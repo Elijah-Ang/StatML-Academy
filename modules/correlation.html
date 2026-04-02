@@ -1,0 +1,1099 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Understanding Correlation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-main: #f7f7f4;
+            --bg-secondary: #f0efeb;
+            --surface: #ffffff;
+            --border: #e7e5e4;
+            --text-main: #1f2937;
+            --text-dim: #4b5563;
+            --text-muted: #6b7280;
+            --accent: #6366f1;
+            --accent-dark: #4f46e5;
+            --accent-light: rgba(99, 102, 241, 0.1);
+            --success: #16a34a;
+            --warning: #d97706;
+            --error: #dc2626;
+            --blue: #2563eb;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Typography */
+        h1, h2, h3 { color: var(--text-main); font-weight: 600; }
+        h1 { font-size: 3.5rem; line-height: 1.1; letter-spacing: -0.02em; position: relative; z-index: 2; }
+        h2 { font-size: 1.75rem; margin-bottom: 1rem; }
+        p { margin-bottom: 1.25rem; font-size: 1.05rem; color: var(--text-dim); }
+        ul { margin-bottom: 1.25rem; padding-left: 1.5rem; color: var(--text-dim); font-size: 1.05rem; }
+        li { margin-bottom: 0.5rem; }
+        .mono { font-family: 'JetBrains Mono', monospace; }
+
+        /* Progress Bar */
+        #progress-bar {
+            position: fixed;
+            top: 0; left: 0; height: 4px;
+            background: linear-gradient(90deg, var(--accent), var(--blue));
+            width: 0%;
+            z-index: 1000;
+            transition: width 0.1s ease-out;
+        }
+
+        /* Stage Dots */
+        .stage-dots {
+            position: fixed;
+            right: 2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            z-index: 100;
+        }
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--border);
+            transition: all 0.2s ease;
+            text-decoration: none;
+        }
+        .dot:hover { background: var(--text-muted); }
+        .dot.active {
+            background: var(--accent);
+            transform: scale(1.5);
+        }
+
+        /* Hero */
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
+            background: var(--bg-main);
+        }
+        #hero-canvas {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 1;
+            opacity: 0.6;
+            pointer-events: none;
+        }
+        .topic-badge {
+            background: var(--surface);
+            color: var(--text-dim);
+            padding: 0.25rem 0.75rem;
+            border-radius: 999px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 1.5rem;
+            border: 1px solid var(--border);
+            position: relative;
+            z-index: 2;
+        }
+        .hero-title-gradient {
+            background: linear-gradient(135deg, #1f2937, var(--accent-dark));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .hero-subtitle {
+            margin-top: 1.5rem;
+            font-size: 1.2rem;
+            max-width: 600px;
+            position: relative;
+            z-index: 2;
+        }
+        .scroll-cue {
+            position: absolute;
+            bottom: 2rem;
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            animation: bounce 2s infinite;
+            z-index: 2;
+        }
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+
+        /* Layout */
+        .layout-wrapper {
+            display: flex;
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+        }
+        .narrative-col {
+            width: 45%;
+            padding: 0 4rem 4rem 4rem;
+        }
+        .vis-col {
+            width: 55%;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            padding: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Stages */
+        .stage-section {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            opacity: 0.2;
+            transition: opacity 0.5s ease;
+            padding: 4rem 0;
+        }
+        .stage-section.active { opacity: 1; }
+        .stage-label {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--accent);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .stage-label::after {
+            content: "";
+            display: block;
+            width: 2rem;
+            height: 2px;
+            background-color: var(--accent);
+        }
+
+        /* Components */
+        .glass-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+        }
+        .decision-card {
+            border-color: var(--accent);
+            background: var(--surface);
+        }
+        .formula-block {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.25rem;
+            font-family: 'JetBrains Mono', monospace;
+            text-align: center;
+            margin: 1.5rem 0;
+            font-size: 1.1rem;
+            overflow-x: auto;
+        }
+        .insight-box {
+            border-left: 4px solid var(--accent);
+            background: var(--accent-light);
+            padding: 1rem 1.25rem;
+            border-radius: 0 8px 8px 0;
+            margin: 1.5rem 0;
+        }
+        .insight-box p { margin: 0; color: var(--text-main); font-size: 0.95rem; }
+        
+        .pill {
+            display: inline-block;
+            padding: 0.2rem 0.6rem;
+            border-radius: 999px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+        }
+        .pill.positive { background: rgba(22, 163, 74, 0.1); color: var(--success); border-color: var(--success); }
+        .pill.negative { background: rgba(220, 38, 38, 0.1); color: var(--error); border-color: var(--error); }
+
+        .metric-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+        .metric-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1rem;
+            text-align: center;
+        }
+        .metric-value {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--accent-dark);
+        }
+        .metric-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            letter-spacing: 0.05em;
+            margin-top: 0.25rem;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+            font-size: 0.9rem;
+        }
+        .data-table th, .data-table td {
+            padding: 0.75rem;
+            text-align: right;
+            border-bottom: 1px solid var(--border);
+        }
+        .data-table th { color: var(--text-muted); font-weight: 500; }
+        .data-table td.mono { color: var(--text-main); }
+
+        /* Canvas Container */
+        .canvas-container {
+            width: 100%;
+            height: 100%;
+            max-height: 800px;
+            background: var(--surface);
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+            position: relative;
+            overflow: hidden;
+        }
+        #vis-canvas {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+        
+        /* Interactive Control */
+        .control-panel {
+            margin-top: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        input[type=range] {
+            flex-grow: 1;
+            accent-color: var(--accent);
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 900px) {
+            .layout-wrapper { flex-direction: column; }
+            .narrative-col { width: 100%; padding: 0 1.5rem; }
+            .vis-col { 
+                width: 100%; 
+                height: 50vh; 
+                padding: 1rem; 
+                background: var(--bg-main);
+                z-index: 10;
+                border-bottom: 1px solid var(--border);
+            }
+            .stage-dots { display: none; }
+            h1 { font-size: 2.5rem; }
+            .stage-section { padding: 3rem 0; min-height: auto; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="progress-bar"></div>
+
+    <div class="stage-dots">
+        <a href="#stage-1" class="dot" id="dot-1" title="Stage 1"></a>
+        <a href="#stage-2" class="dot" id="dot-2" title="Stage 2"></a>
+        <a href="#stage-3" class="dot" id="dot-3" title="Stage 3"></a>
+        <a href="#stage-4" class="dot" id="dot-4" title="Stage 4"></a>
+        <a href="#stage-5" class="dot" id="dot-5" title="Stage 5"></a>
+        <a href="#stage-6" class="dot" id="dot-6" title="Stage 6"></a>
+        <a href="#stage-7" class="dot" id="dot-7" title="Stage 7"></a>
+        <a href="#stage-8" class="dot" id="dot-8" title="Stage 8"></a>
+        <a href="#stage-9" class="dot" id="dot-9" title="Stage 9"></a>
+        <a href="#stage-10" class="dot" id="dot-10" title="Stage 10"></a>
+    </div>
+
+    <section class="hero">
+        <canvas id="hero-canvas"></canvas>
+        <div class="topic-badge">Statistical Methods</div>
+        <h1 class="hero-title-gradient">Understanding<br>Correlation</h1>
+        <p class="hero-subtitle">
+            A visual guide to how variables move together, from raw data to statistical significance and the limits of interpretation.
+        </p>
+        <div class="scroll-cue">Scroll to begin ↓</div>
+    </section>
+
+    <div class="layout-wrapper">
+        <div class="narrative-col">
+            
+            <section class="stage-section" data-stage="1" id="stage-1">
+                <div class="stage-label">Stage 01</div>
+                <h2>The Raw Data</h2>
+                <p>Correlation is a statistical technique used to answer one big question: <strong>When one thing changes, does another thing also change?</strong></p>
+                <p>To find out, we need paired observations. For example, let's look at the relationship between hours studied and test scores for six students.</p>
+                
+                <div class="glass-card">
+                    <table class="data-table">
+                        <thead>
+                            <tr><th>Student</th><th>Hours Studied (X)</th><th>Test Score (Y)</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>A</td><td class="mono">1</td><td class="mono">52</td></tr>
+                            <tr><td>B</td><td class="mono">2</td><td class="mono">57</td></tr>
+                            <tr><td>C</td><td class="mono">3</td><td class="mono">63</td></tr>
+                            <tr><td>D</td><td class="mono">4</td><td class="mono">68</td></tr>
+                            <tr><td>E</td><td class="mono">5</td><td class="mono">74</td></tr>
+                            <tr><td>F</td><td class="mono">6</td><td class="mono">79</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p>By plotting these paired values on a scatterplot, we translate raw numbers into a visual pattern.</p>
+            </section>
+
+            <section class="stage-section" data-stage="2" id="stage-2">
+                <div class="stage-label">Stage 02</div>
+                <h2>Direction and Form</h2>
+                <p>The first thing we look for in a scatterplot is the <strong>direction</strong> and <strong>form</strong> of the relationship.</p>
+                <p>If the dots rise from left to right, we have a <span class="pill positive">Positive Correlation</span>. As study hours go up, test scores also go up.</p>
+                <div class="insight-box">
+                    <p><strong>The "Walking Friends" metaphor:</strong> Think of two friends. If they both walk forward together, that's a positive correlation. If one walks forward while the other walks backward, that's negative.</p>
+                </div>
+                <p>We also check the <strong>form</strong>. Pearson correlation specifically measures <em>linear</em> relationships—meaning the dots tend to cluster around a straight line.</p>
+            </section>
+
+            <section class="stage-section" data-stage="3" id="stage-3">
+                <div class="stage-label">Stage 03</div>
+                <h2>Measuring Strength: r</h2>
+                <p>We quantify this relationship using <strong>Pearson's correlation coefficient</strong>, written as <span class="mono">r</span>.</p>
+                <p>The value of <span class="mono">r</span> always falls between -1.00 and +1.00.</p>
+                <ul>
+                    <li><span class="mono">r = +1.0</span> : Perfect positive correlation</li>
+                    <li><span class="mono">r = -1.0</span> : Perfect negative correlation</li>
+                    <li><span class="mono">r = 0.0</span> : No linear correlation</li>
+                </ul>
+                <div class="glass-card">
+                    <p><strong>Interactive:</strong> Adjust the noise to see how <span class="mono">r</span> changes when the dots spread further from the perfect line.</p>
+                    <div class="control-panel">
+                        <label for="noise-slider">Data Noise:</label>
+                        <input type="range" id="noise-slider" min="0" max="25" value="0">
+                    </div>
+                    <div class="metric-grid" style="margin-top:1rem;">
+                        <div class="metric-card">
+                            <div class="metric-value" id="r-display">--</div>
+                            <div class="metric-label">Pearson's r</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="stage-section" data-stage="4" id="stage-4">
+                <div class="stage-label">Stage 04</div>
+                <h2>Formal Hypotheses</h2>
+                <p>In statistics, we use a sample to make guesses about an entire population. To test if a correlation is "real", we set up formal hypotheses.</p>
+                
+                <div class="glass-card">
+                    <div style="margin-bottom: 1rem;">
+                        <strong>Null Hypothesis (H₀): <span class="mono">ρ = 0</span></strong>
+                        <p style="font-size: 0.9rem; margin-top: 0.25rem;">There is no linear correlation between the variables in the population. Any observed relationship is just random chance.</p>
+                    </div>
+                    <div>
+                        <strong>Alternative Hypothesis (H₁): <span class="mono">ρ ≠ 0</span></strong>
+                        <p style="font-size: 0.9rem; margin-top: 0.25rem;">There is a significant linear relationship between the two variables.</p>
+                    </div>
+                </div>
+                <p>We use the Greek letter rho (<span class="mono">ρ</span>) for the population, and <span class="mono">r</span> for our sample.</p>
+            </section>
+
+            <section class="stage-section" data-stage="5" id="stage-5">
+                <div class="stage-label">Stage 05</div>
+                <h2>How it works: Covariability</h2>
+                <p>How does the math actually figure out if they move together? It looks at the <strong>means</strong>.</p>
+                <div class="formula-block" style="padding: 1.5rem 1rem;">
+                    r = <span style="display:inline-block; vertical-align:middle; text-align:center;">
+                        <div style="border-bottom: 1px solid var(--text-main); padding-bottom: 0.2rem;">Σ((X - X̄)(Y - Ȳ))</div>
+                        <div style="padding-top: 0.2rem;">√[Σ(X - X̄)² × Σ(Y - Ȳ)²]</div>
+                    </span>
+                </div>
+                <p style="text-align: center; font-size: 0.95rem; margin-top: -0.5rem; margin-bottom: 1.5rem;">
+                    <em>Translation: The sum of how they vary together, divided by the total of how they vary individually.</em>
+                </p>
+                <p>We draw a vertical line for the average of X, and a horizontal line for the average of Y. This creates four quadrants.</p>
+                <div class="insight-box">
+                    <p>If points mostly fall in the Top-Right (both above average) and Bottom-Left (both below average), they are moving together. The formula multiplies their distances from the mean. Positive × Positive = Positive. Negative × Negative = Positive!</p>
+                </div>
+            </section>
+
+            <section class="stage-section" data-stage="6" id="stage-6">
+                <div class="stage-label">Stage 06</div>
+                <h2>Assumptions: Paired & Linear</h2>
+                <p>Pearson's correlation is powerful, but you must check two critical assumptions before trusting the math:</p>
+                <ul>
+                    <li><strong>Paired Numeric Data:</strong> Both variables must be numeric, and each <span class="mono">X</span> must belong to the exact same subject as <span class="mono">Y</span>.</li>
+                    <li><strong>Linearity:</strong> The relationship must be relatively straight.</li>
+                </ul>
+                <p>Imagine a scenario where cramming too much causes sleep deprivation, hurting test performance. Scores rise initially, then fall.</p>
+                <div class="metric-grid">
+                    <div class="metric-card">
+                        <div class="metric-value" id="curve-r-display">--</div>
+                        <div class="metric-label">Calculated r</div>
+                    </div>
+                </div>
+                <p>The math yields an <span class="mono">r</span> near 0, suggesting "no relationship." But visually, there is a strong <em>curvilinear</em> relationship. <strong>Always inspect the scatterplot first.</strong></p>
+            </section>
+
+            <section class="stage-section" data-stage="7" id="stage-7">
+                <div class="stage-label">Stage 07</div>
+                <h2>Assumption Check: Outliers</h2>
+                <p>Another critical assumption is that there are <strong>no extreme outliers</strong>.</p>
+                <p>Because the formula squares the distances from the mean, a single point far away from the rest can act like a magnet, drastically altering the slope and the <span class="mono">r</span> value.</p>
+                <div class="glass-card">
+                    <p>Watch how a single anomalous student (who studied 12 hours but scored 30) pulls the trendline down, severely weakening our strong positive correlation.</p>
+                </div>
+            </section>
+
+            <section class="stage-section" data-stage="8" id="stage-8">
+                <div class="stage-label">Stage 08</div>
+                <h2>The Inferential Result</h2>
+                <p>Let's return to our original, clean data. We have calculated the sample statistic and must now make a formal decision.</p>
+                
+                <div class="metric-grid">
+                    <div class="metric-card">
+                        <div class="metric-value" id="stage8-n-display">--</div>
+                        <div class="metric-label">Sample Size (n)</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value" id="stage8-r-display">--</div>
+                        <div class="metric-label">Observed r</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value" id="stage8-p-display">--</div>
+                        <div class="metric-label">p-value</div>
+                    </div>
+                </div>
+
+                <div class="glass-card decision-card">
+                    <strong>Statistical Decision:</strong>
+                    <p style="margin: 0.5rem 0 0 0;" id="stage8-decision-text"><em style="color: var(--text-muted);">Awaiting statistical computation...</em></p>
+                </div>
+            </section>
+
+            <section class="stage-section" data-stage="9" id="stage-9">
+                <div class="stage-label">Stage 09</div>
+                <h2>The Golden Rule: Causation</h2>
+                <p>We found a statistically significant relationship. But how far can we stretch our interpretation?</p>
+                <div class="glass-card">
+                    <strong>Interpretation:</strong>
+                    <p style="margin: 0.5rem 0 0 0;">"There was a significant positive correlation between hours studied and test score, <span class="mono">r = <span id="stage9-r-text">--</span>, <span id="stage9-p-text">--</span></span>. Students who studied more tended to score higher."</p>
+                </div>
+                <p>However, we <strong>cannot</strong> say that studying <em>caused</em> the score to increase.</p>
+                <div class="insight-box" style="border-left-color: var(--error); background: rgba(220, 38, 38, 0.05);">
+                    <p><strong>Correlation does not equal causation.</strong> Two variables might move together because of a third, confounding variable (e.g., Ice cream sales and sunburns both rise together, but the sun causes both).</p>
+                </div>
+            </section>
+
+            <section class="stage-section" data-stage="10" id="stage-10">
+                <div class="stage-label">Stage 10</div>
+                <h2>Limitations & Summary</h2>
+                <p>To recap, correlation is an observational tool, not an experimental proof.</p>
+                <div class="glass-card">
+                    <ul style="margin-bottom: 0;">
+                        <li><span class="mono">r</span> measures linear tightness (from -1 to +1).</li>
+                        <li><strong>Check the plot:</strong> <span class="mono">r</span> is blind to curves and highly sensitive to outliers.</li>
+                        <li><strong>Significance vs. Size:</strong> A significant p-value means the relationship is likely real, but <span class="mono">r</span> tells you how <em>strong</em> it is.</li>
+                        <li><strong>Pearson vs. Spearman:</strong> Use Pearson for continuous data. Switch to <em>Spearman</em> if your data is ranked/ordinal or has a monotonic non-linear relationship.</li>
+                        <li><strong>No Causal Claims:</strong> It is only evidence of an association.</li>
+                    </ul>
+                </div>
+                <p>When you encounter a correlation, always ask: What does the scatterplot look like, and could a hidden variable be driving the pattern?</p>
+            </section>
+
+            <div style="height: 20vh;"></div> <!-- Spacer -->
+        </div>
+
+        <div class="vis-col">
+            <div class="canvas-container">
+                <canvas id="vis-canvas"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Hero Ambient Canvas Setup
+        const hCanvas = document.getElementById('hero-canvas');
+        const hCtx = hCanvas.getContext('2d');
+        let hWidth, hHeight;
+        let particles = [];
+
+        function initHeroCanvas() {
+            hWidth = hCanvas.width = hCanvas.offsetWidth;
+            hHeight = hCanvas.height = hCanvas.offsetHeight;
+            particles = [];
+            for(let i=0; i<40; i++) {
+                particles.push({
+                    x: Math.random() * hWidth,
+                    y: Math.random() * hHeight,
+                    vx: (Math.random() - 0.5) * 0.5,
+                    vy: (Math.random() - 0.5) * 0.5,
+                    radius: Math.random() * 2 + 1
+                });
+            }
+        }
+
+        function drawHero() {
+            hCtx.clearRect(0, 0, hWidth, hHeight);
+            hCtx.fillStyle = 'rgba(99, 102, 241, 0.5)';
+            hCtx.strokeStyle = 'rgba(99, 102, 241, 0.15)';
+            
+            particles.forEach((p, i) => {
+                p.x += p.vx;
+                p.y += p.vy;
+                
+                if(p.x < 0 || p.x > hWidth) p.vx *= -1;
+                if(p.y < 0 || p.y > hHeight) p.vy *= -1;
+                
+                hCtx.beginPath();
+                hCtx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                hCtx.fill();
+
+                for(let j=i+1; j<particles.length; j++) {
+                    const p2 = particles[j];
+                    const dist = Math.hypot(p.x - p2.x, p.y - p2.y);
+                    if(dist < 100) {
+                        hCtx.beginPath();
+                        hCtx.moveTo(p.x, p.y);
+                        hCtx.lineTo(p2.x, p2.y);
+                        hCtx.stroke();
+                    }
+                }
+            });
+            requestAnimationFrame(drawHero);
+        }
+
+        window.addEventListener('resize', initHeroCanvas);
+        initHeroCanvas();
+        drawHero();
+
+        // Main Vis Canvas Setup
+        const canvas = document.getElementById('vis-canvas');
+        const ctx = canvas.getContext('2d');
+        const rDisplay = document.getElementById('r-display');
+        const curveRDisplay = document.getElementById('curve-r-display');
+        const noiseSlider = document.getElementById('noise-slider');
+        const stageDots = document.querySelectorAll('.dot');
+
+        let width, height;
+        let currentStage = 1;
+        
+        // Base Data (Study Hours vs Test Score)
+        const baseData = [
+            {x: 1, y: 52}, {x: 2, y: 57}, {x: 3, y: 63}, 
+            {x: 4, y: 68}, {x: 5, y: 74}, {x: 6, y: 79}
+        ];
+        
+        // Curvilinear Data (Study Hours vs Test Score - Inverted U)
+        const curveData = [
+            {x: 1, y: 50},
+            {x: 2, y: 65},
+            {x: 3, y: 75},
+            {x: 3.5, y: 78},
+            {x: 4, y: 75},
+            {x: 5, y: 65},
+            {x: 6, y: 50}
+        ];
+
+        // State objects for rendering
+        let points = [];
+        let targetPoints = [];
+        let xRange = {min: 0, max: 7};
+        let yRange = {min: 40, max: 90};
+        let targetXRange = {min: 0, max: 7};
+        let targetYRange = {min: 40, max: 90};
+        
+        let showTrendline = false;
+        let targetShowTrendline = 0; // 0 to 1 opacity
+        let showMeans = false;
+        let targetShowMeans = 0; // 0 to 1 opacity
+        let showQuadrants = false;
+        let targetShowQuadrants = 0;
+        
+        let noiseLevel = 0;
+
+        // Colors
+        const colors = {
+            dot: '#6366f1',
+            line: '#1f2937',
+            axis: '#e7e5e4',
+            text: '#6b7280',
+            mean: '#d97706',
+            quadPos: 'rgba(22, 163, 74, 0.08)',
+            quadNeg: 'rgba(220, 38, 38, 0.08)',
+            outlier: '#dc2626',
+            error: '#dc2626'
+        };
+
+        function resize() {
+            const container = canvas.parentElement;
+            const dpr = window.devicePixelRatio || 1;
+            ctx.resetTransform();
+            canvas.width = container.clientWidth * dpr;
+            canvas.height = container.clientHeight * dpr;
+            ctx.scale(dpr, dpr);
+            width = container.clientWidth;
+            height = container.clientHeight;
+        }
+
+        window.addEventListener('resize', resize);
+        resize();
+
+        // Utilities
+        function lerp(start, end, amt) {
+            return (1 - amt) * start + amt * end;
+        }
+
+        function mapRange(val, inMin, inMax, outMin, outMax) {
+            return (val - inMin) * (outMax - outMin) / (inMax - inMin) + outMin;
+        }
+
+        // High-performance numerical integration of t-distribution PDF for exact live p-values
+        const halfAreaCache = {};
+        function calculatePValue(r, n) {
+            if (n <= 2) return 1;
+            if (Math.abs(r) >= 0.999) return 0.0001;
+            
+            const df = n - 2;
+            const t = Math.abs(r * Math.sqrt(df / (1 - r * r)));
+            
+            const step = 0.02;
+            const maxT = 50; 
+            
+            if (!halfAreaCache[df]) {
+                let area = 0;
+                for (let x = 0; x < maxT; x += step) {
+                    area += Math.pow(1 + (x * x) / df, -(df + 1) / 2);
+                }
+                halfAreaCache[df] = area;
+            }
+            
+            const halfArea = halfAreaCache[df];
+            let tailArea = 0;
+            for (let x = t; x < maxT; x += step) {
+                tailArea += Math.pow(1 + (x * x) / df, -(df + 1) / 2);
+            }
+            
+            return Math.min(1, tailArea / halfArea);
+        }
+
+        function calcStats(data) {
+            const n = data.length;
+            if(n === 0) return { meanX: 0, meanY: 0, r: 0, m: 0, b: 0 };
+            
+            let sumX = 0, sumY = 0, sumXY = 0, sumX2 = 0, sumY2 = 0;
+            data.forEach(p => {
+                const px = p.renderX !== undefined ? p.renderX : p.x;
+                const py = p.renderY !== undefined ? p.renderY : p.y;
+                
+                sumX += px; sumY += py;
+                sumXY += px * py;
+                sumX2 += px * px; sumY2 += py * py;
+            });
+            const meanX = sumX / n;
+            const meanY = sumY / n;
+            
+            const num = (n * sumXY) - (sumX * sumY);
+            const den = Math.sqrt((n * sumX2 - sumX * sumX) * (n * sumY2 - sumY * sumY));
+            const r = den === 0 ? 0 : num / den;
+
+            const denomM = (n * sumX2 - sumX * sumX);
+            const m = denomM === 0 ? 0 : num / denomM;
+            const b = meanY - m * meanX;
+
+            return { meanX, meanY, r, m, b };
+        }
+
+        function generateNoisyData(base, noiseAmount) {
+            // Apply a slight curve to make the initial slider interaction feel natural but responsive
+            const effectiveNoise = Math.pow(noiseAmount / 25, 0.7) * 25;
+            return base.map((p, i) => {
+                const angle = (i * 1.37 + 0.5) * Math.PI; 
+                const yNoise = Math.sin(angle) * (effectiveNoise * 1.5); 
+                const xNoise = Math.cos(angle) * (effectiveNoise * 0.3); 
+                return { x: p.x + xNoise, y: Math.max(0, p.y + yNoise), isBase: true };
+            });
+        }
+
+        points = baseData.map(p => ({x: p.x, y: p.y, renderX: p.x, renderY: p.y, isOutlier: false}));
+        targetPoints = [...points];
+
+        // Draw Loop
+        function draw() {
+            ctx.clearRect(0, 0, width, height);
+            
+            xRange.min = lerp(xRange.min, targetXRange.min, 0.05);
+            xRange.max = lerp(xRange.max, targetXRange.max, 0.05);
+            yRange.min = lerp(yRange.min, targetYRange.min, 0.05);
+            yRange.max = lerp(yRange.max, targetYRange.max, 0.05);
+            
+            showTrendline = lerp(showTrendline, targetShowTrendline, 0.1);
+            showMeans = lerp(showMeans, targetShowMeans, 0.05);
+            showQuadrants = lerp(showQuadrants, targetShowQuadrants, 0.05);
+
+            let activePoints = [];
+            for(let i=0; i<targetPoints.length; i++) {
+                if(!points[i]) {
+                    points[i] = { x: targetPoints[i].x, y: targetPoints[i].y, renderX: targetPoints[i].x, renderY: targetPoints[i].y, isOutlier: targetPoints[i].isOutlier, a: 0 };
+                }
+                points[i].renderX = lerp(points[i].renderX, targetPoints[i].x, 0.1);
+                points[i].renderY = lerp(points[i].renderY, targetPoints[i].y, 0.1);
+                points[i].isOutlier = targetPoints[i].isOutlier;
+                points[i].a = lerp(points[i].a !== undefined ? points[i].a : 1, 1, 0.1);
+                activePoints.push(points[i]);
+            }
+            if(points.length > targetPoints.length) {
+                for(let i=targetPoints.length; i<points.length; i++) {
+                    points[i].a = lerp(points[i].a, 0, 0.1);
+                    if(points[i].a > 0.01) activePoints.push(points[i]);
+                }
+                if(points[points.length-1].a <= 0.01) points.pop();
+            }
+
+            // Real-time stats from animating points vs stable inference stats from destination targets
+            const stats = calcStats(activePoints);
+            const targetStats = calcStats(targetPoints); 
+
+            const padX = 70;
+            const padY = 70;
+
+            function getPX(val) { return mapRange(val, xRange.min, xRange.max, padX, width - padX); }
+            function getPY(val) { return mapRange(val, yRange.min, yRange.max, height - padY, padY); }
+
+            ctx.fillStyle = colors.text;
+            ctx.font = '600 13px Inter';
+            ctx.textAlign = 'left';
+            ctx.textBaseline = 'top';
+            ctx.fillText('Scatterplot: Study vs Score', padX, 25);
+
+            if (showQuadrants > 0.01) {
+                const pxMeanX = getPX(stats.meanX);
+                const pyMeanY = getPY(stats.meanY);
+                
+                ctx.globalAlpha = showQuadrants;
+                ctx.fillStyle = colors.quadPos;
+                ctx.fillRect(pxMeanX, padY, width - padX - pxMeanX, pyMeanY - padY);
+                ctx.fillRect(padX, pyMeanY, pxMeanX - padX, height - padY - pyMeanY);
+                ctx.fillStyle = colors.quadNeg;
+                ctx.fillRect(padX, padY, pxMeanX - padX, pyMeanY - padY);
+                ctx.fillRect(pxMeanX, pyMeanY, width - padX - pxMeanX, height - padY - pyMeanY);
+                
+                ctx.fillStyle = colors.text;
+                ctx.font = '12px Inter';
+                ctx.textAlign = 'center';
+                ctx.fillText('(+) Positive contribution', pxMeanX + 80, pyMeanY - 20);
+                ctx.fillText('(-) Negative', pxMeanX - 60, pyMeanY - 20);
+                ctx.globalAlpha = 1;
+            }
+
+            ctx.beginPath();
+            ctx.strokeStyle = colors.axis;
+            ctx.lineWidth = 1;
+            ctx.moveTo(padX, padY);
+            ctx.lineTo(padX, height - padY);
+            ctx.lineTo(width - padX, height - padY);
+            ctx.stroke();
+
+            ctx.fillStyle = colors.text;
+            ctx.font = '12px JetBrains Mono';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'top';
+            for(let i=Math.ceil(xRange.min); i<=xRange.max; i+= (xRange.max-xRange.min > 10 ? 2 : 1)) {
+                let px = getPX(i);
+                ctx.fillText(i, px, height - padY + 10);
+                ctx.beginPath(); ctx.moveTo(px, height-padY); ctx.lineTo(px, height-padY+4); ctx.stroke();
+            }
+            
+            ctx.font = '500 13px Inter';
+            ctx.fillText('Hours Studied (X)', width/2, height - padY + 35); 
+
+            ctx.font = '12px JetBrains Mono';
+            ctx.textAlign = 'right';
+            ctx.textBaseline = 'middle';
+            let yStep = yRange.max - yRange.min > 40 ? 10 : 10;
+            for(let i=Math.ceil(yRange.min/yStep)*yStep; i<=yRange.max; i+=yStep) {
+                let py = getPY(i);
+                ctx.fillText(i, padX - 10, py);
+                ctx.beginPath(); ctx.moveTo(padX-4, py); ctx.lineTo(padX, py); ctx.stroke();
+            }
+
+            ctx.save();
+            ctx.translate(padX - 45, height/2);
+            ctx.rotate(-Math.PI/2);
+            ctx.textAlign = 'center';
+            ctx.font = '500 13px Inter';
+            ctx.fillText('Test Score (Y)', 0, 0);
+            ctx.restore();
+
+            if (showMeans > 0.01) {
+                const pxMeanX = getPX(stats.meanX);
+                const pyMeanY = getPY(stats.meanY);
+                ctx.globalAlpha = showMeans;
+                ctx.strokeStyle = colors.mean;
+                ctx.setLineDash([5, 5]);
+                ctx.beginPath();
+                ctx.moveTo(pxMeanX, padY); ctx.lineTo(pxMeanX, height - padY); 
+                ctx.moveTo(padX, pyMeanY); ctx.lineTo(width - padX, pyMeanY); 
+                ctx.stroke();
+                ctx.setLineDash([]);
+                
+                ctx.fillStyle = colors.mean;
+                ctx.font = '12px Inter';
+                ctx.textAlign = 'left';
+                ctx.fillText('X̄', pxMeanX + 5, height - padY - 10);
+                ctx.fillText('Ȳ', padX + 10, pyMeanY - 5);
+                ctx.globalAlpha = 1;
+            }
+
+            if (showTrendline > 0.01) {
+                ctx.globalAlpha = showTrendline;
+                ctx.strokeStyle = colors.line;
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                const y1 = stats.m * xRange.min + stats.b;
+                const y2 = stats.m * xRange.max + stats.b;
+                ctx.moveTo(getPX(xRange.min), getPY(y1));
+                ctx.lineTo(getPX(xRange.max), getPY(y2));
+                ctx.stroke();
+                
+                // Explicit label safely anchored near the bottom axis to avoid point overlap
+                if (currentStage === 6 && showTrendline > 0.5) {
+                    const label = 'Misleading Linear Summary';
+                    ctx.font = '600 12px Inter';
+                    const textMetrics = ctx.measureText(label);
+                    const midX = getPX((xRange.min + xRange.max) / 2);
+                    const labelY = height - padY - 20;
+                    
+                    ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
+                    ctx.fillRect(midX - textMetrics.width/2 - 8, labelY - 12, textMetrics.width + 16, 24);
+
+                    ctx.fillStyle = colors.error;
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'middle';
+                    ctx.fillText(label, midX, labelY);
+                }
+                
+                ctx.globalAlpha = 1;
+            }
+
+            activePoints.forEach(p => {
+                ctx.globalAlpha = p.a !== undefined ? p.a : 1;
+                ctx.beginPath();
+                ctx.arc(getPX(p.renderX), getPY(p.renderY), 6, 0, Math.PI * 2);
+                ctx.fillStyle = p.isOutlier ? colors.outlier : colors.dot;
+                ctx.fill();
+                ctx.strokeStyle = '#fff';
+                ctx.lineWidth = 1.5;
+                ctx.stroke();
+            });
+            ctx.globalAlpha = 1;
+
+            // DOM UI Binding
+            if (currentStage === 3) {
+                rDisplay.innerText = stats.r.toFixed(2);
+            }
+            if (currentStage === 6) {
+                const formattedR = stats.r === 0 || Math.abs(stats.r) < 0.005 ? "0.00" : stats.r.toFixed(2);
+                curveRDisplay.innerText = formattedR;
+            }
+            if (currentStage >= 8) {
+                const liveN = activePoints.length;
+                const liveRVal = stats.r;
+                const targetN = targetPoints.length;
+                const targetRVal = targetStats.r;
+                
+                const stage8N = document.getElementById('stage8-n-display');
+                if (stage8N) stage8N.innerText = liveN;
+
+                const stage8RDisplay = document.getElementById('stage8-r-display');
+                if (stage8RDisplay) stage8RDisplay.innerText = liveRVal === 0 || Math.abs(liveRVal) < 0.005 ? "0.00" : liveRVal.toFixed(2);
+                
+                // Determine if the animation transition is visually complete
+                const isSettled = Math.abs(liveRVal - targetRVal) < 0.005 && liveN === targetN;
+                
+                const stage8PDisplay = document.getElementById('stage8-p-display');
+                const stage8DecisionText = document.getElementById('stage8-decision-text');
+                
+                if (currentStage === 8) {
+                    if (!isSettled) {
+                        if (stage8PDisplay) stage8PDisplay.innerText = '--';
+                        if (stage8DecisionText) stage8DecisionText.innerHTML = '<em style="color: var(--text-muted);">Awaiting statistical computation...</em>';
+                    } else {
+                        const pValTarget = calculatePValue(targetRVal, targetN);
+                        let pStr, pLabel;
+                        
+                        if (pValTarget < 0.001) { 
+                            pStr = '< .001'; pLabel = 'p < .001'; 
+                        } else if (pValTarget < 0.01) { 
+                            pStr = '< .01'; pLabel = 'p < .01'; 
+                        } else { 
+                            pStr = pValTarget.toFixed(3).replace(/^0\./, '.'); 
+                            pLabel = 'p = ' + pStr;
+                        }
+                        
+                        if (stage8PDisplay) stage8PDisplay.innerText = pStr;
+                        
+                        if (stage8DecisionText) {
+                            if (pValTarget < 0.05) {
+                                stage8DecisionText.innerHTML = `Because our p-value (<span class="mono">${pLabel}</span>) is smaller than our alpha threshold (usually 0.05), we <strong style="color:var(--success)">reject the null hypothesis</strong>. There is sufficient evidence to conclude a linear relationship exists.`;
+                            } else {
+                                stage8DecisionText.innerHTML = `Because our p-value (<span class="mono">${pLabel}</span>) is greater than our alpha threshold (usually 0.05), we <strong style="color:var(--error)">fail to reject the null hypothesis</strong>. There is not sufficient evidence to conclude a linear relationship exists.`;
+                            }
+                        }
+                    }
+                }
+
+                // Bind Stage 9 interpretation strictly to the stable inference pipeline
+                if (currentStage === 9) {
+                    const pValTarget = calculatePValue(targetRVal, targetN);
+                    let pLabel = pValTarget < 0.001 ? 'p < .001' : (pValTarget < 0.01 ? 'p < .01' : 'p = ' + pValTarget.toFixed(3).replace(/^0\./, '.'));
+                    
+                    const s9R = document.getElementById('stage9-r-text');
+                    const s9P = document.getElementById('stage9-p-text');
+                    if (s9R) s9R.innerText = targetRVal === 0 || Math.abs(targetRVal) < 0.005 ? "0.00" : targetRVal.toFixed(2);
+                    if (s9P) s9P.innerText = pLabel;
+                }
+            }
+
+            requestAnimationFrame(draw);
+        }
+
+        requestAnimationFrame(draw);
+
+        function setStage(stageIndex) {
+            currentStage = stageIndex;
+            
+            targetShowTrendline = 0;
+            targetShowMeans = 0;
+            targetShowQuadrants = 0;
+            targetXRange = {min: 0, max: 7};
+            targetYRange = {min: 40, max: 90};
+
+            stageDots.forEach(dot => dot.classList.remove('active'));
+            const activeDot = document.getElementById(`dot-${stageIndex}`);
+            if(activeDot) activeDot.classList.add('active');
+
+            switch(stageIndex) {
+                case 1:
+                    targetPoints = baseData.map(p => ({...p}));
+                    break;
+                case 2:
+                    targetPoints = baseData.map(p => ({...p}));
+                    targetShowTrendline = 1;
+                    break;
+                case 3:
+                    updateNoise(); 
+                    targetShowTrendline = 1;
+                    break;
+                case 4:
+                    targetPoints = baseData.map(p => ({...p}));
+                    targetShowTrendline = 1;
+                    break;
+                case 5:
+                    targetPoints = baseData.map(p => ({...p}));
+                    targetShowTrendline = 0;
+                    targetShowMeans = 1;
+                    targetShowQuadrants = 1;
+                    break;
+                case 6:
+                    targetPoints = curveData.map(p => ({...p}));
+                    targetShowTrendline = 1;
+                    break;
+                case 7:
+                    targetPoints = baseData.map(p => ({...p}));
+                    targetPoints.push({x: 12, y: 30, isOutlier: true}); 
+                    targetXRange = {min: 0, max: 13};
+                    targetYRange = {min: 20, max: 90};
+                    targetShowTrendline = 1;
+                    break;
+                case 8:
+                case 9:
+                case 10:
+                    targetPoints = baseData.map(p => ({...p}));
+                    targetShowTrendline = 1;
+                    break;
+            }
+        }
+
+        function updateNoise() {
+            if (currentStage === 3) {
+                noiseLevel = parseFloat(noiseSlider.value);
+                targetPoints = generateNoisyData(baseData, noiseLevel);
+            }
+        }
+        noiseSlider.addEventListener('input', updateNoise);
+
+        const sections = document.querySelectorAll('.stage-section');
+        const progressBar = document.getElementById('progress-bar');
+
+        const observerOptions = {
+            root: null,
+            rootMargin: '-40% 0px -40% 0px',
+            threshold: 0
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    sections.forEach(s => s.classList.remove('active'));
+                    entry.target.classList.add('active');
+                    const stage = parseInt(entry.target.getAttribute('data-stage'));
+                    setStage(stage);
+                }
+            });
+        }, observerOptions);
+
+        sections.forEach(section => observer.observe(section));
+
+        window.addEventListener('scroll', () => {
+            const scrollPos = window.scrollY;
+            const maxScroll = document.body.scrollHeight - window.innerHeight;
+            const progress = (scrollPos / maxScroll) * 100;
+            progressBar.style.width = progress + '%';
+        });
+
+        setStage(1);
+
+    </script>
+</body>
+</html>

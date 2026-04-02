@@ -1,0 +1,2188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Principal Components Analysis (PCA)</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-page: #f7f7f4;
+            --bg-secondary: #f0efeb;
+            --surface: #ffffff;
+            --border: #e7e5e4;
+            --text-main: #1f2937;
+            --text-dim: #4b5563;
+            --text-muted: #6b7280;
+            --accent: #6366f1;
+            --accent-dark: #4f46e5;
+            --accent-light: #e0e7ff;
+            --success: #16a34a;
+            --warning: #d97706;
+            --error: #dc2626;
+            --blue: #2563eb;
+            --font-prose: 'Inter', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-prose);
+            color: var(--text-main);
+            background-color: var(--bg-page);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Typography */
+        h1 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            line-height: 1.1;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--text-main), var(--accent-dark));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        h2 {
+            font-size: 1.75rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            letter-spacing: -0.01em;
+        }
+
+        p {
+            font-size: 1rem;
+            margin-bottom: 1.25rem;
+            color: var(--text-dim);
+        }
+
+        .stage-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .stage-label::before {
+            content: '';
+            display: inline-block;
+            width: 1.5rem;
+            height: 2px;
+            background-color: var(--accent);
+        }
+
+        /* Layout */
+        #progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent), var(--blue));
+            width: 0%;
+            z-index: 1000;
+            transition: width 0.1s ease-out;
+        }
+
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 2rem;
+            position: relative;
+        }
+
+        .hero-subtitle {
+            font-size: 1.25rem;
+            color: var(--text-dim);
+            max-width: 600px;
+            margin-bottom: 2rem;
+        }
+
+        .topic-badge {
+            font-size: 0.85rem;
+            font-family: var(--font-mono);
+            background-color: var(--bg-secondary);
+            padding: 0.25rem 0.75rem;
+            border-radius: 999px;
+            margin-bottom: 1.5rem;
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+        }
+
+        .scroll-cue {
+            position: absolute;
+            bottom: 2rem;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+
+        .split-layout {
+            display: flex;
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .narrative-column {
+            width: 45%;
+            padding: 0 4rem 10rem 4rem;
+        }
+
+        .visualization-column {
+            width: 55%;
+            height: 100vh;
+            position: sticky;
+            top: 0;
+            padding: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .story-section {
+            min-height: 80vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 4rem 0;
+        }
+
+        .story-section.active {
+            /* Active class retained for scroll-tracking hooks */
+        }
+
+        /* Components */
+        .glass-card {
+            background-color: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+            margin-bottom: 1.5rem;
+        }
+
+        .formula-block {
+            font-family: var(--font-mono);
+            background-color: var(--bg-secondary);
+            padding: 1rem;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            font-size: 0.9rem;
+            margin-bottom: 1.25rem;
+            color: var(--text-main);
+            overflow-x: auto;
+        }
+
+        .insight-box {
+            background-color: var(--accent-light);
+            border-left: 4px solid var(--accent);
+            padding: 1rem 1.25rem;
+            border-radius: 0 8px 8px 0;
+            margin-bottom: 1.25rem;
+        }
+
+        .insight-box p {
+            margin-bottom: 0;
+            font-size: 0.95rem;
+            color: var(--accent-dark);
+        }
+
+        .metric-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .metric-card {
+            background-color: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .metric-value {
+            font-family: var(--font-mono);
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent-dark);
+        }
+
+        .metric-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+        }
+
+        .pill {
+            display: inline-block;
+            padding: 0.2rem 0.6rem;
+            border-radius: 999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border);
+            font-family: var(--font-mono);
+        }
+
+        .control-group {
+            margin-top: 1rem;
+        }
+
+        .feature-pill-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin: 1rem 0 0.75rem;
+        }
+
+        .feature-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            padding: 0.35rem 0.7rem;
+            border-radius: 999px;
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border);
+            font-family: var(--font-mono);
+            font-size: 0.78rem;
+            color: var(--text-main);
+        }
+
+        .loadings-list {
+            display: grid;
+            gap: 0.7rem;
+            margin: 1rem 0;
+        }
+
+        .loadings-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+            color: var(--text-dim);
+        }
+
+        .data-table-wrap {
+            overflow-x: auto;
+            margin-top: 1rem;
+        }
+
+        .mini-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.84rem;
+            font-family: var(--font-mono);
+        }
+
+        .mini-table th,
+        .mini-table td {
+            padding: 0.55rem 0.65rem;
+            border-bottom: 1px solid var(--border);
+            white-space: nowrap;
+            text-align: right;
+        }
+
+        .mini-table th:first-child,
+        .mini-table td:first-child {
+            text-align: left;
+        }
+
+        .mini-table th {
+            font-family: var(--font-prose);
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+        }
+
+        .pc2-note {
+            font-size: 0.88rem;
+            color: var(--text-muted);
+            margin-bottom: 0;
+        }
+
+        .transform-visual {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            width: min(90%, 540px);
+            max-height: calc(100% - 4rem);
+            transform: translate(-50%, -50%);
+            display: grid;
+            grid-template-columns: minmax(0, 1fr);
+            gap: 0.4rem;
+            align-items: center;
+            align-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.22s ease;
+            z-index: 3;
+        }
+
+        .transform-visual.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .transform-card {
+            min-height: 0;
+            background-color: rgba(255, 255, 255, 0.96);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            box-shadow: 0 10px 18px -10px rgba(15, 23, 42, 0.16);
+            padding: 0.75rem 0.85rem 0.8rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            overflow: hidden;
+        }
+
+        .transform-card-head h3 {
+            font-size: 1rem;
+            margin-bottom: 0.15rem;
+        }
+
+        .transform-card-head p {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 0;
+        }
+
+        .transform-table-scroll {
+            max-height: min(208px, 34vh);
+            overflow: auto;
+            scrollbar-width: thin;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+        }
+
+        .transform-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-family: var(--font-mono);
+            font-size: 0.72rem;
+        }
+
+        .transform-table th,
+        .transform-table td {
+            padding: 0.32rem 0.38rem;
+            white-space: nowrap;
+            border-bottom: 1px solid var(--border);
+            text-align: right;
+        }
+
+        .transform-table th:first-child,
+        .transform-table td:first-child {
+            text-align: left;
+        }
+
+        .transform-table thead th {
+            position: sticky;
+            top: 0;
+            z-index: 1;
+            background-color: rgba(247, 247, 244, 0.97);
+            font-family: var(--font-prose);
+            font-size: 0.68rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+        }
+
+        .transform-table tbody tr {
+            transition: background-color 0.18s ease, box-shadow 0.18s ease;
+        }
+
+        .transform-table tbody tr:hover,
+        .transform-table tbody tr.is-linked {
+            background-color: rgba(224, 231, 255, 0.5);
+        }
+
+        .transform-id {
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .transform-bridge {
+            min-height: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 0.25rem;
+            padding-top: 0;
+        }
+
+        .transform-bridge-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.3rem 0.7rem;
+            border-radius: 999px;
+            border: 1px solid var(--border);
+            background-color: rgba(240, 239, 235, 0.9);
+            color: var(--text-main);
+            font-size: 0.76rem;
+            font-weight: 700;
+            text-align: center;
+        }
+
+        .transform-bridge-note {
+            font-size: 0.72rem;
+            line-height: 1.35;
+            color: var(--text-muted);
+            text-align: center;
+            margin-bottom: 0;
+            max-width: 180px;
+        }
+
+        .transform-link-scroll {
+            display: none;
+        }
+
+        #main-canvas.stage7-hidden {
+            opacity: 0;
+            border-color: transparent;
+            box-shadow: none;
+            pointer-events: none;
+        }
+
+        .control-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            accent-color: var(--accent);
+            margin-bottom: 1rem;
+        }
+
+        /* Canvas */
+        #main-canvas {
+            width: 100%;
+            height: 100%;
+            max-height: 800px;
+            background-color: var(--surface);
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Stage Dots */
+        #stage-dots {
+            position: fixed;
+            right: 2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            z-index: 100;
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: var(--border);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .dot.active {
+            background-color: var(--accent);
+            transform: scale(1.5);
+        }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .split-layout {
+                flex-direction: column;
+            }
+
+            .narrative-column {
+                width: 100%;
+                padding: 0 1.25rem 5rem 1.25rem;
+            }
+
+            .visualization-column {
+                width: 100%;
+                order: -1;
+                height: min(58vh, 430px);
+                position: sticky;
+                top: 0.75rem;
+                padding: 0.75rem 1rem 0.5rem 1rem;
+                z-index: 2;
+                background: linear-gradient(180deg, rgba(247, 247, 244, 0.96) 0%, rgba(247, 247, 244, 0.82) 72%, rgba(247, 247, 244, 0) 100%);
+                backdrop-filter: blur(6px);
+            }
+
+            #stage-dots {
+                display: none;
+            }
+            
+            #main-canvas {
+                border-radius: 8px;
+                min-height: 300px;
+            }
+
+            .story-section {
+                min-height: 72vh;
+                padding: 3rem 0;
+            }
+
+            .transform-visual {
+                left: 50%;
+                top: 50%;
+                width: calc(100% - 2rem);
+                max-height: calc(100% - 1.25rem);
+                transform: translate(-50%, -50%);
+                grid-template-columns: 1fr;
+                gap: 0.45rem;
+                align-content: center;
+                overflow: hidden;
+            }
+
+            .transform-bridge {
+                padding-top: 0;
+                gap: 0.2rem;
+            }
+
+            .transform-bridge-note {
+                max-width: none;
+            }
+
+            .transform-link-scroll {
+                display: none;
+            }
+
+            .transform-table-scroll {
+                max-height: 118px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="progress-bar"></div>
+
+    <ul id="stage-dots"></ul>
+
+    <section class="hero">
+        <div class="topic-badge">Dimensionality Reduction</div>
+        <h1>Principal Components Analysis</h1>
+        <p class="hero-subtitle">The "Magic Shrink Ray" for high-dimensional data. Learn how PCA compresses many columns into a few components without losing the strongest patterns.</p>
+        <div class="scroll-cue">Scroll to begin</div>
+    </section>
+
+    <div class="split-layout">
+        <div class="narrative-column">
+            
+            <div class="story-section" data-stage="1">
+                <div class="stage-label">Stage 01</div>
+                <h2>The Unsupervised Explorer</h2>
+                <p>In traditional "supervised" machine learning, we act like students with an answer key. We know what we want to predict (e.g., house prices) and use features to find the answer.</p>
+                <p><strong>Principal Components Analysis (PCA)</strong> belongs to <em>unsupervised learning</em>. Here, we are explorers. There is no answer key. We are handed a messy box of variables and asked to find the hidden structure.</p>
+                
+                <div class="glass-card">
+                    <p>Imagine measuring students on a full performance sheet instead of only two numbers:</p>
+                    <div class="feature-pill-row" id="feature-pills"></div>
+                    <p><span class="pill" id="dataset-shape-pill">60 rows x 6 columns</span></p>
+                    <p>The canvas will still use a 2D Speed-vs-Strength slice to build intuition, but the loadings, scores, and scree plot later on will come from the full generated dataset.</p>
+                </div>
+            </div>
+
+            <div class="story-section" data-stage="2">
+                <div class="stage-label">Stage 02</div>
+                <h2>The "Too Much Information" Problem</h2>
+                <p>Why can't we just look at the variables one by one?</p>
+                <p>Because dimensionality explodes fast. With 6 variables you already have 15 pairwise plots, and with 10 variables you jump to 45. No single view tells the whole story.</p>
+                <p>If we only look at <strong>Speed</strong> (squashing the data to the horizontal axis), we lose all information about strength. The points overlap and hide the true shape of our students.</p>
+                <p>If we only look at <strong>Strength</strong> (vertical axis), we lose speed. Neither axis alone captures the main "soul" of the dataset, because athletic students tend to be both fast <em>and</em> strong.</p>
+                <div class="insight-box">
+                    <p>When variables are correlated (moving together), keeping them separate is redundant. We need a way to combine them.</p>
+                </div>
+            </div>
+
+            <div class="story-section" data-stage="3">
+                <div class="stage-label">Stage 03</div>
+                <h2>Finding the First Principal Component</h2>
+                <p>PCA looks for a brand new direction—a line sliced straight through the cloud of data.</p>
+                <p>It rotates this line until the data points, when projected onto the line, <strong>spread out as much as possible</strong>.</p>
+                <div class="metric-grid">
+                    <div class="metric-card">
+                        <div class="metric-value" id="metric-variance">0.0</div>
+                        <div class="metric-label">Current Spread (Variance)</div>
+                    </div>
+                </div>
+                <p>The direction that creates the largest spread is called <strong>Principal Component 1 (PC1)</strong>. By maximizing the spread, this line stays closest to the entire data cloud, giving us the clearest single summary.</p>
+            </div>
+
+            <div class="story-section" data-stage="4">
+                <div class="stage-label">Stage 04</div>
+                <h2>The Secret Sauce: Loadings</h2>
+                <p>How does PCA actually draw this line? It acts like a "dimmer knob", mixing the original variables together using weights.</p>
+                <p>These weights are called <strong>Loadings</strong>. They tell us how much each original variable contributes to the new component.</p>
+                
+                <div class="formula-block" id="pc1-formula">PC1 Score = Σ(wⱼ × standardized featureⱼ)</div>
+                
+                <div class="glass-card">
+                    <p>For this generated dataset, the PC1 loadings are computed directly from the same PCA fit used for the scores and scree plot:</p>
+                    <div class="loadings-list" id="loading-list"></div>
+                    <p id="loading-summary">PC1 blends the columns that move together into one broader summary axis.</p>
+                </div>
+            </div>
+
+            <div class="story-section" data-stage="5">
+                <div class="stage-label">Stage 05</div>
+                <h2>The Golden Rule: Scaling</h2>
+                <p>There is a massive trap in PCA. Because it hunts for maximum variance, it can be bullied by units.</p>
+                <p>Even in this generated dataset, Strength naturally varies much more than Speed in raw units. Without scaling, PCA leans toward the higher-variance column; after <strong>Standardization</strong>, both columns get a fair vote.</p>
+                
+                <div class="formula-block">
+                    Step 1: Mean (μ) = Average of column<br>
+                    Step 2: Center = X - μ<br>
+                    Step 3: Variance (σ²) = Average of (X - μ)²<br>
+                    Step 4: Std Dev (σ) = √Variance<br><br>
+                    Step 5: Scaled (Z) = (X - μ) / σ
+                </div>
+
+                <div class="insight-box">
+                    <p><strong>Result:</strong> After scaling, every variable has a mean of 0 and a standard deviation of 1. Units disappear, and no single variable dominates just because it has bigger raw numbers.</p>
+                </div>
+                <div class="metric-grid">
+                    <div class="metric-card">
+                        <div class="metric-value" id="scale-before-metric">0.00 / 0.00</div>
+                        <div class="metric-label">Raw Std Devs (Speed / Strength)</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value" id="scale-after-metric">1.00 / 1.00</div>
+                        <div class="metric-label">After Standardization</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="story-section" data-stage="6">
+                <div class="stage-label">Stage 06</div>
+                <h2>Capturing the Leftovers: PC2</h2>
+                <p>PC1 captured the main trend (overall athleticism). But there is still some "thickness" left over in the cloud.</p>
+                <p>To capture this, PCA finds a <strong>Second Principal Component (PC2)</strong>. It follows the exact same logic, but with one non-negotiable rule:</p>
+                <p><em>It must be exactly 90 degrees (perpendicular) to PC1.</em></p>
+                <div class="glass-card">
+                    <p>Because it is perpendicular, PC2 is completely uncorrelated with PC1. It captures the contrasts—for example, students who are stronger than expected for their speed.</p>
+                </div>
+            </div>
+
+            <div class="story-section" data-stage="7">
+                <div class="stage-label">Stage 07</div>
+                <h2>The Transformation (Scores)</h2>
+                <p>Here is where the magic happens. We don't just draw lines on the old graph. We <strong>rotate the entire coordinate system</strong>.</p>
+                <p>PC1 and PC2 become our brand new X and Y axes. The data points haven't changed their relationships to each other, but we are now viewing them from the most informative angle.</p>
+                <div class="formula-block" id="transform-formula">
+                    Original matrix: 60 x 6<br>
+                    PCA scores: 60 x 2
+                </div>
+                <div class="glass-card">
+                    <p>Same students, same information, new coordinates. A few rows from the original matrix become PC scores side by side:</p>
+                    <div class="data-table-wrap">
+                        <table class="mini-table" id="score-preview-table">
+                            <thead>
+                                <tr>
+                                    <th>Student</th>
+                                    <th>Speed</th>
+                                    <th>Strength</th>
+                                    <th>Endurance</th>
+                                    <th>Agility</th>
+                                    <th>Balance</th>
+                                    <th>Jump</th>
+                                    <th>PC1</th>
+                                    <th>PC2</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="story-section" data-stage="8">
+                <div class="stage-label">Stage 08</div>
+                <h2>Proportion of Variance Explained</h2>
+                <p>How do we know if our components are actually useful? We look at the <strong>Proportion of Variance Explained (PVE)</strong> using a <em>Scree Plot</em>.</p>
+                <p>Think of the total variation in the data as a pizza. PC1 always takes the biggest slice. PC2 takes the next biggest. The cumulative line shows how quickly we reach near 100% of the information.</p>
+                <div class="metric-grid">
+                    <div class="metric-card">
+                        <div class="metric-value" id="pve-pc1">0%</div>
+                        <div class="metric-label">PC1 Variance</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value" id="pve-cum2">0%</div>
+                        <div class="metric-label">Cumulative (PC1+PC2)</div>
+                    </div>
+                </div>
+                <p>Look for the "Elbow" in the plot. In datasets with 100 columns, you might find that just 2 or 3 components explain 95% of the variance. That's the "Magic Shrink Ray" at work.</p>
+            </div>
+
+            <div class="story-section" data-stage="9">
+                <div class="stage-label">Stage 09</div>
+                <h2>Interactive Playground</h2>
+                <p>Now you are the algorithm. Use the slider to rotate the projection line through the original data space.</p>
+                <p>Watch how the spread (variance) changes based on the angle. Your goal is to find the angle that maximizes the variance.</p>
+                
+                <div class="glass-card">
+                    <div class="control-group">
+                        <div class="control-label">
+                            <span>Projection Angle</span>
+                            <span id="angle-readout" class="pill">0°</span>
+                        </div>
+                        <input type="range" id="angle-slider" min="0" max="180" value="0" step="1">
+                    </div>
+                    <div class="metric-grid" style="margin-bottom: 0.85rem;">
+                        <div class="metric-card">
+                            <div class="metric-value" id="play-variance">0.00</div>
+                            <div class="metric-label">PC1 Variance</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-value" id="play-variance-pc2">0.00</div>
+                            <div class="metric-label">PC2 Leftover Variance</div>
+                        </div>
+                    </div>
+                    <p class="pc2-note">PC2 is locked to stay 90° from PC1, so it always shows the next-biggest leftover spread instead of being chosen freely.</p>
+                </div>
+                <div class="insight-box">
+                    <p>The angle with the highest variance is exactly where the math places Principal Component 1.</p>
+                </div>
+            </div>
+
+            <div class="story-section" data-stage="10">
+                <div class="stage-label">Synthesis</div>
+                <h2>The Best Summary</h2>
+                <p>PCA does not invent new data. It simply rotates your perspective to find the most meaningful angles.</p>
+                <p>By finding directions that maximize variance, PCA allows us to squash datasets with hundreds of columns into just a few principal components, filtering out the noise while preserving the mathematical "soul" of the data.</p>
+                <div class="glass-card">
+                    <p><strong>Remember:</strong></p>
+                    <ul style="margin-left: 1.5rem; color: var(--text-dim);">
+                        <li>Scale your data first.</li>
+                        <li>Loadings are the weights.</li>
+                        <li>Scores are the new coordinates.</li>
+                        <li>Stop when the "pizza slices" of variance get too small.</li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+        <div class="visualization-column">
+            <canvas id="main-canvas"></canvas>
+            <div id="transform-visual" class="transform-visual" aria-hidden="true">
+                <section class="transform-card">
+                    <div class="transform-card-head">
+                        <h3>Original Rows</h3>
+                        <p>Same students before PCA</p>
+                    </div>
+                    <div class="transform-table-scroll" id="transform-before-scroll">
+                        <table class="transform-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Spd</th>
+                                    <th>Str</th>
+                                    <th>End</th>
+                                    <th>Agi</th>
+                                    <th>Bal</th>
+                                    <th>Jump</th>
+                                </tr>
+                            </thead>
+                            <tbody id="transform-before-body"></tbody>
+                        </table>
+                    </div>
+                </section>
+                <div class="transform-bridge">
+                    <div class="transform-bridge-badge">Rotate + project</div>
+                    <p class="transform-bridge-note">Same rows stay matched. Only the coordinates change.</p>
+                    <div class="transform-link-scroll" id="transform-link-scroll">
+                        <div id="transform-link-list"></div>
+                    </div>
+                </div>
+                <section class="transform-card">
+                    <div class="transform-card-head">
+                        <h3>PC Scores</h3>
+                        <p>Same rows after projection onto the component axes</p>
+                    </div>
+                    <div class="transform-table-scroll" id="transform-after-scroll">
+                        <table class="transform-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>PC1</th>
+                                    <th>PC2</th>
+                                </tr>
+                            </thead>
+                            <tbody id="transform-after-body"></tbody>
+                        </table>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('main-canvas');
+        const ctx = canvas.getContext('2d');
+        const sections = document.querySelectorAll('.story-section');
+        const progressBar = document.getElementById('progress-bar');
+        const stageDotsContainer = document.getElementById('stage-dots');
+        const angleSlider = document.getElementById('angle-slider');
+        const angleReadout = document.getElementById('angle-readout');
+        const playVariance = document.getElementById('play-variance');
+        const playVariancePc2 = document.getElementById('play-variance-pc2');
+        const metricVariance = document.getElementById('metric-variance');
+        const featurePills = document.getElementById('feature-pills');
+        const datasetShapePill = document.getElementById('dataset-shape-pill');
+        const pc1Formula = document.getElementById('pc1-formula');
+        const loadingList = document.getElementById('loading-list');
+        const loadingSummary = document.getElementById('loading-summary');
+        const scaleBeforeMetric = document.getElementById('scale-before-metric');
+        const scaleAfterMetric = document.getElementById('scale-after-metric');
+        const transformFormula = document.getElementById('transform-formula');
+        const scorePreviewBody = document.querySelector('#score-preview-table tbody');
+        const pvePc1 = document.getElementById('pve-pc1');
+        const pveCum2 = document.getElementById('pve-cum2');
+        const transformVisual = document.getElementById('transform-visual');
+        const transformBeforeBody = document.getElementById('transform-before-body');
+        const transformAfterBody = document.getElementById('transform-after-body');
+        const transformLinkList = document.getElementById('transform-link-list');
+        const transformBeforeScroll = document.getElementById('transform-before-scroll');
+        const transformAfterScroll = document.getElementById('transform-after-scroll');
+        const transformLinkScroll = document.getElementById('transform-link-scroll');
+
+        let activeStage = 1;
+
+        const FONT_PROSE = 'Inter, sans-serif';
+        const FONT_MONO = '"JetBrains Mono", monospace';
+
+        const colors = {
+            bg: '#ffffff',
+            grid: '#f0efeb',
+            axis: '#e7e5e4',
+            axisText: '#6b7280',
+            point: '#6b7280',
+            pointHighlight: '#4f46e5',
+            linePC1: '#6366f1',
+            linePC2: '#d97706',
+            projection: '#a5b4fc',
+            projectionPC2: 'rgba(217, 119, 6, 0.28)',
+            varianceZone: 'rgba(99, 102, 241, 0.15)',
+            varianceZonePC2: 'rgba(217, 119, 6, 0.12)',
+            accentDark: '#4f46e5',
+            textMain: '#1f2937',
+            textDim: '#4b5563',
+            heatPositive: 'rgba(99, 102, 241, ',
+            heatNegative: 'rgba(217, 119, 6, ',
+            rowStripe: 'rgba(240, 239, 235, 0.5)'
+        };
+
+        const featureMeta = [
+            { name: 'Speed', short: 'Spd', unit: 'm/s' },
+            { name: 'Strength', short: 'Str', unit: 'kg' },
+            { name: 'Endurance', short: 'End', unit: 'min' },
+            { name: 'Agility', short: 'Agi', unit: 'score' },
+            { name: 'Balance', short: 'Bal', unit: 'score' },
+            { name: 'Jump', short: 'Jump', unit: 'cm' }
+        ];
+        const rowAccentColors = ['#6366f1', '#2563eb', '#16a34a', '#d97706', '#0891b2', '#7c3aed', '#ea580c', '#15803d'];
+        const N_POINTS = 60;
+
+        let seed = 42;
+
+        function random() {
+            const value = Math.sin(seed++) * 10000;
+            return value - Math.floor(value);
+        }
+
+        function randn() {
+            const u1 = Math.max(random(), 1e-9);
+            const u2 = random();
+            return Math.sqrt(-2 * Math.log(u1)) * Math.cos(2 * Math.PI * u2);
+        }
+
+        function generateDataset() {
+            const rows = [];
+            for (let i = 0; i < N_POINTS; i++) {
+                const athleticism = randn();
+                const power = randn();
+                const coordination = randn();
+                const noise = (scale) => randn() * scale;
+
+                rows.push({
+                    id: i + 1,
+                    values: [
+                        7.5 + 1.1 * athleticism + 0.55 * power + 0.25 * coordination + noise(0.28),
+                        65 + 7.5 * athleticism + 8.5 * power + 0.5 * coordination + noise(2.0),
+                        38 + 6.0 * athleticism - 2.5 * power + 1.5 * coordination + noise(1.2),
+                        52 + 4.5 * athleticism + 0.5 * power + 5.2 * coordination + noise(1.1),
+                        58 + 3.0 * athleticism - 0.8 * power + 5.6 * coordination + noise(1.0),
+                        42 + 4.8 * athleticism + 6.0 * power + 1.2 * coordination + noise(1.4)
+                    ]
+                });
+            }
+            return rows;
+        }
+
+        function computeColumnStats(matrix) {
+            const means = [];
+            const stds = [];
+
+            for (let col = 0; col < matrix[0].length; col++) {
+                const column = matrix.map((row) => row[col]);
+                const mean = column.reduce((sum, value) => sum + value, 0) / column.length;
+                const variance = column.reduce((sum, value) => sum + (value - mean) ** 2, 0) / (column.length - 1);
+                means.push(mean);
+                stds.push(Math.sqrt(variance));
+            }
+
+            return { means, stds };
+        }
+
+        function standardizeMatrix(matrix, means, stds) {
+            return matrix.map((row) =>
+                row.map((value, index) => (value - means[index]) / stds[index])
+            );
+        }
+
+        function covarianceMatrix(matrix) {
+            const rows = matrix.length;
+            const cols = matrix[0].length;
+            const cov = Array.from({ length: cols }, () => Array(cols).fill(0));
+
+            for (let i = 0; i < cols; i++) {
+                for (let j = i; j < cols; j++) {
+                    let sum = 0;
+                    for (let row = 0; row < rows; row++) {
+                        sum += matrix[row][i] * matrix[row][j];
+                    }
+                    cov[i][j] = sum / (rows - 1);
+                    cov[j][i] = cov[i][j];
+                }
+            }
+
+            return cov;
+        }
+
+        function identityMatrix(size) {
+            return Array.from({ length: size }, (_, row) =>
+                Array.from({ length: size }, (_, col) => (row === col ? 1 : 0))
+            );
+        }
+
+        function jacobiEigenDecomposition(matrix) {
+            const size = matrix.length;
+            const a = matrix.map((row) => row.slice());
+            const vectors = identityMatrix(size);
+            const maxIterations = 100;
+
+            for (let iteration = 0; iteration < maxIterations; iteration++) {
+                let p = 0;
+                let q = 1;
+                let max = Math.abs(a[p][q]);
+
+                for (let row = 0; row < size; row++) {
+                    for (let col = row + 1; col < size; col++) {
+                        const value = Math.abs(a[row][col]);
+                        if (value > max) {
+                            max = value;
+                            p = row;
+                            q = col;
+                        }
+                    }
+                }
+
+                if (max < 1e-10) {
+                    break;
+                }
+
+                const app = a[p][p];
+                const aqq = a[q][q];
+                const apq = a[p][q];
+                const phi = 0.5 * Math.atan2(2 * apq, aqq - app);
+                const c = Math.cos(phi);
+                const s = Math.sin(phi);
+
+                for (let i = 0; i < size; i++) {
+                    if (i !== p && i !== q) {
+                        const aip = a[i][p];
+                        const aiq = a[i][q];
+                        a[i][p] = c * aip - s * aiq;
+                        a[p][i] = a[i][p];
+                        a[i][q] = s * aip + c * aiq;
+                        a[q][i] = a[i][q];
+                    }
+                }
+
+                a[p][p] = c * c * app - 2 * s * c * apq + s * s * aqq;
+                a[q][q] = s * s * app + 2 * s * c * apq + c * c * aqq;
+                a[p][q] = 0;
+                a[q][p] = 0;
+
+                for (let i = 0; i < size; i++) {
+                    const vip = vectors[i][p];
+                    const viq = vectors[i][q];
+                    vectors[i][p] = c * vip - s * viq;
+                    vectors[i][q] = s * vip + c * viq;
+                }
+            }
+
+            const eigenPairs = Array.from({ length: size }, (_, index) => ({
+                value: a[index][index],
+                vector: vectors.map((row) => row[index])
+            })).sort((left, right) => right.value - left.value);
+
+            eigenPairs.forEach((pair) => {
+                const dominantIndex = pair.vector.reduce((bestIndex, value, index, source) =>
+                    Math.abs(value) > Math.abs(source[bestIndex]) ? index : bestIndex, 0);
+                if (pair.vector[dominantIndex] < 0) {
+                    pair.vector = pair.vector.map((value) => -value);
+                }
+            });
+
+            return eigenPairs;
+        }
+
+        function dotProduct(left, right) {
+            return left.reduce((sum, value, index) => sum + value * right[index], 0);
+        }
+
+        function computePCA(matrix) {
+            const eigenPairs = jacobiEigenDecomposition(covarianceMatrix(matrix));
+            const eigenvalues = eigenPairs.map((pair) => pair.value);
+            const vectors = eigenPairs.map((pair) => pair.vector);
+            const totalVariance = eigenvalues.reduce((sum, value) => sum + value, 0);
+            const explainedVariance = eigenvalues.map((value) => value / totalVariance);
+            const cumulativeVariance = [];
+
+            explainedVariance.reduce((running, value, index) => {
+                cumulativeVariance[index] = running + value;
+                return cumulativeVariance[index];
+            }, 0);
+
+            const scores = matrix.map((row) => vectors.map((vector) => dotProduct(row, vector)));
+
+            return {
+                eigenvalues,
+                vectors,
+                explainedVariance,
+                cumulativeVariance,
+                scores
+            };
+        }
+
+        function normalizeAngle(angle) {
+            let normalized = angle;
+            while (normalized < 0) normalized += Math.PI;
+            while (normalized >= Math.PI) normalized -= Math.PI;
+            return normalized;
+        }
+
+        function cleanFixed(value, digits = 2) {
+            const fixed = Number(value).toFixed(digits);
+            return fixed === '-0.00' ? '0.00' : fixed;
+        }
+
+        function formatSigned(value, digits = 2) {
+            return `${value >= 0 ? '+' : '-'}${cleanFixed(Math.abs(value), digits)}`;
+        }
+
+        function formatPercent(value) {
+            return `${Math.round(value * 100)}%`;
+        }
+
+        const datasetRows = generateDataset();
+        const rawMatrix = datasetRows.map((row) => row.values.slice());
+        const columnStats = computeColumnStats(rawMatrix);
+        const standardizedMatrix = standardizeMatrix(rawMatrix, columnStats.means, columnStats.stds);
+        const fullPca = computePCA(standardizedMatrix);
+        const rawSliceCentered = rawMatrix.map((row) => [row[0] - columnStats.means[0], row[1] - columnStats.means[1]]);
+        const standardizedSlice = standardizedMatrix.map((row) => [row[0], row[1]]);
+        const slicePca = computePCA(standardizedSlice);
+        const rawSlicePca = computePCA(rawSliceCentered);
+        const trueAngle = normalizeAngle(Math.atan2(slicePca.vectors[0][1], slicePca.vectors[0][0]));
+        const rawAngle = normalizeAngle(Math.atan2(rawSlicePca.vectors[0][1], rawSlicePca.vectors[0][0]));
+
+        function pickRowsByQuantiles(quantiles) {
+            const ranked = fullPca.scores
+                .map((scores, index) => ({ index, pc1: scores[0] }))
+                .sort((left, right) => left.pc1 - right.pc1);
+            const picked = [];
+
+            quantiles.forEach((quantile) => {
+                const rankedIndex = Math.min(ranked.length - 1, Math.floor((ranked.length - 1) * quantile));
+                const originalIndex = ranked[rankedIndex].index;
+                if (!picked.includes(originalIndex)) {
+                    picked.push(originalIndex);
+                }
+            });
+
+            return picked.map((index) => ({
+                id: datasetRows[index].id,
+                values: rawMatrix[index],
+                scores: fullPca.scores[index]
+            }));
+        }
+
+        const sampleRows = pickRowsByQuantiles([0.12, 0.36, 0.64, 0.88]);
+        const transformRows = pickRowsByQuantiles([0.05, 0.16, 0.27, 0.38, 0.5, 0.62, 0.76, 0.9]);
+
+        const state = {
+            width: 0,
+            height: 0,
+            cx: 0,
+            cy: 0,
+            dpr: window.devicePixelRatio || 1,
+            targetAnglePC1: trueAngle,
+            currentAnglePC1: trueAngle,
+            showProjections: false,
+            projectionAxis: 'none',
+            showPC1: false,
+            showPC2: false,
+            showVariance: false,
+            showDualProjection: false,
+            showScreePlot: false,
+            worldRotation: 0,
+            targetWorldRotation: 0,
+            axisLabels: { x: 'Speed', y: 'Strength' },
+            isInteractive: false,
+            sliderAngle: trueAngle
+        };
+
+        let isSyncingTransformScroll = false;
+
+        function populateNarrative() {
+            featurePills.innerHTML = featureMeta
+                .map((feature) => `<span class="feature-pill">${feature.name} (${feature.unit})</span>`)
+                .join('');
+            datasetShapePill.textContent = `${datasetRows.length} rows x ${featureMeta.length} columns`;
+
+            const formulaLines = fullPca.vectors[0]
+                .map((loading, index) => `${formatSigned(loading)} x ${featureMeta[index].name}`)
+                .join('<br>');
+            pc1Formula.innerHTML = `PC1 Score =<br>${formulaLines}`;
+
+            loadingList.innerHTML = featureMeta
+                .map((feature, index) => `
+                    <div class="loadings-row">
+                        <span>${feature.name}</span>
+                        <span class="pill">${formatSigned(fullPca.vectors[0][index])}</span>
+                    </div>
+                `)
+                .join('');
+
+            const strongestLoadingIndex = fullPca.vectors[0].reduce((bestIndex, value, index, source) =>
+                Math.abs(value) > Math.abs(source[bestIndex]) ? index : bestIndex, 0);
+            loadingSummary.textContent = `All of these weights come from the same standardized PCA fit. ${featureMeta[strongestLoadingIndex].name} contributes most strongly here, but PC1 stays broad because several columns are moving together.`;
+
+            scaleBeforeMetric.textContent = `${cleanFixed(columnStats.stds[0])} / ${cleanFixed(columnStats.stds[1])}`;
+            scaleAfterMetric.textContent = '1.00 / 1.00';
+            transformFormula.innerHTML = `Original matrix: ${datasetRows.length} x ${featureMeta.length}<br>PCA scores kept here: ${datasetRows.length} x 2`;
+
+            scorePreviewBody.innerHTML = sampleRows
+                .map((row) => `
+                    <tr>
+                        <td>Student ${row.id}</td>
+                        <td>${cleanFixed(row.values[0], 1)}</td>
+                        <td>${cleanFixed(row.values[1], 1)}</td>
+                        <td>${cleanFixed(row.values[2], 1)}</td>
+                        <td>${cleanFixed(row.values[3], 1)}</td>
+                        <td>${cleanFixed(row.values[4], 1)}</td>
+                        <td>${cleanFixed(row.values[5], 1)}</td>
+                        <td>${formatSigned(row.scores[0])}</td>
+                        <td>${formatSigned(row.scores[1])}</td>
+                    </tr>
+                `)
+                .join('');
+
+            pvePc1.textContent = formatPercent(fullPca.explainedVariance[0]);
+            pveCum2.textContent = formatPercent(fullPca.cumulativeVariance[1]);
+            angleSlider.value = Math.round(trueAngle * 180 / Math.PI);
+            angleReadout.textContent = `${Math.round(trueAngle * 180 / Math.PI)}°`;
+            playVariance.textContent = cleanFixed(calculateVariance(trueAngle));
+            playVariancePc2.textContent = cleanFixed(calculateVariance(trueAngle + Math.PI / 2));
+            metricVariance.textContent = cleanFixed(calculateVariance(trueAngle));
+        }
+
+        function buildTransformRowMarkup(row, color, isScoreTable = false) {
+            if (isScoreTable) {
+                return `
+                    <tr data-row-id="${row.id}" style="--row-accent: ${color}">
+                        <td><span class="transform-id">S${row.id}</span></td>
+                        <td>${formatSigned(row.scores[0])}</td>
+                        <td>${formatSigned(row.scores[1])}</td>
+                    </tr>
+                `;
+            }
+
+            return `
+                <tr data-row-id="${row.id}" style="--row-accent: ${color}">
+                    <td><span class="transform-id">S${row.id}</span></td>
+                    <td>${cleanFixed(row.values[0], 1)}</td>
+                    <td>${cleanFixed(row.values[1], 1)}</td>
+                    <td>${cleanFixed(row.values[2], 1)}</td>
+                    <td>${cleanFixed(row.values[3], 1)}</td>
+                    <td>${cleanFixed(row.values[4], 1)}</td>
+                    <td>${cleanFixed(row.values[5], 1)}</td>
+                </tr>
+            `;
+        }
+
+        function populateTransformOverlay() {
+            transformBeforeBody.innerHTML = transformRows
+                .map((row, index) => buildTransformRowMarkup(row, rowAccentColors[index % rowAccentColors.length]))
+                .join('');
+
+            transformAfterBody.innerHTML = transformRows
+                .map((row, index) => buildTransformRowMarkup(row, rowAccentColors[index % rowAccentColors.length], true))
+                .join('');
+
+            transformLinkList.innerHTML = '';
+        }
+
+        function setLinkedTransformRow(rowId) {
+            transformVisual.querySelectorAll('[data-row-id]').forEach((element) => {
+                element.classList.toggle('is-linked', element.dataset.rowId === rowId);
+            });
+        }
+
+        function clearLinkedTransformRows() {
+            transformVisual.querySelectorAll('.is-linked').forEach((element) => {
+                element.classList.remove('is-linked');
+            });
+        }
+
+        function syncTransformScroll(source) {
+            if (isSyncingTransformScroll) return;
+            isSyncingTransformScroll = true;
+
+            const scrollTop = source.scrollTop;
+            [transformBeforeScroll, transformAfterScroll, transformLinkScroll].forEach((element) => {
+                if (element !== source) {
+                    element.scrollTop = scrollTop;
+                }
+            });
+
+            requestAnimationFrame(() => {
+                isSyncingTransformScroll = false;
+            });
+        }
+
+        function bindTransformInteractions() {
+            transformVisual.querySelectorAll('.transform-table tbody tr').forEach((row) => {
+                row.addEventListener('mouseenter', () => setLinkedTransformRow(row.dataset.rowId));
+                row.addEventListener('mouseleave', clearLinkedTransformRows);
+            });
+
+            [transformBeforeScroll, transformAfterScroll].forEach((element) => {
+                element.addEventListener('scroll', () => syncTransformScroll(element));
+            });
+        }
+
+        function setTransformVisualActive(isActive) {
+            transformVisual.classList.toggle('active', isActive);
+            transformVisual.setAttribute('aria-hidden', String(!isActive));
+            canvas.classList.toggle('stage7-hidden', isActive);
+            if (isActive) {
+                syncTransformScroll(transformBeforeScroll);
+            } else {
+                clearLinkedTransformRows();
+            }
+        }
+
+        function resize() {
+            const rect = canvas.parentElement.getBoundingClientRect();
+            const dpr = window.devicePixelRatio || 1;
+
+            canvas.width = Math.round(rect.width * dpr);
+            canvas.height = Math.round(rect.height * dpr);
+            canvas.style.width = `${rect.width}px`;
+            canvas.style.height = `${rect.height}px`;
+            ctx.setTransform(1, 0, 0, 1, 0, 0);
+            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+            state.dpr = dpr;
+            state.width = rect.width;
+            state.height = rect.height;
+            state.cx = state.width / 2;
+            state.cy = state.height / 2 + Math.min(20, state.height * 0.05);
+        }
+
+        window.addEventListener('resize', resize);
+
+        function roundedRectPath(context, x, y, width, height, radius) {
+            const r = Math.min(radius, width / 2, height / 2);
+            context.beginPath();
+            context.moveTo(x + r, y);
+            context.arcTo(x + width, y, x + width, y + height, r);
+            context.arcTo(x + width, y + height, x, y + height, r);
+            context.arcTo(x, y + height, x, y, r);
+            context.arcTo(x, y, x + width, y, r);
+            context.closePath();
+        }
+
+        function drawCard(context, rect, title, subtitle) {
+            roundedRectPath(context, rect.x, rect.y, rect.w, rect.h, 18);
+            context.fillStyle = colors.bg;
+            context.fill();
+            context.lineWidth = 1;
+            context.strokeStyle = colors.axis;
+            context.stroke();
+
+            context.fillStyle = colors.textMain;
+            context.font = `600 16px ${FONT_PROSE}`;
+            context.textAlign = 'left';
+            context.fillText(title, rect.x + 18, rect.y + 26);
+
+            if (subtitle) {
+                context.fillStyle = colors.axisText;
+                context.font = `500 12px ${FONT_PROSE}`;
+                context.fillText(subtitle, rect.x + 18, rect.y + 44);
+            }
+
+            return {
+                x: rect.x + 18,
+                y: rect.y + 58,
+                w: rect.w - 36,
+                h: rect.h - 76
+            };
+        }
+
+        function getSplitPanels() {
+            const padding = Math.min(34, state.width * 0.05);
+            const gap = Math.min(24, state.width * 0.03);
+            const stacked = state.width < 760;
+
+            if (stacked) {
+                const panelHeight = (state.height - padding * 2 - gap) / 2;
+                return {
+                    stacked,
+                    rects: [
+                        { x: padding, y: padding, w: state.width - padding * 2, h: panelHeight },
+                        { x: padding, y: padding + panelHeight + gap, w: state.width - padding * 2, h: panelHeight }
+                    ]
+                };
+            }
+
+            const panelWidth = (state.width - padding * 2 - gap) / 2;
+            return {
+                stacked,
+                rects: [
+                    { x: padding, y: padding, w: panelWidth, h: state.height - padding * 2 },
+                    { x: padding + panelWidth + gap, y: padding, w: panelWidth, h: state.height - padding * 2 }
+                ]
+            };
+        }
+
+        function getScatterScale() {
+            return Math.min(state.width, state.height) * 0.19;
+        }
+
+        function getScatterPoints() {
+            const scale = getScatterScale();
+            return standardizedSlice.map(([x, y], index) => ({
+                id: index,
+                x: x * scale,
+                y: y * scale
+            }));
+        }
+
+        function drawGrid(context) {
+            context.strokeStyle = colors.grid;
+            context.lineWidth = 1;
+
+            const gridSize = 40;
+            const width = state.width * 2;
+            const height = state.height * 2;
+
+            context.beginPath();
+            for (let x = -width; x <= width; x += gridSize) {
+                context.moveTo(x, -height);
+                context.lineTo(x, height);
+            }
+            for (let y = -height; y <= height; y += gridSize) {
+                context.moveTo(-width, y);
+                context.lineTo(width, y);
+            }
+            context.stroke();
+        }
+
+        function drawAxes(context) {
+            context.strokeStyle = colors.axis;
+            context.lineWidth = 2;
+
+            const axisLength = Math.max(state.width, state.height) * 1.5;
+
+            context.beginPath();
+            context.moveTo(-axisLength, 0);
+            context.lineTo(axisLength, 0);
+            context.moveTo(0, -axisLength);
+            context.lineTo(0, axisLength);
+            context.stroke();
+
+            context.fillStyle = colors.axisText;
+            context.font = `500 14px ${FONT_PROSE}`;
+            context.textAlign = 'left';
+
+            context.save();
+            context.translate(axisLength / 2.5, 20);
+            context.rotate(state.worldRotation);
+            context.fillText(state.axisLabels.x, 0, 0);
+            context.restore();
+
+            context.save();
+            context.translate(20, -axisLength / 2.5);
+            context.rotate(state.worldRotation);
+            context.fillText(state.axisLabels.y, 0, 0);
+            context.restore();
+        }
+
+        function getProjectedPoint(x, y, angle) {
+            const vx = Math.cos(angle);
+            const vy = Math.sin(angle);
+            const distance = x * vx + y * vy;
+
+            return {
+                x: distance * vx,
+                y: distance * vy,
+                dist: distance
+            };
+        }
+
+        function calculateVariance(angle) {
+            const sumSq = standardizedSlice.reduce((sum, [x, y]) => {
+                const distance = x * Math.cos(angle) + y * Math.sin(angle);
+                return sum + distance * distance;
+            }, 0);
+
+            return sumSq / (standardizedSlice.length - 1);
+        }
+
+        function drawProjectionOverlay(context, points, angle, options = {}) {
+            let maxDist = -Infinity;
+            let minDist = Infinity;
+
+            context.strokeStyle = options.strokeStyle;
+            context.lineWidth = options.lineWidth || 1;
+            context.setLineDash(options.dash || []);
+            context.beginPath();
+
+            points.forEach((point) => {
+                const projection = getProjectedPoint(point.x, point.y, angle);
+                context.moveTo(point.x, -point.y);
+                context.lineTo(projection.x, -projection.y);
+                maxDist = Math.max(maxDist, projection.dist);
+                minDist = Math.min(minDist, projection.dist);
+            });
+
+            context.stroke();
+            context.setLineDash([]);
+
+            if (options.bandColor && maxDist > -Infinity) {
+                const bandWidth = options.bandWidth || 32;
+                const vx = Math.cos(angle);
+                const vy = Math.sin(angle);
+                const nx = -vy * bandWidth;
+                const ny = vx * bandWidth;
+                const p1x = minDist * vx;
+                const p1y = minDist * vy;
+                const p2x = maxDist * vx;
+                const p2y = maxDist * vy;
+
+                context.fillStyle = options.bandColor;
+                context.beginPath();
+                context.moveTo(p1x + nx, -(p1y + ny));
+                context.lineTo(p2x + nx, -(p2y + ny));
+                context.lineTo(p2x - nx, -(p2y - ny));
+                context.lineTo(p1x - nx, -(p1y - ny));
+                context.fill();
+            }
+        }
+
+        function drawScatterScene(context) {
+            const activeAngle = state.isInteractive ? state.sliderAngle : state.currentAnglePC1;
+            const points = getScatterPoints();
+            let maxDist = -Infinity;
+            let minDist = Infinity;
+            const currentVariance = calculateVariance(activeAngle);
+            const currentVariancePC2 = calculateVariance(activeAngle + Math.PI / 2);
+
+            if (state.showDualProjection) {
+                drawProjectionOverlay(context, points, activeAngle, {
+                    strokeStyle: colors.projection,
+                    dash: [4, 4],
+                    bandColor: colors.varianceZone,
+                    bandWidth: 38
+                });
+
+                drawProjectionOverlay(context, points, activeAngle + Math.PI / 2, {
+                    strokeStyle: colors.projectionPC2,
+                    dash: [3, 5],
+                    bandColor: colors.varianceZonePC2,
+                    bandWidth: 20
+                });
+            } else if (state.showProjections) {
+                context.strokeStyle = colors.projection;
+                context.lineWidth = 1;
+                context.setLineDash([4, 4]);
+                context.beginPath();
+
+                points.forEach((point) => {
+                    let projection;
+
+                    if (state.projectionAxis === 'x') projection = { x: point.x, y: 0, dist: point.x };
+                    if (state.projectionAxis === 'y') projection = { x: 0, y: point.y, dist: point.y };
+                    if (state.projectionAxis === 'pc1') projection = getProjectedPoint(point.x, point.y, activeAngle);
+                    if (state.projectionAxis === 'pc2') projection = getProjectedPoint(point.x, point.y, activeAngle + Math.PI / 2);
+
+                    if (!projection) return;
+
+                    context.moveTo(point.x, -point.y);
+                    context.lineTo(projection.x, -projection.y);
+
+                    if (state.showVariance && (state.projectionAxis === 'pc1' || state.projectionAxis === 'x')) {
+                        maxDist = Math.max(maxDist, projection.dist);
+                        minDist = Math.min(minDist, projection.dist);
+                    }
+                });
+
+                context.stroke();
+                context.setLineDash([]);
+            }
+
+            if (state.showVariance && state.showProjections && maxDist > -Infinity) {
+                context.fillStyle = colors.varianceZone;
+                context.beginPath();
+
+                const bandWidth = 40;
+                const vx = Math.cos(activeAngle);
+                const vy = Math.sin(activeAngle);
+                const nx = -vy * bandWidth;
+                const ny = vx * bandWidth;
+                const p1x = minDist * vx;
+                const p1y = minDist * vy;
+                const p2x = maxDist * vx;
+                const p2y = maxDist * vy;
+
+                context.moveTo(p1x + nx, -(p1y + ny));
+                context.lineTo(p2x + nx, -(p2y + ny));
+                context.lineTo(p2x - nx, -(p2y - ny));
+                context.lineTo(p1x - nx, -(p1y - ny));
+                context.fill();
+            }
+
+            const lineLength = Math.max(state.width, state.height);
+            if (state.showPC1 || state.isInteractive) {
+                const vx = Math.cos(activeAngle);
+                const vy = Math.sin(activeAngle);
+
+                context.strokeStyle = colors.linePC1;
+                context.lineWidth = 3;
+                context.beginPath();
+                context.moveTo(-lineLength * vx, lineLength * vy);
+                context.lineTo(lineLength * vx, -lineLength * vy);
+                context.stroke();
+
+                context.fillStyle = colors.linePC1;
+                context.font = `600 14px ${FONT_PROSE}`;
+                context.save();
+                context.translate((lineLength / 3) * vx, -((lineLength / 3) * vy) - 10);
+                context.rotate(-activeAngle + state.worldRotation);
+                context.fillText('PC1', 0, 0);
+                context.restore();
+            }
+
+            if (state.showPC2) {
+                const vx = Math.cos(activeAngle + Math.PI / 2);
+                const vy = Math.sin(activeAngle + Math.PI / 2);
+
+                context.strokeStyle = colors.linePC2;
+                context.lineWidth = 3;
+                context.beginPath();
+                context.moveTo(-lineLength * vx, lineLength * vy);
+                context.lineTo(lineLength * vx, -lineLength * vy);
+                context.stroke();
+
+                context.fillStyle = colors.linePC2;
+                context.font = `600 14px ${FONT_PROSE}`;
+                context.save();
+                context.translate((lineLength / 3) * vx + 10, -((lineLength / 3) * vy));
+                context.rotate(-activeAngle - Math.PI / 2 + state.worldRotation);
+                context.fillText('PC2', 0, 0);
+                context.restore();
+            }
+
+            points.forEach((point) => {
+                context.beginPath();
+                context.arc(point.x, -point.y, 5, 0, Math.PI * 2);
+                context.fillStyle = (state.showPC1 || state.isInteractive) ? colors.pointHighlight : colors.point;
+                context.fill();
+                context.strokeStyle = colors.bg;
+                context.lineWidth = 1.5;
+                context.stroke();
+            });
+
+            if (!state.isInteractive && activeStage === 3) {
+                metricVariance.textContent = cleanFixed(currentVariance);
+            }
+            if (state.isInteractive) {
+                playVariance.textContent = cleanFixed(currentVariance);
+                playVariancePc2.textContent = cleanFixed(currentVariancePC2);
+            }
+        }
+
+        function drawPanelScatter(context, rect, points, options = {}) {
+            const centerX = rect.x + rect.w / 2;
+            const centerY = rect.y + rect.h / 2;
+            const maxAbsX = Math.max(...points.map((point) => Math.abs(point[0])), 1);
+            const maxAbsY = Math.max(...points.map((point) => Math.abs(point[1])), 1);
+            const scale = Math.min((rect.w * 0.38) / maxAbsX, (rect.h * 0.34) / maxAbsY);
+
+            context.strokeStyle = colors.grid;
+            context.lineWidth = 1;
+            context.beginPath();
+            context.moveTo(rect.x + 8, centerY);
+            context.lineTo(rect.x + rect.w - 8, centerY);
+            context.moveTo(centerX, rect.y + 8);
+            context.lineTo(centerX, rect.y + rect.h - 8);
+            context.stroke();
+
+            if (typeof options.pcAngle === 'number') {
+                const vx = Math.cos(options.pcAngle);
+                const vy = Math.sin(options.pcAngle);
+                const length = Math.min(rect.w, rect.h) * 0.45;
+                context.strokeStyle = options.lineColor || colors.linePC1;
+                context.lineWidth = 3;
+                context.beginPath();
+                context.moveTo(centerX - vx * length, centerY + vy * length);
+                context.lineTo(centerX + vx * length, centerY - vy * length);
+                context.stroke();
+            }
+
+            points.forEach(([x, y]) => {
+                context.beginPath();
+                context.arc(centerX + x * scale, centerY - y * scale, 4, 0, Math.PI * 2);
+                context.fillStyle = options.pointColor || colors.pointHighlight;
+                context.fill();
+                context.strokeStyle = colors.bg;
+                context.lineWidth = 1;
+                context.stroke();
+            });
+
+            context.fillStyle = colors.axisText;
+            context.font = `500 12px ${FONT_PROSE}`;
+            context.textAlign = 'center';
+            context.fillText(options.xLabel || '', rect.x + rect.w / 2, rect.y + rect.h + 10);
+
+            context.save();
+            context.translate(rect.x - 12, rect.y + rect.h / 2);
+            context.rotate(-Math.PI / 2);
+            context.fillText(options.yLabel || '', 0, 0);
+            context.restore();
+
+            if (options.footnote) {
+                context.fillStyle = colors.textDim;
+                context.font = `500 12px ${FONT_PROSE}`;
+                context.textAlign = 'left';
+                context.fillText(options.footnote, rect.x, rect.y + rect.h - 8);
+            }
+        }
+
+        function drawHeatmap(context, rect) {
+            const sampledRows = state.width < 760 ? 24 : 36;
+            const rowIndexes = Array.from({ length: sampledRows }, (_, index) =>
+                Math.round(index * (standardizedMatrix.length - 1) / Math.max(sampledRows - 1, 1))
+            );
+            const headerHeight = 28;
+            const cellWidth = rect.w / featureMeta.length;
+            const cellHeight = (rect.h - headerHeight - 12) / rowIndexes.length;
+
+            context.fillStyle = colors.axisText;
+            context.font = `600 11px ${FONT_PROSE}`;
+            context.textAlign = 'center';
+            featureMeta.forEach((feature, index) => {
+                context.fillText(feature.short, rect.x + cellWidth * index + cellWidth / 2, rect.y + 12);
+            });
+
+            rowIndexes.forEach((rowIndex, displayRow) => {
+                const values = standardizedMatrix[rowIndex];
+                values.forEach((value, colIndex) => {
+                    const alpha = 0.18 + Math.min(Math.abs(value) / 2.5, 1) * 0.58;
+                    context.fillStyle = `${value >= 0 ? colors.heatPositive : colors.heatNegative}${alpha})`;
+                    context.fillRect(
+                        rect.x + colIndex * cellWidth + 1,
+                        rect.y + headerHeight + displayRow * cellHeight,
+                        cellWidth - 2,
+                        Math.max(cellHeight - 1, 1.5)
+                    );
+                });
+            });
+
+            context.fillStyle = colors.textDim;
+            context.font = `500 12px ${FONT_PROSE}`;
+            context.textAlign = 'left';
+            context.fillText('Each row is a student. Each column is a different feature.', rect.x, rect.y + rect.h + 8);
+        }
+
+        function drawIntroOverview(context) {
+            const layout = getSplitPanels();
+            const left = drawCard(context, layout.rects[0], 'Full Dataset', `${datasetRows.length} students x ${featureMeta.length} features`);
+            const right = drawCard(context, layout.rects[1], 'Visible Slice', 'Speed vs Strength is only one view into the matrix');
+
+            drawHeatmap(context, left);
+            drawPanelScatter(context, right, standardizedSlice, {
+                pcAngle: trueAngle,
+                xLabel: 'Speed (z-score)',
+                yLabel: 'Strength (z-score)',
+                footnote: 'The later loadings, scores, and scree plot use all six columns.'
+            });
+        }
+
+        function drawLoadingsScene(context) {
+            const padding = Math.min(34, state.width * 0.05);
+            const content = drawCard(
+                context,
+                { x: padding, y: padding, w: state.width - padding * 2, h: state.height - padding * 2 },
+                'PC1 Loadings',
+                'Weights learned from the full standardized dataset'
+            );
+
+            const loadings = fullPca.vectors[0];
+            const maxAbs = Math.max(...loadings.map((value) => Math.abs(value)));
+            const zeroX = content.x + content.w * 0.42;
+            const barMax = content.w * 0.46;
+            const rowHeight = content.h / loadings.length;
+
+            context.strokeStyle = colors.axis;
+            context.lineWidth = 2;
+            context.beginPath();
+            context.moveTo(zeroX, content.y);
+            context.lineTo(zeroX, content.y + content.h);
+            context.stroke();
+
+            featureMeta.forEach((feature, index) => {
+                const loading = loadings[index];
+                const barWidth = (Math.abs(loading) / maxAbs) * barMax;
+                const y = content.y + rowHeight * index + rowHeight * 0.55;
+
+                context.fillStyle = colors.textDim;
+                context.font = `500 14px ${FONT_PROSE}`;
+                context.textAlign = 'left';
+                context.fillText(feature.name, content.x, y + 5);
+
+                context.fillStyle = loading >= 0 ? colors.linePC1 : colors.linePC2;
+                roundedRectPath(context, loading >= 0 ? zeroX : zeroX - barWidth, y - 9, barWidth, 18, 9);
+                context.fill();
+
+                context.fillStyle = colors.textMain;
+                context.font = `600 13px ${FONT_MONO}`;
+                context.textAlign = loading >= 0 ? 'left' : 'right';
+                context.fillText(
+                    formatSigned(loading),
+                    loading >= 0 ? zeroX + barWidth + 10 : zeroX - barWidth - 10,
+                    y + 5
+                );
+            });
+
+            context.fillStyle = colors.axisText;
+            context.font = `500 13px ${FONT_PROSE}`;
+            context.textAlign = 'left';
+            context.fillText(`PC1 explains ${formatPercent(fullPca.explainedVariance[0])} of the standardized variance in this dataset.`, content.x, content.y + content.h + 8);
+        }
+
+        function drawScalingComparison(context) {
+            const layout = getSplitPanels();
+            const before = drawCard(context, layout.rects[0], 'Before Scaling', 'Centered raw values keep their original units');
+            const after = drawCard(context, layout.rects[1], 'After Scaling', 'Both columns are standardized to mean 0 and sd 1');
+
+            drawPanelScatter(context, before, rawSliceCentered, {
+                pcAngle: rawAngle,
+                xLabel: 'Speed (m/s)',
+                yLabel: 'Strength (kg)',
+                footnote: `Std devs: ${cleanFixed(columnStats.stds[0])} / ${cleanFixed(columnStats.stds[1])}`
+            });
+
+            drawPanelScatter(context, after, standardizedSlice, {
+                pcAngle: trueAngle,
+                xLabel: 'Speed (z-score)',
+                yLabel: 'Strength (z-score)',
+                footnote: 'Std devs: 1.00 / 1.00'
+            });
+
+            context.fillStyle = colors.accentDark;
+            context.font = `600 13px ${FONT_PROSE}`;
+            context.textAlign = 'center';
+            if (layout.stacked) {
+                context.fillText('Standardize ->', state.width / 2, layout.rects[0].y + layout.rects[0].h + 8);
+            } else {
+                context.fillText('Standardize ->', state.width / 2, layout.rects[0].y + layout.rects[0].h * 0.36);
+            }
+        }
+
+        function drawTable(context, rect, headers, rows, widths, rowColors = []) {
+            const total = widths.reduce((sum, value) => sum + value, 0);
+            const colWidths = widths.map((value) => rect.w * (value / total));
+            const headerHeight = 26;
+            const rowHeight = Math.min(30, (rect.h - headerHeight) / rows.length);
+
+            let xCursor = rect.x;
+            headers.forEach((header, index) => {
+                const width = colWidths[index];
+                context.fillStyle = colors.axisText;
+                context.font = `600 11px ${FONT_PROSE}`;
+                context.textAlign = index === 0 ? 'left' : 'right';
+                context.fillText(
+                    header,
+                    index === 0 ? xCursor + 8 : xCursor + width - 8,
+                    rect.y + 12
+                );
+                xCursor += width;
+            });
+
+            context.strokeStyle = colors.axis;
+            context.lineWidth = 1;
+            context.beginPath();
+            context.moveTo(rect.x, rect.y + headerHeight - 4);
+            context.lineTo(rect.x + rect.w, rect.y + headerHeight - 4);
+            context.stroke();
+
+            rows.forEach((row, rowIndex) => {
+                const top = rect.y + headerHeight + rowHeight * rowIndex;
+                if (rowIndex % 2 === 0) {
+                    context.fillStyle = colors.rowStripe;
+                    context.fillRect(rect.x, top, rect.w, rowHeight);
+                }
+
+                let columnX = rect.x;
+                row.forEach((value, colIndex) => {
+                    const width = colWidths[colIndex];
+                    context.fillStyle = colors.textMain;
+                    context.font = `500 12px ${FONT_MONO}`;
+                    context.textAlign = colIndex === 0 ? 'left' : 'right';
+                    context.fillText(
+                        value,
+                        colIndex === 0 ? columnX + 18 : columnX + width - 8,
+                        top + rowHeight * 0.62
+                    );
+
+                    if (colIndex === 0 && rowColors[rowIndex]) {
+                        context.fillStyle = rowColors[rowIndex];
+                        context.beginPath();
+                        context.arc(columnX + 8, top + rowHeight * 0.52, 4, 0, Math.PI * 2);
+                        context.fill();
+                    }
+
+                    columnX += width;
+                });
+            });
+        }
+
+        function drawScreePlot(context) {
+            const margin = Math.min(64, state.width * 0.12);
+            const graphWidth = state.width - margin * 2;
+            const graphHeight = state.height - margin * 2;
+            const startX = margin;
+            const startY = state.height - margin;
+            const pveData = fullPca.explainedVariance;
+            const cumulativeData = fullPca.cumulativeVariance;
+            const legendY = Math.max(12, margin - 34);
+
+            context.fillStyle = colors.projection;
+            context.fillRect(startX + graphWidth / 2 - 105, legendY, 12, 12);
+            context.fillStyle = colors.textDim;
+            context.font = `500 13px ${FONT_PROSE}`;
+            context.textAlign = 'left';
+            context.fillText('Individual', startX + graphWidth / 2 - 85, legendY + 10);
+
+            context.strokeStyle = colors.accentDark;
+            context.lineWidth = 3;
+            context.beginPath();
+            context.moveTo(startX + graphWidth / 2 + 25, legendY + 6);
+            context.lineTo(startX + graphWidth / 2 + 42, legendY + 6);
+            context.stroke();
+            context.beginPath();
+            context.arc(startX + graphWidth / 2 + 33.5, legendY + 6, 4, 0, Math.PI * 2);
+            context.fillStyle = colors.accentDark;
+            context.fill();
+            context.fillStyle = colors.textDim;
+            context.fillText('Cumulative', startX + graphWidth / 2 + 52, legendY + 10);
+
+            context.strokeStyle = colors.axis;
+            context.lineWidth = 2;
+            context.beginPath();
+            context.moveTo(startX, margin);
+            context.lineTo(startX, startY);
+            context.lineTo(startX + graphWidth, startY);
+            context.stroke();
+
+            context.fillStyle = colors.axisText;
+            context.font = `500 14px ${FONT_PROSE}`;
+            context.textAlign = 'center';
+            context.fillText('Principal Component', startX + graphWidth / 2, startY + 40);
+
+            context.save();
+            context.translate(startX - 42, startY - graphHeight / 2);
+            context.rotate(-Math.PI / 2);
+            context.fillText('Variance Explained', 0, 0);
+            context.restore();
+
+            for (let tick = 0; tick <= 10; tick += 2) {
+                const y = startY - (tick / 10) * graphHeight;
+                context.fillStyle = colors.axisText;
+                context.textAlign = 'right';
+                context.fillText(`${tick * 10}%`, startX - 10, y + 5);
+
+                context.strokeStyle = colors.grid;
+                context.beginPath();
+                context.moveTo(startX, y);
+                context.lineTo(startX + graphWidth, y);
+                context.stroke();
+            }
+
+            const spacing = graphWidth / (pveData.length + 1);
+            const barWidth = Math.min(38, spacing * 0.56);
+
+            pveData.forEach((value, index) => {
+                const x = startX + spacing * (index + 1);
+                const y = startY - value * graphHeight;
+
+                context.fillStyle = colors.projection;
+                context.fillRect(x - barWidth / 2, y, barWidth, value * graphHeight);
+
+                context.fillStyle = colors.axisText;
+                context.textAlign = 'center';
+                context.font = `500 12px ${FONT_PROSE}`;
+                context.fillText(`PC${index + 1}`, x, startY + 20);
+            });
+
+            context.strokeStyle = colors.accentDark;
+            context.lineWidth = 3;
+            context.beginPath();
+            cumulativeData.forEach((value, index) => {
+                const x = startX + spacing * (index + 1);
+                const y = startY - value * graphHeight;
+                if (index === 0) context.moveTo(x, y);
+                else context.lineTo(x, y);
+            });
+            context.stroke();
+
+            cumulativeData.forEach((value, index) => {
+                const x = startX + spacing * (index + 1);
+                const y = startY - value * graphHeight;
+
+                context.beginPath();
+                context.arc(x, y, 6, 0, Math.PI * 2);
+                context.fillStyle = colors.accentDark;
+                context.fill();
+                context.strokeStyle = colors.bg;
+                context.lineWidth = 2;
+                context.stroke();
+
+                context.fillStyle = colors.textMain;
+                context.font = `600 12px ${FONT_PROSE}`;
+                context.textAlign = 'center';
+                context.fillText(formatPercent(value), x, y - 15);
+            });
+        }
+
+        function render() {
+            state.currentAnglePC1 += (state.targetAnglePC1 - state.currentAnglePC1) * 0.05;
+            state.worldRotation += (state.targetWorldRotation - state.worldRotation) * 0.05;
+
+            ctx.setTransform(state.dpr, 0, 0, state.dpr, 0, 0);
+            ctx.clearRect(0, 0, state.width, state.height);
+
+            if (activeStage === 1) {
+                drawIntroOverview(ctx);
+            } else if (activeStage === 4) {
+                drawLoadingsScene(ctx);
+            } else if (activeStage === 5) {
+                drawScalingComparison(ctx);
+            } else if (activeStage === 7) {
+                // The transformation stage is rendered with the compact DOM overlay.
+            } else if (state.showScreePlot) {
+                drawScreePlot(ctx);
+            } else {
+                ctx.save();
+                ctx.translate(state.cx, state.cy);
+                ctx.rotate(-state.worldRotation);
+                drawGrid(ctx);
+                drawAxes(ctx);
+                drawScatterScene(ctx);
+                ctx.restore();
+            }
+
+            requestAnimationFrame(render);
+        }
+
+        function createStageDots() {
+            sections.forEach((section, index) => {
+                const dot = document.createElement('li');
+                dot.className = 'dot';
+                dot.dataset.idx = index + 1;
+                dot.addEventListener('click', () => {
+                    section.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                });
+                stageDotsContainer.appendChild(dot);
+            });
+        }
+
+        function updateStageState(stage) {
+            activeStage = stage;
+            state.isInteractive = false;
+            state.showPC1 = false;
+            state.showPC2 = false;
+            state.showProjections = false;
+            state.showVariance = false;
+            state.showDualProjection = false;
+            state.showScreePlot = false;
+            state.projectionAxis = 'none';
+            state.targetWorldRotation = 0;
+            state.axisLabels = { x: 'Speed', y: 'Strength' };
+            setTransformVisualActive(stage === 7);
+
+            switch (stage) {
+                case 1:
+                    state.targetAnglePC1 = trueAngle;
+                    state.currentAnglePC1 = trueAngle;
+                    break;
+                case 2:
+                    state.showProjections = true;
+                    state.projectionAxis = 'x';
+                    state.targetAnglePC1 = trueAngle;
+                    break;
+                case 3:
+                    state.showPC1 = true;
+                    state.showProjections = true;
+                    state.projectionAxis = 'pc1';
+                    state.showVariance = true;
+                    state.currentAnglePC1 = -Math.PI / 2;
+                    state.targetAnglePC1 = trueAngle;
+                    break;
+                case 4:
+                    state.targetAnglePC1 = trueAngle;
+                    break;
+                case 5:
+                    state.targetAnglePC1 = trueAngle;
+                    break;
+                case 6:
+                    state.showPC1 = true;
+                    state.showPC2 = true;
+                    state.showProjections = true;
+                    state.projectionAxis = 'pc2';
+                    state.targetAnglePC1 = trueAngle;
+                    break;
+                case 7:
+                    state.targetAnglePC1 = trueAngle;
+                    break;
+                case 8:
+                    state.showScreePlot = true;
+                    break;
+                case 9:
+                    state.isInteractive = true;
+                    state.showPC1 = true;
+                    state.showPC2 = true;
+                    state.showProjections = true;
+                    state.showDualProjection = true;
+                    state.projectionAxis = 'pc1';
+                    state.showVariance = true;
+                    state.targetAnglePC1 = trueAngle;
+                    angleSlider.value = Math.round(state.sliderAngle * 180 / Math.PI);
+                    angleReadout.textContent = `${Math.round(state.sliderAngle * 180 / Math.PI)}°`;
+                    break;
+                case 10:
+                    state.showPC1 = true;
+                    state.showPC2 = true;
+                    state.targetAnglePC1 = trueAngle;
+                    state.targetWorldRotation = trueAngle;
+                    state.axisLabels = { x: 'PC1', y: 'PC2' };
+                    break;
+            }
+        }
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (!entry.isIntersecting) return;
+
+                sections.forEach((section) => section.classList.remove('active'));
+                entry.target.classList.add('active');
+
+                const stage = Number(entry.target.dataset.stage);
+                document.querySelectorAll('.dot').forEach((dot) => {
+                    dot.classList.toggle('active', Number(dot.dataset.idx) === stage);
+                });
+
+                updateStageState(stage);
+            });
+        }, {
+            root: null,
+            rootMargin: '-40% 0px -40% 0px',
+            threshold: 0
+        });
+
+        sections.forEach((section) => observer.observe(section));
+
+        window.addEventListener('scroll', () => {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            progressBar.style.width = `${(winScroll / height) * 100}%`;
+        });
+
+        angleSlider.addEventListener('input', (event) => {
+            const degrees = Number(event.target.value);
+            angleReadout.textContent = `${degrees}°`;
+            state.sliderAngle = degrees * (Math.PI / 180);
+        });
+
+        createStageDots();
+        populateNarrative();
+        populateTransformOverlay();
+        bindTransformInteractions();
+        resize();
+        updateStageState(1);
+        document.querySelector('.dot')?.classList.add('active');
+        requestAnimationFrame(render);
+    </script>
+</body>
+</html>

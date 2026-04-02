@@ -1,0 +1,1476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multiple Linear Regression</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS (via CDN for standalone file) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        bgMain: '#f7f7f4',
+                        bgSec: '#f0efeb',
+                        surface: '#ffffff',
+                        borderLight: '#e7e5e4',
+                        textMain: '#1f2937',
+                        textDim: '#4b5563',
+                        textMuted: '#6b7280',
+                        accent: '#6366f1',
+                        accentDark: '#4f46e5',
+                        success: '#16a34a',
+                        warning: '#d97706',
+                        error: '#dc2626',
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        body {
+            background-color: theme('colors.bgMain');
+            color: theme('colors.textMain');
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+        
+        /* Fixed Progress Bar */
+        #progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #6366f1, #818cf8);
+            width: 0%;
+            z-index: 50;
+            transition: width 0.1s ease-out;
+        }
+
+        /* Stage Dots */
+        .stage-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: theme('colors.borderLight');
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .stage-dot.active {
+            background-color: theme('colors.accent');
+            transform: scale(1.5);
+        }
+
+        /* Layout Architecture */
+        .layout-wrapper {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .narrative-col {
+            width: 100%;
+            padding: 2rem 1.5rem;
+            z-index: 10;
+        }
+        
+        .viz-col {
+            width: 100%;
+            height: 50vh;
+            position: sticky;
+            top: 0;
+            background-color: theme('colors.bgMain');
+            z-index: 5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-bottom: 1px solid theme('colors.borderLight');
+        }
+
+        @media (min-width: 900px) {
+            .layout-wrapper {
+                flex-direction: row;
+            }
+            .narrative-col {
+                width: 45%;
+                padding: 4rem 4rem 4rem 8rem;
+            }
+            .viz-col {
+                width: 55%;
+                height: 100vh;
+                border-bottom: none;
+                border-left: 1px solid theme('colors.borderLight');
+            }
+        }
+
+        /* Story Sections */
+        .story-section {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            opacity: 0.3;
+            transition: opacity 0.5s ease;
+            padding-bottom: 4rem;
+        }
+        .story-section.active {
+            opacity: 1;
+        }
+
+        /* UI Components */
+        .glass-card {
+            background-color: theme('colors.surface');
+            border: 1px solid theme('colors.borderLight');
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+        }
+        
+        .formula-block {
+            background-color: theme('colors.bgSec');
+            border-left: 4px solid theme('colors.accent');
+            padding: 1rem 1.5rem;
+            font-family: 'JetBrains Mono', monospace;
+            border-radius: 0 0.5rem 0.5rem 0;
+            margin: 1.5rem 0;
+            font-size: 0.95rem;
+            overflow-x: auto;
+        }
+
+        .insight-box {
+            background-color: rgba(99, 102, 241, 0.05);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            border-left: 4px solid theme('colors.accent');
+            padding: 1rem 1.25rem;
+            border-radius: 0 0.5rem 0.5rem 0;
+            margin: 1.5rem 0;
+            font-size: 0.95rem;
+        }
+
+        .stage-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: theme('colors.accent');
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        .stage-label::before {
+            content: "";
+            display: block;
+            width: 20px;
+            height: 2px;
+            background-color: theme('colors.accent');
+        }
+
+        .pill {
+            display: inline-block;
+            padding: 0.125rem 0.5rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            background-color: theme('colors.bgSec');
+            border: 1px solid theme('colors.borderLight');
+        }
+
+        /* Sliders */
+        input[type=range] {
+            -webkit-appearance: none;
+            width: 100%;
+            background: transparent;
+        }
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 16px;
+            width: 16px;
+            border-radius: 50%;
+            background: theme('colors.accent');
+            cursor: pointer;
+            margin-top: -6px;
+        }
+        input[type=range]::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 4px;
+            cursor: pointer;
+            background: theme('colors.borderLight');
+            border-radius: 2px;
+        }
+        
+        canvas {
+            width: 100%;
+            height: 100%;
+            max-width: 800px;
+            max-height: 800px;
+        }
+
+        .axis-label-overlay {
+            position: absolute;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            z-index: 10;
+            font-size: 0.75rem;
+            font-weight: 600;
+            line-height: 1;
+            white-space: nowrap;
+            padding: 0.35rem 0.55rem;
+            border-radius: 9999px;
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid rgba(231, 229, 228, 0.95);
+            box-shadow: 0 2px 4px rgba(15, 23, 42, 0.06);
+            opacity: 0;
+            transition: opacity 0.15s ease;
+        }
+
+        .viz-legend {
+            position: absolute;
+            left: 1rem;
+            bottom: 1rem;
+            z-index: 10;
+            pointer-events: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.45rem;
+            padding: 0.65rem 0.8rem;
+            border-radius: 0.9rem;
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid rgba(231, 229, 228, 0.95);
+            box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
+            backdrop-filter: blur(10px);
+            opacity: 0;
+            transform: translateY(6px);
+            transition: opacity 0.18s ease, transform 0.18s ease;
+        }
+
+        .viz-legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.55rem;
+            font-size: 0.7rem;
+            line-height: 1.1;
+            color: theme('colors.textDim');
+            transition: opacity 0.18s ease;
+        }
+
+        .viz-legend-plane,
+        .viz-legend-prediction {
+            flex: 0 0 auto;
+            position: relative;
+            width: 1.8rem;
+            height: 0.8rem;
+        }
+
+        .viz-legend-plane::before {
+            content: "";
+            position: absolute;
+            inset: 0.05rem 0;
+            border-radius: 9999px;
+            background: rgba(99, 102, 241, 0.24);
+            border: 1px solid rgba(99, 102, 241, 0.45);
+        }
+
+        .viz-legend-prediction::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 50%;
+            border-top: 2px dashed rgba(220, 38, 38, 0.55);
+            transform: translateY(-50%);
+        }
+
+        .viz-legend-prediction::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0.45rem;
+            height: 0.45rem;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.95);
+            border: 2px solid theme('colors.error');
+            transform: translate(-50%, -50%);
+        }
+    </style>
+</head>
+<body>
+
+    <div id="progress-bar"></div>
+
+    <!-- Stage Navigation Dots -->
+    <div class="fixed right-6 top-1/2 transform -translate-y-1/2 flex flex-col gap-3 z-50 hidden md:flex" id="stage-dots">
+        <!-- Injected via JS -->
+    </div>
+
+    <!-- Hero Section -->
+    <section class="min-h-screen flex flex-col items-center justify-center text-center p-6 relative overflow-hidden" data-stage="0">
+        <div class="absolute inset-0 z-0 opacity-20 pointer-events-none" id="hero-bg"></div>
+        <div class="z-10 max-w-3xl">
+            <span class="inline-block py-1 px-3 rounded-full bg-indigo-100 text-indigo-700 font-semibold text-sm mb-6 tracking-wide uppercase border border-indigo-200">Statistical Learning</span>
+            <h1 class="text-5xl md:text-7xl font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-br from-gray-900 to-indigo-700 mb-6">
+                Multiple Linear<br>Regression
+            </h1>
+            <p class="text-xl text-textDim mb-10 leading-relaxed">
+                Moving beyond a single variable.<br>Learn how multiple inputs combine to predict a single continuous outcome in the real world.
+            </p>
+            <div class="text-sm text-textMuted flex items-center justify-center gap-2 animate-bounce mt-12">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M19 12l-7 7-7-7"/></svg>
+                Scroll to begin
+            </div>
+        </div>
+    </section>
+
+    <div class="layout-wrapper">
+        
+        <!-- Narrative Column -->
+        <div class="narrative-col" id="narrative-container">
+            
+            <!-- Stage 1 -->
+            <section class="story-section" data-stage="1">
+                <div class="stage-label">Stage 01</div>
+                <h2 class="text-3xl font-bold mb-4">The Multi-Variable World</h2>
+                <p class="text-textDim mb-4 leading-relaxed">
+                    Life is messy. If we want to predict a student's <strong>Test Score</strong>, knowing how many hours they studied is helpful, but it's rarely the full story.
+                </p>
+                <p class="text-textDim leading-relaxed">
+                    What about how much sleep they got? What about the number of practice papers they completed? Multiple Linear Regression allows us to use <em>several clues together</em> to predict one number.
+                </p>
+                <div class="glass-card">
+                    <h3 class="font-semibold mb-2">Our Data Universe</h3>
+                    <p class="text-sm text-textDim mb-3">To the right, we plot a dataset of students in 3D space:</p>
+                    <ul class="text-sm font-mono flex flex-col gap-2">
+                        <li><span class="inline-block w-3 h-3 rounded-full bg-blue-500 mr-2"></span>X-Axis: Hours Studied</li>
+                        <li><span class="inline-block w-3 h-3 rounded-full bg-emerald-500 mr-2"></span>Z-Axis: Hours Slept</li>
+                        <li><span class="inline-block w-3 h-3 rounded-full bg-indigo-500 mr-2"></span>Y-Axis (Height): Test Score</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Stage 2 -->
+            <section class="story-section" data-stage="2">
+                <div class="stage-label">Stage 02</div>
+                <h2 class="text-3xl font-bold mb-4">The Secret Recipe</h2>
+                <p class="text-textDim mb-4 leading-relaxed">
+                    In simple regression, we draw a line. But with three predictors—Study, Sleep, and Practice—we technically need a 4D space! Since we can't see 4D, we'll draw a <strong>3D plane</strong> as a visual stepping stone. 
+                </p>
+                <p class="text-textDim leading-relaxed">
+                    We'll plot Study and Sleep on the axes, and hold Practice temporarily constant at its average to visualize one slice of the full model. Think of the full equation like a cake recipe with multiple ingredients:
+                </p>
+                
+                <div class="formula-block">
+                    y = &beta;<sub>0</sub> + &beta;<sub>1</sub>x<sub>1</sub> + &beta;<sub>2</sub>x<sub>2</sub> + &beta;<sub>3</sub>x<sub>3</sub> + &epsilon;
+                </div>
+                
+                <div class="grid grid-cols-2 gap-4 mt-6">
+                    <div class="p-3 border border-borderLight rounded-lg bg-surface">
+                        <div class="text-xs text-textMuted uppercase font-bold">The Target (y)</div>
+                        <div class="font-mono text-sm mt-1">Test Score</div>
+                    </div>
+                    <div class="p-3 border border-borderLight rounded-lg bg-surface">
+                        <div class="text-xs text-textMuted uppercase font-bold">The Predictors (x)</div>
+                        <div class="font-mono text-sm mt-1">Study, Sleep, Practice</div>
+                    </div>
+                    <div class="p-3 border border-borderLight rounded-lg bg-surface">
+                        <div class="text-xs text-textMuted uppercase font-bold">The Boosters (&beta;)</div>
+                        <div class="font-mono text-sm mt-1">Coefficients</div>
+                    </div>
+                    <div class="p-3 border border-borderLight rounded-lg bg-surface">
+                        <div class="text-xs text-textMuted uppercase font-bold">The Messiness (&epsilon;)</div>
+                        <div class="font-mono text-sm mt-1">Unexplained Error</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Stage 3 -->
+            <section class="story-section" data-stage="3">
+                <div class="stage-label">Stage 03</div>
+                <h2 class="text-3xl font-bold mb-4">Finding the Fit</h2>
+                <p class="text-textDim mb-4 leading-relaxed">
+                    We want our model to pass as closely to the actual student scores as possible. The distance between our prediction and the actual score is called a <strong>Residual</strong> (the red dashed lines).
+                </p>
+                <p class="text-textDim mb-6 leading-relaxed">
+                    Try adjusting the full set of coefficients manually. The indigo surface is the average-practice slice, while the hollow red markers show the <em>full</em> three-variable prediction used for the residuals and SSE.
+                </p>
+
+                <div class="glass-card">
+                    <div class="mb-5">
+                        <div class="flex justify-between text-sm mb-1">
+                            <span class="font-semibold">Base Score (&beta;<sub>0</sub>)</span>
+                            <span id="val-b0" class="font-mono">10.0</span>
+                        </div>
+                        <input type="range" id="slider-b0" min="-20" max="40" step="1" value="10">
+                    </div>
+                    <div class="mb-5">
+                        <div class="flex justify-between text-sm mb-1">
+                            <span class="font-semibold text-blue-600">Study Boost (&beta;<sub>1</sub>)</span>
+                            <span id="val-b1" class="font-mono">1.0</span>
+                        </div>
+                        <input type="range" id="slider-b1" min="-2" max="10" step="0.5" value="1">
+                    </div>
+                    <div class="mb-5">
+                        <div class="flex justify-between text-sm mb-1">
+                            <span class="font-semibold text-emerald-600">Sleep Boost (&beta;<sub>2</sub>)</span>
+                            <span id="val-b2" class="font-mono">1.0</span>
+                        </div>
+                        <input type="range" id="slider-b2" min="-2" max="8" step="0.5" value="1">
+                    </div>
+                    <div class="mb-5">
+                        <div class="flex justify-between text-sm mb-1">
+                            <span class="font-semibold text-purple-600">Practice Boost (&beta;<sub>3</sub>)</span>
+                            <span id="val-b3" class="font-mono">1.0</span>
+                        </div>
+                        <input type="range" id="slider-b3" min="-2" max="10" step="0.5" value="1">
+                    </div>
+
+                    <div class="mt-6 pt-4 border-t border-borderLight flex justify-between items-end">
+                        <div>
+                            <div class="text-xs text-textMuted uppercase font-bold tracking-wide">Sum of Squared Errors (SSE)</div>
+                            <div class="text-2xl font-mono font-bold text-error" id="val-sse">---</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Stage 4 -->
+            <section class="story-section" data-stage="4">
+                <div class="stage-label">Stage 04</div>
+                <h2 class="text-3xl font-bold mb-4">The Least Squares Method</h2>
+                <p class="text-textDim mb-4 leading-relaxed">
+                    Instead of guessing, the computer uses matrix algebra to instantly derive the absolute lowest possible Sum of Squared Errors directly from the dataset.
+                </p>
+                <p class="text-textDim mb-6 leading-relaxed">
+                    By minimizing the squared residuals across all 3 dimensions simultaneously, it settles perfectly into the optimal fit.
+                </p>
+                
+                <button id="btn-optimize" class="w-full py-3 bg-accent hover:bg-accentDark text-white font-semibold rounded-lg shadow-sm transition-colors mb-4">
+                    Snap to Optimal Fit
+                </button>
+
+                <div class="insight-box">
+                    <strong>Why Square the Errors?</strong><br>
+                    1. It stops positive (+4) and negative (-4) misses from canceling out to zero.<br>
+                    2. It heavily punishes huge misses (a miss of 10 costs 100 points), forcing the model to compromise evenly across all variables.
+                </div>
+            </section>
+
+            <!-- Stage 5 -->
+            <section class="story-section" data-stage="5">
+                <div class="stage-label">Stage 05</div>
+                <h2 class="text-3xl font-bold mb-4">The Superpower: Holding Constant</h2>
+                <p class="text-textDim mb-4 leading-relaxed">
+                    This is the most critical concept in multiple regression. What does a Study Boost (&beta;<sub>1</sub>) actually mean when we have an optimal fit?
+                </p>
+                <p class="text-textDim leading-relaxed">
+                    It means: If a student studies one extra hour, their score increases by exactly that boost amount—<em>assuming their sleep and practice papers stay exactly the same.</em>
+                </p>
+
+                <div class="glass-card">
+                    <p class="text-sm text-textDim mb-4">
+                        Notice the highlighted slice on the plane. We've locked "Sleep" at 6 hours (and Practice at its average). As we move purely along the Study axis, the score rises in a perfect straight line determined solely by &beta;<sub>1</sub>.
+                    </p>
+                    <div class="formula-block !my-0 !bg-transparent border-l-0 border-t border-borderLight pt-3" id="hold-constant-formula">
+                        Score = &beta;<sub>0</sub> + <strong>&beta;<sub>1</sub>(Study)</strong> + Locked
+                    </div>
+                </div>
+            </section>
+
+            <!-- Stage 6 -->
+            <section class="story-section" data-stage="6">
+                <div class="stage-label">Stage 06</div>
+                <h2 class="text-3xl font-bold mb-4">Moving Beyond 3D</h2>
+                <p class="text-textDim mb-4 leading-relaxed">
+                    Now we transition away from the 3D plane. With three independent predictors, regression is best understood as a <strong>Multivariable Contribution Panel</strong>.
+                </p>
+                <p class="text-textDim mb-6 leading-relaxed">
+                    The final prediction is built by stacking the individual partial effects of each variable on top of the base intercept. Try adjusting the student's habits below:
+                </p>
+
+                <div class="glass-card">
+                    <h3 class="font-semibold text-sm mb-4 uppercase tracking-wide text-textMuted">Predicting a specific student</h3>
+                    <ul class="text-sm space-y-4 font-mono">
+                        <li class="flex justify-between items-center">
+                            <span>Study:</span>
+                            <input type="range" id="input-student-study" min="0" max="10" step="0.5" value="4" class="w-32">
+                            <span id="val-student-study" class="w-16 text-right">4.0 hrs</span>
+                        </li>
+                        <li class="flex justify-between items-center">
+                            <span>Sleep:</span>
+                            <input type="range" id="input-student-sleep" min="0" max="10" step="0.5" value="7.5" class="w-32">
+                            <span id="val-student-sleep" class="w-16 text-right">7.5 hrs</span>
+                        </li>
+                        <li class="flex justify-between items-center">
+                            <span>Practice:</span>
+                            <input type="range" id="input-student-practice" min="0" max="5" step="1" value="2" class="w-32">
+                            <span id="val-student-practice" class="w-16 text-right">2 pps</span>
+                        </li>
+                    </ul>
+                </div>
+                <p class="text-xs text-textMuted mt-4 text-center">Watch the live waterfall breakdown on the right.</p>
+            </section>
+
+            <!-- Stage 7 -->
+            <section class="story-section" data-stage="7">
+                <div class="stage-label">Stage 07</div>
+                <h2 class="text-3xl font-bold mb-4">The Shark & Ice Cream Mystery</h2>
+                <p class="text-textDim mb-4 leading-relaxed">
+                    If multiple variables just stack, why use them? Why not run a simple regression for each variable separately?
+                </p>
+                <p class="text-textDim mb-6 leading-relaxed">
+                    Because of <strong>Spurious Correlations</strong>. If you run a simple regression, Ice Cream Sales look like they cause Shark Attacks.
+                </p>
+
+                <div class="glass-card">
+                    <div class="flex items-center justify-between mb-4 pb-4 border-b border-borderLight">
+                        <div class="text-center">
+                            <span class="text-2xl block mb-1">🍦</span>
+                            <span class="pill">Ice Cream</span>
+                        </div>
+                        <div class="text-error font-bold text-sm">Fake Link ?</div>
+                        <div class="text-center">
+                            <span class="text-2xl block mb-1">🦈</span>
+                            <span class="pill">Shark Attacks</span>
+                        </div>
+                    </div>
+                    <div class="flex flex-col items-center">
+                        <span class="text-xs text-textMuted font-bold uppercase mb-2">The True Driver (Lurking Variable)</span>
+                        <div class="text-center">
+                            <span class="text-2xl block mb-1">☀️</span>
+                            <span class="pill bg-warning text-white border-warning">High Temperature</span>
+                        </div>
+                        <svg class="mt-2 text-borderLight" width="100" height="30" viewBox="0 0 100 30"><path d="M50 0 L20 30 M50 0 L80 30" stroke="currentColor" stroke-width="2" fill="none"/></svg>
+                    </div>
+                </div>
+                
+                <div class="insight-box mt-4">
+                    Multiple regression acts as a detective. If we put both Ice Cream and Temperature into the model, the model realizes Ice Cream's specific effect (holding Temperature constant) is zero!
+                </div>
+            </section>
+
+            <!-- Stage 8 -->
+            <section class="story-section" data-stage="8">
+                <div class="stage-label">Stage 08</div>
+                <h2 class="text-3xl font-bold mb-4">The Model Scorecard</h2>
+                <p class="text-textDim mb-4 leading-relaxed">
+                    How do we know if our team of variables is actually good? We look at <strong>R&sup2;</strong> (R-Squared), which tells us what percentage of the variance we explained.
+                </p>
+                <p class="text-textDim mb-4 leading-relaxed">
+                    But beware the <strong>Trap of R&sup2;</strong>. Adding <em>any</em> variable—even "Student's Shoe Size"—will mathematically force raw R&sup2; to increase, tricking you into thinking the model is better.
+                </p>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="glass-card !mt-0 flex flex-col justify-center">
+                        <div class="text-xs text-textMuted uppercase font-bold tracking-wide">Live Raw R&sup2;</div>
+                        <div class="text-3xl font-mono text-textMain my-2" id="val-r2">0.000</div>
+                        <div class="text-xs text-textDim">Always goes up. Easily tricked.</div>
+                    </div>
+                    <div class="glass-card !mt-0 flex flex-col justify-center border-l-4 border-l-success">
+                        <div class="text-xs text-textMuted uppercase font-bold tracking-wide">Live Adj R&sup2;</div>
+                        <div class="text-3xl font-mono text-success my-2" id="val-adj-r2">0.000</div>
+                        <div class="text-xs text-textDim">Punishes you for adding useless variables.</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Stage 9 -->
+            <section class="story-section" data-stage="9">
+                <div class="stage-label">Stage 09</div>
+                <h2 class="text-3xl font-bold mb-4">Synthesis</h2>
+                <p class="text-textDim mb-4 leading-relaxed">
+                    Multiple Linear Regression is the grandfather of data science. It is a smart rule that uses several clues together to predict a continuous number.
+                </p>
+                <ul class="space-y-4 text-sm text-textDim">
+                    <li class="flex items-start">
+                        <svg class="w-5 h-5 text-accent mr-2 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        <strong>It models additive effects:</strong> Every variable provides a specific "boost" to the baseline.
+                    </li>
+                    <li class="flex items-start">
+                        <svg class="w-5 h-5 text-accent mr-2 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        <strong>It isolates drivers:</strong> It answers "What happens if X changes, while everything else stays perfectly still?"
+                    </li>
+                    <li class="flex items-start">
+                        <svg class="w-5 h-5 text-accent mr-2 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        <strong>It minimizes squared error:</strong> The optimal fit finds the absolute lowest sum of squared residuals across all dimensions simultaneously.
+                    </li>
+                </ul>
+            </section>
+        </div>
+
+        <!-- Sticky Visualization Column -->
+        <div class="viz-col">
+            <div class="relative w-full h-full flex items-center justify-center p-4" id="viz-scene">
+                <canvas id="viz-canvas"></canvas>
+                <div id="axis-label-x" class="axis-label-overlay text-blue-600" data-full="Study (X)" data-short="Study">Study (X)</div>
+                <div id="axis-label-z" class="axis-label-overlay text-emerald-600" data-full="Sleep (Z)" data-short="Sleep">Sleep (Z)</div>
+                <div id="axis-label-y" class="axis-label-overlay text-textDim" data-full="Score (Y)" data-short="Score">Score (Y)</div>
+                <div id="viz-legend" class="viz-legend">
+                    <div id="legend-plane" class="viz-legend-item">
+                        <span class="viz-legend-plane"></span>
+                        <span>Indigo plane: average-practice slice</span>
+                    </div>
+                    <div id="legend-prediction" class="viz-legend-item">
+                        <span class="viz-legend-prediction"></span>
+                        <span>Hollow red markers: full-model predictions</span>
+                    </div>
+                </div>
+                
+                <!-- Tooltip overlays -->
+                <div id="viz-overlay" class="absolute top-8 left-8 bg-surface/90 backdrop-blur border border-borderLight rounded-lg p-3 text-xs font-mono hidden shadow-sm transition-opacity">
+                    <!-- Dynamic content -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- DATA & STATE ---
+        // True equation: Score = 12 + 5.2*Study + 2.1*Sleep + noise
+        const rawData = [
+            { id: 1, study: 1.5, sleep: 5.0, practice: 0, score: 32 },
+            { id: 2, study: 2.0, sleep: 6.5, practice: 1, score: 38 },
+            { id: 3, study: 3.5, sleep: 5.5, practice: 1, score: 45 },
+            { id: 4, study: 4.0, sleep: 7.0, practice: 2, score: 55 },
+            { id: 5, study: 4.5, sleep: 8.0, practice: 2, score: 56 },
+            { id: 6, study: 5.5, sleep: 6.0, practice: 2, score: 54 },
+            { id: 7, study: 6.0, sleep: 8.5, practice: 3, score: 71 },
+            { id: 8, study: 7.0, sleep: 7.0, practice: 3, score: 68 },
+            { id: 9, study: 8.0, sleep: 6.5, practice: 4, score: 75 },
+            { id: 10, study: 8.5, sleep: 8.0, practice: 4, score: 85 },
+            { id: 11, study: 9.0, sleep: 5.0, practice: 5, score: 80 },
+            { id: 12, study: 2.5, sleep: 4.0, practice: 0, score: 28 },
+            { id: 13, study: 6.5, sleep: 5.5, practice: 3, score: 60 },
+            { id: 14, study: 3.0, sleep: 8.5, practice: 1, score: 48 },
+            { id: 15, study: 7.5, sleep: 9.0, practice: 4, score: 82 },
+        ];
+
+        // Normalization bounds for 3D drawing
+        const bounds = {
+            xMin: 0, xMax: 10,   // Study
+            zMin: 0, zMax: 10,   // Sleep
+            yMin: 0, yMax: 100   // Score
+        };
+
+        // We calculate the exact least-squares optimal coefficients from the data dynamically
+        let optimal = { b0: 0, b1: 0, b2: 0, b3: 0 };
+        const avgPractice = rawData.reduce((sum, d) => sum + d.practice, 0) / rawData.length;
+        const lockedSleep = 6.0;
+        const meanScore = rawData.reduce((sum, pt) => sum + pt.score, 0) / rawData.length;
+        const totalSumSquares = rawData.reduce((sum, pt) => sum + (pt.score - meanScore) ** 2, 0);
+
+        const state = {
+            stage: 0,
+            
+            // Current model parameters
+            b0: 0, b1: 0, b2: 0, b3: 0,
+            
+            // Animation targets
+            targetB0: 0, targetB1: 0, targetB2: 0, targetB3: 0,
+
+            // Live student prediction values
+            studentStudy: 4.0,
+            studentSleep: 7.5,
+            studentPractice: 2,
+            
+            // 3D View properties
+            angle: Math.PI / 4,
+            pitch: Math.PI / 6,
+            autoRotate: true,
+            
+            // Rendering modes
+            showPoints: false,
+            showPlane: false,
+            showResiduals: false,
+            sliceZ: null, // If set, highlights a line on the plane
+            
+            // View Mode
+            viewMode: '3d', // '3d' or 'waterfall'
+            waterfallProgress: 0, // 0 to 1 for animation
+            
+            // Slider interaction tracking
+            userInteracting: false
+        };
+
+        // DOM Elements
+        const vizScene = document.getElementById('viz-scene');
+        const canvas = document.getElementById('viz-canvas');
+        const ctx = canvas.getContext('2d');
+        const axisLabelX = document.getElementById('axis-label-x');
+        const axisLabelZ = document.getElementById('axis-label-z');
+        const axisLabelY = document.getElementById('axis-label-y');
+        const vizLegend = document.getElementById('viz-legend');
+        const legendPlane = document.getElementById('legend-plane');
+        const legendPrediction = document.getElementById('legend-prediction');
+        const sliderB0 = document.getElementById('slider-b0');
+        const sliderB1 = document.getElementById('slider-b1');
+        const sliderB2 = document.getElementById('slider-b2');
+        const sliderB3 = document.getElementById('slider-b3');
+        const valB0 = document.getElementById('val-b0');
+        const valB1 = document.getElementById('val-b1');
+        const valB2 = document.getElementById('val-b2');
+        const valB3 = document.getElementById('val-b3');
+        const valSSE = document.getElementById('val-sse');
+        const valR2 = document.getElementById('val-r2');
+        const valAdjR2 = document.getElementById('val-adj-r2');
+        const btnOptimize = document.getElementById('btn-optimize');
+        
+        // Student inputs
+        const inputStudy = document.getElementById('input-student-study');
+        const inputSleep = document.getElementById('input-student-sleep');
+        const inputPractice = document.getElementById('input-student-practice');
+        const txtStudy = document.getElementById('val-student-study');
+        const txtSleep = document.getElementById('val-student-sleep');
+        const txtPractice = document.getElementById('val-student-practice');
+
+        // --- MATH & PROJECTION ---
+        
+        // Gaussian elimination to solve X^T X beta = X^T Y
+        function solveLinearSystem(A, B) {
+            let n = A.length;
+            for (let i = 0; i < n; i++) {
+                let maxEl = Math.abs(A[i][i]);
+                let maxRow = i;
+                for (let k = i + 1; k < n; k++) {
+                    if (Math.abs(A[k][i]) > maxEl) { maxEl = Math.abs(A[k][i]); maxRow = k; }
+                }
+                for (let k = i; k < n; k++) { let tmp = A[maxRow][k]; A[maxRow][k] = A[i][k]; A[i][k] = tmp; }
+                let tmp = B[maxRow]; B[maxRow] = B[i]; B[i] = tmp;
+
+                for (let k = i + 1; k < n; k++) {
+                    let c = -A[k][i] / A[i][i];
+                    for (let j = i; j < n; j++) { if (i === j) A[k][j] = 0; else A[k][j] += c * A[i][j]; }
+                    B[k] += c * B[i];
+                }
+            }
+            let x = new Array(n).fill(0);
+            for (let i = n - 1; i >= 0; i--) {
+                x[i] = B[i] / A[i][i];
+                for (let k = i - 1; k >= 0; k--) { B[k] -= A[k][i] * x[i]; }
+            }
+            return x;
+        }
+
+        function computeOptimal() {
+            let n = rawData.length;
+            let X = rawData.map(d => [1, d.study, d.sleep, d.practice]);
+            let Y = rawData.map(d => d.score);
+
+            let XtX = Array(4).fill(0).map(() => Array(4).fill(0));
+            let XtY = Array(4).fill(0);
+
+            for (let i = 0; i < n; i++) {
+                for (let j = 0; j < 4; j++) {
+                    XtY[j] += X[i][j] * Y[i];
+                    for (let k = 0; k < 4; k++) {
+                        XtX[j][k] += X[i][j] * X[i][k];
+                    }
+                }
+            }
+            let beta = solveLinearSystem(XtX, XtY);
+            optimal = { b0: beta[0], b1: beta[1], b2: beta[2], b3: beta[3] };
+        }
+
+        function getLiveCoefficients() {
+            return {
+                b0: state.b0,
+                b1: state.b1,
+                b2: state.b2,
+                b3: state.b3
+            };
+        }
+
+        function predictScore(coefficients, study, sleep, practice) {
+            return coefficients.b0
+                + coefficients.b1 * study
+                + coefficients.b2 * sleep
+                + coefficients.b3 * practice;
+        }
+
+        function predictSliceScore(coefficients, study, sleep) {
+            return predictScore(coefficients, study, sleep, avgPractice);
+        }
+
+        function calculateSSE(coefficients) {
+            let sse = 0;
+            for (let pt of rawData) {
+                let predicted = predictScore(coefficients, pt.study, pt.sleep, pt.practice);
+                let error = pt.score - predicted;
+                sse += error * error;
+            }
+            return sse;
+        }
+
+        function getModelSnapshot() {
+            const coefficients = getLiveCoefficients();
+            const sse = calculateSSE(coefficients);
+            const r2 = 1 - (sse / totalSumSquares);
+            const n = rawData.length;
+            const p = 3;
+            const adjR2 = 1 - ((1 - r2) * (n - 1) / (n - p - 1));
+            const predStudy = state.studentStudy * coefficients.b1;
+            const predSleep = state.studentSleep * coefficients.b2;
+            const predPractice = state.studentPractice * coefficients.b3;
+
+            return {
+                coefficients,
+                metrics: {
+                    sse,
+                    r2,
+                    adjR2
+                },
+                holdConstant: {
+                    sleep: lockedSleep,
+                    practice: avgPractice,
+                    lockedImpact: coefficients.b2 * lockedSleep + coefficients.b3 * avgPractice
+                },
+                student: {
+                    study: state.studentStudy,
+                    sleep: state.studentSleep,
+                    practice: state.studentPractice,
+                    components: [
+                        { label: 'Base (&beta;0)', value: coefficients.b0, color: '#94a3b8' },
+                        { label: `Study (${state.studentStudy}h)`, value: predStudy, color: '#3b82f6' },
+                        { label: `Sleep (${state.studentSleep}h)`, value: predSleep, color: '#10b981' },
+                        { label: `Practice (${state.studentPractice}p)`, value: predPractice, color: '#8b5cf6' }
+                    ],
+                    total: coefficients.b0 + predStudy + predSleep + predPractice
+                }
+            };
+        }
+
+        // Project 3D coordinate (x, y, z) into 2D screen coordinate
+        // Coordinate system: X (right), Y (up), Z (into screen)
+        function project(x, y, z, width, height) {
+            // Normalize to roughly [-1, 1] range for scaling
+            let nx = ((x - bounds.xMin) / (bounds.xMax - bounds.xMin)) * 2 - 1;
+            let ny = ((y - bounds.yMin) / (bounds.yMax - bounds.yMin)) * 2 - 1;
+            let nz = ((z - bounds.zMin) / (bounds.zMax - bounds.zMin)) * 2 - 1;
+
+            // Rotation around Y axis (pan)
+            let rx = nx * Math.cos(state.angle) - nz * Math.sin(state.angle);
+            let rz = nx * Math.sin(state.angle) + nz * Math.cos(state.angle);
+            
+            // Rotation around X axis (pitch)
+            let ry = ny * Math.cos(state.pitch) - rz * Math.sin(state.pitch);
+            let rz2 = ny * Math.sin(state.pitch) + rz * Math.cos(state.pitch);
+
+            // Simple orthographic/isometric scaling
+            let scale = Math.min(width, height) * 0.31;
+            
+            return {
+                x: width/2 + rx * scale,
+                y: height/2 + 20 - ry * scale, // offset Y slightly down
+                depth: rz2
+            };
+        }
+
+        // --- RENDERING ENGINE ---
+
+        function resize() {
+            // Handle high-DPI displays
+            const dpr = window.devicePixelRatio || 1;
+            const rect = canvas.parentElement.getBoundingClientRect();
+            ctx.setTransform(1, 0, 0, 1, 0, 0);
+            canvas.width = rect.width * dpr;
+            canvas.height = rect.height * dpr;
+            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+            canvas.style.width = `${rect.width}px`;
+            canvas.style.height = `${rect.height}px`;
+        }
+        window.addEventListener('resize', resize);
+
+        function hideAxisLabels() {
+            [axisLabelX, axisLabelZ, axisLabelY].forEach((label) => {
+                label.style.opacity = '0';
+                label.style.left = '-9999px';
+                label.style.top = '-9999px';
+            });
+        }
+
+        function setAxisLabelText(label, compact) {
+            const nextText = compact ? label.dataset.short : label.dataset.full;
+            if (label.textContent !== nextText) label.textContent = nextText;
+        }
+
+        function positionAxisLabel(label, point, offsetX, offsetY) {
+            const canvasRect = canvas.getBoundingClientRect();
+            const sceneRect = vizScene.getBoundingClientRect();
+            const x = canvasRect.left - sceneRect.left + point.x + offsetX;
+            const y = canvasRect.top - sceneRect.top + point.y + offsetY;
+            const compact =
+                sceneRect.width < 720 ||
+                x < 90 ||
+                x > sceneRect.width - 90 ||
+                y < 72 ||
+                y > sceneRect.height - 72;
+
+            setAxisLabelText(label, compact);
+            const halfWidth = label.offsetWidth / 2;
+            const halfHeight = label.offsetHeight / 2;
+            const margin = 12;
+            const minX = margin + halfWidth;
+            const maxX = sceneRect.width - margin - halfWidth;
+            const minY = margin + halfHeight;
+            const maxY = sceneRect.height - margin - halfHeight;
+            const clampedX = Math.min(maxX, Math.max(minX, x));
+            const clampedY = Math.min(maxY, Math.max(minY, y));
+            const overflowX = Math.max(minX - x, x - maxX, 0);
+            const overflowY = Math.max(minY - y, y - maxY, 0);
+            const overflow = Math.max(overflowX, overflowY);
+            const fadeDistance = 70;
+            const opacity = Math.max(0, Math.min(1, 1 - overflow / fadeDistance));
+
+            if (opacity < 0.05) {
+                label.style.opacity = '0';
+                label.style.left = '-9999px';
+                label.style.top = '-9999px';
+                return;
+            }
+
+            label.style.left = `${clampedX}px`;
+            label.style.top = `${clampedY}px`;
+            label.style.opacity = `${0.25 + opacity * 0.75}`;
+        }
+
+        function updateVizLegend() {
+            const showLegend = state.viewMode === '3d' && (state.showPlane || state.showResiduals);
+            vizLegend.style.opacity = showLegend ? '1' : '0';
+            vizLegend.style.transform = showLegend ? 'translateY(0)' : 'translateY(6px)';
+            legendPlane.style.opacity = state.showPlane ? '1' : '0.35';
+            legendPrediction.style.opacity = state.showResiduals ? '1' : '0.35';
+        }
+
+        function updateAxisLabels(xEnd, yEnd, zEnd) {
+            const canvasWidth = canvas.getBoundingClientRect().width;
+            const xOffset = xEnd.x > canvasWidth * 0.68 ? -42 : 38;
+            const zOffset = zEnd.x > canvasWidth * 0.68 ? -42 : 38;
+
+            positionAxisLabel(axisLabelX, xEnd, xOffset, 0);
+            positionAxisLabel(axisLabelZ, zEnd, zOffset, 0);
+            positionAxisLabel(axisLabelY, yEnd, -6, -18);
+        }
+        
+        function drawAxes(w, h) {
+            ctx.lineWidth = 1;
+            ctx.strokeStyle = '#e7e5e4'; // borderLight
+            
+            // Origin and ends
+            let o = project(0, 0, 0, w, h);
+            let xEnd = project(bounds.xMax, 0, 0, w, h);
+            let yEnd = project(0, bounds.yMax, 0, w, h);
+            let zEnd = project(0, 0, bounds.zMax, w, h);
+
+            // Draw X Axis (Study)
+            ctx.beginPath(); ctx.moveTo(o.x, o.y); ctx.lineTo(xEnd.x, xEnd.y); ctx.stroke();
+
+            // Draw Z Axis (Sleep)
+            ctx.beginPath(); ctx.moveTo(o.x, o.y); ctx.lineTo(zEnd.x, zEnd.y); ctx.stroke();
+
+            // Draw Y Axis (Score)
+            ctx.beginPath(); ctx.moveTo(o.x, o.y); ctx.lineTo(yEnd.x, yEnd.y); ctx.stroke();
+            updateAxisLabels(xEnd, yEnd, zEnd);
+            
+            // Draw floor grid
+            ctx.strokeStyle = 'rgba(231, 229, 228, 0.4)';
+            ctx.beginPath();
+            for(let i=1; i<=10; i++) {
+                let p1 = project(i, 0, 0, w, h);
+                let p2 = project(i, 0, 10, w, h);
+                ctx.moveTo(p1.x, p1.y); ctx.lineTo(p2.x, p2.y);
+                
+                let p3 = project(0, 0, i, w, h);
+                let p4 = project(10, 0, i, w, h);
+                ctx.moveTo(p3.x, p3.y); ctx.lineTo(p4.x, p4.y);
+            }
+            ctx.stroke();
+        }
+
+        function drawPlaneAndData(w, h, snapshot) {
+            // To handle basic depth sorting, we collect all renderable items
+            let renderQueue = [];
+            const coefficients = snapshot.coefficients;
+
+            // 1. Data points & Residuals
+            if (state.showPoints) {
+                for (let pt of rawData) {
+                    let projReal = project(pt.study, pt.score, pt.sleep, w, h);
+                    let predY = predictScore(coefficients, pt.study, pt.sleep, pt.practice);
+                    let projPred = project(pt.study, predY, pt.sleep, w, h);
+                    
+                    if (state.showResiduals) {
+                        renderQueue.push({
+                            type: 'line',
+                            depth: (projReal.depth + projPred.depth) / 2,
+                            p1: projReal, p2: projPred,
+                            color: '#dc2626',
+                            dash: [6, 4]
+                        });
+                        renderQueue.push({
+                            type: 'prediction-point',
+                            depth: projPred.depth - 0.01,
+                            pos: projPred,
+                            radius: 5
+                        });
+                    }
+                    
+                    renderQueue.push({
+                        type: 'point',
+                        depth: projReal.depth,
+                        pos: projReal,
+                        radius: 4
+                    });
+                }
+            }
+
+            // 2. The Regression Plane
+            if (state.showPlane) {
+                // Split plane into grid cells for better depth sorting
+                const steps = 5;
+                const stepX = bounds.xMax / steps;
+                const stepZ = bounds.zMax / steps;
+
+                for (let i=0; i<steps; i++) {
+                    for (let j=0; j<steps; j++) {
+                        let x1 = i * stepX, z1 = j * stepZ;
+                        let x2 = (i+1) * stepX, z2 = (j+1) * stepZ;
+                        
+                        let y11 = predictSliceScore(coefficients, x1, z1);
+                        let y21 = predictSliceScore(coefficients, x2, z1);
+                        let y22 = predictSliceScore(coefficients, x2, z2);
+                        let y12 = predictSliceScore(coefficients, x1, z2);
+                        
+                        let p11 = project(x1, y11, z1, w, h);
+                        let p21 = project(x2, y21, z1, w, h);
+                        let p22 = project(x2, y22, z2, w, h);
+                        let p12 = project(x1, y12, z2, w, h);
+                        
+                        let avgDepth = (p11.depth + p21.depth + p22.depth + p12.depth) / 4;
+                        
+                        renderQueue.push({
+                            type: 'poly',
+                            depth: avgDepth,
+                            pts: [p11, p21, p22, p12]
+                        });
+                    }
+                }
+            }
+
+            // 3. Slice Line (Holding Constant)
+            if (state.sliceZ !== null) {
+                let z = state.sliceZ;
+                let y1 = predictSliceScore(coefficients, 0, z);
+                let y2 = predictSliceScore(coefficients, 10, z);
+                let p1 = project(0, y1, z, w, h);
+                let p2 = project(10, y2, z, w, h);
+                
+                renderQueue.push({
+                    type: 'line',
+                    depth: (p1.depth + p2.depth)/2 - 0.1, // draw slightly over plane
+                    p1: p1, p2: p2,
+                    color: '#1f2937', // dark line
+                    width: 3
+                });
+            }
+
+            // Sort back to front (Painters algorithm)
+            renderQueue.sort((a, b) => b.depth - a.depth);
+
+            // Render
+            for (let item of renderQueue) {
+                if (item.type === 'poly') {
+                    ctx.beginPath();
+                    ctx.moveTo(item.pts[0].x, item.pts[0].y);
+                    for (let i=1; i<4; i++) ctx.lineTo(item.pts[i].x, item.pts[i].y);
+                    ctx.closePath();
+                    ctx.fillStyle = 'rgba(99, 102, 241, 0.2)'; // indigo accent with opacity
+                    ctx.fill();
+                    ctx.strokeStyle = 'rgba(99, 102, 241, 0.4)';
+                    ctx.lineWidth = 1;
+                    ctx.stroke();
+                } else if (item.type === 'point') {
+                    ctx.beginPath();
+                    ctx.arc(item.pos.x, item.pos.y, item.radius, 0, Math.PI*2);
+                    ctx.fillStyle = '#1f2937';
+                    ctx.fill();
+                    ctx.strokeStyle = '#ffffff';
+                    ctx.lineWidth = 1.5;
+                    ctx.stroke();
+                } else if (item.type === 'prediction-point') {
+                    ctx.beginPath();
+                    ctx.arc(item.pos.x, item.pos.y, item.radius, 0, Math.PI*2);
+                    ctx.fillStyle = 'rgba(255, 255, 255, 0.92)';
+                    ctx.fill();
+                    ctx.strokeStyle = '#dc2626';
+                    ctx.lineWidth = 2;
+                    ctx.stroke();
+                } else if (item.type === 'line') {
+                    ctx.beginPath();
+                    ctx.moveTo(item.p1.x, item.p1.y);
+                    ctx.lineTo(item.p2.x, item.p2.y);
+                    ctx.strokeStyle = item.color;
+                    ctx.lineWidth = item.width || 1.5;
+                    ctx.setLineDash(item.dash || []);
+                    ctx.stroke();
+                    ctx.setLineDash([]);
+                }
+            }
+        }
+
+        function drawWaterfall(w, h, snapshot) {
+            // A 2D breakdown charting the live predicted score of the dynamic student
+            const { components, total } = snapshot.student;
+
+            const startX = 60;
+            const endX = w - 60;
+            const chartWidth = endX - startX;
+            const chartTop = h * 0.18;
+            const chartBottom = h * 0.8;
+            const chartHeight = chartBottom - chartTop;
+            const spacing = chartWidth / 6;
+            const barWidth = chartWidth / 6;
+
+            let currentAccum = 0;
+            const domainValues = [0];
+            for (const comp of components) {
+                domainValues.push(currentAccum);
+                currentAccum += comp.value;
+                domainValues.push(currentAccum);
+            }
+            domainValues.push(total);
+            const minValue = Math.min(...domainValues);
+            const maxValue = Math.max(...domainValues);
+            const span = Math.max(12, maxValue - minValue);
+            const padding = Math.max(6, span * 0.15);
+            const domainMin = Math.min(0, minValue) - padding;
+            const domainMax = Math.max(0, maxValue) + padding;
+            const valueToY = (value) => chartBottom - ((value - domainMin) / (domainMax - domainMin)) * chartHeight;
+            const zeroY = valueToY(0);
+            
+            // Draw axes
+            ctx.strokeStyle = '#e7e5e4';
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(startX, zeroY);
+            ctx.lineTo(endX, zeroY);
+            ctx.stroke();
+            
+            ctx.font = '12px Inter';
+            ctx.textAlign = 'center';
+            currentAccum = 0;
+
+            for (let i = 0; i < components.length; i++) {
+                let comp = components[i];
+                
+                // Animate entrance via waterfallProgress
+                let p = Math.max(0, Math.min(1, state.waterfallProgress * 4 - i));
+                let drawVal = comp.value * p;
+                
+                let x = startX + spacing + i * barWidth * 1.2;
+                
+                // Stack up or down depending on positive/negative
+                const barStartY = valueToY(currentAccum);
+                const barEndY = valueToY(currentAccum + drawVal);
+                let y = Math.min(barStartY, barEndY);
+                let height = Math.max(1, Math.abs(barEndY - barStartY));
+                
+                // Draw connecting line from previous
+                if (i > 0 && p > 0) {
+                    ctx.setLineDash([4, 4]);
+                    ctx.strokeStyle = '#cbd5e1';
+                    ctx.beginPath();
+                    ctx.moveTo(x - barWidth*1.2, valueToY(currentAccum));
+                    ctx.lineTo(x + barWidth, valueToY(currentAccum));
+                    ctx.stroke();
+                    ctx.setLineDash([]);
+                }
+
+                // Draw Bar
+                ctx.fillStyle = comp.color;
+                ctx.fillRect(x - barWidth/2, y, barWidth, height);
+                
+                // Draw label
+                if (p > 0.5) {
+                    ctx.fillStyle = '#1f2937';
+                    ctx.fillText(comp.label, x, chartBottom + 20);
+                    ctx.font = 'bold 12px JetBrains Mono';
+                    ctx.fillText((drawVal >= 0 ? '+' : '') + drawVal.toFixed(1), x, (drawVal >= 0 ? y - 10 : y + height + 15));
+                    ctx.font = '12px Inter';
+                }
+
+                currentAccum += drawVal;
+            }
+
+            // Draw final total
+            if (state.waterfallProgress > 0.9) {
+                let x = startX + spacing + 4 * barWidth * 1.2;
+                let fTotal = total * state.waterfallProgress;
+                let totalY = valueToY(fTotal);
+                let y = Math.min(zeroY, totalY);
+                let height = Math.max(1, Math.abs(totalY - zeroY));
+
+                ctx.fillStyle = '#4f46e5';
+                ctx.fillRect(x - barWidth/2, y, barWidth, height);
+                ctx.fillStyle = '#1f2937';
+                ctx.fillText('Final Score', x, chartBottom + 20);
+                ctx.font = 'bold 14px JetBrains Mono';
+                ctx.fillText(fTotal.toFixed(1), x, (fTotal >= 0 ? y - 10 : y + height + 15));
+            }
+        }
+
+        function render() {
+            const rect = canvas.getBoundingClientRect();
+            const w = rect.width;
+            const h = rect.height;
+            
+            ctx.clearRect(0, 0, w, h);
+
+            // Interpolate betas for smooth animation
+            if (!state.userInteracting) {
+                state.b0 += (state.targetB0 - state.b0) * 0.1;
+                state.b1 += (state.targetB1 - state.b1) * 0.1;
+                state.b2 += (state.targetB2 - state.b2) * 0.1;
+                state.b3 += (state.targetB3 - state.b3) * 0.1;
+                
+                // Update DOM sliders to match
+                sliderB0.value = state.b0;
+                sliderB1.value = state.b1;
+                sliderB2.value = state.b2;
+                sliderB3.value = state.b3;
+            }
+
+            const snapshot = getModelSnapshot();
+            syncUI(snapshot);
+            updateVizLegend();
+
+            // Auto-rotate 3D view slightly
+            if (state.viewMode === '3d' && state.autoRotate) {
+                state.angle += 0.002;
+            }
+
+            if (state.viewMode === '3d') {
+                drawAxes(w, h);
+                drawPlaneAndData(w, h, snapshot);
+            } else if (state.viewMode === 'waterfall') {
+                hideAxisLabels();
+                // Fade in waterfall progress
+                state.waterfallProgress += (1 - state.waterfallProgress) * 0.05;
+                drawWaterfall(w, h, snapshot);
+            }
+
+            requestAnimationFrame(render);
+        }
+
+        // --- INTERACTION & LOGIC ---
+
+        function syncUI(snapshot) {
+            valB0.innerText = snapshot.coefficients.b0.toFixed(1);
+            valB1.innerText = snapshot.coefficients.b1.toFixed(1);
+            valB2.innerText = snapshot.coefficients.b2.toFixed(1);
+            valB3.innerText = snapshot.coefficients.b3.toFixed(1);
+            valSSE.innerText = snapshot.metrics.sse.toFixed(0);
+
+            if (valR2) valR2.innerText = Math.max(-0.999, snapshot.metrics.r2).toFixed(3);
+            if (valAdjR2) valAdjR2.innerText = Math.max(-0.999, snapshot.metrics.adjR2).toFixed(3);
+            if (txtStudy) txtStudy.innerText = `${snapshot.student.study.toFixed(1)} hrs`;
+            if (txtSleep) txtSleep.innerText = `${snapshot.student.sleep.toFixed(1)} hrs`;
+            if (txtPractice) txtPractice.innerText = `${snapshot.student.practice} pps`;
+
+            const formulaBox = document.getElementById('hold-constant-formula');
+            if (formulaBox) {
+                formulaBox.innerHTML = `Score = ${snapshot.coefficients.b0.toFixed(1)} + <strong>${snapshot.coefficients.b1.toFixed(1)}(Study)</strong> + ${snapshot.holdConstant.lockedImpact.toFixed(1)} (Sleep = ${snapshot.holdConstant.sleep.toFixed(1)}, Practice = avg ${snapshot.holdConstant.practice.toFixed(1)})`;
+            }
+        }
+
+        function setupInteractions() {
+            const handleInput = (e, prop) => {
+                state.userInteracting = true;
+                state[prop] = parseFloat(e.target.value);
+                const targetProp = `target${prop.charAt(0).toUpperCase()}${prop.slice(1)}`;
+                state[targetProp] = state[prop];
+                syncUI(getModelSnapshot());
+            };
+            const handleRelease = () => state.userInteracting = false;
+
+            sliderB0.addEventListener('input', (e) => handleInput(e, 'b0'));
+            sliderB1.addEventListener('input', (e) => handleInput(e, 'b1'));
+            sliderB2.addEventListener('input', (e) => handleInput(e, 'b2'));
+            sliderB3.addEventListener('input', (e) => handleInput(e, 'b3'));
+            
+            sliderB0.addEventListener('change', handleRelease);
+            sliderB1.addEventListener('change', handleRelease);
+            sliderB2.addEventListener('change', handleRelease);
+            sliderB3.addEventListener('change', handleRelease);
+
+            // Student input bindings
+            const handleStudentInput = (e, prop, textEl, suffix) => {
+                state[prop] = parseFloat(e.target.value);
+                textEl.innerText = `${state[prop].toFixed(1)} ${suffix}`;
+                if (state.viewMode === 'waterfall') state.waterfallProgress = 1; // Snaps to end to show live changes
+                syncUI(getModelSnapshot());
+            };
+
+            inputStudy.addEventListener('input', (e) => handleStudentInput(e, 'studentStudy', txtStudy, 'hrs'));
+            inputSleep.addEventListener('input', (e) => handleStudentInput(e, 'studentSleep', txtSleep, 'hrs'));
+            inputPractice.addEventListener('input', (e) => {
+                state.studentPractice = parseInt(e.target.value);
+                txtPractice.innerText = `${state.studentPractice} pps`;
+                if (state.viewMode === 'waterfall') state.waterfallProgress = 1;
+                syncUI(getModelSnapshot());
+            });
+
+            btnOptimize.addEventListener('click', () => {
+                state.userInteracting = false;
+                state.targetB0 = optimal.b0;
+                state.targetB1 = optimal.b1;
+                state.targetB2 = optimal.b2;
+                state.targetB3 = optimal.b3;
+            });
+        }
+
+        // --- SCROLL / STAGE MANAGEMENT ---
+
+        const heroSection = document.querySelector('section[data-stage="0"]');
+        const storySections = Array.from(document.querySelectorAll('.story-section'));
+        const allSections = [heroSection, ...storySections];
+        const stageIndexLookup = new Map(
+            allSections.map((section, index) => [parseInt(section.getAttribute('data-stage'), 10), index])
+        );
+        const dotsContainer = document.getElementById('stage-dots');
+        
+        // Generate dots
+        allSections.forEach((section) => {
+            let dot = document.createElement('div');
+            dot.className = 'stage-dot';
+            dot.addEventListener('click', () => {
+                section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            });
+            dotsContainer.appendChild(dot);
+        });
+        const dots = Array.from(document.querySelectorAll('.stage-dot'));
+
+        function setStage(stage) {
+            const sectionIndex = stageIndexLookup.get(stage);
+            if (sectionIndex === undefined) return;
+
+            state.stage = stage;
+            
+            // UI Updates
+            storySections.forEach((section) => {
+                section.classList.toggle('active', parseInt(section.getAttribute('data-stage'), 10) === stage);
+            });
+            dots.forEach((dot, index) => dot.classList.toggle('active', index === sectionIndex));
+            
+            // Progress bar
+            const progress = allSections.length > 1 ? (sectionIndex / (allSections.length - 1)) * 100 : 0;
+            document.getElementById('progress-bar').style.width = `${progress}%`;
+
+            // Canvas State Machine
+            state.viewMode = '3d';
+            state.sliceZ = null;
+            state.showPoints = false;
+            state.showPlane = false;
+            state.showResiduals = false;
+            
+            // Reset to identity if leaving 3D later, but keep continuous
+            if (stage < 6) {
+                state.waterfallProgress = 0;
+            }
+
+            switch(stage) {
+                case 0: // Hero
+                    // Ambient rotation, no data
+                    state.targetB0 = 0; state.targetB1 = 0; state.targetB2 = 0; state.targetB3 = 0;
+                    break;
+                case 1: // The Multi-Variable World
+                    state.showPoints = true;
+                    state.targetB0 = 0; state.targetB1 = 0; state.targetB2 = 0; state.targetB3 = 0;
+                    break;
+                case 2: // The Secret Recipe
+                    state.showPoints = true;
+                    state.showPlane = true;
+                    // Flat plane at y=10
+                    state.targetB0 = 10; state.targetB1 = 0; state.targetB2 = 0; state.targetB3 = 0;
+                    break;
+                case 3: // Finding the Fit (Sliders)
+                    state.showPoints = true;
+                    state.showPlane = true;
+                    state.showResiduals = true;
+                    break;
+                case 4: // Least Squares
+                    state.showPoints = true;
+                    state.showPlane = true;
+                    state.showResiduals = true;
+                    // Note: Optimize button handles the actual snapping
+                    break;
+                case 5: // Holding Constant
+                    state.showPoints = true;
+                    state.showPlane = true;
+                    state.sliceZ = lockedSleep;
+                    state.targetB0 = optimal.b0;
+                    state.targetB1 = optimal.b1;
+                    state.targetB2 = optimal.b2;
+                    state.targetB3 = optimal.b3;
+                    break;
+                case 6: // Moving Beyond 3D (Waterfall)
+                    state.viewMode = 'waterfall';
+                    break;
+                case 7: // Shark & Ice Cream
+                    state.viewMode = 'waterfall';
+                    state.waterfallProgress = 1; // Keep static
+                    break;
+                case 8: // R2 Trap
+                    state.viewMode = 'waterfall';
+                    break;
+                case 9: // Summary
+                    state.viewMode = '3d';
+                    state.showPlane = true;
+                    state.showPoints = true;
+                    state.targetB0 = optimal.b0;
+                    state.targetB1 = optimal.b1;
+                    state.targetB2 = optimal.b2;
+                    state.targetB3 = optimal.b3;
+                    break;
+            }
+        }
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const idx = parseInt(entry.target.getAttribute('data-stage'));
+                    setStage(idx);
+                }
+            });
+        }, {
+            root: null,
+            threshold: 0.45
+        });
+
+        // Initialize
+        computeOptimal(); // Calculate true regression coefficients
+        resize();
+        hideAxisLabels();
+        updateVizLegend();
+        setupInteractions();
+        setStage(0);
+
+        allSections.forEach(section => observer.observe(section));
+        
+        // Start loop
+        requestAnimationFrame(render);
+        
+    </script>
+</body>
+</html>

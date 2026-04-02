@@ -1,0 +1,1098 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Chi-Square Test of Independence</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Palette Anchors */
+            --bg: #f7f7f4;
+            --surface: #ffffff;
+            --border: #e7e5e4;
+            --text-main: #1f2937;
+            --text-dim: #4b5563;
+            --text-muted: #6b7280;
+            --accent: #6366f1;
+            --accent-dark: #4f46e5;
+            --accent-light: #e0e7ff;
+            --success: #16a34a;
+            --warning: #d97706;
+            --error: #f43f5e;
+            --blue: #2563eb;
+            --positive-bg: rgba(14, 165, 233, 0.1);
+            --positive-text: #0284c7;
+            --negative-bg: rgba(244, 63, 94, 0.1);
+            --negative-text: #e11d48;
+            
+            /* Typography */
+            --font-sans: 'Inter', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background-color: var(--bg);
+            color: var(--text-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        /* Top Progress Bar */
+        #progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent), var(--blue));
+            width: 0%;
+            z-index: 1000;
+            transition: width 0.1s ease-out;
+        }
+
+        /* Stage Dots */
+        .stage-dots {
+            position: fixed;
+            right: 2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            z-index: 100;
+        }
+        .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: var(--border);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        .dot:hover {
+            background-color: var(--accent-light);
+            transform: scale(1.2);
+        }
+        .dot.active {
+            background-color: var(--accent);
+            transform: scale(1.4);
+        }
+        .dot-tooltip {
+            position: absolute;
+            right: 150%;
+            top: 50%;
+            transform: translateY(-50%);
+            background: var(--text-main);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s;
+        }
+        .dot:hover .dot-tooltip {
+            opacity: 1;
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 2rem;
+            position: relative;
+        }
+        .hero-badge {
+            background-color: var(--accent-light);
+            color: var(--accent-dark);
+            padding: 4px 12px;
+            border-radius: 9999px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            margin-bottom: 1.5rem;
+        }
+        .hero h1 {
+            font-size: clamp(2.5rem, 5vw, 4.5rem);
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, #111827, var(--accent-dark));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            max-width: 900px;
+        }
+        .hero p {
+            font-size: 1.25rem;
+            color: var(--text-dim);
+            max-width: 600px;
+            margin-bottom: 3rem;
+        }
+        .scroll-cue {
+            position: absolute;
+            bottom: 3rem;
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 0.5; transform: translateY(0); }
+            50% { opacity: 1; transform: translateY(5px); }
+        }
+
+        /* Layout */
+        .split-layout {
+            display: flex;
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        .narrative {
+            width: 45%;
+            padding: 0 4rem 10vh 4rem;
+        }
+        .visualization-container {
+            width: 55%;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+        }
+
+        /* Narrative Sections */
+        .section {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 4rem 0;
+        }
+        .stage-label {
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--accent);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .stage-label::after {
+            content: "";
+            display: block;
+            width: 2rem;
+            height: 2px;
+            background-color: var(--accent-light);
+        }
+        .section h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: var(--text-main);
+        }
+        .section p {
+            margin-bottom: 1.25rem;
+            font-size: 1.05rem;
+            color: var(--text-dim);
+        }
+
+        /* Cards & Blocks */
+        .card {
+            background-color: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+        }
+        .card-title {
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+        .formula-block {
+            background-color: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.5rem;
+            font-family: var(--font-mono);
+            font-size: 1.1rem;
+            text-align: center;
+            margin: 1.5rem 0;
+            color: var(--accent-dark);
+            overflow-x: auto;
+        }
+        .insight-box {
+            border-left: 4px solid var(--accent);
+            background-color: var(--accent-light);
+            padding: 1.25rem;
+            border-radius: 0 8px 8px 0;
+            margin: 1.5rem 0;
+            font-size: 0.95rem;
+            color: var(--text-main);
+        }
+        .pill {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 9999px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            font-family: var(--font-mono);
+            background-color: var(--border);
+            color: var(--text-dim);
+        }
+
+        /* Hypotheses & Check List Styles */
+        .hypothesis-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        .hypothesis-row:last-child {
+            margin-bottom: 0;
+        }
+        .hyp-label {
+            font-family: var(--font-mono);
+            font-weight: 700;
+            color: var(--accent);
+            background: var(--accent-light);
+            padding: 4px 8px;
+            border-radius: 6px;
+        }
+        .check-list {
+            list-style: none;
+            padding-left: 0;
+        }
+        .check-list li {
+            position: relative;
+            padding-left: 1.75rem;
+            margin-bottom: 0.75rem;
+            color: var(--text-dim);
+        }
+        .check-list li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            top: 0;
+            color: var(--success);
+            font-weight: bold;
+        }
+
+        /* Software Output Matrix */
+        .software-output {
+            font-family: var(--font-mono);
+            background-color: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.25rem;
+            font-size: 0.85rem;
+            color: var(--text-main);
+            overflow-x: auto;
+        }
+        .so-title {
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--text-main);
+            border-bottom: 1px dashed var(--border);
+            padding-bottom: 0.5rem;
+        }
+        .so-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.35rem 0;
+        }
+        .so-label {
+            color: var(--text-dim);
+        }
+        .so-val {
+            font-weight: 600;
+            color: var(--accent-dark);
+        }
+        .so-check {
+            margin-top: 0.75rem;
+            padding-top: 0.75rem;
+            border-top: 1px solid var(--border);
+            color: var(--success);
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.75rem;
+        }
+
+        /* Visualization: Matrix */
+        .matrix-container {
+            width: 100%;
+            max-width: 600px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+            margin-bottom: 2rem;
+            transition: all 0.5s ease;
+        }
+        .matrix {
+            display: grid;
+            grid-template-columns: 80px 1fr 1fr 80px;
+            gap: 12px;
+            text-align: center;
+        }
+        .m-header, .m-row-label, .m-margin {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            color: var(--text-muted);
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .m-margin {
+            font-family: var(--font-mono);
+            background: var(--bg);
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .m-cell {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem 1rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            transition: all 0.5s ease;
+            min-height: 100px;
+            cursor: crosshair;
+        }
+
+        .m-cell:hover {
+            box-shadow: 0 0 0 2px var(--accent-light);
+            z-index: 10;
+        }
+        
+        /* Cell States */
+        .m-val {
+            font-family: var(--font-mono);
+            font-size: 1.75rem;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            position: absolute;
+        }
+        
+        .val-obs, .val-exp, .val-res, .val-chi {
+            opacity: 0;
+            transform: translateY(10px);
+            pointer-events: none;
+        }
+        
+        .val-label {
+            font-family: var(--font-sans);
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-muted);
+            position: absolute;
+            bottom: 8px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        /* Hover Tooltip */
+        .cell-tooltip {
+            position: absolute;
+            bottom: 105%;
+            left: 50%;
+            transform: translateX(-50%) translateY(10px);
+            background-color: var(--text-main);
+            color: var(--surface);
+            padding: 1rem;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            font-family: var(--font-sans);
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            z-index: 20;
+            text-align: left;
+        }
+        .cell-tooltip::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: var(--text-main) transparent transparent transparent;
+        }
+        .m-cell:hover .cell-tooltip {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+        .tt-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 1.5rem;
+            margin-bottom: 0.25rem;
+        }
+        .tt-row:last-child {
+            margin-bottom: 0;
+            padding-top: 0.25rem;
+            border-top: 1px solid rgba(255,255,255,0.2);
+        }
+        .tt-label {
+            color: #9ca3af;
+            font-family: var(--font-mono);
+        }
+        .tt-val {
+            font-family: var(--font-mono);
+            font-weight: 600;
+        }
+
+        /* Matrix State Classes (Controlled by JS) */
+        .state-1 .val-obs { opacity: 1; transform: translateY(-8px); }
+        .state-1 .label-obs { opacity: 1; }
+        
+        .state-2 .val-obs { opacity: 1; transform: translateY(-8px); }
+        .state-2 .label-obs { opacity: 1; }
+        .state-2 .m-margin { background: var(--accent-light); color: var(--accent-dark); border: 1px solid var(--accent); }
+        
+        .state-3 .val-exp { opacity: 1; transform: translateY(-8px); color: var(--accent-dark); }
+        .state-3 .label-exp { opacity: 1; }
+        
+        .state-4 .val-res { opacity: 1; transform: translateY(-8px); }
+        .state-4 .label-res { opacity: 1; }
+        .state-4 .cell-pos { background: var(--positive-bg); border-color: var(--positive-text); }
+        .state-4 .cell-pos .val-res { color: var(--positive-text); }
+        .state-4 .cell-neg { background: var(--negative-bg); border-color: var(--negative-text); }
+        .state-4 .cell-neg .val-res { color: var(--negative-text); }
+        
+        .state-5 .val-chi { opacity: 1; transform: translateY(-8px); color: var(--accent-dark); }
+        .state-5 .label-chi { opacity: 1; }
+        .state-6 .val-chi { opacity: 1; transform: translateY(-8px); color: var(--accent-dark); }
+        .state-6 .label-chi { opacity: 1; }
+        .state-7 .val-chi { opacity: 1; transform: translateY(-8px); color: var(--accent-dark); }
+        .state-7 .label-chi { opacity: 1; }
+        
+        /* Distribution Canvas */
+        .dist-container {
+            width: 100%;
+            max-width: 600px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.6s ease;
+            display: none; /* Hidden by default */
+            flex-direction: column;
+            align-items: center;
+        }
+        .dist-container.visible {
+            display: flex;
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .dist-container.dimmed {
+            opacity: 0.6;
+        }
+        .dist-header {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            font-family: var(--font-mono);
+            font-size: 0.875rem;
+            color: var(--text-muted);
+        }
+        canvas {
+            width: 100%;
+            height: 180px;
+        }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .split-layout {
+                flex-direction: column;
+            }
+            .narrative {
+                width: 100%;
+                padding: 0 2rem;
+            }
+            .visualization-container {
+                width: 100%;
+                height: 55vh;
+                position: sticky;
+                top: 0;
+                background: linear-gradient(to bottom, var(--bg) 90%, transparent);
+                z-index: 50;
+                padding: 1rem;
+            }
+            .matrix-container {
+                padding: 1rem;
+                margin-bottom: 0.5rem;
+            }
+            .m-cell {
+                min-height: 70px;
+                padding: 0.5rem;
+            }
+            .m-val {
+                font-size: 1.25rem;
+            }
+            .dist-container {
+                padding: 1rem;
+            }
+            canvas {
+                height: 120px;
+            }
+            .stage-dots {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="progress-bar"></div>
+    
+    <div class="stage-dots" id="stage-dots">
+        <!-- Populated by JS -->
+    </div>
+
+    <header class="hero">
+        <div class="hero-badge">Statistical Inference</div>
+        <h1>The Chi-Square Test of Independence</h1>
+        <p>A formal method for determining whether categorical variables are truly independent, or if a meaningful pattern exists within the counts.</p>
+        <div class="scroll-cue">Scroll to begin &darr;</div>
+    </header>
+
+    <main class="split-layout">
+        <div class="narrative">
+            
+            <section class="section" data-stage="1" id="stage-1">
+                <div class="stage-label">Stage 01</div>
+                <h2>The Raw Counts</h2>
+                <p>The Chi-Square test evaluates <strong>categorical data</strong>—data placed into distinct bins or groups without an inherent numeric value.</p>
+                <p>Imagine we survey 50 students to see if there is a relationship between two categorical variables: <strong>Club Choice</strong> (Art vs. Sports) and <strong>Favorite Snack</strong> (Apples vs. Chips).</p>
+                
+                <div class="insight-box">
+                    <strong>Rule of thumb:</strong> Chi-Square works with <em>frequencies</em> (counts), not averages. Every individual belongs to exactly one cell in our table.
+                </div>
+            </section>
+
+            <section class="section" data-stage="2" id="stage-2">
+                <div class="stage-label">Stage 02</div>
+                <h2>Hypotheses & Marginals</h2>
+                <p>Are club choice and favorite snack related, or are they completely independent? We formalize this question using hypotheses.</p>
+                
+                <div class="card">
+                    <div class="hypothesis-row">
+                        <div class="hyp-label">H₀</div>
+                        <div><strong>Null Hypothesis:</strong> Club choice and favorite snack are <em>independent</em>. (No relationship).</div>
+                    </div>
+                    <div class="hypothesis-row">
+                        <div class="hyp-label">H₁</div>
+                        <div><strong>Alternative Hypothesis:</strong> Club choice and favorite snack are <em>not independent</em>. (There is a relationship).</div>
+                    </div>
+                </div>
+                
+                <p>To test this, we must first look at the margins. The <strong>row totals</strong> and <strong>column totals</strong> tell us the overall preferences of the group, ignoring the split between the variables.</p>
+            </section>
+
+            <section class="section" data-stage="3" id="stage-3">
+                <div class="stage-label">Stage 03</div>
+                <h2>Expected Counts</h2>
+                <p>If the Null Hypothesis is perfectly true, the counts inside the table should be directly proportional to the totals on the margins.</p>
+                
+                <div class="formula-block">
+                    E = (Row Total × Column Total) / Grand Total
+                </div>
+                
+                <p>For example, if half of all students like apples (<span class="pill">25/50</span>), and there are 30 Art students, we would <em>expect</em> half of those Art students (<span class="pill">15</span>) to like apples if there is no special relationship.</p>
+            </section>
+
+            <section class="section" data-stage="4" id="stage-4">
+                <div class="stage-label">Stage 04</div>
+                <h2>Residuals & Contributions</h2>
+                <p>The core intuition of Chi-Square is to compare what we <strong>Observed (O)</strong> with what we <strong>Expected (E)</strong>. We square the residuals and divide by the expected count to scale the difference.</p>
+                
+                <div class="formula-block">
+                    χ² = Σ [ (O - E)² / E ]
+                </div>
+                
+                <div class="insight-box">
+                    <strong>Interactive Matrix:</strong> Hover over any cell in the table to inspect its Observed, Expected, Residual, and individual χ² contribution.
+                </div>
+
+                <p>We do this for every cell and add them all together to get our final test statistic. <em>(Note: visual contributions are shown rounded to two decimals, but the true sum is roughly 8.33).</em></p>
+            </section>
+
+            <section class="section" data-stage="5" id="stage-5">
+                <div class="stage-label">Stage 05</div>
+                <h2>The Reference Distribution</h2>
+                <p>To evaluate our test statistic of <span class="pill">8.33</span>, we map it onto a Chi-Square distribution. The curve's exact shape is determined by the <strong>Degrees of Freedom (df)</strong>.</p>
+                
+                <div class="formula-block">
+                    df = (Rows - 1) × (Cols - 1) = 1
+                </div>
+                
+                <p>If our statistic lands past the critical boundary (here, 3.84 for α = 0.05), the deviation is too large to be attributed to random chance.</p>
+            </section>
+
+            <section class="section" data-stage="6" id="stage-6">
+                <div class="stage-label">Stage 06</div>
+                <h2>Reading the Output</h2>
+                <p>Statistical software synthesizes these steps into a standard output summary. Here is how to read the final result:</p>
+                
+                <div class="card">
+                    <div class="card-title">Analysis Output</div>
+                    <div class="software-output">
+                        <div class="so-title">Pearson's Chi-squared test</div>
+                        <div class="so-row">
+                            <span class="so-label">X-squared</span>
+                            <span class="so-val">8.33</span>
+                        </div>
+                        <div class="so-row">
+                            <span class="so-label">df</span>
+                            <span class="so-val">1</span>
+                        </div>
+                        <div class="so-row">
+                            <span class="so-label">p-value</span>
+                            <span class="so-val" style="color: var(--error);">0.0039</span>
+                        </div>
+                        <div class="so-row">
+                            <span class="so-label">alpha (α)</span>
+                            <span class="so-val">0.05</span>
+                        </div>
+                        <div class="so-row">
+                            <span class="so-label">Decision</span>
+                            <span class="so-val">Reject H₀</span>
+                        </div>
+                        <div class="so-row">
+                            <span class="so-label">Effect Size (Phi)</span>
+                            <span class="so-val">0.41 (Moderate)</span>
+                        </div>
+                        <div class="so-check">
+                            <span>✓ Expected counts check</span>
+                            <span>All expected counts ≥ 5</span>
+                        </div>
+                    </div>
+                </div>
+
+                <p>Because the p-value (0.0039) is much smaller than our alpha threshold (0.05), we officially reject the null hypothesis. The Phi value of 0.41 confirms this is a moderate relationship.</p>
+            </section>
+
+            <section class="section" data-stage="7" id="stage-7">
+                <div class="stage-label">Stage 07</div>
+                <h2>Assumptions & Caveats</h2>
+                <p>Before closing the book on this relationship, we must acknowledge the strict assumptions required for a valid Chi-Square test.</p>
+                
+                <div class="card">
+                    <div class="card-title">Required Conditions</div>
+                    <ul class="check-list">
+                        <li><strong>Count Data:</strong> Measurements are frequencies, not means.</li>
+                        <li><strong>Independence:</strong> Each person belongs to only one category combination.</li>
+                        <li><strong>Sufficient Size:</strong> Ideally, all expected counts should be at least 5. If they are too tiny, the test breaks down.</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">Synthesis</div>
+                    <p>We have strong statistical evidence that club choice and snack preference are connected. However, Chi-Square demonstrates <em>association, not causation</em>. We cannot declare that joining the Art club causes students to eat apples.</p>
+                </div>
+            </section>
+
+        </div>
+
+        <div class="visualization-container">
+            
+            <div class="matrix-container state-1" id="viz-matrix">
+                <div class="matrix">
+                    <!-- Header Row -->
+                    <div></div>
+                    <div class="m-header">Apple</div>
+                    <div class="m-header">Chips</div>
+                    <div class="m-header">Row Totals</div>
+
+                    <!-- Row 1 -->
+                    <div class="m-row-label">Art</div>
+                    <div class="m-cell cell-pos">
+                        <div class="m-val val-obs">20</div>
+                        <div class="val-label label-obs">Observed</div>
+                        <div class="m-val val-exp">15</div>
+                        <div class="val-label label-exp">Expected</div>
+                        <div class="m-val val-res">+5</div>
+                        <div class="val-label label-res">Residual</div>
+                        <div class="m-val val-chi">1.67</div>
+                        <div class="val-label label-chi">χ² contribution</div>
+                        
+                        <!-- Hover Info -->
+                        <div class="cell-tooltip">
+                            <div class="tt-row"><span class="tt-label">Observed:</span> <span class="tt-val">20</span></div>
+                            <div class="tt-row"><span class="tt-label">Expected:</span> <span class="tt-val">15</span></div>
+                            <div class="tt-row"><span class="tt-label">Residual:</span> <span class="tt-val" style="color:var(--positive-text)">+5</span></div>
+                            <div class="tt-row"><span class="tt-label">χ² Contrib:</span> <span class="tt-val">1.67</span></div>
+                        </div>
+                    </div>
+                    
+                    <div class="m-cell cell-neg">
+                        <div class="m-val val-obs">10</div>
+                        <div class="val-label label-obs">Observed</div>
+                        <div class="m-val val-exp">15</div>
+                        <div class="val-label label-exp">Expected</div>
+                        <div class="m-val val-res">-5</div>
+                        <div class="val-label label-res">Residual</div>
+                        <div class="m-val val-chi">1.67</div>
+                        <div class="val-label label-chi">χ² contribution</div>
+
+                        <!-- Hover Info -->
+                        <div class="cell-tooltip">
+                            <div class="tt-row"><span class="tt-label">Observed:</span> <span class="tt-val">10</span></div>
+                            <div class="tt-row"><span class="tt-label">Expected:</span> <span class="tt-val">15</span></div>
+                            <div class="tt-row"><span class="tt-label">Residual:</span> <span class="tt-val" style="color:var(--negative-text)">-5</span></div>
+                            <div class="tt-row"><span class="tt-label">χ² Contrib:</span> <span class="tt-val">1.67</span></div>
+                        </div>
+                    </div>
+                    <div class="m-margin">30</div>
+
+                    <!-- Row 2 -->
+                    <div class="m-row-label">Sports</div>
+                    <div class="m-cell cell-neg">
+                        <div class="m-val val-obs">5</div>
+                        <div class="val-label label-obs">Observed</div>
+                        <div class="m-val val-exp">10</div>
+                        <div class="val-label label-exp">Expected</div>
+                        <div class="m-val val-res">-5</div>
+                        <div class="val-label label-res">Residual</div>
+                        <div class="m-val val-chi">2.50</div>
+                        <div class="val-label label-chi">χ² contribution</div>
+
+                        <!-- Hover Info -->
+                        <div class="cell-tooltip">
+                            <div class="tt-row"><span class="tt-label">Observed:</span> <span class="tt-val">5</span></div>
+                            <div class="tt-row"><span class="tt-label">Expected:</span> <span class="tt-val">10</span></div>
+                            <div class="tt-row"><span class="tt-label">Residual:</span> <span class="tt-val" style="color:var(--negative-text)">-5</span></div>
+                            <div class="tt-row"><span class="tt-label">χ² Contrib:</span> <span class="tt-val">2.50</span></div>
+                        </div>
+                    </div>
+                    <div class="m-cell cell-pos">
+                        <div class="m-val val-obs">15</div>
+                        <div class="val-label label-obs">Observed</div>
+                        <div class="m-val val-exp">10</div>
+                        <div class="val-label label-exp">Expected</div>
+                        <div class="m-val val-res">+5</div>
+                        <div class="val-label label-res">Residual</div>
+                        <div class="m-val val-chi">2.50</div>
+                        <div class="val-label label-chi">χ² contribution</div>
+
+                        <!-- Hover Info -->
+                        <div class="cell-tooltip">
+                            <div class="tt-row"><span class="tt-label">Observed:</span> <span class="tt-val">15</span></div>
+                            <div class="tt-row"><span class="tt-label">Expected:</span> <span class="tt-val">10</span></div>
+                            <div class="tt-row"><span class="tt-label">Residual:</span> <span class="tt-val" style="color:var(--positive-text)">+5</span></div>
+                            <div class="tt-row"><span class="tt-label">χ² Contrib:</span> <span class="tt-val">2.50</span></div>
+                        </div>
+                    </div>
+                    <div class="m-margin">20</div>
+
+                    <!-- Totals Row -->
+                    <div class="m-header">Col Totals</div>
+                    <div class="m-margin">25</div>
+                    <div class="m-margin">25</div>
+                    <div class="m-margin" style="background: var(--text-main); color: var(--surface);">50</div>
+                </div>
+            </div>
+
+            <div class="dist-container" id="viz-dist">
+                <div class="dist-header">
+                    <span>Chi-Square Distribution (df=1)</span>
+                    <span id="dist-metric" style="color: var(--error); font-weight: bold; opacity: 0; transition: opacity 0.5s;">χ² = 8.33</span>
+                </div>
+                <canvas id="chiCanvas" width="550" height="180"></canvas>
+            </div>
+
+        </div>
+    </main>
+
+    <script>
+        // Progress Bar
+        window.addEventListener('scroll', () => {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById('progress-bar').style.width = scrolled + '%';
+        });
+
+        // Setup Stage Dots Navigation
+        const sections = document.querySelectorAll('.section');
+        const dotsContainer = document.getElementById('stage-dots');
+        sections.forEach((s, i) => {
+            const dot = document.createElement('div');
+            dot.className = 'dot';
+            dot.dataset.target = i + 1;
+            
+            const tooltip = document.createElement('div');
+            tooltip.className = 'dot-tooltip';
+            tooltip.innerText = `Stage ${i + 1}`;
+            dot.appendChild(tooltip);
+
+            // Clickable Navigation
+            dot.addEventListener('click', () => {
+                s.scrollIntoView({ behavior: 'smooth' });
+            });
+
+            dotsContainer.appendChild(dot);
+        });
+        const dots = document.querySelectorAll('.dot');
+
+        // State variables
+        let currentStage = 1;
+        const matrixContainer = document.getElementById('viz-matrix');
+        const distContainer = document.getElementById('viz-dist');
+        const distMetric = document.getElementById('dist-metric');
+        
+        // Canvas Setup
+        const canvas = document.getElementById('chiCanvas');
+        const ctx = canvas.getContext('2d');
+        let animationProgress = 0;
+        let animationReq;
+
+        // Chi-Square PDF approximation for drawing
+        function chiSquarePDF(x) {
+            if (x <= 0) return 0;
+            return (1 / Math.sqrt(2 * Math.PI)) * Math.pow(x, -0.5) * Math.exp(-x / 2);
+        }
+
+        function drawDistribution(progress = 0) {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            const w = canvas.width;
+            const h = canvas.height;
+            const padding = 20;
+            
+            const xMax = 12; 
+            const yMax = 0.8; 
+            
+            const scaleX = (w - 2 * padding) / xMax;
+            const scaleY = (h - 2 * padding) / yMax;
+            
+            // Draw axes
+            ctx.beginPath();
+            ctx.moveTo(padding, padding);
+            ctx.lineTo(padding, h - padding);
+            ctx.lineTo(w - padding, h - padding);
+            ctx.strokeStyle = '#e7e5e4';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            // Draw critical region fill (alpha = 0.05 -> critical val 3.84)
+            const critX = 3.84;
+            ctx.beginPath();
+            let startedCrit = false;
+            for (let x = critX; x <= xMax; x += 0.1) {
+                const y = Math.min(chiSquarePDF(x), yMax);
+                const px = padding + x * scaleX;
+                const py = h - padding - y * scaleY;
+                if (!startedCrit) {
+                    ctx.moveTo(px, h - padding);
+                    startedCrit = true;
+                }
+                ctx.lineTo(px, py);
+            }
+            ctx.lineTo(padding + xMax * scaleX, h - padding);
+            ctx.fillStyle = 'rgba(217, 119, 6, 0.15)'; // Light warning background for critical region
+            ctx.fill();
+
+            // Draw p-value tail and animation dot
+            if (progress > 0) {
+                const targetX = 8.33; 
+                const currentX = critX + (targetX - critX) * Math.min(1, progress); 
+                
+                // Draw actual p-value shading starting from current position
+                ctx.beginPath();
+                let startedPval = false;
+                for (let x = currentX; x <= xMax; x += 0.1) {
+                    const y = Math.min(chiSquarePDF(x), yMax);
+                    const px = padding + x * scaleX;
+                    const py = h - padding - y * scaleY;
+                    if (!startedPval) {
+                        ctx.moveTo(px, h - padding);
+                        startedPval = true;
+                    }
+                    ctx.lineTo(px, py);
+                }
+                ctx.lineTo(padding + xMax * scaleX, h - padding);
+                ctx.fillStyle = 'rgba(244, 63, 94, 0.4)'; // Distinct coral for actual p-value
+                ctx.fill();
+
+                const px = padding + currentX * scaleX;
+                
+                ctx.beginPath();
+                ctx.moveTo(px, h - padding);
+                ctx.lineTo(px, padding + 35);
+                ctx.strokeStyle = '#f43f5e'; // Error/coral line
+                ctx.lineWidth = 2;
+                ctx.setLineDash([5, 5]);
+                ctx.stroke();
+                ctx.setLineDash([]);
+
+                // Dot
+                ctx.beginPath();
+                ctx.arc(px, h - padding - Math.min(chiSquarePDF(currentX), yMax)*scaleY, 4, 0, Math.PI*2);
+                ctx.fillStyle = '#f43f5e';
+                ctx.fill();
+
+                // Annotate the tail when animation finishes
+                if (progress >= 1) {
+                    ctx.fillStyle = '#f43f5e';
+                    ctx.font = "bold 11px 'Inter'";
+                    ctx.fillText("p-value area", padding + targetX * scaleX + 8, padding + 50);
+                }
+            }
+
+            // Draw outline curve over fills
+            ctx.beginPath();
+            let started = false;
+            for (let x = 0.1; x <= xMax; x += 0.1) {
+                const y = Math.min(chiSquarePDF(x), yMax);
+                const px = padding + x * scaleX;
+                const py = h - padding - y * scaleY;
+                
+                if (!started) {
+                    ctx.moveTo(px, py);
+                    started = true;
+                } else {
+                    ctx.lineTo(px, py);
+                }
+            }
+            ctx.strokeStyle = '#6b7280';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+            
+            // Labels
+            ctx.fillStyle = '#6b7280';
+            ctx.font = "12px 'JetBrains Mono'";
+            ctx.fillText("0", padding - 5, h - padding + 15);
+            ctx.fillText("3.84", padding + critX * scaleX - 15, h - padding + 15);
+            
+            ctx.fillStyle = '#d97706';
+            ctx.font = "bold 11px 'Inter'";
+            ctx.fillText("Critical Region", padding + critX * scaleX + 8, padding + 25);
+
+            if (progress >= 1) {
+                ctx.fillStyle = '#f43f5e';
+                ctx.font = "12px 'JetBrains Mono'";
+                ctx.fillText("8.33", padding + 8.33 * scaleX - 15, h - padding + 15);
+            }
+        }
+
+        function animateDistribution() {
+            animationProgress += 0.02;
+            drawDistribution(animationProgress);
+            if (animationProgress < 1.2) {
+                animationReq = requestAnimationFrame(animateDistribution);
+            }
+        }
+
+        // Stage Controller
+        function updateVisuals(stage) {
+            stage = parseInt(stage);
+            currentStage = stage;
+            
+            // Update dots
+            dots.forEach((d, i) => {
+                d.classList.toggle('active', i + 1 === stage);
+            });
+
+            // Reset Matrix Classes
+            matrixContainer.className = `matrix-container state-${stage}`;
+            
+            // Handle Distribution Canvas visibility & animation
+            if (stage >= 5) {
+                distContainer.classList.add('visible');
+                matrixContainer.style.transform = "scale(0.9)";
+                matrixContainer.style.marginBottom = "0";
+            } else {
+                distContainer.classList.remove('visible');
+                matrixContainer.style.transform = "scale(1)";
+                matrixContainer.style.marginBottom = "2rem";
+            }
+
+            // Dim out the distribution panel for final stage focus
+            if (stage === 7) {
+                distContainer.classList.add('dimmed');
+            } else {
+                distContainer.classList.remove('dimmed');
+            }
+
+            if (stage >= 5 && animationProgress === 0) {
+                animateDistribution();
+            } else if (stage < 5) {
+                animationProgress = 0;
+                cancelAnimationFrame(animationReq);
+                drawDistribution(0);
+            }
+            
+            if (stage >= 5) {
+                distMetric.style.opacity = 1;
+            } else {
+                distMetric.style.opacity = 0;
+            }
+        }
+
+        // Intersection Observer
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const stage = entry.target.dataset.stage;
+                    updateVisuals(stage);
+                }
+            });
+        }, {
+            rootMargin: '-30% 0px -50% 0px', 
+            threshold: 0
+        });
+
+        sections.forEach(section => observer.observe(section));
+
+        // Initial setup
+        drawDistribution(0);
+    </script>
+</body>
+</html>

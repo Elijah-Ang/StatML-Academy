@@ -1,0 +1,1980 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hierarchical Clustering: The Secret Art of Grouping</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            /* Palette Anchors */
+            --bg: #f7f7f4;
+            --surface: #ffffff;
+            --border: #e7e5e4;
+            --text-main: #1f2937;
+            --text-dim: #4b5563;
+            --text-muted: #6b7280;
+            --accent: #6366f1;
+            --accent-dark: #4f46e5;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --error: #ef4444;
+            --rose: #f43f5e;
+            --sky: #0ea5e9;
+            --amber: #f59e0b;
+            
+            /* Typography */
+            --font-sans: 'Inter', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background-color: var(--bg);
+            color: var(--text-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Typography Base */
+        h1, h2, h3 { font-weight: 600; color: var(--text-main); }
+        p { margin-bottom: 1.25rem; font-size: 1.05rem; }
+        
+        /* Layout */
+        #progress-bar {
+            position: fixed;
+            top: 0; left: 0; height: 4px;
+            background: linear-gradient(to right, var(--accent), var(--sky));
+            width: 0%;
+            z-index: 100;
+            transition: width 0.1s ease-out;
+        }
+
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 2rem;
+            position: relative;
+        }
+
+        .topic-badge {
+            background-color: rgba(99, 102, 241, 0.1);
+            color: var(--accent-dark);
+            padding: 0.5rem 1rem;
+            border-radius: 9999px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            max-width: 800px;
+            background: linear-gradient(135deg, #1f2937, var(--accent-dark));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            color: var(--text-dim);
+            max-width: 600px;
+        }
+
+        .scroll-cue {
+            position: absolute;
+            bottom: 3rem;
+            animation: bounce 2s infinite;
+            color: var(--text-muted);
+            font-size: 0.875rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .scroll-cue svg { width: 24px; height: 24px; stroke: currentColor; fill: none; stroke-width: 2; }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+
+        .split-layout {
+            display: flex;
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .narrative {
+            width: 45%;
+            padding: 0 4rem 4rem 4rem;
+        }
+
+        .viz-container {
+            width: 55%;
+            height: 100vh;
+            position: sticky;
+            top: 0;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: stretch;
+        }
+
+        .viz-stage {
+            width: 100%;
+            height: 100%;
+            min-height: 0;
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) 340px;
+            grid-template-rows: minmax(0, 1fr) auto;
+            gap: 1rem;
+            align-items: stretch;
+        }
+
+        .viz-stage.is-expanded {
+            grid-template-columns: minmax(0, 1fr);
+        }
+
+        .canvas-wrapper {
+            width: 100%;
+            height: 100%;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 1.5rem;
+            box-shadow: 0 10px 30px -10px rgba(0,0,0,0.05);
+            position: relative;
+            overflow: hidden;
+            min-height: 0;
+            grid-column: 1;
+            grid-row: 1;
+        }
+
+        canvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Narrative Sections */
+        section {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 4rem 0;
+            opacity: 0.2;
+            transition: opacity 0.5s ease;
+        }
+
+        section.active { opacity: 1; }
+
+        .stage-label {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-size: 0.875rem;
+            font-weight: 700;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 1.5rem;
+        }
+
+        .stage-label::after {
+            content: '';
+            height: 2px;
+            width: 40px;
+            background: var(--accent);
+            opacity: 0.5;
+        }
+
+        h2 { font-size: 2rem; margin-bottom: 1.5rem; }
+
+        /* UI Components */
+        .glass-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+        }
+
+        .formula-block {
+            background: rgba(99, 102, 241, 0.05);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            border-radius: 0.75rem;
+            padding: 1.25rem;
+            font-family: var(--font-mono);
+            font-size: 0.95rem;
+            color: var(--accent-dark);
+            margin: 1.5rem 0;
+            overflow-x: auto;
+        }
+
+        .insight-box {
+            border-left: 4px solid var(--accent);
+            background: rgba(99, 102, 241, 0.05);
+            padding: 1.25rem 1.5rem;
+            border-radius: 0 0.5rem 0.5rem 0;
+            margin: 1.5rem 0;
+            font-size: 0.95rem;
+            color: var(--text-dim);
+        }
+
+        .metric-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .metric-grid.metric-grid-3 {
+            grid-template-columns: repeat(3, 1fr);
+        }
+
+        .metric-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            padding: 1.25rem;
+            border-radius: 0.75rem;
+            text-align: center;
+        }
+
+        .metric-val {
+            font-family: var(--font-mono);
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--accent-dark);
+        }
+
+        .metric-lbl {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+        }
+
+        .takeaway {
+            margin-top: 1.25rem;
+            font-size: 0.98rem;
+            color: var(--text-main);
+        }
+
+        /* Controls */
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .btn-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        button {
+            flex: 1;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--border);
+            background: var(--surface);
+            border-radius: 0.5rem;
+            font-family: var(--font-sans);
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text-dim);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        button:hover {
+            border-color: var(--accent);
+            color: var(--accent-dark);
+        }
+
+        button.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: white;
+        }
+
+        #randomize-btn,
+        .linkage-mini-card {
+            flex: 0 0 auto;
+        }
+
+        .slider-container {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .slider-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        input[type=range] {
+            -webkit-appearance: none;
+            width: 100%;
+            background: transparent;
+        }
+
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 20px;
+            width: 20px;
+            border-radius: 50%;
+            background: var(--accent);
+            cursor: pointer;
+            margin-top: -8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        input[type=range]::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 4px;
+            cursor: pointer;
+            background: var(--border);
+            border-radius: 2px;
+        }
+
+        .viz-toolbar {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            right: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 0.75rem;
+            pointer-events: none;
+            z-index: 5;
+        }
+
+        .viz-toolbar > * {
+            pointer-events: auto;
+        }
+
+        .viz-toolbar-note,
+        .viz-tooltip,
+        .support-card {
+            background: rgba(255, 255, 255, 0.92);
+            border: 1px solid rgba(231, 229, 228, 0.95);
+            box-shadow: 0 10px 24px -18px rgba(0, 0, 0, 0.35);
+            backdrop-filter: blur(12px);
+        }
+
+        .viz-toolbar-note {
+            padding: 0.65rem 0.85rem;
+            border-radius: 0.85rem;
+            font-size: 0.78rem;
+            color: var(--text-dim);
+            max-width: 270px;
+        }
+
+        .support-card {
+            padding: 1rem;
+            border-radius: 1rem;
+            min-width: 0;
+        }
+
+        .support-card.is-hidden,
+        .viz-tooltip.is-hidden {
+            display: none !important;
+        }
+
+        .support-card h3 {
+            font-size: 0.95rem;
+            margin-bottom: 0.2rem;
+        }
+
+        .support-card .panel-note {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            margin-bottom: 0;
+        }
+
+        #process-panel {
+            grid-column: 2;
+            grid-row: 1;
+            display: flex;
+            flex-direction: column;
+            min-height: 0;
+        }
+
+        #scrubber-panel {
+            grid-column: 1 / span 2;
+            grid-row: 2;
+        }
+
+        .viz-stage.is-expanded #scrubber-panel {
+            grid-column: 1;
+        }
+
+        .panel-kicker {
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--accent);
+            margin-bottom: 0.35rem;
+        }
+
+        .panel-hero {
+            font-family: var(--font-mono);
+            font-size: 1.1rem;
+            color: var(--accent-dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .panel-mini-metrics {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 0.75rem;
+            margin-bottom: 0.85rem;
+        }
+
+        .panel-mini-metrics div {
+            background: rgba(99, 102, 241, 0.05);
+            border: 1px solid rgba(99, 102, 241, 0.1);
+            border-radius: 0.75rem;
+            padding: 0.65rem 0.75rem;
+        }
+
+        .panel-mini-metrics strong {
+            display: block;
+            font-family: var(--font-mono);
+            font-size: 0.95rem;
+            color: var(--accent-dark);
+        }
+
+        .panel-mini-metrics span {
+            display: block;
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            margin-top: 0.2rem;
+        }
+
+        .matrix-panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 0.7rem;
+            flex-wrap: wrap;
+        }
+
+        .matrix-mode-toggle {
+            display: inline-flex;
+            gap: 0.45rem;
+            flex-wrap: wrap;
+        }
+
+        .matrix-mode-toggle button {
+            flex: 0 0 auto;
+            padding: 0.45rem 0.7rem;
+            font-size: 0.78rem;
+        }
+
+        .matrix-shell {
+            overflow: auto;
+            margin-bottom: 0.7rem;
+            max-height: 220px;
+            border: 1px solid var(--border);
+            border-radius: 0.85rem;
+            background: rgba(99, 102, 241, 0.03);
+        }
+
+        .matrix-shell.is-full {
+            max-height: 320px;
+        }
+
+        .matrix-table {
+            width: max-content;
+            min-width: 100%;
+            border-collapse: collapse;
+            font-family: var(--font-mono);
+            font-size: 0.74rem;
+            color: var(--text-dim);
+        }
+
+        .matrix-table th,
+        .matrix-table td {
+            border: 1px solid var(--border);
+            padding: 0.45rem;
+            text-align: center;
+            min-width: 46px;
+        }
+
+        .matrix-table th {
+            background: rgba(99, 102, 241, 0.05);
+            color: var(--text-main);
+        }
+
+        .viz-tooltip {
+            position: absolute;
+            top: 4.85rem;
+            right: 1rem;
+            z-index: 6;
+            border-radius: 0.75rem;
+            padding: 0.65rem 0.8rem;
+            font-size: 0.78rem;
+            color: var(--text-main);
+            pointer-events: none;
+        }
+
+        .linkage-compare-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 0.85rem;
+            margin-top: 1rem;
+        }
+
+        .linkage-mini-card {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+            gap: 0.55rem;
+            padding: 0.9rem;
+            text-align: left;
+        }
+
+        .linkage-mini-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.86rem;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        .linkage-mini-title span:last-child {
+            font-size: 0.72rem;
+            font-weight: 500;
+            color: var(--text-muted);
+        }
+
+        .linkage-mini-card canvas {
+            display: block;
+            width: 100%;
+            height: 108px;
+            border-radius: 0.65rem;
+            background: rgba(99, 102, 241, 0.04);
+            border: 1px solid rgba(99, 102, 241, 0.08);
+        }
+
+        .stage-dots {
+            position: fixed;
+            right: 2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            z-index: 10;
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--border);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .dot.active {
+            background: var(--accent);
+            transform: scale(1.5);
+        }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .split-layout { flex-direction: column; }
+            .narrative { width: 100%; padding: 2rem; }
+            .viz-container { 
+                width: 100%; 
+                height: auto; 
+                position: relative; 
+                top: auto; 
+                z-index: 0;
+                padding: 1rem;
+            }
+            .viz-stage {
+                height: auto;
+                grid-template-columns: 1fr;
+                grid-template-rows: minmax(320px, 50vh) auto auto;
+            }
+            .canvas-wrapper {
+                grid-column: 1;
+                grid-row: 1;
+            }
+            .stage-dots { display: none; }
+            section { min-height: auto; padding: 3rem 0; }
+            .metric-grid.metric-grid-3,
+            .linkage-compare-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+            .viz-toolbar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .viz-toolbar-note {
+                max-width: none;
+            }
+            #process-panel {
+                grid-column: 1;
+                grid-row: 2;
+            }
+            #scrubber-panel {
+                grid-column: 1;
+                grid-row: 3;
+            }
+            .viz-tooltip {
+                top: auto;
+                right: 1rem;
+                bottom: 1rem;
+                left: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="progress-bar"></div>
+
+    <div class="stage-dots" id="stage-dots"></div>
+
+    <header class="hero" data-stage="0">
+        <div class="topic-badge">Unsupervised Learning</div>
+        <h1>Hierarchical Clustering</h1>
+        <p>The secret art of discovering hidden family trees in your data. No labels, no pre-defined answers—just the mathematical pursuit of "closeness".</p>
+        <div class="scroll-cue">
+            <span>Scroll to begin</span>
+            <svg viewBox="0 0 24 24"><path d="M12 5v14M19 12l-7 7-7-7"/></svg>
+        </div>
+    </header>
+
+    <main class="split-layout">
+        <article class="narrative">
+            
+            <section data-stage="1">
+                <div class="stage-label">Stage 01</div>
+                <h2>The Uncharted Planet</h2>
+                <p>Imagine landing on a distant planet with no map or guidebook. Your goal isn't to reach a destination; it's simply to see what is there. This is the essence of <strong>Unsupervised Learning</strong>.</p>
+                <p>Unlike supervised learning, where we try to predict a specific answer, here we only have features. We are discovering the natural structure of the data.</p>
+                <div class="insight-box">
+                    <strong>The Toy Box Analogy:</strong> Think of a child given a massive box of mixed toys and told to "find the patterns." Without instructions, they group them naturally by similarity.
+                </div>
+                <p>To the right, we have a raw dataset. Just points in space waiting to be understood.</p>
+                <p class="takeaway"><strong>Takeaway:</strong> Unsupervised learning is about revealing structure that is already hiding in the data.</p>
+            </section>
+
+            <section data-stage="2">
+                <div class="stage-label">Stage 02</div>
+                <h2>Measuring "Close"</h2>
+                <p>Before we can group anything, we must define what "similar" means. The most common way is to measure the physical distance between data points.</p>
+                <p>We use the <strong>Euclidean distance</strong> (the straight-line distance) to find out who is closest to whom. It is common, but not the only option; Manhattan, cosine, or domain-specific distances can make more sense for different data.</p>
+                
+                <div class="formula-block">
+                    d(A, B) = √[ (x₂ - x₁)² + (y₂ - y₁)² ]
+                </div>
+                
+                <p>By measuring the distance between every single pair of points, we build a "distance matrix"—a lookup table for similarity.</p>
+                <p class="takeaway"><strong>Takeaway:</strong> Clustering depends on your distance choice, because "close" is a design decision.</p>
+            </section>
+
+            <section data-stage="3">
+                <div class="stage-label">Stage 03</div>
+                <h2>The First Merge</h2>
+                <p>Hierarchical clustering (specifically the <em>Agglomerative</em> or "bottom-up" kind) starts with a simple rule:</p>
+                <ol style="margin-left: 1.5rem; margin-bottom: 1rem;">
+                    <li>Every point starts as its own separate cluster.</li>
+                    <li>Find the two clusters that are closest together.</li>
+                    <li>Merge them.</li>
+                </ol>
+                <p>Watch as the algorithm scans all points, finds the single closest pair, and binds them into a new, single cluster.</p>
+                <p class="takeaway"><strong>Takeaway:</strong> Agglomerative clustering grows structure from the bottom up, one merge at a time.</p>
+            </section>
+
+            <section data-stage="4">
+                <div class="stage-label">Stage 04</div>
+                <h2>Defining Group Distance (Linkage)</h2>
+                <p>Merging two individual points is easy. But how do you measure the distance between a single point and a <em>group</em>? Or between two groups?</p>
+                <p>This is called <strong>Linkage</strong>. The linkage method you choose changes the shape of the clusters.</p>
+                
+                <div class="glass-card control-group">
+                    <p style="font-size:0.9rem; margin-bottom:0.5rem;">Select a linkage method to re-calculate the merges:</p>
+                    <div class="btn-group" id="linkage-btns">
+                        <button class="active" data-link="average">Average</button>
+                        <button data-link="single">Single</button>
+                        <button data-link="complete">Complete</button>
+                        <button data-link="ward">Ward</button>
+                    </div>
+                    <ul style="font-size:0.85rem; color:var(--text-dim); margin-top:0.5rem; padding-left:1.5rem;">
+                        <li id="link-desc"><strong>Average:</strong> Mean distance between all pairs. Balanced.</li>
+                    </ul>
+                </div>
+                <div class="glass-card">
+                    <p style="font-size:0.9rem; margin-bottom:0.3rem;">Same dataset, different linkage rules:</p>
+                    <p style="font-size:0.85rem; color:var(--text-dim); margin-bottom:0;">Click any mini tree to load that linkage into the main visualization.</p>
+                    <div class="linkage-compare-grid" id="linkage-compare-grid">
+                        <button class="linkage-mini-card active" type="button" data-preview-linkage="average">
+                            <div class="linkage-mini-title"><span>Average</span><span>Balanced</span></div>
+                            <canvas data-mini-linkage="average"></canvas>
+                        </button>
+                        <button class="linkage-mini-card" type="button" data-preview-linkage="single">
+                            <div class="linkage-mini-title"><span>Single</span><span>Chain-friendly</span></div>
+                            <canvas data-mini-linkage="single"></canvas>
+                        </button>
+                        <button class="linkage-mini-card" type="button" data-preview-linkage="complete">
+                            <div class="linkage-mini-title"><span>Complete</span><span>Compact</span></div>
+                            <canvas data-mini-linkage="complete"></canvas>
+                        </button>
+                        <button class="linkage-mini-card" type="button" data-preview-linkage="ward">
+                            <div class="linkage-mini-title"><span>Ward</span><span>Variance-aware</span></div>
+                            <canvas data-mini-linkage="ward"></canvas>
+                        </button>
+                    </div>
+                </div>
+                <p class="takeaway"><strong>Takeaway:</strong> Linkage is the rulebook for deciding which groups are "closest" once clusters start to grow.</p>
+            </section>
+
+            <section data-stage="5">
+                <div class="stage-label">Stage 05</div>
+                <h2>The Process in Motion</h2>
+                <p>Now, the algorithm repeats the rule over and over. It constantly recalculates distances using the linkage method, finding the next closest pair of clusters, and merging them.</p>
+                <p>Slowly, tiny groups fuse into medium groups, which fuse into large groups. It only stops when everything becomes one giant family. Use the merge scrubber on the right to step through the history one merge at a time.</p>
+                
+                <div class="metric-grid metric-grid-3">
+                    <div class="metric-card">
+                        <div class="metric-val" id="process-clusters-display">17</div>
+                        <div class="metric-lbl">Current Clusters</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-val" id="process-next-merge-display">0.000</div>
+                        <div class="metric-lbl">Next Merge Distance</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-val" id="process-linkage-display">Average</div>
+                        <div class="metric-lbl">Current Linkage</div>
+                    </div>
+                </div>
+                <p class="takeaway"><strong>Takeaway:</strong> The algorithm keeps rebuilding the distance picture after every merge, so the path matters.</p>
+            </section>
+
+            <section data-stage="6">
+                <div class="stage-label">Stage 06</div>
+                <h2>The Family Tree (Dendrogram)</h2>
+                <p>Instead of just looking at circles on a map, we can record the exact <em>history</em> of these merges in a tree structure called a <strong>Dendrogram</strong>.</p>
+                <p>As the points align at the bottom, watch the tree grow upwards. The <strong>vertical height</strong> of each branch is critical: it tells us exactly how far apart the two groups were when they merged.</p>
+                <div class="insight-box">
+                    <strong>Rule of thumb:</strong> A fusion low on the tree means the items were very similar. A fusion high up means they were quite different.
+                </div>
+                <p class="takeaway"><strong>Takeaway:</strong> A dendrogram preserves the full merge history, and branch height tells you how costly each merge was.</p>
+            </section>
+
+            <section data-stage="7">
+                <div class="stage-label">Stage 07</div>
+                <h2>Cutting the Tree</h2>
+                <p>What if you don't know how many clusters you need? That is the superpower of hierarchical clustering: you don't have to guess upfront.</p>
+                <p>By drawing a horizontal line across the dendrogram, you "cut" the branches. The number of vertical lines you intersect is your number of clusters (<strong>K</strong>).</p>
+                <p>How do you choose the cut? A good first strategy is to look for a <strong>big jump in merge height</strong> and cut just below it, because that often means the algorithm has started forcing together groups that were meaningfully different. If you want a more quantitative check, you can also compare several cuts with a metric such as <strong>silhouette score</strong>.</p>
+                
+                <div class="glass-card">
+                    <div class="slider-container">
+                        <div class="slider-header">
+                            <span>Cut Height (merge distance)</span>
+                            <span id="cut-val-display" style="font-family: var(--font-mono); color: var(--accent);">0.000</span>
+                        </div>
+                        <input type="range" id="cut-slider" min="0" max="100" value="50">
+                    </div>
+                    <div style="text-align: center; margin-top: 1rem;">
+                        <span style="font-size:0.875rem; color:var(--text-muted);">Resulting Clusters: </span>
+                        <span id="k-val-display" class="metric-val" style="font-size: 1.25rem;"></span>
+                    </div>
+                </div>
+                <p class="takeaway"><strong>Takeaway:</strong> Choose cuts where the tree shows a natural separation, not just where a slider gives a convenient K.</p>
+            </section>
+
+            <section data-stage="8">
+                <div class="stage-label">Stage 08</div>
+                <h2>The Detective's Challenge</h2>
+                <p>Clustering is subjective detective work. Because there is no "true" answer (no target variable Y), the results rely entirely on your choices.</p>
+                
+                <div class="glass-card">
+                    <h3 style="font-size:1.1rem; margin-bottom:0.5rem;">The "Socks and Computers" Problem</h3>
+                    <p style="font-size:0.9rem; margin-bottom:0;">
+                        If you don't <strong>scale</strong> your data, a feature with big numbers (buying 10 pairs of socks) will mathematically overpower a feature with small numbers (buying 1 expensive computer). Always standardize your data first!
+                    </p>
+                </div>
+                
+                <p>Furthermore, an <strong>outlier</strong> can distort the tree, pulling a group away from its true members just to accommodate the stranger.</p>
+                <p class="takeaway"><strong>Takeaway:</strong> Scaling and outliers can change the tree dramatically, so preprocessing matters.</p>
+            </section>
+
+            <section data-stage="9">
+                <div class="stage-label">Stage 09</div>
+                <h2>Synthesis & Recap</h2>
+                <p>Hierarchical clustering gives us a rich, explorable structure rather than a single flat answer. Let's compare it to the other famous method, K-Means:</p>
+                
+                <div class="glass-card" style="padding: 0; overflow: hidden;">
+                    <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.9rem;">
+                        <tr style="background: rgba(99,102,241,0.1); border-bottom: 1px solid var(--border);">
+                            <th style="padding: 1rem;">Feature</th>
+                            <th style="padding: 1rem;">Hierarchical</th>
+                            <th style="padding: 1rem;">K-Means</th>
+                        </tr>
+                        <tr style="border-bottom: 1px solid var(--border);">
+                            <td style="padding: 1rem;">Setup</td>
+                            <td style="padding: 1rem;">Pick K <em>after</em></td>
+                            <td style="padding: 1rem;">Pick K <em>first</em></td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid var(--border);">
+                            <td style="padding: 1rem;">Output</td>
+                            <td style="padding: 1rem;">Tree (Dendrogram)</td>
+                            <td style="padding: 1rem;">Flat groups</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 1rem;">Speed</td>
+                            <td style="padding: 1rem;">Usually slower because it builds the full merge tree and repeatedly compares clusters</td>
+                            <td style="padding: 1rem;">Faster</td>
+                        </tr>
+                    </table>
+                </div>
+                
+                <p><strong>Final Advice:</strong> Never take one clustering result as absolute truth. Try different linkages and cut heights. If the same patterns emerge every time, you've found something truly interesting.</p>
+                <p class="takeaway"><strong>Takeaway:</strong> Hierarchical clustering is valuable when you want an explorable merge history, not just one fixed partition.</p>
+            </section>
+
+        </article>
+
+        <aside class="viz-container">
+            <div class="viz-stage">
+                <div class="canvas-wrapper">
+                    <canvas id="viz-canvas"></canvas>
+                    <div class="viz-toolbar">
+                        <button id="randomize-btn" type="button">Random Dataset</button>
+                        <div class="viz-toolbar-note">Hover a point or dendrogram leaf to trace the same sample across both views.</div>
+                    </div>
+                    <div class="viz-tooltip is-hidden" id="hover-tooltip"></div>
+                </div>
+                <div class="support-card is-hidden" id="process-panel">
+                    <div class="panel-kicker">Live Process</div>
+                    <h3>Closest Pair Right Now</h3>
+                    <div class="panel-hero" id="closest-pair-display">P1 + P2</div>
+                    <div class="panel-mini-metrics">
+                        <div><strong id="closest-distance-display">0.000</strong><span>Distance</span></div>
+                        <div><strong id="closest-clusters-display">17</strong><span>Clusters Left</span></div>
+                    </div>
+                    <div class="matrix-panel-header">
+                        <p class="panel-note">Active distance matrix</p>
+                        <div class="matrix-mode-toggle">
+                            <button class="active" type="button" data-matrix-mode="preview">Preview Matrix</button>
+                            <button type="button" data-matrix-mode="full">Full Matrix</button>
+                        </div>
+                    </div>
+                    <div class="matrix-shell" id="matrix-display"></div>
+                    <p class="panel-note" id="matrix-note">Preview shows the closest pair plus nearby clusters.</p>
+                </div>
+                <div class="support-card is-hidden" id="scrubber-panel">
+                    <div class="slider-container">
+                        <div class="slider-header">
+                            <span>Merge-by-Merge Scrubber</span>
+                            <span id="merge-step-display" style="font-family: var(--font-mono); color: var(--accent);">0/0</span>
+                        </div>
+                        <input type="range" id="merge-scrubber" min="0" max="16" value="0" step="1">
+                    </div>
+                    <p class="panel-note" id="scrubber-note">Step through each merge to watch the tree being built.</p>
+                </div>
+            </div>
+        </aside>
+    </main>
+
+    <script>
+        // --- State Management ---
+        const LINKAGE_ORDER = ['average', 'single', 'complete', 'ward'];
+        const LINKAGE_LABELS = {
+            average: 'Average',
+            single: 'Single',
+            complete: 'Complete',
+            ward: 'Ward'
+        };
+
+        const state = {
+            stage: 0,
+            linkage: 'average',
+            mergeProgress: 0,
+            scrubStep: 0,
+            matrixMode: 'preview',
+            dendroTransition: 0,
+            cutHeight: 0.5,
+            maxDistance: 1,
+            hoveredPointId: null
+        };
+
+        const targetState = {
+            mergeProgress: 0,
+            dendroTransition: 0
+        };
+
+        // --- Data Generation ---
+        const defaultRawPoints = [
+            // Blob 1 (Bottom Left)
+            { id: 0, x: 0.20, y: 0.70 }, { id: 1, x: 0.25, y: 0.75 }, 
+            { id: 2, x: 0.15, y: 0.78 }, { id: 3, x: 0.28, y: 0.65 },
+            { id: 4, x: 0.18, y: 0.62 },
+            // Blob 2 (Top Right)
+            { id: 5, x: 0.75, y: 0.20 }, { id: 6, x: 0.80, y: 0.25 },
+            { id: 7, x: 0.70, y: 0.15 }, { id: 8, x: 0.85, y: 0.18 },
+            { id: 9, x: 0.72, y: 0.28 }, { id: 10, x: 0.78, y: 0.30 },
+            // Blob 3 (Bottom Right)
+            { id: 11, x: 0.65, y: 0.75 }, { id: 12, x: 0.70, y: 0.80 },
+            { id: 13, x: 0.60, y: 0.85 }, { id: 14, x: 0.75, y: 0.70 },
+            { id: 15, x: 0.80, y: 0.82 },
+            // Outlier
+            { id: 16, x: 0.10, y: 0.20 }
+        ];
+
+        let rawPoints = defaultRawPoints.map(point => ({ ...point }));
+        let outlierPointId = rawPoints[rawPoints.length - 1].id;
+        let clusteringModels = {};
+        let points = [];
+        let clusterTree = [];
+        let treeRoot = null;
+        let mergeHistory = [];
+
+        // --- DOM References ---
+        const canvas = document.getElementById('viz-canvas');
+        const ctx = canvas.getContext('2d');
+        const linkBtns = document.getElementById('linkage-btns').querySelectorAll('button');
+        const previewCards = document.querySelectorAll('[data-preview-linkage]');
+        const previewCanvases = document.querySelectorAll('[data-mini-linkage]');
+        const linkDesc = document.getElementById('link-desc');
+        const cutSlider = document.getElementById('cut-slider');
+        const cutValDisplay = document.getElementById('cut-val-display');
+        const kValDisplay = document.getElementById('k-val-display');
+        const processClustersDisplay = document.getElementById('process-clusters-display');
+        const processNextMergeDisplay = document.getElementById('process-next-merge-display');
+        const processLinkageDisplay = document.getElementById('process-linkage-display');
+        const randomizeBtn = document.getElementById('randomize-btn');
+        const vizStage = document.querySelector('.viz-stage');
+        const processPanel = document.getElementById('process-panel');
+        const closestPairDisplay = document.getElementById('closest-pair-display');
+        const closestDistanceDisplay = document.getElementById('closest-distance-display');
+        const closestClustersDisplay = document.getElementById('closest-clusters-display');
+        const matrixDisplay = document.getElementById('matrix-display');
+        const matrixNote = document.getElementById('matrix-note');
+        const matrixModeButtons = document.querySelectorAll('[data-matrix-mode]');
+        const scrubberPanel = document.getElementById('scrubber-panel');
+        const mergeScrubber = document.getElementById('merge-scrubber');
+        const mergeStepDisplay = document.getElementById('merge-step-display');
+        const scrubberNote = document.getElementById('scrubber-note');
+        const hoverTooltip = document.getElementById('hover-tooltip');
+
+        const descriptions = {
+            average: '<strong>Average:</strong> Mean distance between all pairs. Balanced clusters.',
+            single: '<strong>Single:</strong> Smallest distance. Can create long, trailing chains.',
+            complete: '<strong>Complete:</strong> Largest distance. Forces tight, compact clusters.',
+            ward: '<strong>Ward:</strong> Merges clusters that least increase within-cluster spread. Often yields compact, balanced groups.'
+        };
+
+        const renderCache = {
+            pointPositions: new Map(),
+            scatterPadX: 0,
+            scatterPadY: 0,
+            scatterDrawW: 0,
+            scatterDrawH: 0,
+            dendroPadX: 0,
+            dendroPadY: 0,
+            dendroDrawW: 0,
+            dendroDrawH: 0
+        };
+
+        let cw = 0;
+        let ch = 0;
+
+        // --- Math & Clustering ---
+        function dist(a, b) {
+            return Math.hypot(a.x - b.x, a.y - b.y);
+        }
+
+        function clamp(value, min, max) {
+            return Math.min(max, Math.max(min, value));
+        }
+
+        function clusterLabel(leafIds, clusterId) {
+            const labels = [...leafIds].sort((a, b) => a - b).map(id => `P${id + 1}`);
+            if (labels.length <= 3) {
+                return labels.join('+');
+            }
+            return `C${clusterId} (${labels.length})`;
+        }
+
+        function resizeHiDPICanvas(targetCanvas, context) {
+            const rect = targetCanvas.getBoundingClientRect();
+            const dpr = window.devicePixelRatio || 1;
+            context.setTransform(1, 0, 0, 1, 0, 0);
+            targetCanvas.width = Math.max(1, Math.round(rect.width * dpr));
+            targetCanvas.height = Math.max(1, Math.round(rect.height * dpr));
+            context.setTransform(dpr, 0, 0, dpr, 0, 0);
+            return { width: rect.width, height: rect.height };
+        }
+
+        function clusterDistance(c1, c2, linkage) {
+            const pts1 = c1.points;
+            const pts2 = c2.points;
+            
+            if (linkage === 'ward') {
+                const dx = c1.centroidX - c2.centroidX;
+                const dy = c1.centroidY - c2.centroidY;
+                return Math.sqrt((c1.size * c2.size) / (c1.size + c2.size) * (dx * dx + dy * dy));
+            }
+
+            if (linkage === 'single') {
+                let minD = Infinity;
+                for (const p1 of pts1) {
+                    for (const p2 of pts2) {
+                        minD = Math.min(minD, dist(p1, p2));
+                    }
+                }
+                return minD;
+            }
+
+            if (linkage === 'complete') {
+                let maxD = 0;
+                for (const p1 of pts1) {
+                    for (const p2 of pts2) {
+                        maxD = Math.max(maxD, dist(p1, p2));
+                    }
+                }
+                return maxD;
+            }
+
+            let sumD = 0;
+            for (const p1 of pts1) {
+                for (const p2 of pts2) {
+                        sumD += dist(p1, p2);
+                }
+            }
+            return sumD / (pts1.length * pts2.length);
+        }
+
+        function buildClusterModel(linkage, sourcePoints) {
+            const leafNodes = sourcePoints.map(point => ({
+                ...point,
+                isLeaf: true,
+                points: [point],
+                size: 1,
+                centroidX: point.x,
+                centroidY: point.y,
+                dendroX: 0,
+                dendroY: 0,
+                leafIds: [point.id],
+                shortLabel: `P${point.id + 1}`,
+                stepIndex: 0
+            }));
+
+            let activeClusters = [...leafNodes];
+            let nextId = leafNodes.length;
+            const tree = [];
+            const history = [];
+
+            while (activeClusters.length > 1) {
+                let minD = Infinity;
+                let mergePair = [0, 1];
+                const distanceLookup = new Map();
+
+                for (let i = 0; i < activeClusters.length; i++) {
+                    for (let j = i + 1; j < activeClusters.length; j++) {
+                        const d = clusterDistance(activeClusters[i], activeClusters[j], linkage);
+                        distanceLookup.set(`${Math.min(activeClusters[i].id, activeClusters[j].id)}:${Math.max(activeClusters[i].id, activeClusters[j].id)}`, d);
+                        if (d < minD) {
+                            minD = d;
+                            mergePair = [i, j];
+                        }
+                    }
+                }
+
+                const c1 = activeClusters[mergePair[0]];
+                const c2 = activeClusters[mergePair[1]];
+
+                history.push({
+                    step: history.length,
+                    numClusters: activeClusters.length,
+                    closestPairLabels: [c1.shortLabel, c2.shortLabel],
+                    closestPairIds: [c1.id, c2.id],
+                    closestPairCentroids: [
+                        { x: c1.centroidX, y: c1.centroidY },
+                        { x: c2.centroidX, y: c2.centroidY }
+                    ],
+                    mergeDistance: minD,
+                    matrixClusterIds: activeClusters
+                        .slice()
+                        .sort((a, b) => a.leafIds[0] - b.leafIds[0])
+                        .map(cluster => cluster.id),
+                    matrixLabels: activeClusters
+                        .slice()
+                        .sort((a, b) => a.leafIds[0] - b.leafIds[0])
+                        .map(cluster => cluster.shortLabel),
+                    matrixValues: activeClusters
+                        .slice()
+                        .sort((a, b) => a.leafIds[0] - b.leafIds[0])
+                        .map(rowCluster => (
+                            activeClusters
+                                .slice()
+                                .sort((a, b) => a.leafIds[0] - b.leafIds[0])
+                                .map(colCluster => (
+                                    rowCluster.id === colCluster.id
+                                        ? 0
+                                        : distanceLookup.get(`${Math.min(rowCluster.id, colCluster.id)}:${Math.max(rowCluster.id, colCluster.id)}`) || 0
+                                ))
+                        ))
+                });
+
+                const mergedPoints = [...c1.points, ...c2.points];
+                const mergedSize = c1.size + c2.size;
+                const centroidX = ((c1.centroidX * c1.size) + (c2.centroidX * c2.size)) / mergedSize;
+                const centroidY = ((c1.centroidY * c1.size) + (c2.centroidY * c2.size)) / mergedSize;
+                const id = nextId++;
+                const leafIds = [...c1.leafIds, ...c2.leafIds].sort((a, b) => a - b);
+
+                const newCluster = {
+                    id,
+                    isLeaf: false,
+                    left: c1,
+                    right: c2,
+                    distance: minD,
+                    points: mergedPoints,
+                    size: mergedSize,
+                    centroidX,
+                    centroidY,
+                    x: centroidX,
+                    y: centroidY,
+                    leafIds,
+                    shortLabel: clusterLabel(leafIds, id),
+                    stepIndex: tree.length + 1
+                };
+                
+                newCluster.radius = Math.max(...newCluster.points.map(point => dist(point, { x: centroidX, y: centroidY })));
+
+                tree.push(newCluster);
+
+                activeClusters = activeClusters.filter((_, index) => index !== mergePair[0] && index !== mergePair[1]);
+                activeClusters.push(newCluster);
+            }
+
+            const root = tree[tree.length - 1] || leafNodes[0];
+            const maxDistance = root && !root.isLeaf ? root.distance : 1;
+            
+            let leafCounter = 0;
+            function traverse(node) {
+                if (node.isLeaf) {
+                    node.dendroX = (leafCounter + 0.5) / leafNodes.length;
+                    node.dendroY = 0;
+                    leafCounter++;
+                } else {
+                    traverse(node.left);
+                    traverse(node.right);
+                    node.dendroX = (node.left.dendroX + node.right.dendroX) / 2;
+                    node.dendroY = node.distance;
+                }
+            }
+            if (root) {
+                traverse(root);
+            }
+
+            return {
+                linkage,
+                points: leafNodes,
+                clusterTree: tree,
+                treeRoot: root,
+                maxDistance,
+                mergeHistory: history
+            };
+        }
+
+        function rebuildAllModels() {
+            const previousStep = state.scrubStep;
+            clusteringModels = {};
+            LINKAGE_ORDER.forEach(linkage => {
+                clusteringModels[linkage] = buildClusterModel(linkage, rawPoints);
+            });
+
+            points = clusteringModels[state.linkage].points;
+            clusterTree = clusteringModels[state.linkage].clusterTree;
+            treeRoot = clusteringModels[state.linkage].treeRoot;
+            mergeHistory = clusteringModels[state.linkage].mergeHistory;
+            state.maxDistance = clusteringModels[state.linkage].maxDistance || 1;
+            state.scrubStep = clamp(previousStep, 0, clusterTree.length);
+            mergeScrubber.max = clusterTree.length;
+            setMergeStep(state.scrubStep, true);
+            syncLinkageControls();
+            renderLinkagePreviews();
+            updateDynamicUI();
+        }
+
+        // Colors for clusters when cut
+        const clusterColors = ['#6366f1', '#10b981', '#f59e0b', '#f43f5e', '#0ea5e9', '#8b5cf6', '#ec4899'];
+
+        function getClustersAtCut(node, cutThreshold, clustersResult = []) {
+            if (!node) {
+                return clustersResult;
+            }
+            if (node.isLeaf || node.distance <= cutThreshold) {
+                clustersResult.push(node);
+            } else {
+                getClustersAtCut(node.left, cutThreshold, clustersResult);
+                getClustersAtCut(node.right, cutThreshold, clustersResult);
+            }
+            return clustersResult;
+        }
+
+        function getProcessSnapshot(step = state.scrubStep) {
+            return mergeHistory[step] || null;
+        }
+
+        function getPreviewMatrixIndices(snapshot, limit = 6) {
+            const total = snapshot.matrixClusterIds.length;
+            if (total <= limit) {
+                return Array.from({ length: total }, (_, index) => index);
+            }
+
+            const pairIndices = snapshot.closestPairIds
+                .map(id => snapshot.matrixClusterIds.indexOf(id))
+                .filter(index => index >= 0);
+
+            if (!pairIndices.length) {
+                return Array.from({ length: Math.min(limit, total) }, (_, index) => index);
+            }
+
+            const chosen = [];
+            pairIndices.forEach(index => {
+                if (!chosen.includes(index)) {
+                    chosen.push(index);
+                }
+            });
+
+            const ranked = snapshot.matrixClusterIds.map((_, index) => {
+                if (chosen.includes(index)) {
+                    return null;
+                }
+
+                return {
+                    index,
+                    score: Math.min(...pairIndices.map(pairIndex => snapshot.matrixValues[pairIndex][index]))
+                };
+            }).filter(Boolean).sort((a, b) => a.score - b.score);
+
+            ranked.slice(0, Math.max(0, limit - chosen.length)).forEach(item => {
+                chosen.push(item.index);
+            });
+
+            return chosen.sort((a, b) => a - b);
+        }
+
+        function getDisplayedMatrix(snapshot) {
+            if (!snapshot || !snapshot.matrixLabels || !snapshot.matrixLabels.length) {
+                return null;
+            }
+
+            const fullCount = snapshot.matrixLabels.length;
+            if (state.matrixMode === 'full' || fullCount <= 6) {
+                return {
+                    labels: snapshot.matrixLabels,
+                    values: snapshot.matrixValues,
+                    isFull: true,
+                    note: fullCount <= 6 && state.matrixMode === 'preview'
+                        ? 'All active clusters fit in view right now, so preview and full are the same.'
+                        : `Full matrix shows all ${fullCount} active clusters at this step.`
+                };
+            }
+
+            const indices = getPreviewMatrixIndices(snapshot, 6);
+            return {
+                labels: indices.map(index => snapshot.matrixLabels[index]),
+                values: indices.map(rowIndex => indices.map(colIndex => snapshot.matrixValues[rowIndex][colIndex])),
+                isFull: false,
+                note: 'Preview shows the closest pair plus the nearby clusters with the smallest distances.'
+            };
+        }
+
+        function syncMatrixModeControls() {
+            matrixModeButtons.forEach(button => {
+                button.classList.toggle('active', button.getAttribute('data-matrix-mode') === state.matrixMode);
+            });
+        }
+
+        function updateMatrixDisplay(snapshot) {
+            const matrixView = getDisplayedMatrix(snapshot);
+
+            if (!matrixView) {
+                matrixDisplay.innerHTML = '';
+                matrixDisplay.classList.remove('is-full');
+                matrixNote.textContent = 'No active distance matrix is left once the full tree is complete.';
+                return;
+            }
+
+            matrixDisplay.classList.toggle('is-full', matrixView.isFull);
+            matrixNote.textContent = matrixView.note;
+
+            const header = matrixView.labels.map(label => `<th>${label}</th>`).join('');
+            const rows = matrixView.labels.map((label, rowIndex) => {
+                const cells = matrixView.values[rowIndex].map((value, colIndex) => (
+                    `<td>${rowIndex === colIndex ? '—' : value.toFixed(2)}</td>`
+                )).join('');
+                return `<tr><th>${label}</th>${cells}</tr>`;
+            }).join('');
+
+            matrixDisplay.innerHTML = `
+                <table class="matrix-table">
+                    <thead>
+                        <tr><th></th>${header}</tr>
+                    </thead>
+                    <tbody>${rows}</tbody>
+                </table>
+            `;
+        }
+
+        function updateCutDisplay() {
+            const actualCutHeight = state.cutHeight * state.maxDistance;
+            cutValDisplay.textContent = actualCutHeight.toFixed(3);
+            if (treeRoot) {
+                kValDisplay.textContent = getClustersAtCut(treeRoot, actualCutHeight).length;
+            }
+        }
+
+        function updateProcessDisplays() {
+            const currentStep = state.scrubStep;
+            const currentClusters = Math.max(1, points.length - currentStep);
+            const snapshot = getProcessSnapshot(currentStep);
+
+            processClustersDisplay.textContent = currentClusters;
+            processNextMergeDisplay.textContent = snapshot ? snapshot.mergeDistance.toFixed(3) : 'Done';
+            processLinkageDisplay.textContent = LINKAGE_LABELS[state.linkage];
+            closestPairDisplay.textContent = snapshot ? snapshot.closestPairLabels.join(' + ') : 'Tree complete';
+            closestDistanceDisplay.textContent = snapshot ? snapshot.mergeDistance.toFixed(3) : '—';
+            closestClustersDisplay.textContent = currentClusters;
+            mergeStepDisplay.textContent = `${currentStep}/${clusterTree.length}`;
+            scrubberNote.textContent = snapshot
+                ? `Next merge under ${LINKAGE_LABELS[state.linkage]}: ${snapshot.closestPairLabels.join(' + ')}`
+                : 'All merges are complete for this tree.';
+            syncMatrixModeControls();
+            updateMatrixDisplay(snapshot);
+        }
+
+        function updatePanelVisibility() {
+            const wasExpanded = vizStage.classList.contains('is-expanded');
+            const wasProcessHidden = processPanel.classList.contains('is-hidden');
+            const wasScrubberHidden = scrubberPanel.classList.contains('is-hidden');
+
+            processPanel.classList.toggle('is-hidden', !(state.stage >= 2 && state.stage <= 5));
+            scrubberPanel.classList.toggle('is-hidden', !(state.stage >= 3 && state.stage <= 6));
+            vizStage.classList.toggle('is-expanded', processPanel.classList.contains('is-hidden'));
+
+            const layoutChanged =
+                wasExpanded !== vizStage.classList.contains('is-expanded') ||
+                wasProcessHidden !== processPanel.classList.contains('is-hidden') ||
+                wasScrubberHidden !== scrubberPanel.classList.contains('is-hidden');
+
+            if (layoutChanged) {
+                requestAnimationFrame(resize);
+            }
+
+            if (state.hoveredPointId === null) {
+                hoverTooltip.classList.add('is-hidden');
+            }
+        }
+
+        function updateDynamicUI() {
+            updateCutDisplay();
+            updateProcessDisplays();
+            updatePanelVisibility();
+        }
+
+        function syncLinkageControls() {
+            linkBtns.forEach(button => {
+                button.classList.toggle('active', button.getAttribute('data-link') === state.linkage);
+            });
+            previewCards.forEach(card => {
+                card.classList.toggle('active', card.getAttribute('data-preview-linkage') === state.linkage);
+            });
+            linkDesc.innerHTML = descriptions[state.linkage];
+        }
+
+        function setMergeStep(step, immediate = false) {
+            const clampedStep = clamp(Math.round(Number(step)), 0, clusterTree.length);
+            state.scrubStep = clampedStep;
+            targetState.mergeProgress = clampedStep;
+            mergeScrubber.max = clusterTree.length;
+            mergeScrubber.value = clampedStep;
+
+            if (immediate) {
+                state.mergeProgress = clampedStep;
+            }
+
+            updateProcessDisplays();
+        }
+
+        function setLinkage(linkage) {
+            if (!clusteringModels[linkage]) {
+                return;
+            }
+
+            state.linkage = linkage;
+            points = clusteringModels[linkage].points;
+            clusterTree = clusteringModels[linkage].clusterTree;
+            treeRoot = clusteringModels[linkage].treeRoot;
+            mergeHistory = clusteringModels[linkage].mergeHistory;
+            state.maxDistance = clusteringModels[linkage].maxDistance || 1;
+            state.scrubStep = clamp(state.scrubStep, 0, clusterTree.length);
+            setMergeStep(state.scrubStep, true);
+            syncLinkageControls();
+            renderLinkagePreviews();
+            updateDynamicUI();
+        }
+
+        function createRandomDataset() {
+            const counts = [5, 6, 5];
+            const centers = [];
+
+            while (centers.length < 3) {
+                const candidate = {
+                    x: 0.18 + Math.random() * 0.64,
+                    y: 0.18 + Math.random() * 0.64
+                };
+                if (centers.every(center => dist(center, candidate) > 0.28)) {
+                    centers.push(candidate);
+                }
+            }
+
+            const nextPoints = [];
+            let id = 0;
+
+            centers.forEach((center, index) => {
+                for (let i = 0; i < counts[index]; i++) {
+                    const angle = Math.random() * Math.PI * 2;
+                    const radius = 0.03 + Math.random() * 0.06;
+                    nextPoints.push({
+                        id: id++,
+                        x: clamp(center.x + Math.cos(angle) * radius, 0.05, 0.95),
+                        y: clamp(center.y + Math.sin(angle) * radius, 0.05, 0.95)
+                    });
+                }
+            });
+
+            let bestOutlier = { x: 0.1, y: 0.1, score: -Infinity };
+            for (let i = 0; i < 120; i++) {
+                const candidate = {
+                    x: 0.06 + Math.random() * 0.88,
+                    y: 0.06 + Math.random() * 0.88
+                };
+                const nearestCenter = Math.min(...centers.map(center => dist(center, candidate)));
+                if (nearestCenter > bestOutlier.score) {
+                    bestOutlier = { ...candidate, score: nearestCenter };
+                }
+            }
+
+            nextPoints.push({
+                id: id,
+                x: bestOutlier.x,
+                y: bestOutlier.y
+            });
+
+            return nextPoints;
+        }
+
+        function updateHoverTooltip(pointId) {
+            if (pointId === null) {
+                hoverTooltip.classList.add('is-hidden');
+                return;
+            }
+
+            const message = state.dendroTransition > 0.4
+                ? `<strong>P${pointId + 1}</strong> is the same sample in the scatter plot and at the matching dendrogram leaf.`
+                : `<strong>P${pointId + 1}</strong> keeps its identity while the clustering structure grows around it.`;
+
+            hoverTooltip.innerHTML = message;
+            hoverTooltip.classList.remove('is-hidden');
+        }
+
+        function handleHover(clientX, clientY) {
+            const rect = canvas.getBoundingClientRect();
+            const x = clientX - rect.left;
+            const y = clientY - rect.top;
+            let closestId = null;
+            let closestDistance = 15;
+
+            renderCache.pointPositions.forEach((position, id) => {
+                const candidates = [{ x: position.currentX, y: position.currentY }];
+                if (state.dendroTransition > 0.85) {
+                    candidates.push({ x: position.leafX, y: position.leafY });
+                }
+
+                candidates.forEach(candidate => {
+                    const distanceToCandidate = Math.hypot(candidate.x - x, candidate.y - y);
+                    if (distanceToCandidate < closestDistance) {
+                        closestDistance = distanceToCandidate;
+                        closestId = id;
+                    }
+                });
+            });
+
+            state.hoveredPointId = closestId;
+            updateHoverTooltip(closestId);
+        }
+
+        function drawMiniDendrogram(previewCanvas, model, active) {
+            const previewCtx = previewCanvas.getContext('2d');
+            const { width, height } = resizeHiDPICanvas(previewCanvas, previewCtx);
+            previewCtx.clearRect(0, 0, width, height);
+
+            const padX = 12;
+            const padY = 10;
+            const drawW = width - padX * 2;
+            const drawH = height - padY * 2;
+            const maxDistance = model.maxDistance || 1;
+            const strokeColor = active ? varColor('--accent', '#6366f1') : '#9ca3af';
+
+            previewCtx.lineWidth = active ? 2 : 1.6;
+            previewCtx.lineCap = 'round';
+
+            model.clusterTree.forEach(merge => {
+                const lx = padX + merge.left.dendroX * drawW;
+                const ly = height - padY - (merge.left.dendroY / maxDistance) * drawH;
+                const rx = padX + merge.right.dendroX * drawW;
+                const ry = height - padY - (merge.right.dendroY / maxDistance) * drawH;
+                const py = height - padY - (merge.dendroY / maxDistance) * drawH;
+
+                previewCtx.strokeStyle = strokeColor;
+                previewCtx.beginPath();
+                previewCtx.moveTo(lx, ly);
+                previewCtx.lineTo(lx, py);
+                previewCtx.lineTo(rx, py);
+                previewCtx.lineTo(rx, ry);
+                previewCtx.stroke();
+            });
+
+            model.points.forEach(point => {
+                previewCtx.beginPath();
+                previewCtx.arc(padX + point.dendroX * drawW, height - padY, 2.6, 0, Math.PI * 2);
+                previewCtx.fillStyle = active ? strokeColor : '#6b7280';
+                previewCtx.fill();
+            });
+        }
+
+        function renderLinkagePreviews() {
+            previewCanvases.forEach(previewCanvas => {
+                const linkage = previewCanvas.getAttribute('data-mini-linkage');
+                const model = clusteringModels[linkage];
+                if (model) {
+                    drawMiniDendrogram(previewCanvas, model, linkage === state.linkage);
+                }
+            });
+        }
+
+        function resize() {
+            const dimensions = resizeHiDPICanvas(canvas, ctx);
+            cw = dimensions.width;
+            ch = dimensions.height;
+            renderLinkagePreviews();
+        }
+
+        function drawCurrentClosestPairLine(snapshot) {
+            if (!snapshot) {
+                return;
+            }
+
+            const [leftCenter, rightCenter] = snapshot.closestPairCentroids;
+            const x1 = renderCache.scatterPadX + leftCenter.x * renderCache.scatterDrawW;
+            const y1 = renderCache.scatterPadY + leftCenter.y * renderCache.scatterDrawH;
+            const x2 = renderCache.scatterPadX + rightCenter.x * renderCache.scatterDrawW;
+            const y2 = renderCache.scatterPadY + rightCenter.y * renderCache.scatterDrawH;
+
+            ctx.save();
+            ctx.setLineDash([6, 5]);
+            ctx.strokeStyle = 'rgba(99, 102, 241, 0.75)';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(x1, y1);
+            ctx.lineTo(x2, y2);
+            ctx.stroke();
+            ctx.restore();
+        }
+
+        function drawHoverLink(position) {
+            if (!position) {
+                return;
+            }
+
+            const highlightColor = '#f59e0b';
+
+            if (state.dendroTransition > 0.4) {
+                ctx.save();
+                ctx.setLineDash([6, 4]);
+                ctx.strokeStyle = 'rgba(245, 158, 11, 0.9)';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.moveTo(position.scatterX, position.scatterY);
+                ctx.lineTo(position.leafX, position.leafY);
+                ctx.stroke();
+                ctx.restore();
+
+                ctx.beginPath();
+                ctx.arc(position.scatterX, position.scatterY, 7.5, 0, Math.PI * 2);
+                ctx.fillStyle = highlightColor;
+                ctx.fill();
+                ctx.strokeStyle = '#ffffff';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+            }
+
+            ctx.beginPath();
+            ctx.arc(position.currentX, position.currentY, 10, 0, Math.PI * 2);
+            ctx.strokeStyle = highlightColor;
+            ctx.lineWidth = 2.5;
+            ctx.stroke();
+        }
+
+        function draw() {
+            ctx.clearRect(0, 0, cw, ch);
+
+            state.mergeProgress += (targetState.mergeProgress - state.mergeProgress) * 0.1;
+            state.dendroTransition += (targetState.dendroTransition - state.dendroTransition) * 0.05;
+
+            const dendroPadX = cw * 0.1;
+            const dendroPadY = ch * 0.1;
+            const dendroDrawW = cw - dendroPadX * 2;
+            const dendroDrawH = ch - dendroPadY * 2;
+            const scatterSize = Math.min(dendroDrawW, dendroDrawH);
+            const scatterPadX = dendroPadX + (dendroDrawW - scatterSize) / 2;
+            const scatterPadY = dendroPadY + (dendroDrawH - scatterSize) / 2;
+            const scatterDrawW = scatterSize;
+            const scatterDrawH = scatterSize;
+            const maxDistance = state.maxDistance || 1;
+            const currentStep = clamp(Math.round(state.scrubStep), 0, clusterTree.length);
+            const processSnapshot = getProcessSnapshot(currentStep);
+
+            renderCache.pointPositions.clear();
+            renderCache.scatterPadX = scatterPadX;
+            renderCache.scatterPadY = scatterPadY;
+            renderCache.scatterDrawW = scatterDrawW;
+            renderCache.scatterDrawH = scatterDrawH;
+            renderCache.dendroPadX = dendroPadX;
+            renderCache.dendroPadY = dendroPadY;
+            renderCache.dendroDrawW = dendroDrawW;
+            renderCache.dendroDrawH = dendroDrawH;
+
+            const cutActive = state.stage >= 7;
+            const actualCutHeight = state.cutHeight * state.maxDistance;
+            const currentClusters = cutActive && treeRoot ? getClustersAtCut(treeRoot, actualCutHeight) : (treeRoot ? [treeRoot] : []);
+            
+            const colorMap = new Map();
+            if (cutActive) {
+                currentClusters.forEach((c, idx) => {
+                    const color = clusterColors[idx % clusterColors.length];
+                    c.points.forEach(point => colorMap.set(point.id, color));
+                });
+            } else {
+                points.forEach(point => colorMap.set(point.id, '#1f2937'));
+            }
+
+            if (state.dendroTransition > 0.01) {
+                ctx.lineWidth = 2;
+                ctx.lineCap = 'round';
+                
+                clusterTree.forEach(merge => {
+                    if (merge.stepIndex <= state.mergeProgress + 0.001) {
+                        const lx = dendroPadX + merge.left.dendroX * dendroDrawW;
+                        const ly = ch - dendroPadY - (merge.left.dendroY / maxDistance) * dendroDrawH;
+                        const rx = dendroPadX + merge.right.dendroX * dendroDrawW;
+                        const ry = ch - dendroPadY - (merge.right.dendroY / maxDistance) * dendroDrawH;
+                        const py = ch - dendroPadY - (merge.dendroY / maxDistance) * dendroDrawH;
+
+                        let branchColor = '#e7e5e4';
+                        if (cutActive) {
+                            if (merge.distance <= actualCutHeight) {
+                                const activeCluster = currentClusters.find(cluster => cluster.leafIds.includes(merge.leafIds[0]));
+                                if (activeCluster) {
+                                    branchColor = colorMap.get(activeCluster.leafIds[0]) || branchColor;
+                                }
+                            }
+                        } else {
+                            branchColor = `rgba(31, 41, 55, ${state.dendroTransition})`;
+                        }
+
+                        ctx.strokeStyle = branchColor;
+                        ctx.globalAlpha = state.dendroTransition;
+                        ctx.beginPath();
+                        ctx.moveTo(lx, ly);
+                        ctx.lineTo(lx, py);
+                        ctx.lineTo(rx, py);
+                        ctx.lineTo(rx, ry);
+                        ctx.stroke();
+                        ctx.globalAlpha = 1.0;
+                    }
+                });
+            }
+
+            if (state.dendroTransition < 0.99 && state.mergeProgress > 0) {
+                clusterTree.forEach((merge, i) => {
+                    if (merge.stepIndex <= state.mergeProgress + 0.001) {
+                        const progressOpacity = Math.max(0, 1 - (state.mergeProgress - merge.stepIndex) * 0.15);
+                        const finalOpacity = progressOpacity * (1 - state.dendroTransition);
+                        
+                        if (finalOpacity > 0.01) {
+                            const currentX = scatterPadX + merge.x * scatterDrawW;
+                            const currentY = scatterPadY + merge.y * scatterDrawH;
+                            const targetX = dendroPadX + merge.dendroX * dendroDrawW;
+                            const targetY = ch - dendroPadY;
+                            
+                            const x = currentX + (targetX - currentX) * state.dendroTransition;
+                            const y = currentY + (targetY - currentY) * state.dendroTransition;
+                            
+                            const maxR = merge.radius * scatterSize;
+                            const r = maxR * (1 - state.dendroTransition) + 10 * state.dendroTransition;
+
+                            ctx.beginPath();
+                            ctx.arc(x, y, r + 5, 0, Math.PI * 2);
+                            ctx.fillStyle = `rgba(99, 102, 241, ${0.05 * finalOpacity})`;
+                            ctx.fill();
+                            ctx.strokeStyle = `rgba(99, 102, 241, ${0.3 * finalOpacity})`;
+                            ctx.lineWidth = 1;
+                            ctx.stroke();
+                        }
+                    }
+                });
+            }
+
+            if (state.stage >= 2 && state.stage <= 5) {
+                drawCurrentClosestPairLine(processSnapshot);
+            }
+
+            points.forEach(point => {
+                const scatterX = scatterPadX + point.x * scatterDrawW;
+                const scatterY = scatterPadY + point.y * scatterDrawH;
+                const leafX = dendroPadX + point.dendroX * dendroDrawW;
+                const leafY = ch - dendroPadY;
+                
+                const currentX = scatterX + (leafX - scatterX) * state.dendroTransition;
+                const currentY = scatterY + (leafY - scatterY) * state.dendroTransition;
+
+                renderCache.pointPositions.set(point.id, {
+                    scatterX,
+                    scatterY,
+                    leafX,
+                    leafY,
+                    currentX,
+                    currentY
+                });
+
+                ctx.beginPath();
+                ctx.arc(currentX, currentY, 6, 0, Math.PI * 2);
+                ctx.fillStyle = colorMap.get(point.id);
+                ctx.fill();
+                
+                if (state.stage === 8 && point.id === outlierPointId) {
+                    ctx.strokeStyle = varColor('--error', '#ef4444');
+                    ctx.lineWidth = 2;
+                    ctx.stroke();
+                    ctx.beginPath();
+                    ctx.arc(currentX, currentY, 12, 0, Math.PI * 2);
+                    ctx.strokeStyle = 'rgba(239, 68, 68, 0.4)';
+                    ctx.stroke();
+                } else {
+                    ctx.strokeStyle = '#ffffff';
+                    ctx.lineWidth = 1.5;
+                    ctx.stroke();
+                }
+            });
+
+            if (state.hoveredPointId !== null) {
+                drawHoverLink(renderCache.pointPositions.get(state.hoveredPointId));
+            }
+
+            if (cutActive && state.dendroTransition > 0.5) {
+                const cutY = ch - dendroPadY - state.cutHeight * dendroDrawH;
+                ctx.beginPath();
+                ctx.moveTo(dendroPadX - 20, cutY);
+                ctx.lineTo(cw - dendroPadX + 20, cutY);
+                ctx.setLineDash([5, 5]);
+                ctx.strokeStyle = 'rgba(245, 158, 11, 0.8)';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+                ctx.setLineDash([]);
+            }
+
+            requestAnimationFrame(draw);
+        }
+        
+        function varColor(name, fallback) {
+            return getComputedStyle(document.documentElement).getPropertyValue(name) || fallback;
+        }
+
+        // --- Interaction & Scroll Logic ---
+
+        linkBtns.forEach(button => {
+            button.addEventListener('click', () => {
+                setLinkage(button.getAttribute('data-link'));
+            });
+        });
+
+        previewCards.forEach(card => {
+            card.addEventListener('click', () => {
+                setLinkage(card.getAttribute('data-preview-linkage'));
+            });
+        });
+
+        cutSlider.addEventListener('input', event => {
+            state.cutHeight = event.target.value / 100;
+            updateCutDisplay();
+        });
+
+        matrixModeButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                state.matrixMode = button.getAttribute('data-matrix-mode');
+                updateProcessDisplays();
+            });
+        });
+
+        mergeScrubber.addEventListener('input', event => {
+            setMergeStep(event.target.value, true);
+        });
+
+        randomizeBtn.addEventListener('click', () => {
+            rawPoints = createRandomDataset();
+            outlierPointId = rawPoints[rawPoints.length - 1].id;
+            state.hoveredPointId = null;
+            rebuildAllModels();
+            updateHoverTooltip(null);
+            applyStageTargets(state.stage);
+        });
+
+        canvas.addEventListener('mousemove', event => {
+            handleHover(event.clientX, event.clientY);
+        });
+
+        canvas.addEventListener('mouseleave', () => {
+            state.hoveredPointId = null;
+            updateHoverTooltip(null);
+        });
+
+        const sections = document.querySelectorAll('section[data-stage], header[data-stage]');
+        const dotsContainer = document.getElementById('stage-dots');
+        
+        sections.forEach((sec, i) => {
+            if (i > 0) {
+                const dot = document.createElement('div');
+                dot.className = 'dot';
+                dot.addEventListener('click', () => {
+                    sec.scrollIntoView({ behavior: 'smooth' });
+                });
+                dotsContainer.appendChild(dot);
+            }
+        });
+        const dots = document.querySelectorAll('.dot');
+
+        function applyStageTargets(stage) {
+            switch (stage) {
+                case 0:
+                case 1:
+                case 2:
+                    setMergeStep(0);
+                    targetState.dendroTransition = 0;
+                    break;
+                case 3:
+                    setMergeStep(Math.min(1, clusterTree.length));
+                    targetState.dendroTransition = 0;
+                    break;
+                case 4:
+                    setMergeStep(Math.min(3, clusterTree.length));
+                    targetState.dendroTransition = 0;
+                    break;
+                case 5:
+                    setMergeStep(Math.min(Math.ceil(clusterTree.length / 2), clusterTree.length));
+                    targetState.dendroTransition = 0;
+                    break;
+                case 6:
+                    setMergeStep(clusterTree.length);
+                    targetState.dendroTransition = 1;
+                    break;
+                case 7:
+                case 8:
+                case 9:
+                    setMergeStep(clusterTree.length);
+                    targetState.dendroTransition = 1;
+                    break;
+            }
+
+            updatePanelVisibility();
+        }
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const stage = parseInt(entry.target.getAttribute('data-stage'));
+                    const previousStage = state.stage;
+                    state.stage = stage;
+                    
+                    sections.forEach(s => s.classList.remove('active'));
+                    entry.target.classList.add('active');
+
+                    if (stage > 0) {
+                        dots.forEach((d, i) => {
+                            d.classList.toggle('active', i === stage - 1);
+                        });
+                    }
+
+                    const progress = (stage / (sections.length - 1)) * 100;
+                    document.getElementById('progress-bar').style.width = `${progress}%`;
+
+                    if (previousStage !== stage) {
+                        applyStageTargets(stage);
+                    }
+                }
+            });
+        }, { threshold: 0.45 });
+
+        sections.forEach(sec => observer.observe(sec));
+
+        window.addEventListener('resize', resize);
+
+        rebuildAllModels();
+        resize();
+        draw();
+
+    </script>
+</body>
+</html>

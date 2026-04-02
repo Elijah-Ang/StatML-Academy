@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>K-Means Clustering | Educational Explainer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #f7f7f4;
+            --surface: #ffffff;
+            --surface-alt: #f0efeb;
+            --border: #e7e5e4;
+            --text-main: #1f2937;
+            --text-dim: #4b5563;
+            --text-muted: #6b7280;
+            --accent: #6366f1;
+            --accent-dark: #4f46e5;
+            --accent-light: #e0e7ff;
+            
+            --cluster-0: #3b82f6;
+            --cluster-1: #ef4444;
+            --cluster-2: #10b981;
+            --cluster-3: #f59e0b;
+            --cluster-4: #8b5cf6;
+            --cluster-5: #ec4899;
+            --cluster-none: #9ca3af;
+            
+            --font-prose: 'Inter', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: var(--font-prose); background-color: var(--bg); color: var(--text-main); line-height: 1.6; overflow-x: hidden; }
+
+        #progress-bar { position: fixed; top: 0; left: 0; height: 4px; background: linear-gradient(to right, var(--accent), var(--cluster-0)); width: 0%; z-index: 1000; }
+
+        .hero { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 2rem; position: relative; }
+        .topic-badge { background-color: var(--accent-light); color: var(--accent-dark); padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.875rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 1.5rem; }
+        .hero h1 { font-size: clamp(2.5rem, 5vw, 4.5rem); font-weight: 700; line-height: 1.1; margin-bottom: 1rem; background: linear-gradient(135deg, #1f2937, var(--accent-dark)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .hero p { font-size: clamp(1.125rem, 2vw, 1.25rem); color: var(--text-dim); max-width: 600px; margin-bottom: 2rem; }
+        
+        .layout-wrapper { display: flex; max-width: 1400px; margin: 0 auto; position: relative; }
+        .narrative-column { width: 45%; padding: 0 4rem 10vh 4rem; }
+        .vis-column { width: 55%; height: 100vh; position: sticky; top: 0; padding: 1.5rem; display: flex; flex-direction: column; }
+
+        /* Status Strip */
+        .status-strip { background: var(--surface); border: 1px solid var(--border); border-radius: 0.5rem; padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; font-family: var(--font-mono); font-size: 0.8rem; margin-bottom: 1rem; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
+        .status-item { display: flex; flex-direction: column; align-items: center; }
+        .status-label { color: var(--text-muted); font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.05em; }
+        .status-val { font-weight: 600; color: var(--text-main); }
+        .status-val.converged { color: var(--cluster-2); }
+
+        .canvas-container { flex-grow: 1; background-color: var(--surface); border-radius: 0.75rem; border: 1px solid var(--border); box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); position: relative; overflow: hidden; margin-bottom: 1rem; }
+        canvas { display: block; width: 100%; height: 100%; cursor: crosshair; }
+
+        /* Control Panel */
+        .control-panel { background: var(--surface); border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; font-size: 0.85rem; }
+        .control-group { display: flex; align-items: center; gap: 0.5rem; }
+        .control-panel select, .control-panel input[type="range"] { font-family: var(--font-prose); border: 1px solid var(--border); border-radius: 0.25rem; padding: 0.25rem; }
+        .btn { background: var(--surface-alt); border: 1px solid var(--border); padding: 0.35rem 0.75rem; border-radius: 0.25rem; cursor: pointer; font-weight: 500; font-family: var(--font-prose); color: var(--text-main); }
+        .btn:hover { background: var(--border); }
+        .btn.primary { background: var(--accent); color: white; border-color: var(--accent-dark); }
+        .btn.primary:hover { background: var(--accent-dark); }
+
+        /* Narrative Sections */
+        section { min-height: 90vh; display: flex; flex-direction: column; justify-content: center; padding: 4rem 0; opacity: 0.3; transition: opacity 0.5s ease; }
+        section.active { opacity: 1; }
+        .stage-label { font-family: var(--font-mono); font-size: 0.75rem; font-weight: 600; color: var(--accent); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; }
+        .stage-label::after { content: ''; height: 1px; width: 2rem; background-color: var(--accent); }
+        section h2 { font-size: 1.75rem; font-weight: 700; margin-bottom: 1rem; line-height: 1.2; }
+        section p { font-size: 1rem; color: var(--text-dim); margin-bottom: 1.25rem; }
+
+        .takeaway { background: var(--accent-light); border-left: 4px solid var(--accent); padding: 1rem; border-radius: 0 0.5rem 0.5rem 0; font-weight: 500; color: var(--accent-dark); font-size: 0.9rem; margin-top: 1rem; }
+        .card { background-color: var(--surface); border: 1px solid var(--border); border-radius: 0.75rem; padding: 1.25rem; margin-bottom: 1.25rem; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+        .formula { font-family: var(--font-mono); background: var(--surface-alt); padding: 0.75rem; border-radius: 0.5rem; font-size: 0.85rem; border: 1px solid var(--border); margin-bottom: 1.25rem; display: inline-block; }
+
+        table { width: 100%; border-collapse: collapse; font-size: 0.85rem; margin-bottom: 1rem; }
+        th { text-align: left; padding: 0.5rem; border-bottom: 2px solid var(--border); color: var(--text-dim); }
+        td { padding: 0.5rem; border-bottom: 1px solid var(--border); font-family: var(--font-mono); }
+
+        /* Tooltip & Legend */
+        #tooltip { position: fixed; background: rgba(31, 41, 55, 0.9); color: white; padding: 0.5rem 0.75rem; border-radius: 0.375rem; font-size: 0.75rem; font-family: var(--font-mono); pointer-events: none; opacity: 0; transition: opacity 0.1s; z-index: 100; transform: translate(-50%, -120%); }
+        .legend-strip { display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center; padding: 0.5rem 0; font-size: 0.75rem; color: var(--text-dim); font-weight: 500; }
+        .legend-item { display: flex; align-items: center; gap: 0.35rem; }
+        .legend-dot { width: 10px; height: 10px; border-radius: 50%; border: 1px solid rgba(0,0,0,0.1); }
+
+        @media (max-width: 900px) {
+            .layout-wrapper { flex-direction: column; }
+            .narrative-column { width: 100%; padding: 0 1.5rem; order: 2; }
+            .vis-column { width: 100%; height: 65vh; position: sticky; top: 0; padding: 1rem; order: 1; background-color: var(--bg); z-index: 10; border-bottom: 1px solid var(--border); }
+            section { min-height: auto; padding: 3rem 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="progress-bar"></div>
+    <div id="tooltip"></div>
+
+    <div class="hero">
+        <div class="topic-badge">Unsupervised Learning</div>
+        <h1>K-Means Clustering</h1>
+        <p>A live, interactive guide to finding hidden structure in messy data. <strong>At its core, K-Means tries to minimize the total squared distance from points to their assigned centroids.</strong></p>
+        <div style="margin-top: 2rem; font-size: 0.85rem; color: var(--text-muted); animation: pulse 2s infinite;">Scroll to begin</div>
+    </div>
+
+    <div class="layout-wrapper">
+        <div class="narrative-column">
+
+            <section data-stage="1">
+                <div class="stage-label">Stage 01</div>
+                <h2>The Unlabeled Data</h2>
+                <p>Imagine a database of customers. We have their <strong>Age</strong> and <strong>Spending</strong>. There are no predefined groups; it's just raw information plotted in space.</p>
+                <div class="card">
+                    <table>
+                        <tr><th>Customer</th><th>Age</th><th>Spending</th></tr>
+                        <tr><td>A</td><td>24</td><td>$ 420</td></tr>
+                        <tr><td>B</td><td>48</td><td>$ 8,100</td></tr>
+                        <tr><td>...</td><td>...</td><td>...</td></tr>
+                    </table>
+                </div>
+                <div class="takeaway">💡 Takeaway: Data starts as a scattered collection of observations with no inherent group labels.</div>
+            </section>
+
+            <section data-stage="2">
+                <div class="stage-label">Stage 02</div>
+                <h2>The Blind Guess (Initialization)</h2>
+                <p>We must choose how many groups (<strong>K</strong>) we want. But the algorithm has to start somewhere. It must make a blind guess.</p>
+                <p>In this demo, we use <strong>Random Partition</strong>: assigning every point to a random cluster and finding the center of those random teams. </p>
+                <p><em>Note: Another common method is <strong>Forgy</strong> (picking random data points as initial centers). Real-world applications mostly use <strong>k-means++</strong> to smartly space out the initial guesses.</em></p>
+                <div class="takeaway">💡 Takeaway: K-Means cannot learn until it makes an initial, often terrible, guess at the cluster centers (centroids).</div>
+            </section>
+
+            <section data-stage="3">
+                <div class="stage-label">Stage 03</div>
+                <h2>Nearest Neighbor Assignment</h2>
+                <p>Every data point ignores its random assignment, measures the straight-line (Euclidean) distance to all current centroids, and joins the closest centroid for this round.</p>
+                <div class="formula">Dist = √[ (x₂ - x₁)² + (y₂ - y₁)² ]</div>
+                <p>Hover over the points on the canvas to see their exact distance to their newly chosen centroid.</p>
+                <div class="takeaway">💡 Takeaway: Points greedily choose the closest center to minimize their individual distance.</div>
+            </section>
+
+            <section data-stage="4">
+                <div class="stage-label">Stage 04</div>
+                <h2>Recentering</h2>
+                <p>The points have formed groups, but the original guess (the star) is no longer in the true center of its new team.</p>
+                <p>The algorithm calculates the <strong>mean (average)</strong> position of all points in a cluster, and the centroid slides exactly to that mathematical center of mass.</p>
+                <div class="takeaway">💡 Takeaway: Centroids dynamically update to reflect the actual center of the points assigned to them.</div>
+            </section>
+
+            <section data-stage="5">
+                <div class="stage-label">Stage 05</div>
+                <h2>The Convergence Loop</h2>
+                <p>Because the centroids moved, the boundaries changed. A point that was in the Blue cluster might now be closer to the Red centroid.</p>
+                <p>We loop Steps 3 and 4: Re-assign, Re-center, Re-assign, Re-center. Use the <strong>Step</strong> button to advance manually. When no points swap teams, the algorithm has <strong>converged</strong>.</p>
+                <button class="btn primary" id="btn-narrative-step">Step Algorithm</button>
+                <div class="takeaway">💡 Takeaway: The algorithm loops until stable. It is guaranteed to converge, though not always to the perfect global solution.</div>
+            </section>
+
+            <section data-stage="6">
+                <div class="stage-label">Stage 06</div>
+                <h2>Measuring Tightness (WCSS)</h2>
+                <p>How good are these clusters? We measure the <strong>Within-Cluster Sum of Squares (WCSS)</strong>. It is the sum of the squared distances from every point to its assigned centroid.</p>
+                <p>Look at the Status Strip above the canvas. Lower WCSS means tighter, denser clusters. We want this number to be as small as possible.</p>
+                <div class="takeaway">💡 Takeaway: WCSS is the score K-Means tries to minimize. Smaller means tighter clusters.</div>
+            </section>
+
+            <section data-stage="7">
+                <div class="stage-label">Stage 07</div>
+                <h2>The Elbow Heuristic</h2>
+                <p>How do we choose K? We compute K-Means for K=1, 2, 3, 4, 5... and plot the final WCSS for each.</p>
+                <p>The chart on the right is a <strong>fast demo estimate based on repeated runs</strong> using the current data. We look for the "Elbow" — the point where adding more clusters yields diminishing returns.</p>
+                <p><em>Warning: This is just a heuristic. It doesn't magically reveal a single unquestionable "correct" K. Real datasets are messy and often do not produce a clean bend.</em></p>
+                <div class="takeaway">💡 Takeaway: The Elbow method helps guess the optimal K, but human judgment is still required.</div>
+            </section>
+
+            <section data-stage="8">
+                <div class="stage-label">Stage 08</div>
+                <h2>The Scaling Trap</h2>
+                <p>Age is a small number (20-60). Spending is a massive number ($100-$10,000). Because K-Means uses raw geometric distance, the Y-axis (Spending) completely swallows the X-axis.</p>
+                <p>Look at the canvas: this is a <strong>demo visualization of scale imbalance</strong>. Without standardization, the data visually forms a thin vertical line, and the algorithm essentially ignores Age entirely!</p>
+                <p>Standardization doesn't magically change the dataset's meaning; it simply adjusts the feature scale <em>before</em> clustering so all columns contribute equally to the distance.</p>
+                <div class="takeaway">💡 Takeaway: Always Standardize/Scale your data (e.g., StandardScaler) so all features contribute equally to the distance.</div>
+            </section>
+
+            <section data-stage="9">
+                <div class="stage-label">Stage 09</div>
+                <h2>Limitations & Outliers</h2>
+                <p>K-Means is incredibly fast, but rigid. It assumes clusters are roughly circular (spherical) and equally sized.</p>
+                <p>Furthermore, because it calculates averages, it is highly sensitive to <strong>Outliers</strong>. An outlier has been added to the canvas—watch how it physically drags its centroid away from the true cluster mass.</p>
+                <div class="takeaway">💡 Takeaway: K-Means struggles with complex shapes and outliers. Data preparation is 90% of the battle.</div>
+            </section>
+
+        </div>
+        
+        <div class="vis-column">
+            <div class="status-strip">
+                <div class="status-item"><span class="status-label">Stage</span><span class="status-val" id="ui-stage">1</span></div>
+                <div class="status-item"><span class="status-label">K</span><span class="status-val" id="ui-k">3</span></div>
+                <div class="status-item"><span class="status-label">Iter</span><span class="status-val" id="ui-iter">0</span></div>
+                <div class="status-item"><span class="status-label">Swaps</span><span class="status-val" id="ui-swaps">0</span></div>
+                <div class="status-item"><span class="status-label">WCSS</span><span class="status-val" id="ui-wcss">0.0</span></div>
+                <div class="status-item"><span class="status-label">Status</span><span class="status-val" id="ui-status">Ready</span></div>
+            </div>
+
+            <div class="canvas-container">
+                <canvas id="main-canvas"></canvas>
+            </div>
+            
+            <div class="legend-strip" id="cluster-legend"></div>
+
+            <div class="control-panel">
+                <div class="control-group">
+                    <label style="font-weight: 500;">K:</label>
+                    <input type="range" id="ctrl-k" min="1" max="6" value="3" style="width: 60px;">
+                </div>
+                <div class="control-group">
+                    <label style="font-weight: 500;">Init:</label>
+                    <select id="ctrl-init">
+                        <option value="partition">Random Partition</option>
+                        <option value="forgy">Forgy</option>
+                    </select>
+                </div>
+                <div class="control-group" style="margin-left: auto;">
+                    <label style="font-size: 0.8rem;"><input type="checkbox" id="ctrl-scale" checked> Standardize</label>
+                </div>
+                <div class="control-group">
+                    <label style="font-size: 0.8rem;"><input type="checkbox" id="ctrl-outlier"> Outlier</label>
+                </div>
+                <div class="control-group">
+                    <button class="btn" id="ctrl-rerun">New Data</button>
+                    <button class="btn" id="ctrl-autorun">Auto-Run</button>
+                    <button class="btn primary" id="ctrl-step">Step</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // DOM Elements
+        const canvas = document.getElementById('main-canvas');
+        const ctx = canvas.getContext('2d');
+        const tooltip = document.getElementById('tooltip');
+        
+        // UI Bindings
+        const uiStage = document.getElementById('ui-stage');
+        const uiK = document.getElementById('ui-k');
+        const uiIter = document.getElementById('ui-iter');
+        const uiSwaps = document.getElementById('ui-swaps');
+        const uiWcss = document.getElementById('ui-wcss');
+        const uiStatus = document.getElementById('ui-status');
+
+        // Controls
+        const ctrlK = document.getElementById('ctrl-k');
+        const ctrlInit = document.getElementById('ctrl-init');
+        const ctrlScale = document.getElementById('ctrl-scale');
+        const ctrlOutlier = document.getElementById('ctrl-outlier');
+        
+        // Palette
+        const colors = ['#3b82f6', '#ef4444', '#10b981', '#f59e0b', '#8b5cf6', '#ec4899'];
+        const bgColors = colors.map(c => c + '1A'); // 10% opacity hex
+        
+        // State
+        let width, height;
+        let currentStage = 1;
+        let iteration = 0;
+        let pointsChangedLast = 0;
+        let hasConverged = false;
+        
+        // Data Structures
+        let rawPoints = []; // Stores true numerical values (e.g., Age 20-60, Spend 100-10000)
+        let renderPoints = []; // Screen coordinates [0, 1]
+        let centroids = [];
+        let elbowData = [];
+        
+        let mouseX = -1, mouseY = -1;
+        let hoveredPoint = null;
+        let autoRunInterval = null;
+
+        // Configuration
+        const RAW_AGE_MIN = 20, RAW_AGE_MAX = 60;
+        const RAW_SPEND_MIN = 100, RAW_SPEND_MAX = 10000;
+
+        // --- Core Math ---
+        function dist(p1, p2) {
+            return Math.sqrt(Math.pow(p1.x - p2.x, 2) + Math.pow(p1.y - p2.y, 2));
+        }
+        function lerp(start, end, amt) { return (1 - amt) * start + amt * end; }
+        
+        // Box-Muller for synthetic clusters
+        function randomGaussian() {
+            let u = 1 - Math.random(), v = Math.random();
+            return Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2.0 * Math.PI * v);
+        }
+
+        // --- Data Generation ---
+        function generateData() {
+            rawPoints = [];
+            // Generate 3 base clusters in raw dimensional space
+            const baseClusters = [
+                { a: 28, s: 1500, a_sd: 4, s_sd: 500 }, // Young, Low Spend
+                { a: 50, s: 8000, a_sd: 5, s_sd: 1000 }, // Older, High Spend
+                { a: 40, s: 4500, a_sd: 6, s_sd: 800 }   // Mid, Mid Spend
+            ];
+            
+            baseClusters.forEach(bc => {
+                for(let i=0; i<30; i++) {
+                    let age = bc.a + randomGaussian() * bc.a_sd;
+                    let spend = bc.s + randomGaussian() * bc.s_sd;
+                    age = Math.max(RAW_AGE_MIN, Math.min(RAW_AGE_MAX, age));
+                    spend = Math.max(RAW_SPEND_MIN, Math.min(RAW_SPEND_MAX, spend));
+                    rawPoints.push({ rawAge: age, rawSpend: spend, isOutlier: false });
+                }
+            });
+
+            // Add exactly one explicit outlier
+            rawPoints.push({ rawAge: 58, rawSpend: 1500, isOutlier: true });
+            
+            mapPointsToScreen();
+            resetAlgorithm();
+        }
+
+        function mapPointsToScreen() {
+            const isScaled = ctrlScale.checked;
+            renderPoints = rawPoints.map(rp => {
+                let rx, ry;
+                if (isScaled) {
+                    // Standardized: both mapped cleanly to 0.1 - 0.9 canvas space
+                    rx = 0.1 + 0.8 * ((rp.rawAge - RAW_AGE_MIN) / (RAW_AGE_MAX - RAW_AGE_MIN));
+                    ry = 0.1 + 0.8 * ((rp.rawSpend - RAW_SPEND_MIN) / (RAW_SPEND_MAX - RAW_SPEND_MIN));
+                } else {
+                    // Raw: Mapping geometrically based on absolute spans.
+                    // Spend span is ~9900. Age span is ~40. Age is visually squished.
+                    let maxSpan = Math.max(RAW_AGE_MAX, RAW_SPEND_MAX);
+                    rx = 0.5 + ((rp.rawAge - (RAW_AGE_MAX/2)) / maxSpan); // Squished heavily
+                    ry = 0.1 + 0.8 * ((rp.rawSpend - 0) / maxSpan);
+                }
+                
+                return {
+                    id: Math.random().toString(36).substr(2, 9),
+                    rawAge: rp.rawAge, rawSpend: rp.rawSpend,
+                    origX: rx, origY: ry, x: rx, y: ry, targetX: rx, targetY: ry,
+                    cluster: -1, isOutlier: rp.isOutlier,
+                    randCluster: Math.floor(Math.random() * parseInt(ctrlK.value))
+                };
+            });
+        }
+
+        // --- K-Means Engine ---
+        function resetAlgorithm() {
+            if (autoRunInterval) {
+                clearInterval(autoRunInterval);
+                autoRunInterval = null;
+                document.getElementById('ctrl-autorun').innerText = 'Auto-Run';
+            }
+            let K = parseInt(ctrlK.value);
+            iteration = 0;
+            pointsChangedLast = 0;
+            hasConverged = false;
+            
+            // Re-roll random partitions based on new K
+            renderPoints.forEach(p => { 
+                p.cluster = -1; 
+                p.randCluster = Math.floor(Math.random() * K);
+            });
+            
+            centroids = [];
+            uiIter.innerText = '0';
+            uiSwaps.innerText = '--';
+            uiStatus.innerText = 'Ready';
+            uiStatus.className = 'status-val';
+            
+            if (currentStage === 7) computeLiveElbow();
+            updateLegend();
+            updateUI();
+        }
+
+        function updateLegend() {
+            const legend = document.getElementById('cluster-legend');
+            legend.innerHTML = '';
+            let k = parseInt(ctrlK.value);
+            for(let i=0; i<k; i++) {
+                legend.innerHTML += `<div class="legend-item"><div class="legend-dot" style="background: ${colors[i]}"></div>Cluster ${i}</div>`;
+            }
+            if(ctrlOutlier.checked) {
+                legend.innerHTML += `<div class="legend-item"><div class="legend-dot" style="background: #fff; border: 2px solid #1f2937"></div>Outlier</div>`;
+            }
+        }
+
+        function initCentroids() {
+            let K = parseInt(ctrlK.value);
+            let method = ctrlInit.value;
+            centroids = [];
+
+            // Filter points based on outlier toggle
+            let validPoints = renderPoints.filter(p => !p.isOutlier || ctrlOutlier.checked);
+
+            if (method === 'partition') {
+                validPoints.forEach(p => p.cluster = p.randCluster);
+                let sums = Array(K).fill(0).map(() => ({x:0,y:0,c:0}));
+                validPoints.forEach(p => {
+                    sums[p.cluster].x += p.origX;
+                    sums[p.cluster].y += p.origY;
+                    sums[p.cluster].c++;
+                });
+                sums.forEach((s, i) => {
+                    let cx = s.c > 0 ? s.x / s.c : Math.random();
+                    let cy = s.c > 0 ? s.y / s.c : Math.random();
+                    centroids.push({ x: cx, y: cy, targetX: cx, targetY: cy, cluster: i });
+                });
+            } else if (method === 'forgy') {
+                validPoints.forEach(p => p.cluster = -1);
+                // Pick K random unique valid points
+                let shuffled = [...validPoints].sort(() => 0.5 - Math.random());
+                for(let i=0; i<K; i++) {
+                    let p = shuffled[i % shuffled.length];
+                    centroids.push({ x: p.origX, y: p.origY, targetX: p.origX, targetY: p.origY, cluster: i });
+                }
+            }
+        }
+
+        function assignStep() {
+            let changed = 0;
+            renderPoints.forEach(p => {
+                if (p.isOutlier && !ctrlOutlier.checked) {
+                    p.cluster = -1;
+                    return;
+                }
+                let minDist = Infinity;
+                let best = -1;
+                centroids.forEach(c => {
+                    let d = dist({x: p.targetX, y: p.targetY}, {x: c.targetX, y: c.targetY});
+                    if (d < minDist) { minDist = d; best = c.cluster; }
+                });
+                if (p.cluster !== best && p.cluster !== -1) changed++;
+                p.cluster = best;
+            });
+            pointsChangedLast = changed;
+            if (iteration > 0 && changed === 0) {
+                hasConverged = true;
+                uiStatus.innerText = 'Converged';
+                uiStatus.classList.add('converged');
+            }
+        }
+
+        function centerStep() {
+            let sums = Array(centroids.length).fill(0).map(() => ({x:0, y:0, c:0}));
+            renderPoints.forEach(p => {
+                if (p.cluster !== -1) {
+                    sums[p.cluster].x += p.targetX;
+                    sums[p.cluster].y += p.targetY;
+                    sums[p.cluster].c++;
+                }
+            });
+            centroids.forEach((c, i) => {
+                if (sums[i].c > 0) {
+                    c.targetX = sums[i].x / sums[i].c;
+                    c.targetY = sums[i].y / sums[i].c;
+                }
+            });
+        }
+
+        function stepLogic() {
+            if (hasConverged || currentStage < 3) return;
+            
+            if (centroids.length === 0) initCentroids();
+            
+            assignStep();
+            centerStep();
+            
+            iteration++;
+            updateUI();
+        }
+
+        // Calculate actual visible spatial WCSS
+        function calcWCSS(pts, cents) {
+            let wcss = 0;
+            pts.forEach(p => {
+                if(p.cluster !== -1 && p.cluster < cents.length) {
+                    let c = cents[p.cluster];
+                    wcss += Math.pow(p.targetX - c.targetX, 2) + Math.pow(p.targetY - c.targetY, 2);
+                }
+            });
+            return wcss;
+        }
+
+        // Live Elbow Calculation (Runs K=1 to 6 secretly)
+        function computeLiveElbow() {
+            elbowData = [];
+            let validPoints = renderPoints.filter(p => !p.isOutlier || ctrlOutlier.checked);
+            
+            for(let k=1; k<=6; k++) {
+                let bestWcss = Infinity;
+                
+                // Run 5 restarts to find the best (lowest) WCSS for this K
+                for(let restart=0; restart<5; restart++) {
+                    // Forgy init for stable elbow
+                    let shuffled = [...validPoints].sort(() => 0.5 - Math.random());
+                    let tempCents = [];
+                    for(let i=0; i<k; i++) tempCents.push({ targetX: shuffled[i%shuffled.length].origX, targetY: shuffled[i%shuffled.length].origY, cluster: i });
+                    
+                    // Temp assign
+                    let tempPts = validPoints.map(p => ({...p, cluster: -1}));
+                    
+                    for(let iter=0; iter<10; iter++) {
+                        // Assign
+                        tempPts.forEach(p => {
+                            let minDist = Infinity, best = -1;
+                            tempCents.forEach(c => {
+                                let d = dist({x: p.targetX, y: p.targetY}, {x: c.targetX, y: c.targetY});
+                                if(d < minDist) { minDist = d; best = c.cluster; }
+                            });
+                            p.cluster = best;
+                        });
+                        // Center
+                        let sums = Array(k).fill(0).map(() => ({x:0, y:0, c:0}));
+                        tempPts.forEach(p => { sums[p.cluster].x += p.targetX; sums[p.cluster].y += p.targetY; sums[p.cluster].c++; });
+                        tempCents.forEach((c, i) => { if(sums[i].c>0) { c.targetX = sums[i].x/sums[i].c; c.targetY = sums[i].y/sums[i].c; }});
+                    }
+                    let runWcss = calcWCSS(tempPts, tempCents);
+                    if (runWcss < bestWcss) bestWcss = runWcss;
+                }
+                elbowData.push(bestWcss);
+            }
+        }
+
+        // --- Interaction Handlers ---
+        document.getElementById('ctrl-step').addEventListener('click', stepLogic);
+        document.getElementById('btn-narrative-step').addEventListener('click', stepLogic);
+        document.getElementById('ctrl-rerun').addEventListener('click', () => { generateData(); if(currentStage===7) computeLiveElbow(); });
+        
+        document.getElementById('ctrl-autorun').addEventListener('click', () => {
+            if (autoRunInterval) {
+                clearInterval(autoRunInterval);
+                autoRunInterval = null;
+                document.getElementById('ctrl-autorun').innerText = 'Auto-Run';
+            } else {
+                if (hasConverged) resetAlgorithm();
+                document.getElementById('ctrl-autorun').innerText = 'Stop';
+                autoRunInterval = setInterval(() => {
+                    stepLogic();
+                    if (hasConverged) {
+                        clearInterval(autoRunInterval);
+                        autoRunInterval = null;
+                        document.getElementById('ctrl-autorun').innerText = 'Auto-Run';
+                    }
+                }, 400);
+            }
+        });
+        
+        ctrlK.addEventListener('input', () => { uiK.innerText = ctrlK.value; resetAlgorithm(); });
+        ctrlInit.addEventListener('change', resetAlgorithm);
+        ctrlScale.addEventListener('change', () => { mapPointsToScreen(); resetAlgorithm(); });
+        ctrlOutlier.addEventListener('change', resetAlgorithm);
+
+        canvas.addEventListener('mousemove', (e) => {
+            const rect = canvas.getBoundingClientRect();
+            const dpr = window.devicePixelRatio || 1;
+            // Logical coordinates
+            mouseX = (e.clientX - rect.left);
+            mouseY = (e.clientY - rect.top);
+            
+            hoveredPoint = null;
+            let minDist = 12; // hover radius
+            renderPoints.forEach(p => {
+                if (p.isOutlier && !ctrlOutlier.checked) return;
+                let px = p.x * width, py = p.y * height;
+                let d = Math.sqrt(Math.pow(px - mouseX, 2) + Math.pow(py - mouseY, 2));
+                if (d < minDist) { minDist = d; hoveredPoint = p; }
+            });
+
+            if (hoveredPoint && currentStage >= 3 && hoveredPoint.cluster !== -1) {
+                let c = centroids[hoveredPoint.cluster];
+                let d = dist(hoveredPoint, c).toFixed(3);
+                tooltip.style.opacity = 1;
+                tooltip.style.left = e.clientX + 'px';
+                tooltip.style.top = e.clientY + 'px';
+                tooltip.innerHTML = `Cluster: <span style="color:${colors[hoveredPoint.cluster]}">${hoveredPoint.cluster}</span><br>Dist: ${d}`;
+            } else {
+                tooltip.style.opacity = 0;
+            }
+        });
+        canvas.addEventListener('mouseleave', () => { tooltip.style.opacity = 0; hoveredPoint = null; });
+
+        // --- View & Stage Management ---
+        function updateUI() {
+            uiIter.innerText = iteration;
+            uiSwaps.innerText = iteration === 0 ? '--' : pointsChangedLast;
+            if(centroids.length > 0) {
+                let w = calcWCSS(renderPoints, centroids);
+                uiWcss.innerText = w.toFixed(2);
+            } else {
+                uiWcss.innerText = '--';
+            }
+        }
+
+        function setStage(stage) {
+            currentStage = parseInt(stage);
+            uiStage.innerText = currentStage;
+            
+            // Sync controls with narrative
+            if (currentStage === 8) { ctrlScale.checked = false; mapPointsToScreen(); resetAlgorithm(); }
+            if (currentStage !== 8 && !ctrlScale.checked && currentStage !== 9) { ctrlScale.checked = true; mapPointsToScreen(); resetAlgorithm(); }
+            
+            if (currentStage === 9) { ctrlOutlier.checked = true; resetAlgorithm(); }
+            if (currentStage !== 9 && ctrlOutlier.checked) { ctrlOutlier.checked = false; resetAlgorithm(); }
+
+            // Stage auto-run logic
+            if (currentStage === 1) resetAlgorithm();
+            if (currentStage === 2) { resetAlgorithm(); initCentroids(); }
+            if (currentStage === 3) { resetAlgorithm(); initCentroids(); assignStep(); }
+            if (currentStage === 4) { resetAlgorithm(); initCentroids(); assignStep(); centerStep(); }
+            if (currentStage >= 5 && currentStage <= 6) {
+                resetAlgorithm();
+                while(!hasConverged && iteration < 20) stepLogic();
+            }
+            if (currentStage === 7) {
+                resetAlgorithm();
+                computeLiveElbow();
+            }
+            if (currentStage >= 8) {
+                while(!hasConverged && iteration < 20) stepLogic();
+            }
+            updateUI();
+        }
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting && entry.intersectionRatio > 0.4) {
+                    document.querySelectorAll('section').forEach(el => el.classList.remove('active'));
+                    entry.target.classList.add('active');
+                    setStage(entry.target.getAttribute('data-stage'));
+                }
+            });
+        }, { threshold: 0.45 });
+        document.querySelectorAll('section').forEach(s => observer.observe(s));
+
+        window.addEventListener('scroll', () => {
+            const winScroll = document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            document.getElementById("progress-bar").style.width = (winScroll / height * 100) + "%";
+        });
+
+        // --- Rendering ---
+        function resizeCanvas() {
+            const container = canvas.parentElement;
+            width = container.clientWidth;
+            height = container.clientHeight;
+            const dpr = window.devicePixelRatio || 1;
+            canvas.width = width * dpr;
+            canvas.height = height * dpr;
+            ctx.scale(dpr, dpr);
+        }
+        window.addEventListener('resize', resizeCanvas);
+
+        function drawAxes() {
+            ctx.strokeStyle = '#e7e5e4'; ctx.lineWidth = 1; ctx.beginPath();
+            for(let i=1; i<10; i++) {
+                ctx.moveTo(width*(i/10), 0); ctx.lineTo(width*(i/10), height);
+                ctx.moveTo(0, height*(i/10)); ctx.lineTo(width, height*(i/10));
+            }
+            ctx.stroke();
+            ctx.fillStyle = '#9ca3af'; ctx.font = '12px Inter';
+            ctx.fillText('Age →', width/2 - 20, height - 10);
+            ctx.save(); ctx.translate(15, height/2 + 30); ctx.rotate(-Math.PI/2); ctx.fillText('Spending →', 0, 0); ctx.restore();
+        }
+
+        function drawVoronoi() {
+            if (currentStage < 5 || currentStage === 7 || centroids.length === 0) return;
+            const step = 20;
+            for(let x=0; x<width; x+=step) {
+                for(let y=0; y<height; y+=step) {
+                    let minDist = Infinity, bestC = -1;
+                    centroids.forEach(c => {
+                        let d = dist({x: x/width, y: y/height}, {x: c.targetX, y: c.targetY});
+                        if(d < minDist) { minDist = d; bestC = c.cluster; }
+                    });
+                    if (bestC !== -1) { ctx.fillStyle = bgColors[bestC]; ctx.fillRect(x, y, step, step); }
+                }
+            }
+        }
+
+        function drawLines() {
+            if (currentStage === 3 || currentStage === 4 || currentStage === 6 || hoveredPoint) {
+                renderPoints.forEach(p => {
+                    if (p.isOutlier && !ctrlOutlier.checked) return;
+                    if(p.cluster !== -1 && (currentStage !== 5 || p === hoveredPoint)) {
+                        let c = centroids[p.cluster];
+                        if(!c) return;
+                        ctx.beginPath();
+                        ctx.moveTo(p.x * width, p.y * height);
+                        ctx.lineTo(c.x * width, c.y * height);
+                        
+                        if (p === hoveredPoint) {
+                            ctx.strokeStyle = colors[p.cluster]; ctx.lineWidth = 2;
+                        } else {
+                            ctx.strokeStyle = currentStage === 6 ? colors[p.cluster] : '#d1d5db';
+                            ctx.lineWidth = currentStage === 6 ? 1.5 : 1;
+                            if (currentStage !== 6) ctx.setLineDash([4, 4]);
+                        }
+                        ctx.stroke(); ctx.setLineDash([]);
+                    }
+                });
+            }
+        }
+
+        function drawElbowChart() {
+            if (elbowData.length === 0) return;
+            ctx.fillStyle = 'rgba(255,255,255,0.9)'; ctx.fillRect(0, 0, width, height);
+            
+            const chartW = width * 0.7, chartH = height * 0.5;
+            const ox = (width - chartW) / 2, oy = (height + chartH) / 2;
+            
+            ctx.strokeStyle = '#9ca3af'; ctx.lineWidth = 2; ctx.beginPath();
+            ctx.moveTo(ox, oy - chartH); ctx.lineTo(ox, oy); ctx.lineTo(ox + chartW, oy); ctx.stroke();
+            
+            ctx.fillStyle = '#4b5563'; ctx.font = '14px Inter';
+            ctx.fillText('Number of Clusters (K)', ox + chartW/2 - 60, oy + 30);
+            ctx.save(); ctx.translate(ox - 20, oy - chartH/2 + 20); ctx.rotate(-Math.PI/2); ctx.fillText('Actual WCSS', 0, 0); ctx.restore();
+            
+            let maxW = Math.max(...elbowData);
+            
+            ctx.beginPath(); ctx.strokeStyle = '#6366f1'; ctx.lineWidth = 3;
+            elbowData.forEach((w, i) => {
+                let px = ox + (i / 5) * chartW;
+                let py = oy - (w / maxW) * chartH;
+                if(i===0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+            });
+            ctx.stroke();
+            
+            let currentK = parseInt(ctrlK.value);
+            elbowData.forEach((w, i) => {
+                let px = ox + (i / 5) * chartW;
+                let py = oy - (w / maxW) * chartH;
+                let isCurrent = (i+1) === currentK;
+                
+                ctx.beginPath(); ctx.arc(px, py, isCurrent ? 8 : 5, 0, Math.PI*2);
+                ctx.fillStyle = isCurrent ? '#ef4444' : '#6366f1'; ctx.fill();
+                
+                if (isCurrent) {
+                    ctx.fillStyle = '#ef4444'; ctx.font = 'bold 12px Inter';
+                    ctx.fillText(`K=${currentK}`, px + 12, py - 10);
+                }
+            });
+        }
+
+        function render() {
+            ctx.clearRect(0, 0, width, height);
+            
+            if (currentStage !== 7) {
+                drawAxes();
+                drawVoronoi();
+                drawLines();
+
+                renderPoints.forEach(p => {
+                    if (p.isOutlier && !ctrlOutlier.checked) return;
+                    
+                    p.x = lerp(p.x, p.targetX, 0.1);
+                    p.y = lerp(p.y, p.targetY, 0.1);
+                    
+                    ctx.beginPath();
+                    ctx.arc(p.x * width, p.y * height, (p.isOutlier || p === hoveredPoint) ? 7 : 4, 0, Math.PI * 2);
+                    ctx.fillStyle = p.cluster === -1 ? '#9ca3af' : colors[p.cluster];
+                    ctx.fill();
+                    if (p.isOutlier || p === hoveredPoint) { ctx.strokeStyle = '#1f2937'; ctx.lineWidth = 2; ctx.stroke(); }
+                });
+
+                if (currentStage >= 2) {
+                    centroids.forEach(c => {
+                        c.x = lerp(c.x, c.targetX, 0.1);
+                        c.y = lerp(c.y, c.targetY, 0.1);
+                        let cx = c.x * width, cy = c.y * height;
+                        
+                        ctx.fillStyle = colors[c.cluster]; ctx.strokeStyle = '#ffffff'; ctx.lineWidth = 2;
+                        ctx.beginPath();
+                        for(let i=0; i<5; i++) {
+                            ctx.lineTo(Math.cos((18+i*72)/180*Math.PI)*14 + cx, -Math.sin((18+i*72)/180*Math.PI)*14 + cy);
+                            ctx.lineTo(Math.cos((54+i*72)/180*Math.PI)*6 + cx, -Math.sin((54+i*72)/180*Math.PI)*6 + cy);
+                        }
+                        ctx.closePath(); ctx.fill(); ctx.stroke();
+                    });
+                }
+                
+                // Draw Swaps overlay
+                if (iteration > 0 && currentStage !== 7) {
+                    ctx.fillStyle = hasConverged ? '#10b981' : '#1f2937';
+                    ctx.font = '600 14px Inter';
+                    ctx.textAlign = 'right';
+                    ctx.fillText(hasConverged ? 'Convergence Reached' : `Swaps this step: ${pointsChangedLast}`, width - 15, 25);
+                    ctx.textAlign = 'left';
+                }
+            } else {
+                drawElbowChart();
+            }
+            requestAnimationFrame(render);
+        }
+
+        // Init
+        resizeCanvas();
+        generateData();
+        setTimeout(() => setStage(1), 100);
+        render();
+
+    </script>
+</body>
+</html>

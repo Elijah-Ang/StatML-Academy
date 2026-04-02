@@ -1,0 +1,1806 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Regression Trees | Visual Explainer</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Base Variables & Theme */
+        :root {
+            --bg-main: #f7f7f4;
+            --bg-card: #ffffff;
+            --bg-secondary: #f0efeb;
+            --border: #e7e5e4;
+            --text-main: #1f2937;
+            --text-dim: #4b5563;
+            --text-muted: #6b7280;
+            --accent: #6366f1;
+            --accent-dark: #4f46e5;
+            --accent-bg: #e0e7ff;
+            --error: #dc2626;
+            --success: #16a34a;
+            --warning: #d97706;
+            
+            --font-sans: 'Inter', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Progress Bar */
+        #progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent), #818cf8);
+            width: 0%;
+            z-index: 100;
+        }
+
+        /* Layout */
+        #hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 2rem;
+            position: relative;
+            background: transparent;
+        }
+
+        #hero-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.6;
+        }
+
+        #hero h1 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--text-main), var(--accent-dark));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        #hero p {
+            font-size: 1.25rem;
+            color: var(--text-dim);
+            max-width: 600px;
+            margin-bottom: 2rem;
+        }
+
+        .topic-badge {
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--accent);
+            margin-bottom: 1rem;
+        }
+
+        .scroll-cue {
+            position: absolute;
+            bottom: 3rem;
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+
+        /* Main Container */
+        #main-container {
+            display: flex;
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        #narrative {
+            width: 45%;
+            padding: 0 4rem 10vh 4rem;
+        }
+
+        #visualization {
+            width: 55%;
+            height: 100vh;
+            position: sticky;
+            top: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        canvas#viz-canvas {
+            width: 100%;
+            height: 100%;
+            max-height: 800px;
+            background-color: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            cursor: crosshair;
+        }
+
+        /* Story Sections */
+        .stage-section {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            opacity: 0.2;
+            transition: opacity 0.5s ease;
+            padding: 4rem 0;
+        }
+
+        .stage-section.active { opacity: 1; }
+
+        .stage-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .stage-label::after {
+            content: ''; height: 1px; width: 2rem;
+            background-color: var(--accent); opacity: 0.5;
+        }
+
+        .stage-section h2 {
+            font-size: 2rem; font-weight: 600;
+            margin-bottom: 1.5rem; line-height: 1.2;
+        }
+
+        .stage-section p {
+            margin-bottom: 1.25rem; font-size: 1.05rem;
+            color: var(--text-dim);
+        }
+
+        /* Components */
+        .glass-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 8px; padding: 1.5rem;
+            margin: 2rem 0; box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .playground-summary-card {
+            margin-top: 1rem;
+            padding: 0.95rem 1rem;
+            background: rgba(255, 255, 255, 0.72);
+            border-color: rgba(226, 232, 240, 0.78);
+            box-shadow: none;
+        }
+
+        .playground-summary-grid {
+            font-family: var(--font-mono);
+            display: flex;
+            flex-direction: column;
+            gap: 0.55rem;
+        }
+
+        .playground-summary-row {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+
+        .playground-summary-label {
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+        }
+
+        .playground-summary-value {
+            font-size: 0.92rem;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .stage6-tree-card {
+            margin: 1.25rem 0 1.25rem 0;
+            padding: 0.75rem;
+        }
+
+        canvas#stage6-tree-canvas {
+            width: 100%;
+            height: 320px;
+            display: block;
+        }
+
+        .formula-block {
+            font-family: var(--font-mono); background-color: var(--bg-secondary);
+            padding: 1rem 1.5rem; border-radius: 6px;
+            font-size: 0.9rem; color: var(--text-main);
+            margin: 1.5rem 0; border-left: 3px solid var(--accent);
+        }
+
+        .insight-box {
+            background-color: var(--accent-bg);
+            border-left: 4px solid var(--accent);
+            padding: 1.25rem; border-radius: 0 8px 8px 0;
+            margin: 1.5rem 0; font-size: 0.95rem; color: var(--accent-dark);
+        }
+
+        .metric-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 1rem; margin: 1.5rem 0;
+        }
+
+        .metric-card {
+            background-color: var(--bg-card); border: 1px solid var(--border);
+            padding: 1rem; border-radius: 8px; text-align: center;
+        }
+
+        .metric-value {
+            font-family: var(--font-mono); font-size: 1.25rem;
+            font-weight: 700; color: var(--text-main);
+        }
+
+        .metric-label {
+            font-size: 0.7rem; text-transform: uppercase;
+            letter-spacing: 0.05em; color: var(--text-muted); margin-top: 0.25rem;
+        }
+
+        .tag {
+            display: inline-block; padding: 0.1rem 0.6rem;
+            border-radius: 9999px; font-size: 0.8rem; font-weight: 500;
+            background-color: var(--bg-secondary); border: 1px solid var(--border);
+        }
+
+        /* Controls */
+        .control-panel {
+            margin-top: 1rem; padding: 1.5rem;
+            background-color: var(--bg-card); border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+
+        .control-header {
+            display: flex; justify-content: space-between;
+            margin-bottom: 1rem; font-weight: 500; font-size: 0.9rem;
+        }
+
+        input[type=range] {
+            width: 100%; -webkit-appearance: none;
+            background: transparent; margin: 0.5rem 0 1.5rem 0;
+        }
+
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none; height: 18px; width: 18px;
+            border-radius: 50%; background: var(--accent);
+            cursor: pointer; margin-top: -7px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+        }
+
+        input[type=range]::-webkit-slider-runnable-track {
+            width: 100%; height: 4px; cursor: pointer;
+            background: var(--border); border-radius: 2px;
+        }
+
+        button.btn {
+            background-color: var(--bg-secondary); border: 1px solid var(--border);
+            padding: 0.6rem 1rem; border-radius: 6px; font-family: var(--font-sans);
+            font-weight: 500; font-size: 0.9rem; cursor: pointer;
+            transition: all 0.2s; color: var(--text-main); width: 100%;
+        }
+
+        button.btn:hover { background-color: #e5e5e5; }
+        button.btn.primary { background-color: var(--accent); color: white; border-color: var(--accent); }
+        button.btn.primary:hover { background-color: var(--accent-dark); }
+
+        .checkbox-group {
+            display: flex; flex-direction: column; gap: 0.75rem; margin-top: 1rem;
+        }
+        .checkbox-label {
+            display: flex; align-items: center; gap: 0.5rem; font-size: 0.9rem; cursor: pointer;
+        }
+
+        /* Stage Dots */
+        #stage-dots {
+            position: fixed; right: 2rem; top: 50%;
+            transform: translateY(-50%); display: flex;
+            flex-direction: column; gap: 1rem; z-index: 50;
+        }
+
+        .dot {
+            width: 8px; height: 8px; border-radius: 50%;
+            background-color: var(--border); transition: all 0.3s; cursor: pointer;
+        }
+
+        .dot.active { background-color: var(--accent); transform: scale(1.5); }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            #main-container { flex-direction: column; }
+            #narrative { width: 100%; padding: 0 2rem; }
+            #visualization {
+                width: 100%; height: 55vh; position: sticky; top: 0;
+                padding: 1rem; background: var(--bg-main); z-index: 10;
+                border-bottom: 1px solid var(--border);
+            }
+            #stage-dots { display: none; }
+            .stage-section { min-height: auto; padding: 3rem 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="progress-bar"></div>
+    <div id="stage-dots"></div>
+
+    <section id="hero">
+        <canvas id="hero-canvas"></canvas>
+        <div class="topic-badge">Algorithmic Intuition</div>
+        <h1>Regression Trees</h1>
+        <p>A visual guide to predicting numbers through recursive logic, top-down optimization, and simple math.</p>
+        <div class="scroll-cue">Scroll to begin ↓</div>
+    </section>
+
+    <div id="main-container">
+        <!-- Narrative Column -->
+        <div id="narrative">
+            
+            <article class="stage-section active" data-stage="1">
+                <div class="stage-label">Stage 01</div>
+                <h2>The Raw Target</h2>
+                <p>A regression tree is a model that helps us predict a <strong>number</strong>. Not a category like "cat or dog", but a continuous value like an exam score, temperature, or a house price.</p>
+                <p>Let's look at a small dataset of houses. We want to predict the <span class="tag">Price</span> (in thousands) based entirely on the <span class="tag">Size</span> of the house (in square meters).</p>
+                <div class="glass-card">
+                    <p style="font-size: 0.9rem; margin-bottom: 0;">Look at the canvas. The horizontal axis is Size ($m^2$), and the vertical axis is Price ($k). Hover over the canvas to see active tooltips.</p>
+                </div>
+            </article>
+
+            <article class="stage-section" data-stage="2">
+                <div class="stage-label">Stage 02</div>
+                <h2>The Clumsy Guess</h2>
+                <p>At the very start, the tree puts all houses in one big group (the <strong>Root Node</strong>). Before asking any questions, it asks: <em>"If I had to guess one price for all houses, what should I use?"</em></p>
+                <p>The standard answer is the <strong>average</strong>. If we take all 16 training house prices and average them, we get exactly $483.1k.</p>
+                <div class="formula-block">
+                    Root Prediction = Average(y) = 483.1
+                </div>
+                <p>This is a clumsy guess. The red lines on the canvas show the <strong>Residuals</strong>—the mathematical distance between our flat guess and reality.</p>
+            </article>
+
+            <article class="stage-section" data-stage="3">
+                <div class="stage-label">Stage 03</div>
+                <h2>The First Split</h2>
+                <p>Now the tree asks a question to divide the data: <em>"Can I split the houses into 2 groups so the prices inside each group become more similar?"</em></p>
+                <p>It checks a "cut point". Based on the math, the best first rule is: <strong>Is Size < 100?</strong></p>
+                <div class="insight-box">
+                    If <strong>Yes</strong>, go Left. If <strong>No</strong>, go Right.
+                </div>
+                <p>Now, instead of one average for everything, we have <strong>two averages</strong>. A lower average ($363.3k) for smaller houses, and a higher average ($637.1k) for bigger houses.</p>
+            </article>
+
+            <article class="stage-section" data-stage="4">
+                <div class="stage-label">Stage 04</div>
+                <h2>The Error Engine (RSS)</h2>
+                <p>How did it know to split exactly at 100? The algorithm is "Greedy". It sweeps across <em>every single possible threshold</em> and chooses the one that leaves the least amount of mess.</p>
+                <p>It measures "mess" using the <strong>Residual Sum of Squares (RSS)</strong>. It squares all the red error lines and adds them up.</p>
+                
+                <div class="control-panel">
+                    <div class="control-header">
+                        <span>Test Threshold: Size < <span id="sweep-readout">100</span></span>
+                    </div>
+                    <input type="range" id="sweep-slider" min="46" max="154" value="100">
+                    <div class="metric-grid" style="margin-top: 0;">
+                        <div class="metric-card">
+                            <div class="metric-value" id="rss-metric" style="color: var(--accent);">61,744</div>
+                            <div class="metric-label">Total RSS</div>
+                        </div>
+                    </div>
+                    <button id="snap-btn" class="btn">Snap to Minimum RSS</button>
+                </div>
+                <p style="margin-top: 1rem; font-size: 0.9rem; color: var(--text-dim);">Look at the mini-chart on the canvas. The true optimal split is the absolute bottom of that curve.</p>
+            </article>
+
+            <article class="stage-section" data-stage="5">
+                <div class="stage-label">Stage 05</div>
+                <h2>Recursive Splitting</h2>
+                <p>After finding the best first split, the tree does the exact same thing inside each new group. It splits, then splits inside the split. Like cutting a cake into pieces, then cutting those pieces again.</p>
+                <p>This is called <strong>Recursive Binary Splitting</strong>. With every split, the prediction line stops looking flat and starts looking like a set of stairs.</p>
+                
+                <div class="control-panel">
+                    <button id="play-split-btn" class="btn primary">Play: Grow Tree Sequentially</button>
+                    <p style="margin-top: 1rem; font-size: 0.85rem; color: var(--text-dim); text-align: center;">Watch the regions split and slide to form deeper nodes.</p>
+                </div>
+            </article>
+
+            <article class="stage-section" data-stage="6">
+                <div class="stage-label">Stage 06</div>
+                <h2>The Anatomy of a Tree</h2>
+                <p>Even though we call it a tree, data scientists draw them upside down.</p>
+                <ul style="padding-left: 1.5rem; margin-bottom: 1.5rem; color: var(--text-dim);">
+                    <li><strong>Root Node:</strong> The top, where all data starts.</li>
+                    <li><strong>Internal Node:</strong> A fork in the road.</li>
+                    <li><strong>Terminal Node (Leaf):</strong> The final box that gives the prediction number.</li>
+                </ul>
+                <div class="glass-card stage6-tree-card">
+                    <canvas id="stage6-tree-canvas"></canvas>
+                </div>
+                <div class="insight-box" style="background-color: #fdf2f8; border-color: #db2777; color: #9d174d;">
+                    <strong>Interactive:</strong> Move your mouse over the canvas right now. The tree diagram will light up to trace the exact decision path for the region your cursor is in.
+                </div>
+            </article>
+
+            <article class="stage-section" data-stage="7">
+                <div class="stage-label">Stage 07</div>
+                <h2>The Overfitting Trap</h2>
+                <p>What happens if we never tell the tree to stop? It will keep splitting until every single data point is alone in its own leaf.</p>
+                <p>We've added <strong>Validation Data</strong> (the <span style="color: var(--warning); font-weight: bold;">amber dots</span>). These are new houses the tree has never seen.</p>
+                
+                <div class="control-panel">
+                    <div class="control-header" style="margin-bottom: 0.75rem;">
+                        <span>Always-Visible Comparison</span>
+                    </div>
+                    <div class="metric-grid" style="margin: 0;">
+                        <div class="metric-card">
+                            <div class="metric-value" style="color: var(--accent);">Depth 2</div>
+                            <div class="metric-label">4 Leaves · Simplified</div>
+                        </div>
+                        <div class="metric-card" style="border-color: var(--warning);">
+                            <div class="metric-value" style="color: var(--warning);">Depth 10</div>
+                            <div class="metric-label" style="color: var(--warning);">16 Leaves · Overfit</div>
+                        </div>
+                    </div>
+                </div>
+                <p style="margin-top: 1rem;">Both trees now stay fully visible. The simpler tree keeps the broad shape, while the deeper tree memorizes tiny bumps and loses the cleaner structure.</p>
+            </article>
+
+            <article class="stage-section" data-stage="8">
+                <div class="stage-label">Stage 08</div>
+                <h2>Stopping Rules</h2>
+                <p>To prevent overfitting, we enforce <strong>Stopping Rules</strong> (also known as pre-pruning). We limit how deep the tree can grow.</p>
+                <p>Choose an integer training depth. The model is retrained at each whole number, while the staircase animation eases between those snapshots so you can see the shift without pretending the tree was literally trained at 1.3 or 7.3 levels.</p>
+                
+                <div class="control-panel">
+                    <div class="control-header">
+                        <span>Effective Depth: <span id="depth-readout" style="font-family: var(--font-mono); color: var(--accent);">2</span></span>
+                    </div>
+                    <input type="range" id="depth-slider" min="1" max="8" step="1" value="2">
+                    
+                    <div class="metric-grid">
+                        <div class="metric-card">
+                            <div class="metric-value" id="train-err-metric">...</div>
+                            <div class="metric-label">Train RSS</div>
+                        </div>
+                        <div class="metric-card" style="border-color: var(--warning);">
+                            <div class="metric-value" id="val-err-metric" style="color: var(--warning);">...</div>
+                            <div class="metric-label" style="color: var(--warning);">Validation RSS</div>
+                        </div>
+                    </div>
+                    <p style="margin-top: 1rem; font-size: 0.82rem; color: var(--text-dim); text-align: center;">The mini-curve on the canvas marks the best validation depth and the currently selected trained depth.</p>
+                </div>
+            </article>
+
+            <article class="stage-section" data-stage="9">
+                <div class="stage-label">Stage 09</div>
+                <h2>Trees vs. Lines</h2>
+                <p>Linear regression fits a smooth, straight line. It assumes a constant rate of change. Regression trees carve the world into rectangles and assign a flat average to each.</p>
+                
+                <div class="control-panel">
+                    <div class="checkbox-group">
+                        <label class="checkbox-label"><input type="checkbox" id="chk-tree" checked> Show Tree Model (Indigo)</label>
+                        <label class="checkbox-label"><input type="checkbox" id="chk-line" checked> Show Linear Model (Green)</label>
+                        <label class="checkbox-label"><input type="checkbox" id="chk-tree-err"> Show Tree Errors</label>
+                        <label class="checkbox-label"><input type="checkbox" id="chk-line-err"> Show Linear Errors</label>
+                    </div>
+                </div>
+                <p style="margin-top: 1.5rem;">If the data has sudden thresholds or "if/then" behaviors, trees capture it naturally. If it's a smooth trend, lines win.</p>
+            </article>
+
+            <article class="stage-section" data-stage="10">
+                <div class="stage-label">Stage 10</div>
+                <h2>Interactive Playground</h2>
+                <p>Let's put the model to work. The tree is currently trained at Depth 3.</p>
+                <div class="insight-box">
+                    <strong>Click anywhere on the canvas</strong> to place a new house. The tree will evaluate it and trace its path.
+                </div>
+                <div class="glass-card playground-summary-card">
+                    <div class="playground-summary-grid">
+                        <div class="playground-summary-row"><span class="playground-summary-label">New House Size</span><span class="playground-summary-value"><span id="pg-size">--</span> m²</span></div>
+                        <div class="playground-summary-row"><span class="playground-summary-label">Predicted Price</span><span class="playground-summary-value"><span id="pg-pred">--</span></span></div>
+                    </div>
+                </div>
+            </article>
+
+            <article class="stage-section" data-stage="11">
+                <div class="stage-label">Stage 11</div>
+                <h2>Synthesis</h2>
+                <p>You now understand the mechanics of a regression tree.</p>
+                <ol style="padding-left: 1.5rem; margin-bottom: 1.5rem; color: var(--text-dim);">
+                    <li><strong>Predicts a number</strong>, not a class.</li>
+                    <li><strong>Greedy search</strong> finds the best splits to minimize RSS.</li>
+                    <li><strong>Leaves predict averages</strong> of the data inside them.</li>
+                    <li><strong>Stopping rules prevent overfitting</strong>, prioritizing generalization over memorization.</li>
+                </ol>
+                <p>While a single tree can be unstable, this exact recursive splitting is the fundamental building block for advanced modern algorithms like Random Forests and Gradient Boosting.</p>
+            </article>
+
+        </div>
+
+        <!-- Right: Visualization -->
+        <div id="visualization">
+            <canvas id="viz-canvas"></canvas>
+        </div>
+    </div>
+
+    <script>
+        // Data & State
+        const trainData = [
+            {x: 45, y: 280}, {x: 50, y: 300}, {x: 55, y: 310}, {x: 60, y: 330},
+            {x: 68, y: 320}, {x: 75, y: 390}, {x: 80, y: 420}, {x: 88, y: 450},
+            {x: 95, y: 470}, {x: 105, y: 550}, {x: 115, y: 580}, {x: 120, y: 620},
+            {x: 128, y: 640}, {x: 135, y: 650}, {x: 145, y: 700}, {x: 155, y: 720}
+        ];
+        const testData = [
+            {x: 48, y: 260}, {x: 65, y: 360}, {x: 85, y: 460}, 
+            {x: 110, y: 530}, {x: 130, y: 610}, {x: 150, y: 750}
+        ];
+
+        let state = {
+            stage: 1,
+            targetDepth: 0,
+            animDepth: 0, // Used for smooth interpolations
+            sweepX: 100,
+            hoverX: null,
+            hoverPxX: null,
+            hoverPxY: null,
+            playgroundX: null,
+            playgroundY: null,
+            
+            // Stage 9 Toggles
+            s9Tree: true,
+            s9Line: true,
+            s9TreeErr: false,
+            s9LineErr: false
+        };
+
+        // DOM Elements
+        const canvas = document.getElementById('viz-canvas');
+        const vizCtx = canvas.getContext('2d');
+        let ctx = vizCtx;
+        const stage6TreeCanvas = document.getElementById('stage6-tree-canvas');
+        const stage6TreeCtx = stage6TreeCanvas.getContext('2d');
+        const heroCanvas = document.getElementById('hero-canvas');
+        const heroCtx = heroCanvas.getContext('2d');
+        
+        const progressBar = document.getElementById('progress-bar');
+        const sections = document.querySelectorAll('.stage-section');
+        const dotsContainer = document.getElementById('stage-dots');
+        
+        // Setup Canvas
+        let cw, ch;
+        function resizeCanvas() {
+            const rect = canvas.parentElement.getBoundingClientRect();
+            const dpr = window.devicePixelRatio || 1;
+
+            canvas.width = rect.width * dpr;
+            canvas.height = rect.height * dpr;
+            vizCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+            cw = rect.width;
+            ch = rect.height;
+
+            const stage6Rect = stage6TreeCanvas.getBoundingClientRect();
+            stage6TreeCanvas.width = stage6Rect.width * dpr;
+            stage6TreeCanvas.height = stage6Rect.height * dpr;
+            stage6TreeCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+            
+            heroCanvas.width = window.innerWidth * dpr;
+            heroCanvas.height = window.innerHeight * dpr;
+            heroCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+            
+            precomputeRSSCurve();
+            precomputeDepthMetrics();
+        }
+        window.addEventListener('resize', resizeCanvas);
+
+        // Mapping
+        const minX = 35, maxX = 165;
+        const minY = 200, maxY = 800;
+        const TREE_ACTIVE_ACCENT = '#db2777';
+        const TREE_ACTIVE_ACCENT_DARK = '#9d174d';
+        const TREE_INACTIVE_EDGE = 'rgba(148, 163, 184, 0.42)';
+        const TREE_INACTIVE_EDGE_LABEL = 'rgba(100, 116, 139, 0.76)';
+        const TREE_INACTIVE_NODE_FILL = 'rgba(255, 255, 255, 0.78)';
+        const TREE_INACTIVE_NODE_STROKE = 'rgba(148, 163, 184, 0.38)';
+        const TREE_INACTIVE_LEAF_FILL = 'rgba(224, 231, 255, 0.68)';
+        const TREE_INACTIVE_LEAF_STROKE = 'rgba(99, 102, 241, 0.52)';
+        const TREE_INACTIVE_TEXT = 'rgba(31, 41, 55, 0.82)';
+        function clamp(val, min, max) { return Math.max(min, Math.min(max, val)); }
+        function createPlotBounds(x, y, w, h, padding = {}) {
+            const bounds = {
+                x, y, w, h,
+                padL: padding.left ?? 40,
+                padR: padding.right ?? 20,
+                padT: padding.top ?? 20,
+                padB: padding.bottom ?? 40
+            };
+            bounds.innerLeft = bounds.x + bounds.padL;
+            bounds.innerRight = bounds.x + bounds.w - bounds.padR;
+            bounds.innerTop = bounds.y + bounds.padT;
+            bounds.innerBottom = bounds.y + bounds.h - bounds.padB;
+            bounds.innerW = Math.max(1, bounds.innerRight - bounds.innerLeft);
+            bounds.innerH = Math.max(1, bounds.innerBottom - bounds.innerTop);
+            return bounds;
+        }
+        function getMainPlotBounds() { return createPlotBounds(0, 0, cw, ch); }
+        function mapX(val, bounds = getMainPlotBounds()) {
+            return bounds.innerLeft + ((val - minX) / (maxX - minX)) * bounds.innerW;
+        }
+        function mapY(val, bounds = getMainPlotBounds()) {
+            return bounds.innerBottom - ((val - minY) / (maxY - minY)) * bounds.innerH;
+        }
+        function unmapX(px, bounds = getMainPlotBounds()) {
+            return minX + ((px - bounds.innerLeft) / bounds.innerW) * (maxX - minX);
+        }
+        function unmapY(py, bounds = getMainPlotBounds()) {
+            return minY + ((bounds.innerBottom - py) / bounds.innerH) * (maxY - minY);
+        }
+        function isInsideBox(px, py, bounds) {
+            return px >= bounds.x && px <= bounds.x + bounds.w && py >= bounds.y && py <= bounds.y + bounds.h;
+        }
+        function isInsidePlotArea(px, py, bounds) {
+            return px >= bounds.innerLeft && px <= bounds.innerRight && py >= bounds.innerTop && py <= bounds.innerBottom;
+        }
+
+        // Math
+        function getMean(pts) {
+            if (pts.length === 0) return 0;
+            return pts.reduce((sum, p) => sum + p.y, 0) / pts.length;
+        }
+        function getRSS(pts, mean) {
+            return pts.reduce((sum, p) => sum + Math.pow(p.y - mean, 2), 0);
+        }
+        function getLinearRegression(pts) {
+            const n = pts.length;
+            const sumX = pts.reduce((sum, p) => sum + p.x, 0);
+            const sumY = pts.reduce((sum, p) => sum + p.y, 0);
+            const sumXY = pts.reduce((sum, p) => sum + p.x * p.y, 0);
+            const sumXX = pts.reduce((sum, p) => sum + p.x * p.x, 0);
+            const slope = (n * sumXY - sumX * sumY) / (n * sumXX - sumX * sumX);
+            const intercept = (sumY - slope * sumX) / n;
+            return { slope, intercept };
+        }
+
+        // Tree Logic
+        function findBestSplit(pts) {
+            if (pts.length <= 1) return null;
+            pts.sort((a, b) => a.x - b.x);
+            let bestRSS = Infinity, bestCut = null, bestLeft = null, bestRight = null;
+            for (let i = 0; i < pts.length - 1; i++) {
+                if (pts[i].x === pts[i+1].x) continue;
+                const cut = (pts[i].x + pts[i+1].x) / 2;
+                const left = pts.slice(0, i + 1);
+                const right = pts.slice(i + 1);
+                const currentRSS = getRSS(left, getMean(left)) + getRSS(right, getMean(right));
+                if (currentRSS < bestRSS) {
+                    bestRSS = currentRSS; bestCut = cut; bestLeft = left; bestRight = right;
+                }
+            }
+            return { cut: bestCut, left: bestLeft, right: bestRight };
+        }
+
+        function buildTree(pts, depth, maxDepth) {
+            const mean = getMean(pts);
+            if (depth >= maxDepth || pts.length <= 1) {
+                return { isLeaf: true, value: mean, pts: pts, count: pts.length };
+            }
+            const split = findBestSplit(pts);
+            if (!split) return { isLeaf: true, value: mean, pts: pts, count: pts.length };
+            return {
+                isLeaf: false, cut: split.cut,
+                left: buildTree(split.left, depth + 1, maxDepth),
+                right: buildTree(split.right, depth + 1, maxDepth)
+            };
+        }
+
+        function getTreeRegions(tree, min_x = minX, max_x = maxX) {
+            if (tree.isLeaf) {
+                return [{ x0: min_x, x1: max_x, value: tree.value, pts: tree.pts, isLeaf: true, node: tree }];
+            }
+            return [
+                ...getTreeRegions(tree.left, min_x, tree.cut),
+                ...getTreeRegions(tree.right, tree.cut, max_x)
+            ];
+        }
+
+        // Smooth Interpolation Logic
+        function getBlendedRegions(pts, depthFraction) {
+            const floorD = Math.floor(depthFraction);
+            const ceilD = Math.ceil(depthFraction);
+            const frac = depthFraction - floorD;
+
+            const treeFloor = buildTree(pts, 0, floorD);
+            const treeCeil = buildTree(pts, 0, ceilD);
+            const regionsFloor = getTreeRegions(treeFloor);
+            const regionsCeil = getTreeRegions(treeCeil);
+
+            // Blend based on the finest cut (ceil)
+            return regionsCeil.map(rc => {
+                const midX = (rc.x0 + rc.x1) / 2;
+                const rf = regionsFloor.find(r => midX >= r.x0 && midX <= r.x1);
+                return {
+                    x0: rc.x0, x1: rc.x1,
+                    value: rf.value * (1 - frac) + rc.value * frac,
+                    pts: rc.pts, isLeaf: true
+                };
+            });
+        }
+
+        function evaluateRegions(regions, dataset) {
+            let totalRSS = 0;
+            dataset.forEach(p => {
+                const r = regions.find(reg => p.x >= reg.x0 && p.x <= reg.x1) || regions[0];
+                totalRSS += Math.pow(p.y - r.value, 2);
+            });
+            return totalRSS;
+        }
+
+        function countLeaves(tree) {
+            return tree.isLeaf ? 1 : countLeaves(tree.left) + countLeaves(tree.right);
+        }
+
+        function getTreeDepth(tree) {
+            return tree.isLeaf ? 0 : 1 + Math.max(getTreeDepth(tree.left), getTreeDepth(tree.right));
+        }
+
+        // RSS Curve Precomputation
+        let rssCurveData = [];
+        let minRSSPoint = {x: 100, rss: Infinity};
+        function precomputeRSSCurve() {
+            rssCurveData = [];
+            minRSSPoint = {x: 100, rss: Infinity};
+            for(let x = 46; x <= 154; x += 1) {
+                const left = trainData.filter(p => p.x <= x);
+                const right = trainData.filter(p => p.x > x);
+                if(left.length === 0 || right.length === 0) continue;
+                const r = getRSS(left, getMean(left)) + getRSS(right, getMean(right));
+                rssCurveData.push({x: x, rss: r});
+                if(r < minRSSPoint.rss) minRSSPoint = {x: x, rss: r};
+            }
+        }
+
+        let depthMetrics = [];
+        let bestDepthMetric = null;
+        function precomputeDepthMetrics() {
+            depthMetrics = [];
+            bestDepthMetric = null;
+            for (let depth = 1; depth <= 8; depth++) {
+                const tree = buildTree(trainData, 0, depth);
+                const regions = getTreeRegions(tree);
+                const metric = {
+                    depth,
+                    leafCount: countLeaves(tree),
+                    trainRSS: evaluateRegions(regions, trainData),
+                    validationRSS: evaluateRegions(regions, testData)
+                };
+                depthMetrics.push(metric);
+                if (!bestDepthMetric || metric.validationRSS < bestDepthMetric.validationRSS) {
+                    bestDepthMetric = metric;
+                }
+            }
+        }
+
+        function getDepthMetric(depth) {
+            const effectiveDepth = Math.round(depth);
+            return depthMetrics.find(metric => metric.depth === effectiveDepth) || depthMetrics[0];
+        }
+
+        // Draw Helpers
+        function drawPanelCard(bounds, options = {}) {
+            const fillStyle = options.fillStyle || `rgba(255, 255, 255, ${options.alpha ?? 0.92})`;
+            const strokeStyle = options.strokeStyle || 'rgba(203, 213, 225, 0.95)';
+            const radius = options.radius ?? 16;
+            ctx.fillStyle = fillStyle;
+            ctx.strokeStyle = strokeStyle;
+            ctx.lineWidth = options.lineWidth ?? 1;
+            ctx.beginPath();
+            ctx.roundRect(bounds.x, bounds.y, bounds.w, bounds.h, radius);
+            ctx.fill();
+            ctx.stroke();
+        }
+
+        function drawPlotPanel(panelBounds, title, subtitle = '', accent = '#4f46e5', options = {}) {
+            drawPanelCard(panelBounds, { fillStyle: options.fillStyle || 'rgba(255, 255, 255, 0.94)' });
+            ctx.textAlign = 'left';
+            ctx.textBaseline = 'middle';
+            ctx.fillStyle = options.titleColor || accent;
+            ctx.font = "600 11px 'Inter'";
+            ctx.fillText(title, panelBounds.x + 18, panelBounds.y + 20);
+            if (subtitle) {
+                ctx.fillStyle = options.subtitleColor || '#4b5563';
+                ctx.font = "11px 'Inter'";
+                ctx.fillText(subtitle, panelBounds.x + 18, panelBounds.y + 39);
+            }
+            return createPlotBounds(panelBounds.x, panelBounds.y, panelBounds.w, panelBounds.h, {
+                left: 46,
+                right: 18,
+                top: subtitle ? 58 : 48,
+                bottom: 42
+            });
+        }
+
+        function drawAxes(bounds = getMainPlotBounds(), options = {}) {
+            ctx.strokeStyle = options.axisColor || '#e7e5e4';
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(bounds.innerLeft, bounds.innerBottom);
+            ctx.lineTo(bounds.innerRight, bounds.innerBottom);
+            ctx.moveTo(bounds.innerLeft, bounds.innerTop);
+            ctx.lineTo(bounds.innerLeft, bounds.innerBottom);
+            ctx.stroke();
+
+            ctx.fillStyle = options.labelColor || '#6b7280';
+            ctx.font = "12px 'Inter'";
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(options.xLabel || "Size (m²)", bounds.innerLeft + bounds.innerW / 2, bounds.y + bounds.h - 12);
+            ctx.save();
+            ctx.translate(bounds.x + 16, bounds.innerTop + bounds.innerH / 2);
+            ctx.rotate(-Math.PI / 2);
+            ctx.fillText(options.yLabel || "Price ($k)", 0, 0);
+            ctx.restore();
+        }
+
+        function drawPoints(dataset, color = '#1f2937', size = 4, bounds = getMainPlotBounds(), alpha = 1) {
+            ctx.save();
+            ctx.globalAlpha = alpha;
+            dataset.forEach(p => {
+                ctx.fillStyle = color;
+                ctx.beginPath();
+                ctx.arc(mapX(p.x, bounds), mapY(p.y, bounds), size, 0, Math.PI * 2);
+                ctx.fill();
+            });
+            ctx.restore();
+        }
+
+        function drawRegions(regions, options = {}) {
+            const bounds = options.bounds || getMainPlotBounds();
+            const highlightX = options.highlightX ?? null;
+            const showLines = options.showLines !== false;
+            const baseColor = options.baseColor || '#6366f1';
+            const highlightColor = options.highlightColor || TREE_ACTIVE_ACCENT;
+            const connectorColor = options.connectorColor || '#a5b4fc';
+            const lineWidth = options.lineWidth || 3;
+            const highlightWidth = options.highlightWidth || 5;
+            ctx.save();
+            ctx.globalAlpha = options.alpha ?? 1;
+            regions.forEach((r, i) => {
+                const px0 = mapX(r.x0, bounds);
+                const px1 = mapX(r.x1, bounds);
+                const py = mapY(r.value, bounds);
+                
+                const isHighlighted = highlightX !== null && highlightX >= r.x0 && highlightX <= r.x1;
+                ctx.strokeStyle = isHighlighted ? highlightColor : baseColor;
+                ctx.lineWidth = isHighlighted ? highlightWidth : lineWidth;
+
+                ctx.beginPath();
+                ctx.moveTo(px0, py);
+                ctx.lineTo(px1, py);
+                ctx.stroke();
+                
+                if (showLines && i > 0) {
+                    const prevPy = mapY(regions[i-1].value, bounds);
+                    ctx.strokeStyle = connectorColor;
+                    ctx.lineWidth = 1;
+                    ctx.setLineDash([4, 4]);
+                    ctx.beginPath();
+                    ctx.moveTo(px0, prevPy);
+                    ctx.lineTo(px0, py);
+                    ctx.stroke();
+                    ctx.setLineDash([]);
+                }
+            });
+            ctx.restore();
+        }
+
+        function drawResiduals(regions, dataset, options = {}) {
+            const bounds = options.bounds || getMainPlotBounds();
+            ctx.save();
+            ctx.strokeStyle = options.color || '#dc2626';
+            ctx.lineWidth = options.lineWidth || 1;
+            ctx.globalAlpha = options.alpha ?? 0.5;
+            dataset.forEach(p => {
+                const r = regions.find(reg => p.x >= reg.x0 && p.x <= reg.x1);
+                if (r) {
+                    ctx.beginPath();
+                    ctx.moveTo(mapX(p.x, bounds), mapY(p.y, bounds));
+                    ctx.lineTo(mapX(p.x, bounds), mapY(r.value, bounds));
+                    ctx.stroke();
+                }
+            });
+            ctx.restore();
+        }
+
+        function drawLinearResiduals(dataset, lr, options = {}) {
+            const bounds = options.bounds || getMainPlotBounds();
+            ctx.save();
+            ctx.strokeStyle = options.color || '#16a34a';
+            ctx.lineWidth = options.lineWidth || 1;
+            ctx.globalAlpha = options.alpha ?? 0.5;
+            dataset.forEach(p => {
+                const predY = lr.intercept + lr.slope * p.x;
+                ctx.beginPath();
+                ctx.moveTo(mapX(p.x, bounds), mapY(p.y, bounds));
+                ctx.lineTo(mapX(p.x, bounds), mapY(predY, bounds));
+                ctx.stroke();
+            });
+            ctx.restore();
+        }
+
+        function drawMiniRSSChart() {
+            const chartW = 200, chartH = 80;
+            const chartX = cw - chartW - 30, chartY = ch - chartH - 60;
+            ctx.fillStyle = '#ffffff'; ctx.strokeStyle = '#e7e5e4'; ctx.lineWidth = 1;
+            ctx.fillRect(chartX, chartY, chartW, chartH); ctx.strokeRect(chartX, chartY, chartW, chartH);
+            ctx.fillStyle = '#6b7280'; ctx.font = "10px 'Inter'"; ctx.textAlign = 'left';
+            ctx.fillText("RSS Curve", chartX + 8, chartY + 16);
+
+            if(rssCurveData.length === 0) return;
+            const maxR = Math.max(...rssCurveData.map(d => d.rss));
+            const minR = Math.min(...rssCurveData.map(d => d.rss));
+            function mx(vx) { return chartX + ((vx - 46) / (154 - 46)) * chartW; }
+            function my(vr) { return chartY + chartH - 10 - ((vr - minR) / (maxR - minR)) * (chartH - 30); }
+
+            ctx.beginPath(); ctx.strokeStyle = '#cbd5e1'; ctx.lineWidth = 2;
+            rssCurveData.forEach((d, i) => { if(i===0) ctx.moveTo(mx(d.x), my(d.rss)); else ctx.lineTo(mx(d.x), my(d.rss)); });
+            ctx.stroke();
+
+            ctx.fillStyle = '#10b981'; ctx.beginPath(); ctx.arc(mx(minRSSPoint.x), my(minRSSPoint.rss), 4, 0, Math.PI*2); ctx.fill();
+
+            const sD = rssCurveData.find(d => Math.abs(d.x - state.sweepX) < 1) || {rss: maxR};
+            ctx.fillStyle = '#6366f1'; ctx.beginPath(); ctx.arc(mx(state.sweepX), my(sD.rss), 5, 0, Math.PI*2); ctx.fill();
+            
+            ctx.strokeStyle = '#6366f1'; ctx.setLineDash([2,2]);
+            ctx.beginPath(); ctx.moveTo(mx(state.sweepX), chartY); ctx.lineTo(mx(state.sweepX), chartY + chartH); ctx.stroke();
+            ctx.setLineDash([]);
+        }
+
+        function clearStage6NarrativeTree() {
+            stage6TreeCtx.save();
+            stage6TreeCtx.setTransform(1, 0, 0, 1, 0, 0);
+            stage6TreeCtx.clearRect(0, 0, stage6TreeCanvas.width, stage6TreeCanvas.height);
+            stage6TreeCtx.restore();
+        }
+
+        function drawStage6NarrativeTree(tree, activeX) {
+            const rect = stage6TreeCanvas.getBoundingClientRect();
+            if (!rect.width || !rect.height) return;
+
+            const prevCtx = ctx;
+            ctx = stage6TreeCtx;
+            drawTreePanel(tree, { x: 0, y: 0, w: rect.width, h: rect.height }, {
+                title: 'Tree Structure',
+                subtitle: activeX === null ? 'Hover the staircase to highlight one path.' : `Active path for size ${activeX.toFixed(1)} m²`,
+                neutralText: 'Hover the staircase to highlight one path.',
+                activeX,
+                panelAlpha: 0.94,
+                compact: rect.width < 460
+            });
+            ctx = prevCtx;
+        }
+
+        function getStage7Layout() {
+            const top = 78;
+            const side = 16;
+            const bottom = 18;
+            const gap = cw < 760 ? 14 : 16;
+            if (cw < 760) {
+                const panelW = cw - side * 2;
+                const panelH = (ch - top - bottom - gap) / 2;
+                const simplePanel = { x: side, y: top, w: panelW, h: panelH };
+                const overfitPanel = { x: side, y: top + panelH + gap, w: panelW, h: panelH };
+                return { stacked: true, simplePanel, overfitPanel };
+            }
+            const panelW = (cw - side * 2 - gap) / 2;
+            const panelH = ch - top - bottom;
+            const simplePanel = { x: side, y: top, w: panelW, h: panelH };
+            const overfitPanel = { x: side + panelW + gap, y: top, w: panelW, h: panelH };
+            return { stacked: false, simplePanel, overfitPanel };
+        }
+
+        function getStage10Layout() {
+            const margin = 16;
+            const gap = cw < 760 ? 14 : 16;
+            if (cw < 760) {
+                const availableH = ch - margin * 2 - gap;
+                const minTreeHeight = 190;
+                const minPlotHeight = 200;
+                let treeHeight;
+                if (availableH >= minTreeHeight + minPlotHeight) {
+                    treeHeight = clamp(availableH * 0.44, minTreeHeight, availableH - minPlotHeight);
+                } else {
+                    treeHeight = Math.max(170, availableH * 0.44);
+                }
+                const plotHeight = availableH - treeHeight;
+                const plotPanel = { x: margin, y: margin, w: cw - margin * 2, h: plotHeight };
+                const treePanel = {
+                    x: margin,
+                    y: margin + plotHeight + gap,
+                    w: cw - margin * 2,
+                    h: availableH - plotHeight
+                };
+                return { stacked: true, plotPanel, treePanel };
+            }
+            const treeWidth = clamp(cw * 0.4, 360, 420);
+            const plotPanel = { x: margin, y: margin, w: cw - margin * 2 - gap - treeWidth, h: ch - margin * 2 };
+            const treePanel = { x: plotPanel.x + plotPanel.w + gap, y: margin, w: treeWidth, h: ch - margin * 2 };
+            return { stacked: false, plotPanel, treePanel };
+        }
+
+        function getDecisionPath(tree, x) {
+            if (x === null || x === undefined) return [];
+            const path = [];
+            let node = tree;
+            while (node) {
+                if (node.isLeaf) {
+                    path.push({ node, branch: null });
+                    break;
+                }
+                const goLeft = x <= node.cut;
+                path.push({ node, branch: goLeft ? 'left' : 'right' });
+                node = goLeft ? node.left : node.right;
+            }
+            return path;
+        }
+
+        function getTreeNodeLabel(node, abbreviated = false) {
+            if (node.isLeaf) return `$${Math.round(node.value)}k`;
+            return abbreviated ? `< ${node.cut.toFixed(0)}?` : `Size < ${node.cut.toFixed(0)}?`;
+        }
+
+        function computeTreeLayout(tree, areaBounds, options = {}) {
+            const compact = options.compact || false;
+            const horizontalBias = options.horizontalBias ?? 0.5;
+            const activeNodes = options.activeNodes || new Set();
+            const allowInactiveAbbreviation = options.allowInactiveAbbreviation !== false;
+            let nodeMeta = new WeakMap();
+            const maxDepth = getTreeDepth(tree);
+            const edgeLabelWidth = compact ? 48 : 44;
+            const pillToBoxClearance = compact ? 14 : 13;
+            const siblingLeafClearance = compact ? 14 : 12;
+            const pillToChildClearance = compact ? 22 : 20;
+            const abbreviatedNodes = new WeakSet();
+
+            function getNodeStyle(node, depth) {
+                const baseFont = compact ? 10.9 : 12.3;
+                const boxMin = node.isLeaf ? (compact ? 42 : 50) : (compact ? 62 : 74);
+                const fontSize = Math.max(compact ? 8 : 8.9, baseFont - depth * (compact ? 0.9 : 0.72));
+                const abbreviated = !node.isLeaf && abbreviatedNodes.has(node);
+                const label = getTreeNodeLabel(node, abbreviated);
+                ctx.font = `${node.isLeaf ? 700 : 600} ${fontSize}px 'Inter'`;
+                return {
+                    label,
+                    abbreviated,
+                    fontSize,
+                    boxW: Math.max(boxMin, ctx.measureText(label).width + (node.isLeaf ? 18 : 24)),
+                    boxH: Math.max(24, fontSize + (node.isLeaf ? 12 : 14))
+                };
+            }
+
+            function measure(node, depth = 0) {
+                const style = getNodeStyle(node, depth);
+                const meta = { node, depth, style };
+                if (node.isLeaf) {
+                    meta.subtreeWidth = style.boxW;
+                } else {
+                    const left = measure(node.left, depth + 1);
+                    const right = measure(node.right, depth + 1);
+                    meta.left = left;
+                    meta.right = right;
+                    const baseGap = compact ? 24 : 30;
+                    const leafClearance = node.left.isLeaf || node.right.isLeaf ? siblingLeafClearance : 0;
+                    meta.gap = Math.max(
+                        baseGap,
+                        edgeLabelWidth + pillToBoxClearance * 2 + (compact ? 6 : 4),
+                        style.fontSize * (compact ? 2.35 : 2.8),
+                        leafClearance + pillToBoxClearance * 2
+                    );
+                    meta.subtreeWidth = Math.max(style.boxW, left.subtreeWidth + meta.gap + right.subtreeWidth);
+                }
+                nodeMeta.set(node, meta);
+                return meta;
+            }
+
+            function collectAbbreviationCandidates(node, acc = []) {
+                if (node.isLeaf) return acc;
+                collectAbbreviationCandidates(node.left, acc);
+                collectAbbreviationCandidates(node.right, acc);
+                if (!activeNodes.has(node)) acc.push(node);
+                return acc;
+            }
+
+            let rootMeta = measure(tree);
+            if (allowInactiveAbbreviation && rootMeta.subtreeWidth > areaBounds.w) {
+                const candidates = collectAbbreviationCandidates(tree).sort((a, b) => {
+                    return nodeMeta.get(b).depth - nodeMeta.get(a).depth;
+                });
+                for (const node of candidates) {
+                    abbreviatedNodes.add(node);
+                    nodeMeta = new WeakMap();
+                    rootMeta = measure(tree);
+                    if (rootMeta.subtreeWidth <= areaBounds.w) break;
+                }
+            }
+
+            const stretch = Math.min(compact ? 1.02 : 1.08, areaBounds.w / rootMeta.subtreeWidth);
+            const spanWidth = rootMeta.subtreeWidth * stretch;
+            const boxScale = clamp(stretch, compact ? 0.55 : 0.65, compact ? 1.02 : 1.06);
+            const levels = maxDepth + 1;
+            const topY = areaBounds.y + 18;
+            const bottomY = areaBounds.y + areaBounds.h - 18;
+            const levelGap = levels > 1 ? (bottomY - topY) / (levels - 1) : 0;
+
+            function position(node, spanLeft, width) {
+                const meta = nodeMeta.get(node);
+                meta.boxW = Math.max(node.isLeaf ? (compact ? 34 : 40) : (compact ? 46 : 56), meta.style.boxW * boxScale);
+                meta.boxH = Math.max(compact ? 22 : 24, meta.style.boxH * boxScale);
+                meta.fontSize = Math.max(8, meta.style.fontSize * boxScale);
+                meta.levelClearance = pillToChildClearance;
+                meta.x = spanLeft + width / 2;
+                meta.y = topY + meta.depth * levelGap;
+                if (!node.isLeaf) {
+                    const leftWidth = meta.left.subtreeWidth * stretch;
+                    const rightWidth = meta.right.subtreeWidth * stretch;
+                    const gap = meta.gap * stretch;
+                    const totalChildren = leftWidth + gap + rightWidth;
+                    const childStart = spanLeft + (width - totalChildren) / 2;
+                    position(node.left, childStart, leftWidth);
+                    position(node.right, childStart + leftWidth + gap, rightWidth);
+                }
+            }
+
+            position(tree, areaBounds.x + (areaBounds.w - spanWidth) * horizontalBias, spanWidth);
+            return nodeMeta;
+        }
+
+        function drawTreePanel(tree, panelBounds, options = {}) {
+            const activeX = options.activeX ?? null;
+            const title = options.title || 'Tree Structure';
+            const subtitle = options.subtitle || '';
+            const neutralText = activeX === null ? (options.neutralText || subtitle) : subtitle;
+            const footerText = options.footerText || '';
+            const compact = options.compact || false;
+            const panelAlpha = options.panelAlpha ?? 0.72;
+            const horizontalBias = options.horizontalBias ?? 0.5;
+            const path = getDecisionPath(tree, activeX);
+            const activeNodes = new Set(path.map(step => step.node));
+            const activeEdges = new WeakMap();
+
+            path.forEach((step, idx) => {
+                const nextStep = path[idx + 1];
+                if (nextStep && !step.node.isLeaf) activeEdges.set(step.node, nextStep.node);
+            });
+
+            drawPanelCard(panelBounds, {
+                fillStyle: `rgba(255, 255, 255, ${panelAlpha})`,
+                strokeStyle: 'rgba(203, 213, 225, 0.82)',
+                radius: 18
+            });
+
+            ctx.textAlign = 'left';
+            ctx.textBaseline = 'middle';
+            ctx.fillStyle = 'rgba(31, 41, 55, 0.76)';
+            ctx.font = "600 12px 'Inter'";
+            ctx.fillText(title, panelBounds.x + 18, panelBounds.y + 22);
+
+            if (neutralText) {
+                ctx.fillStyle = 'rgba(75, 85, 99, 0.68)';
+                ctx.font = "11px 'Inter'";
+                ctx.fillText(neutralText, panelBounds.x + 18, panelBounds.y + 42);
+            }
+
+            const footerHeight = footerText ? 42 : 0;
+            if (footerText) {
+                const dividerY = panelBounds.y + panelBounds.h - footerHeight;
+                ctx.strokeStyle = 'rgba(226, 232, 240, 0.78)';
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                ctx.moveTo(panelBounds.x + 18, dividerY);
+                ctx.lineTo(panelBounds.x + panelBounds.w - 18, dividerY);
+                ctx.stroke();
+
+                ctx.fillStyle = 'rgba(31, 41, 55, 0.82)';
+                ctx.font = "600 11px 'Inter'";
+                ctx.fillText(footerText, panelBounds.x + 18, dividerY + 20);
+            }
+
+            const treeArea = {
+                x: panelBounds.x + 18,
+                y: panelBounds.y + 54,
+                w: panelBounds.w - 36,
+                h: panelBounds.h - 72 - footerHeight
+            };
+            const layout = computeTreeLayout(tree, treeArea, { compact, activeNodes, horizontalBias });
+
+            function drawEdge(parentMeta, childMeta, label, isActive) {
+                const startX = parentMeta.x;
+                const startY = parentMeta.y + parentMeta.boxH / 2;
+                const endX = childMeta.x;
+                const endY = childMeta.y - childMeta.boxH / 2;
+                const dx = endX - startX;
+                const dy = endY - startY;
+                const length = Math.hypot(dx, dy) || 1;
+                const nx = -dy / length;
+                const ny = dx / length;
+                const branchSign = endX < startX ? -1 : 1;
+                const labelAlong = compact ? 0.29 : 0.31;
+                let labelX = startX + dx * labelAlong + nx * (compact ? 14 : 12) + branchSign * (compact ? 8 : 6);
+                let labelY = startY + dy * labelAlong + ny * (compact ? 12 : 10) - (compact ? 10 : 8);
+
+                ctx.strokeStyle = isActive ? TREE_ACTIVE_ACCENT : TREE_INACTIVE_EDGE;
+                ctx.lineWidth = isActive ? 2.45 : 1.2;
+                ctx.beginPath();
+                ctx.moveTo(startX, startY);
+                ctx.lineTo(endX, endY);
+                ctx.stroke();
+
+                ctx.font = "600 10px 'Inter'";
+                const pillW = Math.max(28, ctx.measureText(label).width + 14);
+                const pillH = 18;
+                labelX += branchSign * (pillW * 0.1);
+                const childTop = childMeta.y - childMeta.boxH / 2;
+                const minLabelY = startY + pillH / 2 + 4;
+                const maxLabelY = childTop - childMeta.levelClearance - pillH / 2;
+                labelY = maxLabelY >= minLabelY ? clamp(labelY, minLabelY, maxLabelY) : maxLabelY;
+                ctx.fillStyle = isActive ? 'rgba(255, 255, 255, 0.98)' : 'rgba(255, 255, 255, 0.82)';
+                ctx.strokeStyle = isActive ? 'rgba(219, 39, 119, 0.28)' : 'rgba(203, 213, 225, 0.68)';
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                ctx.roundRect(labelX - pillW / 2, labelY - pillH / 2, pillW, pillH, 9);
+                ctx.fill();
+                ctx.stroke();
+
+                ctx.fillStyle = isActive ? TREE_ACTIVE_ACCENT_DARK : TREE_INACTIVE_EDGE_LABEL;
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(label, labelX, labelY + 0.5);
+            }
+
+            function drawNode(node) {
+                const meta = layout.get(node);
+                if (!node.isLeaf) {
+                    const leftMeta = layout.get(node.left);
+                    const rightMeta = layout.get(node.right);
+                    drawEdge(meta, leftMeta, 'Yes', activeEdges.get(node) === node.left);
+                    drawEdge(meta, rightMeta, 'No', activeEdges.get(node) === node.right);
+                    drawNode(node.left);
+                    drawNode(node.right);
+                }
+
+                const isActive = activeNodes.has(node);
+                ctx.fillStyle = isActive ? 'rgba(219, 39, 119, 0.95)' : (node.isLeaf ? TREE_INACTIVE_LEAF_FILL : TREE_INACTIVE_NODE_FILL);
+                ctx.strokeStyle = isActive ? TREE_ACTIVE_ACCENT : (node.isLeaf ? TREE_INACTIVE_LEAF_STROKE : TREE_INACTIVE_NODE_STROKE);
+                ctx.lineWidth = isActive ? 2.5 : 1.2;
+                ctx.beginPath();
+                ctx.roundRect(meta.x - meta.boxW / 2, meta.y - meta.boxH / 2, meta.boxW, meta.boxH, 12);
+                ctx.fill();
+                ctx.stroke();
+
+                ctx.fillStyle = isActive ? '#ffffff' : TREE_INACTIVE_TEXT;
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.font = `${node.isLeaf ? 700 : 600} ${meta.fontSize}px 'Inter'`;
+                ctx.fillText(meta.style.label, meta.x, meta.y + 0.5);
+            }
+
+            drawNode(tree);
+        }
+
+        function drawStage7Banner(simpleLeaves, overfitLeaves) {
+            const bannerBounds = { x: 16, y: 16, w: Math.min(cw - 32, 320), h: 46 };
+            drawPanelCard(bannerBounds, { fillStyle: 'rgba(255, 255, 255, 0.82)', radius: 14 });
+            ctx.textAlign = 'left';
+            ctx.textBaseline = 'middle';
+            ctx.fillStyle = '#1f2937';
+            ctx.font = "600 12px 'Inter'";
+            ctx.fillText('Depth 2 vs Depth 10', bannerBounds.x + 16, bannerBounds.y + 18);
+            ctx.fillStyle = '#4b5563';
+            ctx.font = "11px 'Inter'";
+            ctx.fillText(`Leaves: ${simpleLeaves} vs ${overfitLeaves}`, bannerBounds.x + 16, bannerBounds.y + 33);
+        }
+
+        function drawDepthValidationChart(selectedDepth) {
+            if (!depthMetrics.length || !bestDepthMetric) return;
+
+            const cardW = cw < 700 ? Math.min(cw - 36, 224) : 240;
+            const cardH = 132;
+            const cardBounds = { x: cw - cardW - 20, y: 20, w: cardW, h: cardH };
+            drawPanelCard(cardBounds, { fillStyle: 'rgba(255, 255, 255, 0.92)', radius: 14 });
+
+            ctx.textAlign = 'left';
+            ctx.textBaseline = 'middle';
+            ctx.fillStyle = '#1f2937';
+            ctx.font = "600 11px 'Inter'";
+            ctx.fillText('Validation RSS by depth', cardBounds.x + 14, cardBounds.y + 18);
+            ctx.fillStyle = '#4b5563';
+            ctx.font = "11px 'Inter'";
+            ctx.fillText(`Best depth: ${bestDepthMetric.depth}`, cardBounds.x + 14, cardBounds.y + 34);
+
+            const chart = createPlotBounds(cardBounds.x, cardBounds.y, cardBounds.w, cardBounds.h, {
+                left: 28,
+                right: 14,
+                top: 44,
+                bottom: 24
+            });
+            const vals = depthMetrics.map(metric => metric.validationRSS);
+            const minVal = Math.min(...vals);
+            const maxVal = Math.max(...vals);
+            const range = maxVal - minVal || 1;
+            const xAt = depth => chart.innerLeft + ((depth - 1) / (depthMetrics.length - 1)) * chart.innerW;
+            const yAt = value => chart.innerBottom - ((value - minVal) / range) * chart.innerH;
+
+            ctx.strokeStyle = 'rgba(226, 232, 240, 0.95)';
+            ctx.lineWidth = 1;
+            [0, 0.5, 1].forEach(step => {
+                const y = chart.innerTop + step * chart.innerH;
+                ctx.beginPath();
+                ctx.moveTo(chart.innerLeft, y);
+                ctx.lineTo(chart.innerRight, y);
+                ctx.stroke();
+            });
+
+            ctx.strokeStyle = '#d97706';
+            ctx.lineWidth = 2.5;
+            ctx.beginPath();
+            depthMetrics.forEach((metric, idx) => {
+                const px = xAt(metric.depth);
+                const py = yAt(metric.validationRSS);
+                if (idx === 0) ctx.moveTo(px, py);
+                else ctx.lineTo(px, py);
+            });
+            ctx.stroke();
+
+            const selectedMetric = getDepthMetric(selectedDepth);
+            const selectedX = xAt(selectedMetric.depth);
+            const selectedY = yAt(selectedMetric.validationRSS);
+            ctx.strokeStyle = 'rgba(99, 102, 241, 0.45)';
+            ctx.setLineDash([3, 3]);
+            ctx.beginPath();
+            ctx.moveTo(selectedX, chart.innerTop);
+            ctx.lineTo(selectedX, chart.innerBottom);
+            ctx.stroke();
+            ctx.setLineDash([]);
+
+            depthMetrics.forEach(metric => {
+                const px = xAt(metric.depth);
+                const py = yAt(metric.validationRSS);
+                ctx.fillStyle = metric.depth === bestDepthMetric.depth ? '#d97706' : 'rgba(217, 119, 6, 0.42)';
+                ctx.beginPath();
+                ctx.arc(px, py, metric.depth === bestDepthMetric.depth ? 4.8 : 3.2, 0, Math.PI * 2);
+                ctx.fill();
+            });
+
+            const bestX = xAt(bestDepthMetric.depth);
+            const bestY = yAt(bestDepthMetric.validationRSS);
+            ctx.strokeStyle = '#f59e0b';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.arc(bestX, bestY, 7, 0, Math.PI * 2);
+            ctx.stroke();
+
+            ctx.fillStyle = '#6366f1';
+            ctx.beginPath();
+            ctx.arc(selectedX, selectedY, 5.4, 0, Math.PI * 2);
+            ctx.fill();
+
+            ctx.fillStyle = '#6b7280';
+            ctx.font = "10px 'Inter'";
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'top';
+            depthMetrics.forEach(metric => {
+                ctx.fillText(metric.depth, xAt(metric.depth), chart.innerBottom + 6);
+            });
+        }
+
+        function drawTooltip() {
+            if (state.hoverPxX === null || state.hoverPxY === null || state.hoverX === null) return;
+            
+            // Only show tooltips when regions make sense
+            if ([2, 3, 5, 8].includes(state.stage)) {
+                const regions = getBlendedRegions(trainData, state.animDepth);
+                const r = regions.find(reg => state.hoverX >= reg.x0 && state.hoverX <= reg.x1);
+                
+                if (r && r.pts && r.pts.length > 0) {
+                    const rss = getRSS(r.pts, r.value);
+                    const t1 = `Prediction: $${r.value.toFixed(1)}k`;
+                    const t2 = `Samples: ${r.pts.length}`;
+                    const t3 = `Local RSS: ${Math.round(rss).toLocaleString()}`;
+                    
+                    ctx.font = "12px 'Inter'";
+                    const w = Math.max(ctx.measureText(t1).width, ctx.measureText(t2).width, ctx.measureText(t3).width) + 24;
+                    const h = 64;
+                    let px = state.hoverPxX + 15; let py = state.hoverPxY + 15;
+                    if (px + w > cw) px = state.hoverPxX - w - 10;
+                    if (py + h > ch) py = state.hoverPxY - h - 10;
+                    
+                    ctx.fillStyle = 'rgba(255, 255, 255, 0.95)';
+                    ctx.strokeStyle = '#6366f1'; ctx.lineWidth = 1;
+                    ctx.beginPath(); ctx.roundRect(px, py, w, h, 6); ctx.fill(); ctx.stroke();
+                    
+                    ctx.fillStyle = '#1f2937'; ctx.textAlign = 'left'; ctx.textBaseline = 'top';
+                    ctx.fillText(t1, px + 12, py + 10);
+                    ctx.fillStyle = '#4b5563';
+                    ctx.fillText(t2, px + 12, py + 26);
+                    ctx.fillText(t3, px + 12, py + 42);
+                }
+            }
+        }
+
+        // Main Render Loop
+        function render() {
+            // Update animations
+            if (Math.abs(state.targetDepth - state.animDepth) > 0.01) {
+                state.animDepth += (state.targetDepth - state.animDepth) * 0.1;
+            } else {
+                state.animDepth = state.targetDepth;
+            }
+
+            ctx = vizCtx;
+            ctx.clearRect(0, 0, cw, ch);
+            clearStage6NarrativeTree();
+            const mainBounds = getMainPlotBounds();
+            
+            if (state.stage === 1) {
+                drawAxes(mainBounds);
+                drawPoints(trainData, '#1f2937', 4, mainBounds);
+            } 
+            else if (state.stage === 2 || state.stage === 3 || state.stage === 5 || state.stage === 8) {
+                drawAxes(mainBounds);
+                const regions = getBlendedRegions(trainData, state.animDepth);
+                if (state.stage === 2 || state.stage === 3) {
+                    drawResiduals(regions, trainData, { bounds: mainBounds });
+                }
+                drawRegions(regions, { bounds: mainBounds, highlightX: state.hoverX });
+                
+                if(state.stage === 3 && state.animDepth > 0.5) {
+                    const tree = buildTree(trainData, 0, 1);
+                    if(!tree.isLeaf) {
+                        ctx.strokeStyle = '#cbd5e1'; ctx.setLineDash([5, 5]); ctx.beginPath();
+                        ctx.moveTo(mapX(tree.cut, mainBounds), mainBounds.innerTop);
+                        ctx.lineTo(mapX(tree.cut, mainBounds), mainBounds.innerBottom);
+                        ctx.stroke();
+                        ctx.setLineDash([]);
+                    }
+                }
+                
+                drawPoints(trainData, '#1f2937', 4, mainBounds);
+                if (state.stage === 8) {
+                    drawPoints(testData, '#d97706', 4, mainBounds);
+                    drawDepthValidationChart(state.targetDepth);
+                }
+            }
+            else if (state.stage === 4) {
+                drawAxes(mainBounds);
+                const left = trainData.filter(p => p.x <= state.sweepX);
+                const right = trainData.filter(p => p.x > state.sweepX);
+                const regions = [
+                    {x0: minX, x1: state.sweepX, value: getMean(left)},
+                    {x0: state.sweepX, x1: maxX, value: getMean(right)}
+                ];
+                drawResiduals(regions, trainData, { bounds: mainBounds });
+                drawRegions(regions, { bounds: mainBounds });
+
+                ctx.strokeStyle = '#4f46e5'; ctx.lineWidth = 2; ctx.beginPath();
+                ctx.moveTo(mapX(state.sweepX, mainBounds), mainBounds.innerTop);
+                ctx.lineTo(mapX(state.sweepX, mainBounds), mainBounds.innerBottom);
+                ctx.stroke();
+
+                drawPoints(trainData, '#1f2937', 4, mainBounds);
+                drawMiniRSSChart();
+            }
+            else if (state.stage === 6) {
+                const activeX = (state.hoverPxX !== null && state.hoverPxY !== null && isInsidePlotArea(state.hoverPxX, state.hoverPxY, mainBounds))
+                    ? clamp(unmapX(state.hoverPxX, mainBounds), minX, maxX)
+                    : null;
+                drawAxes(mainBounds);
+                const tree = buildTree(trainData, 0, 2); 
+                const regions = getTreeRegions(tree);
+                drawRegions(regions, { bounds: mainBounds, highlightX: activeX });
+                drawPoints(trainData, '#1f2937', 4, mainBounds);
+                drawStage6NarrativeTree(tree, activeX);
+            }
+            else if (state.stage === 7) {
+                const layout = getStage7Layout();
+                const simpleTree = buildTree(trainData, 0, 2);
+                const overfitTree = buildTree(trainData, 0, 10);
+                const simpleLeaves = countLeaves(simpleTree);
+                const overfitLeaves = countLeaves(overfitTree);
+                drawStage7Banner(simpleLeaves, overfitLeaves);
+
+                const simplePlot = drawPlotPanel(layout.simplePanel, 'Simplified Tree', `Depth 2 · ${simpleLeaves} leaves`, '#4f46e5');
+                drawAxes(simplePlot);
+                const simpleRegions = getTreeRegions(simpleTree);
+                drawResiduals(simpleRegions, testData, { bounds: simplePlot, color: '#d97706', alpha: 0.55 });
+                drawRegions(simpleRegions, { bounds: simplePlot });
+                drawPoints(trainData, '#d1d5db', 3.8, simplePlot);
+                drawPoints(testData, '#d97706', 4, simplePlot);
+
+                const overfitPlot = drawPlotPanel(layout.overfitPanel, 'Overfit Tree', `Depth 10 · ${overfitLeaves} leaves`, '#d97706');
+                drawAxes(overfitPlot);
+                const overfitRegions = getTreeRegions(overfitTree);
+                drawResiduals(overfitRegions, testData, { bounds: overfitPlot, color: '#d97706', alpha: 0.55 });
+                drawRegions(overfitRegions, { bounds: overfitPlot, baseColor: '#4f46e5', connectorColor: '#c4b5fd' });
+                drawPoints(trainData, '#d1d5db', 3.8, overfitPlot);
+                drawPoints(testData, '#d97706', 4, overfitPlot);
+            }
+            else if (state.stage === 9) {
+                drawAxes(mainBounds);
+                const lr = getLinearRegression(trainData);
+                const tree = buildTree(trainData, 0, 2);
+                const regions = getTreeRegions(tree);
+
+                if (state.s9LineErr) drawLinearResiduals(trainData, lr, { bounds: mainBounds });
+                if (state.s9TreeErr) drawResiduals(regions, trainData, { bounds: mainBounds, color: '#6366f1' });
+
+                if (state.s9Line) {
+                    ctx.strokeStyle = '#16a34a'; ctx.lineWidth = 3; ctx.beginPath();
+                    ctx.moveTo(mapX(minX, mainBounds), mapY(lr.intercept + lr.slope * minX, mainBounds));
+                    ctx.lineTo(mapX(maxX, mainBounds), mapY(lr.intercept + lr.slope * maxX, mainBounds));
+                    ctx.stroke();
+                }
+                if (state.s9Tree) drawRegions(regions, { bounds: mainBounds });
+                
+                drawPoints(trainData, '#1f2937', 4, mainBounds);
+            }
+            else if (state.stage === 10) {
+                const layout = getStage10Layout();
+                const plotBounds = drawPlotPanel(layout.plotPanel, 'Prediction Staircase', 'Click inside the plot to test a house.', '#4f46e5', {
+                    titleColor: 'rgba(79, 70, 229, 0.8)',
+                    subtitleColor: 'rgba(75, 85, 99, 0.66)'
+                });
+                drawAxes(plotBounds);
+                const tree = buildTree(trainData, 0, 3);
+                const regions = getTreeRegions(tree);
+                let activeValue = null;
+                if (state.playgroundX !== null) {
+                    const r = regions.find(reg => state.playgroundX >= reg.x0 && state.playgroundX <= reg.x1);
+                    if (r) activeValue = r.value;
+                }
+                drawRegions(regions, { bounds: plotBounds, highlightX: state.playgroundX });
+                drawPoints(trainData, '#e5e7eb', 4, plotBounds);
+                
+                if (state.playgroundX !== null && state.playgroundY !== null) {
+                    ctx.fillStyle = TREE_ACTIVE_ACCENT; ctx.beginPath();
+                    ctx.arc(mapX(state.playgroundX, plotBounds), mapY(state.playgroundY, plotBounds), 8, 0, Math.PI * 2); ctx.fill();
+                    ctx.strokeStyle = '#ffffff'; ctx.lineWidth = 2; ctx.stroke();
+                    
+                    if (activeValue !== null) {
+                        ctx.strokeStyle = TREE_ACTIVE_ACCENT; ctx.setLineDash([4, 4]); ctx.lineWidth = 1;
+                        ctx.beginPath();
+                        ctx.moveTo(mapX(state.playgroundX, plotBounds), mapY(state.playgroundY, plotBounds));
+                        ctx.lineTo(mapX(state.playgroundX, plotBounds), mapY(activeValue, plotBounds));
+                        ctx.stroke(); ctx.setLineDash([]);
+                    }
+                }
+
+                const path = getDecisionPath(tree, state.playgroundX);
+                const leafNode = path.length ? path[path.length - 1].node : null;
+                drawTreePanel(tree, layout.treePanel, {
+                    title: 'Decision Tree Companion',
+                    subtitle: state.playgroundX === null ? 'Click the plot to trace a house.' : `Selected size: ${state.playgroundX.toFixed(1)} m²`,
+                    neutralText: 'Click the plot to trace a house.',
+                    footerText: leafNode && leafNode.isLeaf ? `Predicted: $${leafNode.value.toFixed(1)}k` : '',
+                    activeX: state.playgroundX,
+                    compact: !layout.stacked,
+                    panelAlpha: 0.94
+                });
+            }
+            else if (state.stage === 11) {
+                drawAxes(mainBounds);
+                drawRegions(getTreeRegions(buildTree(trainData, 0, 2)), { bounds: mainBounds });
+                drawPoints(trainData, '#1f2937', 4, mainBounds);
+            }
+
+            drawTooltip();
+            requestAnimationFrame(render);
+        }
+
+        // Hero Animation
+        function drawHeroBackground() {
+            heroCtx.clearRect(0, 0, heroCanvas.width, heroCanvas.height);
+            heroCtx.strokeStyle = 'rgba(99, 102, 241, 0.15)'; heroCtx.lineWidth = 1;
+
+            const time = Date.now() / 1500;
+            const w = window.innerWidth, h = window.innerHeight;
+            
+            const cuts = [w/2, w/4 + Math.sin(time)*100, 3*w/4 + Math.cos(time*0.8)*100];
+            cuts.forEach(cut => { heroCtx.beginPath(); heroCtx.moveTo(cut, 0); heroCtx.lineTo(cut, h); heroCtx.stroke(); });
+
+            heroCtx.beginPath(); heroCtx.moveTo(0, h/2 + Math.cos(time*1.2)*50); heroCtx.lineTo(cuts[0], h/2 + Math.cos(time*1.2)*50);
+            heroCtx.moveTo(cuts[0], h/3); heroCtx.lineTo(w, h/3); heroCtx.stroke();
+            requestAnimationFrame(drawHeroBackground);
+        }
+
+        // Interactive Events
+        canvas.addEventListener('mousemove', (e) => {
+            const rect = canvas.getBoundingClientRect();
+            const dpr = window.devicePixelRatio || 1;
+            state.hoverPxX = (e.clientX - rect.left) * (canvas.width / rect.width / dpr);
+            state.hoverPxY = (e.clientY - rect.top) * (canvas.height / rect.height / dpr);
+            state.hoverX = unmapX(state.hoverPxX);
+        });
+        canvas.addEventListener('mouseleave', () => { state.hoverX = null; state.hoverPxX = null; });
+
+        canvas.addEventListener('click', (e) => {
+            if (state.stage === 10) {
+                const rect = canvas.getBoundingClientRect();
+                const dpr = window.devicePixelRatio || 1;
+                const px = (e.clientX - rect.left) * (canvas.width / rect.width / dpr);
+                const py = (e.clientY - rect.top) * (canvas.height / rect.height / dpr);
+                const layout = getStage10Layout();
+                const plotBounds = createPlotBounds(layout.plotPanel.x, layout.plotPanel.y, layout.plotPanel.w, layout.plotPanel.h, {
+                    left: 46,
+                    right: 18,
+                    top: 58,
+                    bottom: 42
+                });
+                if (!isInsidePlotArea(px, py, plotBounds)) return;
+
+                state.playgroundX = clamp(unmapX(px, plotBounds), minX, maxX);
+                state.playgroundY = clamp(unmapY(py, plotBounds), minY, maxY);
+                
+                const tree = buildTree(trainData, 0, 3);
+                let curr = tree;
+                while (!curr.isLeaf) {
+                    if (state.playgroundX <= curr.cut) {
+                        curr = curr.left;
+                    } else {
+                        curr = curr.right;
+                    }
+                }
+                
+                document.getElementById('pg-size').innerText = state.playgroundX.toFixed(1);
+                document.getElementById('pg-pred').innerText = `$${curr.value.toFixed(1)}k`;
+            }
+        });
+
+        // Metrics
+        function resetPlaygroundSummary() {
+            state.playgroundX = null;
+            state.playgroundY = null;
+            document.getElementById('pg-size').innerText = '--';
+            document.getElementById('pg-pred').innerText = '--';
+        }
+
+        function updateStage8Metrics(depth) {
+            const metric = getDepthMetric(depth);
+            if (!metric) return;
+            document.getElementById('depth-readout').innerText = metric.depth;
+            document.getElementById('train-err-metric').innerText = Math.round(metric.trainRSS).toLocaleString();
+            document.getElementById('val-err-metric').innerText = Math.round(metric.validationRSS).toLocaleString();
+        }
+
+        // DOM Listeners
+        document.getElementById('sweep-slider').addEventListener('input', (e) => {
+            state.sweepX = parseFloat(e.target.value);
+            document.getElementById('sweep-readout').innerText = state.sweepX.toFixed(1);
+            const l = trainData.filter(p => p.x <= state.sweepX);
+            const r = trainData.filter(p => p.x > state.sweepX);
+            document.getElementById('rss-metric').innerText = Math.round(getRSS(l, getMean(l)) + getRSS(r, getMean(r))).toLocaleString();
+        });
+        document.getElementById('snap-btn').addEventListener('click', () => {
+            state.sweepX = minRSSPoint.x;
+            document.getElementById('sweep-slider').value = state.sweepX;
+            document.getElementById('sweep-readout').innerText = state.sweepX.toFixed(1);
+            document.getElementById('rss-metric').innerText = Math.round(minRSSPoint.rss).toLocaleString();
+        });
+
+        document.getElementById('play-split-btn').addEventListener('click', () => {
+            state.targetDepth = 1; state.animDepth = 1;
+            let d = 1;
+            const int = setInterval(() => {
+                d++; state.targetDepth = d;
+                if (d >= 4) clearInterval(int);
+            }, 1200);
+        });
+        
+        document.getElementById('depth-slider').addEventListener('input', (e) => {
+            const val = parseInt(e.target.value, 10);
+            state.targetDepth = val;
+            updateStage8Metrics(val);
+        });
+
+        ['chk-tree', 'chk-line', 'chk-tree-err', 'chk-line-err'].forEach(id => {
+            document.getElementById(id).addEventListener('change', (e) => {
+                if(id === 'chk-tree') state.s9Tree = e.target.checked;
+                if(id === 'chk-line') state.s9Line = e.target.checked;
+                if(id === 'chk-tree-err') state.s9TreeErr = e.target.checked;
+                if(id === 'chk-line-err') state.s9LineErr = e.target.checked;
+            });
+        });
+
+        // Scroll Logic
+        sections.forEach((s, i) => {
+            const dot = document.createElement('div'); dot.className = 'dot'; dot.dataset.idx = i;
+            dot.addEventListener('click', () => s.scrollIntoView({ behavior: 'smooth' }));
+            dotsContainer.appendChild(dot);
+        });
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    sections.forEach(s => s.classList.remove('active'));
+                    document.querySelectorAll('.dot').forEach(d => d.classList.remove('active'));
+                    entry.target.classList.add('active');
+                    const sNum = parseInt(entry.target.getAttribute('data-stage'));
+                    state.stage = sNum;
+                    if(dotsContainer.children[sNum - 1]) dotsContainer.children[sNum - 1].classList.add('active');
+
+                    // Set target depth per stage
+                    if (sNum === 1) state.targetDepth = 0;
+                    else if (sNum === 2) state.targetDepth = 0;
+                    else if (sNum === 3) state.targetDepth = 1;
+                    else if (sNum === 5) state.targetDepth = 1; // Resets for manual play
+                    else if (sNum === 8) {
+                        state.targetDepth = parseInt(document.getElementById('depth-slider').value, 10);
+                        updateStage8Metrics(state.targetDepth);
+                    }
+                    else if (sNum === 10) {
+                        state.targetDepth = 3;
+                        state.animDepth = 3;
+                        resetPlaygroundSummary();
+                    }
+                    else if ([6,7,9,11].includes(sNum)) { state.targetDepth = 2; state.animDepth = 2; }
+                }
+            });
+        }, { threshold: 0.45 });
+        sections.forEach(section => observer.observe(section));
+
+        window.addEventListener('scroll', () => {
+            const scrollPx = document.documentElement.scrollTop;
+            const winHeightPx = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            progressBar.style.width = `${(scrollPx / winHeightPx) * 100}%`;
+        });
+
+        // Init
+        setTimeout(() => {
+            resetPlaygroundSummary();
+            resizeCanvas(); requestAnimationFrame(render); requestAnimationFrame(drawHeroBackground);
+        }, 100);
+
+    </script>
+</body>
+</html>

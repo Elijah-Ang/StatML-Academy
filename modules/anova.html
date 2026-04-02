@@ -1,0 +1,1227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analysis of Variance (ANOVA) - An Editorial Essay</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        :root {
+            --bg: #f7f7f4;
+            --bg-secondary: #f0efeb;
+            --surface: #ffffff;
+            --border: #e7e5e4;
+            --text-main: #1f2937;
+            --text-dim: #4b5563;
+            --text-muted: #6b7280;
+            --accent: #6366f1;
+            --accent-dark: #4f46e5;
+            --success: #16a34a;
+            --error: #dc2626;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg);
+            color: var(--text-main);
+            overflow-x: hidden;
+        }
+        h1, h2, h3, h4, .font-serif {
+            font-family: 'Merriweather', serif;
+        }
+        
+        /* Smooth Scrolling & Progress */
+        html { scroll-behavior: smooth; }
+        #progress-bar {
+            position: fixed;
+            top: 0; left: 0; height: 4px;
+            background: linear-gradient(90deg, var(--accent), var(--accent-dark));
+            width: 0%; z-index: 100;
+            transition: width 0.1s ease-out;
+        }
+
+        /* Step Layout */
+        .step {
+            min-height: 80vh;
+            padding: 6rem 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            opacity: 0.2;
+            transition: opacity 0.7s ease;
+            position: relative;
+        }
+        .step.active { opacity: 1; }
+        .step-label {
+            position: absolute;
+            top: 2rem; left: 0;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        /* Visual Canvas Transitions */
+        .canvas-layer {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .canvas-layer.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        /* Interactive Data Dots */
+        .data-dot {
+            position: absolute;
+            width: 12px; height: 12px;
+            border-radius: 50%;
+            transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+            transform: translate(-50%, -50%);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        /* Mean Lines */
+        .mean-line, .grand-mean-line {
+            position: absolute;
+            height: 2px;
+            transition: all 0.6s ease;
+            opacity: 0;
+            transform-origin: center;
+        }
+        .grand-mean-line {
+            width: 80%; left: 10%;
+            background-color: var(--text-muted);
+            border-top: 2px dashed var(--text-muted);
+            background: transparent;
+        }
+        .mean-line { width: 15%; background-color: var(--text-main); }
+        
+        /* Deviation Shading */
+        .deviation-line {
+            position: absolute;
+            width: 2px;
+            opacity: 0;
+            transition: all 0.6s ease;
+        }
+        .dev-within { background-color: var(--error); }
+        .dev-between { background-color: var(--accent); width: 4px; }
+
+        /* Custom Buttons */
+        .interactive-btn {
+            background: var(--surface); border: 1px solid var(--border);
+            padding: 0.5rem 1rem; border-radius: 999px;
+            font-size: 0.875rem; font-weight: 500; color: var(--text-dim);
+            transition: all 0.2s; cursor: pointer;
+            display: inline-flex; align-items: center; gap: 0.5rem;
+        }
+        .interactive-btn:hover { background: var(--bg-secondary); border-color: #d6d3d1; }
+        .interactive-btn.active-btn { background: var(--accent-dark); color: white; border-color: var(--accent-dark); }
+
+        .font-mono-ui {
+            font-family: 'JetBrains Mono', monospace;
+            font-variant-numeric: tabular-nums;
+        }
+
+        /* Tooltips for ANOVA Table */
+        .hover-cell { position: relative; cursor: help; transition: background 0.2s; touch-action: manipulation; }
+        .hover-cell:hover { background: var(--bg-secondary); }
+        .hover-cell:focus-visible {
+            background: var(--bg-secondary);
+            outline: none;
+            box-shadow: inset 0 0 0 2px rgba(99, 102, 241, 0.18);
+        }
+        .tooltip-card {
+            position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%) translateY(10px);
+            background: var(--text-main); color: white; padding: 1rem; border-radius: 8px;
+            width: min(250px, calc(100vw - 2rem)); font-size: 0.875rem; opacity: 0; pointer-events: none;
+            transition: all 0.2s; z-index: 50; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+            text-align: left; font-family: 'Inter', sans-serif; font-weight: normal;
+        }
+        .hover-cell:hover .tooltip-card,
+        .hover-cell:focus-within .tooltip-card,
+        .hover-cell.tooltip-open .tooltip-card {
+            opacity: 1; transform: translateX(-50%) translateY(-8px); pointer-events: auto;
+        }
+        .tooltip-card::after {
+            content: ''; position: absolute; top: 100%; left: 50%; transform: translateX(-50%);
+            border-width: 6px; border-style: solid; border-color: var(--text-main) transparent transparent transparent;
+        }
+
+        .stage-dot {
+            width: 10px; height: 10px; border-radius: 999px;
+            border: 1px solid rgba(107, 114, 128, 0.28);
+            background: rgba(240, 239, 235, 0.95);
+            transition: all 0.2s ease;
+        }
+        .stage-dot:hover {
+            background: rgba(99, 102, 241, 0.16);
+            border-color: rgba(99, 102, 241, 0.45);
+            transform: scale(1.15);
+        }
+        .stage-dot.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            box-shadow: 0 0 0 6px rgba(99, 102, 241, 0.12);
+        }
+
+        header,
+        main,
+        #viz-table {
+            background-color: var(--bg) !important;
+        }
+
+        aside,
+        #viz-scatter,
+        #viz-interaction {
+            background-color: var(--surface) !important;
+        }
+
+        #stage-dots {
+            background: rgba(255, 255, 255, 0.78);
+            border-color: var(--border);
+        }
+
+        .hero-badge {
+            background-color: var(--bg-secondary);
+            color: var(--accent-dark) !important;
+            border: 1px solid var(--border);
+            padding: 0.5rem 1rem;
+            border-radius: 999px;
+            letter-spacing: 0.05em;
+        }
+
+        .hero-title {
+            background: linear-gradient(135deg, var(--text-main), var(--accent-dark));
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent !important;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-subtitle {
+            color: var(--text-dim) !important;
+        }
+
+        .hero-scroll {
+            background-color: var(--bg-secondary) !important;
+            color: var(--text-dim) !important;
+            border: 1px solid var(--border);
+        }
+
+        .hero-scroll:hover {
+            background-color: #e7e5e4 !important;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg); }
+        ::-webkit-scrollbar-thumb { background: #D6D3D1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #A8A29E; }
+
+        @media (max-width: 767px) {
+            .step {
+                min-height: 68vh;
+                padding: 4rem 0;
+            }
+            .step-label { top: 1rem; }
+            .tooltip-card {
+                left: auto;
+                right: 0;
+                transform: translateY(10px);
+            }
+            .hover-cell:hover .tooltip-card,
+            .hover-cell:focus-within .tooltip-card,
+            .hover-cell.tooltip-open .tooltip-card {
+                transform: translateY(-8px);
+            }
+            .tooltip-card::after {
+                left: auto;
+                right: 1rem;
+                transform: none;
+            }
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-stone-200">
+
+    <div id="progress-bar"></div>
+    <nav id="stage-dots" class="hidden xl:flex fixed right-6 top-1/2 -translate-y-1/2 z-40 flex-col gap-3 rounded-full bg-white/75 backdrop-blur px-3 py-4 border border-stone-200 shadow-sm" aria-label="Lesson stages"></nav>
+
+    <!-- Full Screen Hero -->
+    <header class="min-h-screen flex flex-col items-center justify-center text-center px-6 relative bg-stone-50 overflow-hidden">
+        <div class="absolute inset-0 opacity-10 pointer-events-none" style="background-image: radial-gradient(#6366f1 1px, transparent 1px); background-size: 32px 32px;"></div>
+        <div class="z-10 max-w-3xl">
+            <p class="hero-badge text-sm font-semibold tracking-widest text-indigo-600 uppercase mb-6 inline-flex items-center justify-center gap-2">
+                <i data-lucide="bar-chart-2" class="w-4 h-4"></i> Statistical Methods
+            </p>
+            <h1 class="hero-title text-5xl md:text-7xl font-bold leading-tight mb-8 text-stone-900 tracking-tight">Analysis of Variance</h1>
+            <p class="hero-subtitle text-xl md:text-2xl text-stone-600 leading-relaxed font-serif mb-12">
+                Are the differences between groups real, or are they just a product of everyday random noise? 
+                Discover how ANOVA decomposes variation to find the signal in the static.
+            </p>
+            <button onclick="document.getElementById('content-start').scrollIntoView({behavior: 'smooth'})" class="hero-scroll animate-bounce p-3 rounded-full bg-stone-200 text-stone-600 hover:bg-stone-300 transition-colors">
+                <i data-lucide="arrow-down" class="w-6 h-6"></i>
+            </button>
+        </div>
+    </header>
+
+    <div id="content-start" class="flex flex-col md:flex-row min-h-screen relative">
+        
+        <!-- TEXT COLUMN (Scrollable) -->
+        <main class="order-2 md:order-1 w-full md:w-[45%] lg:w-[40%] px-6 md:px-12 lg:px-20 pb-32 md:pb-64 md:border-r border-stone-200 z-10 bg-stone-50">
+            
+            <article class="step active" data-stage="1">
+                <div class="step-label">Stage 01</div>
+                <h2 class="text-3xl font-bold mb-4">The Raw Data</h2>
+                <p class="mb-4 text-stone-700 leading-relaxed font-serif">
+                    Imagine we are comparing test scores across three different teaching methods (Group A, B, and C). 
+                </p>
+                <p class="mb-4 text-stone-700 leading-relaxed font-serif">
+                    If you look at the raw data in the visual panel, you'll notice that not everyone in Group A scored exactly the same. There is a natural spread, or <em>noise</em>, within every group. This is everyday biological, psychological, or measurement variation.
+                </p>
+            </article>
+
+            <article class="step" data-stage="2">
+                <div class="step-label">Stage 02</div>
+                <h2 class="text-3xl font-bold mb-4">The Research Question</h2>
+                <p class="mb-4 text-stone-700 leading-relaxed font-serif">
+                    Our question isn't about individuals; it's about the <strong>group averages</strong> (the black lines). 
+                </p>
+                <p class="mb-4 text-stone-700 leading-relaxed font-serif">
+                    Are the gaps between these group means large enough to confidently say the teaching methods have different effects? Or are the means just slightly off from each other by pure chance, drowning in the natural noise of the students?
+                </p>
+                
+                <!-- Interactive Controls -->
+                <div class="mt-8 p-5 bg-white border border-stone-200 rounded-xl shadow-sm">
+                    <p class="text-sm font-bold text-stone-800 mb-3">Teaching Interaction: Shape the Data</p>
+                    <div class="flex flex-col gap-3">
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-stone-600">Within-Group Spread (Noise)</span>
+                            <div class="flex gap-2">
+                                <button class="interactive-btn active-btn" onclick="setNoise('low', this)">Low</button>
+                                <button class="interactive-btn" onclick="setNoise('high', this)">High</button>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-stone-600">Group Differences (Signal)</span>
+                            <div class="flex gap-2">
+                                <button class="interactive-btn active-btn" onclick="setSignal('large', this)">Distinct</button>
+                                <button class="interactive-btn" onclick="setSignal('none', this)">Equal</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <article class="step" data-stage="3">
+                <div class="step-label">Stage 03</div>
+                <h2 class="text-3xl font-bold mb-4">The Rules of the Game</h2>
+                <p class="mb-4 text-stone-700 leading-relaxed font-serif">
+                    Before we build an ANOVA model, we must check our assumptions. If the data breaks the rules, standard ANOVA might mislead us.
+                </p>
+                <div class="space-y-4 my-6">
+                    <div class="p-4 border-l-4 border-blue-400 bg-stone-100 rounded-r-lg">
+                        <h4 class="font-semibold text-stone-800 flex items-center gap-2"><i data-lucide="bar-chart" class="w-4 h-4 text-blue-500"></i> Normality</h4>
+                        <p class="text-sm text-stone-600 mt-1 font-serif">Technically, ANOVA assumes the <em>residuals</em> (the error or distance of each point from its group mean) are normally distributed. In practice, researchers often check if the data within each group resembles a bell curve.</p>
+                    </div>
+                    <div class="p-4 border-l-4 border-amber-400 bg-stone-100 rounded-r-lg">
+                        <h4 class="font-semibold text-stone-800 flex items-center gap-2"><i data-lucide="scale" class="w-4 h-4 text-amber-500"></i> Homogeneity of Variance</h4>
+                        <p class="text-sm text-stone-600 mt-1 font-serif">The spread (variance) of scores should be roughly equal across all groups. ANOVA is robust to minor violations, provided sample sizes are equal.</p>
+                    </div>
+                    <div class="p-4 border-l-4 border-emerald-400 bg-stone-100 rounded-r-lg">
+                        <h4 class="font-semibold text-stone-800 flex items-center gap-2"><i data-lucide="users" class="w-4 h-4 text-emerald-500"></i> Independence</h4>
+                        <p class="text-sm text-stone-600 mt-1 font-serif">Data points must not influence each other. If the same student is tested multiple times, you must use a Repeated-Measures ANOVA instead.</p>
+                    </div>
+                </div>
+            </article>
+
+            <article class="step" data-stage="4">
+                <div class="step-label">Stage 04</div>
+                <h2 class="text-3xl font-bold mb-4">Variance Decomposition</h2>
+                <p class="mb-4 text-stone-700 leading-relaxed font-serif">
+                    ANOVA answers our question by splitting the total variation in the data into two components. Look at the canvas to see these distances visualized.
+                </p>
+                <ul class="space-y-6 my-6">
+                    <li class="p-4 bg-indigo-50 border border-indigo-100 rounded-lg">
+                        <strong class="block text-indigo-900 mb-1">Between-Group Variance (Signal)</strong>
+                        <span class="text-sm text-indigo-800 font-serif">The systematic variance <em>associated with</em> the independent variable. Measured by how far each group mean (black line) deviates from the Grand Mean (dashed line).</span>
+                    </li>
+                    <li class="p-4 bg-red-50 border border-red-100 rounded-lg">
+                        <strong class="block text-red-900 mb-1">Within-Group Variance (Noise)</strong>
+                        <span class="text-sm text-red-800 font-serif">The unsystematic variance or error. Measured by how much individual dots deviate from their own group mean.</span>
+                    </li>
+                </ul>
+            </article>
+
+            <article class="step" data-stage="5">
+                <div class="step-label">Stage 05</div>
+                <h2 class="text-3xl font-bold mb-4">The F-Statistic & Significance</h2>
+                <p class="mb-4 text-stone-700 leading-relaxed font-serif">
+                    ANOVA summarizes this decomposition into a single ratio, the <strong>F-statistic</strong>. It compares the size of the treatment effect to the size of the error.
+                </p>
+                <div class="my-6 p-6 bg-white border border-stone-200 rounded-xl shadow-sm text-center">
+                    $$F = \frac{\text{Between-Group Variance}}{\text{Within-Group Variance}}$$
+                </div>
+                <div class="bg-stone-800 text-stone-100 p-5 rounded-lg font-serif text-sm leading-relaxed mb-4">
+                    <strong>Crucial Nuance:</strong> A large F value means the signal is stronger than the noise. But "large" does not automatically mean "statistically significant." Significance (a p-value < 0.05) depends heavily on <em>Degrees of Freedom</em>—how many groups you have and your sample size. A small signal can be significant with 10,000 students, while a large signal might not be with only 10.
+                </div>
+            </article>
+
+            <article class="step" data-stage="6">
+                <div class="step-label">Stage 06</div>
+                <h2 class="text-3xl font-bold mb-4">A Worked Example</h2>
+                <p class="mb-4 text-stone-700 leading-relaxed font-serif">
+                    Let’s calculate this for the data currently on display. Each teaching method has 12 observations, so the example uses <strong>N = 36</strong> students in total.
+                </p>
+                <div class="space-y-4 my-6">
+                    <div class="p-5 bg-white border border-stone-200 rounded-xl shadow-sm">
+                        <p class="text-xs font-semibold uppercase tracking-wide text-stone-500 mb-2">From The Displayed Scores</p>
+                        <p id="calc-summary" class="font-mono-ui text-sm text-stone-700 leading-relaxed">Group means: A = 72, B = 69, C = 63. Grand mean = 68. Each group has n = 12, so N = 36.</p>
+                    </div>
+                    <div class="p-5 bg-indigo-50 border border-indigo-100 rounded-xl">
+                        <p class="text-xs font-semibold uppercase tracking-wide text-indigo-700 mb-2">Between-Group Sum Of Squares</p>
+                        <p id="calc-ss-between" class="font-mono-ui text-sm text-indigo-900 leading-relaxed">SS<sub>between</sub> = 12[(72 - 68)<sup>2</sup> + (69 - 68)<sup>2</sup> + (63 - 68)<sup>2</sup>] = 504</p>
+                    </div>
+                    <div class="p-5 bg-red-50 border border-red-100 rounded-xl">
+                        <p class="text-xs font-semibold uppercase tracking-wide text-red-700 mb-2">Within-Group Sum Of Squares</p>
+                        <p id="calc-ss-within" class="font-mono-ui text-sm text-red-900 leading-relaxed">SS<sub>within</sub> = 132 + 132 + 132 = 396</p>
+                    </div>
+                    <div class="p-5 bg-stone-800 text-stone-100 rounded-xl shadow-sm">
+                        <p class="text-xs font-semibold uppercase tracking-wide text-stone-300 mb-2">Degrees Of Freedom, Mean Squares, And F</p>
+                        <p id="calc-final" class="font-mono-ui text-sm leading-relaxed">df<sub>between</sub> = 3 - 1 = 2; df<sub>within</sub> = 36 - 3 = 33. Then MS<sub>between</sub> = 504 / 2 = 252, MS<sub>within</sub> = 396 / 33 = 12, and F = 252 / 12 = 21.</p>
+                    </div>
+                </div>
+                <p class="text-stone-500 italic text-sm">Scroll down to see the same quantities organized into the universal language of statisticians: the ANOVA table.</p>
+            </article>
+
+            <article class="step" data-stage="7">
+                <div class="step-label">Stage 07</div>
+                <h2 class="text-3xl font-bold mb-4">Reading the ANOVA Table</h2>
+                <p class="mb-4 text-stone-700 leading-relaxed font-serif">
+                    When you run ANOVA in software like R, SPSS, or Python, the output is standardized into this table format.
+                </p>
+                <p class="mb-4 text-stone-700 leading-relaxed font-serif">
+                    <strong>Interact with the table in the visual panel:</strong> Tap or hover over the column headers (SS, df, MS, F, p) and the rows to understand exactly what each number represents and how they mathematically connect.
+                </p>
+                <div class="mt-8 border-l-2 border-green-500 pl-4">
+                    <p class="text-sm font-semibold text-stone-800">The Conclusion:</p>
+                    <p id="anova-conclusion" class="text-sm text-stone-600 font-serif mt-1">Because our p-value (&lt; 0.001) is less than our threshold (0.05), we reject the null hypothesis. We conclude that <em>at least one</em> teaching method has a significantly different mean score.</p>
+                </div>
+            </article>
+
+            <article class="step" data-stage="8">
+                <div class="step-label">Stage 08</div>
+                <h2 class="text-3xl font-bold mb-4">Post-Hoc Testing</h2>
+                <p class="mb-4 text-stone-700 leading-relaxed font-serif">
+                    A significant ANOVA is an omnibus test—it tells you a difference exists, but not <em>where</em>. Is A different from B? Is B different from C? 
+                </p>
+                <div class="bg-red-50 p-5 rounded-lg border border-red-100 mb-6">
+                    <p class="text-sm font-semibold text-red-900 mb-2">The Multiple Comparisons Problem</p>
+                    <p class="text-sm text-red-800 font-serif">
+                        If you run three separate t-tests, your 5% chance of a false positive (Type I error) compounds. The more tests you run, the higher the <strong>Family-Wise Error Rate</strong>.
+                    </p>
+                </div>
+                <p class="mb-4 text-stone-700 leading-relaxed font-serif">
+                    To follow up, we use Post-Hoc tests like <strong>Tukey's HSD</strong>. Under its assumptions, Tukey's controls the family-wise error rate at the chosen alpha level across the full set of pairwise comparisons.
+                </p>
+            </article>
+
+            <article class="step" data-stage="9">
+                <div class="step-label">Stage 09</div>
+                <h2 class="text-3xl font-bold mb-4">Enter Two-Way ANOVA</h2>
+                <p class="mb-4 text-stone-700 leading-relaxed font-serif">
+                    So far, we've used a One-Way ANOVA (One independent variable: Teaching Method). But reality is complex. What if we want to know the effect of Teaching Method <strong>AND</strong> the student's Sleep Level (High vs. Low)?
+                </p>
+                <p class="mb-4 text-stone-700 leading-relaxed font-serif">
+                    A Two-Way ANOVA tests three things simultaneously:
+                </p>
+                <ol class="list-decimal pl-5 space-y-2 text-stone-700 font-serif mb-6">
+                    <li>The Main Effect of Factor 1 (Method).</li>
+                    <li>The Main Effect of Factor 2 (Sleep).</li>
+                    <li>The <strong>Interaction Effect</strong> between them.</li>
+                </ol>
+            </article>
+
+            <article class="step" data-stage="10">
+                <div class="step-label">Stage 10</div>
+                <h2 class="text-3xl font-bold mb-4">The Interaction Effect</h2>
+                <p class="mb-4 text-stone-700 leading-relaxed font-serif">
+                    An interaction effect answers the ultimate scientific caveat: <em>"It depends."</em>
+                </p>
+                <p class="mb-4 text-stone-700 leading-relaxed font-serif">
+                    Does Teaching Method A work better than Method B? If there is a significant interaction, the answer is "It depends on how much sleep they got." 
+                </p>
+                
+                <div class="mt-6 p-5 bg-white border border-stone-200 rounded-xl shadow-sm">
+                    <p class="text-sm font-bold text-stone-800 mb-3">Teaching Interaction: Plotting Two-Way</p>
+                    <div class="flex gap-2">
+                        <button class="interactive-btn" onclick="setInteraction('none', this)">No Interaction (Parallel)</button>
+                        <button class="interactive-btn active-btn" onclick="setInteraction('synergy', this)">Interaction (Crossing)</button>
+                    </div>
+                    <p class="text-xs text-stone-500 mt-3 font-serif">Notice how, in the interaction plot, non-parallel lines indicate an interaction: Method A is better when sleep is high, but Method B is better when sleep is low.</p>
+                </div>
+            </article>
+
+            <article class="step" data-stage="11">
+                <div class="step-label">Stage 11</div>
+                <h2 class="text-3xl font-bold mb-4">Caveats & Recap</h2>
+                <p class="mb-4 text-stone-700 leading-relaxed font-serif">
+                    ANOVA is a beautiful, mathematically elegant tool for partitioning variance. But it is only a model of reality.
+                </p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
+                    <div class="bg-stone-100 p-4 rounded-lg">
+                        <h4 class="font-bold text-stone-800 text-sm mb-1">Effect Size Matters</h4>
+                        <p class="text-xs text-stone-600 font-serif">A significant p-value doesn't mean the effect is practically meaningful. Always report measures like Eta-squared ($\eta^2$) to show the <em>proportion</em> of variance explained.</p>
+                    </div>
+                    <div class="bg-stone-100 p-4 rounded-lg">
+                        <h4 class="font-bold text-stone-800 text-sm mb-1">Look at the Data</h4>
+                        <p class="text-xs text-stone-600 font-serif">Never rely solely on the p-value or bar charts. Plot the raw data, check the boxplots, and ensure extreme outliers aren't driving the omnibus F-test.</p>
+                    </div>
+                </div>
+                <p class="text-stone-700 leading-relaxed font-serif font-medium">
+                    In one sentence: ANOVA tests if group differences are real enough to stand out above the normal noise in the data.
+                </p>
+            </article>
+
+        </main>
+
+        <!-- VISUAL COLUMN (Sticky Canvas) -->
+        <aside class="order-1 md:order-2 w-full md:w-[55%] lg:w-[60%] sticky top-0 h-[52vh] sm:h-[56vh] md:h-screen bg-white overflow-hidden border-b md:border-b-0 md:border-l border-stone-200 flex items-center justify-center relative z-20 md:z-0">
+            
+            <!-- LAYER 1: The Dot Plot (Stages 1-5) -->
+            <div id="viz-scatter" class="canvas-layer active w-full h-full relative max-w-2xl max-h-[600px] mx-auto p-4 sm:p-6 md:p-12">
+                <!-- Axes -->
+                <div class="absolute bottom-12 left-12 right-12 h-px bg-stone-300"></div>
+                <div class="absolute bottom-12 left-12 top-12 w-px bg-stone-300"></div>
+                <span class="absolute bottom-4 left-1/2 -translate-x-1/2 text-sm font-semibold text-stone-500 uppercase tracking-wide">Teaching Method Group</span>
+                <span class="absolute top-1/2 left-4 -translate-y-1/2 -rotate-90 text-sm font-semibold text-stone-500 uppercase tracking-wide">Test Score</span>
+
+                <!-- Group Labels -->
+                <div class="absolute bottom-6 left-[20%] -translate-x-1/2 text-lg font-bold text-indigo-800">A</div>
+                <div class="absolute bottom-6 left-[50%] -translate-x-1/2 text-lg font-bold text-teal-800">B</div>
+                <div class="absolute bottom-6 left-[80%] -translate-x-1/2 text-lg font-bold text-red-800">C</div>
+
+                <!-- Grand Mean Line (Hidden initially) -->
+                <div id="grand-mean" class="grand-mean-line top-[50%] flex items-center justify-end pr-2 text-xs font-bold text-stone-500">Grand Mean</div>
+
+                <!-- Dynamic container for dots & means -->
+                <div id="plot-container" class="absolute inset-12"></div>
+            </div>
+
+            <!-- LAYER 2: The ANOVA Table (Stages 6-8) -->
+            <div id="viz-table" class="canvas-layer w-full h-full bg-stone-50 p-4 sm:p-6 md:p-8 flex flex-col justify-center">
+                <div class="max-w-2xl mx-auto w-full bg-white rounded-xl shadow-lg border border-stone-200 overflow-hidden">
+                    <div class="bg-stone-800 px-6 py-4">
+                        <h3 class="text-white font-serif text-lg">ANOVA Output Table</h3>
+                    </div>
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="bg-stone-100 border-b border-stone-200 text-sm font-bold text-stone-600">
+                                <th class="p-4 hover-cell">Source <div class="tooltip-card font-normal">Where is the variance coming from? The model (Between) or the residuals (Within)?</div></th>
+                                <th class="p-4 hover-cell font-mono-ui">SS <div class="tooltip-card font-normal"><strong>Sum of Squares:</strong> The total squared distance of data points from means.</div></th>
+                                <th class="p-4 hover-cell font-mono-ui">df <div class="tooltip-card font-normal"><strong>Degrees of Freedom:</strong> (Number of groups - 1) for Between. (Total N - Number of groups) for Within.</div></th>
+                                <th class="p-4 hover-cell font-mono-ui">MS <div class="tooltip-card font-normal"><strong>Mean Square (Variance):</strong> SS divided by df. The average squared deviation.</div></th>
+                                <th class="p-4 hover-cell font-mono-ui">F <div class="tooltip-card font-normal"><strong>F-Ratio:</strong> MS(Between) / MS(Within). The ratio of Signal to Noise.</div></th>
+                                <th class="p-4 hover-cell font-mono-ui">p-value <div class="tooltip-card font-normal">Probability of observing this F-ratio (or larger) if the null hypothesis were true.</div></th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-sm">
+                            <tr class="border-b border-stone-100">
+                                <td class="p-4 font-semibold text-indigo-700 hover-cell">Between Groups (Treatment)<div class="tooltip-card font-normal">The signal: variance associated with different teaching methods.</div></td>
+                                <td id="anova-ss-between" class="p-4 font-mono-ui">504</td>
+                                <td class="p-4 font-mono-ui">2</td>
+                                <td id="anova-ms-between" class="p-4 font-mono-ui">252</td>
+                                <td id="anova-f-value" class="p-4 font-mono-ui font-bold text-stone-800">21</td>
+                                <td id="anova-p-value" class="p-4 font-mono-ui font-bold text-green-600">&lt; 0.001</td>
+                            </tr>
+                            <tr class="border-b border-stone-100">
+                                <td class="p-4 font-semibold text-red-700">Within Groups (Error)</td>
+                                <td id="anova-ss-within" class="p-4 font-mono-ui">396</td>
+                                <td id="anova-df-within" class="p-4 font-mono-ui">33</td>
+                                <td id="anova-ms-within" class="p-4 font-mono-ui">12</td>
+                                <td class="p-4 font-mono-ui text-stone-400">-</td>
+                                <td class="p-4 font-mono-ui text-stone-400">-</td>
+                            </tr>
+                            <tr class="bg-stone-50 font-semibold text-stone-600">
+                                <td class="p-4">Total</td>
+                                <td id="anova-ss-total" class="p-4 font-mono-ui">900</td>
+                                <td id="anova-df-total" class="p-4 font-mono-ui">35</td>
+                                <td class="p-4 font-mono-ui">-</td>
+                                <td class="p-4 font-mono-ui">-</td>
+                                <td class="p-4 font-mono-ui">-</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <!-- Stage 8: Post Hoc additions -->
+                <div id="post-hoc-viz" class="max-w-2xl mx-auto w-full mt-6 bg-white rounded-xl shadow border border-red-100 p-6 opacity-0 transition-opacity duration-500 transform translate-y-4">
+                    <h4 class="font-serif text-red-900 font-bold mb-3 border-b border-red-100 pb-2">Tukey's HSD Results</h4>
+                    <div class="grid grid-cols-3 gap-4 text-center text-sm font-mono-ui">
+                        <div id="posthoc-ab" class="p-3 bg-stone-50 rounded border border-stone-200">A vs B: <span class="text-stone-400">Not Sig (p = 0.101)</span></div>
+                        <div id="posthoc-ac" class="p-3 bg-green-50 rounded border border-green-200">A vs C: <span class="text-green-700 font-bold">Sig (p &lt; 0.001)</span></div>
+                        <div id="posthoc-bc" class="p-3 bg-green-50 rounded border border-green-200">B vs C: <span class="text-green-700 font-bold">Sig (p = 0.001)</span></div>
+                    </div>
+                    <p class="text-xs text-red-700 font-serif mt-3">These pairwise decisions are interpreted at the chosen alpha level under Tukey HSD's assumptions.</p>
+                </div>
+            </div>
+
+            <!-- LAYER 3: Interaction Plot (Stages 9-11) -->
+            <div id="viz-interaction" class="canvas-layer w-full h-full bg-white p-4 sm:p-6 md:p-12">
+                <div class="w-full h-full relative max-w-xl max-h-[500px] mx-auto">
+                    <h3 class="absolute -top-12 w-full text-center font-serif text-xl text-stone-800">Effect of Method & Sleep on Scores</h3>
+                    
+                    <!-- Axes -->
+                    <div class="absolute bottom-0 left-0 right-0 h-px bg-stone-300"></div>
+                    <div class="absolute bottom-0 left-0 top-0 w-px bg-stone-300"></div>
+                    <span class="absolute top-1/2 -left-14 -translate-y-1/2 -rotate-90 text-sm font-semibold text-stone-500 uppercase tracking-wide">Mean Score</span>
+                    <div class="absolute inset-0 pointer-events-none">
+                        <div class="absolute left-0 right-0 top-[20%] border-t border-dashed border-stone-200"></div>
+                        <div class="absolute left-0 right-0 top-[40%] border-t border-dashed border-stone-200"></div>
+                        <div class="absolute left-0 right-0 top-[60%] border-t border-dashed border-stone-200"></div>
+                        <div class="absolute left-0 right-0 top-[80%] border-t border-dashed border-stone-200"></div>
+                        <span class="absolute -left-10 top-[20%] -translate-y-1/2 text-xs font-semibold text-stone-500">80</span>
+                        <span class="absolute -left-10 top-[40%] -translate-y-1/2 text-xs font-semibold text-stone-500">70</span>
+                        <span class="absolute -left-10 top-[60%] -translate-y-1/2 text-xs font-semibold text-stone-500">60</span>
+                        <span class="absolute -left-10 top-[80%] -translate-y-1/2 text-xs font-semibold text-stone-500">50</span>
+                    </div>
+                    <span class="absolute -bottom-8 left-1/4 -translate-x-1/2 text-sm font-semibold text-stone-700">Method A</span>
+                    <span class="absolute -bottom-8 left-3/4 -translate-x-1/2 text-sm font-semibold text-stone-700">Method B</span>
+                    
+                    <!-- Legend -->
+                    <div class="absolute top-0 right-0 border border-stone-200 p-3 rounded bg-stone-50 shadow-sm text-sm">
+                        <div class="flex items-center gap-2 mb-2"><div class="w-4 h-1 bg-indigo-500"></div> High Sleep</div>
+                        <div class="flex items-center gap-2"><div class="w-4 h-1 bg-red-400 border-t border-dashed border-red-600"></div> Low Sleep</div>
+                    </div>
+
+                    <!-- SVG Lines (Updated via JS) -->
+                    <svg class="absolute inset-0 w-full h-full" preserveAspectRatio="none">
+                        <line id="line-high-sleep" x1="25%" y1="20%" x2="75%" y2="50%" stroke="#6366f1" stroke-width="4" stroke-linecap="round" class="transition-all duration-700"/>
+                        <line id="line-low-sleep" x1="25%" y1="80%" x2="75%" y2="30%" stroke="#dc2626" stroke-width="4" stroke-linecap="round" stroke-dasharray="8,4" class="transition-all duration-700"/>
+                        
+                        <!-- Points -->
+                        <circle id="pt-h1" cx="25%" cy="20%" r="6" fill="#4f46e5" class="transition-all duration-700"/>
+                        <circle id="pt-h2" cx="75%" cy="50%" r="6" fill="#4f46e5" class="transition-all duration-700"/>
+                        <circle id="pt-l1" cx="25%" cy="80%" r="6" fill="#dc2626" class="transition-all duration-700"/>
+                        <circle id="pt-l2" cx="75%" cy="30%" r="6" fill="#dc2626" class="transition-all duration-700"/>
+                    </svg>
+                </div>
+            </div>
+
+        </aside>
+
+    </div>
+
+    <script>
+        lucide.createIcons();
+        document.addEventListener('DOMContentLoaded', () => {
+            renderMathInElement(document.body, { delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}] });
+            initPlot();
+            setupScrollObserver();
+            setupScrollProgress();
+        });
+
+        // --- Data & State Setup ---
+        const GROUPS = [
+            { id: 'A', x: '20%', color: 'bg-indigo-500', baseMean: 68, effectMean: 72 },
+            { id: 'B', x: '50%', color: 'bg-teal-500', baseMean: 68, effectMean: 69 },
+            { id: 'C', x: '80%', color: 'bg-red-500', baseMean: 68, effectMean: 63 }
+        ];
+        const LOW_OFFSETS = [-6, -4, -3, -2, -1, 0, 0, 1, 2, 3, 4, 6];
+        const HIGH_OFFSETS = [-12, -8, -6, -4, -2, 0, 0, 2, 4, 6, 8, 12];
+        const X_JITTERS = [-3.6, -1.8, 1.6, 3.5, -2.7, 2.5, -0.8, 0.9, -4.2, 4.1, -2.1, 2.2];
+        // Exact Tukey HSD adjusted p-value labels for the deterministic scenarios generated
+        // by the fixed means and offsets above. The pairwise significance decisions themselves
+        // are computed live from the displayed data via the Tukey HSD cutoff below.
+        const TUKEY_REFERENCE_P_VALUES = {
+            'low-large': {
+                ab: '0.101',
+                ac: '< 0.001',
+                bc: '0.001'
+            },
+            'low-none': {
+                ab: '1.000',
+                ac: '1.000',
+                bc: '1.000'
+            },
+            'high-large': {
+                ab: '0.545',
+                ac: '0.009',
+                bc: '0.101'
+            },
+            'high-none': {
+                ab: '1.000',
+                ac: '1.000',
+                bc: '1.000'
+            }
+        };
+        const TUKEY_HSD_Q_CRITICAL = 3.4701894886275673; // alpha = 0.05, k = 3, df_within = 33
+        const N_PER_GROUP = 12;
+        let dataPoints = [];
+        let state = { noise: 'low', signal: 'large', stage: 1 };
+        const container = document.getElementById('plot-container');
+        const betweenLines = {};
+        let progressTicking = false;
+        let stageObserver = null;
+        let observerRefreshTimer = null;
+
+        function formatPlotLeft(baseX, jitter) {
+            return jitter >= 0 ? `calc(${baseX} + ${jitter}%)` : `calc(${baseX} - ${Math.abs(jitter)}%)`;
+        }
+
+        function formatNumber(value) {
+            if (Math.abs(value) < 0.000001) return '0';
+            return Number.isInteger(value) ? `${value}` : value.toFixed(2).replace(/\.?0+$/, '');
+        }
+
+        function formatPValueHtml(value) {
+            return value.startsWith('<') ? `&lt; ${value.slice(1).trim()}` : value;
+        }
+
+        function formatPLabelHtml(value) {
+            return value.startsWith('<') ? `p ${formatPValueHtml(value)}` : `p = ${value}`;
+        }
+
+        function formatPValueDisplay(value) {
+            if (value < 0.001) return '< 0.001';
+            return value.toFixed(3);
+        }
+
+        function getScenarioKey() {
+            return `${state.noise}-${state.signal}`;
+        }
+
+        function logGamma(z) {
+            const coefficients = [
+                676.5203681218851,
+                -1259.1392167224028,
+                771.3234287776531,
+                -176.6150291621406,
+                12.507343278686905,
+                -0.13857109526572012,
+                9.984369578019572e-6,
+                1.5056327351493116e-7
+            ];
+            if (z < 0.5) {
+                return Math.log(Math.PI) - Math.log(Math.sin(Math.PI * z)) - logGamma(1 - z);
+            }
+            z -= 1;
+            let series = 0.9999999999998099;
+            coefficients.forEach((coefficient, index) => {
+                series += coefficient / (z + index + 1);
+            });
+            const term = z + coefficients.length - 0.5;
+            return 0.5 * Math.log(2 * Math.PI) + ((z + 0.5) * Math.log(term)) - term + Math.log(series);
+        }
+
+        function betaContinuedFraction(x, a, b) {
+            const maxIterations = 200;
+            const epsilon = 3e-7;
+            const fpMin = 1e-30;
+            let qab = a + b;
+            let qap = a + 1;
+            let qam = a - 1;
+            let c = 1;
+            let d = 1 - ((qab * x) / qap);
+            if (Math.abs(d) < fpMin) d = fpMin;
+            d = 1 / d;
+            let h = d;
+
+            for (let m = 1; m <= maxIterations; m += 1) {
+                const m2 = 2 * m;
+                let aa = (m * (b - m) * x) / ((qam + m2) * (a + m2));
+                d = 1 + (aa * d);
+                if (Math.abs(d) < fpMin) d = fpMin;
+                c = 1 + (aa / c);
+                if (Math.abs(c) < fpMin) c = fpMin;
+                d = 1 / d;
+                h *= d * c;
+
+                aa = (-(a + m) * (qab + m) * x) / ((a + m2) * (qap + m2));
+                d = 1 + (aa * d);
+                if (Math.abs(d) < fpMin) d = fpMin;
+                c = 1 + (aa / c);
+                if (Math.abs(c) < fpMin) c = fpMin;
+                d = 1 / d;
+                const delta = d * c;
+                h *= delta;
+
+                if (Math.abs(delta - 1) < epsilon) break;
+            }
+
+            return h;
+        }
+
+        function regularizedIncompleteBeta(x, a, b) {
+            if (x <= 0) return 0;
+            if (x >= 1) return 1;
+
+            const logBeta = logGamma(a + b) - logGamma(a) - logGamma(b) + (a * Math.log(x)) + (b * Math.log(1 - x));
+            const front = Math.exp(logBeta);
+
+            if (x < ((a + 1) / (a + b + 2))) {
+                return (front * betaContinuedFraction(x, a, b)) / a;
+            }
+            return 1 - ((front * betaContinuedFraction(1 - x, b, a)) / b);
+        }
+
+        function fSurvivalValue(fValue, df1, df2) {
+            if (fValue <= 0) return 1;
+            const x = df2 / (df2 + (df1 * fValue));
+            return regularizedIncompleteBeta(x, df2 / 2, df1 / 2);
+        }
+
+        function derivePostHocResults(stats) {
+            const groupMeansById = Object.fromEntries(GROUPS.map((group, index) => [group.id, stats.groupMeans[index]]));
+            const hsdThreshold = TUKEY_HSD_Q_CRITICAL * Math.sqrt(stats.msWithin / N_PER_GROUP);
+            const pairLabels = TUKEY_REFERENCE_P_VALUES[getScenarioKey()] || { ab: '?', ac: '?', bc: '?' };
+            const pairs = [
+                ['ab', 'A', 'B'],
+                ['ac', 'A', 'C'],
+                ['bc', 'B', 'C']
+            ];
+
+            return Object.fromEntries(pairs.map(([id, left, right]) => {
+                const diff = Math.abs(groupMeansById[left] - groupMeansById[right]);
+                return [id, {
+                    significant: diff > (hsdThreshold + 1e-9),
+                    pDisplay: pairLabels[id]
+                }];
+            }));
+        }
+
+        function setPostHocCard(id, label, result) {
+            const card = document.getElementById(id);
+            const significantClasses = 'p-3 bg-green-50 rounded border border-green-200';
+            const neutralClasses = 'p-3 bg-stone-50 rounded border border-stone-200';
+            const statusText = result.significant
+                ? `<span class="text-green-700 font-bold">Sig (${formatPLabelHtml(result.pDisplay)})</span>`
+                : `<span class="text-stone-400">Not Sig (${formatPLabelHtml(result.pDisplay)})</span>`;
+
+            card.className = result.significant ? significantClasses : neutralClasses;
+            card.innerHTML = `${label}: ${statusText}`;
+        }
+
+        function closeTableTooltips() {
+            document.querySelectorAll('#viz-table .hover-cell.tooltip-open').forEach(cell => {
+                cell.classList.remove('tooltip-open');
+                cell.setAttribute('aria-expanded', 'false');
+            });
+        }
+
+        function toggleTableTooltip(cell) {
+            const shouldOpen = !cell.classList.contains('tooltip-open');
+            closeTableTooltips();
+            if (shouldOpen) {
+                cell.classList.add('tooltip-open');
+                cell.setAttribute('aria-expanded', 'true');
+            }
+        }
+
+        function setupTableTooltips() {
+            const cells = document.querySelectorAll('#viz-table .hover-cell');
+            cells.forEach((cell, index) => {
+                const tooltip = cell.querySelector('.tooltip-card');
+                if (!tooltip) return;
+
+                if (!tooltip.id) {
+                    tooltip.id = `anova-tooltip-${index + 1}`;
+                }
+
+                cell.setAttribute('tabindex', '0');
+                cell.setAttribute('role', 'button');
+                cell.setAttribute('aria-expanded', 'false');
+                cell.setAttribute('aria-controls', tooltip.id);
+
+                cell.addEventListener('click', (event) => {
+                    if (event.target.closest('.tooltip-card')) return;
+                    event.stopPropagation();
+                    toggleTableTooltip(cell);
+                });
+
+                cell.addEventListener('keydown', (event) => {
+                    if (event.key === 'Enter' || event.key === ' ') {
+                        event.preventDefault();
+                        toggleTableTooltip(cell);
+                    } else if (event.key === 'Escape') {
+                        closeTableTooltips();
+                        cell.blur();
+                    }
+                });
+            });
+
+            document.addEventListener('click', (event) => {
+                if (!event.target.closest('#viz-table .hover-cell')) {
+                    closeTableTooltips();
+                }
+            });
+
+            document.addEventListener('keydown', (event) => {
+                if (event.key === 'Escape') {
+                    closeTableTooltips();
+                }
+            });
+        }
+
+        function initStageDots() {
+            const dotNav = document.getElementById('stage-dots');
+            const steps = document.querySelectorAll('.step');
+
+            steps.forEach(step => {
+                const stage = step.getAttribute('data-stage');
+                const title = step.querySelector('h2')?.textContent?.trim() || `Stage ${stage}`;
+                const dot = document.createElement('button');
+                dot.type = 'button';
+                dot.className = 'stage-dot';
+                dot.dataset.stage = stage;
+                dot.title = `Stage ${stage}: ${title}`;
+                dot.setAttribute('aria-label', `Go to Stage ${stage}: ${title}`);
+                dot.addEventListener('click', () => {
+                    step.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                });
+                dotNav.appendChild(dot);
+            });
+        }
+
+        function updateStageDots(stage) {
+            document.querySelectorAll('#stage-dots .stage-dot').forEach(dot => {
+                dot.classList.toggle('active', dot.dataset.stage === `${stage}`);
+            });
+        }
+
+        function updateAnovaDisplays(stats) {
+            const [meanA, meanB, meanC] = stats.groupMeans;
+            const pValue = fSurvivalValue(stats.f, stats.dfBetween, stats.dfWithin);
+            const pDisplay = formatPValueDisplay(pValue);
+            const significant = pValue < 0.05;
+            const postHocResults = derivePostHocResults(stats);
+
+            document.getElementById('calc-summary').textContent = `Group means: A = ${formatNumber(meanA)}, B = ${formatNumber(meanB)}, C = ${formatNumber(meanC)}. Grand mean = ${formatNumber(stats.grandMean)}. Each group has n = ${N_PER_GROUP}, so N = ${stats.totalN}.`;
+            document.getElementById('calc-ss-between').innerHTML = `SS<sub>between</sub> = ${N_PER_GROUP}[(${formatNumber(meanA)} - ${formatNumber(stats.grandMean)})<sup>2</sup> + (${formatNumber(meanB)} - ${formatNumber(stats.grandMean)})<sup>2</sup> + (${formatNumber(meanC)} - ${formatNumber(stats.grandMean)})<sup>2</sup>] = ${formatNumber(stats.ssBetween)}`;
+            document.getElementById('calc-ss-within').innerHTML = `SS<sub>within</sub> = ${formatNumber(stats.withinByGroup[0])} + ${formatNumber(stats.withinByGroup[1])} + ${formatNumber(stats.withinByGroup[2])} = ${formatNumber(stats.ssWithin)}`;
+            document.getElementById('calc-final').innerHTML = `df<sub>between</sub> = 3 - 1 = ${stats.dfBetween}; df<sub>within</sub> = ${stats.totalN} - 3 = ${stats.dfWithin}. Then MS<sub>between</sub> = ${formatNumber(stats.ssBetween)} / ${stats.dfBetween} = ${formatNumber(stats.msBetween)}, MS<sub>within</sub> = ${formatNumber(stats.ssWithin)} / ${stats.dfWithin} = ${formatNumber(stats.msWithin)}, and F = ${formatNumber(stats.msBetween)} / ${formatNumber(stats.msWithin)} = ${formatNumber(stats.f)}.`;
+
+            document.getElementById('anova-ss-between').textContent = formatNumber(stats.ssBetween);
+            document.getElementById('anova-ms-between').textContent = formatNumber(stats.msBetween);
+            document.getElementById('anova-f-value').textContent = formatNumber(stats.f);
+            document.getElementById('anova-p-value').innerHTML = formatPValueHtml(pDisplay);
+            document.getElementById('anova-p-value').className = significant
+                ? 'p-4 font-mono-ui font-bold text-green-600'
+                : 'p-4 font-mono-ui font-bold text-stone-500';
+            document.getElementById('anova-ss-within').textContent = formatNumber(stats.ssWithin);
+            document.getElementById('anova-df-within').textContent = `${stats.dfWithin}`;
+            document.getElementById('anova-ms-within').textContent = formatNumber(stats.msWithin);
+            document.getElementById('anova-ss-total').textContent = formatNumber(stats.ssTotal);
+            document.getElementById('anova-df-total').textContent = `${stats.dfTotal}`;
+
+            document.getElementById('anova-conclusion').innerHTML = significant
+                ? `Because our p-value (${formatPValueHtml(pDisplay)}) is less than our threshold (0.05), we reject the null hypothesis. We conclude that <em>at least one</em> teaching method has a significantly different mean score.`
+                : `Because our p-value (${formatPValueHtml(pDisplay)}) is greater than our threshold (0.05), we fail to reject the null hypothesis. The observed group mean differences are small relative to the background noise in this example.`;
+
+            setPostHocCard('posthoc-ab', 'A vs B', postHocResults.ab);
+            setPostHocCard('posthoc-ac', 'A vs C', postHocResults.ac);
+            setPostHocCard('posthoc-bc', 'B vs C', postHocResults.bc);
+        }
+
+        function calculateAnovaStats(groupValues, groupMeans, grandMean) {
+            const withinByGroup = GROUPS.map((group, index) => (
+                groupValues[group.id].reduce((sum, value) => sum + ((value - groupMeans[index]) ** 2), 0)
+            ));
+            const ssWithin = withinByGroup.reduce((sum, value) => sum + value, 0);
+            const ssBetween = GROUPS.reduce((sum, group, index) => (
+                sum + (groupValues[group.id].length * ((groupMeans[index] - grandMean) ** 2))
+            ), 0);
+            const totalN = Object.values(groupValues).reduce((sum, values) => sum + values.length, 0);
+            const dfBetween = GROUPS.length - 1;
+            const dfWithin = totalN - GROUPS.length;
+            const dfTotal = totalN - 1;
+            const msBetween = ssBetween / dfBetween;
+            const msWithin = ssWithin / dfWithin;
+
+            return {
+                groupMeans,
+                grandMean,
+                withinByGroup,
+                ssBetween,
+                ssWithin,
+                ssTotal: ssBetween + ssWithin,
+                dfBetween,
+                dfWithin,
+                dfTotal,
+                msBetween,
+                msWithin,
+                f: msWithin === 0 ? 0 : msBetween / msWithin,
+                totalN
+            };
+        }
+
+        function initPlot() {
+            GROUPS.forEach((g, gIdx) => {
+                // Mean line element
+                const mLine = document.createElement('div');
+                mLine.className = `mean-line group-${gIdx}`;
+                mLine.style.left = `calc(${g.x} - 7.5%)`;
+                container.appendChild(mLine);
+
+                const betweenLine = document.createElement('div');
+                betweenLine.className = 'deviation-line dev-between';
+                betweenLine.style.left = `calc(${g.x} + 4%)`;
+                container.appendChild(betweenLine);
+                betweenLines[g.id] = betweenLine;
+
+                for (let i=0; i<N_PER_GROUP; i++) {
+                    const dot = document.createElement('div');
+                    dot.className = `data-dot ${g.color} opacity-80`;
+                    dot.style.left = formatPlotLeft(g.x, X_JITTERS[i]);
+                    
+                    const devLine = document.createElement('div');
+                    devLine.className = 'deviation-line dev-within';
+                    devLine.style.left = dot.style.left;
+
+                    container.appendChild(devLine);
+                    container.appendChild(dot);
+                    
+                    dataPoints.push({
+                        element: dot,
+                        devElement: devLine,
+                        groupObj: g,
+                        offsetIndex: i,
+                        plotLeft: dot.style.left,
+                        showWithin: i % 3 === 0
+                    });
+                }
+            });
+            updatePlotPositions();
+        }
+
+        function updatePlotPositions() {
+            const offsets = state.noise === 'high' ? HIGH_OFFSETS : LOW_OFFSETS;
+            let totalSum = 0;
+            let groupMeans = [0,0,0];
+            const groupValues = { A: [], B: [], C: [] };
+
+            // 1. Calculate positions
+            dataPoints.forEach(p => {
+                const targetMean = state.signal === 'large' ? p.groupObj.effectMean : p.groupObj.baseMean;
+                p.currentVal = targetMean + offsets[p.offsetIndex];
+                
+                // Keep bounded 5 to 95 for visual sanity
+                p.currentVal = Math.max(5, Math.min(95, p.currentVal));
+                
+                // Convert score to top % (inverted Y axis)
+                p.element.style.top = `${100 - p.currentVal}%`;
+                
+                if(p.groupObj.id==='A') groupMeans[0] += p.currentVal;
+                if(p.groupObj.id==='B') groupMeans[1] += p.currentVal;
+                if(p.groupObj.id==='C') groupMeans[2] += p.currentVal;
+                groupValues[p.groupObj.id].push(p.currentVal);
+                totalSum += p.currentVal;
+            });
+
+            groupMeans = groupMeans.map(s => s/N_PER_GROUP);
+            const grandMean = totalSum / dataPoints.length;
+            const stats = calculateAnovaStats(groupValues, groupMeans, grandMean);
+
+            // 2. Update Lines
+            const meanLines = document.querySelectorAll('.mean-line');
+            meanLines.forEach((m, i) => m.style.top = `${100 - groupMeans[i]}%`);
+            document.getElementById('grand-mean').style.top = `${100 - grandMean}%`;
+
+            // 3. Update Deviation Shading based on Stage
+            dataPoints.forEach(p => {
+                const gIdx = p.groupObj.id === 'A' ? 0 : p.groupObj.id === 'B' ? 1 : 2;
+                const topVal = 100 - p.currentVal;
+                const meanTop = 100 - groupMeans[gIdx];
+
+                p.devElement.className = 'deviation-line dev-within';
+                p.devElement.style.left = p.plotLeft;
+                if (state.stage === 4 && p.showWithin) {
+                    p.devElement.style.opacity = 0.45;
+                    p.devElement.style.top = `${Math.min(topVal, meanTop)}%`;
+                    p.devElement.style.height = `${Math.abs(topVal - meanTop)}%`;
+                } else {
+                    p.devElement.style.opacity = 0;
+                    p.devElement.style.height = '0%';
+                }
+            });
+
+            GROUPS.forEach((group, index) => {
+                const betweenLine = betweenLines[group.id];
+                const meanTop = 100 - groupMeans[index];
+                const grandTop = 100 - grandMean;
+
+                if (state.stage === 4) {
+                    betweenLine.style.opacity = 0.6;
+                    betweenLine.style.top = `${Math.min(meanTop, grandTop)}%`;
+                    betweenLine.style.height = `${Math.abs(meanTop - grandTop)}%`;
+                } else {
+                    betweenLine.style.opacity = 0;
+                    betweenLine.style.height = '0%';
+                }
+            });
+
+            updateAnovaDisplays(stats);
+        }
+
+        // --- Interactive Button Toggles ---
+        window.setNoise = function(val, btn) {
+            state.noise = val;
+            updateBtnUI(btn);
+            updatePlotPositions();
+        }
+        window.setSignal = function(val, btn) {
+            state.signal = val;
+            updateBtnUI(btn);
+            updatePlotPositions();
+        }
+        window.setInteraction = function(val, btn) {
+            updateBtnUI(btn);
+            const lHigh = document.getElementById('line-high-sleep');
+            const lLow = document.getElementById('line-low-sleep');
+            const [ph1, ph2, pl1, pl2] = ['pt-h1','pt-h2','pt-l1','pt-l2'].map(id => document.getElementById(id));
+            
+            if (val === 'synergy') {
+                // Crossing
+                lHigh.setAttribute('y1', '20%'); ph1.setAttribute('cy', '20%');
+                lHigh.setAttribute('y2', '80%'); ph2.setAttribute('cy', '80%');
+                lLow.setAttribute('y1', '75%'); pl1.setAttribute('cy', '75%');
+                lLow.setAttribute('y2', '25%'); pl2.setAttribute('cy', '25%');
+            } else {
+                // Parallel
+                lHigh.setAttribute('y1', '20%'); ph1.setAttribute('cy', '20%');
+                lHigh.setAttribute('y2', '40%'); ph2.setAttribute('cy', '40%');
+                lLow.setAttribute('y1', '60%'); pl1.setAttribute('cy', '60%');
+                lLow.setAttribute('y2', '80%'); pl2.setAttribute('cy', '80%');
+            }
+        }
+        function updateBtnUI(clickedBtn) {
+            const siblings = clickedBtn.parentElement.querySelectorAll('button');
+            siblings.forEach(b => b.classList.remove('active-btn'));
+            clickedBtn.classList.add('active-btn');
+        }
+
+        function updateScrollProgress() {
+            const progressBar = document.getElementById('progress-bar');
+            const scrollableHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const progress = scrollableHeight <= 0 ? 0 : Math.min(1, window.scrollY / scrollableHeight);
+            progressBar.style.width = `${progress * 100}%`;
+        }
+
+        function setupScrollProgress() {
+            const onScroll = () => {
+                if (progressTicking) return;
+                progressTicking = true;
+                window.requestAnimationFrame(() => {
+                    updateScrollProgress();
+                    progressTicking = false;
+                });
+            };
+
+            window.addEventListener('scroll', onScroll, { passive: true });
+            window.addEventListener('resize', updateScrollProgress);
+            updateScrollProgress();
+        }
+
+        function activateStage(stage, activeStep, steps) {
+            state.stage = stage;
+            steps.forEach(step => step.classList.remove('active'));
+            activeStep.classList.add('active');
+            updateStageDots(stage);
+            closeTableTooltips();
+
+            document.querySelectorAll('.canvas-layer').forEach(layer => layer.classList.remove('active'));
+
+            if (stage >= 1 && stage <= 5) {
+                document.getElementById('viz-scatter').classList.add('active');
+                document.querySelectorAll('.mean-line').forEach(line => line.style.opacity = stage >= 2 ? 1 : 0);
+                document.getElementById('grand-mean').style.opacity = stage >= 4 ? 1 : 0;
+                updatePlotPositions();
+            } else if (stage >= 6 && stage <= 8) {
+                document.getElementById('viz-table').classList.add('active');
+                const postHoc = document.getElementById('post-hoc-viz');
+                if (stage === 8) {
+                    postHoc.classList.remove('opacity-0', 'translate-y-4');
+                } else {
+                    postHoc.classList.add('opacity-0', 'translate-y-4');
+                }
+            } else if (stage >= 9) {
+                document.getElementById('viz-interaction').classList.add('active');
+            }
+        }
+
+        function syncActiveStage(steps = Array.from(document.querySelectorAll('.step'))) {
+            const viewportCenter = window.innerHeight * 0.5;
+            let closestStep = steps[0];
+            let closestDistance = Number.POSITIVE_INFINITY;
+
+            steps.forEach(step => {
+                const rect = step.getBoundingClientRect();
+                const stepCenter = rect.top + (rect.height / 2);
+                const distance = Math.abs(stepCenter - viewportCenter);
+                if (distance < closestDistance) {
+                    closestDistance = distance;
+                    closestStep = step;
+                }
+            });
+
+            if (closestStep) {
+                activateStage(parseInt(closestStep.getAttribute('data-stage'), 10), closestStep, steps);
+            }
+        }
+
+        function setupObserverRefresh() {
+            const refreshObserver = () => {
+                clearTimeout(observerRefreshTimer);
+                observerRefreshTimer = setTimeout(() => {
+                    setupScrollObserver();
+                    updateScrollProgress();
+                }, 120);
+            };
+
+            window.addEventListener('resize', refreshObserver);
+            window.addEventListener('orientationchange', refreshObserver);
+        }
+
+        // --- Scroll Logic & Stage Handling ---
+        function setupScrollObserver() {
+            const steps = Array.from(document.querySelectorAll('.step'));
+            const rootMargin = window.innerWidth < 768 ? '-52% 0px -18% 0px' : '-40% 0px -40% 0px';
+
+            if (stageObserver) {
+                stageObserver.disconnect();
+            }
+
+            stageObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const stage = parseInt(entry.target.getAttribute('data-stage'));
+                        activateStage(stage, entry.target, steps);
+                    }
+                });
+            }, { rootMargin, threshold: 0 });
+
+            steps.forEach(step => stageObserver.observe(step));
+            syncActiveStage(steps);
+        }
+
+        initStageDots();
+        setupTableTooltips();
+        setupObserverRefresh();
+    </script>
+</body>
+</html>

@@ -1,0 +1,1192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>K-Nearest Neighbors — Interactive Visual Guide</title>
+<meta name="description" content="A scroll-driven, interactive visual guide to K-Nearest Neighbors (KNN). Learn how KNN works from raw data to final model prediction.">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#f7f7f4;--bg2:#f0efeb;--surface:#ffffff;
+  --glass:rgba(255,255,255,0.85);--glass-border:#e7e5e4;
+  --text:#1f2937;--text-dim:#4b5563;--text-muted:#6b7280;
+  --accent:#6366f1;--accent2:#4f46e5;--accent-glow:rgba(99,102,241,0.08);
+  --apple:#b55a52;--apple-soft:rgba(181,90,82,0.12);
+  --orange:#d97706;--orange-soft:rgba(217,119,6,0.1);
+  --green:#16a34a;--green-soft:rgba(22,163,74,0.1);
+  --blue:#3b82f6;--blue-soft:rgba(59,130,246,0.1);
+  --coral:#dc2626;--coral-soft:rgba(220,38,38,0.08);
+  --radius:16px;--radius-sm:10px;
+}
+html{scroll-behavior:smooth;background:var(--bg)}
+body{font-family:'Inter',system-ui,sans-serif;color:var(--text);background:var(--bg);line-height:1.7;overflow-x:hidden}
+.layout{display:flex;min-height:100vh;position:relative}
+.narrative{width:45%;min-width:400px;position:relative;z-index:2}
+.viz-container{width:55%;height:100vh;position:sticky;top:0;right:0;display:flex;align-items:center;justify-content:center;z-index:1;background:var(--bg)}
+#mainCanvas{width:100%;height:100%;display:block}
+.section{min-height:100vh;padding:80px 60px 80px 40px;display:flex;flex-direction:column;justify-content:center;position:relative}
+.section::after{content:'';position:absolute;bottom:0;left:40px;right:60px;height:1px;background:linear-gradient(90deg,transparent,var(--glass-border),transparent)}
+.hero-section{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;width:100vw;position:relative;padding:60px;overflow:hidden}
+.hero-bg{position:absolute;inset:0;z-index:0;pointer-events:none}
+.hero-section h1{font-size:clamp(2.8rem,5vw,4.5rem);font-weight:800;letter-spacing:-0.03em;line-height:1.1;background:linear-gradient(135deg,#1f2937 0%,var(--accent) 50%,var(--accent2) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:20px;position:relative;z-index:1}
+.hero-section .subtitle{font-size:clamp(1rem,1.8vw,1.25rem);color:var(--text-dim);font-weight:400;max-width:600px;margin-bottom:40px;position:relative;z-index:1}
+.hero-section .scroll-hint{font-size:0.85rem;color:var(--text-muted);display:flex;align-items:center;gap:8px;animation:pulse 2s ease-in-out infinite;position:relative;z-index:1}
+@keyframes pulse{0%,100%{opacity:0.5;transform:translateY(0)}50%{opacity:1;transform:translateY(5px)}}
+.hero-badge{display:inline-block;padding:6px 18px;border-radius:100px;background:var(--accent-glow);border:1px solid rgba(99,102,241,0.2);color:var(--accent);font-size:0.8rem;font-weight:500;letter-spacing:0.05em;text-transform:uppercase;margin-bottom:24px;position:relative;z-index:1}
+.hero-note{font-size:0.82rem;color:var(--text-muted);max-width:480px;margin-top:20px;line-height:1.6;position:relative;z-index:1;font-style:italic}
+.stage-num{font-size:0.7rem;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;color:var(--accent);margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.stage-num::before{content:'';width:24px;height:1px;background:var(--accent)}
+h2{font-size:clamp(1.6rem,3vw,2.2rem);font-weight:700;letter-spacing:-0.02em;line-height:1.2;margin-bottom:20px;color:var(--text)}
+h3{font-size:1.1rem;font-weight:600;margin-bottom:12px;color:var(--accent2)}
+p{font-size:0.95rem;color:var(--text-dim);margin-bottom:16px;max-width:520px}
+.glass-card{background:var(--surface);border:1px solid var(--glass-border);border-radius:var(--radius);padding:24px;margin:16px 0;box-shadow:0 1px 3px rgba(0,0,0,0.04)}
+.math-block{font-family:'JetBrains Mono',monospace;font-size:0.85rem;background:rgba(99,102,241,0.05);border:1px solid rgba(99,102,241,0.12);border-radius:var(--radius-sm);padding:16px 20px;margin:12px 0;color:var(--accent2);overflow-x:auto;white-space:pre-wrap;line-height:1.8}
+.data-table{width:100%;border-collapse:collapse;font-size:0.82rem;margin:12px 0}
+.data-table th{text-align:left;padding:8px 12px;font-weight:600;color:var(--accent2);border-bottom:2px solid var(--glass-border);font-size:0.75rem;letter-spacing:0.05em;text-transform:uppercase}
+.data-table td{padding:8px 12px;border-bottom:1px solid #f0efeb;color:var(--text-dim);font-family:'JetBrains Mono',monospace;font-size:0.8rem}
+.data-table tr:hover td{background:rgba(99,102,241,0.03)}
+.tag{display:inline-block;padding:3px 10px;border-radius:100px;font-size:0.72rem;font-weight:600}
+.tag-apple{background:var(--apple-soft);color:var(--apple)}
+.tag-orange{background:var(--orange-soft);color:var(--orange)}
+.metric-row{display:flex;gap:12px;margin:12px 0;flex-wrap:wrap}
+.metric-card{flex:1;min-width:100px;background:var(--bg);border:1px solid var(--glass-border);border-radius:var(--radius-sm);padding:14px;text-align:center}
+.metric-card .val{font-size:1.4rem;font-weight:700;font-family:'JetBrains Mono',monospace}
+.metric-card .lbl{font-size:0.7rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.05em;margin-top:4px}
+.insight-box{border-left:3px solid var(--accent);padding:12px 16px;margin:16px 0;background:var(--accent-glow);border-radius:0 var(--radius-sm) var(--radius-sm) 0}
+.insight-box p{margin:0;font-size:0.88rem;color:var(--text)}
+.matrix-grid{display:grid;grid-template-columns:auto 1fr 1fr;gap:0;margin:16px 0;font-family:'JetBrains Mono',monospace;font-size:0.8rem}
+.matrix-grid .cell{padding:10px 14px;text-align:center;border:1px solid var(--glass-border)}
+.matrix-grid .header{font-weight:600;color:var(--accent2);background:rgba(99,102,241,0.05)}
+.matrix-grid .tp{background:rgba(22,163,74,0.08);color:var(--green)}
+.matrix-grid .tn{background:rgba(59,130,246,0.08);color:var(--blue)}
+.matrix-grid .fp{background:rgba(217,119,6,0.06);color:var(--orange)}
+.matrix-grid .fn{background:rgba(220,38,38,0.06);color:var(--coral)}
+.playground-controls{display:flex;gap:12px;margin:16px 0;flex-wrap:wrap;align-items:center}
+.btn{padding:10px 20px;border-radius:var(--radius-sm);border:1px solid var(--glass-border);background:var(--surface);color:var(--text);font-family:'Inter',sans-serif;font-size:0.85rem;font-weight:500;cursor:pointer;transition:all 0.2s}
+.btn:hover{background:var(--accent-glow);border-color:var(--accent)}
+.btn-accent{background:rgba(99,102,241,0.1);border-color:rgba(99,102,241,0.25);color:var(--accent2)}
+.btn-accent:hover{background:rgba(99,102,241,0.2)}
+.live-calc{margin:8px 0;padding:10px 14px;background:rgba(22,163,74,0.04);border:1px solid rgba(22,163,74,0.12);border-radius:var(--radius-sm);font-family:'JetBrains Mono',monospace;font-size:0.78rem;color:#15803d}
+.progress-bar{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--accent),var(--accent2));z-index:100;transition:width 0.3s;width:0}
+.stage-dots{position:fixed;right:20px;top:50%;transform:translateY(-50%);z-index:50;display:flex;flex-direction:column;gap:10px}
+.stage-dot{width:10px;height:10px;border-radius:50%;background:#d1d5db;cursor:pointer;transition:all 0.3s;border:2px solid transparent}
+.stage-dot:hover{background:#9ca3af}
+.stage-dot.active{background:var(--accent);border-color:rgba(99,102,241,0.3);box-shadow:0 0 12px rgba(99,102,241,0.35)}
+.tooltip{position:absolute;background:rgba(255,255,255,0.97);border:1px solid var(--glass-border);border-radius:8px;padding:8px 12px;font-size:0.75rem;pointer-events:none;z-index:200;box-shadow:0 4px 12px rgba(0,0,0,0.1);color:var(--text);white-space:nowrap;display:none}
+.k-slider-wrap{display:flex;align-items:center;gap:12px;margin:12px 0}
+.k-slider-wrap input[type=range]{flex:1;accent-color:var(--accent)}
+.k-slider-wrap .k-val{font-family:'JetBrains Mono',monospace;font-size:1.1rem;font-weight:700;color:var(--accent2);min-width:30px;text-align:center}
+
+@media(max-width:900px){
+  .layout{flex-direction:column}
+  .narrative{width:100%;min-width:unset}
+  .viz-container{width:100%;height:50vh;position:sticky;top:0}
+  .section{padding:40px 24px}
+  .hero-section{width:100%}
+  .stage-dots{display:none}
+}
+</style>
+</head>
+<body>
+
+<div class="progress-bar" id="progressBar"></div>
+<div class="stage-dots" id="stageDots"></div>
+<div id="tooltip" class="tooltip"></div>
+
+<!-- HERO -->
+<section class="hero-section section" data-stage="0" id="sec-0">
+  <canvas id="heroCanvas" class="hero-bg"></canvas>
+  <div class="hero-badge">Machine Learning · Classification</div>
+  <h1>K-Nearest<br>Neighbors</h1>
+  <p class="subtitle">A visual, step-by-step journey from raw data to a trained classifier. Watch one plot evolve as the model learns to classify fruits by looking at their nearest neighbors.</p>
+  <p class="hero-note">The dataset used here is intentionally simplified so you can clearly see how each step of KNN works. Real-world data is messier and noisier.</p>
+  <div class="scroll-hint">↓ Scroll to begin</div>
+</section>
+
+<!-- MAIN LAYOUT -->
+<div class="layout">
+<div class="narrative">
+
+<!-- S1: Raw Data -->
+<section class="section" data-stage="1" id="sec-1">
+  <div class="stage-num">Stage 01</div>
+  <h2>The Raw Data</h2>
+  <p>Every machine learning model starts with data. Here we have measurements of fruits — each one scored on <strong>Sweetness</strong> and <strong>Color Intensity</strong>.</p>
+  <p>Each fruit is already labeled: it's either an <span class="tag tag-apple">Apple</span> or an <span class="tag tag-orange">Orange</span>. Because we have labels, this is <em>supervised learning</em>.</p>
+  <div class="glass-card">
+    <h3>Training Dataset</h3>
+    <table class="data-table" id="dataTable"></table>
+  </div>
+  <div class="insight-box"><p>💡 KNN needs labeled examples to learn from. It doesn't build a formula — it simply remembers all the data and compares new points to what it already knows.</p></div>
+</section>
+
+<!-- S2: Feature Selection -->
+<section class="section" data-stage="2" id="sec-2">
+  <div class="stage-num">Stage 02</div>
+  <h2>Choosing Good Features</h2>
+  <p>Not every measurement helps separate classes. We pick features where the groups actually differ — like Sweetness and Color Intensity.</p>
+  <p>Bad features (random IDs, row numbers) add noise without signal. KNN is especially sensitive to irrelevant features because they pollute the distance calculation.</p>
+  <div class="glass-card">
+    <h3>Feature Quality</h3>
+    <p style="margin:0">✅ <strong>Sweetness</strong> — Oranges tend to be sweeter<br>
+    ✅ <strong>Color Intensity</strong> — Apples score higher on red<br>
+    ❌ Row number — meaningless for prediction<br>
+    ❌ Day picked — no predictive power</p>
+  </div>
+  <div class="insight-box"><p>💡 Notice how the two classes form somewhat distinct clusters on the plot — a good sign. KNN relies entirely on spatial proximity.</p></div>
+</section>
+
+<!-- S3: Train/Test Split -->
+<section class="section" data-stage="3" id="sec-3">
+  <div class="stage-num">Stage 03</div>
+  <h2>Train / Test Split</h2>
+  <p>We hold out a small <strong>test set</strong> (2 apples + 2 oranges) that the model will not see during training. The remaining points are used as the "memory" KNN will search through.</p>
+  <p>Testing on training data is one of the most common mistakes — it gives inflated confidence. A model that memorizes isn't smart; it's just a parrot.</p>
+  <div class="glass-card" id="splitInfo">
+    <div class="metric-row">
+      <div class="metric-card"><div class="val" id="trainCount">—</div><div class="lbl">Training</div></div>
+      <div class="metric-card"><div class="val" id="testCount">—</div><div class="lbl">Testing (held-out)</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- S4: Feature Scaling -->
+<section class="section" data-stage="4" id="sec-4">
+  <div class="stage-num">Stage 04</div>
+  <h2>Feature Scaling</h2>
+  <p>This is the <strong>most common mistake</strong> with KNN. If Sweetness ranges 0–10 but Color ranges 0–100, the Color feature would completely dominate distance calculations.</p>
+  <p>We use <em>Min-Max Scaling</em> to squish every feature into the 0–1 range, giving each feature equal voice.</p>
+  <div class="math-block">Scaled Value = (Value − Min) / (Max − Min)
+
+Example: Sweetness 7, Min=2, Max=9
+→ (7 − 2) / (9 − 2) = 5/7 ≈ 0.71</div>
+  <div class="glass-card" id="scaleInfo"></div>
+  <div class="insight-box"><p>💡 Watch the points shift on the plot — they're being rescaled to [0, 1] on each axis. The shape of the clusters stays the same, but the axes are now comparable.</p></div>
+</section>
+
+<!-- S5: Distance Metrics -->
+<section class="section" data-stage="5" id="sec-5">
+  <div class="stage-num">Stage 05</div>
+  <h2>Measuring Distance</h2>
+  <p>KNN's entire logic boils down to one question: <em>"Who lives closest to me?"</em> To answer that, we need a way to measure distance between points.</p>
+  <p>The most common choice is <strong>Euclidean distance</strong> — the straight-line distance between two points.</p>
+  <div class="math-block">d(a, b) = √[(x₂ − x₁)² + (y₂ − y₁)²]
+
+This is just the Pythagorean theorem —
+the same formula you learned in geometry class.</div>
+  <div class="glass-card" id="distanceInfo">
+    <h3>Live Distance Calculation</h3>
+    <p id="distCalcText">Lines on the plot show the distance from a query point (★) to every training point. The darker lines emphasize the current teaching K nearest neighbors.</p>
+  </div>
+</section>
+
+<!-- S6: Choose K -->
+<section class="section" data-stage="6" id="sec-6">
+  <div class="stage-num">Stage 06</div>
+  <h2>Choosing K</h2>
+  <p>K is <strong>one of the most important hyperparameters</strong> in KNN — the number of neighbors to consult before making a prediction.</p>
+  <p><strong>Small K</strong> (e.g. K=1): Very sensitive to noise. One outlier can flip the prediction.<br>
+  <strong>Large K</strong> (e.g. K=15): Too smooth. Local patterns get drowned out by distant voters.</p>
+  <div class="glass-card">
+    <h3>Adjust K</h3>
+    <div class="k-slider-wrap">
+      <span style="font-size:0.8rem;color:var(--text-muted)">K =</span>
+      <input type="range" id="kSlider" min="1" max="15" value="3" step="2">
+      <span class="k-val" id="kValue">3</span>
+    </div>
+    <p style="font-size:0.82rem;color:var(--text-muted);margin:0" id="kAdvice">K=3 is a balanced starting point. Try different values!</p>
+  </div>
+  <div class="insight-box"><p>💡 Best practice: use an <strong>odd</strong> number for K to avoid ties. Use cross-validation to find the optimal K for your specific dataset.</p></div>
+</section>
+
+<!-- S7: Find Neighbors -->
+<section class="section" data-stage="7" id="sec-7">
+  <div class="stage-num">Stage 07</div>
+  <h2>Finding Neighbors</h2>
+  <p>For our query point (★), we calculate the distance to <em>every single training point</em>, then sort from closest to farthest.</p>
+  <p>The top <strong>K</strong> points become the "neighborhood council" that will decide the prediction. Watch the circles expand outward from the query to find them.</p>
+  <div class="glass-card" id="neighborInfo">
+    <h3>Nearest Neighbors</h3>
+    <div id="neighborList"></div>
+  </div>
+</section>
+
+<!-- S8: Majority Vote -->
+<section class="section" data-stage="8" id="sec-8">
+  <div class="stage-num">Stage 08</div>
+  <h2>The Majority Vote</h2>
+  <p>Classification is now a democracy. Each of the K nearest neighbors gets one vote. The class with the most votes wins.</p>
+  <div class="glass-card" id="voteInfo">
+    <h3>Vote Tally</h3>
+    <div id="voteTally"></div>
+  </div>
+  <div class="math-block">If K=3 and neighbors are: 🍎 🍊 🍎
+→ Apple: 2 votes | Orange: 1 vote
+→ Prediction: 🍎 Apple!</div>
+  <div class="insight-box"><p>💡 For regression tasks, instead of voting, KNN takes the <strong>average value</strong> of the K neighbors. But for classification like ours, it's pure democracy.</p></div>
+</section>
+
+<!-- S9: Decision Boundary -->
+<section class="section" data-stage="9" id="sec-9">
+  <div class="stage-num">Stage 09</div>
+  <h2>Decision Boundary</h2>
+  <p>What if we classified <em>every possible point</em> on the plot? The result is a colorful map showing which regions belong to which class.</p>
+  <p>Unlike linear models, KNN boundaries are <strong>non-linear</strong> — they bend and curve around the data naturally. The boundary is just wherever the majority vote flips from one class to the other.</p>
+  <div class="glass-card" id="boundaryInfo">
+    <h3>Boundary Properties</h3>
+    <p id="boundaryText">The decision boundary emerges organically from the data — no formula is fitted. This is what makes KNN a <em>non-parametric</em> model.</p>
+  </div>
+  <div class="insight-box"><p>💡 Small K = wiggly, complex boundaries. Large K = smoother boundaries. This is the classic <strong>bias-variance tradeoff</strong>.</p></div>
+</section>
+
+<!-- S10: Classify Test Points -->
+<section class="section" data-stage="10" id="sec-10">
+  <div class="stage-num">Stage 10</div>
+  <h2>Classifying Test Points</h2>
+  <p>Now the moment of truth. We take the test points the model has never seen and classify each one using the same KNN procedure.</p>
+  <p>Watch each test point light up with its prediction. <span style="color:var(--green)">Green rings</span> = correct. <span style="color:var(--coral)">Red rings</span> = wrong.</p>
+  <div class="glass-card" id="testResults">
+    <h3>Test Predictions</h3>
+    <div id="testResultsList"></div>
+  </div>
+</section>
+
+<!-- S11: Evaluation -->
+<section class="section" data-stage="11" id="sec-11">
+  <div class="stage-num">Stage 11</div>
+  <h2>Evaluating the Model</h2>
+  <p>We don't just say "it works." We inspect <em>how</em> it works and where it fails using a <strong>confusion matrix</strong> and derived metrics.</p>
+  <div class="glass-card">
+    <h3>Confusion Matrix</h3>
+    <div class="matrix-grid" id="confMatrix"></div>
+  </div>
+  <div class="glass-card" id="metricsPanel">
+    <h3>Performance Metrics <span style="font-weight:400;font-size:0.78rem;color:var(--text-muted)">(Apple = positive class)</span></h3>
+    <div class="metric-row" id="metricsRow"></div>
+    <p style="font-size:0.82rem;color:var(--text-muted);margin-top:12px">These results come from a tiny 4-point held-out test set, so treat them as illustrative rather than stable performance estimates.</p>
+  </div>
+  <div class="insight-box"><p>💡 With imbalanced data, accuracy alone can be misleading. Precision tells you "of all predicted apples, how many were actually apples?" Recall tells you "of all actual apples, how many did the model find?"</p></div>
+</section>
+
+<!-- S12: Effect of K -->
+<section class="section" data-stage="12" id="sec-12">
+  <div class="stage-num">Stage 12</div>
+  <h2>The Effect of K</h2>
+  <p>K is one of the most important tuning knobs. Watch how the decision boundary changes as K increases.</p>
+  <div class="glass-card">
+    <h3>Compare K Values</h3>
+    <div class="k-slider-wrap">
+      <span style="font-size:0.8rem;color:var(--text-muted)">K =</span>
+      <input type="range" id="kCompareSlider" min="1" max="15" value="1" step="2">
+      <span class="k-val" id="kCompareValue">1</span>
+    </div>
+    <div id="kCompareInfo" style="margin-top:12px"></div>
+  </div>
+  <div class="glass-card">
+    <h3>K vs Cross-Validation Accuracy</h3>
+    <p style="font-size:0.82rem;color:var(--text-muted);margin:0 0 12px 0">This chart uses leave-one-out cross-validation on the training set only, not the held-out test set.</p>
+    <canvas id="kAccChart" width="400" height="200" style="width:100%;max-height:200px"></canvas>
+  </div>
+  <div class="insight-box"><p>💡 K=1 overfits — it memorizes noise. Very large K underfits — it becomes too generic. The sweet spot is found through <strong>cross-validation</strong>.</p></div>
+</section>
+
+<!-- S13: Playground -->
+<section class="section" data-stage="13" id="sec-13">
+  <div class="stage-num">Stage 13</div>
+  <h2>Interactive Playground</h2>
+  <p>Click anywhere on the plot to drop a new point. The model will classify it in real time using KNN.</p>
+  <div class="playground-controls">
+    <button class="btn btn-accent" onclick="resetPlayground()">Reset Points</button>
+    <button class="btn" onclick="regenerateData()">New Dataset</button>
+    <div class="k-slider-wrap" style="flex:1;min-width:160px">
+      <span style="font-size:0.8rem;color:var(--text-muted)">K =</span>
+      <input type="range" id="kPlaySlider" min="1" max="15" value="3" step="2">
+      <span class="k-val" id="kPlayValue">3</span>
+    </div>
+  </div>
+  <div class="glass-card" id="playgroundInfo">
+    <h3>Click the plot to classify new points →</h3>
+    <p>Each new point's K nearest neighbors will be found and the majority vote decides its class.</p>
+    <div id="playgroundCalc"></div>
+  </div>
+</section>
+
+</div><!-- /narrative -->
+
+<div class="viz-container">
+  <canvas id="mainCanvas"></canvas>
+</div>
+
+</div><!-- /layout -->
+
+<script>
+(function(){
+'use strict';
+
+// ===== DATASET =====
+const BASE_DATA = [
+  {s:7.2,c:8.1,label:'Apple'},{s:6.8,c:7.5,label:'Apple'},{s:7.9,c:8.8,label:'Apple'},
+  {s:6.5,c:7.0,label:'Apple'},{s:7.5,c:9.0,label:'Apple'},{s:8.0,c:7.8,label:'Apple'},
+  {s:6.0,c:8.5,label:'Apple'},{s:7.1,c:7.2,label:'Apple'},{s:6.9,c:8.3,label:'Apple'},
+  {s:7.6,c:7.6,label:'Apple'},{s:6.3,c:7.9,label:'Apple'},{s:7.8,c:8.6,label:'Apple'},
+  {s:3.0,c:3.2,label:'Orange'},{s:3.8,c:2.5,label:'Orange'},{s:2.5,c:3.8,label:'Orange'},
+  {s:4.0,c:3.0,label:'Orange'},{s:3.5,c:4.2,label:'Orange'},{s:2.8,c:2.8,label:'Orange'},
+  {s:4.5,c:3.5,label:'Orange'},{s:3.2,c:4.0,label:'Orange'},{s:3.9,c:2.2,label:'Orange'},
+  {s:2.2,c:3.5,label:'Orange'},{s:4.2,c:4.5,label:'Orange'},{s:3.6,c:3.8,label:'Orange'},
+  // borderline
+  {s:5.2,c:5.8,label:'Apple'},{s:5.0,c:5.0,label:'Orange'}
+];
+
+let trainData=[], testData=[], allData=[];
+let scaledTrain=[], scaledTest=[];
+let sMin,sMax,cMin,cMax;
+let currentStage=0, mainK=3, compareK=1, playgroundK=3, queryPoint=null;
+let playgroundPoints=[], animFrame=0;
+let neighborSearchRadius=0, neighborSearching=false;
+let decisionBoundaryImg=null, boundaryK=null;
+
+const COLORS={
+  apple:'#b55a52', appleFill:'rgba(181,90,82,0.16)', appleRing:'rgba(181,90,82,0.42)',
+  orange:'#d97706', orangeFill:'rgba(217,119,6,0.15)', orangeRing:'rgba(217,119,6,0.4)',
+  green:'#16a34a', coral:'#dc2626', accent:'#6366f1',
+  gridLine:'rgba(0,0,0,0.06)', text:'#4b5563', textDim:'#9ca3af'
+};
+
+let currentData = null;
+let lastPlaygroundPoint = null;
+
+function shuffleArray(items){
+  for(let i=items.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    [items[i],items[j]]=[items[j],items[i]];
+  }
+  return items;
+}
+
+function getActiveK(stage=currentStage){
+  if(stage===12)return compareK;
+  if(stage===13)return playgroundK;
+  return mainK;
+}
+
+// ===== INIT =====
+function initData(){
+  if(!currentData) currentData = BASE_DATA.map(d=>({...d}));
+  const shuffled=shuffleArray([...currentData]);
+  const testApples=shuffled.filter(d=>d.label==='Apple').slice(0,2);
+  const testOranges=shuffled.filter(d=>d.label==='Orange').slice(0,2);
+  testData=[...testApples,...testOranges];
+  trainData=shuffled.filter(d=>!testData.includes(d));
+  allData=[...trainData,...testData];
+  computeScaling();
+  scaledTrain=trainData.map(d=>({s:scale(d.s,'s'),c:scale(d.c,'c'),label:d.label,raw:d}));
+  scaledTest=testData.map(d=>({s:scale(d.s,'s'),c:scale(d.c,'c'),label:d.label,raw:d}));
+  queryPoint={s:0.45,c:0.55,label:'?'};
+}
+
+function computeScaling(){
+  const trainS=trainData.map(d=>d.s), trainC=trainData.map(d=>d.c);
+  sMin=Math.min(...trainS);sMax=Math.max(...trainS);
+  cMin=Math.min(...trainC);cMax=Math.max(...trainC);
+}
+
+function scale(v,feat){return feat==='s'?(v-sMin)/(sMax-sMin):(v-cMin)/(cMax-cMin)}
+function unscale(v,feat){return feat==='s'?v*(sMax-sMin)+sMin:v*(cMax-cMin)+cMin}
+
+function euclidean(a,b){return Math.sqrt((a.s-b.s)**2+(a.c-b.c)**2)}
+
+function knn(point,data,k){
+  const dists=data.map((d,i)=>({dist:euclidean(point,d),point:d,idx:i}));
+  dists.sort((a,b)=>a.dist-b.dist);
+  const neighbors=dists.slice(0,k);
+  const votes={Apple:0,Orange:0};
+  neighbors.forEach(n=>votes[n.point.label]++);
+  return{neighbors,prediction:votes.Apple>=votes.Orange?'Apple':'Orange',votes};
+}
+
+// ===== CANVAS =====
+const canvas=document.getElementById('mainCanvas');
+const ctx=canvas.getContext('2d');
+let W,H,plotX,plotY,plotW,plotH,plotPad,plotInnerX,plotInnerY,plotInnerW,plotInnerH;
+
+function resizeCanvas(){
+  const r=window.devicePixelRatio||1;
+  const rect=canvas.parentElement.getBoundingClientRect();
+  canvas.width=rect.width*r;canvas.height=rect.height*r;
+  canvas.style.width=rect.width+'px';canvas.style.height=rect.height+'px';
+  ctx.setTransform(r,0,0,r,0,0);
+  W=rect.width;H=rect.height;
+  plotX=60;plotY=50;plotW=W-120;plotH=H-140;
+  plotPad=Math.min(24,Math.max(16,Math.min(plotW,plotH)*0.05));
+  plotInnerX=plotX+plotPad;
+  plotInnerY=plotY+plotPad;
+  plotInnerW=plotW-(plotPad*2);
+  plotInnerH=plotH-(plotPad*2);
+  decisionBoundaryImg=null;
+}
+
+function toPixel(s,c){return{x:plotInnerX+s*plotInnerW,y:plotInnerY+plotInnerH-c*plotInnerH}}
+function fromPixel(px,py){return{s:(px-plotInnerX)/plotInnerW,c:(plotInnerY+plotInnerH-py)/plotInnerH}}
+
+function clipPlotArea(){
+  ctx.beginPath();
+  ctx.rect(plotInnerX,plotInnerY,plotInnerW,plotInnerH);
+  ctx.clip();
+}
+
+function drawGrid(){
+  ctx.save();
+  for(let i=0;i<=5;i++){
+    const x=plotInnerX+i*(plotInnerW/5),y=plotInnerY+i*(plotInnerH/5);
+    ctx.strokeStyle=COLORS.gridLine;ctx.lineWidth=1;
+    ctx.beginPath();ctx.moveTo(x,plotInnerY);ctx.lineTo(x,plotInnerY+plotInnerH);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(plotInnerX,y);ctx.lineTo(plotInnerX+plotInnerW,y);ctx.stroke();
+  }
+  ctx.restore();
+}
+
+function drawAxes(labelX,labelY){
+  ctx.save();
+  ctx.strokeStyle='#d1d5db';ctx.lineWidth=1.5;
+  ctx.beginPath();ctx.moveTo(plotInnerX,plotInnerY+plotInnerH);ctx.lineTo(plotInnerX+plotInnerW,plotInnerY+plotInnerH);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(plotInnerX,plotInnerY);ctx.lineTo(plotInnerX,plotInnerY+plotInnerH);ctx.stroke();
+  ctx.fillStyle=COLORS.text;ctx.font='500 12px Inter,sans-serif';ctx.textAlign='center';
+  ctx.fillText(labelX||'Sweetness',plotInnerX+plotInnerW/2,plotInnerY+plotInnerH+35);
+  ctx.save();ctx.translate(18,plotInnerY+plotInnerH/2);ctx.rotate(-Math.PI/2);
+  ctx.fillText(labelY||'Color Intensity',0,0);ctx.restore();
+  // tick labels
+  ctx.font='400 10px JetBrains Mono,monospace';ctx.fillStyle=COLORS.textDim;ctx.textAlign='center';
+  for(let i=0;i<=5;i++){
+    const v=(i/5).toFixed(1);
+    const x=plotInnerX+i*(plotInnerW/5);
+    ctx.fillText(v,x,plotInnerY+plotInnerH+16);
+  }
+  ctx.textAlign='right';
+  for(let i=0;i<=5;i++){
+    const v=(i/5).toFixed(1);
+    const y=plotInnerY+plotInnerH-i*(plotInnerH/5);
+    ctx.fillText(v,plotInnerX-8,y+4);
+  }
+  ctx.restore();
+}
+
+function drawPoint(s,c,label,opts={}){
+  const {x,y}=toPixel(s,c);
+  const r=opts.radius||6;
+  const isApple=label==='Apple';
+  ctx.save();
+  if(opts.glow){
+    ctx.shadowColor=isApple?COLORS.apple:COLORS.orange;
+    ctx.shadowBlur=12;
+  }
+  ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);
+  ctx.fillStyle=opts.fill||(isApple?COLORS.apple:COLORS.orange);
+  ctx.globalAlpha=opts.alpha||1;
+  ctx.fill();
+  if(opts.stroke){ctx.strokeStyle=opts.stroke;ctx.lineWidth=opts.strokeWidth||2;ctx.stroke();}
+  ctx.restore();
+}
+
+function drawStar(s,c,color,size){
+  const {x,y}=toPixel(s,c);
+  ctx.save();ctx.fillStyle=color;ctx.font=`${size||18}px sans-serif`;ctx.textAlign='center';ctx.textBaseline='middle';
+  ctx.fillText('★',x,y);ctx.restore();
+}
+
+function drawLine(s1,c1,s2,c2,color,width,dash){
+  const a=toPixel(s1,c1),b=toPixel(s2,c2);
+  ctx.save();ctx.strokeStyle=color;ctx.lineWidth=width||1;
+  if(dash)ctx.setLineDash(dash);
+  ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke();
+  ctx.restore();
+}
+
+// ===== DECISION BOUNDARY =====
+function computeDecisionBoundary(k,res){
+  res=res||2;
+  const imgW=Math.ceil(plotInnerW/res),imgH=Math.ceil(plotInnerH/res);
+  const imgData=ctx.createImageData(imgW,imgH);
+  for(let py=0;py<imgH;py++){
+    for(let px=0;px<imgW;px++){
+      const s=px/imgW,c=1-py/imgH;
+      const result=knn({s,c},scaledTrain,k);
+      const isApple=result.prediction==='Apple';
+      const idx=(py*imgW+px)*4;
+      if(isApple){imgData.data[idx]=181;imgData.data[idx+1]=90;imgData.data[idx+2]=82;imgData.data[idx+3]=30;}
+      else{imgData.data[idx]=217;imgData.data[idx+1]=119;imgData.data[idx+2]=6;imgData.data[idx+3]=28;}
+    }
+  }
+  const offscreen=document.createElement('canvas');
+  offscreen.width=imgW;offscreen.height=imgH;
+  offscreen.getContext('2d').putImageData(imgData,0,0);
+  return offscreen;
+}
+
+function drawDecisionBoundary(k){
+  if(!decisionBoundaryImg||boundaryK!==k){
+    decisionBoundaryImg=computeDecisionBoundary(k);
+    boundaryK=k;
+  }
+  ctx.drawImage(decisionBoundaryImg,plotInnerX,plotInnerY,plotInnerW,plotInnerH);
+}
+
+// ===== RENDER STAGES =====
+function render(){
+  ctx.clearRect(0,0,W,H);
+  if(currentStage===0)return renderHero();
+  if(currentStage>=4){
+    renderScaled();
+  } else {
+    renderRaw();
+  }
+}
+
+function renderHero(){/* hero canvas handles its own animation */}
+
+function renderRaw(){
+  drawGrid();
+  const useRaw=true;
+  const xLabel='Sweetness (raw)';
+  const yLabel='Color Intensity (raw)';
+  // map raw to 0-1 for plotting using raw range
+  const allS=allData.map(d=>d.s),allC=allData.map(d=>d.c);
+  const rsMin=Math.min(...allS)-0.5,rsMax=Math.max(...allS)+0.5;
+  const rcMin=Math.min(...allC)-0.5,rcMax=Math.max(...allC)+0.5;
+  function rawToPlot(d){return{s:(d.s-rsMin)/(rsMax-rsMin),c:(d.c-rcMin)/(rcMax-rcMin)};}
+
+  drawAxes(xLabel,yLabel);
+  // override tick labels with raw values
+  ctx.save();ctx.font='400 10px JetBrains Mono,monospace';ctx.fillStyle=COLORS.textDim;ctx.textAlign='center';
+  for(let i=0;i<=5;i++){
+    const rv=rsMin+i*(rsMax-rsMin)/5;
+    ctx.fillText(rv.toFixed(1),plotInnerX+i*(plotInnerW/5),plotInnerY+plotInnerH+16);
+  }
+  ctx.textAlign='right';
+  for(let i=0;i<=5;i++){
+    const rv=rcMin+i*(rcMax-rcMin)/5;
+    ctx.fillText(rv.toFixed(1),plotInnerX-8,plotInnerY+plotInnerH-i*(plotInnerH/5)+4);
+  }
+  ctx.restore();
+
+  ctx.save();
+  clipPlotArea();
+  if(currentStage>=3){
+    // show train/test split
+    trainData.forEach(d=>{const p=rawToPlot(d);drawPoint(p.s,p.c,d.label);});
+    testData.forEach(d=>{const p=rawToPlot(d);drawPoint(p.s,p.c,d.label,{alpha:0.25,stroke:'#9ca3af',strokeWidth:2});});
+  } else if(currentStage===2){
+    // feature selection - highlight axes
+    allData.forEach(d=>{const p=rawToPlot(d);drawPoint(p.s,p.c,d.label,{glow:true});});
+  } else {
+    allData.forEach(d=>{const p=rawToPlot(d);drawPoint(p.s,p.c,d.label);});
+  }
+  ctx.restore();
+  drawLegend();
+}
+
+function renderScaled(){
+  const activeK=getActiveK();
+  if(currentStage>=9){drawDecisionBoundary(activeK);}
+  drawGrid();drawAxes('Sweetness (scaled)','Color (scaled)');
+
+  ctx.save();
+  clipPlotArea();
+  if(currentStage>=10){
+    // show test points with prediction
+    scaledTest.forEach(d=>{
+      const pred=knn(d,scaledTrain,activeK);
+      const correct=pred.prediction===d.label;
+      drawPoint(d.s,d.c,d.label,{radius:8,stroke:correct?COLORS.green:COLORS.coral,strokeWidth:3});
+    });
+  }
+
+  // training points
+  scaledTrain.forEach(d=>{
+    drawPoint(d.s,d.c,d.label);
+  });
+
+  if(currentStage>=5&&currentStage<=8&&queryPoint){
+    // distance lines
+    if(currentStage>=5){
+      const dists=scaledTrain.map((d,i)=>({dist:euclidean(queryPoint,d),d,i})).sort((a,b)=>a.dist-b.dist);
+      if(currentStage===5){
+        // all lines
+        dists.forEach(({d,dist})=>{
+          drawLine(queryPoint.s,queryPoint.c,d.s,d.c,'rgba(99,102,241,0.15)',1);
+        });
+        // closest K bold
+        dists.slice(0,activeK).forEach(({d})=>{
+          drawLine(queryPoint.s,queryPoint.c,d.s,d.c,COLORS.accent,2);
+        });
+      }
+      if(currentStage>=7){
+        // highlight K neighbors
+        const neighbors=dists.slice(0,activeK);
+        neighbors.forEach(({d})=>{
+          const {x,y}=toPixel(d.s,d.c);
+          ctx.save();ctx.strokeStyle=COLORS.accent;ctx.lineWidth=2;ctx.setLineDash([4,3]);
+          ctx.beginPath();ctx.arc(x,y,14,0,Math.PI*2);ctx.stroke();ctx.restore();
+          drawLine(queryPoint.s,queryPoint.c,d.s,d.c,COLORS.accent,1.5,[4,3]);
+        });
+        // expanding circle
+        if(currentStage===7&&neighborSearching){
+          const {x,y}=toPixel(queryPoint.s,queryPoint.c);
+          const maxDist=neighbors[neighbors.length-1].dist;
+          const rad=Math.min(neighborSearchRadius,maxDist)*Math.min(plotInnerW,plotInnerH);
+          ctx.save();ctx.strokeStyle='rgba(99,102,241,0.2)';ctx.lineWidth=1;
+          ctx.beginPath();ctx.arc(x,y,rad,0,Math.PI*2);ctx.stroke();ctx.restore();
+        }
+      }
+      if(currentStage===6){
+        // show K highlight
+        dists.slice(0,activeK).forEach(({d})=>{
+          const {x,y}=toPixel(d.s,d.c);
+          ctx.save();ctx.strokeStyle=COLORS.accent;ctx.lineWidth=2;
+          ctx.beginPath();ctx.arc(x,y,12,0,Math.PI*2);ctx.stroke();ctx.restore();
+          drawLine(queryPoint.s,queryPoint.c,d.s,d.c,COLORS.accent,1.5,[4,3]);
+        });
+      }
+    }
+    drawStar(queryPoint.s,queryPoint.c,COLORS.accent,20);
+  }
+
+  if(currentStage===8&&queryPoint){
+    const result=knn(queryPoint,scaledTrain,activeK);
+    const {x,y}=toPixel(queryPoint.s,queryPoint.c);
+    const isApple=result.prediction==='Apple';
+    ctx.save();ctx.fillStyle=isApple?COLORS.apple:COLORS.orange;
+    ctx.globalAlpha=0.2;ctx.beginPath();ctx.arc(x,y,22,0,Math.PI*2);ctx.fill();ctx.restore();
+  }
+
+  // playground points
+  if(currentStage===13){
+    playgroundPoints.forEach(pp=>{
+      const pred=knn(pp,scaledTrain,activeK);
+      drawPoint(pp.s,pp.c,pred.prediction,{radius:8,stroke:'#fff',strokeWidth:2,glow:true});
+    });
+  }
+
+  ctx.restore();
+  drawLegend();
+}
+
+function drawLegend(){
+  ctx.save();
+  const lx=plotInnerX+plotInnerW-130,ly=plotInnerY+10;
+  ctx.fillStyle='rgba(255,255,255,0.96)';
+  ctx.strokeStyle='#e5e7eb';ctx.lineWidth=1;
+  roundRect(ctx,lx,ly,125,currentStage>=5&&currentStage<=8?80:55,8);
+  ctx.fill();ctx.stroke();
+  ctx.fillStyle=COLORS.apple;ctx.beginPath();ctx.arc(lx+16,ly+20,5,0,Math.PI*2);ctx.fill();
+  ctx.fillStyle=COLORS.text;ctx.font='400 11px Inter';ctx.textAlign='left';ctx.fillText('Apple',lx+28,ly+24);
+  ctx.fillStyle=COLORS.orange;ctx.beginPath();ctx.arc(lx+16,ly+40,5,0,Math.PI*2);ctx.fill();
+  ctx.fillStyle=COLORS.text;ctx.fillText('Orange',lx+28,ly+44);
+  if(currentStage>=5&&currentStage<=8){
+    ctx.fillStyle=COLORS.accent;ctx.font='16px sans-serif';ctx.fillText('★',lx+12,ly+64);
+    ctx.fillStyle=COLORS.text;ctx.font='400 11px Inter';ctx.fillText('Query',lx+28,ly+64);
+  }
+  ctx.restore();
+}
+
+function roundRect(c,x,y,w,h,r){
+  c.beginPath();c.moveTo(x+r,y);c.lineTo(x+w-r,y);c.quadraticCurveTo(x+w,y,x+w,y+r);
+  c.lineTo(x+w,y+h-r);c.quadraticCurveTo(x+w,y+h,x+w-r,y+h);
+  c.lineTo(x+r,y+h);c.quadraticCurveTo(x,y+h,x,y+h-r);
+  c.lineTo(x,y+r);c.quadraticCurveTo(x,y,x+r,y);c.closePath();
+}
+
+// ===== POPULATE HTML =====
+function populateDataTable(){
+  const tbl=document.getElementById('dataTable');
+  let html='<thead><tr><th>#</th><th>Sweetness</th><th>Color</th><th>Label</th></tr></thead><tbody>';
+  allData.slice(0,12).forEach((d,i)=>{
+    const cls=d.label==='Apple'?'tag-apple':'tag-orange';
+    html+=`<tr><td>${i+1}</td><td>${d.s}</td><td>${d.c}</td><td><span class="tag ${cls}">${d.label}</span></td></tr>`;
+  });
+  html+=`<tr><td colspan="4" style="text-align:center;color:var(--text-muted);font-style:italic">... ${allData.length-12} more rows</td></tr>`;
+  html+='</tbody>';tbl.innerHTML=html;
+}
+
+function populateSplitInfo(){
+  document.getElementById('trainCount').textContent=trainData.length;
+  document.getElementById('testCount').textContent=testData.length;
+}
+
+function populateScaleInfo(){
+  const el=document.getElementById('scaleInfo');
+  const exampleCandidates=[
+    scaledTrain.find(d=>d.label==='Apple'),
+    scaledTrain.find(d=>d.label==='Orange'),
+    scaledTrain[Math.floor(scaledTrain.length/2)]
+  ].filter(Boolean);
+  const examples=exampleCandidates.filter((d,i)=>exampleCandidates.indexOf(d)===i);
+  let exampleTable='<table class="data-table"><thead><tr><th>Fruit</th><th>Label</th><th>Raw Sweetness</th><th>Raw Color</th><th>Scaled Sweetness</th><th>Scaled Color</th></tr></thead><tbody>';
+  examples.forEach((d,i)=>{
+    const cls=d.label==='Apple'?'tag-apple':'tag-orange';
+    exampleTable+=`<tr><td>${i+1}</td><td><span class="tag ${cls}">${d.label}</span></td><td>${d.raw.s.toFixed(1)}</td><td>${d.raw.c.toFixed(1)}</td><td>${d.s.toFixed(2)}</td><td>${d.c.toFixed(2)}</td></tr>`;
+  });
+  exampleTable+='</tbody></table>';
+  el.innerHTML=`<h3>Scaling Parameters</h3>
+  <div class="metric-row">
+    <div class="metric-card"><div class="val">${sMin.toFixed(1)}–${sMax.toFixed(1)}</div><div class="lbl">Sweetness Range</div></div>
+    <div class="metric-card"><div class="val">${cMin.toFixed(1)}–${cMax.toFixed(1)}</div><div class="lbl">Color Range</div></div>
+  </div>
+  <div class="live-calc">After scaling → both features in [0.00, 1.00]</div>
+  <h3 style="margin-top:18px">Before / After Examples</h3>
+  ${exampleTable}
+  <p style="font-size:0.82rem;color:var(--text-muted);margin:0">These sample rows use the training-set min and max only.</p>`;
+}
+
+function populateDistanceInfo(){
+  if(!queryPoint)return;
+  const el=document.getElementById('distCalcText');
+  const closest=scaledTrain.map(d=>({d,dist:euclidean(queryPoint,d)})).sort((a,b)=>a.dist-b.dist);
+  const c=closest[0];
+  el.innerHTML=`Lines on plot show distances from ★ to all training points. The darker lines currently emphasize the nearest ${mainK} neighbors from the teaching flow.<br><br>
+  <span class="live-calc">Closest point: ${c.d.label} at (${c.d.s.toFixed(2)}, ${c.d.c.toFixed(2)})<br>
+  d = √[(${queryPoint.s.toFixed(2)}−${c.d.s.toFixed(2)})² + (${queryPoint.c.toFixed(2)}−${c.d.c.toFixed(2)})²]<br>
+  d = ${c.dist.toFixed(4)}</span>`;
+}
+
+function populateNeighborInfo(){
+  const k=mainK;
+  const result=knn(queryPoint,scaledTrain,k);
+  const list=document.getElementById('neighborList');
+  let html='<table class="data-table"><thead><tr><th>Rank</th><th>Label</th><th>Distance</th></tr></thead><tbody>';
+  result.neighbors.forEach((n,i)=>{
+    const cls=n.point.label==='Apple'?'tag-apple':'tag-orange';
+    html+=`<tr><td>${i+1}</td><td><span class="tag ${cls}">${n.point.label}</span></td><td>${n.dist.toFixed(4)}</td></tr>`;
+  });
+  html+='</tbody></table>';list.innerHTML=html;
+}
+
+function populateVoteInfo(){
+  const k=mainK;
+  const result=knn(queryPoint,scaledTrain,k);
+  const tally=document.getElementById('voteTally');
+  const aW=Math.round(result.votes.Apple/k*100);
+  const oW=Math.round(result.votes.Orange/k*100);
+  tally.innerHTML=`
+  <div class="metric-row">
+    <div class="metric-card"><div class="val" style="color:${COLORS.apple}">${result.votes.Apple}</div><div class="lbl">🍎 Apple</div></div>
+    <div class="metric-card"><div class="val" style="color:${COLORS.orange}">${result.votes.Orange}</div><div class="lbl">🍊 Orange</div></div>
+  </div>
+  <div style="height:24px;border-radius:12px;overflow:hidden;background:#f0efeb;margin:12px 0;display:flex">
+    <div style="width:${aW}%;background:${COLORS.apple};transition:width 0.5s"></div>
+    <div style="width:${oW}%;background:${COLORS.orange};transition:width 0.5s"></div>
+  </div>
+  <p style="font-size:0.88rem;font-weight:600;margin:0">Prediction: <span style="color:${result.prediction==='Apple'?COLORS.apple:COLORS.orange}">${result.prediction==='Apple'?'🍎 Apple':'🍊 Orange'}</span></p>`;
+}
+
+function populateTestResults(){
+  const el=document.getElementById('testResultsList');
+  let correct=0;
+  let html='<table class="data-table"><thead><tr><th>Point</th><th>Actual</th><th>Predicted</th><th>Result</th></tr></thead><tbody>';
+  scaledTest.forEach((d,i)=>{
+    const pred=knn(d,scaledTrain,mainK);
+    const ok=pred.prediction===d.label;if(ok)correct++;
+    const cls=d.label==='Apple'?'tag-apple':'tag-orange';
+    const pcls=pred.prediction==='Apple'?'tag-apple':'tag-orange';
+    html+=`<tr><td>${i+1}</td><td><span class="tag ${cls}">${d.label}</span></td><td><span class="tag ${pcls}">${pred.prediction}</span></td><td>${ok?'✅':'❌'}</td></tr>`;
+  });
+  html+='</tbody></table>';
+  html+=`<p style="margin-top:12px;font-weight:600">${correct}/${scaledTest.length} correct (${(correct/scaledTest.length*100).toFixed(0)}%)</p>`;
+  el.innerHTML=html;
+}
+
+function populateConfusionMatrix(){
+  let tp=0,tn=0,fp=0,fn=0;
+  scaledTest.forEach(d=>{
+    const pred=knn(d,scaledTrain,mainK).prediction;
+    if(d.label==='Apple'&&pred==='Apple')tp++;
+    else if(d.label==='Orange'&&pred==='Orange')tn++;
+    else if(d.label==='Orange'&&pred==='Apple')fp++;
+    else fn++;
+  });
+  const grid=document.getElementById('confMatrix');
+  grid.innerHTML=`
+    <div class="cell header"></div><div class="cell header">Pred Apple</div><div class="cell header">Pred Orange</div>
+    <div class="cell header">Actual Apple</div><div class="cell tp">TP = ${tp}</div><div class="cell fn">FN = ${fn}</div>
+    <div class="cell header">Actual Orange</div><div class="cell fp">FP = ${fp}</div><div class="cell tn">TN = ${tn}</div>`;
+  const acc=(tp+tn)/scaledTest.length;
+  const prec=tp+fp>0?tp/(tp+fp):0;
+  const rec=tp+fn>0?tp/(tp+fn):0;
+  const f1=prec+rec>0?2*prec*rec/(prec+rec):0;
+  document.getElementById('metricsRow').innerHTML=`
+    <div class="metric-card"><div class="val">${(acc*100).toFixed(0)}%</div><div class="lbl">Accuracy</div></div>
+    <div class="metric-card"><div class="val">${(prec*100).toFixed(0)}%</div><div class="lbl">Precision</div></div>
+    <div class="metric-card"><div class="val">${(rec*100).toFixed(0)}%</div><div class="lbl">Recall</div></div>
+    <div class="metric-card"><div class="val">${(f1*100).toFixed(0)}%</div><div class="lbl">F1 Score</div></div>`;
+}
+
+function populateKCompare(){
+  const k=compareK;
+  const info=document.getElementById('kCompareInfo');
+  let desc='';
+  if(k<=1)desc='Very noisy boundary — each point creates its own island. High variance, low bias.';
+  else if(k<=3)desc='Some smoothing but still captures local patterns well.';
+  else if(k<=7)desc='Balanced — boundaries are fairly smooth but still adaptive.';
+  else if(k<=11)desc='Quite smooth — may miss small pockets of one class inside the other.';
+  else desc='Very smooth boundary — almost linear. High bias, low variance.';
+  info.innerHTML=`<p style="font-size:0.85rem;color:var(--text-dim);margin:0">${desc}</p>`;
+  drawKAccChart(k);
+  if(currentStage===12)render();
+}
+
+function drawKAccChart(highlightK){
+  const cvs=document.getElementById('kAccChart');
+  const c=cvs.getContext('2d');
+  const dpr=window.devicePixelRatio||1;
+  cvs.width=cvs.clientWidth*dpr;cvs.height=cvs.clientHeight*dpr;
+  c.setTransform(dpr,0,0,dpr,0,0);
+  const w=cvs.clientWidth,h=cvs.clientHeight;
+  const pad={l:40,r:20,t:15,b:30};
+  const pw=w-pad.l-pad.r,ph=h-pad.t-pad.b;
+  c.clearRect(0,0,w,h);
+  const ks=[1,3,5,7,9,11,13,15];
+  const accs=ks.map(k=>{
+    let correct=0;
+    scaledTrain.forEach((d, i)=>{
+      const trainSet = scaledTrain.filter((_, idx)=>idx!==i);
+      if(knn(d,trainSet,k).prediction===d.label)correct++;
+    });
+    return correct/scaledTrain.length;
+  });
+  // grid
+  c.strokeStyle='rgba(0,0,0,0.06)';c.lineWidth=1;
+  for(let i=0;i<=4;i++){
+    const y=pad.t+i*(ph/4);
+    c.beginPath();c.moveTo(pad.l,y);c.lineTo(pad.l+pw,y);c.stroke();
+  }
+  // line
+  c.beginPath();c.strokeStyle=COLORS.accent;c.lineWidth=2;
+  ks.forEach((k,i)=>{
+    const x=pad.l+i/(ks.length-1)*pw;
+    const y=pad.t+ph-(accs[i]*ph);
+    i===0?c.moveTo(x,y):c.lineTo(x,y);
+  });
+  c.stroke();
+  // dots
+  ks.forEach((k,i)=>{
+    const x=pad.l+i/(ks.length-1)*pw;
+    const y=pad.t+ph-(accs[i]*ph);
+    c.beginPath();c.arc(x,y,k===highlightK?6:4,0,Math.PI*2);
+    c.fillStyle=k===highlightK?COLORS.accent:'#d1d5db';c.fill();
+    if(k===highlightK){c.strokeStyle='rgba(99,102,241,0.3)';c.lineWidth=3;c.stroke();}
+  });
+  // labels
+  c.fillStyle=COLORS.textDim;c.font='10px JetBrains Mono';c.textAlign='center';
+  ks.forEach((k,i)=>{
+    const x=pad.l+i/(ks.length-1)*pw;
+    c.fillText('K='+k,x,h-5);
+  });
+  c.textAlign='right';
+  for(let i=0;i<=4;i++){
+    const v=(i*25)+'%';
+    const y=pad.t+ph-i*(ph/4);
+    c.fillText(v,pad.l-5,y+4);
+  }
+}
+
+function updatePlaygroundCalc(point){
+  const result=knn(point,scaledTrain,playgroundK);
+  document.getElementById('playgroundCalc').innerHTML=`
+    <div class="live-calc">New point at (${point.s.toFixed(2)}, ${point.c.toFixed(2)})<br>
+    ${playgroundK} neighbors: ${result.neighbors.map(n=>`${n.point.label}(${n.dist.toFixed(3)})`).join(', ')}<br>
+    Votes → 🍎 ${result.votes.Apple} | 🍊 ${result.votes.Orange}<br>
+    <strong>Prediction: ${result.prediction}</strong></div>`;
+}
+
+function refreshPlaygroundCalc(){
+  if(!lastPlaygroundPoint)return;
+  updatePlaygroundCalc(lastPlaygroundPoint);
+}
+
+function refreshAllStagePanels(){
+  populateDataTable();
+  populateSplitInfo();
+  populateScaleInfo();
+  populateDistanceInfo();
+  populateNeighborInfo();
+  populateVoteInfo();
+  populateTestResults();
+  populateConfusionMatrix();
+  populateKCompare();
+}
+
+function getHoverCandidates(stage){
+  if(stage>=4){
+    const candidates = [
+      ...scaledTrain.map(d => ({
+        kind:'Training',
+        label:d.label,
+        s:d.s,
+        c:d.c,
+        raw:d.raw
+      }))
+    ];
+
+    if(stage>=10){
+      candidates.push(...scaledTest.map(d => ({
+        kind:'Held-out test',
+        label:d.label,
+        s:d.s,
+        c:d.c,
+        raw:d.raw
+      })));
+    }
+
+    if(stage===13){
+      candidates.push(...playgroundPoints.map((d, index) => {
+        const pred = knn(d,scaledTrain,playgroundK).prediction;
+        return {
+          kind:'Playground',
+          label:pred,
+          prediction:pred,
+          s:d.s,
+          c:d.c,
+          index:index+1
+        };
+      }));
+    }
+
+    return candidates;
+  }
+
+  return allData.map(d => ({
+    kind: stage>=3 ? (testData.includes(d) ? 'Held-out test' : 'Training') : 'Labeled',
+    label:d.label,
+    s:d.s,
+    c:d.c
+  }));
+}
+
+function formatHoverTooltip(found, stage){
+  if(stage>=4){
+    if(found.kind === 'Playground'){
+      return `<strong>Playground point ${found.index}</strong><br>Prediction: ${found.prediction}<br>Scaled: (${found.s.toFixed(2)}, ${found.c.toFixed(2)})`;
+    }
+    return `<strong>${found.label}</strong><br>${found.kind} point<br>Scaled: (${found.s.toFixed(2)}, ${found.c.toFixed(2)})`;
+  }
+
+  return `<strong>${found.label}</strong><br>${found.kind} point<br>Sweetness: ${found.s} | Color: ${found.c}`;
+}
+
+// ===== SCROLL LOGIC =====
+const sections=document.querySelectorAll('[data-stage]');
+const TOTAL_STAGES=14;
+
+function setupStageDots(){
+  const container=document.getElementById('stageDots');
+  for(let i=0;i<=TOTAL_STAGES-1;i++){
+    const dot=document.createElement('div');dot.className='stage-dot';
+    dot.addEventListener('click',()=>{document.getElementById('sec-'+i)?.scrollIntoView({behavior:'smooth'});});
+    container.appendChild(dot);
+  }
+}
+
+function updateStageDots(stage){
+  const dots=document.querySelectorAll('.stage-dot');
+  dots.forEach((d,i)=>{d.classList.toggle('active',i===stage);});
+}
+
+const observer=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      const stage=parseInt(e.target.dataset.stage);
+      if(stage!==currentStage){
+        currentStage=stage;
+        onStageChange(stage);
+      }
+    }
+  });
+},{threshold:0.4});
+
+function onStageChange(stage){
+  updateStageDots(stage);
+  decisionBoundaryImg=null;
+  if(stage===1)populateDataTable();
+  if(stage===3)populateSplitInfo();
+  if(stage===4)populateScaleInfo();
+  if(stage===5)populateDistanceInfo();
+  if(stage===6){
+    mainK=parseInt(document.getElementById('kSlider').value,10);
+  }
+  if(stage===7){populateNeighborInfo();startNeighborSearch();}
+  if(stage===8)populateVoteInfo();
+  if(stage===10)populateTestResults();
+  if(stage===11)populateConfusionMatrix();
+  if(stage===12){
+    compareK=parseInt(document.getElementById('kCompareSlider').value,10);
+    populateKCompare();
+  }
+  if(stage===13){
+    playgroundK=parseInt(document.getElementById('kPlaySlider').value,10);
+    refreshPlaygroundCalc();
+  }
+  render();
+}
+
+function startNeighborSearch(){
+  neighborSearchRadius=0;neighborSearching=true;
+  function tick(){
+    if(!neighborSearching||currentStage!==7)return;
+    neighborSearchRadius+=0.003;
+    const maxR=knn(queryPoint,scaledTrain,mainK).neighbors[mainK-1].dist;
+    if(neighborSearchRadius>=maxR){neighborSearchRadius=maxR;neighborSearching=false;}
+    render();
+    if(neighborSearching)requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+}
+
+// ===== PROGRESS BAR =====
+window.addEventListener('scroll',()=>{
+  const h=document.documentElement.scrollHeight-window.innerHeight;
+  const pct=window.scrollY/h*100;
+  document.getElementById('progressBar').style.width=pct+'%';
+});
+
+// ===== HERO CANVAS =====
+function setupHeroCanvas(){
+  const hc=document.getElementById('heroCanvas');
+  const hctx=hc.getContext('2d');
+  const particles=[];
+  function resizeHero(){
+    const r=window.devicePixelRatio||1;
+    hc.width=window.innerWidth*r;hc.height=window.innerHeight*r;
+    hctx.setTransform(r,0,0,r,0,0);
+  }
+  resizeHero();window.addEventListener('resize',resizeHero);
+  for(let i=0;i<60;i++){
+    particles.push({x:Math.random()*window.innerWidth,y:Math.random()*window.innerHeight,
+      r:Math.random()*3+1,dx:(Math.random()-0.5)*0.3,dy:(Math.random()-0.5)*0.3,
+      color:Math.random()>0.5?'rgba(99,102,241,0.15)':'rgba(217,119,6,0.12)'});
+  }
+  function animHero(){
+    hctx.clearRect(0,0,window.innerWidth,window.innerHeight);
+    particles.forEach(p=>{
+      p.x+=p.dx;p.y+=p.dy;
+      if(p.x<0||p.x>window.innerWidth)p.dx*=-1;
+      if(p.y<0||p.y>window.innerHeight)p.dy*=-1;
+      hctx.beginPath();hctx.arc(p.x,p.y,p.r,0,Math.PI*2);hctx.fillStyle=p.color;hctx.fill();
+    });
+    // lines between close particles
+    for(let i=0;i<particles.length;i++){
+      for(let j=i+1;j<particles.length;j++){
+        const dx=particles[i].x-particles[j].x,dy=particles[i].y-particles[j].y;
+        const dist=Math.sqrt(dx*dx+dy*dy);
+        if(dist<120){
+          hctx.beginPath();hctx.moveTo(particles[i].x,particles[i].y);
+          hctx.lineTo(particles[j].x,particles[j].y);
+          hctx.strokeStyle=`rgba(99,102,241,${0.06*(1-dist/120)})`;hctx.lineWidth=1;hctx.stroke();
+        }
+      }
+    }
+    requestAnimationFrame(animHero);
+  }
+  animHero();
+}
+
+// ===== SLIDER EVENTS =====
+document.getElementById('kSlider').addEventListener('input',function(){
+  mainK=parseInt(this.value,10);
+  document.getElementById('kValue').textContent=mainK;
+  const advice=mainK<=1?'K=1 — every single neighbor matters. Very noisy!':
+    mainK<=3?'K=3 — balanced, good starting point.':
+    mainK<=7?'Good middle-ground. Smooths out some noise.':
+    mainK<=11?'Getting smooth. May lose fine detail.':
+    'Very smooth boundaries. Risk of underfitting.';
+  document.getElementById('kAdvice').textContent=advice;
+  render();
+  if(currentStage===5)populateDistanceInfo();
+  if(currentStage===7)populateNeighborInfo();
+  if(currentStage===8)populateVoteInfo();
+  if(currentStage===10)populateTestResults();
+  if(currentStage===11)populateConfusionMatrix();
+});
+
+document.getElementById('kCompareSlider').addEventListener('input',function(){
+  compareK=parseInt(this.value,10);
+  document.getElementById('kCompareValue').textContent=compareK;
+  populateKCompare();
+});
+
+document.getElementById('kPlaySlider').addEventListener('input',function(){
+  playgroundK=parseInt(this.value,10);
+  document.getElementById('kPlayValue').textContent=playgroundK;
+  render();
+  refreshPlaygroundCalc();
+});
+
+// ===== PLAYGROUND =====
+canvas.addEventListener('click',function(e){
+  if(currentStage!==13)return;
+  const rect=canvas.getBoundingClientRect();
+  const px=e.clientX-rect.left,py=e.clientY-rect.top;
+  const pt=fromPixel(px,py);
+  if(pt.s<0||pt.s>1||pt.c<0||pt.c>1)return;
+  const point={s:pt.s,c:pt.c};
+  playgroundPoints.push(point);
+  lastPlaygroundPoint=point;
+  render();
+  updatePlaygroundCalc(point);
+});
+
+window.resetPlayground=function(){playgroundPoints=[];lastPlaygroundPoint=null;decisionBoundaryImg=null;render();
+  document.getElementById('playgroundCalc').innerHTML='';};
+
+window.regenerateData=function(){
+  currentData = BASE_DATA.map(d=>({
+    s: d.s + ((Math.random()-0.5)*0.8),
+    c: d.c + ((Math.random()-0.5)*0.8),
+    label: d.label
+  }));
+  initData();playgroundPoints=[];lastPlaygroundPoint=null;decisionBoundaryImg=null;
+  refreshAllStagePanels();
+  if(currentStage===7)startNeighborSearch();
+  render();
+  document.getElementById('playgroundCalc').innerHTML='';
+};
+
+// ===== TOOLTIP =====
+canvas.addEventListener('mousemove',function(e){
+  if(currentStage<1)return;
+  const rect=canvas.getBoundingClientRect();
+  const px=e.clientX-rect.left,py=e.clientY-rect.top;
+  const data=getHoverCandidates(currentStage);
+  const allS2=allData.map(d=>d.s),allC2=allData.map(d=>d.c);
+  const rsMin2 = Math.min(...allS2) - 0.5, rsMax2 = Math.max(...allS2) + 0.5;
+  const rcMin2 = Math.min(...allC2) - 0.5, rcMax2 = Math.max(...allC2) + 0.5;
+  let found=null,minD=20;
+  data.forEach(d=>{
+    let pt;
+    if(currentStage>=4)pt=toPixel(d.s,d.c);
+    else pt=toPixel((d.s-rsMin2)/(rsMax2-rsMin2),(d.c-rcMin2)/(rcMax2-rcMin2));
+    const dx=pt.x-px,dy=pt.y-py;
+    const dist=Math.sqrt(dx*dx+dy*dy);
+    if(dist<minD){minD=dist;found=d;}
+  });
+  const tip=document.getElementById('tooltip');
+  if(found){
+    tip.style.display='block';
+    tip.style.left=(e.clientX+12)+'px';tip.style.top=(e.clientY-10)+'px';
+    tip.innerHTML=formatHoverTooltip(found,currentStage);
+  } else {tip.style.display='none';}
+});
+canvas.addEventListener('mouseleave',()=>{document.getElementById('tooltip').style.display='none';});
+
+// ===== BOOT =====
+initData();resizeCanvas();setupStageDots();setupHeroCanvas();
+sections.forEach(s=>observer.observe(s));
+window.addEventListener('resize',()=>{resizeCanvas();decisionBoundaryImg=null;render();});
+populateDataTable();
+
+render();
+
+})();
+</script>
+</body>
+</html>

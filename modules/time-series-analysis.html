@@ -1,0 +1,1602 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Time Series Analysis</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #f7f7f4;
+            --bg-secondary: #f0efeb;
+            --surface: #ffffff;
+            --border: #e7e5e4;
+            --text-main: #1f2937;
+            --text-dim: #4b5563;
+            --text-muted: #6b7280;
+            --accent: #6366f1;
+            --accent-dark: #4f46e5;
+            --success: #16a34a;
+            --warning: #d97706;
+            --error: #dc2626;
+            --font-sans: 'Inter', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background-color: var(--bg-primary);
+            color: var(--text-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Typography */
+        h1 { font-size: 3.5rem; font-weight: 700; line-height: 1.1; letter-spacing: -0.02em; margin-bottom: 1rem; color: #111827; position: relative; z-index: 2; }
+        h2 { font-size: 1.875rem; font-weight: 600; margin-bottom: 1rem; letter-spacing: -0.01em; }
+        p { font-size: 1.05rem; margin-bottom: 1.25rem; color: var(--text-dim); }
+        strong { color: var(--text-main); font-weight: 600; }
+        .small-note { font-size: 0.85rem; color: var(--text-muted); line-height: 1.4; margin-top: 0.5rem; }
+
+        /* Progress Bar */
+        #progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent), #818cf8);
+            width: 0%;
+            z-index: 1000;
+            transition: width 0.1s ease-out;
+        }
+
+        /* Stage Dots */
+        .stage-dots {
+            position: fixed;
+            right: 1.5rem;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            z-index: 100;
+        }
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: var(--border);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .dot.active {
+            background-color: var(--accent);
+            transform: scale(1.5);
+        }
+
+        /* Hero */
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 0 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero-bg {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: 
+                radial-gradient(circle at 20% 40%, rgba(99, 102, 241, 0.08), transparent 45%),
+                radial-gradient(circle at 80% 60%, rgba(99, 102, 241, 0.12), transparent 45%);
+            z-index: 1;
+            animation: pulseBg 12s ease-in-out infinite alternate;
+        }
+        @keyframes pulseBg {
+            0% { transform: scale(1); opacity: 0.8; }
+            100% { transform: scale(1.05); opacity: 1; }
+        }
+        .hero-badge {
+            background: rgba(99, 102, 241, 0.1);
+            color: var(--accent-dark);
+            padding: 0.5rem 1rem;
+            border-radius: 9999px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            margin-bottom: 1.5rem;
+            position: relative;
+            z-index: 2;
+        }
+        .hero-subtitle {
+            font-size: 1.25rem;
+            color: var(--text-dim);
+            max-width: 600px;
+            position: relative;
+            z-index: 2;
+        }
+        .scroll-indicator {
+            position: absolute;
+            bottom: 3rem;
+            animation: bounce 2s infinite;
+            color: var(--text-muted);
+            font-size: 0.875rem;
+            font-weight: 500;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            z-index: 2;
+        }
+        .scroll-indicator::after {
+            content: '';
+            width: 2px;
+            height: 24px;
+            background: var(--border);
+            display: block;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+
+        /* Layout */
+        .main-layout {
+            display: flex;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            position: relative;
+        }
+
+        .narrative {
+            width: 45%;
+            padding-bottom: 50vh;
+            padding-right: 4rem;
+        }
+
+        .visualization {
+            width: 55%;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .canvas-container {
+            width: 100%;
+            aspect-ratio: 4/3;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            box-shadow: 0 10px 30px -10px rgba(0,0,0,0.05);
+            position: relative;
+            overflow: hidden;
+            cursor: crosshair;
+        }
+
+        canvas {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        /* Sections and Cards */
+        .stage {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 4rem 0;
+            opacity: 0.2;
+            transition: opacity 0.5s ease;
+        }
+        .stage.active {
+            opacity: 1;
+        }
+
+        .stage-label {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .stage-label::after {
+            content: '';
+            height: 1px;
+            width: 30px;
+            background: var(--accent);
+        }
+
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02);
+        }
+
+        .card-title {
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            margin-bottom: 0.75rem;
+            font-weight: 600;
+        }
+
+        .formula-block {
+            background: var(--bg-secondary);
+            font-family: var(--font-mono);
+            padding: 1.25rem;
+            border-radius: 6px;
+            color: var(--accent-dark);
+            font-size: 1rem;
+            text-align: center;
+            margin: 1rem 0;
+            border: 1px solid var(--border);
+        }
+
+        .insight-box {
+            border-left: 4px solid var(--accent);
+            background: rgba(99, 102, 241, 0.05);
+            padding: 1.25rem;
+            border-radius: 0 8px 8px 0;
+            margin: 1.5rem 0;
+        }
+        .insight-box p {
+            margin: 0;
+            font-size: 0.95rem;
+            color: var(--accent-dark);
+        }
+
+        /* UI Controls */
+        .control-panel {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.25rem;
+            margin: 1.5rem 0;
+        }
+        .control-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.75rem;
+        }
+        .control-row:last-child {
+            margin-bottom: 0;
+        }
+        .control-label {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .control-val {
+            font-family: var(--font-mono);
+            color: var(--accent-dark);
+            font-weight: 600;
+            min-width: 2rem;
+            text-align: right;
+        }
+        input[type=range] {
+            width: 55%;
+            accent-color: var(--accent);
+        }
+        
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 44px;
+            height: 24px;
+        }
+        .toggle-switch input { opacity: 0; width: 0; height: 0; }
+        .slider {
+            position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
+            background-color: var(--border); transition: .3s; border-radius: 24px;
+        }
+        .slider:before {
+            position: absolute; content: ""; height: 18px; width: 18px;
+            left: 3px; bottom: 3px; background-color: white; transition: .3s; border-radius: 50%;
+        }
+        input:checked + .slider { background-color: var(--accent); }
+        input:checked + .slider:before { transform: translateX(20px); }
+        
+        /* Bad Residuals specific color */
+        #ctrl-bad-res:checked + .slider { background-color: var(--error); }
+
+        /* Tables & Metrics */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.875rem;
+            margin: 1rem 0;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            overflow: hidden;
+        }
+        .data-table th, .data-table td {
+            padding: 0.5rem 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+        .data-table th { background: var(--bg-secondary); font-weight: 600; color: var(--text-muted); }
+        .data-table td { font-family: var(--font-mono); }
+        .data-table tr:last-child td { border-bottom: none; }
+
+        .metric-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+        .metric-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            padding: 1rem;
+            border-radius: 6px;
+            text-align: center;
+        }
+        .metric-value {
+            font-family: var(--font-mono);
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+        .metric-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+        }
+
+        .pill {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            font-family: var(--font-mono);
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            color: var(--text-dim);
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .pill.trend { background: rgba(99, 102, 241, 0.1); color: var(--accent-dark); border-color: var(--accent); }
+        .pill.seasonality { background: rgba(22, 163, 74, 0.1); color: var(--success); border-color: var(--success); }
+        .pill.noise { background: rgba(217, 119, 6, 0.1); color: var(--warning); border-color: var(--warning); }
+
+        /* Media Queries */
+        @media (max-width: 900px) {
+            .main-layout {
+                flex-direction: column;
+                padding: 0 1rem;
+            }
+            .narrative {
+                width: 100%;
+                padding-right: 0;
+                padding-bottom: 10vh;
+            }
+            .visualization {
+                width: 100%;
+                height: 50vh;
+                position: sticky;
+                top: 0;
+                z-index: 10;
+                background: var(--bg-primary);
+                padding: 1rem 0;
+            }
+            .stage {
+                min-height: auto;
+                padding: 3rem 0;
+            }
+            .stage-dots {
+                display: none;
+            }
+            h1 { font-size: 2.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="progress-bar"></div>
+
+    <div class="stage-dots" id="stage-dots">
+        <!-- Generated by JS -->
+    </div>
+
+    <section class="hero" id="hero">
+        <div class="hero-bg"></div>
+        <div class="hero-badge">Statistical Method Explainer</div>
+        <h1>Time Series Analysis</h1>
+        <p class="hero-subtitle">Finding the story inside data that changes over time, uncovering patterns, and predicting what comes next.</p>
+        <div class="scroll-indicator">Scroll to begin</div>
+    </section>
+
+    <div class="main-layout">
+        <div class="narrative" id="narrative">
+            
+            <div class="stage" data-stage="1">
+                <div class="stage-label">Stage 01</div>
+                <h2>The Raw Data & The Question</h2>
+                <p>Before any complex math, a time series begins as a sequence of observations. Imagine a company asking: <em>"What will product demand look like over the next two years?"</em></p>
+                <p>In standard data analysis, you can shuffle rows without losing meaning. <strong>In time series, order matters.</strong> Because today affects tomorrow, shuffling the dates destroys the story.</p>
+                
+                <div class="control-panel">
+                    <div class="card-title">Data Generation Parameters</div>
+                    <div class="control-row">
+                        <label class="control-label">Trend Strength</label>
+                        <input type="range" id="ctrl-trend" min="0" max="2" step="0.1" value="1.0">
+                        <span class="control-val" id="val-trend">1.0</span>
+                    </div>
+                    <div class="control-row">
+                        <label class="control-label">Seasonality</label>
+                        <input type="range" id="ctrl-season" min="0" max="30" step="1" value="15">
+                        <span class="control-val" id="val-season">15</span>
+                    </div>
+                    <div class="control-row">
+                        <label class="control-label">Noise Level</label>
+                        <input type="range" id="ctrl-noise" min="0" max="25" step="1" value="10">
+                        <span class="control-val" id="val-noise">10</span>
+                    </div>
+                </div>
+
+                <table class="data-table" id="raw-data-table">
+                    <thead><tr><th>Month (t)</th><th>Observed Demand (Y)</th></tr></thead>
+                    <tbody id="raw-data-body">
+                        <!-- Populated by JS -->
+                    </tbody>
+                </table>
+                <p class="small-note" style="text-align: center;">Displaying first 5 of 120 observations.</p>
+            </div>
+
+            <div class="stage" data-stage="2">
+                <div class="stage-label">Stage 02</div>
+                <h2>The Time Plot</h2>
+                <p>The very first step in analysis is visual. A <strong>Time Plot</strong> connects our raw observations chronologically.</p>
+                <p>By mapping time on the x-axis and our measured value on the y-axis, human intuition can instantly spot behaviors that spreadsheets hide. Does the sequence climb steadily? Does it repeat in a wave? Are there violent spikes?</p>
+                <div class="insight-box">
+                    <p><em>Hover over the canvas to inspect the exact values at any point in time.</em></p>
+                </div>
+            </div>
+
+            <div class="stage" data-stage="3">
+                <div class="stage-label">Stage 03</div>
+                <h2>Decomposing the Pattern</h2>
+                <p>A time series is rarely a single, simple movement. We can typically decompose it into three underlying structural components:</p>
+                <div>
+                    <span class="pill trend">Trend</span>
+                    <span class="pill seasonality">Seasonality</span>
+                    <span class="pill noise">Noise / Residual</span>
+                </div>
+                
+                <div class="card">
+                    <div class="card-title">Additive Decomposition Model</div>
+                    <div class="formula-block">
+                        Y<sub>t</sub> = T<sub>t</sub> + S<sub>t</sub> + R<sub>t</sub>
+                    </div>
+                    <p style="font-size: 0.875rem; margin-bottom: 0;">
+                        Observed Data = Long-term Trend + Repeating Seasonality + Remainder (Noise)
+                    </p>
+                </div>
+                <div class="insight-box">
+                    <p><strong>Note:</strong> The lines displayed on the canvas represent the exact, known components used to generate our simulation, rather than an estimated decomposition. In practice, models must infer these hidden components from the raw data.</p>
+                </div>
+            </div>
+
+            <div class="stage" data-stage="4">
+                <div class="stage-label">Stage 04</div>
+                <h2>The Assumption of Stationarity</h2>
+                <p>Many advanced statistical models require a series to be <strong>stationary</strong> before forecasting. A stationary series has statistical properties that do not change over time.</p>
+                
+                <div class="card">
+                    <div class="card-title">Stationarity Conditions</div>
+                    <ul style="padding-left: 1.5rem; font-size: 0.95rem; color: var(--text-dim);">
+                        <li style="margin-bottom: 0.5rem;"><strong>Constant Mean:</strong> The average does not drift up or down.</li>
+                        <li style="margin-bottom: 0.5rem;"><strong>Constant Variance:</strong> The spread (volatility) stays consistent.</li>
+                        <li><strong>Constant Covariance:</strong> The relationship between past and present doesn't shift.</li>
+                    </ul>
+                </div>
+                <p>Watch the <strong>rolling moving average</strong> on the plot. If it climbs or falls significantly, the mean is not constant. This series violates the assumptions of basic autoregressive modeling and requires transformation.</p>
+            </div>
+
+            <div class="stage" data-stage="5">
+                <div class="stage-label">Stage 05</div>
+                <h2>Fixing It: Differencing</h2>
+                <p>To stabilize the mean of a trending series, we apply <strong>differencing</strong>. Instead of looking at raw values, we analyze the <em>change</em> between consecutive months.</p>
+                
+                <div class="control-panel">
+                    <div class="control-row">
+                        <label class="control-label">Apply 1st-Order Differencing</label>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="ctrl-diff">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="formula-block">
+                    Y'<sub>t</sub> = Y<sub>t</sub> - Y<sub>t-1</sub>
+                </div>
+                <p>Differencing removes the trend, shifting the mean down to a stable baseline, making the series often closer to stationarity.</p>
+                
+                <div class="metric-grid">
+                    <div class="metric-card">
+                        <div class="metric-value" id="val-raw-mean">0.00</div>
+                        <div class="metric-label">Mean (Raw Series)</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value" id="val-diff-mean" style="color: var(--accent-dark);">0.00</div>
+                        <div class="metric-label">Mean (Differenced)</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stage" data-stage="6">
+                <div class="stage-label">Stage 06</div>
+                <h2>Looking to the Past (Lags & ACF)</h2>
+                <p>A massive concept here is a <strong>lag</strong>—looking backward in time. Today's demand might be highly correlated with demand from exactly 12 months ago.</p>
+                <p>The <strong>Autocorrelation Function (ACF)</strong> mathematically measures how strongly a series is related to its own past values across different lags.</p>
+                
+                <div class="control-panel">
+                    <div class="control-row">
+                        <label class="control-label">Max Lags to Compute</label>
+                        <input type="range" id="ctrl-lags" min="10" max="40" step="1" value="24">
+                        <span class="control-val" id="val-lags">24</span>
+                    </div>
+                </div>
+
+                <div class="insight-box">
+                    <p><strong>How to read this genuinely computed ACF:</strong> Bars extending outside the shaded region are statistically significant (p < 0.05). Notice the repeating spikes? Depending on the noise level, they often suggest a repeating seasonal structure.</p>
+                </div>
+            </div>
+
+            <div class="stage" data-stage="7">
+                <div class="stage-label">Stage 07</div>
+                <h2>Forecasting the Future</h2>
+                <p>Since this is an interactive environment, we project the future using a <strong>structural simulation forecast</strong> built from our known trend and seasonal generators, rather than estimating an ARIMA model from scratch.</p>
+                
+                <div class="control-panel">
+                    <div class="control-row">
+                        <label class="control-label">Forecast Horizon (Months)</label>
+                        <input type="range" id="ctrl-horizon" min="6" max="48" step="1" value="24">
+                        <span class="control-val" id="val-horizon">24</span>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">Prediction Intervals</div>
+                    <p style="font-size: 0.95rem; margin-bottom: 0;">A forecast is an estimate, not a prophecy. The shaded area represents the <strong>95% prediction interval</strong>.</p>
+                    <p class="small-note">Note: The expanding fan shown here is a simplified heuristic to illustrate how uncertainty accumulates over time, rather than a mathematically derived forecast variance.</p>
+                </div>
+            </div>
+
+            <div class="stage" data-stage="8">
+                <div class="stage-label">Stage 08</div>
+                <h2>Diagnostics: Evaluating Residuals</h2>
+                <p>How do we know if a real-world forecasting model is adequate? We subtract the model's historical predictions from the actual raw data to check the <strong>residuals</strong>.</p>
+                
+                <div class="formula-block" style="font-size: 0.9rem;">
+                    Residual<sub>t</sub> = Actual Y<sub>t</sub> - Predicted Y<sub>t</sub>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">What Good Residuals Look Like</div>
+                    <ul style="padding-left: 1.5rem; font-size: 0.95rem; color: var(--text-dim); margin-bottom:0;">
+                        <li style="margin-bottom: 0.5rem;"><strong>Centered around zero:</strong> No overall drift up or down.</li>
+                        <li style="margin-bottom: 0.5rem;"><strong>Constant spread:</strong> Variance shouldn't wildly fan out.</li>
+                        <li style="margin-bottom: 0.5rem;"><strong>No waves or patterns:</strong> All seasonality and trend should be captured by the model.</li>
+                        <li><strong>Occasional outliers:</strong> Random spikes are normal, but they shouldn't cluster.</li>
+                    </ul>
+                </div>
+                
+                <div class="control-panel" style="border-color: var(--error); background: rgba(220, 38, 38, 0.03);">
+                    <div class="control-row">
+                        <label class="control-label" style="color: var(--error);">Simulate a "Bad" Model (Leftover Pattern)</label>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="ctrl-bad-res">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <p>Toggle the switch to see what happens when a model fails to capture the underlying seasonality. A robust model leaves residuals that closely resemble pure random noise.</p>
+            </div>
+
+            <div class="stage" data-stage="9">
+                <div class="stage-label">Synthesis</div>
+                <h2>Reading the Output</h2>
+                <p>A statistical analysis translates a visual chart into actionable business metrics. Below is a simulated summary of what we learned from our generated data.</p>
+                
+                <div class="card">
+                    <div class="card-title">Simulated Analysis Report</div>
+                    <table class="data-table" style="margin: 0;">
+                        <tbody>
+                            <tr><td><strong>Underlying Trend</strong></td><td id="out-trend-dir">Positive</td></tr>
+                            <tr><td><strong>Seasonal Peak</strong></td><td id="out-season-peak">Month 4</td></tr>
+                            <tr><td><strong>Mean MoM Change</strong></td><td id="out-diff-change">1.00</td></tr>
+                            <tr><td id="label-strong-lag"><strong>Strongest Observed Lag</strong></td><td id="out-strong-lag">Lag 12</td></tr>
+                            <tr><td><strong>Next Period Forecast</strong></td><td id="out-next-forecast">145.20</td></tr>
+                            <tr><td><strong>95% Prediction Bounds</strong></td><td id="out-bounds">[130.20, 160.20]</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="stage" data-stage="10">
+                <div class="stage-label">Stage 10</div>
+                <h2>Limitations & Caveats</h2>
+                <p>Time series models fundamentally rely on the assumption that <em>the future will structurally resemble the past</em>. It is crucial not to overclaim the certainty of any forecast.</p>
+                
+                <div class="card">
+                    <div class="card-title">What Models Can't Do</div>
+                    <ul style="padding-left: 1.5rem; font-size: 0.95rem; color: var(--text-dim); margin-bottom:0;">
+                        <li style="margin-bottom: 0.5rem;"><strong>Black Swan Events:</strong> Standard models cannot predict unprecedented external shocks (pandemics, sudden market crashes).</li>
+                        <li style="margin-bottom: 0.5rem;"><strong>Structural Breaks:</strong> If a company pivots its business model at month 100, data from month 1 is no longer highly relevant.</li>
+                        <li><strong>Infinite Horizons:</strong> Prediction intervals eventually grow so wide that long-term forecasts become practically useless.</li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="visualization">
+            <div class="canvas-container">
+                <canvas id="ts-canvas"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Colors mapped directly from CSS for Canvas usage
+        const colors = {
+            bg: '#ffffff',
+            grid: '#f3f4f6',
+            border: '#e7e5e4',
+            axis: '#9ca3af',
+            mainLine: '#1f2937', 
+            accent: '#6366f1',   
+            point: '#6366f1',    
+            trend: '#4f46e5',    
+            seasonal: '#16a34a', 
+            noise: '#d97706',    
+            forecast: '#f97316', 
+            forecastBand: 'rgba(249, 115, 22, 0.15)',
+            diffLine: '#2563eb', 
+            error: '#dc2626',
+            textMain: '#1f2937',
+            textDim: '#4b5563',
+            textMuted: '#6b7280',
+            surface: '#ffffff'
+        };
+
+        // Core State
+        const N = 120; // 10 years of monthly data
+        let params = {
+            trend: 1.0,
+            seasonal: 15,
+            noise: 10,
+            diff: false,
+            lags: 24,
+            horizon: 24,
+            badRes: false
+        };
+
+        let tsData = [];
+        let tsDiff = [];
+        let maData = [];
+        let acfData = [];
+        let forecastData = [];
+        let badResData = [];
+
+        // DOM Elements
+        const canvas = document.getElementById('ts-canvas');
+        const ctx = canvas.getContext('2d', { alpha: false });
+        let width, height;
+
+        // Controls
+        const ctrlTrend = document.getElementById('ctrl-trend');
+        const ctrlSeason = document.getElementById('ctrl-season');
+        const ctrlNoise = document.getElementById('ctrl-noise');
+        const ctrlDiff = document.getElementById('ctrl-diff');
+        const ctrlLags = document.getElementById('ctrl-lags');
+        const ctrlHorizon = document.getElementById('ctrl-horizon');
+        const ctrlBadRes = document.getElementById('ctrl-bad-res');
+
+        // Text Updates
+        const valTrend = document.getElementById('val-trend');
+        const valSeason = document.getElementById('val-season');
+        const valNoise = document.getElementById('val-noise');
+        const valLags = document.getElementById('val-lags');
+        const valHorizon = document.getElementById('val-horizon');
+        const valRawMean = document.getElementById('val-raw-mean');
+        const valDiffMean = document.getElementById('val-diff-mean');
+        const rawDataBody = document.getElementById('raw-data-body');
+
+        // Synthesis Output panel Updates
+        const outTrendDir = document.getElementById('out-trend-dir');
+        const outSeasonPeak = document.getElementById('out-season-peak');
+        const outDiffChange = document.getElementById('out-diff-change');
+        const outStrongLag = document.getElementById('out-strong-lag');
+        const labelStrongLag = document.getElementById('label-strong-lag');
+        const outNextForecast = document.getElementById('out-next-forecast');
+        const outBounds = document.getElementById('out-bounds');
+
+        // Animation / Transition State
+        let currentStageIndex = 1;
+        let animationProgress = 0;
+        let targetProgress = 0;
+        let isAnimating = false;
+        
+        // Interaction State
+        let mouse = { x: -100, y: -100, hover: false };
+
+        // Coordinate System state (for smooth transitions)
+        let currentXRange = [0, N];
+        let targetXRange = [0, N];
+        let currentYRange = [0, 160];
+        let targetYRange = [0, 160];
+
+        // --- Data Generation & Math ---
+
+        function computeACF(arr, maxLag) {
+            let mean = arr.reduce((a,b) => a+b, 0) / arr.length;
+            let variance = arr.reduce((a,b) => a + Math.pow(b-mean, 2), 0);
+            let result = [];
+            for(let lag=0; lag<=maxLag; lag++) {
+                if (variance === 0) { result.push(0); continue; }
+                let cov = 0;
+                for(let i=0; i<arr.length-lag; i++) {
+                    cov += (arr[i]-mean) * (arr[i+lag]-mean);
+                }
+                result.push(cov / variance);
+            }
+            return result;
+        }
+
+        function getRange(datasets, keys, padding = 0.15) {
+            let min = Infinity;
+            let max = -Infinity;
+            datasets.forEach(dataset => {
+                dataset.forEach(pt => {
+                    keys.forEach(k => {
+                        if(pt[k] < min) min = pt[k];
+                        if(pt[k] > max) max = pt[k];
+                    });
+                });
+            });
+            if(min === Infinity) return [0, 100];
+            const spread = max - min;
+            if (spread === 0) return [min - 10, max + 10];
+            return [min - spread * padding, max + spread * padding];
+        }
+
+        function generateData() {
+            let seed = 42; 
+            function random() {
+                let x = Math.sin(seed++) * 10000;
+                return x - Math.floor(x);
+            }
+
+            tsData = [];
+            let sumRaw = 0;
+            const baseLevel = 40;
+
+            for (let i = 0; i < N; i++) {
+                let tr = baseLevel + (i * params.trend); 
+                let sea = Math.sin((i / 12) * Math.PI * 2) * params.seasonal;
+                let n = (random() - 0.5) * params.noise * 2;
+                let y = tr + sea + n;
+                
+                sumRaw += y;
+                tsData.push({ t: i, y: y, trend: tr, seasonal: sea, noise: n });
+            }
+
+            maData = [];
+            const w = 12;
+            for (let i = w - 1; i < N; i++) {
+                let sum = 0;
+                for (let j = 0; j < w; j++) sum += tsData[i-j].y;
+                maData.push({ t: i, y: sum / w });
+            }
+
+            tsDiff = [];
+            let sumDiff = 0;
+            for(let i = 1; i < N; i++) {
+                let val = tsData[i].y - tsData[i-1].y;
+                sumDiff += val;
+                tsDiff.push({ t: i, y: val });
+            }
+
+            const acfSource = params.diff ? tsDiff.map(d=>d.y) : tsData.map(d=>d.y);
+            acfData = computeACF(acfSource, 40);
+
+            forecastData = [];
+            for (let i = N; i < N + params.horizon; i++) {
+                let tr = baseLevel + (i * params.trend);
+                let sea = Math.sin((i / 12) * Math.PI * 2) * params.seasonal;
+                let y = tr + sea; 
+                let ci = params.noise * 1.5 + ((i - N) * 0.4); 
+                forecastData.push({ t: i, y: y, upper: y + ci, lower: y - ci });
+            }
+
+            // Generate bad residuals (injecting uncaptured seasonality + slight trend drift)
+            badResData = tsData.map(d => ({
+                t: d.t,
+                res: d.noise + Math.sin((d.t / 12) * Math.PI * 2) * 12 + (d.t * 0.15) - 8
+            }));
+
+            updateDOMPanels(sumRaw, sumDiff);
+            wakeUpAnimation();
+        }
+
+        function updateDOMPanels(sumRaw, sumDiff) {
+            rawDataBody.innerHTML = '';
+            for(let i=0; i<5; i++) {
+                let tr = document.createElement('tr');
+                tr.innerHTML = `<td>Month ${tsData[i].t + 1}</td><td>${tsData[i].y.toFixed(2)}</td>`;
+                rawDataBody.appendChild(tr);
+            }
+
+            valRawMean.innerText = (sumRaw / N).toFixed(2);
+            let meanDiff = sumDiff / (N-1);
+            valDiffMean.innerText = meanDiff.toFixed(2);
+
+            let trendDir = params.trend > 0.1 ? "Positive" : (params.trend < -0.1 ? "Negative" : "Flat");
+            outTrendDir.innerText = `${trendDir} (${params.trend > 0 ? '+' : ''}${params.trend.toFixed(2)}/mo)`;
+
+            let maxSea = -Infinity, peakMo = 1;
+            for(let i=0; i<12; i++) {
+                if(tsData[i].seasonal > maxSea) {
+                    maxSea = tsData[i].seasonal;
+                    peakMo = i + 1;
+                }
+            }
+            outSeasonPeak.innerText = params.seasonal === 0 ? "None" : `Month ${peakMo}`;
+            outDiffChange.innerText = meanDiff.toFixed(2);
+
+            const sig = 1.96 / Math.sqrt(N);
+            let maxAcf = -1, bestLag = 0;
+            let sigLags = [];
+            for(let i=1; i<=params.lags; i++) {
+                if(Math.abs(acfData[i]) > sig) sigLags.push(i);
+                if(Math.abs(acfData[i]) > maxAcf) {
+                    maxAcf = Math.abs(acfData[i]);
+                    bestLag = i;
+                }
+            }
+            
+            if (maxAcf > sig) {
+                let seasonal = sigLags.filter(l => l % 12 === 0 && l > 0);
+                if (seasonal.length > 0 && params.seasonal > 0) {
+                    labelStrongLag.innerHTML = "<strong>Key Pattern Identified</strong>";
+                    outStrongLag.innerText = `Seasonal (12m cycle)`;
+                } else {
+                    labelStrongLag.innerHTML = "<strong>Strongest Sig. Lag</strong>";
+                    outStrongLag.innerText = `Lag ${bestLag} (${acfData[bestLag].toFixed(2)})`;
+                }
+            } else {
+                labelStrongLag.innerHTML = "<strong>Strongest Observed Lag</strong>";
+                outStrongLag.innerText = bestLag === 0 ? "None" : `Lag ${bestLag} (Not Sig.)`;
+            }
+
+            if(forecastData.length > 0) {
+                let next = forecastData[0];
+                outNextForecast.innerText = next.y.toFixed(2);
+                outBounds.innerText = `[${next.lower.toFixed(1)}, ${next.upper.toFixed(1)}]`;
+            }
+        }
+
+        // --- Interaction Handlers ---
+        
+        function updateParams() {
+            params.trend = parseFloat(ctrlTrend.value);
+            params.seasonal = parseFloat(ctrlSeason.value);
+            params.noise = parseFloat(ctrlNoise.value);
+            params.diff = ctrlDiff.checked;
+            params.lags = parseInt(ctrlLags.value);
+            params.horizon = parseInt(ctrlHorizon.value);
+            params.badRes = ctrlBadRes.checked;
+
+            valTrend.innerText = params.trend.toFixed(1);
+            valSeason.innerText = params.seasonal;
+            valNoise.innerText = params.noise;
+            valLags.innerText = params.lags;
+            valHorizon.innerText = params.horizon;
+
+            generateData();
+        }
+
+        [ctrlTrend, ctrlSeason, ctrlNoise, ctrlDiff, ctrlLags, ctrlHorizon, ctrlBadRes].forEach(el => {
+            el.addEventListener('input', updateParams);
+        });
+
+        // Canvas Mouse Events for Hover Tooltips
+        canvas.addEventListener('mousemove', (e) => {
+            const rect = canvas.getBoundingClientRect();
+            // Use strict CSS pixels for hit testing
+            mouse.x = e.clientX - rect.left;
+            mouse.y = e.clientY - rect.top;
+            mouse.hover = true;
+            if (!isAnimating) requestAnimationFrame(draw);
+        });
+        canvas.addEventListener('mouseleave', () => {
+            mouse.hover = false;
+            if (!isAnimating) requestAnimationFrame(draw);
+        });
+
+
+        // --- Canvas Setup & Drawing ---
+
+        function resize() {
+            const rect = canvas.parentElement.getBoundingClientRect();
+            const dpr = window.devicePixelRatio || 1;
+            canvas.width = rect.width * dpr;
+            canvas.height = rect.height * dpr;
+            ctx.setTransform(1, 0, 0, 1, 0, 0); 
+            ctx.scale(dpr, dpr);
+            width = rect.width;
+            height = rect.height;
+            wakeUpAnimation();
+        }
+        window.addEventListener('resize', resize);
+
+        function mapX(x) {
+            const padding = width * 0.08;
+            const minX = currentXRange[0];
+            const maxX = currentXRange[1];
+            return padding + ((x - minX) / (maxX - minX)) * (width - 2 * padding);
+        }
+
+        function mapY(y) {
+            const padding = height * 0.12;
+            const availableHeight = height - 2 * padding;
+            const minY = currentYRange[0];
+            const maxY = currentYRange[1];
+            return height - padding - ((y - minY) / (maxY - minY)) * availableHeight;
+        }
+
+        function drawGrid(ySteps = 5) {
+            ctx.strokeStyle = colors.grid;
+            ctx.lineWidth = 1;
+            
+            const minY = currentYRange[0];
+            const maxY = currentYRange[1];
+            const step = (maxY - minY) / ySteps;
+
+            ctx.beginPath();
+            for (let i = 0; i <= ySteps; i++) {
+                const yVal = minY + (i * step);
+                const y = mapY(yVal);
+                ctx.moveTo(width * 0.08, y);
+                ctx.lineTo(width * 0.92, y);
+            }
+            ctx.stroke();
+
+            // Y-Axis Labels
+            ctx.fillStyle = colors.textMuted;
+            ctx.textAlign = 'right';
+            ctx.textBaseline = 'middle';
+            ctx.font = '400 11px Inter, sans-serif';
+            for (let i = 0; i <= ySteps; i++) {
+                const yVal = minY + (i * step);
+                const y = mapY(yVal);
+                ctx.fillText(yVal.toFixed(0), width * 0.08 - 8, y);
+            }
+
+            // Zero line emphasis
+            if (minY < 0 && maxY > 0) {
+                ctx.strokeStyle = colors.axis;
+                ctx.setLineDash([5, 5]);
+                ctx.beginPath();
+                ctx.moveTo(width * 0.08, mapY(0));
+                ctx.lineTo(width * 0.92, mapY(0));
+                ctx.stroke();
+                ctx.setLineDash([]);
+            }
+
+            // X-Axis Baseline
+            ctx.strokeStyle = colors.axis;
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(width * 0.08, mapY(minY));
+            ctx.lineTo(width * 0.92, mapY(minY));
+            ctx.stroke();
+
+            // X-Axis Time Markers
+            ctx.fillStyle = colors.textMuted;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'top';
+            const minX = Math.max(0, Math.floor(currentXRange[0]));
+            const maxX = Math.ceil(currentXRange[1]);
+            
+            if (currentStageIndex === 6) {
+                const tickStep = params.lags > 20 ? 4 : (params.lags > 10 ? 2 : 1);
+                for(let t = 0; t <= params.lags; t += tickStep) {
+                    const x = mapX(t);
+                    const y = mapY(0);
+                    ctx.fillRect(x - 1, mapY(minY), 2, 5);
+                    ctx.fillText(`Lag ${t}`, x, mapY(minY) + 8);
+                }
+            } else {
+                for(let t = minX; t <= maxX; t++) {
+                    if (t % 12 === 0) {
+                        const x = mapX(t);
+                        const y = mapY(minY);
+                        ctx.fillRect(x - 1, y, 2, 5);
+                        if (t > 0) {
+                            ctx.fillText(`Y${t/12}`, x, y + 8);
+                        }
+                    }
+                }
+            }
+        }
+
+        function drawPath(dataset, key, color, widthLine = 2, alpha = 1) {
+            ctx.beginPath();
+            ctx.strokeStyle = color;
+            ctx.lineWidth = widthLine;
+            ctx.lineJoin = 'round';
+            ctx.globalAlpha = alpha;
+            
+            for (let i = 0; i < dataset.length; i++) {
+                const pt = dataset[i];
+                const x = mapX(pt.t);
+                const y = mapY(pt[key]);
+                if (i === 0) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
+            }
+            ctx.stroke();
+            ctx.globalAlpha = 1;
+        }
+
+        function drawPoints(dataset, key, alpha = 1, rad = 3, colorOverride = colors.point) {
+            ctx.fillStyle = colorOverride;
+            ctx.globalAlpha = alpha;
+            for (let i = 0; i < dataset.length; i++) {
+                const pt = dataset[i];
+                const x = mapX(pt.t);
+                const y = mapY(pt[key]);
+                ctx.beginPath();
+                ctx.arc(x, y, rad, 0, Math.PI * 2);
+                ctx.fill();
+            }
+            ctx.globalAlpha = 1;
+        }
+
+        function drawStageChip(text, iconColor) {
+            ctx.font = '600 12px Inter, sans-serif';
+            ctx.textAlign = 'left';
+            ctx.textBaseline = 'middle';
+            const padX = 12;
+            const textW = ctx.measureText(text).width;
+            const boxW = textW + padX * 2 + 16;
+            const boxH = 28;
+            
+            const x = width * 0.08 + 10;
+            const y = 20;
+
+            ctx.fillStyle = colors.surface;
+            ctx.shadowColor = 'rgba(0,0,0,0.1)';
+            ctx.shadowBlur = 8;
+            ctx.shadowOffsetY = 2;
+            
+            ctx.beginPath();
+            ctx.roundRect(x, y, boxW, boxH, 6);
+            ctx.fill();
+            
+            ctx.shadowColor = 'transparent';
+            
+            // Draw color dot
+            ctx.fillStyle = iconColor;
+            ctx.beginPath();
+            ctx.arc(x + padX + 4, y + boxH/2, 4, 0, Math.PI*2);
+            ctx.fill();
+
+            // Draw text
+            ctx.fillStyle = colors.textMain;
+            ctx.fillText(text, x + padX + 16, y + boxH/2);
+        }
+
+        function wakeUpAnimation() {
+            if (!isAnimating) {
+                isAnimating = true;
+                requestAnimationFrame(draw);
+            }
+        }
+
+        function draw() {
+            ctx.fillStyle = colors.bg;
+            ctx.fillRect(0, 0, width, height);
+
+            animationProgress += (targetProgress - animationProgress) * 0.08;
+            const s = currentStageIndex;
+
+            const baseRange = getRange([tsData], ['y']);
+            const diffRange = getRange([tsDiff], ['y']);
+            const forecastRange = getRange([tsData, forecastData], ['y', 'upper', 'lower']);
+
+            targetXRange = [0, N];
+            targetYRange = baseRange; 
+
+            if (s === 3) targetYRange = baseRange; 
+            if (s === 5) targetYRange = params.diff ? diffRange : baseRange;
+            if (s === 6) { targetXRange = [0, params.lags]; targetYRange = [-1.1, 1.1]; }
+            if (s === 7 || s === 9 || s === 10) { targetXRange = [0, N + params.horizon]; targetYRange = forecastRange; }
+            if (s === 8) {
+                const sourceData = params.badRes ? badResData : tsData;
+                const sourceKey = params.badRes ? 'res' : 'noise';
+                let maxNoise = Math.max(...sourceData.map(d => Math.abs(d[sourceKey])));
+                if (maxNoise === 0) maxNoise = 1; 
+                targetYRange = [-maxNoise * 1.8, maxNoise * 1.8]; 
+            }
+
+            currentXRange[0] += (targetXRange[0] - currentXRange[0]) * 0.08;
+            currentXRange[1] += (targetXRange[1] - currentXRange[1]) * 0.08;
+            currentYRange[0] += (targetYRange[0] - currentYRange[0]) * 0.08;
+            currentYRange[1] += (targetYRange[1] - currentYRange[1]) * 0.08;
+
+            const deltaProg = Math.abs(targetProgress - animationProgress);
+            const deltaX = Math.abs(targetXRange[1] - currentXRange[1]);
+            const deltaY = Math.abs(targetYRange[1] - currentYRange[1]);
+
+            // Clean decoupling of hover redraw vs physics transition
+            if (deltaProg > 0.001 || deltaX > 0.1 || deltaY > 0.1) {
+                isAnimating = true;
+                requestAnimationFrame(draw);
+            } else {
+                isAnimating = false;
+                // We no longer trigger requestAnimationFrame(draw) automatically here for hover.
+                // The mousemove/mouseleave listeners will explicitly request a frame if !isAnimating.
+            }
+
+            if (s !== 3) drawGrid(); // S3 draws its own lane grid
+
+            ctx.font = '600 13px Inter, sans-serif';
+            ctx.textAlign = 'left';
+            ctx.textBaseline = 'alphabetic';
+
+            let chipText = "Raw Data Loaded";
+            let chipColor = colors.mainLine;
+
+            // Render Logic per Stage
+            if (s === 1 || s === 2) {
+                if (s === 2) {
+                    drawPath(tsData, 'y', colors.mainLine, 2, animationProgress);
+                    chipText = "Time Plot Connected";
+                }
+                drawPoints(tsData, 'y', 1 - (animationProgress * 0.5));
+            } 
+            else if (s === 3) {
+                chipText = "Structural Decomposition";
+                chipColor = colors.trend;
+                
+                const p = animationProgress;
+                
+                // Fade in dividers smoothly
+                ctx.globalAlpha = p * Math.min(1, p * 2);
+                ctx.strokeStyle = colors.border;
+                ctx.lineWidth = 1;
+                const laneH = height / 4;
+                for(let i=1; i<4; i++) {
+                    ctx.beginPath();
+                    ctx.moveTo(width*0.08, i*laneH);
+                    ctx.lineTo(width*0.92, i*laneH);
+                    ctx.stroke();
+                }
+
+                const drawDecompLane = (key, color, laneIdx, label, isObserved = false) => {
+                    const topPx = laneIdx * laneH + 20; 
+                    const bottomPx = (laneIdx + 1) * laneH - 10; 
+                    
+                    let min = Infinity, max = -Infinity;
+                    tsData.forEach(pt => {
+                        if (pt[key] < min) min = pt[key];
+                        if (pt[key] > max) max = pt[key];
+                    });
+                    
+                    if (key === 'noise') {
+                        const maxAbs = Math.max(Math.abs(min), Math.abs(max)) || 1;
+                        min = -maxAbs; max = maxAbs;
+                    }
+                    if (min === max) { min -= 1; max += 1; }
+                    
+                    // Main line fades out to reference color, components fade in to their real color
+                    ctx.globalAlpha = isObserved ? Math.max(0.2, 1 - p*0.6) : p; 
+                    ctx.beginPath();
+                    ctx.strokeStyle = isObserved ? colors.textDim : color; 
+                    ctx.lineWidth = isObserved ? 1.5 : 2;
+                    ctx.lineJoin = 'round';
+                    
+                    const topLaneTopPx = 20;
+                    const topLaneBotPx = laneH - 10;
+                    let topMin = baseRange[0], topMax = baseRange[1];
+
+                    for (let i = 0; i < N; i++) {
+                        const pt = tsData[i];
+                        const x = mapX(pt.t);
+                        
+                        // Start point is exactly the observed line in the top lane
+                        const startY = topLaneBotPx - ((pt.y - topMin)/(topMax - topMin)) * (topLaneBotPx - topLaneTopPx);
+                        // Target point is its isolated shape in its dedicated lane
+                        const targetY = bottomPx - ((pt[key] - min) / (max - min)) * (bottomPx - topPx);
+                        
+                        const ease = Math.sin(p * Math.PI / 2);
+                        const currentY = startY + (targetY - startY) * ease;
+
+                        if (i === 0) ctx.moveTo(x, currentY);
+                        else ctx.lineTo(x, currentY);
+                    }
+                    ctx.stroke();
+                    
+                    ctx.globalAlpha = isObserved ? 1 : p;
+                    ctx.fillStyle = isObserved ? colors.textMain : color;
+                    ctx.fillText(label, mapX(0) + 5, topPx + 2);
+                };
+
+                drawDecompLane('y', colors.textDim, 0, "OBSERVED DATA (REFERENCE)", true);
+                drawDecompLane('trend', colors.trend, 1, "1. TREND");
+                drawDecompLane('seasonal', colors.seasonal, 2, "2. SEASONALITY");
+                drawDecompLane('noise', colors.noise, 3, "3. NOISE (REMAINDER)");
+                
+                ctx.globalAlpha = 1;
+            }
+            else if (s === 4) {
+                chipText = "Checking Stationarity";
+                chipColor = colors.error;
+
+                drawPath(tsData, 'y', colors.mainLine, 1.5, 0.4);
+                
+                ctx.beginPath();
+                ctx.strokeStyle = colors.error;
+                ctx.lineWidth = 3;
+                ctx.globalAlpha = animationProgress;
+                for(let i=0; i < maData.length; i++) {
+                    const x = mapX(maData[i].t);
+                    const y = mapY(maData[i].y);
+                    if(i===0) ctx.moveTo(x,y);
+                    else ctx.lineTo(x,y);
+                }
+                ctx.stroke();
+                
+                const labelIdx = Math.floor(maData.length * 0.3);
+                const maPt = maData[labelIdx];
+                if (maPt) {
+                    ctx.fillStyle = colors.error;
+                    ctx.fillText("Rolling Moving Average (12m)", mapX(maPt.t), mapY(maPt.y) - 20);
+                }
+                ctx.globalAlpha = 1;
+            }
+            else if (s === 5) {
+                chipText = params.diff ? "Differenced (Mean Stabilized)" : "Raw Series Active";
+                chipColor = params.diff ? colors.diffLine : colors.mainLine;
+
+                if (!params.diff) {
+                    drawPath(tsData, 'y', colors.mainLine, 2);
+                    ctx.globalAlpha = animationProgress;
+                    ctx.fillStyle = colors.textDim;
+                    ctx.fillText("Raw Series (Trend Intact)", mapX(10), mapY(tsData[10].y) - 20);
+                } else {
+                    drawPath(tsDiff, 'y', colors.diffLine, 2);
+                    ctx.globalAlpha = animationProgress;
+                    ctx.fillStyle = colors.diffLine;
+                    ctx.fillText("Differenced Series", mapX(10), mapY(tsDiff[9]?.y || 0) - 25);
+                }
+                ctx.globalAlpha = 1;
+            }
+            else if (s === 6) {
+                chipText = "ACF Computed";
+                chipColor = colors.accent;
+
+                ctx.globalAlpha = animationProgress;
+                
+                // Draw 95% Confidence Bounds
+                const sig = 1.96 / Math.sqrt(N);
+                ctx.fillStyle = 'rgba(156, 163, 175, 0.2)';
+                ctx.fillRect(mapX(0), mapY(sig), mapX(params.lags) - mapX(0), mapY(-sig) - mapY(sig));
+
+                for(let lag=0; lag<=params.lags; lag++) {
+                    const val = acfData[lag];
+                    const x = mapX(lag);
+                    const y = mapY(val);
+                    const zeroY = mapY(0);
+                    
+                    ctx.fillStyle = colors.accent;
+                    ctx.fillRect(x - 4, y, 8, zeroY - y);
+                }
+                
+                ctx.fillStyle = colors.textMain;
+                ctx.fillText(`95% Sig. Limit (\xB1${sig.toFixed(2)})`, mapX(0), mapY(sig) - 10);
+                
+                ctx.globalAlpha = 1;
+            }
+            else if (s === 7 || s === 9 || s === 10) {
+                chipText = "Forecast Deployed";
+                chipColor = colors.forecast;
+
+                drawPath(tsData, 'y', colors.mainLine, 2);
+                
+                ctx.globalAlpha = 1;
+                
+                const visiblePts = Math.max(1, Math.floor(forecastData.length * animationProgress));
+                
+                // Draw forecast CI fan (grows outwards in X)
+                ctx.beginPath();
+                ctx.fillStyle = colors.forecastBand;
+                for(let i=0; i<visiblePts; i++) {
+                    const pt = forecastData[i];
+                    // Fan out effect based on animation progress
+                    const targetUpper = pt.y + (pt.upper - pt.y) * animationProgress;
+                    if(i===0) ctx.moveTo(mapX(pt.t), mapY(targetUpper));
+                    else ctx.lineTo(mapX(pt.t), mapY(targetUpper));
+                }
+                for(let i=visiblePts-1; i>=0; i--) {
+                    const pt = forecastData[i];
+                    const targetLower = pt.y - (pt.y - pt.lower) * animationProgress;
+                    ctx.lineTo(mapX(pt.t), mapY(targetLower));
+                }
+                ctx.closePath();
+                ctx.fill();
+
+                // Draw forecast line expanding outwards in X
+                ctx.beginPath();
+                ctx.strokeStyle = colors.forecast;
+                ctx.lineWidth = 3;
+                for (let i = 0; i < visiblePts; i++) {
+                    const pt = forecastData[i];
+                    if (i === 0) ctx.moveTo(mapX(pt.t), mapY(pt.y));
+                    else ctx.lineTo(mapX(pt.t), mapY(pt.y));
+                }
+                ctx.stroke();
+                
+                ctx.strokeStyle = colors.axis;
+                ctx.setLineDash([5, 5]);
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                const divX = mapX(N);
+                ctx.moveTo(divX, mapY(currentYRange[0]));
+                ctx.lineTo(divX, mapY(currentYRange[1]));
+                ctx.stroke();
+                ctx.setLineDash([]);
+                
+                ctx.fillStyle = colors.textDim;
+                ctx.textAlign = 'right';
+                ctx.fillText("Historical Data", divX - 10, mapY(currentYRange[1]) + 30);
+                ctx.fillStyle = colors.forecast;
+                ctx.textAlign = 'left';
+                ctx.fillText("Forecast Horizon", divX + 10, mapY(currentYRange[1]) + 30);
+                
+                ctx.globalAlpha = 1;
+            }
+            else if (s === 8) {
+                chipText = params.badRes ? "Pattern Leftover (Bad)" : "White Noise (Good)";
+                chipColor = params.badRes ? colors.error : colors.noise;
+
+                ctx.globalAlpha = animationProgress;
+
+                const expectedLimit = params.noise * 1.5;
+                const zoneTop = mapY(expectedLimit);
+                const zoneBot = mapY(-expectedLimit);
+                ctx.fillStyle = 'rgba(156, 163, 175, 0.12)'; 
+                ctx.fillRect(mapX(0), zoneTop, mapX(N) - mapX(0), zoneBot - zoneTop);
+                
+                ctx.fillStyle = colors.textMuted;
+                ctx.fillText("Expected Noise Zone", mapX(N) - 145, zoneTop - 8);
+
+                ctx.strokeStyle = colors.axis;
+                ctx.setLineDash([5, 5]);
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                ctx.moveTo(mapX(0), mapY(0));
+                ctx.lineTo(mapX(N), mapY(0));
+                ctx.stroke();
+                ctx.setLineDash([]);
+
+                const sourceData = params.badRes ? badResData : tsData.map(d => ({ t: d.t, res: d.noise }));
+                const drawColor = params.badRes ? colors.error : colors.noise;
+                
+                drawPath(sourceData, 'res', drawColor, 1.5);
+                drawPoints(sourceData, 'res', 1, 2.5, drawColor);
+                
+                ctx.fillStyle = drawColor;
+                ctx.textAlign = 'left';
+                ctx.fillText(params.badRes ? "Bad Residuals (Uncaptured Pattern)" : "Idealized Residuals (Pure Noise)", mapX(2), mapY(currentYRange[1]) + 20);
+                
+                ctx.globalAlpha = 1;
+            }
+
+            if (s !== 3) {
+                drawStageChip(chipText, chipColor);
+            }
+
+            // Hover Tooltip Logic
+            if (mouse.hover && s !== 3) {
+                const minX = currentXRange[0];
+                const maxX = currentXRange[1];
+                const padding = width * 0.08;
+                const activeW = width - 2 * padding;
+                
+                let rawT = ((mouse.x - padding) / activeW) * (maxX - minX) + minX;
+                let t = Math.round(rawT);
+                
+                // Strict clamping so we don't inspect invisible data
+                let maxAllowedT = N - 1;
+                if (s === 6) maxAllowedT = params.lags;
+                else if (s >= 7) maxAllowedT = N + params.horizon - 1;
+                
+                t = Math.max(0, Math.min(maxAllowedT, t));
+
+                let validPoint = false;
+                let hy = 0;
+                let dotColor = colors.point;
+                let lines = [];
+
+                // Determine active data point based on stage context
+                if (s === 6 && t <= params.lags) {
+                    validPoint = true; hy = mapY(acfData[t]); dotColor = colors.accent;
+                    lines.push(`Lag: ${t}`, `ACF: ${acfData[t].toFixed(3)}`);
+                } else if (s === 8 && t < N) {
+                    validPoint = true;
+                    const resVal = params.badRes ? badResData[t].res : tsData[t].noise;
+                    hy = mapY(resVal); dotColor = params.badRes ? colors.error : colors.noise;
+                    lines.push(`Month: ${t+1}`, `Residual: ${resVal.toFixed(2)}`);
+                } else if (s === 5 && params.diff) {
+                    if (t > 0 && t < N) {
+                        validPoint = true; hy = mapY(tsDiff[t-1].y); dotColor = colors.diffLine;
+                        lines.push(`Month: ${t+1}`, `Change: ${tsDiff[t-1].y.toFixed(2)}`);
+                    }
+                } else if (t >= N && s >= 7) {
+                    const ft = t - N;
+                    if(forecastData[ft]) {
+                        validPoint = true; hy = mapY(forecastData[ft].y); dotColor = colors.forecast;
+                        lines.push(`Month: ${t+1} (Forecast)`, `Estimate: ${forecastData[ft].y.toFixed(2)}`, `Bounds: [${forecastData[ft].lower.toFixed(1)}, ${forecastData[ft].upper.toFixed(1)}]`);
+                    }
+                } else if (t < N && s !== 5 && s !== 8 && s !== 6) {
+                    validPoint = true; hy = mapY(tsData[t].y); dotColor = colors.point;
+                    lines.push(`Month: ${t+1}`, `Observed: ${tsData[t].y.toFixed(2)}`);
+                } else if (t < N && s === 5 && !params.diff) {
+                    validPoint = true; hy = mapY(tsData[t].y); dotColor = colors.mainLine;
+                    lines.push(`Month: ${t+1}`, `Observed: ${tsData[t].y.toFixed(2)}`);
+                }
+
+                if (validPoint && lines.length > 0) {
+                    const hx = mapX(t);
+                    
+                    // Draw Crosshair
+                    ctx.strokeStyle = 'rgba(0,0,0,0.15)';
+                    ctx.lineWidth = 1;
+                    ctx.beginPath();
+                    ctx.moveTo(hx, mapY(currentYRange[0]));
+                    ctx.lineTo(hx, mapY(currentYRange[1]));
+                    ctx.stroke();
+
+                    ctx.font = '500 12px Inter, sans-serif';
+                    ctx.textAlign = 'left';
+                    ctx.textBaseline = 'top';
+                    let maxW = 0;
+                    lines.forEach(l => { maxW = Math.max(maxW, ctx.measureText(l).width); });
+                    
+                    const boxW = maxW + 24;
+                    const boxH = lines.length * 18 + 12;
+                    let boxX = hx + 12;
+                    let boxY = mouse.y + 12;
+
+                    // Collision detection with canvas edges and stage chip
+                    if (boxX + boxW > width - padding + 20) boxX = hx - boxW - 12;
+                    if (boxY + boxH > height - padding) boxY = mouse.y - boxH - 12;
+                    if (boxY < 60 && boxX < 240) boxY = 60; // Avoid top left chip area
+
+                    // Tooltip Container
+                    ctx.fillStyle = 'rgba(255, 255, 255, 0.95)';
+                    ctx.shadowColor = 'rgba(0,0,0,0.12)';
+                    ctx.shadowBlur = 12;
+                    ctx.shadowOffsetY = 4;
+                    ctx.beginPath();
+                    ctx.roundRect(boxX, boxY, boxW, boxH, 6);
+                    ctx.fill();
+                    ctx.strokeStyle = colors.border;
+                    ctx.stroke();
+
+                    // Text
+                    ctx.shadowColor = 'transparent';
+                    ctx.fillStyle = colors.textMain;
+                    lines.forEach((l, idx) => {
+                        ctx.fillText(l, boxX + 12, boxY + 8 + idx * 18);
+                    });
+                    
+                    // Emphasized Active Point
+                    ctx.fillStyle = dotColor;
+                    ctx.beginPath(); ctx.arc(hx, hy, 4, 0, Math.PI*2); ctx.fill();
+                    ctx.strokeStyle = colors.surface;
+                    ctx.lineWidth = 1.5;
+                    ctx.stroke();
+                }
+            }
+        }
+
+        // --- Intersection Observer Setup ---
+        const stages = document.querySelectorAll('.stage');
+        const progressBar = document.getElementById('progress-bar');
+        const dotsContainer = document.getElementById('stage-dots');
+
+        stages.forEach((stage, index) => {
+            const dot = document.createElement('div');
+            dot.className = 'dot' + (index === 0 ? ' active' : '');
+            dot.addEventListener('click', () => {
+                stage.scrollIntoView({ behavior: 'smooth' });
+            });
+            dotsContainer.appendChild(dot);
+        });
+        const dots = document.querySelectorAll('.dot');
+
+        const observerOptions = {
+            root: null,
+            rootMargin: '-40% 0px -40% 0px',
+            threshold: 0
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const stageNum = parseInt(entry.target.getAttribute('data-stage'));
+                    
+                    stages.forEach(s => s.classList.remove('active'));
+                    entry.target.classList.add('active');
+                    
+                    dots.forEach(d => d.classList.remove('active'));
+                    if (dots[stageNum - 1]) dots[stageNum - 1].classList.add('active');
+
+                    currentStageIndex = stageNum;
+                    targetProgress = 1;
+                    animationProgress = 0; 
+                    
+                    wakeUpAnimation();
+                }
+            });
+        }, observerOptions);
+
+        stages.forEach(stage => observer.observe(stage));
+
+        // Global Scroll Progress
+        window.addEventListener('scroll', () => {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            progressBar.style.width = scrolled + "%";
+        });
+
+        // --- Initialization ---
+        generateData();
+        resize();
+        animationProgress = 1; 
+        draw();
+
+    </script>
+</body>
+</html>

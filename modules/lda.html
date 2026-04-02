@@ -1,0 +1,944 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Linear Discriminant Analysis — Interactive Visual Guide</title>
+<meta name="description" content="A scroll-driven, interactive visual guide to Linear Discriminant Analysis (LDA). Learn how LDA works from raw data to final model prediction.">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#f7f7f4;--bg2:#f0efeb;--surface:#ffffff;
+  --glass:rgba(255,255,255,0.85);--glass-border:#e7e5e4;
+  --text:#1f2937;--text-dim:#4b5563;--text-muted:#6b7280;
+  --accent:#6366f1;--accent2:#4f46e5;--accent-glow:rgba(99,102,241,0.08);
+  --apple:#2563eb;--apple-soft:rgba(37,99,235,0.1);
+  --orange:#d97706;--orange-soft:rgba(217,119,6,0.1);
+  --green:#16a34a;--green-soft:rgba(22,163,74,0.1);
+  --blue:#3b82f6;--blue-soft:rgba(59,130,246,0.1);
+  --coral:#dc2626;--coral-soft:rgba(220,38,38,0.08);
+  --radius:16px;--radius-sm:10px;
+}
+html{scroll-behavior:smooth;background:var(--bg)}
+body{font-family:'Inter',system-ui,sans-serif;color:var(--text);background:var(--bg);line-height:1.7;overflow-x:hidden}
+.layout{display:flex;min-height:100vh;position:relative}
+.narrative{width:45%;min-width:400px;position:relative;z-index:2}
+.viz-container{width:55%;height:100vh;position:sticky;top:0;right:0;display:flex;align-items:center;justify-content:center;z-index:1;background:var(--bg)}
+#mainCanvas{width:100%;height:100%;display:block}
+.section{min-height:100vh;padding:80px 60px 80px 40px;display:flex;flex-direction:column;justify-content:center;position:relative}
+.section::after{content:'';position:absolute;bottom:0;left:40px;right:60px;height:1px;background:linear-gradient(90deg,transparent,var(--glass-border),transparent)}
+.hero-section{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;width:100vw;position:relative;padding:60px;overflow:hidden}
+.hero-bg{position:absolute;inset:0;z-index:0;pointer-events:none}
+.hero-section h1{font-size:clamp(2.8rem,5vw,4.5rem);font-weight:800;letter-spacing:-0.03em;line-height:1.1;background:linear-gradient(135deg,#1f2937 0%,var(--accent) 50%,var(--accent2) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:20px;position:relative;z-index:1}
+.hero-section .subtitle{font-size:clamp(1rem,1.8vw,1.25rem);color:var(--text-dim);font-weight:400;max-width:600px;margin-bottom:40px;position:relative;z-index:1}
+.hero-section .scroll-hint{font-size:0.85rem;color:var(--text-muted);display:flex;align-items:center;gap:8px;animation:pulse 2s ease-in-out infinite;position:relative;z-index:1}
+@keyframes pulse{0%,100%{opacity:0.5;transform:translateY(0)}50%{opacity:1;transform:translateY(5px)}}
+.hero-badge{display:inline-block;padding:6px 18px;border-radius:100px;background:var(--accent-glow);border:1px solid rgba(99,102,241,0.2);color:var(--accent);font-size:0.8rem;font-weight:500;letter-spacing:0.05em;text-transform:uppercase;margin-bottom:24px;position:relative;z-index:1}
+.hero-note{font-size:0.82rem;color:var(--text-muted);max-width:480px;margin-top:20px;line-height:1.6;position:relative;z-index:1;font-style:italic}
+.stage-num{font-size:0.7rem;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;color:var(--accent);margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.stage-num::before{content:'';width:24px;height:1px;background:var(--accent)}
+h2{font-size:clamp(1.6rem,3vw,2.2rem);font-weight:700;letter-spacing:-0.02em;line-height:1.2;margin-bottom:20px;color:var(--text)}
+h3{font-size:1.1rem;font-weight:600;margin-bottom:12px;color:var(--accent2)}
+p{font-size:0.95rem;color:var(--text-dim);margin-bottom:16px;max-width:520px}
+.glass-card{background:var(--surface);border:1px solid var(--glass-border);border-radius:var(--radius);padding:24px;margin:16px 0;box-shadow:0 1px 3px rgba(0,0,0,0.04)}
+.math-block{font-family:'JetBrains Mono',monospace;font-size:0.85rem;background:rgba(99,102,241,0.05);border:1px solid rgba(99,102,241,0.12);border-radius:var(--radius-sm);padding:16px 20px;margin:12px 0;color:var(--accent2);overflow-x:auto;white-space:pre-wrap;line-height:1.8}
+.data-table{width:100%;border-collapse:collapse;font-size:0.82rem;margin:12px 0}
+.data-table th{text-align:left;padding:8px 12px;font-weight:600;color:var(--accent2);border-bottom:2px solid var(--glass-border);font-size:0.75rem;letter-spacing:0.05em;text-transform:uppercase}
+.data-table td{padding:8px 12px;border-bottom:1px solid #f0efeb;color:var(--text-dim);font-family:'JetBrains Mono',monospace;font-size:0.8rem}
+.data-table tr:hover td{background:rgba(99,102,241,0.03)}
+.tag{display:inline-block;padding:3px 10px;border-radius:100px;font-size:0.72rem;font-weight:600}
+.tag-apple{background:var(--apple-soft);color:var(--apple)}
+.tag-orange{background:var(--orange-soft);color:var(--orange)}
+.metric-row{display:flex;gap:12px;margin:12px 0;flex-wrap:wrap}
+.metric-card{flex:1;min-width:100px;background:var(--bg);border:1px solid var(--glass-border);border-radius:var(--radius-sm);padding:14px;text-align:center}
+.metric-card .val{font-size:1.4rem;font-weight:700;font-family:'JetBrains Mono',monospace}
+.metric-card .lbl{font-size:0.7rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.05em;margin-top:4px}
+.insight-box{border-left:3px solid var(--accent);padding:12px 16px;margin:16px 0;background:var(--accent-glow);border-radius:0 var(--radius-sm) var(--radius-sm) 0}
+.insight-box p{margin:0;font-size:0.88rem;color:var(--text)}
+.matrix-grid{display:grid;grid-template-columns:auto 1fr 1fr;gap:0;margin:16px 0;font-family:'JetBrains Mono',monospace;font-size:0.8rem}
+.matrix-grid .cell{padding:10px 14px;text-align:center;border:1px solid var(--glass-border)}
+.matrix-grid .header{font-weight:600;color:var(--accent2);background:rgba(99,102,241,0.05)}
+.matrix-grid .tp{background:rgba(22,163,74,0.08);color:var(--green)}
+.matrix-grid .tn{background:rgba(59,130,246,0.08);color:var(--blue)}
+.matrix-grid .fp{background:rgba(217,119,6,0.06);color:var(--orange)}
+.matrix-grid .fn{background:rgba(220,38,38,0.06);color:var(--coral)}
+.playground-controls{display:flex;gap:12px;margin:16px 0;flex-wrap:wrap}
+.btn{padding:10px 20px;border-radius:var(--radius-sm);border:1px solid var(--glass-border);background:var(--surface);color:var(--text);font-family:'Inter',sans-serif;font-size:0.85rem;font-weight:500;cursor:pointer;transition:all 0.2s}
+.btn:hover{background:var(--accent-glow);border-color:var(--accent)}
+.btn-accent{background:rgba(99,102,241,0.1);border-color:rgba(99,102,241,0.25);color:var(--accent2)}
+.btn-accent:hover{background:rgba(99,102,241,0.2)}
+.live-calc{margin:8px 0;padding:10px 14px;background:rgba(22,163,74,0.04);border:1px solid rgba(22,163,74,0.12);border-radius:var(--radius-sm);font-family:'JetBrains Mono',monospace;font-size:0.78rem;color:#15803d}
+.progress-bar{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--accent),var(--accent2));z-index:100;transition:width 0.3s;width:0}
+.stage-dots{position:fixed;right:20px;top:50%;transform:translateY(-50%);z-index:50;display:flex;flex-direction:column;gap:12px}
+.stage-dot{width:12px;height:12px;border-radius:50%;background:#d1d5db;cursor:pointer;transition:all 0.3s;border:2px solid transparent}
+.stage-dot:hover{background:#9ca3af}
+.stage-dot.active{background:var(--accent);border-color:rgba(99,102,241,0.3);box-shadow:0 0 12px rgba(99,102,241,0.35)}
+.tooltip{position:absolute;background:rgba(255,255,255,0.97);border:1px solid var(--glass-border);border-radius:8px;padding:8px 12px;font-size:0.75rem;pointer-events:none;z-index:200;box-shadow:0 4px 12px rgba(0,0,0,0.1);color:var(--text);white-space:nowrap;display:none}
+.point-info-card{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--surface);border:1px solid var(--glass-border);border-radius:var(--radius-sm);padding:12px 20px;font-size:0.8rem;z-index:200;box-shadow:0 4px 16px rgba(0,0,0,0.1);display:none;text-align:center}
+.point-info-card .close-btn{position:absolute;top:4px;right:8px;cursor:pointer;font-size:1rem;color:var(--text-muted)}
+@media(max-width:900px){
+  .layout{flex-direction:column}
+  .narrative{width:100%;min-width:unset}
+  .viz-container{width:100%;height:50vh;position:sticky;top:0}
+  .section{padding:40px 24px}
+  .hero-section{width:100%}
+  .stage-dots{display:none}
+}
+
+</style>
+</head>
+<body>
+
+<div class="progress-bar" id="progressBar"></div>
+<div class="stage-dots" id="stageDots"></div>
+<div id="tooltip" class="tooltip"></div>
+<div id="pointInfoCard" class="point-info-card"><span class="close-btn" onclick="this.parentElement.style.display='none'">&times;</span><div id="pointInfoContent"></div></div>
+
+<!-- HERO -->
+<section class="hero-section section" data-stage="0" id="sec-0">
+  <canvas id="heroCanvas" class="hero-bg"></canvas>
+  <div class="hero-badge">Machine Learning · Classification</div>
+  <h1>Linear Discriminant<br>Analysis</h1>
+  <p class="subtitle">Watch one plot evolve as LDA finds the best linear direction for separating apples from oranges — from raw data to a trained classifier, one step at a time.</p>
+  <p class="hero-note">The dataset used here is intentionally simplified so you can clearly see how each step of LDA works. Real-world data is messier and noisier.</p>
+  <div class="scroll-hint">↓ Scroll to begin</div>
+</section>
+
+<!-- MAIN LAYOUT -->
+<div class="layout">
+<div class="narrative">
+
+<!-- S1: Raw Data -->
+<section class="section" data-stage="1" id="sec-1">
+  <div class="stage-num">Stage 01</div>
+  <h2>The Raw Data</h2>
+  <p>Every machine learning model starts with data. Here we have measurements of fruits — each one scored on <strong>Sweetness</strong> and <strong>Color</strong>.</p>
+  <p>Each fruit is already labeled: it's either an <span class="tag tag-apple">Apple</span> or an <span class="tag tag-orange">Orange</span>. Because we have labels, this is <em>supervised learning</em>.</p>
+  <div class="glass-card">
+    <h3>Training Dataset</h3>
+    <table class="data-table" id="dataTable"></table>
+  </div>
+  <div class="insight-box"><p>💡 LDA needs labeled examples to learn the pattern that separates classes. Without labels, it cannot learn.</p></div>
+</section>
+
+<!-- S2: Feature Selection -->
+<section class="section" data-stage="2" id="sec-2">
+  <div class="stage-num">Stage 02</div>
+  <h2>Choosing Good Features</h2>
+  <p>Not every measurement helps separate classes. We pick features where the groups actually differ — like Sweetness and Color Score.</p>
+  <p>Bad features (random IDs, row numbers) add noise without signal. LDA works best when features genuinely explain class differences.</p>
+  <div class="glass-card">
+    <h3>Feature Quality</h3>
+    <p style="margin:0">✅ <strong>Sweetness</strong> — Apples tend to be sweeter<br>
+    ✅ <strong>Color Score</strong> — Apples score higher on color<br>
+    ❌ Row number — meaningless for classification<br>
+    ❌ Day of entry — no predictive power</p>
+  </div>
+  <div class="insight-box"><p>💡 The plot highlights valid features. Notice how the two classes already form distinct clusters — a good sign for LDA.</p></div>
+</section>
+
+<!-- S3: Train/Test Split -->
+<section class="section" data-stage="3" id="sec-3">
+  <div class="stage-num">Stage 03</div>
+  <h2>Train / Test Split</h2>
+  <p>We hold out a small <strong>test set</strong> (2 apples + 2 oranges) that the model will not see during training. The remaining <strong>20 points</strong> are used to learn the pattern.</p>
+  <p>The test points are completely hidden until the evaluation stage. A model that only memorizes training data isn't actually smart — it's just a parrot with ambitions.</p>
+  <div class="glass-card" id="splitInfo">
+    <div class="metric-row">
+      <div class="metric-card"><div class="val" id="trainCount">—</div><div class="lbl">Training</div></div>
+      <div class="metric-card"><div class="val" id="testCount">—</div><div class="lbl">Testing (hidden)</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- S4: Group by Class -->
+<section class="section" data-stage="4" id="sec-4">
+  <div class="stage-num">Stage 04</div>
+  <h2>Group by Class</h2>
+  <p>LDA separates the training data by label. All apples together, all oranges together. Now it can study each group independently.</p>
+  <p>These hulls give a simple visual outline of where each class's training points lie.</p>
+  <div class="glass-card" id="groupInfo"></div>
+</section>
+
+<!-- S5: Class Means -->
+<section class="section" data-stage="5" id="sec-5">
+  <div class="stage-num">Stage 05</div>
+  <h2>Compute Class Means</h2>
+  <p>The <em>mean</em> is the center of each class — its average position in feature space. LDA uses these to understand where each group lives.</p>
+  <div class="glass-card" id="meanCalc"></div>
+  <div class="insight-box"><p>💡 The ★ markers on the plot show each class center. The gap between them is what LDA will try to exploit.</p></div>
+</section>
+
+<!-- S6: Within-Class Scatter -->
+<section class="section" data-stage="6" id="sec-6">
+  <div class="stage-num">Stage 06</div>
+  <h2>Within-Class Scatter</h2>
+  <p>Not all apples are identical. S<sub>W</sub> measures how much the points in each class <em>wiggle</em> around their own mean.</p>
+  <p>The covariance ellipses on the plot show the spread shape. Diagonal entries = how much each feature varies. Off-diagonal = how features vary together.</p>
+  <div class="glass-card" id="swCalc"></div>
+</section>
+
+<!-- S7: Pool Covariances -->
+<section class="section" data-stage="7" id="sec-7">
+  <div class="stage-num">Stage 07</div>
+  <h2>The Shared Covariance Assumption</h2>
+  <p>Here's LDA's <strong>key assumption</strong>: all classes share the same covariance shape. The groups can have different centers, but their spread is assumed to be roughly the same.</p>
+  <p>So LDA <em>pools</em> the individual covariance matrices into one shared estimate. Watch the ellipses morph into a single shape.</p>
+  <div class="glass-card" id="poolCalc"></div>
+  <div class="insight-box"><p>⚠️ If this assumption is badly wrong (classes have very different shapes), LDA can struggle. That's when Quadratic Discriminant Analysis (QDA) might work better.</p></div>
+</section>
+
+<!-- S8: Between-Class Scatter -->
+<section class="section" data-stage="8" id="sec-8">
+  <div class="stage-num">Stage 08</div>
+  <h2>Between-Class Scatter</h2>
+  <p>S<sub>B</sub> measures how far apart the class centers are. The further apart, the easier it is for LDA to separate them.</p>
+  <p>LDA's goal is to <strong>maximize the ratio</strong> of between-class scatter to within-class scatter:</p>
+  <div class="math-block">J(w) = wᵀ S_B w / wᵀ S_W w
+
+"I want the gap between group centers to be BIG,
+and the messiness inside each group to be SMALL."</div>
+  <div class="glass-card" id="sbCalc"></div>
+</section>
+
+<!-- S9: Projection Direction -->
+<section class="section" data-stage="9" id="sec-9">
+  <div class="stage-num">Stage 09</div>
+  <h2>The Optimal Direction</h2>
+  <p>In this 2-class example, LDA gives one main discriminant direction <strong>w</strong> — the angle where classes appear most separated.</p>
+  <div class="math-block">w ∝ S_W⁻¹ (μ₁ − μ₂)
+
+This isn't just the line between means.
+It also accounts for the spread inside each class.</div>
+  <p>Each point is projected onto this direction to get a 1D score. The projected score strip below the plot shows how well the classes separate along this axis.</p>
+  <div class="glass-card" id="projCalc"></div>
+</section>
+
+<!-- S10: Decision Boundary -->
+<section class="section" data-stage="10" id="sec-10">
+  <div class="stage-num">Stage 10</div>
+  <h2>The Decision Boundary</h2>
+  <p>Because LDA is <em>linear</em>, the boundary between classes is a straight line (in 2D). Everything on one side is classified as Apple, the other as Orange.</p>
+  <p>The boundary comes from where the discriminant scores for both classes are equal:</p>
+  <div class="math-block">δ_k(x) = xᵀ Σ⁻¹ μ_k − ½ μ_kᵀ Σ⁻¹ μ_k + log(π_k)
+
+Predict class with highest δ_k(x)</div>
+  <div class="glass-card" id="boundaryCalc"></div>
+</section>
+
+<!-- S11: Classify Test Points -->
+<section class="section" data-stage="11" id="sec-11">
+  <div class="stage-num">Stage 11</div>
+  <h2>Classifying Test Points</h2>
+  <p>Now the moment of truth. We take the test points the model has never seen and run them through the decision function.</p>
+  <p>Watch each test point light up with its prediction. Green rings = correct. Red rings = wrong.</p>
+  <div class="glass-card" id="testResults"></div>
+</section>
+
+<!-- S12: Evaluation -->
+<section class="section" data-stage="12" id="sec-12">
+  <div class="stage-num">Stage 12</div>
+  <h2>Evaluating the Model</h2>
+  <p>We don't just say "it works." We inspect <em>how</em> it works and where it fails.</p>
+  <div class="glass-card">
+    <h3>Confusion Matrix</h3>
+    <div class="matrix-grid" id="confMatrix"></div>
+  </div>
+  <div class="glass-card" id="metricsPanel">
+    <h3>Performance Metrics <span style="font-weight:400;font-size:0.78rem;color:var(--text-muted)">(Apple = positive class)</span></h3>
+    <div class="metric-row" id="metricsRow"></div>
+  </div>
+  <div class="insight-box"><p>💡 Precision and Recall are shown for the Apple class as the positive class. With imbalanced data, accuracy alone can be misleading — these metrics reveal the full picture.</p></div>
+</section>
+
+<!-- S13: Playground -->
+<section class="section" data-stage="13" id="sec-13">
+  <div class="stage-num">Stage 13</div>
+  <h2>Interactive Playground</h2>
+  <p>Click anywhere on the plot to add a new point. The model will classify it in real time using the decision function it just learned.</p>
+  <div class="playground-controls">
+    <button class="btn btn-accent" id="btnReset" onclick="resetPlayground()">Reset Points</button>
+    <button class="btn" id="btnRegenerate" onclick="regenerateData()">New Dataset</button>
+  </div>
+  <div class="glass-card" id="playgroundInfo">
+    <h3>Click the plot to classify new points →</h3>
+    <p>Each new point is scored against both classes. The class with the higher discriminant score wins.</p>
+    <div id="playgroundCalc"></div>
+  </div>
+</section>
+
+
+</div><!-- /narrative -->
+
+<div class="viz-container">
+  <canvas id="mainCanvas"></canvas>
+</div>
+
+</div><!-- /layout -->
+
+<script>
+
+// ===== DATASET =====
+const BASE_DATA = [
+  {s:7.2,c:8.1,label:'apple'},{s:6.5,c:7.4,label:'apple'},{s:8.0,c:8.8,label:'apple'},
+  {s:7.8,c:7.6,label:'apple'},{s:6.9,c:8.5,label:'apple'},{s:7.5,c:7.0,label:'apple'},
+  {s:8.2,c:9.1,label:'apple'},{s:6.3,c:7.8,label:'apple'},{s:7.1,c:8.3,label:'apple'},
+  {s:7.7,c:7.2,label:'apple'},{s:6.8,c:8.7,label:'apple'},{s:8.5,c:8.0,label:'apple'},
+  {s:3.1,c:2.4,label:'orange'},{s:4.0,c:3.2,label:'orange'},{s:2.5,c:1.8,label:'orange'},
+  {s:3.8,c:2.9,label:'orange'},{s:2.2,c:1.5,label:'orange'},{s:3.5,c:3.6,label:'orange'},
+  {s:4.2,c:2.1,label:'orange'},{s:2.8,c:2.7,label:'orange'},{s:3.3,c:3.0,label:'orange'},
+  {s:4.5,c:1.9,label:'orange'},{s:3.0,c:2.2,label:'orange'},{s:2.6,c:3.4,label:'orange'}
+];
+let FULL_DATA = BASE_DATA.map(d=>({...d}));
+let trainData=[], testData=[], userPoints=[], currentStage=0;
+let ldaModel=null, needsRedraw=true;
+
+function initSplit(){
+  const apples=FULL_DATA.filter(d=>d.label==='apple');
+  const oranges=FULL_DATA.filter(d=>d.label==='orange');
+  const aTrain=apples.slice(0,10), aTest=apples.slice(10);
+  const oTrain=oranges.slice(0,10), oTest=oranges.slice(10);
+  trainData=[...aTrain,...oTrain];
+  testData=[...aTest,...oTest];
+}
+initSplit();
+
+// ===== LINEAR ALGEBRA HELPERS =====
+function mean(arr){return arr.reduce((a,b)=>a+b,0)/arr.length}
+function dot(a,b){return a.reduce((s,v,i)=>s+v*b[i],0)}
+function matVec2(M,v){return [M[0][0]*v[0]+M[0][1]*v[1], M[1][0]*v[0]+M[1][1]*v[1]]}
+function inv2(M){
+  const det=M[0][0]*M[1][1]-M[0][1]*M[1][0];
+  if(Math.abs(det)<1e-10) return [[1,0],[0,1]];
+  return [[M[1][1]/det,-M[0][1]/det],[-M[1][0]/det,M[0][0]/det]];
+}
+function addMat2(A,B){return [[A[0][0]+B[0][0],A[0][1]+B[0][1]],[A[1][0]+B[1][0],A[1][1]+B[1][1]]]}
+function scaleMat2(M,s){return [[M[0][0]*s,M[0][1]*s],[M[1][0]*s,M[1][1]*s]]}
+
+// ===== LDA MODEL =====
+function computeLDA(data){
+  const apples=data.filter(d=>d.label==='apple');
+  const oranges=data.filter(d=>d.label==='orange');
+  const n=data.length, n1=apples.length, n2=oranges.length;
+  const mu1=[mean(apples.map(d=>d.s)), mean(apples.map(d=>d.c))];
+  const mu2=[mean(oranges.map(d=>d.s)), mean(oranges.map(d=>d.c))];
+
+  function cov(pts,mu){
+    const m=[[0,0],[0,0]];
+    pts.forEach(p=>{
+      const d=[p.s-mu[0], p.c-mu[1]];
+      m[0][0]+=d[0]*d[0]; m[0][1]+=d[0]*d[1];
+      m[1][0]+=d[1]*d[0]; m[1][1]+=d[1]*d[1];
+    });
+    const f=1/(pts.length-1||1);
+    return scaleMat2(m,f);
+  }
+  const cov1=cov(apples,mu1), cov2=cov(oranges,mu2);
+  const sw=addMat2(scaleMat2(cov1,n1-1), scaleMat2(cov2,n2-1));
+  const pooled=scaleMat2(sw, 1/(n-2));
+  const diff=[mu1[0]-mu2[0], mu1[1]-mu2[1]];
+  const sb=scaleMat2([[diff[0]*diff[0],diff[0]*diff[1]],[diff[1]*diff[0],diff[1]*diff[1]]], (n1*n2)/n);
+  const swInv=inv2(sw);
+  let w=matVec2(swInv, diff);
+  const wLen=Math.sqrt(w[0]*w[0]+w[1]*w[1]);
+  w=[w[0]/wLen, w[1]/wLen];
+  const pi1=n1/n, pi2=n2/n;
+  const pooledInv=inv2(pooled);
+  const coeffs=matVec2(pooledInv, diff);
+  const midpoint=[(mu1[0]+mu2[0])/2, (mu1[1]+mu2[1])/2];
+  const threshold=dot(coeffs, midpoint) - Math.log(pi1/pi2);
+  const proj1=apples.map(p=>dot(w,[p.s,p.c]));
+  const proj2=oranges.map(p=>dot(w,[p.s,p.c]));
+
+  function classify(s,c){
+    const x=[s,c];
+    const d1=dot(matVec2(pooledInv,mu1),x) - 0.5*dot(matVec2(pooledInv,mu1),mu1) + Math.log(pi1);
+    const d2=dot(matVec2(pooledInv,mu2),x) - 0.5*dot(matVec2(pooledInv,mu2),mu2) + Math.log(pi2);
+    return {pred: d1>d2?'apple':'orange', score1:d1, score2:d2, conf:Math.abs(d1-d2)};
+  }
+
+  let tp=0,fp=0,fn=0,tn=0;
+  const testResults=testData.map(p=>{
+    const r=classify(p.s,p.c);
+    r.actual=p.label; r.correct=r.pred===p.label;
+    if(p.label==='apple'&&r.pred==='apple') tp++;
+    else if(p.label==='orange'&&r.pred==='orange') tn++;
+    else if(p.label==='orange'&&r.pred==='apple') fp++;
+    else fn++;
+    return r;
+  });
+  const accuracy=(tp+tn)/(tp+tn+fp+fn)||0;
+  const precision=tp/(tp+fp)||0;
+  const recall=tp/(tp+fn)||0;
+  const f1=2*precision*recall/(precision+recall)||0;
+
+  return {mu1,mu2,cov1,cov2,sw,sb,pooled,pooledInv,w,pi1,pi2,coeffs,threshold,
+          proj1,proj2,classify,testResults,tp,fp,fn,tn,accuracy,precision,recall,f1,n1,n2,n};
+}
+ldaModel=computeLDA(trainData);
+
+// ===== POPULATE HTML =====
+function populateDataTable(){
+  const t=document.getElementById('dataTable');
+  if(!t) return;
+  let h='<thead><tr><th>#</th><th>Sweetness</th><th>Color</th><th>Label</th></tr></thead><tbody>';
+  FULL_DATA.forEach((d,i)=>{
+    const tag=d.label==='apple'?'<span class="tag tag-apple">Apple</span>':'<span class="tag tag-orange">Orange</span>';
+    h+=`<tr><td>${i+1}</td><td>${d.s}</td><td>${d.c}</td><td>${tag}</td></tr>`;
+  });
+  h+='</tbody>';
+  t.innerHTML=h;
+}
+
+function populateSplitInfo(){
+  document.getElementById('trainCount').textContent=trainData.length;
+  document.getElementById('testCount').textContent=testData.length;
+}
+
+function populateGroupInfo(){
+  const el=document.getElementById('groupInfo');
+  const a=trainData.filter(d=>d.label==='apple'), o=trainData.filter(d=>d.label==='orange');
+  el.innerHTML=`<h3>Class Groups</h3>
+    <div class="metric-row">
+      <div class="metric-card"><div class="val" style="color:var(--apple)">${a.length}</div><div class="lbl">Apples</div></div>
+      <div class="metric-card"><div class="val" style="color:var(--orange)">${o.length}</div><div class="lbl">Oranges</div></div>
+    </div>`;
+}
+
+function populateMeanCalc(){
+  const m=ldaModel;
+  document.getElementById('meanCalc').innerHTML=`<h3>Class Means (Centers)</h3>
+    <div class="live-calc">μ_apple  = [ ${m.mu1[0].toFixed(2)}, ${m.mu1[1].toFixed(2)} ]</div>
+    <div class="live-calc">μ_orange = [ ${m.mu2[0].toFixed(2)}, ${m.mu2[1].toFixed(2)} ]</div>
+    <p style="margin-top:12px;font-size:0.85rem;color:var(--text-muted)">Each mean is computed by averaging the Sweetness and Color scores of all training points in that class.</p>`;
+}
+
+function populateSwCalc(){
+  const m=ldaModel;
+  const fmt=v=>v.toFixed(3);
+  document.getElementById('swCalc').innerHTML=`<h3>Within-Class Scatter Matrix S<sub>W</sub></h3>
+    <div class="math-block">S_W = (n₁ − 1)·Σ_apple + (n₂ − 1)·Σ_orange
+
+S_W = ⎡ ${fmt(m.sw[0][0])}  ${fmt(m.sw[0][1])} ⎤
+      ⎣ ${fmt(m.sw[1][0])}  ${fmt(m.sw[1][1])} ⎦</div>
+    <p style="font-size:0.85rem;color:var(--text-muted)">Each class covariance is weighted by (n_k − 1) before summing. Diagonal: variance of each feature. Off-diagonal: how features co-vary within a class.</p>`;
+}
+
+function populatePoolCalc(){
+  const m=ldaModel;
+  const fmt=v=>v.toFixed(3);
+  document.getElementById('poolCalc').innerHTML=`<h3>Pooled Covariance Matrix Σ</h3>
+    <div class="math-block">Σ = S_W / (n − 2)
+
+Σ = ⎡ ${fmt(m.pooled[0][0])}  ${fmt(m.pooled[0][1])} ⎤
+    ⎣ ${fmt(m.pooled[1][0])}  ${fmt(m.pooled[1][1])} ⎦</div>`;
+}
+
+function populateSbCalc(){
+  const m=ldaModel;
+  const fmt=v=>v.toFixed(3);
+  document.getElementById('sbCalc').innerHTML=`<h3>Between-Class Scatter S<sub>B</sub></h3>
+    <div class="math-block">S_B = (n₁·n₂/n) · (μ₁ − μ₂)(μ₁ − μ₂)ᵀ
+
+S_B = ⎡ ${fmt(m.sb[0][0])}  ${fmt(m.sb[0][1])} ⎤
+      ⎣ ${fmt(m.sb[1][0])}  ${fmt(m.sb[1][1])} ⎦</div>`;
+}
+
+function populateProjCalc(){
+  const m=ldaModel;
+  document.getElementById('projCalc').innerHTML=`<h3>Optimal Direction w</h3>
+    <div class="live-calc">w = S_W⁻¹ · (μ₁ − μ₂) → [ ${m.w[0].toFixed(4)}, ${m.w[1].toFixed(4)} ]</div>
+    <p style="font-size:0.85rem;color:var(--text-muted)">This direction maximizes the Fisher criterion J(w). Points projected onto it show maximum class separation.</p>`;
+}
+
+function populateBoundaryCalc(){
+  const m=ldaModel;
+  document.getElementById('boundaryCalc').innerHTML=`<h3>Decision Rule</h3>
+    <div class="live-calc">Prior π_apple  = ${m.pi1.toFixed(2)}</div>
+    <div class="live-calc">Prior π_orange = ${m.pi2.toFixed(2)}</div>
+    <p style="font-size:0.85rem;color:var(--text-muted)">The boundary is where δ_apple(x) = δ_orange(x). Points on the apple side get a higher apple score.</p>`;
+}
+
+function populateTestResults(){
+  const m=ldaModel;
+  let correct=m.testResults.filter(r=>r.correct).length;
+  document.getElementById('testResults').innerHTML=`<h3>Test Set Classification</h3>
+    <div class="metric-row">
+      <div class="metric-card"><div class="val" style="color:var(--green)">${correct}</div><div class="lbl">Correct</div></div>
+      <div class="metric-card"><div class="val" style="color:var(--coral)">${m.testResults.length-correct}</div><div class="lbl">Wrong</div></div>
+    </div>
+    <div style="margin-top:12px">
+    ${m.testResults.map((r,i)=>`<div style="font-family:JetBrains Mono;font-size:0.78rem;padding:4px 0;color:${r.correct?'var(--green)':'var(--coral)'}">${r.correct?'✓':'✗'} Test ${i+1}: actual=${r.actual}, predicted=${r.pred} (δ₁=${r.score1.toFixed(2)}, δ₂=${r.score2.toFixed(2)})</div>`).join('')}
+    </div>`;
+}
+
+function populateConfMatrix(){
+  const m=ldaModel;
+  document.getElementById('confMatrix').innerHTML=`
+    <div class="cell header"></div><div class="cell header">Pred Apple</div><div class="cell header">Pred Orange</div>
+    <div class="cell header">Actual Apple</div><div class="cell tp">${m.tp}</div><div class="cell fn">${m.fn}</div>
+    <div class="cell header">Actual Orange</div><div class="cell fp">${m.fp}</div><div class="cell tn">${m.tn}</div>`;
+  document.getElementById('metricsRow').innerHTML=`
+    <div class="metric-card"><div class="val" style="color:var(--green)">${(m.accuracy*100).toFixed(0)}%</div><div class="lbl">Accuracy</div></div>
+    <div class="metric-card"><div class="val" style="color:var(--accent2)">${(m.precision*100).toFixed(0)}%</div><div class="lbl">Precision</div></div>
+    <div class="metric-card"><div class="val" style="color:var(--blue)">${(m.recall*100).toFixed(0)}%</div><div class="lbl">Recall</div></div>
+    <div class="metric-card"><div class="val" style="color:var(--orange)">${(m.f1*100).toFixed(0)}%</div><div class="lbl">F1 Score</div></div>`;
+}
+
+function populateAll(){
+  populateDataTable();populateSplitInfo();populateGroupInfo();
+  populateMeanCalc();populateSwCalc();populatePoolCalc();
+  populateSbCalc();populateProjCalc();populateBoundaryCalc();
+  populateTestResults();populateConfMatrix();
+}
+populateAll();
+
+
+// ===== CANVAS + HERO CANVAS =====
+const canvas=document.getElementById('mainCanvas');
+const ctx=canvas.getContext('2d');
+const heroCanvas=document.getElementById('heroCanvas');
+const heroCtx=heroCanvas?heroCanvas.getContext('2d'):null;
+let W,H,dpr;
+const PAD=60, PLOT_PAD=80;
+
+function resize(){
+  dpr=window.devicePixelRatio||1;
+  const rect=canvas.getBoundingClientRect();
+  W=rect.width; H=rect.height;
+  canvas.width=W*dpr; canvas.height=H*dpr;
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+  // Hero canvas
+  if(heroCanvas){
+    const hr=heroCanvas.parentElement.getBoundingClientRect();
+    heroCanvas.width=hr.width*dpr; heroCanvas.height=hr.height*dpr;
+    heroCtx.setTransform(dpr,0,0,dpr,0,0);
+    drawHeroBg(hr.width,hr.height);
+  }
+  needsRedraw=true;
+}
+
+resize();
+
+// ===== HERO BACKGROUND (#11) =====
+function drawHeroBg(w,h){
+  if(!heroCtx) return;
+  heroCtx.clearRect(0,0,w,h);
+  // Two faint class clusters + a subtle decision line
+  const cx1=w*0.62, cy1=h*0.35, cx2=w*0.38, cy2=h*0.65;
+  // Cluster 1 (apple - blue haze)
+  for(let i=0;i<40;i++){
+    const x=cx1+(Math.sin(i*2.3)*60+Math.cos(i*1.7)*40);
+    const y=cy1+(Math.cos(i*1.9)*50+Math.sin(i*2.1)*35);
+    heroCtx.fillStyle='rgba(37,99,235,0.04)';
+    heroCtx.beginPath();heroCtx.arc(x,y,8+Math.sin(i)*4,0,Math.PI*2);heroCtx.fill();
+  }
+  // Cluster 2 (orange - amber haze)
+  for(let i=0;i<40;i++){
+    const x=cx2+(Math.sin(i*2.1)*55+Math.cos(i*1.5)*45);
+    const y=cy2+(Math.cos(i*1.7)*45+Math.sin(i*2.3)*30);
+    heroCtx.fillStyle='rgba(217,119,6,0.04)';
+    heroCtx.beginPath();heroCtx.arc(x,y,8+Math.cos(i)*4,0,Math.PI*2);heroCtx.fill();
+  }
+  // Subtle diagonal decision line
+  heroCtx.strokeStyle='rgba(99,102,241,0.07)';heroCtx.lineWidth=2;
+  heroCtx.setLineDash([12,8]);
+  heroCtx.beginPath();heroCtx.moveTo(w*0.15,h*0.85);heroCtx.lineTo(w*0.85,h*0.15);heroCtx.stroke();
+  heroCtx.setLineDash([]);
+}
+
+// Coordinate transforms
+const DATA_MIN_X=0, DATA_MAX_X=10, DATA_MIN_Y=0, DATA_MAX_Y=11;
+function toCanvasX(v){return PLOT_PAD+(v-DATA_MIN_X)/(DATA_MAX_X-DATA_MIN_X)*(W-2*PLOT_PAD)}
+function toCanvasY(v){return (H-PLOT_PAD)-(v-DATA_MIN_Y)/(DATA_MAX_Y-DATA_MIN_Y)*(H-2*PLOT_PAD)}
+function toDataX(cx){return DATA_MIN_X+(cx-PLOT_PAD)/(W-2*PLOT_PAD)*(DATA_MAX_X-DATA_MIN_X)}
+function toDataY(cy){return DATA_MIN_Y+((H-PLOT_PAD)-cy)/(H-2*PLOT_PAD)*(DATA_MAX_Y-DATA_MIN_Y)}
+
+// Axis colors for white theme
+function drawAxes(alpha){
+  ctx.save();ctx.globalAlpha=alpha;
+  ctx.strokeStyle='rgba(0,0,0,0.05)';ctx.lineWidth=1;
+  for(let i=1;i<=9;i++){
+    const x=toCanvasX(i);
+    ctx.beginPath();ctx.moveTo(x,PLOT_PAD);ctx.lineTo(x,H-PLOT_PAD);ctx.stroke();
+    const y=toCanvasY(i);
+    ctx.beginPath();ctx.moveTo(PLOT_PAD,y);ctx.lineTo(W-PLOT_PAD,y);ctx.stroke();
+  }
+  ctx.strokeStyle='rgba(0,0,0,0.15)';ctx.lineWidth=1.5;
+  ctx.beginPath();ctx.moveTo(PLOT_PAD,H-PLOT_PAD);ctx.lineTo(W-PLOT_PAD,H-PLOT_PAD);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(PLOT_PAD,H-PLOT_PAD);ctx.lineTo(PLOT_PAD,PLOT_PAD);ctx.stroke();
+  ctx.fillStyle='rgba(0,0,0,0.45)';ctx.font='500 11px Inter';ctx.textAlign='center';
+  for(let i=1;i<=9;i++){
+    ctx.fillText(i,toCanvasX(i),H-PLOT_PAD+20);
+    ctx.save();ctx.textAlign='right';ctx.fillText(i,PLOT_PAD-10,toCanvasY(i)+4);ctx.restore();
+  }
+  ctx.font='600 12px Inter';ctx.fillStyle='rgba(0,0,0,0.55)';
+  ctx.fillText('Sweetness',W/2,H-PLOT_PAD+42);
+  ctx.save();ctx.translate(22,(H)/2);ctx.rotate(-Math.PI/2);ctx.textAlign='center';
+  ctx.fillText('Color Score',0,0);ctx.restore();
+  ctx.restore();
+}
+
+const APPLE_COLOR='rgb(37,99,235)', ORANGE_COLOR='rgb(202,138,4)';
+
+function drawPoint(x,y,color,radius,alpha,outlined,ringColor){
+  const cx=toCanvasX(x), cy=toCanvasY(y);
+  ctx.save();ctx.globalAlpha=alpha;
+  if(outlined){
+    ctx.beginPath();ctx.arc(cx,cy,radius+3,0,Math.PI*2);
+    ctx.strokeStyle=ringColor||'rgba(0,0,0,0.3)';ctx.lineWidth=2;
+    ctx.setLineDash([4,3]);ctx.stroke();ctx.setLineDash([]);
+  }
+  const g=ctx.createRadialGradient(cx,cy,0,cx,cy,radius*2.5);
+  g.addColorStop(0,color.replace(')',',0.12)').replace('rgb','rgba'));
+  g.addColorStop(1,'transparent');
+  ctx.fillStyle=g;ctx.beginPath();ctx.arc(cx,cy,radius*2.5,0,Math.PI*2);ctx.fill();
+  ctx.fillStyle=color;ctx.beginPath();ctx.arc(cx,cy,radius,0,Math.PI*2);ctx.fill();
+  ctx.restore();
+}
+
+function drawHull(points,color,alpha){
+  if(points.length<3) return;
+  const pts=points.map(p=>({x:toCanvasX(p.s),y:toCanvasY(p.c)}));
+  function cross(O,A,B){return(A.x-O.x)*(B.y-O.y)-(A.y-O.y)*(B.x-O.x)}
+  const sorted=[...pts].sort((a,b)=>a.x-b.x||a.y-b.y);
+  const lower=[];
+  for(const p of sorted){while(lower.length>=2&&cross(lower[lower.length-2],lower[lower.length-1],p)<=0)lower.pop();lower.push(p)}
+  const upper=[];
+  for(const p of sorted.reverse()){while(upper.length>=2&&cross(upper[upper.length-2],upper[upper.length-1],p)<=0)upper.pop();upper.push(p)}
+  const hull=[...lower.slice(0,-1),...upper.slice(0,-1)];
+  ctx.save();ctx.globalAlpha=alpha*0.06;
+  ctx.fillStyle=color;ctx.beginPath();
+  hull.forEach((p,i)=>i===0?ctx.moveTo(p.x,p.y):ctx.lineTo(p.x,p.y));
+  ctx.closePath();ctx.fill();
+  ctx.strokeStyle=color;ctx.globalAlpha=alpha*0.25;ctx.lineWidth=1.5;ctx.stroke();
+  ctx.restore();
+}
+
+function drawStar(x,y,color,size,alpha){
+  const cx=toCanvasX(x), cy=toCanvasY(y);
+  ctx.save();ctx.globalAlpha=alpha;ctx.fillStyle=color;ctx.strokeStyle='white';ctx.lineWidth=1.5;
+  ctx.beginPath();
+  for(let i=0;i<5;i++){
+    const a=Math.PI*2*i/5-Math.PI/2;
+    const ox=cx+Math.cos(a)*size, oy=cy+Math.sin(a)*size;
+    const ia=a+Math.PI/5;
+    const ix=cx+Math.cos(ia)*size*0.4, iy=cy+Math.sin(ia)*size*0.4;
+    i===0?ctx.moveTo(ox,oy):ctx.lineTo(ox,oy);
+    ctx.lineTo(ix,iy);
+  }
+  ctx.closePath();ctx.fill();ctx.stroke();
+  ctx.font='600 11px Inter';ctx.fillStyle=color;ctx.textAlign='center';
+  ctx.fillText('μ',cx,cy-size-8);
+  ctx.restore();
+}
+
+function drawEllipse(mu,covMat,color,alpha,scale){
+  scale=scale||2;
+  const cx=toCanvasX(mu[0]), cy=toCanvasY(mu[1]);
+  const a=covMat[0][0], b=covMat[0][1], d=covMat[1][1];
+  const tr=a+d, det=a*d-b*b;
+  const disc=Math.sqrt(Math.max(0,tr*tr/4-det));
+  const l1=tr/2+disc, l2=tr/2-disc;
+  const angle=Math.atan2(b,l1-d);
+  const sx=(toCanvasX(mu[0]+1)-toCanvasX(mu[0]));
+  const sy=Math.abs(toCanvasY(mu[1]+1)-toCanvasY(mu[1]));
+  ctx.save();ctx.globalAlpha=alpha;
+  ctx.translate(cx,cy);ctx.rotate(-angle);
+  ctx.beginPath();ctx.ellipse(0,0,Math.sqrt(Math.max(0.1,l1))*sx*scale,Math.sqrt(Math.max(0.1,l2))*sy*scale,0,0,Math.PI*2);
+  ctx.strokeStyle=color;ctx.lineWidth=2;ctx.setLineDash([6,4]);ctx.stroke();
+  ctx.fillStyle=color.replace(')',',0.04)').replace('rgb','rgba');
+  ctx.fill();ctx.setLineDash([]);
+  ctx.restore();
+}
+
+function drawProjectionLine(w,alpha){
+  ctx.save();ctx.globalAlpha=alpha;
+  ctx.strokeStyle='rgba(99,102,241,0.5)';ctx.lineWidth=2;
+  ctx.setLineDash([8,4]);
+  const sx=(toCanvasX(1)-toCanvasX(0)), sy=(toCanvasY(0)-toCanvasY(1));
+  const midX=toCanvasX((ldaModel.mu1[0]+ldaModel.mu2[0])/2);
+  const midY=toCanvasY((ldaModel.mu1[1]+ldaModel.mu2[1])/2);
+  ctx.beginPath();
+  ctx.moveTo(midX-w[0]*sx*8, midY+w[1]*sy*8);
+  ctx.lineTo(midX+w[0]*sx*8, midY-w[1]*sy*8);
+  ctx.stroke();ctx.setLineDash([]);
+  ctx.fillStyle='rgba(99,102,241,0.7)';ctx.font='600 12px Inter';ctx.textAlign='center';
+  ctx.fillText('w →',midX+w[0]*sx*6+15, midY-w[1]*sy*6);
+  ctx.restore();
+}
+
+// (#4) Renamed from histogram to projection strip
+function drawProjectionStrip(alpha){
+  if(!ldaModel) return;
+  const m=ldaModel;
+  const stripH=60, stripY=H-PLOT_PAD+55;
+  if(stripY+stripH>H) return;
+  ctx.save();ctx.globalAlpha=alpha;
+  ctx.fillStyle='rgba(0,0,0,0.02)';
+  ctx.fillRect(PLOT_PAD,stripY,W-2*PLOT_PAD,stripH);
+  ctx.strokeStyle='rgba(0,0,0,0.08)';ctx.lineWidth=1;
+  ctx.strokeRect(PLOT_PAD,stripY,W-2*PLOT_PAD,stripH);
+  const allProj=[...m.proj1.map(v=>({v,c:APPLE_COLOR})),...m.proj2.map(v=>({v,c:ORANGE_COLOR}))];
+  const minP=Math.min(...allProj.map(p=>p.v)), maxP=Math.max(...allProj.map(p=>p.v));
+  const range=maxP-minP||1;
+  allProj.forEach(p=>{
+    const px=PLOT_PAD+(p.v-minP)/range*(W-2*PLOT_PAD);
+    ctx.fillStyle=p.c;ctx.globalAlpha=alpha*0.7;
+    ctx.beginPath();ctx.arc(px,stripY+stripH/2,5,0,Math.PI*2);ctx.fill();
+  });
+  ctx.globalAlpha=alpha;ctx.font='500 10px Inter';ctx.fillStyle='rgba(0,0,0,0.4)';ctx.textAlign='center';
+  ctx.fillText('← Projected scores on LDA axis →',(PLOT_PAD+W-PLOT_PAD)/2,stripY+stripH+14);
+  ctx.restore();
+}
+
+function drawDecisionBoundary(alpha){
+  if(!ldaModel) return;
+  const m=ldaModel;
+  ctx.save();ctx.globalAlpha=alpha;
+  // Shade regions
+  for(let px=PLOT_PAD;px<=W-PLOT_PAD;px+=4){
+    for(let py=PLOT_PAD;py<=H-PLOT_PAD;py+=4){
+      const dx=toDataX(px), dy=toDataY(py);
+      const r=m.classify(dx,dy);
+      ctx.fillStyle=r.pred==='apple'?'rgba(37,99,235,0.03)':'rgba(202,138,4,0.03)';
+      ctx.fillRect(px,py,4,4);
+    }
+  }
+  // Boundary line
+  if(Math.abs(m.coeffs[1])>1e-10){
+    ctx.beginPath();ctx.strokeStyle='rgba(0,0,0,0.4)';ctx.lineWidth=2.5;
+    for(let px=PLOT_PAD;px<=W-PLOT_PAD;px++){
+      const dataX=toDataX(px);
+      const dataY=(m.threshold - m.coeffs[0]*dataX)/m.coeffs[1];
+      const py=toCanvasY(dataY);
+      if(px===PLOT_PAD) ctx.moveTo(px,py); else ctx.lineTo(px,py);
+    }
+    ctx.stroke();
+  }
+  ctx.restore();
+}
+
+function drawTestPoints(alpha){
+  if(!ldaModel) return;
+  ldaModel.testResults.forEach((r,i)=>{
+    const p=testData[i];
+    const ringColor=r.correct?'rgb(22,163,74)':'rgb(220,38,38)';
+    const baseColor=r.pred==='apple'?APPLE_COLOR:ORANGE_COLOR;
+    drawPoint(p.s,p.c,baseColor,6,alpha,true,ringColor);
+  });
+}
+
+function drawUserPoints(){
+  userPoints.forEach(p=>{
+    const color=p.pred==='apple'?APPLE_COLOR:ORANGE_COLOR;
+    drawPoint(p.s,p.c,color,7,0.9,false);
+    const cx=toCanvasX(p.s), cy=toCanvasY(p.c);
+    ctx.save();ctx.globalAlpha=0.8;ctx.font='500 9px Inter';ctx.fillStyle=color;
+    ctx.textAlign='center';ctx.fillText(p.pred==='apple'?'🍎':'🍊',cx,cy-12);ctx.restore();
+  });
+}
+
+// ===== RENDER (event-driven, #13) =====
+function render(){
+  ctx.clearRect(0,0,W,H);
+  // White bg
+  ctx.fillStyle='#f7f7f4';ctx.fillRect(0,0,W,H);
+
+  if(currentStage===0){
+    // No need to render main canvas at hero, hero has its own canvas
+    return;
+  }
+
+  drawAxes(1);
+  const s=currentStage;
+
+  // Training points always visible from stage 1+
+  trainData.forEach(d=>{
+    const color=d.label==='apple'?APPLE_COLOR:ORANGE_COLOR;
+    drawPoint(d.s,d.c,color,5,1,false);
+  });
+
+  // (#2) Test points NOT shown in stage 3 — completely hidden until stage 11
+  // Stage 4+: convex hulls
+  if(s>=4){
+    const apples=trainData.filter(d=>d.label==='apple');
+    const oranges=trainData.filter(d=>d.label==='orange');
+    drawHull(apples,APPLE_COLOR,1);
+    drawHull(oranges,ORANGE_COLOR,1);
+  }
+  if(s>=5){
+    drawStar(ldaModel.mu1[0],ldaModel.mu1[1],APPLE_COLOR,12,1);
+    drawStar(ldaModel.mu2[0],ldaModel.mu2[1],ORANGE_COLOR,12,1);
+  }
+  if(s===6){
+    drawEllipse(ldaModel.mu1,ldaModel.cov1,APPLE_COLOR,0.8);
+    drawEllipse(ldaModel.mu2,ldaModel.cov2,ORANGE_COLOR,0.8);
+  }
+  if(s>=7&&s<=8){
+    drawEllipse(ldaModel.mu1,ldaModel.pooled,'rgb(99,102,241)',0.7);
+    drawEllipse(ldaModel.mu2,ldaModel.pooled,'rgb(99,102,241)',0.7);
+  }
+  if(s>=8){
+    const x1=toCanvasX(ldaModel.mu1[0]),y1=toCanvasY(ldaModel.mu1[1]);
+    const x2=toCanvasX(ldaModel.mu2[0]),y2=toCanvasY(ldaModel.mu2[1]);
+    ctx.save();ctx.globalAlpha=0.5;ctx.strokeStyle='rgba(0,0,0,0.3)';ctx.lineWidth=2;
+    ctx.setLineDash([6,4]);ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();
+    ctx.setLineDash([]);ctx.restore();
+  }
+  if(s>=9){
+    drawProjectionLine(ldaModel.w,0.8);
+    drawProjectionStrip(0.9);
+  }
+  if(s>=10) drawDecisionBoundary(0.8);
+  if(s>=11) drawTestPoints(1);
+  if(s>=13) drawUserPoints();
+}
+
+// Event-driven rendering (#13)
+function scheduleRender(){
+  if(!needsRedraw) return;
+  needsRedraw=false;
+  requestAnimationFrame(()=>{render()});
+}
+
+// Trigger renders on meaningful events
+function triggerRedraw(){needsRedraw=true;scheduleRender()}
+window.addEventListener('resize',()=>{resize();triggerRedraw()},false);
+// Initial render
+triggerRedraw();
+
+// ===== SCROLL OBSERVER =====
+const sections=document.querySelectorAll('[data-stage]');
+const dotsContainer=document.getElementById('stageDots');
+sections.forEach((sec,i)=>{
+  const dot=document.createElement('div');
+  dot.className='stage-dot';
+  dot.title=`Stage ${i}`;
+  dot.onclick=()=>sec.scrollIntoView({behavior:'smooth'});
+  dotsContainer.appendChild(dot);
+});
+const dots=dotsContainer.querySelectorAll('.stage-dot');
+
+const observer=new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      const stage=parseInt(e.target.dataset.stage);
+      if(stage!==currentStage){
+        currentStage=stage;
+        dots.forEach((d,i)=>d.classList.toggle('active',i===stage));
+        triggerRedraw();
+      }
+    }
+  });
+},{threshold:0.4});
+sections.forEach(s=>observer.observe(s));
+
+window.addEventListener('scroll',()=>{
+  const h=document.documentElement.scrollHeight-window.innerHeight;
+  const pct=h>0?(window.scrollY/h)*100:0;
+  document.getElementById('progressBar').style.width=pct+'%';
+});
+
+// ===== CANVAS CLICK / TAP (#14) =====
+function handleCanvasInteraction(clientX,clientY,isTap){
+  const rect=canvas.getBoundingClientRect();
+  const mx=clientX-rect.left, my=clientY-rect.top;
+
+  // Check proximity to data points for info
+  const allPts=[...trainData,...(currentStage>=11?testData:[]),...userPoints];
+  for(const p of allPts){
+    const cx=toCanvasX(p.s), cy=toCanvasY(p.c);
+    if(Math.abs(mx-cx)<15&&Math.abs(my-cy)<15){
+      if(isTap){
+        // Mobile: show pinned info card (#14)
+        const card=document.getElementById('pointInfoCard');
+        const content=document.getElementById('pointInfoContent');
+        content.innerHTML=`<strong>${(p.label||p.pred||'').toUpperCase()}</strong><br>Sweetness: ${p.s.toFixed(1)} · Color: ${p.c.toFixed(1)}`;
+        card.style.display='block';
+      } else {
+        const tip=document.getElementById('tooltip');
+        tip.style.display='block';
+        tip.style.left=(clientX+15)+'px';
+        tip.style.top=(clientY-30)+'px';
+        tip.innerHTML=`<strong>${(p.label||p.pred||'').toUpperCase()}</strong><br>Sweetness: ${p.s.toFixed(1)}<br>Color: ${p.c.toFixed(1)}`;
+      }
+      return true;
+    }
+  }
+  return false;
+}
+
+canvas.addEventListener('click',(e)=>{
+  if(currentStage<13){
+    // Try tap-to-inspect on touch
+    handleCanvasInteraction(e.clientX,e.clientY,true);
+    return;
+  }
+  const rect=canvas.getBoundingClientRect();
+  const mx=e.clientX-rect.left, my=e.clientY-rect.top;
+  const ds=toDataX(mx), dc=toDataY(my);
+  if(ds<0||ds>10||dc<0||dc>11) return;
+
+  // Check if tapping existing point first
+  if(handleCanvasInteraction(e.clientX,e.clientY,true)) return;
+
+  const r=ldaModel.classify(ds,dc);
+  userPoints.push({s:ds,c:dc,pred:r.pred,score1:r.score1,score2:r.score2});
+  triggerRedraw();
+  const el=document.getElementById('playgroundCalc');
+  el.innerHTML=`<div class="live-calc">New point: (${ds.toFixed(1)}, ${dc.toFixed(1)})
+δ_apple  = ${r.score1.toFixed(3)}
+δ_orange = ${r.score2.toFixed(3)}
+→ Predicted: ${r.pred.toUpperCase()}</div>`;
+});
+
+canvas.addEventListener('mousemove',(e)=>{
+  if(currentStage<1) return;
+  if(!handleCanvasInteraction(e.clientX,e.clientY,false)){
+    document.getElementById('tooltip').style.display='none';
+  }
+});
+
+// Touch support (#14)
+canvas.addEventListener('touchend',(e)=>{
+  e.preventDefault();
+  const t=e.changedTouches[0];
+  if(currentStage<13){
+    handleCanvasInteraction(t.clientX,t.clientY,true);
+    return;
+  }
+  const rect=canvas.getBoundingClientRect();
+  const mx=t.clientX-rect.left, my=t.clientY-rect.top;
+  const ds=toDataX(mx), dc=toDataY(my);
+  if(ds<0||ds>10||dc<0||dc>11) return;
+  if(handleCanvasInteraction(t.clientX,t.clientY,true)) return;
+  const r=ldaModel.classify(ds,dc);
+  userPoints.push({s:ds,c:dc,pred:r.pred,score1:r.score1,score2:r.score2});
+  triggerRedraw();
+  const el=document.getElementById('playgroundCalc');
+  el.innerHTML=`<div class="live-calc">New point: (${ds.toFixed(1)}, ${dc.toFixed(1)})
+δ_apple  = ${r.score1.toFixed(3)}
+δ_orange = ${r.score2.toFixed(3)}
+→ Predicted: ${r.pred.toUpperCase()}</div>`;
+},{passive:false});
+
+// ===== PLAYGROUND ACTIONS =====
+function resetPlayground(){userPoints=[];document.getElementById('playgroundCalc').innerHTML='';triggerRedraw()}
+function regenerateData(){
+  // (#12) Always generate from immutable BASE_DATA
+  FULL_DATA = BASE_DATA.map(d=>({
+    s: d.s + (Math.random()-0.5)*1.5,
+    c: d.c + (Math.random()-0.5)*1.5,
+    label: d.label
+  }));
+  initSplit();
+  ldaModel=computeLDA(trainData);
+  userPoints=[];
+  populateAll();
+  triggerRedraw();
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Logistic Regression — Interactive Visual Guide</title>
+<meta name="description" content="A scroll-driven, interactive visual guide to Logistic Regression. Learn how logistic regression works from raw data to final model prediction.">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#f7f7f4;--bg2:#f0efeb;--surface:#ffffff;
+  --glass:rgba(255,255,255,0.85);--glass-border:#e7e5e4;
+  --text:#1f2937;--text-dim:#4b5563;--text-muted:#6b7280;
+  --accent:#6366f1;--accent2:#4f46e5;--accent-glow:rgba(99,102,241,0.08);
+  --green:#16a34a;--green-soft:rgba(22,163,74,0.1);
+  --coral:#dc2626;--coral-soft:rgba(220,38,38,0.08);
+  --amber:#d97706;--amber-soft:rgba(217,119,6,0.1);
+  --radius:16px;--radius-sm:10px;
+}
+html{scroll-behavior:smooth;background:var(--bg)}
+body{font-family:'Inter',system-ui,sans-serif;color:var(--text);background:var(--bg);line-height:1.7;overflow-x:hidden}
+.layout{display:flex;min-height:100vh;position:relative}
+.narrative{width:45%;min-width:400px;position:relative;z-index:2}
+.viz-container{width:55%;height:100vh;position:sticky;top:0;right:0;display:flex;align-items:center;justify-content:center;z-index:1;background:var(--bg)}
+#mainCanvas{width:100%;height:100%;display:block}
+.section{min-height:100vh;padding:80px 60px 80px 40px;display:flex;flex-direction:column;justify-content:center;position:relative}
+.section::after{content:'';position:absolute;bottom:0;left:40px;right:60px;height:1px;background:linear-gradient(90deg,transparent,var(--glass-border),transparent)}
+.hero-section{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;width:100vw;position:relative;padding:60px;overflow:hidden}
+.hero-bg{position:absolute;inset:0;z-index:0;pointer-events:none}
+.hero-section h1{font-size:clamp(2.8rem,5vw,4.5rem);font-weight:800;letter-spacing:-0.03em;line-height:1.1;background:linear-gradient(135deg,#1f2937 0%,var(--accent) 50%,var(--accent2) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:20px;position:relative;z-index:1}
+.hero-section .subtitle{font-size:clamp(1rem,1.8vw,1.25rem);color:var(--text-dim);font-weight:400;max-width:600px;margin-bottom:40px;position:relative;z-index:1}
+.hero-section .scroll-hint{font-size:0.85rem;color:var(--text-muted);display:flex;align-items:center;gap:8px;animation:pulse 2s ease-in-out infinite;position:relative;z-index:1}
+@keyframes pulse{0%,100%{opacity:0.5;transform:translateY(0)}50%{opacity:1;transform:translateY(5px)}}
+.hero-badge{display:inline-block;padding:6px 18px;border-radius:100px;background:var(--accent-glow);border:1px solid rgba(99,102,241,0.2);color:var(--accent);font-size:0.8rem;font-weight:500;letter-spacing:0.05em;text-transform:uppercase;margin-bottom:24px;position:relative;z-index:1}
+.hero-note{font-size:0.82rem;color:var(--text-muted);max-width:480px;margin-top:20px;line-height:1.6;position:relative;z-index:1;font-style:italic}
+.stage-num{font-size:0.7rem;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;color:var(--accent);margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.stage-num::before{content:'';width:24px;height:1px;background:var(--accent)}
+h2{font-size:clamp(1.6rem,3vw,2.2rem);font-weight:700;letter-spacing:-0.02em;line-height:1.2;margin-bottom:20px;color:var(--text)}
+h3{font-size:1.1rem;font-weight:600;margin-bottom:12px;color:var(--accent2)}
+p{font-size:0.95rem;color:var(--text-dim);margin-bottom:16px;max-width:520px}
+.glass-card{background:var(--surface);border:1px solid var(--glass-border);border-radius:var(--radius);padding:28px;margin:24px 0;box-shadow:0 2px 8px rgba(0,0,0,0.03)}
+.math-block{font-family:'JetBrains Mono',monospace;font-size:0.85rem;background:rgba(99,102,241,0.05);border:1px solid rgba(99,102,241,0.12);border-radius:var(--radius-sm);padding:20px 24px;margin:20px 0;color:var(--accent2);overflow-x:auto;white-space:pre-wrap;line-height:1.8}
+.metric-row{display:flex;gap:16px;margin:16px 0;flex-wrap:wrap}
+.metric-card{flex:1;min-width:100px;background:var(--bg);border:1px solid var(--glass-border);border-radius:var(--radius-sm);padding:18px 14px;text-align:center}
+.metric-card .val{font-size:1.4rem;font-weight:700;font-family:'JetBrains Mono',monospace}
+.metric-card .lbl{font-size:0.7rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.05em;margin-top:6px}
+.insight-box{border-left:3px solid var(--accent);padding:16px 20px;margin:24px 0;background:var(--accent-glow);border-radius:0 var(--radius-sm) var(--radius-sm) 0}
+.insight-box p{margin:0;font-size:0.88rem;color:var(--text);line-height:1.6}
+.code-accordion{margin:16px 0;border:1px solid var(--glass-border);border-radius:var(--radius-sm);background:var(--surface);overflow:hidden}
+.code-accordion summary{padding:12px 16px;font-size:0.85rem;font-weight:600;color:var(--text-dim);cursor:pointer;list-style:none;background:rgba(99,102,241,0.03);display:flex;align-items:center;gap:8px}
+.code-accordion summary::-webkit-details-marker{display:none}
+.code-accordion summary::after{content:'↓';margin-left:auto;transition:transform 0.2s}
+.code-accordion[open] summary::after{transform:rotate(180deg)}
+.code-accordion .code-card{padding:16px;border-top:1px solid var(--glass-border);background:#fcfcfc}
+.code-accordion pre{margin:0;background:#f8fafc;border:1px solid var(--glass-border);border-radius:6px;padding:14px;overflow-x:auto}
+.code-accordion code{font-family:'JetBrains Mono',monospace;font-size:0.8rem;line-height:1.6;color:#334155}
+.code-accordion .code-note{margin:10px 0 0;font-size:0.8rem;color:var(--text-muted)}
+.matrix-grid{display:grid;grid-template-columns:auto 1fr 1fr;gap:0;margin:16px 0;font-family:'JetBrains Mono',monospace;font-size:0.8rem}
+.matrix-grid .cell{padding:10px 14px;text-align:center;border:1px solid var(--glass-border)}
+.matrix-grid .header{font-weight:600;color:var(--accent2);background:rgba(99,102,241,0.05)}
+.matrix-grid .tp{background:rgba(22,163,74,0.08);color:var(--green)}
+.matrix-grid .tn{background:rgba(59,130,246,0.08);color:#3b82f6}
+.matrix-grid .fp{background:rgba(217,119,6,0.06);color:var(--amber)}
+.matrix-grid .fn{background:rgba(220,38,38,0.06);color:var(--coral)}
+.slider-wrap{display:flex;align-items:center;gap:12px;margin:12px 0}
+.slider-wrap label{font-size:0.8rem;color:var(--text-muted);white-space:nowrap}
+.slider-wrap input[type=range]{flex:1;accent-color:var(--accent)}
+.slider-wrap .s-val{font-family:'JetBrains Mono',monospace;font-size:1rem;font-weight:600;color:var(--accent2);min-width:50px;text-align:center}
+.btn{padding:10px 20px;border-radius:var(--radius-sm);border:1px solid var(--glass-border);background:var(--surface);color:var(--text);font-family:'Inter',sans-serif;font-size:0.85rem;font-weight:500;cursor:pointer;transition:all 0.2s}
+.btn:hover{background:var(--accent-glow);border-color:var(--accent)}
+.btn-accent{background:rgba(99,102,241,0.1);border-color:rgba(99,102,241,0.25);color:var(--accent2)}
+.btn-accent:hover{background:rgba(99,102,241,0.2)}
+.btn-row{display:flex;gap:10px;flex-wrap:wrap;margin:16px 0}
+.live-calc{margin:8px 0;padding:10px 14px;background:rgba(22,163,74,0.04);border:1px solid rgba(22,163,74,0.12);border-radius:var(--radius-sm);font-family:'JetBrains Mono',monospace;font-size:0.78rem;color:#15803d}
+.progress-bar{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--accent),var(--accent2));z-index:100;transition:width 0.3s;width:0}
+.stage-dots{position:fixed;right:20px;top:50%;transform:translateY(-50%);z-index:50;display:flex;flex-direction:column;gap:10px}
+.stage-dot{width:10px;height:10px;border-radius:50%;background:#d1d5db;cursor:pointer;transition:all 0.3s;border:2px solid transparent}
+.stage-dot:hover{background:#9ca3af}
+.stage-dot.active{background:var(--accent);border-color:rgba(99,102,241,0.3);box-shadow:0 0 12px rgba(99,102,241,0.35)}
+.tag{display:inline-block;padding:3px 10px;border-radius:100px;font-size:0.72rem;font-weight:600}
+.tag-green{background:var(--green-soft);color:var(--green)}
+.tag-coral{background:var(--coral-soft);color:var(--coral)}
+@media(max-width:900px){
+  .layout{flex-direction:column}
+  .narrative{width:100%;min-width:unset}
+  .viz-container{width:100%;height:50vh;position:sticky;top:0}
+  .section{padding:40px 24px}
+  .hero-section{width:100%}
+  .stage-dots{display:none}
+}
+</style>
+</head>
+<body>
+
+<div class="progress-bar" id="progressBar"></div>
+<div class="stage-dots" id="stageDots"></div>
+
+<!-- HERO -->
+<section class="hero-section section" data-stage="0" id="sec-0">
+  <canvas id="heroCanvas" class="hero-bg"></canvas>
+  <div class="hero-badge">Machine Learning · Classification</div>
+  <h1>Logistic<br>Regression</h1>
+  <p class="subtitle">A visual, step-by-step journey from raw data to a trained classifier. Watch one plot evolve as the model learns to predict ice-cream purchases from temperature, sunshine, and weekends.</p>
+  <p class="hero-note">The dataset used here is intentionally simplified so you can clearly see how each step works. Real-world data is messier and noisier.</p>
+  <div class="scroll-hint">↓ Scroll to begin</div>
+</section>
+
+<!-- MAIN LAYOUT -->
+<div class="layout">
+<div class="narrative">
+
+<!-- S1: Raw Data -->
+<section class="section" data-stage="1" id="sec-1">
+  <div class="stage-num">Stage 01</div>
+  <h2>It Starts with Data 🍦</h2>
+  <p>Imagine you run an ice-cream shop. Every day you note the <strong>temperature</strong>, whether it was <strong>sunny</strong>, and whether someone <strong>bought ice cream</strong>.</p>
+  <p>The plot shows each day as a dot: temperature on the x-axis, outcome (bought or didn't) on the y-axis.</p>
+  <div class="glass-card">
+    <h3>Legend</h3>
+    <p style="margin:0"><span class="tag tag-green">● Bought (y = 1)</span> &nbsp; <span class="tag tag-coral">● Didn't buy (y = 0)</span></p>
+  </div>
+  <p>Notice how higher temperatures tend to cluster near y = 1? That's the <strong>signal</strong> our model will learn to capture.</p>
+  <div class="insight-box"><p>📌 This is a small toy dataset with 20 rows designed for teaching. Real datasets have hundreds or thousands of rows.</p></div>
+  <div class="insight-box"><p>💻 Expand the "Show R Code" toggles in the stages below if you want to build the same model in RStudio.</p></div>
+</section>
+
+<!-- S2: Why Not Linear? -->
+<section class="section" data-stage="2" id="sec-2">
+  <div class="stage-num">Stage 02</div>
+  <h2>Why Lines Break 📏</h2>
+  <p>Your first instinct might be to draw a straight line through the data — that's <strong>linear regression</strong>.</p>
+  <p>But watch what happens: the line predicts values <strong>above 1</strong> and <strong>below 0</strong>. Those aren't valid probabilities!</p>
+  <div class="math-block">ŷ = b₀ + b₁ · Temperature
+Can give 1.5 or −0.3 … not a probability!</div>
+  <p>We need a function that <em>squishes</em> any number into the 0–1 range. Enter the <strong>sigmoid</strong>.</p>
+</section>
+
+<!-- S3: Sigmoid -->
+<section class="section" data-stage="3" id="sec-3">
+  <div class="stage-num">Stage 03</div>
+  <h2>The Sigmoid Function ✨</h2>
+  <p>The <strong>sigmoid function</strong> takes any score and maps it to a probability between 0 and 1.</p>
+  <div class="math-block">p = 1 / (1 + e⁻ᶻ)
+
+Large positive z → probability near 1
+Large negative z → probability near 0
+z = 0 → probability exactly 0.5</div>
+  <div class="glass-card">
+    <h3>Try It</h3>
+    <div class="slider-wrap">
+      <label>z =</label>
+      <input type="range" min="-6" max="6" step="0.1" value="0" id="zSlider">
+      <span class="s-val" id="zVal">0.0</span>
+    </div>
+    <div class="metric-row">
+      <div class="metric-card"><div class="val" id="pVal" style="color:var(--accent2)">0.500</div><div class="lbl">Probability</div></div>
+    </div>
+  </div>
+  <div class="insight-box"><p>📐 The sigmoid on the canvas is a 2D slice — it plots probability vs. temperature while holding Sunny and Weekend fixed at a neutral 0.5. The real model uses all three features simultaneously.</p></div>
+</section>
+
+<!-- S4: Building Z -->
+<section class="section" data-stage="4" id="sec-4">
+  <div class="stage-num">Stage 04</div>
+  <h2>Weighted Clues 🧠</h2>
+  <p>Where does <strong>z</strong> come from? The model assigns a <strong>weight</strong> to each feature and adds them up:</p>
+  <div class="math-block">z = b₀ + b₁·Temp + b₂·Sunny + b₃·Weekend</div>
+  <p><strong>b₀</strong> = bias · <strong>b₁, b₂, b₃</strong> = how much each clue matters</p>
+  <div class="glass-card">
+    <h3>Adjust Weights</h3>
+    <div class="slider-wrap"><label>b₀ (bias)</label><input type="range" min="-8" max="2" step="0.1" value="0" id="b0Slider"><span class="s-val" id="b0Val">0.0</span></div>
+    <div class="slider-wrap"><label>b₁ (temp)</label><input type="range" min="-0.2" max="3" step="0.01" value="1.5" id="b1Slider"><span class="s-val" id="b1Val">1.50</span></div>
+    <div class="slider-wrap"><label>b₂ (sunny)</label><input type="range" min="-2" max="3" step="0.1" value="0.8" id="b2Slider"><span class="s-val" id="b2Val">0.8</span></div>
+    <div class="slider-wrap"><label>b₃ (weekend)</label><input type="range" min="-2" max="3" step="0.1" value="0.5" id="b3Slider"><span class="s-val" id="b3Val">0.5</span></div>
+    <div class="metric-row"><div class="metric-card"><div class="val" id="manualLoss" style="color:var(--amber)">—</div><div class="lbl">Log-Loss</div></div></div>
+  </div>
+</section>
+
+<!-- S5: Training -->
+<section class="section" data-stage="5" id="sec-5">
+  <div class="stage-num">Stage 05</div>
+  <h2>Learning from Mistakes ⚙️</h2>
+  <p>The model starts with <strong>initial weights</strong>, makes predictions, measures how wrong it was using <strong>log loss</strong>, then nudges the weights to improve. This is <strong>gradient descent</strong>.</p>
+  <div class="math-block">L = −[ y·log(p) + (1−y)·log(1−p) ]
+
+The model is punished more when it's
+very confident but very wrong.</div>
+  <div class="glass-card">
+    <h3>Train the Model</h3>
+    <div class="btn-row">
+      <button class="btn btn-accent" id="btnTrain">▶ Train</button>
+      <button class="btn" id="btnReset">↺ Reset</button>
+    </div>
+    <div class="slider-wrap"><label>Learning rate</label><input type="range" min="0.001" max="0.2" step="0.001" value="0.01" id="lrSlider"><span class="s-val" id="lrVal">0.010</span></div>
+    <div class="metric-row">
+      <div class="metric-card"><div class="val" id="epochVal" style="color:var(--accent2)">0</div><div class="lbl">Epoch</div></div>
+      <div class="metric-card"><div class="val" id="trainLoss" style="color:var(--amber)">—</div><div class="lbl">Loss</div></div>
+    </div>
+  </div>
+  <div class="insight-box"><p>💡 Temperature is standardized behind the scenes (mean=0, std=1) so all features are on comparable scales. This makes gradient descent more stable.</p></div>
+</section>
+
+<!-- S6: Threshold -->
+<section class="section" data-stage="6" id="sec-6">
+  <div class="stage-num">Stage 06</div>
+  <h2>Drawing the Line 🚦</h2>
+  <p>The sigmoid gives a <strong>probability</strong>. But we need a <strong>decision</strong>: Yes or No. We pick a <strong>threshold</strong>.</p>
+  <p>If p ≥ threshold → predict <strong style="color:var(--green)">Yes (1)</strong><br>If p &lt; threshold → predict <strong style="color:var(--coral)">No (0)</strong></p>
+  <div class="glass-card">
+    <h3>Set Threshold</h3>
+    <div class="slider-wrap"><label>Threshold</label><input type="range" min="0.05" max="0.95" step="0.01" value="0.50" id="threshSlider"><span class="s-val" id="threshVal">0.50</span></div>
+  </div>
+  <div class="insight-box"><p>💡 A medical test might use <strong>0.3</strong> (catch more sick people), while a spam filter might use <strong>0.7</strong> (avoid false alarms).</p></div>
+</section>
+
+<!-- S7: Evaluation -->
+<section class="section" data-stage="7" id="sec-7">
+  <div class="stage-num">Stage 07</div>
+  <h2>How Good Is It? 📊</h2>
+  <p>We evaluate on the <strong>test set</strong> (6 held-out samples) — data the model never saw during training.</p>
+  <div class="glass-card" style="padding:16px;margin:8px 0 24px"><p style="margin:0;font-size:0.88rem"><span style="opacity:0.4">● Dim dots</span> = training set &nbsp;&nbsp;&nbsp; <strong>● Vivid dots</strong> = test set</p></div>
+  <div class="glass-card">
+    <h3>Confusion Matrix</h3>
+    <div class="matrix-grid" id="cmGrid">
+      <div class="cell header"></div><div class="cell header">Pred Yes</div><div class="cell header">Pred No</div>
+      <div class="cell header">Real Yes</div><div class="cell tp" id="cmTP">—</div><div class="cell fn" id="cmFN">—</div>
+      <div class="cell header">Real No</div><div class="cell fp" id="cmFP">—</div><div class="cell tn" id="cmTN">—</div>
+    </div>
+  </div>
+  <div class="glass-card">
+    <h3>Metrics <span style="font-weight:400;font-size:0.78rem;color:var(--text-muted)">(on test set)</span></h3>
+    <div class="metric-row" id="metricsRow">
+      <div class="metric-card"><div class="val" id="mAcc">—</div><div class="lbl">Accuracy</div></div>
+      <div class="metric-card"><div class="val" id="mPrec">—</div><div class="lbl">Precision</div></div>
+      <div class="metric-card"><div class="val" id="mRec">—</div><div class="lbl">Recall</div></div>
+      <div class="metric-card"><div class="val" id="mF1">—</div><div class="lbl">F1</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- S8: ROC -->
+<section class="section" data-stage="8" id="sec-8">
+  <div class="stage-num">Stage 08</div>
+  <h2>The ROC Curve 🔔</h2>
+  <p>The <strong>ROC curve</strong> shows: at every possible threshold, how does recall trade off against false-alarm rate?</p>
+  <p>Think of a smoke alarm: too sensitive and it goes off when you cook toast; too lenient and it misses an actual fire.</p>
+  <div class="glass-card">
+    <div class="metric-row"><div class="metric-card"><div class="val" id="aucVal" style="color:var(--accent2)">—</div><div class="lbl">AUC</div></div></div>
+    <p style="font-size:0.82rem;color:var(--text-muted);margin:8px 0 0">AUC = 1.0 is perfect · AUC = 0.5 is random guessing</p>
+    <div class="insight-box" style="margin-top:20px"><p>📌 <strong>Note:</strong> Because we only have 6 test samples, this ROC curve looks coarse and jumpy. With a real dataset of hundreds of rows, the curve would be much smoother.</p></div>
+  </div>
+</section>
+
+<!-- S9: Interpretation -->
+<section class="section" data-stage="9" id="sec-9">
+  <div class="stage-num">Stage 09</div>
+  <h2>What the Numbers Mean 📎</h2>
+  <p>Each <strong>coefficient</strong> tells a story:</p>
+  <div class="glass-card">
+    <p style="margin:0;font-size:0.88rem"><strong>Positive weight</strong> → pushes probability <em>up</em><br><strong>Negative weight</strong> → pushes probability <em>down</em><br><strong>Larger magnitude</strong> → stronger influence</p>
+  </div>
+  <p>We can compute <strong>odds ratios</strong>: e<sup>bᵢ</sup> tells you how the odds multiply for each unit increase in that feature.</p>
+  <div class="glass-card" id="oddsContainer" style="font-size:0.85rem"></div>
+</section>
+
+<!-- S10: Summary -->
+<section class="section" data-stage="10" id="sec-10">
+  <div class="stage-num">Stage 10</div>
+  <h2>The Full Picture 🌟</h2>
+  <p>You've walked through the entire logistic regression pipeline:</p>
+  <div class="math-block">Clues → Score (z) → Sigmoid → Probability → Decision</div>
+  <div class="glass-card">
+    <p style="margin:0;font-size:0.88rem;line-height:2">
+      ✓ Collected and plotted <strong>raw data</strong><br>
+      ✓ Saw why linear regression <strong>can't</strong> predict probabilities<br>
+      ✓ Met the <strong>sigmoid</strong> that squishes scores into 0–1<br>
+      ✓ Built the <strong>score z</strong> from weighted features<br>
+      ✓ Trained with <strong>gradient descent</strong> to minimize log loss<br>
+      ✓ Chose a <strong>threshold</strong> to turn probabilities into decisions<br>
+      ✓ Evaluated with <strong>confusion matrix</strong> and metrics<br>
+      ✓ Explored the <strong>ROC curve</strong> for threshold trade-offs<br>
+      ✓ Interpreted <strong>coefficients</strong> and <strong>odds ratios</strong>
+    </p>
+  </div>
+  <div class="btn-row"><button class="btn" id="btnRestart">↑ Back to top</button></div>
+  <div style="height:30vh"></div>
+</section>
+
+
+
+</div><!-- /narrative -->
+
+<div class="viz-container">
+  <canvas id="mainCanvas"></canvas>
+</div>
+
+</div><!-- /layout -->
+
+<script>
+'use strict';
+// ===== DATA =====
+const DATA=[
+  {temp:15,sunny:0,weekend:0,y:0},{temp:18,sunny:1,weekend:0,y:0},
+  {temp:20,sunny:0,weekend:1,y:0},{temp:22,sunny:0,weekend:0,y:0},
+  {temp:23,sunny:1,weekend:0,y:0},{temp:24,sunny:0,weekend:1,y:1},
+  {temp:25,sunny:1,weekend:0,y:0},{temp:26,sunny:1,weekend:1,y:1},
+  {temp:27,sunny:0,weekend:0,y:0},{temp:28,sunny:1,weekend:0,y:1},
+  {temp:29,sunny:0,weekend:1,y:1},{temp:30,sunny:1,weekend:0,y:1},
+  {temp:31,sunny:1,weekend:1,y:1},{temp:32,sunny:0,weekend:0,y:1},
+  {temp:33,sunny:1,weekend:0,y:1},{temp:34,sunny:1,weekend:1,y:1},
+  {temp:35,sunny:0,weekend:1,y:1},{temp:36,sunny:1,weekend:0,y:1},
+  {temp:38,sunny:1,weekend:1,y:1},{temp:40,sunny:0,weekend:0,y:1}
+];
+function stratifiedSplit(data,testRatio){
+  const pos=data.filter(d=>d.y===1),neg=data.filter(d=>d.y===0);
+  function seededShuffle(a,s){const r=()=>{s=(s*16807)%2147483647;return(s-1)/2147483646};for(let i=a.length-1;i>0;i--){const j=Math.floor(r()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a;}
+  seededShuffle(pos,42);seededShuffle(neg,42);
+  const nTP=Math.max(1,Math.round(pos.length*testRatio));
+  const nTN=Math.max(1,Math.round(neg.length*testRatio));
+  return{train:[...pos.slice(nTP),...neg.slice(nTN)],test:[...pos.slice(0,nTP),...neg.slice(0,nTN)]};
+}
+const SPLIT=stratifiedSplit(DATA,0.3);
+const TRAIN=SPLIT.train,TEST=SPLIT.test;
+const TEMP_MEAN=TRAIN.reduce((s,d)=>s+d.temp,0)/TRAIN.length;
+const TEMP_STD=Math.sqrt(TRAIN.reduce((s,d)=>s+(d.temp-TEMP_MEAN)**2,0)/TRAIN.length);
+function stdTemp(t){return(t-TEMP_MEAN)/TEMP_STD}
+const TEMP_MIN=12,TEMP_MAX=42;
+
+// ===== CANVAS =====
+const canvas=document.getElementById('mainCanvas');
+const ctx=canvas.getContext('2d');
+let W,H;const PAD={t:50,r:40,b:60,l:65};
+function plotX(t){return PAD.l+(t-TEMP_MIN)/(TEMP_MAX-TEMP_MIN)*(W-PAD.l-PAD.r)}
+function plotY(v){return PAD.t+(1-v)*(H-PAD.t-PAD.b)}
+function resizeCanvas(){
+  const dpr=window.devicePixelRatio||1;
+  const rect=canvas.parentElement.getBoundingClientRect();
+  W=rect.width;H=rect.height;
+  canvas.width=W*dpr;canvas.height=H*dpr;
+  canvas.style.width=W+'px';canvas.style.height=H+'px';
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+  draw();
+}
+window.addEventListener('resize',resizeCanvas);
+
+// ===== STATE =====
+let currentStage=0;
+let weights={b0:0,b1:1.5,b2:0.8,b3:0.5};
+let trainedWeights={b0:0,b1:1.5,b2:0.8,b3:0.5};
+let threshold=0.5,epoch=0,lossHistory=[];
+
+// ===== MATH =====
+function sigmoid(z){return 1/(1+Math.exp(-z))}
+function score(d,w){return w.b0+w.b1*stdTemp(d.temp)+w.b2*d.sunny+w.b3*d.weekend}
+function predict(d,w){return sigmoid(score(d,w))}
+function logLoss(data,w){let s=0;for(const d of data){let p=Math.max(1e-10,Math.min(1-1e-10,predict(d,w)));s+=-(d.y*Math.log(p)+(1-d.y)*Math.log(1-p))}return s/data.length}
+function trainStep(lr){const g={b0:0,b1:0,b2:0,b3:0};for(const d of TRAIN){let e=predict(d,trainedWeights)-d.y;g.b0+=e;g.b1+=e*stdTemp(d.temp);g.b2+=e*d.sunny;g.b3+=e*d.weekend}const n=TRAIN.length;trainedWeights.b0-=lr*g.b0/n;trainedWeights.b1-=lr*g.b1/n;trainedWeights.b2-=lr*g.b2/n;trainedWeights.b3-=lr*g.b3/n;epoch++}
+function confusionMatrix(data,w,t){let tp=0,tn=0,fp=0,fn=0;for(const d of data){const p=predict(d,w)>=t?1:0;if(d.y===1&&p===1)tp++;else if(d.y===0&&p===0)tn++;else if(d.y===0&&p===1)fp++;else fn++}return{tp,tn,fp,fn}}
+function rocPoints(data,w){const pts=[];for(let t=0;t<=1.001;t+=0.02){const cm=confusionMatrix(data,w,t);const tpr=cm.tp+cm.fn>0?cm.tp/(cm.tp+cm.fn):0;const fpr=cm.fp+cm.tn>0?cm.fp/(cm.fp+cm.tn):0;pts.push({fpr,tpr,t})}pts.sort((a,b)=>a.fpr-b.fpr);return pts}
+function auc(pts){let a=0;for(let i=1;i<pts.length;i++){a+=(pts[i].fpr-pts[i-1].fpr)*(pts[i].tpr+pts[i-1].tpr)/2}return a}
+
+// ===== COLORS =====
+const C={
+  green:'#16a34a',greenA:'rgba(22,163,74,0.8)',greenDim:'rgba(22,163,74,0.2)',
+  coral:'#dc2626',coralA:'rgba(220,38,38,0.8)',coralDim:'rgba(220,38,38,0.2)',
+  accent:'rgba(99,102,241,0.8)',accentDim:'rgba(99,102,241,0.08)',
+  amber:'rgba(217,119,6,0.5)',amberText:'rgba(217,119,6,0.75)',
+  grid:'rgba(0,0,0,0.06)',axis:'rgba(0,0,0,0.15)',label:'rgba(0,0,0,0.45)',bg:'#f7f7f4'
+};
+
+// ===== DRAWING =====
+function clearCanvas(){ctx.fillStyle=C.bg;ctx.fillRect(0,0,W,H)}
+function drawAxes(xL,yL){
+  ctx.strokeStyle=C.axis;ctx.lineWidth=1.5;
+  ctx.beginPath();ctx.moveTo(PAD.l,PAD.t);ctx.lineTo(PAD.l,H-PAD.b);ctx.lineTo(W-PAD.r,H-PAD.b);ctx.stroke();
+  ctx.strokeStyle=C.grid;ctx.lineWidth=1;
+  for(let i=0;i<=4;i++){const y=PAD.t+i*(H-PAD.t-PAD.b)/4;ctx.beginPath();ctx.moveTo(PAD.l,y);ctx.lineTo(W-PAD.r,y);ctx.stroke()}
+  for(let t=15;t<=40;t+=5){const x=plotX(t);ctx.beginPath();ctx.moveTo(x,PAD.t);ctx.lineTo(x,H-PAD.b);ctx.stroke()}
+  ctx.fillStyle=C.label;ctx.font='500 11px Inter';ctx.textAlign='center';
+  for(let t=15;t<=40;t+=5)ctx.fillText(t+'°',plotX(t),H-PAD.b+20);
+  ctx.textAlign='right';for(let i=0;i<=4;i++)ctx.fillText((i/4).toFixed(1),PAD.l-10,plotY(i/4)+4);
+  ctx.save();ctx.translate(18,H/2);ctx.rotate(-Math.PI/2);ctx.textAlign='center';ctx.font='600 12px Inter';ctx.fillText(yL||'',0,0);ctx.restore();
+  ctx.textAlign='center';ctx.font='600 12px Inter';ctx.fillText(xL||'',W/2,H-PAD.b+42);
+}
+function drawPoints(data,w,mode,alpha){
+  ctx.save();ctx.globalAlpha=alpha||1;
+  for(const d of data){
+    const x=plotX(d.temp),y=plotY(d.y);
+    ctx.beginPath();ctx.arc(x,y,6,0,Math.PI*2);
+    if(mode==='prediction'){const p=predict(d,w);const pred=p>=threshold?1:0;const ok=pred===d.y;ctx.fillStyle=ok?C.greenA:C.coralA;ctx.strokeStyle=ok?C.greenDim:C.coralDim;ctx.lineWidth=3;ctx.stroke()}
+    else{ctx.fillStyle=d.y===1?C.greenA:C.coralA}
+    ctx.fill();
+  }
+  ctx.restore();
+}
+function drawLinearLine(){
+  ctx.strokeStyle='rgba(220,38,38,0.5)';ctx.lineWidth=2;ctx.setLineDash([8,6]);ctx.beginPath();
+  let sx=0,sy=0,sxx=0,sxy=0,n=DATA.length;
+  for(const d of DATA){sx+=d.temp;sy+=d.y;sxx+=d.temp*d.temp;sxy+=d.temp*d.y}
+  const b1l=(n*sxy-sx*sy)/(n*sxx-sx*sx),b0l=(sy-b1l*sx)/n;
+  ctx.moveTo(plotX(TEMP_MIN),plotY(b0l+b1l*TEMP_MIN));ctx.lineTo(plotX(TEMP_MAX),plotY(b0l+b1l*TEMP_MAX));
+  ctx.stroke();ctx.setLineDash([]);
+  ctx.fillStyle='rgba(220,38,38,0.65)';ctx.font='bold 11px Inter';ctx.textAlign='left';
+  if(b0l+b1l*TEMP_MAX>1.05)ctx.fillText('> 1 ✗',plotX(TEMP_MAX)+5,plotY(b0l+b1l*TEMP_MAX));
+  if(b0l+b1l*TEMP_MIN<-0.05)ctx.fillText('< 0 ✗',plotX(TEMP_MIN)-30,plotY(b0l+b1l*TEMP_MIN));
+}
+function drawSigmoidCurve(w){
+  ctx.strokeStyle=C.accent;ctx.lineWidth=3;ctx.beginPath();let first=true;
+  for(let t=TEMP_MIN;t<=TEMP_MAX;t+=0.3){const z=w.b0+w.b1*stdTemp(t)+w.b2*0.5+w.b3*0.5;const p=sigmoid(z);const x=plotX(t),y=plotY(p);first?ctx.moveTo(x,y):ctx.lineTo(x,y);first=false}
+  ctx.stroke();
+  ctx.strokeStyle=C.accentDim;ctx.lineWidth=10;ctx.beginPath();first=true;
+  for(let t=TEMP_MIN;t<=TEMP_MAX;t+=0.3){const z=w.b0+w.b1*stdTemp(t)+w.b2*0.5+w.b3*0.5;const p=sigmoid(z);const x=plotX(t),y=plotY(p);first?ctx.moveTo(x,y):ctx.lineTo(x,y);first=false}
+  ctx.stroke();
+}
+function drawZDot(zVal){
+  const p=sigmoid(zVal);const w=currentStage>=5?trainedWeights:weights;
+  const tRaw=(zVal-w.b0-w.b2*0.5-w.b3*0.5)/w.b1*TEMP_STD+TEMP_MEAN;
+  const cx=plotX(Math.max(TEMP_MIN,Math.min(TEMP_MAX,tRaw))),cy=plotY(p);
+  ctx.setLineDash([3,3]);ctx.strokeStyle='rgba(99,102,241,0.3)';ctx.lineWidth=1;
+  ctx.beginPath();ctx.moveTo(cx,H-PAD.b);ctx.lineTo(cx,cy);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(PAD.l,cy);ctx.lineTo(cx,cy);ctx.stroke();ctx.setLineDash([]);
+  ctx.beginPath();ctx.arc(cx,cy,7,0,Math.PI*2);ctx.fillStyle='rgba(99,102,241,0.9)';ctx.fill();ctx.strokeStyle='#fff';ctx.lineWidth=2;ctx.stroke();
+  ctx.fillStyle='rgba(99,102,241,0.9)';ctx.font='bold 11px JetBrains Mono';ctx.textAlign='left';ctx.fillText('p='+p.toFixed(3),cx+12,cy-6);
+}
+function drawThresholdLine(t){
+  const y=plotY(t);ctx.strokeStyle=C.amber;ctx.lineWidth=1.5;ctx.setLineDash([6,4]);
+  ctx.beginPath();ctx.moveTo(PAD.l,y);ctx.lineTo(W-PAD.r,y);ctx.stroke();ctx.setLineDash([]);
+  ctx.fillStyle=C.amberText;ctx.font='bold 11px JetBrains Mono';ctx.textAlign='left';ctx.fillText('threshold = '+t.toFixed(2),PAD.l+5,y-8);
+}
+function drawLossChart(){
+  if(lossHistory.length<2)return;
+  const cW=180,cH=110,ox=W-PAD.r-cW-16,oy=H-PAD.b-cH-16;
+  ctx.fillStyle='rgba(255,255,255,0.92)';ctx.fillRect(ox,oy,cW,cH);
+  ctx.strokeStyle='rgba(0,0,0,0.08)';ctx.lineWidth=1;ctx.strokeRect(ox,oy,cW,cH);
+  const maxL=Math.max(...lossHistory,0.8);
+  ctx.strokeStyle='rgba(99,102,241,0.7)';ctx.lineWidth=2;ctx.beginPath();
+  for(let i=0;i<lossHistory.length;i++){const x=ox+i/(lossHistory.length-1)*cW;const y=oy+cH-10-(lossHistory[i]/maxL)*(cH-28);i===0?ctx.moveTo(x,y):ctx.lineTo(x,y)}
+  ctx.stroke();ctx.fillStyle=C.label;ctx.font='500 10px JetBrains Mono';ctx.textAlign='left';
+  ctx.fillText('Loss',ox+10,oy+16);ctx.textAlign='right';ctx.fillText('Epoch '+lossHistory.length,ox+cW-10,oy+16);
+}
+function drawROC(data,w){
+  clearCanvas();ctx.strokeStyle=C.axis;ctx.lineWidth=1.5;
+  ctx.beginPath();ctx.moveTo(PAD.l,PAD.t);ctx.lineTo(PAD.l,H-PAD.b);ctx.lineTo(W-PAD.r,H-PAD.b);ctx.stroke();
+  ctx.strokeStyle='rgba(0,0,0,0.1)';ctx.setLineDash([4,4]);ctx.beginPath();ctx.moveTo(PAD.l,H-PAD.b);ctx.lineTo(W-PAD.r,PAD.t);ctx.stroke();ctx.setLineDash([]);
+  const rp=rocPoints(data,w),cW=W-PAD.l-PAD.r,cH=H-PAD.t-PAD.b;
+  ctx.fillStyle=C.accentDim;ctx.beginPath();ctx.moveTo(PAD.l,H-PAD.b);
+  for(const p of rp)ctx.lineTo(PAD.l+p.fpr*cW,H-PAD.b-p.tpr*cH);
+  ctx.lineTo(PAD.l+cW,H-PAD.b);ctx.closePath();ctx.fill();
+  ctx.strokeStyle=C.accent;ctx.lineWidth=3;ctx.beginPath();let f=true;
+  for(const p of rp){const x=PAD.l+p.fpr*cW,y=H-PAD.b-p.tpr*cH;f?ctx.moveTo(x,y):ctx.lineTo(x,y);f=false}ctx.stroke();
+  ctx.fillStyle=C.label;ctx.font='500 11px Inter';ctx.textAlign='center';
+  ctx.fillText('False Positive Rate',W/2,H-PAD.b+42);
+  ctx.save();ctx.translate(18,H/2);ctx.rotate(-Math.PI/2);ctx.fillText('True Positive Rate',0,0);ctx.restore();
+  ctx.textAlign='center';for(let i=0;i<=4;i++)ctx.fillText((i/4).toFixed(1),PAD.l+i/4*cW,H-PAD.b+20);
+  ctx.textAlign='right';for(let i=0;i<=4;i++)ctx.fillText((i/4).toFixed(1),PAD.l-10,H-PAD.b-i/4*cH+4);
+  document.getElementById('aucVal').textContent=auc(rp).toFixed(3);
+}
+function drawCoeffBars(w){
+  clearCanvas();const names=['b₀ bias','b₁ temp','b₂ sunny','b₃ weekend'],vals=[w.b0,w.b1,w.b2,w.b3];
+  const maxAbs=Math.max(...vals.map(Math.abs),1),barH=40,gap=20,startY=PAD.t+50,midX=W/2;
+  ctx.fillStyle=C.label;ctx.font='bold 14px Inter';ctx.textAlign='center';ctx.fillText('Learned Coefficients',W/2,PAD.t+20);
+  ctx.strokeStyle=C.grid;ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(midX,startY);ctx.lineTo(midX,startY+names.length*(barH+gap));ctx.stroke();
+  for(let i=0;i<vals.length;i++){
+    const y=startY+i*(barH+gap),barW=vals[i]/maxAbs*(W/2-PAD.r-50),isPos=vals[i]>=0;
+    const grad=ctx.createLinearGradient(midX,0,midX+barW,0);
+    if(isPos){grad.addColorStop(0,'rgba(22,163,74,0.15)');grad.addColorStop(1,'rgba(22,163,74,0.45)')}
+    else{grad.addColorStop(0,'rgba(220,38,38,0.45)');grad.addColorStop(1,'rgba(220,38,38,0.15)')}
+    ctx.fillStyle=grad;ctx.beginPath();roundRect(ctx,isPos?midX:midX+barW,y,Math.abs(barW),barH,8);ctx.fill();
+    ctx.fillStyle='rgba(0,0,0,0.5)';ctx.font='500 12px Inter';ctx.textAlign='right';ctx.fillText(names[i],midX-14,y+barH/2+4);
+    ctx.textAlign='left';ctx.fillStyle='rgba(0,0,0,0.7)';ctx.font='600 12px JetBrains Mono';ctx.fillText(vals[i].toFixed(3),midX+barW+(isPos?8:-50),y+barH/2+4);
+    if(i>0){const or=Math.exp(vals[i]);ctx.fillStyle='rgba(99,102,241,0.6)';ctx.font='400 10px JetBrains Mono';ctx.fillText('OR: '+or.toFixed(2),midX+barW+(isPos?8:-50),y+barH/2+18)}
+  }
+  // Odds ratio container
+  const oc=document.getElementById('oddsContainer');
+  oc.innerHTML=vals.slice(1).map((v,i)=>{
+    const or=Math.exp(v),nm=['Temperature (std)','Sunny','Weekend'][i];
+    let desc;
+    if(or>1.05)desc=`multiplies the odds by <strong>${or.toFixed(3)}</strong> per unit`;
+    else if(or<0.95)desc=`reduces the odds to <strong>${or.toFixed(3)}×</strong> per unit (${((1-or)*100).toFixed(1)}% decrease)`;
+    else desc='has <strong>little to no effect</strong> on the odds';
+    return`<p style="margin-bottom:8px"><strong>${nm}:</strong> e<sup>${v.toFixed(3)}</sup> = ${or.toFixed(3)} — ${desc}</p>`;
+  }).join('');
+}
+function roundRect(c,x,y,w,h,r){r=Math.min(r,w/2,h/2);c.moveTo(x+r,y);c.lineTo(x+w-r,y);c.quadraticCurveTo(x+w,y,x+w,y+r);c.lineTo(x+w,y+h-r);c.quadraticCurveTo(x+w,y+h,x+w-r,y+h);c.lineTo(x+r,y+h);c.quadraticCurveTo(x,y+h,x,y+h-r);c.lineTo(x,y+r);c.quadraticCurveTo(x,y,x+r,y)}
+function drawPipeline(){
+  clearCanvas();const steps=['📋 Data','📏 Linear?','🍬 Sigmoid','🧠 Score','⚙️ Train','🚦 Threshold','📊 Evaluate','🔔 ROC'];
+  const n=steps.length,startX=PAD.l+10,endX=W-PAD.r-10,midY=H/2,stepW=(endX-startX)/n;
+  for(let i=0;i<n;i++){
+    const x=startX+i*stepW+stepW/2;
+    const grad=ctx.createRadialGradient(x,midY,0,x,midY,28);
+    grad.addColorStop(0,'rgba(99,102,241,0.12)');grad.addColorStop(1,'rgba(99,102,241,0.02)');
+    ctx.fillStyle=grad;ctx.beginPath();ctx.arc(x,midY,26,0,Math.PI*2);ctx.fill();
+    ctx.strokeStyle='rgba(99,102,241,0.2)';ctx.lineWidth=1.5;ctx.stroke();
+    ctx.fillStyle='#333';ctx.font='16px sans-serif';ctx.textAlign='center';ctx.fillText(steps[i].split(' ')[0],x,midY+5);
+    ctx.fillStyle=C.label;ctx.font='500 9px Inter';ctx.fillText(steps[i].split(' ').slice(1).join(' '),x,midY+42);
+    if(i<n-1){ctx.strokeStyle='rgba(99,102,241,0.15)';ctx.lineWidth=1.5;ctx.beginPath();ctx.moveTo(x+28,midY);ctx.lineTo(x+stepW-28,midY);ctx.stroke();ctx.beginPath();ctx.moveTo(x+stepW-33,midY-4);ctx.lineTo(x+stepW-28,midY);ctx.lineTo(x+stepW-33,midY+4);ctx.stroke()}
+  }
+  ctx.fillStyle=C.label;ctx.font='600 13px Inter';ctx.textAlign='center';ctx.fillText('The Logistic Regression Pipeline',W/2,PAD.t+20);
+}
+
+// ===== MAIN DRAW =====
+function draw(){
+  const w=currentStage>=5?trainedWeights:weights;
+  if(currentStage===8){drawROC(TEST,w);return}
+  if(currentStage===9){drawCoeffBars(w);return}
+  if(currentStage===10){drawPipeline();return}
+  clearCanvas();drawAxes('Temperature (°C)','Probability / Outcome');
+  // Stage 7: dim TRAIN, highlight TEST
+  if(currentStage===7){
+    drawPoints(TRAIN,w,'class',0.15);
+    drawPoints(TEST,w,'prediction',1);
+  } else if(currentStage>=1){
+    drawPoints(DATA,w,currentStage>=6?'prediction':'class',1);
+  }
+  if(currentStage===2)drawLinearLine();
+  if(currentStage>=3)drawSigmoidCurve(w);
+  if(currentStage===3)drawZDot(parseFloat(document.getElementById('zSlider').value));
+  if(currentStage===5)drawLossChart();
+  if(currentStage>=6&&currentStage<=7)drawThresholdLine(threshold);
+}
+
+// ===== HERO CANVAS =====
+const heroCanvas=document.getElementById('heroCanvas');
+const heroCtx=heroCanvas?heroCanvas.getContext('2d'):null;
+function drawHeroBg(){
+  if(!heroCtx)return;
+  const hr=heroCanvas.parentElement.getBoundingClientRect();
+  const dpr=window.devicePixelRatio||1;
+  heroCanvas.width=hr.width*dpr;heroCanvas.height=hr.height*dpr;
+  heroCtx.setTransform(dpr,0,0,dpr,0,0);
+  const w=hr.width,h=hr.height;heroCtx.clearRect(0,0,w,h);
+  for(let i=0;i<30;i++){heroCtx.fillStyle='rgba(22,163,74,0.03)';heroCtx.beginPath();heroCtx.arc(w*0.6+Math.sin(i*2.3)*80,h*0.35+Math.cos(i*1.9)*60,8+Math.sin(i)*4,0,Math.PI*2);heroCtx.fill()}
+  for(let i=0;i<30;i++){heroCtx.fillStyle='rgba(220,38,38,0.03)';heroCtx.beginPath();heroCtx.arc(w*0.4+Math.sin(i*2.1)*70,h*0.65+Math.cos(i*1.7)*55,8+Math.cos(i)*4,0,Math.PI*2);heroCtx.fill()}
+  heroCtx.strokeStyle='rgba(99,102,241,0.06)';heroCtx.lineWidth=2;heroCtx.setLineDash([12,8]);
+  heroCtx.beginPath();heroCtx.moveTo(w*0.1,h*0.8);
+  for(let x=0;x<=1;x+=0.01){const px=w*(0.1+x*0.8);heroCtx.lineTo(px,h*(0.8-0.6/(1+Math.exp(-10*(x-0.5)))))}
+  heroCtx.stroke();heroCtx.setLineDash([]);
+}
+
+// ===== SCROLL ENGINE =====
+const sections=document.querySelectorAll('[data-stage]');
+const stageIds=[...sections].map(s=>s.dataset.stage);
+const stageDots=document.getElementById('stageDots');
+stageIds.forEach((id,i)=>{const d=document.createElement('div');d.className='stage-dot';d.addEventListener('click',()=>sections[i].scrollIntoView({behavior:'smooth'}));stageDots.appendChild(d)});
+function updateDots(){document.querySelectorAll('.stage-dot').forEach((d,i)=>d.classList.toggle('active',i===currentStage))}
+const observer=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){const idx=stageIds.indexOf(e.target.dataset.stage);if(idx>=0&&idx!==currentStage){currentStage=idx;draw();updateDots();updateMetrics()}}})},{threshold:0.4});
+sections.forEach(s=>observer.observe(s));
+window.addEventListener('scroll',()=>{const h=document.documentElement;document.getElementById('progressBar').style.width=h.scrollTop/(h.scrollHeight-h.clientHeight)*100+'%'});
+
+// ===== CONTROLS =====
+document.getElementById('zSlider').addEventListener('input',function(){document.getElementById('zVal').textContent=parseFloat(this.value).toFixed(1);document.getElementById('pVal').textContent=sigmoid(parseFloat(this.value)).toFixed(3);if(currentStage===3)draw()});
+['b0','b1','b2','b3'].forEach(k=>{document.getElementById(k+'Slider').addEventListener('input',function(){weights[k]=parseFloat(this.value);document.getElementById(k+'Val').textContent=parseFloat(this.value).toFixed(2);document.getElementById('manualLoss').textContent=logLoss(TRAIN,weights).toFixed(4);if(currentStage===4)draw()})});
+let trainInterval=null;
+document.getElementById('btnTrain').addEventListener('click',()=>{
+  if(trainInterval){clearInterval(trainInterval);trainInterval=null;document.getElementById('btnTrain').textContent='▶ Train';return}
+  document.getElementById('btnTrain').textContent='⏸ Pause';
+  const lr=parseFloat(document.getElementById('lrSlider').value);
+  trainInterval=setInterval(()=>{trainStep(lr);const l=logLoss(TRAIN,trainedWeights);lossHistory.push(l);document.getElementById('trainLoss').textContent=l.toFixed(4);document.getElementById('epochVal').textContent=epoch;if(currentStage===5)draw();if(epoch>=500||l<0.15){clearInterval(trainInterval);trainInterval=null;document.getElementById('btnTrain').textContent='▶ Continue'}},30);
+});
+document.getElementById('btnReset').addEventListener('click',()=>{if(trainInterval){clearInterval(trainInterval);trainInterval=null}trainedWeights={b0:0,b1:1.5,b2:0.8,b3:0.5};epoch=0;lossHistory=[];document.getElementById('trainLoss').textContent='—';document.getElementById('epochVal').textContent='0';document.getElementById('btnTrain').textContent='▶ Train';if(currentStage===5)draw()});
+document.getElementById('lrSlider').addEventListener('input',function(){document.getElementById('lrVal').textContent=parseFloat(this.value).toFixed(3)});
+document.getElementById('threshSlider').addEventListener('input',function(){threshold=parseFloat(this.value);document.getElementById('threshVal').textContent=threshold.toFixed(2);if(currentStage>=6)draw();updateMetrics()});
+document.getElementById('btnRestart').addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
+
+// ===== METRICS =====
+function updateMetrics(){
+  if(currentStage<7)return;const w=trainedWeights;const cm=confusionMatrix(TEST,w,threshold);
+  document.getElementById('cmTP').textContent=cm.tp;document.getElementById('cmTN').textContent=cm.tn;
+  document.getElementById('cmFP').textContent=cm.fp;document.getElementById('cmFN').textContent=cm.fn;
+  const total=cm.tp+cm.tn+cm.fp+cm.fn||1;const acc=(cm.tp+cm.tn)/total;
+  const prec=cm.tp+cm.fp>0?cm.tp/(cm.tp+cm.fp):0;const rec=cm.tp+cm.fn>0?cm.tp/(cm.tp+cm.fn):0;
+  const f1=prec+rec>0?2*prec*rec/(prec+rec):0;
+  document.getElementById('mAcc').textContent=(acc*100).toFixed(0)+'%';
+  document.getElementById('mPrec').textContent=(prec*100).toFixed(0)+'%';
+  document.getElementById('mRec').textContent=(rec*100).toFixed(0)+'%';
+  document.getElementById('mF1').textContent=f1.toFixed(3);
+}
+
+// ===== INIT =====
+resizeCanvas();drawHeroBg();updateDots();
+document.getElementById('manualLoss').textContent=logLoss(TRAIN,weights).toFixed(4);
+
+
+</script>
+</body>
+</html>

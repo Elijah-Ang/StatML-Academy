@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StatML Academy | Interactive Learning</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        paper: {
+                            base: '#f7f7f4',
+                            dark: '#f0efeb',
+                        },
+                        indigo: {
+                            50: '#eef2ff',
+                            100: '#e0e7ff',
+                            500: '#6366f1',
+                            600: '#4f46e5',
+                            900: '#312e81',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background-color: #f7f7f4; 
+            color: #1e293b; 
+            -webkit-font-smoothing: antialiased;
+        }
+        
+        .bg-pattern {
+            background-image: radial-gradient(#d1d5db 1px, transparent 1px);
+            background-size: 16px 16px;
+        }
+        
+        .card-pattern {
+            background-image: radial-gradient(rgba(0,0,0,0.03) 1px, transparent 1px);
+            background-size: 8px 8px;
+        }
+
+        .nav-scrolled {
+            background-color: rgba(247, 247, 244, 0.95);
+            backdrop-filter: blur(8px);
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .hero-graphics {
+            stroke-dasharray: 1000;
+            stroke-dashoffset: 1000;
+            animation: drawLine 12s ease-out forwards infinite alternate;
+        }
+
+        @keyframes drawLine {
+            to { stroke-dashoffset: 0; }
+        }
+    </style>
+</head>
+<body class="selection:bg-indigo-100 selection:text-indigo-900">
+
+    <!-- Top Navigation -->
+    <header id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 py-4 border-b border-transparent">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-10">
+                <!-- Logo -->
+                <div class="flex items-center gap-3 cursor-pointer" onclick="window.scrollTo(0,0)">
+                    <div class="w-6 h-6 rounded border border-indigo-200 bg-white flex items-center justify-center text-indigo-600">
+                        <i data-lucide="network" class="w-3.5 h-3.5"></i>
+                    </div>
+                    <span class="font-medium text-sm tracking-wide text-slate-800">StatML Academy</span>
+                </div>
+
+                <!-- Desktop Nav -->
+                <nav class="hidden md:flex items-center gap-8">
+                    <a href="#statistics" class="font-mono text-xs uppercase tracking-widest text-slate-500 hover:text-indigo-600 transition-colors">Statistics</a>
+                    <a href="#machine-learning" class="font-mono text-xs uppercase tracking-widest text-slate-500 hover:text-indigo-600 transition-colors">Machine Learning</a>
+                </nav>
+
+                <!-- Mobile Menu Button -->
+                <button id="mobile-menu-btn" class="md:hidden p-2 text-slate-500 hover:text-indigo-600">
+                    <i data-lucide="menu" class="w-5 h-5"></i>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Mobile Nav -->
+        <div id="mobile-menu" class="hidden md:hidden bg-paper-base border-b border-slate-200 absolute w-full">
+            <div class="px-4 py-4 flex flex-col space-y-4 shadow-sm">
+                <a href="#statistics" class="mobile-nav-link font-mono text-xs uppercase tracking-widest text-slate-600">Statistics</a>
+                <a href="#machine-learning" class="mobile-nav-link font-mono text-xs uppercase tracking-widest text-slate-600">Machine Learning</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Editorial Hero Section -->
+    <section class="relative min-h-[85vh] flex flex-col justify-center bg-paper-dark border-b border-slate-200 pt-20 overflow-hidden">
+        <!-- Subtle Ambient Grid Overlay -->
+        <div class="absolute inset-0 bg-pattern opacity-[0.3] pointer-events-none"></div>
+
+        <!-- Minimal Node-Link Motion Layer -->
+        <div class="absolute inset-0 z-0 overflow-hidden opacity-[0.06] pointer-events-none flex items-center justify-center">
+            <svg class="w-full h-full text-indigo-900 absolute" viewBox="0 0 1000 600" preserveAspectRatio="xMidYMid slice">
+                <g class="animate-[pulse_8s_ease-in-out_infinite]">
+                    <circle cx="150" cy="150" r="3" fill="currentColor"/>
+                    <circle cx="350" cy="300" r="5" fill="currentColor"/>
+                    <circle cx="650" cy="200" r="3" fill="currentColor"/>
+                    <circle cx="850" cy="400" r="4" fill="currentColor"/>
+                    <circle cx="450" cy="450" r="3" fill="currentColor"/>
+                    <line x1="150" y1="150" x2="350" y2="300" stroke="currentColor" stroke-width="1" stroke-dasharray="4 4" />
+                    <line x1="350" y1="300" x2="650" y2="200" stroke="currentColor" stroke-width="1" />
+                    <line x1="350" y1="300" x2="450" y2="450" stroke="currentColor" stroke-width="1" />
+                    <line x1="650" y1="200" x2="850" y2="400" stroke="currentColor" stroke-width="1" stroke-dasharray="4 4"/>
+                    <path class="hero-graphics" d="M -50 500 Q 300 150 600 350 T 1050 150" fill="none" stroke="currentColor" stroke-width="1.5" />
+                </g>
+            </svg>
+        </div>
+        
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
+            <div class="max-w-3xl">
+                <p class="font-mono text-xs tracking-widest text-indigo-600 mb-6 uppercase">Interactive Curriculum</p>
+                <h1 class="text-4xl md:text-5xl lg:text-6xl font-semibold text-slate-950 tracking-tight leading-[1.15] mb-8">
+                    Visual essays for modern data science.
+                </h1>
+                <p class="text-lg md:text-xl text-slate-600 leading-relaxed max-w-2xl font-light">
+                    A curated collection of step-by-step visual simulators. We strip away the dense academic jargon and replace it with interactive models you can see, touch, and understand.
+                </p>
+            </div>
+        </div>
+
+        <!-- Subtle Scroll Cue -->
+        <div class="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 opacity-60">
+            <span class="font-mono text-[10px] uppercase tracking-widest text-slate-500">Scroll to begin</span>
+            <div class="w-[1px] h-8 bg-slate-400"></div>
+        </div>
+    </section>
+
+    <!-- CHAPTER 01: Statistics -->
+    <section id="statistics" class="py-32 border-b border-slate-200 bg-paper-base">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <header class="mb-24 max-w-2xl">
+                <div class="flex items-center gap-3 mb-4">
+                    <span class="w-8 h-[1px] bg-indigo-600"></span>
+                    <span class="font-mono text-xs text-indigo-600 tracking-widest uppercase">Chapter 01</span>
+                </div>
+                <h2 class="text-3xl font-semibold tracking-tight text-slate-950 mb-6">Statistics</h2>
+                <p class="text-slate-600 leading-relaxed">Establish a rigorous foundation for handling data. These modules focus on uncovering relationships, comparing variance, and understanding the core mechanics of hypothesis testing.</p>
+            </header>
+
+            <!-- Experimental Methods -->
+            <div class="mb-20">
+                <div class="flex items-end justify-between border-b border-slate-200 pb-3 mb-8">
+                    <div class="flex flex-col gap-1">
+                        <h3 class="font-mono text-xs font-semibold text-slate-600 uppercase tracking-widest">Common Experimental Analyses</h3>
+                        <span id="count-stats-exp" class="font-mono text-[10px] text-slate-400"></span>
+                    </div>
+                    <span class="font-mono text-[10px] text-slate-400">01</span>
+                </div>
+                <div id="grid-stats-exp" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- JS Injected -->
+                </div>
+            </div>
+
+            <!-- Non-Experimental Methods -->
+            <div>
+                <div class="flex items-end justify-between border-b border-slate-200 pb-3 mb-8">
+                    <div class="flex flex-col gap-1">
+                        <h3 class="font-mono text-xs font-semibold text-slate-600 uppercase tracking-widest">Observational / Non-Experimental Analyses</h3>
+                        <span id="count-stats-nonexp" class="font-mono text-[10px] text-slate-400"></span>
+                    </div>
+                    <span class="font-mono text-[10px] text-slate-400">02</span>
+                </div>
+                <div id="grid-stats-nonexp" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- JS Injected -->
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- CHAPTER 02: Machine Learning -->
+    <section id="machine-learning" class="py-32 border-b border-slate-200 bg-paper-base">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <header class="mb-24 max-w-2xl">
+                <div class="flex items-center gap-3 mb-4">
+                    <span class="w-8 h-[1px] bg-indigo-600"></span>
+                    <span class="font-mono text-xs text-indigo-600 tracking-widest uppercase">Chapter 02</span>
+                </div>
+                <h2 class="text-3xl font-semibold tracking-tight text-slate-950 mb-6">Machine Learning</h2>
+                <p class="text-slate-600 leading-relaxed">Transition from inference to prediction. Explore how algorithms classify distinct outcomes, fit flexible boundaries, and autonomously uncover hidden structures in complex datasets.</p>
+            </header>
+
+            <!-- Supervised Learning -->
+            <div class="mb-20">
+                <div class="flex items-end justify-between border-b border-slate-200 pb-3 mb-8">
+                    <div class="flex flex-col gap-1">
+                        <h3 class="font-mono text-xs font-semibold text-slate-600 uppercase tracking-widest">Supervised Learning</h3>
+                        <span id="count-ml-sup" class="font-mono text-[10px] text-slate-400"></span>
+                    </div>
+                    <span class="font-mono text-[10px] text-slate-400">01</span>
+                </div>
+                <div id="grid-ml-sup" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- JS Injected -->
+                </div>
+            </div>
+
+            <!-- Unsupervised Learning -->
+            <div>
+                <div class="flex items-end justify-between border-b border-slate-200 pb-3 mb-8">
+                    <div class="flex flex-col gap-1">
+                        <h3 class="font-mono text-xs font-semibold text-slate-600 uppercase tracking-widest">Unsupervised Learning</h3>
+                        <span id="count-ml-unsup" class="font-mono text-[10px] text-slate-400"></span>
+                    </div>
+                    <span class="font-mono text-[10px] text-slate-400">02</span>
+                </div>
+                <div id="grid-ml-unsup" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- JS Injected -->
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Minimal Footer -->
+    <footer class="bg-paper-dark py-12">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="flex items-center gap-3">
+                <div class="w-5 h-5 rounded border border-slate-300 bg-white flex items-center justify-center text-slate-500">
+                    <i data-lucide="network" class="w-3 h-3"></i>
+                </div>
+                <span class="font-medium text-sm text-slate-600">StatML Academy</span>
+            </div>
+            <div class="font-mono text-xs text-slate-400 uppercase tracking-widest">
+                Interactive Learning Platform
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript Application Logic -->
+    <script>
+        // Initialize Icons
+        lucide.createIcons();
+
+        // Navbar Scroll Logic
+        window.addEventListener('scroll', () => {
+            const header = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                header.classList.add('nav-scrolled');
+            } else {
+                header.classList.remove('nav-scrolled');
+            }
+        });
+
+        // Mobile Menu Toggle
+        const btn = document.getElementById('mobile-menu-btn');
+        const menu = document.getElementById('mobile-menu');
+        btn.addEventListener('click', () => {
+            menu.classList.toggle('hidden');
+        });
+
+        // Auto-close mobile menu on link click
+        const mobileLinks = document.querySelectorAll('.mobile-nav-link');
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                menu.classList.add('hidden');
+            });
+        });
+
+        // Data-Driven Architecture
+        const modulesData = [
+            // Statistics / Experimental
+            { id: 'anova', title: 'ANOVA', category: 'Statistics', subcategory: 'Common Experimental Analyses', desc: 'Compare variance to determine significant differences across multiple distinct groups.', difficulty: 'Intermediate', path: 'modules/anova.html', order: 1, icon: 'bar-chart' },
+            
+            // Statistics / Non-Experimental
+            { id: 'corr', title: 'Correlation', category: 'Statistics', subcategory: 'Observational / Non-Experimental Analyses', desc: 'Measure the strength and direction of linear relationships between variables.', difficulty: 'Beginner', path: 'modules/correlation.html', order: 2, icon: 'scatter-chart' },
+            { id: 'chisq', title: 'Chi-Square Test', category: 'Statistics', subcategory: 'Observational / Non-Experimental Analyses', desc: 'Analyze dependencies and expected frequencies between categorical variables.', difficulty: 'Beginner', path: 'modules/chi-square.html', order: 3, icon: 'grid-3X3' },
+            { id: 'tsa', title: 'Time Series Analysis', category: 'Statistics', subcategory: 'Observational / Non-Experimental Analyses', desc: 'Decompose and analyze data points collected over continuous time intervals.', difficulty: 'Advanced', path: 'modules/time-series-analysis.html', order: 4, icon: 'trending-up' },
+            
+            // Machine Learning / Supervised
+            { id: 'slr', title: 'Simple Linear Regression', category: 'Machine Learning', subcategory: 'Supervised Learning', desc: 'Fit a linear model using a single predictor variable to estimate outcomes.', difficulty: 'Beginner', path: 'modules/simple-linear-regression.html', order: 5, icon: 'move-up-right' },
+            { id: 'mlr', title: 'Multiple Linear Regression', category: 'Machine Learning', subcategory: 'Supervised Learning', desc: 'Combine multiple weighted variables simultaneously to predict a continuous outcome.', difficulty: 'Intermediate', path: 'modules/multiple-linear-regression.html', order: 6, icon: 'layers' },
+            { id: 'poly', title: 'Polynomial Regression', category: 'Machine Learning', subcategory: 'Supervised Learning', desc: 'Model non-linear relationships by applying polynomial transformations to features.', difficulty: 'Intermediate', path: 'modules/polynomial-regression.html', order: 7, icon: 'activity' },
+            { id: 'logreg', title: 'Logistic Regression', category: 'Machine Learning', subcategory: 'Supervised Learning', desc: 'Predict binary classifications by mapping probabilities to a sigmoid curve.', difficulty: 'Intermediate', path: 'modules/logistic-regression.html', order: 8, icon: 'toggle-right' },
+            { id: 'knn', title: 'K-Nearest Neighbors (KNN)', category: 'Machine Learning', subcategory: 'Supervised Learning', desc: 'Classify unmapped data points based purely on the proximity of surrounding neighbors.', difficulty: 'Beginner', path: 'modules/knn.html', order: 9, icon: 'focus' },
+            { id: 'lda', title: 'Linear Discriminant Analysis', category: 'Machine Learning', subcategory: 'Supervised Learning', desc: 'Find linear combinations of features that maximize the separation between distinct classes.', difficulty: 'Intermediate', path: 'modules/lda.html', order: 10, icon: 'split-square-horizontal' },
+            { id: 'qda', title: 'Quadratic Discriminant Analysis', category: 'Machine Learning', subcategory: 'Supervised Learning', desc: 'Separate classes using flexible quadratic boundaries rather than rigid straight lines.', difficulty: 'Advanced', path: 'modules/qda.html', order: 11, icon: 'aperture' },
+            { id: 'ctree', title: 'Classification Trees', category: 'Machine Learning', subcategory: 'Supervised Learning', desc: 'Split data hierarchically using node rules to classify categorical outcomes.', difficulty: 'Intermediate', path: 'modules/classification-trees.html', order: 12, icon: 'network' },
+            { id: 'rtree', title: 'Regression Trees', category: 'Machine Learning', subcategory: 'Supervised Learning', desc: 'Utilize recursive decision rules to predict continuous numerical values.', difficulty: 'Intermediate', path: 'modules/regression-trees.html', order: 13, icon: 'git-merge' },
+            
+            // Machine Learning / Unsupervised
+            { id: 'kmeans', title: 'K-Means Clustering', category: 'Machine Learning', subcategory: 'Unsupervised Learning', desc: 'Group unlabeled data into K distinct clusters by iteratively adjusting centroids.', difficulty: 'Beginner', path: 'modules/kmeans.html', order: 14, icon: 'target' },
+            { id: 'hclust', title: 'Hierarchical Clustering', category: 'Machine Learning', subcategory: 'Unsupervised Learning', desc: 'Build a structured dendrogram of nested descriptive clusters from the bottom up.', difficulty: 'Intermediate', path: 'modules/hierarchical-clustering.html', order: 15, icon: 'git-pull-request' },
+            { id: 'pca', title: 'Principal Component Analysis (PCA)', category: 'Machine Learning', subcategory: 'Unsupervised Learning', desc: 'Reduce high dimensionality by projecting data onto axes of maximum variance.', difficulty: 'Advanced', path: 'modules/pca.html', order: 16, icon: 'boxes' }
+        ];
+
+        // Editorial Card Generator
+        function createCardHTML(mod) {
+            return `
+                <a href="${mod.path}" class="group block bg-white rounded-lg border border-slate-200 hover:border-indigo-300 hover:shadow-[0_4px_16px_rgba(0,0,0,0.03)] transition-all duration-300 flex flex-col h-full overflow-hidden">
+                    <!-- Subtle Thumbnail Area -->
+                    <div class="h-28 bg-[#fafaf9] border-b border-slate-100 flex items-center justify-center text-slate-300 group-hover:text-indigo-500 group-hover:bg-[#f8f9fc] transition-colors relative">
+                        <div class="absolute inset-0 card-pattern pointer-events-none"></div>
+                        <i data-lucide="${mod.icon}" class="w-8 h-8 relative z-10 transition-transform duration-500 group-hover:scale-110 opacity-70"></i>
+                    </div>
+                    
+                    <!-- Content Area -->
+                    <div class="p-6 flex flex-col flex-grow">
+                        <!-- Quiet metadata label -->
+                        <div class="font-mono text-[10px] uppercase tracking-widest text-slate-400 mb-3 group-hover:text-indigo-400 transition-colors">
+                            LEVEL // ${mod.difficulty}
+                        </div>
+                        
+                        <h3 class="text-base font-semibold text-slate-950 mb-2 leading-tight group-hover:text-indigo-600 transition-colors">
+                            ${mod.title}
+                        </h3>
+                        
+                        <p class="text-sm text-slate-500 leading-relaxed flex-grow">
+                            ${mod.desc}
+                        </p>
+                    </div>
+                </a>
+            `;
+        }
+
+        // Render Grids logically
+        function renderGrids() {
+            // Stats / Exp
+            const expData = modulesData.filter(m => m.subcategory === 'Common Experimental Analyses').sort((a,b) => a.order - b.order);
+            document.getElementById('grid-stats-exp').innerHTML = expData.map(createCardHTML).join('');
+            document.getElementById('count-stats-exp').innerText = `${expData.length} module${expData.length !== 1 ? 's' : ''}`;
+
+            // Stats / Non-Exp
+            const nonExpData = modulesData.filter(m => m.subcategory === 'Observational / Non-Experimental Analyses').sort((a,b) => a.order - b.order);
+            document.getElementById('grid-stats-nonexp').innerHTML = nonExpData.map(createCardHTML).join('');
+            document.getElementById('count-stats-nonexp').innerText = `${nonExpData.length} module${nonExpData.length !== 1 ? 's' : ''}`;
+
+            // ML / Supervised
+            const supData = modulesData.filter(m => m.subcategory === 'Supervised Learning').sort((a,b) => a.order - b.order);
+            document.getElementById('grid-ml-sup').innerHTML = supData.map(createCardHTML).join('');
+            document.getElementById('count-ml-sup').innerText = `${supData.length} module${supData.length !== 1 ? 's' : ''}`;
+
+            // ML / Unsupervised
+            const unsupData = modulesData.filter(m => m.subcategory === 'Unsupervised Learning').sort((a,b) => a.order - b.order);
+            document.getElementById('grid-ml-unsup').innerHTML = unsupData.map(createCardHTML).join('');
+            document.getElementById('count-ml-unsup').innerText = `${unsupData.length} module${unsupData.length !== 1 ? 's' : ''}`;
+            
+            // Re-initialize injected icons
+            lucide.createIcons();
+        }
+
+        // Execute render
+        renderGrids();
+    </script>
+</body>
+</html>

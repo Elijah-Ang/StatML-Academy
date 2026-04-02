@@ -1,0 +1,1467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Linear Regression: Finding the Best Fit</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-main: #f7f7f4;
+            --bg-secondary: #f0efeb;
+            --surface: #ffffff;
+            --border: #e7e5e4;
+            --text-main: #1f2937;
+            --text-dim: #4b5563;
+            --text-muted: #6b7280;
+            --accent: #6366f1;
+            --accent-dark: #4f46e5;
+            --accent-bg: #e0e7ff;
+            --user-color: #f59e0b; /* Amber for user line */
+            --user-bg: #fef3c7;
+            --error: #dc2626;
+            --success: #16a34a;
+            
+            --font-prose: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+            
+            --layout-nav-width: 45%;
+            --layout-vis-width: 55%;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-prose);
+            color: var(--text-main);
+            background-color: var(--bg-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Typography */
+        h1 { font-size: 3.5rem; font-weight: 700; line-height: 1.1; letter-spacing: -0.02em; margin-bottom: 1rem; color: #111827; }
+        h2 { font-size: 1.75rem; font-weight: 600; line-height: 1.3; letter-spacing: -0.01em; margin-bottom: 1.5rem; }
+        p { font-size: 0.95rem; margin-bottom: 1.25rem; color: var(--text-dim); }
+        strong { color: var(--text-main); font-weight: 600; }
+        .math-text { font-family: var(--font-mono); font-size: 0.9em; background: #e5e7eb; padding: 2px 4px; border-radius: 4px; }
+
+        /* Progress Bar */
+        #progress-bar {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            height: 4px;
+            background: linear-gradient(to right, var(--accent), #818cf8);
+            transform-origin: 0% 50%;
+            transform: scaleX(0);
+            z-index: 100;
+        }
+
+        /* Hero */
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 2rem;
+            position: relative;
+        }
+        .topic-badge {
+            background-color: var(--accent-bg);
+            color: var(--accent-dark);
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 1.5rem;
+        }
+        .hero-subtitle {
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin-bottom: 3rem;
+        }
+
+        /* Layout */
+        .layout-wrapper {
+            display: flex;
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+        }
+        .narrative-col {
+            width: var(--layout-nav-width);
+            padding: 0 4rem 10vh 4rem;
+        }
+        .vis-col {
+            width: var(--layout-vis-width);
+            height: 100vh;
+            position: sticky;
+            top: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+        .canvas-container {
+            width: 100%;
+            height: 80%;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+            position: relative;
+            overflow: hidden;
+        }
+        canvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Narrative Sections */
+        .stage-section {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 4rem 0;
+            /* Removed opacity fading for better readability */
+            color: var(--text-dim);
+            transition: color 0.3s ease;
+        }
+        .stage-section.active {
+            color: var(--text-main);
+        }
+        .stage-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--accent);
+            font-weight: 700;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .stage-label::before {
+            content: "";
+            width: 20px;
+            height: 2px;
+            background-color: var(--accent);
+        }
+
+        /* Components */
+        .glass-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+        
+        .formula-block {
+            background: var(--bg-secondary);
+            font-family: var(--font-mono);
+            padding: 1rem 1.5rem;
+            border-radius: 6px;
+            border-left: 3px solid var(--accent);
+            margin: 1.5rem 0;
+            font-size: 0.9rem;
+            overflow-x: auto;
+            color: var(--text-main);
+        }
+
+        .metric-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+        .metric-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.25rem;
+            text-align: center;
+        }
+        .metric-value {
+            font-family: var(--font-mono);
+            font-size: 1.75rem;
+            font-weight: 600;
+            color: var(--accent-dark);
+        }
+        .metric-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            margin-top: 0.5rem;
+        }
+
+        /* Editable Table */
+        table.data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+            font-size: 0.85rem;
+        }
+        .data-table th, .data-table td {
+            text-align: left;
+            padding: 0.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+        .data-table th { font-weight: 600; color: var(--text-dim); }
+        .data-input {
+            width: 60px;
+            padding: 0.25rem;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            font-family: var(--font-mono);
+            text-align: right;
+            background: #f9fafb;
+        }
+        .data-input:focus {
+            outline: none;
+            border-color: var(--accent);
+            background: #fff;
+        }
+
+        /* Controls */
+        .control-group { margin-top: 1rem; }
+        .control-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text-dim);
+        }
+        input[type="range"] {
+            width: 100%;
+            accent-color: var(--accent);
+        }
+        .user-range { accent-color: var(--user-color) !important; }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        .comp-card {
+            padding: 1rem;
+            border-radius: 8px;
+            text-align: center;
+        }
+        .comp-user { background: var(--user-bg); border: 1px solid #fde68a; }
+        .comp-best { background: var(--accent-bg); border: 1px solid #c7d2fe; }
+
+        .derivation-step { margin-bottom: 0.75rem; font-family: var(--font-mono); font-size: 0.85rem; }
+        .mini-plot-title {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--accent-dark);
+            font-weight: 700;
+            margin-bottom: 0.85rem;
+        }
+        .mini-plot {
+            width: 100%;
+            height: 220px;
+            display: block;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            background: #fcfcfd;
+        }
+        .mini-plot-small { height: 180px; }
+        .mini-caption {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-top: 0.75rem;
+            margin-bottom: 0;
+        }
+        .mini-compare-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+        .mini-panel-label {
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.5rem;
+        }
+        .mini-panel-bad { color: #b45309; }
+        .mini-panel-best { color: var(--accent-dark); }
+        .check-block { margin-top: 1.5rem; }
+        .check-title {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--accent);
+            font-weight: 700;
+            margin-bottom: 0.35rem;
+        }
+        .check-item {
+            border-top: 1px solid var(--border);
+            padding: 0.8rem 0;
+        }
+        .check-item:first-of-type {
+            border-top: none;
+            padding-top: 0.2rem;
+        }
+        .check-item summary {
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+        .check-answer {
+            margin-top: 0.45rem;
+            font-size: 0.88rem;
+            color: var(--text-dim);
+        }
+        .teaching-note,
+        .warning-note {
+            border-radius: 8px;
+            padding: 1rem 1.1rem;
+            margin-top: 1.25rem;
+            font-size: 0.9rem;
+        }
+        .teaching-note {
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
+            color: #1d4ed8;
+        }
+        .warning-note {
+            background: #fffbeb;
+            border: 1px solid #fde68a;
+            color: #92400e;
+        }
+        .warning-note.is-alert {
+            background: #fef2f2;
+            border-color: #fecaca;
+            color: #991b1b;
+        }
+
+        /* Mobile */
+        @media (max-width: 900px) {
+            .layout-wrapper { flex-direction: column; }
+            .narrative-col, .vis-col { width: 100%; padding: 1.5rem; }
+            .vis-col { height: 50vh; position: sticky; top: 0; z-index: 10; background: var(--bg-main); padding-bottom: 1rem; }
+            .canvas-container { height: 100%; }
+            .stage-section { min-height: auto; padding: 3rem 0; }
+            h1 { font-size: 2.5rem; }
+            .mini-compare-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="progress-bar"></div>
+
+    <section class="hero">
+        <div class="topic-badge">Interactive Blueprint</div>
+        <h1>Simple Linear Regression</h1>
+        <p class="hero-subtitle">Predicting the future by finding the best straight line through our messy reality.</p>
+        <div class="scroll-cue">Scroll to Begin</div>
+    </section>
+
+    <div class="layout-wrapper">
+        <div class="narrative-col" id="narrative">
+            
+            <!-- Stage 1: Data -->
+            <section class="stage-section" data-stage="1">
+                <div class="stage-label">Stage 01</div>
+                <h2>The Editable Reality</h2>
+                <p>Data science begins with observation. We collect pairs of information to see if one thing can predict another.</p>
+                <p>Below is our dataset: <strong>Hours Studied (x)</strong> vs <strong>Test Score (y)</strong>. <em>Try changing the numbers!</em> Watch the canvas update live.</p>
+                
+                <div class="glass-card">
+                    <table class="data-table" id="points-table">
+                        <thead>
+                            <tr>
+                                <th>Student</th>
+                                <th>Hours (x)</th>
+                                <th>Score (y)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Populated by JS -->
+                        </tbody>
+                    </table>
+                    <div style="display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 0.85rem; color: var(--accent-dark); margin-top: 1rem;">
+                        <span>Mean x̄ = <span id="stat-mean-x">3.0</span></span>
+                        <span>Mean ȳ = <span id="stat-mean-y">60.0</span></span>
+                    </div>
+                </div>
+                <p>Plotted on the right, each dot is a student. As we move right, the dots generally go up.</p>
+            </section>
+
+            <!-- Stage 2: User Line -->
+            <section class="stage-section" data-stage="2">
+                <div class="stage-label">Stage 02</div>
+                <h2>Make Your Guess</h2>
+                <p>We want to predict scores for any amount of study time. Our model will be a straight line: <span class="math-text">ŷ = b₀ + b₁x</span></p>
+                <p>Before we use math to find the <em>perfect</em> line, try to fit it yourself. Adjust the sliders to move your <strong style="color: var(--user-color);">amber line</strong> through the points.</p>
+                
+                <div class="glass-card">
+                    <div class="control-group">
+                        <div class="control-label">
+                            <span>Intercept (b₀): Where it starts</span>
+                            <span id="label-user-b" style="font-family: var(--font-mono);">--</span>
+                        </div>
+                        <input type="range" class="user-range" id="slider-user-b" min="20" max="80" step="0.5">
+                    </div>
+                    <div class="control-group">
+                        <div class="control-label">
+                            <span>Slope (b₁): How steep it is</span>
+                            <span id="label-user-m" style="font-family: var(--font-mono);">--</span>
+                        </div>
+                        <input type="range" class="user-range" id="slider-user-m" min="-5" max="15" step="0.1">
+                    </div>
+                </div>
+
+                <div class="glass-card check-block">
+                    <div class="check-title">Check Your Understanding</div>
+                    <details class="check-item">
+                        <summary>If the slope gets bigger, does the line get steeper or flatter?</summary>
+                        <div class="check-answer">Steeper.</div>
+                    </details>
+                    <details class="check-item">
+                        <summary>If the intercept changes, which crossing moves first?</summary>
+                        <div class="check-answer">The y-axis crossing. The whole line shifts up or down.</div>
+                    </details>
+                </div>
+            </section>
+
+            <!-- Stage 3: Residuals -->
+            <section class="stage-section" data-stage="3">
+                <div class="stage-label">Stage 03</div>
+                <h2>Measuring the Mistakes</h2>
+                <p>How wrong is your guessed line? We measure the vertical distance from every real data point to your line.</p>
+                <div class="formula-block">Error = Actual (y) - Predicted (ŷ)</div>
+                <p>These gaps are called <strong>Residuals</strong>. Below is the live table of your line's errors.</p>
+
+                <div class="glass-card">
+                    <div class="mini-plot-title">Residual Diagram</div>
+                    <svg id="mini-residual-plot" class="mini-plot" viewBox="0 0 360 220" role="img" aria-label="Residual diagram showing actual points, predicted points on the line, and vertical residual gaps"></svg>
+                    <p class="mini-caption">Filled dots are actual scores. Hollow dots sit on the line. The dashed red gaps are residuals.</p>
+                </div>
+                
+                <div class="glass-card" style="max-height: 200px; overflow-y: auto;">
+                    <table class="data-table" id="residuals-table">
+                        <thead><tr><th>x</th><th>y</th><th>ŷ (Pred)</th><th>Error</th></tr></thead>
+                        <tbody><!-- Populated by JS --></tbody>
+                    </table>
+                </div>
+
+                <div class="teaching-note">
+                    <strong>Outlier note:</strong> A dot far away from the others is called an outlier. It can make one residual huge and pull the line.
+                </div>
+
+                <div class="glass-card check-block">
+                    <div class="check-title">Check Your Understanding</div>
+                    <details class="check-item">
+                        <summary>If a point is above the line, is its residual positive or negative?</summary>
+                        <div class="check-answer">Positive.</div>
+                    </details>
+                    <details class="check-item">
+                        <summary>Does a small residual mean the prediction was close or far?</summary>
+                        <div class="check-answer">Close.</div>
+                    </details>
+                </div>
+            </section>
+
+            <!-- Stage 4: Squares -->
+            <section class="stage-section" data-stage="4">
+                <div class="stage-label">Stage 04</div>
+                <h2>The Penalty for Being Wrong</h2>
+                <p>If we just add up the errors, positive and negative errors cancel out. To prevent this, we <strong>square the errors</strong>.</p>
+                <p>Squaring turns all negatives positive, and heavily punishes massive mistakes (an error of 10 explodes into 100).</p>
+                
+                <div class="glass-card" style="text-align: center;">
+                    <div style="font-size: 0.85rem; color: var(--text-muted); text-transform: uppercase;">Your Line's Total Sum of Squared Errors (SSE)</div>
+                    <div id="stat-user-sse" style="font-family: var(--font-mono); font-size: 2.5rem; font-weight: 700; color: var(--error);">0.0</div>
+                </div>
+                <p>On the right, the red boxes represent these squared errors. To find the best line, we need to shrink this SSE number to the absolute minimum.</p>
+            </section>
+
+            <!-- Stage 5: Math Derivation -->
+            <section class="stage-section" data-stage="5">
+                <div class="stage-label">Stage 05</div>
+                <h2>The Least Squares Engine</h2>
+                <p>Instead of guessing, calculus gives us the exact formulas to minimize the squares. Watch the math compute live based on your data:</p>
+                
+                <div class="formula-block">
+                    <div class="derivation-step">1. Find Means: x̄ = <span id="der-xbar"></span>, ȳ = <span id="der-ybar"></span></div>
+                    <div class="derivation-step">2. Numerator = Σ(x - x̄)(y - ȳ) = <span id="der-num"></span></div>
+                    <div class="derivation-step">3. Denominator = Σ(x - x̄)² = <span id="der-den"></span></div>
+                    <div class="derivation-step" style="color: var(--accent-dark); font-weight: bold;">4. Slope (b₁) = Num ÷ Den = <span id="der-m"></span></div>
+                    <div class="derivation-step" style="color: var(--accent-dark); font-weight: bold;">5. Intercept (b₀) = ȳ - b₁x̄ = <span id="der-b"></span></div>
+                </div>
+
+                <div class="warning-note" id="regression-warning" hidden>
+                    <strong>Special case:</strong> All x-values are identical, so there is no left-to-right spread to learn from. The simulator falls back to a flat line at the average score instead of a meaningful fitted relationship.
+                </div>
+                
+                <p>Notice the <strong style="color: #16a34a;">green dot</strong> on the canvas? That is the mean point (x̄, ȳ). The perfect regression line <em>always</em> passes exactly through the average of x and the average of y.</p>
+            </section>
+
+            <!-- Stage 6: The Final Line -->
+            <section class="stage-section" data-stage="6">
+                <div class="stage-label">Stage 06</div>
+                <h2>The Optimal Line</h2>
+                <p>The math has spoken. The canvas has automatically shifted to the statistically perfect line, shrinking the error boxes to their mathematical limit.</p>
+                
+                <div class="metric-grid">
+                    <div class="metric-card">
+                        <div class="metric-value" id="stat-opt-b">45.3</div>
+                        <div class="metric-label">Best Intercept (b₀)</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value" id="stat-opt-m">4.9</div>
+                        <div class="metric-label">Best Slope (b₁)</div>
+                    </div>
+                </div>
+                <div class="glass-card" style="text-align: center;">
+                    <div style="font-size: 0.85rem; color: var(--text-muted); text-transform: uppercase;">Minimized Sum of Squared Errors (SSE)</div>
+                    <div id="stat-opt-sse" style="font-family: var(--font-mono); font-size: 2rem; font-weight: 700; color: var(--success);">0.0</div>
+                </div>
+
+                <div class="glass-card">
+                    <div class="mini-plot-title">Scatterplot of Raw Data + Fitted Line</div>
+                    <svg id="mini-fit-plot" class="mini-plot" viewBox="0 0 360 220" role="img" aria-label="Scatterplot showing raw data points and the fitted regression line"></svg>
+                    <p class="mini-caption">Black dots are the raw data. The blue line is the fitted regression line.</p>
+                </div>
+
+                <div class="glass-card">
+                    <div class="mini-plot-title">Bad Line vs Best-Fit Line</div>
+                    <div class="mini-compare-grid">
+                        <div>
+                            <div class="mini-panel-label mini-panel-bad">Bad Line</div>
+                            <svg id="mini-bad-line-plot" class="mini-plot mini-plot-small" viewBox="0 0 360 220" role="img" aria-label="Plot showing a bad line with larger errors"></svg>
+                            <p class="mini-caption">Bigger squared gaps. SSE = <strong id="mini-bad-sse">0.0</strong></p>
+                        </div>
+                        <div>
+                            <div class="mini-panel-label mini-panel-best">Best-Fit Line</div>
+                            <svg id="mini-best-line-plot" class="mini-plot mini-plot-small" viewBox="0 0 360 220" role="img" aria-label="Plot showing the best-fit line with smaller errors"></svg>
+                            <p class="mini-caption">Smaller squared gaps. SSE = <strong id="mini-best-sse">0.0</strong></p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Stage 7: Scorecard -->
+            <section class="stage-section" data-stage="7">
+                <div class="stage-label">Stage 07</div>
+                <h2>The Model Scorecard</h2>
+                <p>How much can we trust this line? We grade the model using your live data:</p>
+                
+                <div class="glass-card">
+                    <p><strong>R² (Proportion of Variance Explained): <span id="stat-r2" style="color:var(--accent-dark); font-family:var(--font-mono); font-weight:bold;">0.00</span></strong><br>
+                    R² tells us what percentage of the variance in test scores is explained by study hours. 1.0 is perfect. We compare our line's errors (SSE) against the errors of just guessing the flat average (SST).</p>
+                    <div style="font-family: var(--font-mono); font-size: 0.8rem; margin: 10px 0; padding: 5px; background: #f3f4f6;">R² = 1 - (SSE / SST)</div>
+                    
+                    <p style="margin-top: 1.5rem;"><strong>RSE (Residual Standard Error): <span id="stat-rse" style="color:var(--accent-dark); font-family:var(--font-mono); font-weight:bold;">0.00</span></strong><br>
+                    This is the typical size of our miss. When we predict a score, we are typically off by this many points.</p>
+                </div>
+            </section>
+
+            <!-- Stage 8: Playground -->
+            <section class="stage-section" data-stage="8">
+                <div class="stage-label">Stage 08</div>
+                <h2>Interactive Playground</h2>
+                <p>Let's pit your custom manual line against the statistically perfect line.</p>
+                
+                <div class="comparison-grid">
+                    <div class="comp-card comp-user">
+                        <div style="font-size: 0.75rem; font-weight: bold; color: #b45309; text-transform: uppercase;">Your Line</div>
+                        <div id="play-user-eq" style="font-family: var(--font-mono); margin: 0.5rem 0; font-size: 0.9rem;">y = 40 + 7x</div>
+                        <div style="font-size: 0.75rem;">SSE: <span id="play-user-sse" style="font-family: var(--font-mono); font-weight: bold;">0.0</span></div>
+                    </div>
+                    <div class="comp-card comp-best">
+                        <div style="font-size: 0.75rem; font-weight: bold; color: var(--accent-dark); text-transform: uppercase;">Best Fit Line</div>
+                        <div id="play-opt-eq" style="font-family: var(--font-mono); margin: 0.5rem 0; font-size: 0.9rem;">y = 45.3 + 4.9x</div>
+                        <div style="font-size: 0.75rem;">SSE: <span id="play-opt-sse" style="font-family: var(--font-mono); font-weight: bold;">0.0</span></div>
+                    </div>
+                </div>
+
+                <div class="glass-card">
+                    <div class="control-group">
+                        <div class="control-label">
+                            <span>Predict for Hours (x):</span>
+                            <span id="playground-x-val" style="font-family: var(--font-mono);">3.5</span>
+                        </div>
+                        <input type="range" id="slider-predict-x" min="0" max="10" step="0.1" value="3.5">
+                    </div>
+                    <div style="margin-top: 1.5rem; display: flex; justify-content: space-around;">
+                        <div style="text-align: center;">
+                            <span style="font-size: 0.75rem; color: #b45309; text-transform: uppercase;">Your Prediction</span><br>
+                            <span id="play-pred-user" style="font-family: var(--font-mono); font-size: 1.5rem; color: #b45309; font-weight: 600;">64.5</span>
+                        </div>
+                        <div style="text-align: center;">
+                            <span style="font-size: 0.75rem; color: var(--accent-dark); text-transform: uppercase;">Best Prediction</span><br>
+                            <span id="play-pred-opt" style="font-family: var(--font-mono); font-size: 1.5rem; color: var(--accent-dark); font-weight: 600;">62.5</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="warning-note" id="extrapolation-note">
+                    <strong>Prediction warning:</strong> Our real data only goes from <span class="math-text">x = <span id="obs-min-x">1.0</span></span> to <span class="math-text">x = <span id="obs-max-x">5.0</span></span>. <span id="extrapolation-status">Stay careful when you predict beyond that range.</span>
+                </div>
+
+                <div class="glass-card check-block">
+                    <div class="check-title">Check Your Understanding</div>
+                    <details class="check-item">
+                        <summary>Is predicting at x = 20 safer or riskier than predicting at x = 4?</summary>
+                        <div class="check-answer">Riskier, because x = 20 is beyond the observed data.</div>
+                    </details>
+                    <details class="check-item">
+                        <summary>Does the best line try to make every point perfect?</summary>
+                        <div class="check-answer">No. It tries to make the total squared error as small as possible.</div>
+                    </details>
+                </div>
+            </section>
+
+        </div>
+        
+        <div class="vis-col">
+            <div class="canvas-container">
+                <canvas id="regCanvas"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- Core Data Engine ---
+        let points = [
+            { id: 'A', x: 1, y: 50 },
+            { id: 'B', x: 2, y: 55 },
+            { id: 'C', x: 3, y: 61 },
+            { id: 'D', x: 4, y: 64 },
+            { id: 'E', x: 5, y: 70 }
+        ];
+
+        // Model Stats
+        let stats = {
+            n: 0, xBar: 0, yBar: 0,
+            num: 0, den: 0,
+            optM: 0, optB: 0,
+            optSse: 0, sst: 0,
+            r2: 0, rse: 0,
+            userSse: 0
+        };
+
+        // UI State
+        let state = {
+            stage: 1,
+            userM: 7.0,
+            userB: 40.0,
+            animM: 7.0,      // Animated slope for rendering
+            animB: 40.0,     // Animated intercept for rendering
+            playX: 3.5,
+            
+            // Render Alpha flags targeted by stages
+            showPoints: 1,
+            showUserLine: 0,
+            showOptLine: 0,
+            showResid: 0,
+            showSquares: 0,
+            showMean: 0,
+            showPlayground: 0
+        };
+
+        const DEFAULT_BOUNDS = { minX: 0, maxX: 10, minY: 0, maxY: 100 };
+        let plotBounds = { ...DEFAULT_BOUNDS, xStep: 2, yStep: 20 };
+
+        function niceStep(range, targetTicks = 5) {
+            if (!Number.isFinite(range) || range <= 0) return 1;
+
+            const rough = range / targetTicks;
+            const power = Math.pow(10, Math.floor(Math.log10(rough)));
+            const fraction = rough / power;
+            let niceFraction = 10;
+
+            if (fraction <= 1) niceFraction = 1;
+            else if (fraction <= 2) niceFraction = 2;
+            else if (fraction <= 2.5) niceFraction = 2.5;
+            else if (fraction <= 5) niceFraction = 5;
+
+            return niceFraction * power;
+        }
+
+        function getTickValues(min, max, step) {
+            const values = [];
+            const count = Math.round((max - min) / step);
+            for (let i = 0; i <= count; i++) {
+                values.push(Number((min + i * step).toFixed(10)));
+            }
+            return values;
+        }
+
+        function formatAxisValue(value, step) {
+            const decimals = step < 1 ? 2 : step < 5 ? 1 : 0;
+            return value.toFixed(decimals).replace(/\.0+$/, '').replace(/(\.\d*[1-9])0+$/, '$1');
+        }
+
+        function getPlotBounds() {
+            const xValues = points.map(p => p.x);
+            const yValues = points.map(p => p.y);
+
+            const rawMinX = Math.min(DEFAULT_BOUNDS.minX, ...xValues);
+            const rawMaxX = Math.max(DEFAULT_BOUNDS.maxX, ...xValues);
+            const rawMinY = Math.min(DEFAULT_BOUNDS.minY, ...yValues);
+            const rawMaxY = Math.max(DEFAULT_BOUNDS.maxY, ...yValues);
+
+            const xStep = niceStep(rawMaxX - rawMinX || (DEFAULT_BOUNDS.maxX - DEFAULT_BOUNDS.minX));
+            const yStep = niceStep(rawMaxY - rawMinY || (DEFAULT_BOUNDS.maxY - DEFAULT_BOUNDS.minY));
+
+            return {
+                minX: Math.floor(rawMinX / xStep) * xStep,
+                maxX: Math.ceil(rawMaxX / xStep) * xStep,
+                minY: Math.floor(rawMinY / yStep) * yStep,
+                maxY: Math.ceil(rawMaxY / yStep) * yStep,
+                xStep,
+                yStep
+            };
+        }
+
+        // --- DOM Elements ---
+        const tbody = document.querySelector('#points-table tbody');
+        const residBody = document.querySelector('#residuals-table tbody');
+        const userBSlider = document.getElementById('slider-user-b');
+        const userMSlider = document.getElementById('slider-user-m');
+        const predictXSlider = document.getElementById('slider-predict-x');
+        const userBLabel = document.getElementById('label-user-b');
+        const userMLabel = document.getElementById('label-user-m');
+        const predictXLabel = document.getElementById('playground-x-val');
+        const regressionWarning = document.getElementById('regression-warning');
+
+        function clamp(value, min, max) {
+            return Math.min(max, Math.max(min, value));
+        }
+
+        function roundDown(value, step) {
+            return Math.floor(value / step) * step;
+        }
+
+        function roundUp(value, step) {
+            return Math.ceil(value / step) * step;
+        }
+        
+        // --- Compute Logic ---
+        function computeModel() {
+            stats.n = points.length;
+            let sumX = 0, sumY = 0;
+            points.forEach(p => { sumX += p.x; sumY += p.y; });
+            stats.xBar = sumX / stats.n;
+            stats.yBar = sumY / stats.n;
+
+            stats.num = 0;
+            stats.den = 0;
+            stats.sst = 0;
+            points.forEach(p => {
+                const dx = p.x - stats.xBar;
+                const dy = p.y - stats.yBar;
+                stats.num += dx * dy;
+                stats.den += dx * dx;
+                stats.sst += dy * dy;
+            });
+
+            // Prevent div by zero
+            stats.optM = stats.den === 0 ? 0 : stats.num / stats.den;
+            stats.optB = stats.yBar - stats.optM * stats.xBar;
+
+            stats.optSse = 0;
+            stats.userSse = 0;
+            points.forEach(p => {
+                const optPred = stats.optM * p.x + stats.optB;
+                stats.optSse += Math.pow(p.y - optPred, 2);
+                
+                const userPred = state.userM * p.x + state.userB;
+                stats.userSse += Math.pow(p.y - userPred, 2);
+            });
+
+            stats.r2 = stats.sst === 0 ? 1 : Math.max(0, 1 - (stats.optSse / stats.sst));
+            stats.rse = stats.n > 2 ? Math.sqrt(stats.optSse / (stats.n - 2)) : 0;
+        }
+
+        // --- UI Updaters ---
+        function buildTable() {
+            tbody.innerHTML = '';
+            points.forEach((p, idx) => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${p.id}</td>
+                    <td><input type="number" class="data-input" data-idx="${idx}" data-axis="x" step="0.5" value="${p.x}"></td>
+                    <td><input type="number" class="data-input" data-idx="${idx}" data-axis="y" step="1" value="${p.y}"></td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            document.querySelectorAll('.data-input').forEach(input => {
+                input.addEventListener('input', (e) => {
+                    const idx = parseInt(e.target.dataset.idx);
+                    const axis = e.target.dataset.axis;
+                    const val = parseFloat(e.target.value) || 0;
+                    points[idx][axis] = val;
+                    updateAll();
+                });
+            });
+        }
+
+        function updateDOMText() {
+            // Stage 1
+            document.getElementById('stat-mean-x').textContent = stats.xBar.toFixed(2);
+            document.getElementById('stat-mean-y').textContent = stats.yBar.toFixed(2);
+            
+            // Stage 3: Residuals Table (using user's line as that's what's shown)
+            let resHtml = '';
+            points.forEach(p => {
+                const pred = state.userM * p.x + state.userB;
+                const err = p.y - pred;
+                resHtml += `<tr>
+                    <td>${p.x}</td><td>${p.y}</td>
+                    <td>${pred.toFixed(1)}</td>
+                    <td style="color: ${err > 0 ? 'var(--success)' : 'var(--error)'}">${err.toFixed(1)}</td>
+                </tr>`;
+            });
+            residBody.innerHTML = resHtml;
+
+            // Stage 4
+            document.getElementById('stat-user-sse').textContent = stats.userSse.toFixed(1);
+
+            // Stage 5
+            document.getElementById('der-xbar').textContent = stats.xBar.toFixed(2);
+            document.getElementById('der-ybar').textContent = stats.yBar.toFixed(2);
+            document.getElementById('der-num').textContent = stats.num.toFixed(2);
+            document.getElementById('der-den').textContent = stats.den.toFixed(2);
+            document.getElementById('der-m').textContent = stats.optM.toFixed(3);
+            document.getElementById('der-b').textContent = stats.optB.toFixed(2);
+            regressionWarning.hidden = stats.den !== 0;
+
+            // Stage 6
+            document.getElementById('stat-opt-m').textContent = stats.optM.toFixed(2);
+            document.getElementById('stat-opt-b').textContent = stats.optB.toFixed(1);
+            document.getElementById('stat-opt-sse').textContent = stats.optSse.toFixed(1);
+
+            // Stage 7
+            document.getElementById('stat-r2').textContent = stats.r2.toFixed(3);
+            document.getElementById('stat-rse').textContent = stats.rse.toFixed(2);
+
+            // Stage 8
+            document.getElementById('play-user-eq').textContent = `y = ${state.userB.toFixed(1)} + ${state.userM.toFixed(1)}x`;
+            document.getElementById('play-user-sse').textContent = stats.userSse.toFixed(1);
+            document.getElementById('play-opt-eq').textContent = `y = ${stats.optB.toFixed(1)} + ${stats.optM.toFixed(1)}x`;
+            document.getElementById('play-opt-sse').textContent = stats.optSse.toFixed(1);
+            
+            const pUser = state.userM * state.playX + state.userB;
+            const pOpt = stats.optM * state.playX + stats.optB;
+            document.getElementById('play-pred-user').textContent = pUser.toFixed(1);
+            document.getElementById('play-pred-opt').textContent = pOpt.toFixed(1);
+
+            updateLearningPanels();
+        }
+
+        function updateAll() {
+            computeModel();
+            plotBounds = getPlotBounds();
+            updateInteractiveControls();
+            updateDOMText();
+        }
+
+        function getObservedRange() {
+            const xValues = points.map(p => p.x);
+            return {
+                min: Math.min(...xValues),
+                max: Math.max(...xValues)
+            };
+        }
+
+        function getControlRanges() {
+            const xValues = points.map(p => p.x);
+            const yValues = points.map(p => p.y);
+            const observedRange = getObservedRange();
+            const yMin = Math.min(...yValues);
+            const yMax = Math.max(...yValues);
+            const ySpan = Math.max(yMax - yMin, 10);
+            const xSpan = Math.max(observedRange.max - observedRange.min, 1);
+            const interceptPad = Math.max(10, ySpan);
+            const interceptStep = 0.5;
+            const slopeStep = 0.1;
+
+            const pairwiseSlopes = [];
+            for (let i = 0; i < points.length; i++) {
+                for (let j = i + 1; j < points.length; j++) {
+                    const dx = points[j].x - points[i].x;
+                    if (dx !== 0) {
+                        pairwiseSlopes.push((points[j].y - points[i].y) / dx);
+                    }
+                }
+            }
+
+            const baseSlope = ySpan / xSpan;
+            const slopeCandidates = pairwiseSlopes.length ? pairwiseSlopes : [0];
+            slopeCandidates.push(-baseSlope, baseSlope, stats.optM);
+
+            const slopeMinRaw = Math.min(...slopeCandidates);
+            const slopeMaxRaw = Math.max(...slopeCandidates);
+            const slopePad = Math.max(2, (slopeMaxRaw - slopeMinRaw) * 0.5, baseSlope * 0.5);
+
+            const predictRange = observedRange.max - observedRange.min;
+            const predictStep = predictRange === 0 ? 0.1 : Math.max(0.1, Number(niceStep(predictRange / 40).toFixed(2)));
+
+            let slopeMin = roundDown(slopeMinRaw - slopePad, slopeStep);
+            let slopeMax = roundUp(slopeMaxRaw + slopePad, slopeStep);
+            if (slopeMin === slopeMax) {
+                slopeMin -= 1;
+                slopeMax += 1;
+            }
+
+            let interceptMin = roundDown(Math.min(yMin - interceptPad, stats.optB), interceptStep);
+            let interceptMax = roundUp(Math.max(yMax + interceptPad, stats.optB), interceptStep);
+            if (interceptMin === interceptMax) {
+                interceptMin -= 5;
+                interceptMax += 5;
+            }
+
+            return {
+                interceptMin,
+                interceptMax,
+                interceptStep,
+                slopeMin,
+                slopeMax,
+                slopeStep,
+                predictMin: observedRange.min,
+                predictMax: observedRange.max,
+                predictStep
+            };
+        }
+
+        function updateInteractiveControls() {
+            const ranges = getControlRanges();
+
+            userBSlider.min = ranges.interceptMin;
+            userBSlider.max = ranges.interceptMax;
+            userBSlider.step = ranges.interceptStep;
+            state.userB = clamp(state.userB, ranges.interceptMin, ranges.interceptMax);
+            userBSlider.value = state.userB;
+            userBLabel.textContent = state.userB.toFixed(1);
+
+            userMSlider.min = ranges.slopeMin;
+            userMSlider.max = ranges.slopeMax;
+            userMSlider.step = ranges.slopeStep;
+            state.userM = clamp(state.userM, ranges.slopeMin, ranges.slopeMax);
+            userMSlider.value = state.userM;
+            userMLabel.textContent = state.userM.toFixed(1);
+
+            predictXSlider.min = ranges.predictMin;
+            predictXSlider.max = ranges.predictMax;
+            predictXSlider.step = ranges.predictStep;
+            state.playX = clamp(state.playX, ranges.predictMin, ranges.predictMax);
+            predictXSlider.value = state.playX;
+            predictXLabel.textContent = state.playX.toFixed(1);
+        }
+
+        function getBadLine() {
+            const { slopeMin, slopeMax } = getControlRanges();
+            const slopeSpan = Math.max(slopeMax - slopeMin, 1);
+            const direction = stats.optM >= 0 ? 1 : -1;
+            const primaryOffset = Math.max(Math.abs(stats.optM) * 0.6, slopeSpan * 0.22, 1);
+            const alternateOffset = Math.max(slopeSpan * 0.3, 1.5);
+
+            let badM = stats.optM + direction * primaryOffset;
+            if (badM > slopeMax || badM < slopeMin) {
+                badM = stats.optM - direction * primaryOffset;
+            }
+
+            badM = clamp(badM, slopeMin, slopeMax);
+
+            if (Math.abs(badM - stats.optM) < 0.5) {
+                badM = clamp(stats.optM - direction * alternateOffset, slopeMin, slopeMax);
+            }
+
+            if (Math.abs(badM - stats.optM) < 0.5) {
+                badM = clamp(stats.optM + (direction * -1 || 1) * Math.max(slopeSpan * 0.4, 2), slopeMin, slopeMax);
+            }
+
+            const badB = stats.yBar - badM * stats.xBar;
+            let sse = 0;
+            points.forEach(p => {
+                const pred = badM * p.x + badB;
+                sse += Math.pow(p.y - pred, 2);
+            });
+
+            return { m: badM, b: badB, sse };
+        }
+
+        function renderMiniChart(svgId, options = {}) {
+            const svg = document.getElementById(svgId);
+            if (!svg) return;
+
+            const w = 360;
+            const h = 220;
+            const pad = { top: 22, right: 18, bottom: 40, left: 42 };
+            const chartW = w - pad.left - pad.right;
+            const chartH = h - pad.top - pad.bottom;
+            const clipId = `${svgId}-clip`;
+            const bounds = plotBounds;
+
+            const sx = val => pad.left + ((val - bounds.minX) / (bounds.maxX - bounds.minX || 1)) * chartW;
+            const sy = val => h - pad.bottom - ((val - bounds.minY) / (bounds.maxY - bounds.minY || 1)) * chartH;
+
+            let markup = `
+                <defs>
+                    <clipPath id="${clipId}">
+                        <rect x="${pad.left}" y="${pad.top}" width="${chartW}" height="${chartH}" rx="10"></rect>
+                    </clipPath>
+                </defs>
+                <rect x="0" y="0" width="${w}" height="${h}" fill="#fcfcfd"></rect>
+                <rect x="${pad.left}" y="${pad.top}" width="${chartW}" height="${chartH}" rx="10" fill="#ffffff" stroke="#e7e5e4"></rect>
+            `;
+
+            getTickValues(bounds.minX, bounds.maxX, bounds.xStep).forEach(x => {
+                markup += `
+                    <line x1="${sx(x)}" y1="${pad.top}" x2="${sx(x)}" y2="${h - pad.bottom}" stroke="#f1f5f9" stroke-width="1"></line>
+                    <text x="${sx(x)}" y="${h - pad.bottom + 18}" text-anchor="middle" font-size="10" fill="#6b7280" font-family="JetBrains Mono, monospace">${formatAxisValue(x, bounds.xStep)}</text>
+                `;
+            });
+
+            getTickValues(bounds.minY, bounds.maxY, bounds.yStep).forEach(y => {
+                markup += `
+                    <line x1="${pad.left}" y1="${sy(y)}" x2="${w - pad.right}" y2="${sy(y)}" stroke="#f1f5f9" stroke-width="1"></line>
+                    <text x="${pad.left - 8}" y="${sy(y) + 3}" text-anchor="end" font-size="10" fill="#6b7280" font-family="JetBrains Mono, monospace">${formatAxisValue(y, bounds.yStep)}</text>
+                `;
+            });
+
+            markup += `
+                <line x1="${pad.left}" y1="${h - pad.bottom}" x2="${w - pad.right}" y2="${h - pad.bottom}" stroke="#cbd5e1" stroke-width="1.5"></line>
+                <line x1="${pad.left}" y1="${pad.top}" x2="${pad.left}" y2="${h - pad.bottom}" stroke="#cbd5e1" stroke-width="1.5"></line>
+                <text x="${w / 2}" y="${h - 8}" text-anchor="middle" font-size="11" fill="#64748b" font-family="Inter, sans-serif">Hours</text>
+                <text x="16" y="${h / 2}" text-anchor="middle" font-size="11" fill="#64748b" font-family="Inter, sans-serif" transform="rotate(-90 16 ${h / 2})">Score</text>
+                <g clip-path="url(#${clipId})">
+            `;
+
+            (options.lines || []).forEach(line => {
+                const strokeDash = line.dash ? `stroke-dasharray="${line.dash}"` : '';
+                markup += `
+                    <line
+                        x1="${sx(bounds.minX)}"
+                        y1="${sy(line.m * bounds.minX + line.b)}"
+                        x2="${sx(bounds.maxX)}"
+                        y2="${sy(line.m * bounds.maxX + line.b)}"
+                        stroke="${line.color}"
+                        stroke-width="${line.width || 3}"
+                        ${strokeDash}
+                    ></line>
+                `;
+            });
+
+            if (options.showResiduals && options.residualLine) {
+                points.forEach(p => {
+                    const predY = options.residualLine.m * p.x + options.residualLine.b;
+                    markup += `
+                        <line
+                            x1="${sx(p.x)}"
+                            y1="${sy(p.y)}"
+                            x2="${sx(p.x)}"
+                            y2="${sy(predY)}"
+                            stroke="#dc2626"
+                            stroke-width="2"
+                            stroke-dasharray="5 4"
+                        ></line>
+                        <circle cx="${sx(p.x)}" cy="${sy(predY)}" r="4.5" fill="#ffffff" stroke="#dc2626" stroke-width="2"></circle>
+                    `;
+                });
+            }
+
+            points.forEach(p => {
+                markup += `<circle cx="${sx(p.x)}" cy="${sy(p.y)}" r="5" fill="#1f2937" stroke="#ffffff" stroke-width="1.5"></circle>`;
+            });
+
+            markup += `</g>`;
+
+            if (options.legend && options.legend.length) {
+                const legendStep = chartW / options.legend.length;
+                options.legend.forEach((item, index) => {
+                    const lx = pad.left + (legendStep * index);
+                    const ly = 14;
+
+                    if (item.type === 'line') {
+                        const dashAttr = item.dash ? `stroke-dasharray="${item.dash}"` : '';
+                        markup += `<line x1="${lx}" y1="${ly}" x2="${lx + 18}" y2="${ly}" stroke="${item.color}" stroke-width="3" ${dashAttr}></line>`;
+                    } else {
+                        markup += `<circle cx="${lx + 9}" cy="${ly}" r="5" fill="${item.fill}" stroke="${item.stroke || '#ffffff'}" stroke-width="${item.strokeWidth || 1.5}"></circle>`;
+                    }
+
+                    markup += `<text x="${lx + 24}" y="${ly + 4}" font-size="10.5" fill="#475569" font-family="Inter, sans-serif">${item.label}</text>`;
+                });
+            }
+
+            svg.innerHTML = markup;
+        }
+
+        function updateLearningPanels() {
+            const observedRange = getObservedRange();
+            const badLine = getBadLine();
+
+            renderMiniChart('mini-fit-plot', {
+                lines: [{ m: stats.optM, b: stats.optB, color: '#4f46e5' }],
+                legend: [
+                    { type: 'circle', fill: '#1f2937', stroke: '#ffffff', strokeWidth: 1.5, label: 'Raw data' },
+                    { type: 'line', color: '#4f46e5', label: 'Fitted line' }
+                ]
+            });
+
+            renderMiniChart('mini-residual-plot', {
+                lines: [{ m: state.userM, b: state.userB, color: '#f59e0b' }],
+                showResiduals: true,
+                residualLine: { m: state.userM, b: state.userB },
+                legend: [
+                    { type: 'circle', fill: '#1f2937', stroke: '#ffffff', strokeWidth: 1.5, label: 'Actual' },
+                    { type: 'circle', fill: '#ffffff', stroke: '#dc2626', strokeWidth: 2, label: 'Predicted' },
+                    { type: 'line', color: '#dc2626', dash: '5 4', label: 'Residual' }
+                ]
+            });
+
+            renderMiniChart('mini-bad-line-plot', {
+                lines: [{ m: badLine.m, b: badLine.b, color: '#f59e0b' }]
+            });
+
+            renderMiniChart('mini-best-line-plot', {
+                lines: [{ m: stats.optM, b: stats.optB, color: '#4f46e5' }]
+            });
+
+            document.getElementById('mini-bad-sse').textContent = badLine.sse.toFixed(1);
+            document.getElementById('mini-best-sse').textContent = stats.optSse.toFixed(1);
+
+            document.getElementById('obs-min-x').textContent = observedRange.min.toFixed(1);
+            document.getElementById('obs-max-x').textContent = observedRange.max.toFixed(1);
+
+            const outsideObservedRange = state.playX < observedRange.min || state.playX > observedRange.max;
+            const extrapolationNote = document.getElementById('extrapolation-note');
+            const extrapolationStatus = document.getElementById('extrapolation-status');
+
+            extrapolationNote.classList.toggle('is-alert', outsideObservedRange);
+            extrapolationStatus.textContent = outsideObservedRange
+                ? `Right now x = ${state.playX.toFixed(1)} is outside the observed range, so this is extrapolation.`
+                : `Right now x = ${state.playX.toFixed(1)} is inside the observed range, so this prediction is safer.`;
+        }
+
+        // --- Setup Listeners ---
+        userBSlider.addEventListener('input', e => {
+            state.userB = parseFloat(e.target.value);
+            userBLabel.textContent = state.userB.toFixed(1);
+            updateAll();
+        });
+        
+        userMSlider.addEventListener('input', e => {
+            state.userM = parseFloat(e.target.value);
+            userMLabel.textContent = state.userM.toFixed(1);
+            updateAll();
+        });
+
+        predictXSlider.addEventListener('input', e => {
+            state.playX = parseFloat(e.target.value);
+            predictXLabel.textContent = state.playX.toFixed(1);
+            updateDOMText();
+        });
+
+        // Init
+        buildTable();
+        updateAll();
+
+        // --- Canvas Engine ---
+        const canvas = document.getElementById('regCanvas');
+        const ctx = canvas.getContext('2d');
+        let width, height, padding = 40;
+        let lastRect = { w: 0, h: 0 };
+
+        function resize() {
+            const container = canvas.parentElement;
+            const rect = container.getBoundingClientRect();
+            const dpr = window.devicePixelRatio || 1;
+            
+            // Only resize if container changed size (prevents continuous scale bugs)
+            if (Math.abs(lastRect.w - rect.width) > 1 || Math.abs(lastRect.h - rect.height) > 1) {
+                lastRect = { w: rect.width, h: rect.height };
+                canvas.width = rect.width * dpr;
+                canvas.height = rect.height * dpr;
+                ctx.setTransform(1, 0, 0, 1, 0, 0);
+                ctx.scale(dpr, dpr);
+                width = rect.width;
+                height = rect.height;
+                padding = width < 400 ? 30 : 50;
+            }
+        }
+        window.addEventListener('resize', resize);
+        resize(); // Initial
+
+        // Coordinate Mapping
+        function mapX(val) { return padding + ((val - plotBounds.minX) / (plotBounds.maxX - plotBounds.minX || 1)) * (width - 2 * padding); }
+        function mapY(val) { return height - padding - ((val - plotBounds.minY) / (plotBounds.maxY - plotBounds.minY || 1)) * (height - 2 * padding); }
+
+        function drawAxes() {
+            ctx.beginPath();
+            ctx.strokeStyle = '#e7e5e4';
+            ctx.lineWidth = 2;
+            
+            // Y Axis
+            ctx.moveTo(mapX(plotBounds.minX), mapY(plotBounds.minY)); ctx.lineTo(mapX(plotBounds.minX), mapY(plotBounds.maxY));
+            // X Axis
+            ctx.moveTo(mapX(plotBounds.minX), mapY(plotBounds.minY)); ctx.lineTo(mapX(plotBounds.maxX), mapY(plotBounds.minY));
+            ctx.stroke();
+
+            ctx.fillStyle = '#6b7280';
+            ctx.font = '12px "JetBrains Mono"';
+            ctx.textAlign = 'center'; ctx.textBaseline = 'top';
+            
+            // X ticks
+            getTickValues(plotBounds.minX, plotBounds.maxX, plotBounds.xStep).forEach(i => {
+                ctx.fillText(formatAxisValue(i, plotBounds.xStep), mapX(i), mapY(plotBounds.minY) + 8);
+                ctx.beginPath(); ctx.moveTo(mapX(i), mapY(plotBounds.minY)); ctx.lineTo(mapX(i), mapY(plotBounds.minY) + 4); ctx.stroke();
+            });
+            ctx.fillText("Hours Studied (x)", width / 2, mapY(plotBounds.minY) + 25);
+
+            // Y ticks
+            ctx.textAlign = 'right'; ctx.textBaseline = 'middle';
+            getTickValues(plotBounds.minY, plotBounds.maxY, plotBounds.yStep).forEach(i => {
+                ctx.fillText(formatAxisValue(i, plotBounds.yStep), mapX(plotBounds.minX) - 8, mapY(i));
+                ctx.beginPath(); ctx.moveTo(mapX(plotBounds.minX), mapY(i)); ctx.lineTo(mapX(plotBounds.minX) - 4, mapY(i)); ctx.stroke();
+            });
+            
+            ctx.save();
+            ctx.translate(mapX(plotBounds.minX) - 35, height / 2);
+            ctx.rotate(-Math.PI / 2);
+            ctx.textAlign = 'center';
+            ctx.fillText("Test Score (y)", 0, 0);
+            ctx.restore();
+        }
+
+        function drawPoints(alpha) {
+            if (alpha <= 0) return;
+            points.forEach(p => {
+                ctx.beginPath();
+                ctx.arc(mapX(p.x), mapY(p.y), 6, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(31, 41, 55, ${alpha})`;
+                ctx.fill();
+                ctx.strokeStyle = `rgba(255, 255, 255, ${alpha})`;
+                ctx.lineWidth = 2; ctx.stroke();
+            });
+        }
+
+        function drawLine(m, b, color, label, alpha) {
+            if (alpha <= 0) return;
+            const startY = m * plotBounds.minX + b;
+            const endY = m * plotBounds.maxX + b;
+
+            ctx.beginPath();
+            ctx.moveTo(mapX(plotBounds.minX), mapY(startY));
+            ctx.lineTo(mapX(plotBounds.maxX), mapY(endY));
+            
+            ctx.strokeStyle = color.replace(')', `, ${alpha})`).replace('rgb', 'rgba');
+            if(color.startsWith('#')) {
+                // simple hack for hex to rgba since our colors are mostly defined
+                ctx.globalAlpha = alpha;
+                ctx.strokeStyle = color;
+            }
+            ctx.lineWidth = 3;
+            ctx.stroke();
+            ctx.globalAlpha = 1.0;
+            
+            if (alpha > 0.5 && label) {
+                ctx.fillStyle = color;
+                ctx.font = 'bold 12px "JetBrains Mono"';
+                ctx.textAlign = 'left';
+                ctx.textBaseline = 'bottom';
+                // Find a good spot to label
+                const lx = plotBounds.minX + ((plotBounds.maxX - plotBounds.minX) * 0.7);
+                const ly = m * lx + b;
+                if(ly >= plotBounds.minY && ly <= plotBounds.maxY) {
+                    ctx.fillText(label, mapX(lx), mapY(ly) - 10);
+                }
+            }
+        }
+
+        function drawResidualsAndSquares(m, b, resAlpha, sqAlpha) {
+            points.forEach(p => {
+                const predictedY = m * p.x + b;
+                const error = p.y - predictedY;
+                
+                if (resAlpha > 0) {
+                    ctx.beginPath();
+                    ctx.moveTo(mapX(p.x), mapY(p.y));
+                    ctx.lineTo(mapX(p.x), mapY(predictedY));
+                    ctx.strokeStyle = `rgba(220, 38, 38, ${resAlpha})`; 
+                    ctx.lineWidth = 2; ctx.setLineDash([4, 4]); ctx.stroke(); ctx.setLineDash([]);
+                }
+                
+                if (sqAlpha > 0) {
+                    const pixelYActual = mapY(p.y);
+                    const pixelYPred = mapY(predictedY);
+                    const pixelDiff = Math.abs(pixelYActual - pixelYPred);
+                    
+                    ctx.fillStyle = `rgba(220, 38, 38, ${sqAlpha * 0.15})`;
+                    ctx.strokeStyle = `rgba(220, 38, 38, ${sqAlpha * 0.5})`;
+                    ctx.lineWidth = 1;
+                    
+                    const topY = Math.min(pixelYActual, pixelYPred);
+                    ctx.fillRect(mapX(p.x), topY, pixelDiff, pixelDiff);
+                    ctx.strokeRect(mapX(p.x), topY, pixelDiff, pixelDiff);
+                }
+            });
+        }
+
+        function drawMeanPoint(alpha) {
+            if (alpha <= 0) return;
+            const px = mapX(stats.xBar);
+            const py = mapY(stats.yBar);
+            
+            // Dashed crosshairs
+            ctx.beginPath();
+            ctx.moveTo(px, mapY(plotBounds.minY)); ctx.lineTo(px, mapY(plotBounds.maxY));
+            ctx.moveTo(mapX(plotBounds.minX), py); ctx.lineTo(mapX(plotBounds.maxX), py);
+            ctx.strokeStyle = `rgba(22, 163, 74, ${alpha * 0.3})`;
+            ctx.setLineDash([3, 3]); ctx.stroke(); ctx.setLineDash([]);
+
+            // Dot
+            ctx.beginPath();
+            ctx.arc(px, py, 7, 0, Math.PI * 2);
+            ctx.fillStyle = `rgba(22, 163, 74, ${alpha})`;
+            ctx.fill();
+            ctx.strokeStyle = '#fff'; ctx.lineWidth = 2; ctx.stroke();
+            
+            ctx.fillStyle = `rgba(22, 163, 74, ${alpha})`;
+            ctx.font = 'bold 12px "Inter"';
+            ctx.textAlign = 'right';
+            ctx.fillText("(x̄, ȳ)", px - 10, py - 10);
+        }
+
+        function drawPlayground(alpha) {
+            if (alpha <= 0) return;
+            const pX = state.playX;
+            
+            // Draw points for both lines
+            [
+                { m: state.userM, b: state.userB, color: '#f59e0b' },
+                { m: stats.optM, b: stats.optB, color: '#4f46e5' }
+            ].forEach(line => {
+                const pY = line.m * pX + line.b;
+                
+                // Vertical Drop Line
+                ctx.beginPath();
+                ctx.moveTo(mapX(pX), mapY(plotBounds.minY)); ctx.lineTo(mapX(pX), mapY(pY));
+                ctx.strokeStyle = line.color; ctx.globalAlpha = alpha * 0.4;
+                ctx.setLineDash([4, 4]); ctx.stroke(); ctx.setLineDash([]); ctx.globalAlpha = 1;
+
+                // Point
+                ctx.beginPath();
+                ctx.arc(mapX(pX), mapY(pY), 8, 0, Math.PI * 2);
+                ctx.fillStyle = line.color; ctx.fill();
+                ctx.strokeStyle = '#fff'; ctx.lineWidth = 2; ctx.stroke();
+                
+                // Label
+                ctx.fillStyle = line.color;
+                ctx.font = 'bold 14px "JetBrains Mono"';
+                ctx.textAlign = 'left';
+                ctx.fillText(pY.toFixed(1), mapX(pX) + 12, mapY(pY) - 8);
+            });
+        }
+
+        // --- Render Loop ---
+        function lerp(start, end, amt) { return (1 - amt) * start + amt * end; }
+
+        function render() {
+            ctx.clearRect(0, 0, width, height);
+            
+            // Stage configuration mapping
+            const stages = {
+                1: { sP:1, sU:0, sO:0, sR:0, sSq:0, sM:0, sPl:0, tM: state.userM, tB: state.userB }, // Data
+                2: { sP:1, sU:1, sO:0, sR:0, sSq:0, sM:0, sPl:0, tM: state.userM, tB: state.userB }, // User Line
+                3: { sP:1, sU:1, sO:0, sR:1, sSq:0, sM:0, sPl:0, tM: state.userM, tB: state.userB }, // Residuals
+                4: { sP:1, sU:1, sO:0, sR:1, sSq:1, sM:0, sPl:0, tM: state.userM, tB: state.userB }, // Squares
+                5: { sP:1, sU:0, sO:1, sR:1, sSq:1, sM:1, sPl:0, tM: stats.optM,  tB: stats.optB },  // Engine (moves to opt)
+                6: { sP:1, sU:0, sO:1, sR:0, sSq:0, sM:1, sPl:0, tM: stats.optM,  tB: stats.optB },  // Final Opt
+                7: { sP:1, sU:0, sO:1, sR:0, sSq:0, sM:1, sPl:0, tM: stats.optM,  tB: stats.optB },  // Scorecard
+                8: { sP:1, sU:1, sO:1, sR:0, sSq:0, sM:0, sPl:1, tM: stats.optM,  tB: stats.optB }   // Playground
+            };
+
+            const t = stages[state.stage] || stages[1];
+            
+            // Ease states
+            const spd = 0.08;
+            state.animM = lerp(state.animM, t.tM, spd);
+            state.animB = lerp(state.animB, t.tB, spd);
+            
+            state.showPoints = lerp(state.showPoints, t.sP, spd);
+            state.showUserLine = lerp(state.showUserLine, t.sU, spd);
+            state.showOptLine = lerp(state.showOptLine, t.sO, spd);
+            state.showResid = lerp(state.showResid, t.sR, spd);
+            state.showSquares = lerp(state.showSquares, t.sSq, spd);
+            state.showMean = lerp(state.showMean, t.sM, spd);
+            state.showPlayground = lerp(state.showPlayground, t.sPl, spd);
+
+            // Draw sequence
+            drawAxes();
+            drawPoints(state.showPoints);
+            
+            // Active animated line for stages 2-5 (moves from user -> opt)
+            if (state.stage >= 2 && state.stage <= 5) {
+                drawLine(state.animM, state.animB, '#f59e0b', 'Model', Math.max(state.showUserLine, state.showOptLine));
+                drawResidualsAndSquares(state.animM, state.animB, state.showResid, state.showSquares);
+            } else {
+                // Stage 6+ explicit separated lines
+                drawLine(stats.optM, stats.optB, '#4f46e5', 'Best Fit', state.showOptLine);
+                drawLine(state.userM, state.userB, '#f59e0b', 'Your Line', state.showUserLine);
+            }
+
+            drawMeanPoint(state.showMean);
+            drawPlayground(state.showPlayground);
+
+            requestAnimationFrame(render);
+        }
+
+        // --- Scroll Logic ---
+        const sections = document.querySelectorAll('.stage-section');
+        const progressBar = document.getElementById('progress-bar');
+
+        window.addEventListener('scroll', () => {
+            const scrollTotal = document.documentElement.scrollHeight - window.innerHeight;
+            const scrollProgress = window.scrollY / scrollTotal;
+            progressBar.style.transform = `scaleX(${scrollProgress})`;
+        });
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    state.stage = parseInt(entry.target.getAttribute('data-stage'));
+                    sections.forEach(s => s.classList.remove('active'));
+                    entry.target.classList.add('active');
+                    
+                    // Force start values for snappy transitions if jumping
+                    if (state.stage === 2) { state.animM = state.userM; state.animB = state.userB; }
+                }
+            });
+        }, { root: null, rootMargin: '-40% 0px -40% 0px', threshold: 0 });
+
+        sections.forEach(sec => observer.observe(sec));
+
+        // Start
+        requestAnimationFrame(render);
+    </script>
+</body>
+</html>

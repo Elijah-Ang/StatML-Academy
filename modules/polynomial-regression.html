@@ -1,0 +1,1531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Polynomial Regression</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+        :root {
+            --bg-color: #f7f7f4;
+            --bg-secondary: #f0efeb;
+            --surface: #ffffff;
+            --border: #e7e5e4;
+            --text-main: #1f2937;
+            --text-dim: #4b5563;
+            --text-muted: #6b7280;
+            --accent: #6366f1;
+            --accent-dark: #4f46e5;
+            --error: #dc2626;
+            --warning: #d97706;
+            --success: #16a34a;
+            --train-color: #1f2937;
+            --test-color: #d97706;
+            --font-prose: 'Inter', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: var(--font-prose);
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        /* Progress Bar */
+        #progress-bar {
+            position: fixed;
+            top: 0; left: 0; height: 4px;
+            background: linear-gradient(90deg, var(--accent), var(--accent-dark));
+            width: 0%;
+            z-index: 1000;
+            transition: width 0.1s ease-out;
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 2rem;
+            position: relative;
+            background-color: var(--bg-color);
+            overflow: hidden;
+        }
+        
+        #hero-canvas {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: 0;
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        .hero-content {
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .topic-badge {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            background-color: rgba(240, 239, 235, 0.8);
+            backdrop-filter: blur(4px);
+            color: var(--text-dim);
+            padding: 0.25rem 0.75rem;
+            border-radius: 999px;
+            margin-bottom: 1.5rem;
+            border: 1px solid var(--border);
+            font-weight: 600;
+        }
+
+        .hero h1 {
+            font-size: 4.5rem;
+            font-weight: 700;
+            line-height: 1.1;
+            max-width: 800px;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #1f2937, #4f46e5);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.02em;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            color: var(--text-dim);
+            max-width: 650px;
+        }
+
+        .scroll-cue {
+            position: absolute;
+            bottom: 2rem;
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            animation: bounce 2s infinite;
+            z-index: 1;
+            font-weight: 500;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+
+        /* Layout */
+        .layout-wrapper {
+            display: flex;
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .narrative-column {
+            width: 40%;
+            padding: 0 3rem 4rem 3rem;
+        }
+
+        .visualization-column {
+            width: 60%;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            padding: 1.5rem 2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        /* Narrative Sections */
+        .section {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 4rem 0;
+            opacity: 0.2;
+            transition: opacity 0.5s ease;
+        }
+
+        .section.active { opacity: 1; }
+
+        .stage-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--accent);
+            font-weight: 700;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .stage-label::after {
+            content: '';
+            height: 1px;
+            width: 30px;
+            background-color: var(--accent);
+        }
+
+        .section h2 {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            color: var(--text-main);
+            line-height: 1.2;
+        }
+
+        /* Explicit Procedural Styling */
+        .procedural-step {
+            margin-bottom: 1.25rem;
+            font-size: 1.05rem;
+            color: var(--text-dim);
+            line-height: 1.5;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .procedural-step strong {
+            color: var(--text-main);
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-weight: 700;
+            margin-bottom: 0.2rem;
+        }
+
+        .look-here {
+            margin-top: 1.5rem;
+            padding: 1rem 1.25rem;
+            background-color: rgba(99, 102, 241, 0.05);
+            border-left: 3px solid var(--accent);
+            border-radius: 0 8px 8px 0;
+            display: grid;
+            grid-template-columns: 20px 1fr;
+            column-gap: 12px;
+            align-items: start;
+        }
+        
+        .look-here-arrow {
+            color: var(--accent);
+            font-size: 1.2rem;
+            line-height: 1;
+            margin-top: -2px;
+        }
+
+        .look-here-text {
+            font-size: 1rem;
+            color: var(--text-main);
+            font-weight: 500;
+            line-height: 1.4;
+            white-space: normal;
+            overflow-wrap: break-word;
+            word-break: normal;
+        }
+
+        .pill {
+            display: inline-block;
+            padding: 0.1rem 0.5rem;
+            border-radius: 999px;
+            font-size: 0.8rem;
+            font-family: var(--font-mono);
+            background-color: #e0e7ff;
+            color: var(--accent-dark);
+            font-weight: 500;
+        }
+
+        /* VIZ DASHBOARD (Outside canvas) */
+        .viz-dashboard {
+            width: 100%;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1rem 1.25rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .dash-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .shape-control {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            background: var(--bg-secondary);
+            padding: 0.5rem 0.75rem;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+
+        .shape-control label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        .dash-select {
+            border: none;
+            background: transparent;
+            font-family: var(--font-prose);
+            font-size: 0.9rem;
+            color: var(--text-main);
+            font-weight: 500;
+            outline: none;
+            cursor: pointer;
+        }
+
+        .dash-metrics {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .metric-group {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .metric-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            font-weight: 700;
+            margin-bottom: 0.2rem;
+        }
+
+        .metric-value {
+            font-family: var(--font-mono);
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text-main);
+            display: flex;
+            align-items: baseline;
+            gap: 0.5rem;
+        }
+
+        .metric-desc {
+            font-size: 0.65rem;
+            color: var(--text-dim);
+            font-family: var(--font-prose);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .val-fade { opacity: 0.3; }
+
+        .dash-equation {
+            width: 100%;
+            background: var(--bg-secondary);
+            padding: 0.75rem 1rem;
+            border-radius: 6px;
+            font-family: var(--font-mono);
+            font-size: 0.95rem;
+            color: var(--accent-dark);
+            text-align: center;
+            border: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            line-height: 1.5;
+            font-weight: 500;
+        }
+        
+        .dash-equation-main {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.4rem;
+        }
+
+        /* Canvas Wrapper */
+        .canvas-container {
+            width: 100%;
+            flex-grow: 1;
+            min-height: 380px;
+            background-color: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+            position: relative;
+            overflow: hidden;
+        }
+
+        canvas#viz { width: 100%; height: 100%; display: block; }
+
+        /* In-Canvas Overlays - Subordinated */
+        .math-overlay {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(4px);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease, transform 0.4s ease;
+            transform: translateY(10px);
+            z-index: 50;
+        }
+        .math-overlay.visible { opacity: 1; transform: translateY(0); }
+        
+        .math-overlay-title {
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--accent);
+            margin-bottom: 0.4rem;
+            font-weight: 700;
+            text-align: center;
+        }
+        
+        #overlay-matrix { top: 1.5rem; left: 1.5rem; }
+        #overlay-beta { top: 1.5rem; right: 1.5rem; }
+
+        .matrix-table {
+            border-collapse: collapse;
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            position: relative;
+            margin: 0 auto;
+        }
+        .matrix-table::before, .matrix-table::after {
+            content: ''; position: absolute; top: 0; bottom: 0; width: 4px; border: 1.5px solid var(--text-dim);
+        }
+        .matrix-table::before { left: -3px; border-right: none; }
+        .matrix-table::after { right: -3px; border-left: none; }
+        
+        .matrix-table th, .matrix-table td { padding: 0.2rem 0.4rem; text-align: right; color: var(--text-main); }
+        .matrix-table th { color: var(--text-muted); font-weight: normal; border-bottom: 1px dashed var(--border); padding-bottom: 0.4rem; }
+        .matrix-dots { text-align: center !important; color: var(--text-muted); }
+
+        .legend-panel {
+            position: absolute;
+            bottom: 1rem;
+            left: 1rem;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(4px);
+            border: 1px solid var(--border);
+            padding: 0.5rem 0.75rem;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            color: var(--text-dim);
+            z-index: 100;
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+            font-weight: 500;
+        }
+        .legend-panel.visible { opacity: 1; }
+        .legend-item { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.25rem; }
+        .legend-item:last-child { margin-bottom: 0; }
+        .legend-dot { width: 10px; height: 10px; border-radius: 50%; }
+
+        /* Final Decision Card */
+        .decision-panel {
+            width: 100%;
+            background: var(--surface);
+            border: 2px solid var(--success);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-top: 1rem;
+            box-shadow: 0 10px 25px -5px rgba(22, 163, 74, 0.15);
+            text-align: center;
+            display: none;
+            animation: slideUp 0.4s ease;
+        }
+        
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .decision-panel.visible { display: block; }
+        .decision-title { font-size: 1.25rem; font-weight: 700; color: var(--text-main); margin-bottom: 0.25rem; }
+        .decision-subtitle { font-size: 0.95rem; color: var(--text-dim); margin-bottom: 1rem; line-height: 1.4; }
+        
+        .decision-stats {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 1rem;
+            background: var(--bg-secondary);
+            padding: 1rem;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+        .d-stat { display: flex; flex-direction: column; align-items: center; }
+        .d-val { font-family: var(--font-mono); font-weight: 700; font-size: 1.5rem; }
+        .d-lbl { font-size: 0.7rem; text-transform: uppercase; color: var(--text-muted); font-weight: 700; margin-top: 0.25rem;}
+        
+        /* Controls */
+        .controls-card {
+            margin-top: 1.5rem;
+            padding: 1.25rem;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }
+
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            margin-bottom: 1.25rem;
+        }
+        .control-group:last-child { margin-bottom: 0; }
+
+        .control-label {
+            font-size: 0.9rem;
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            color: var(--text-main);
+        }
+
+        input[type=range] { width: 100%; accent-color: var(--accent); cursor: pointer; }
+        
+        .toggle-row {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text-main);
+            cursor: pointer;
+        }
+        
+        .btn-action {
+            width: 100%;
+            padding: 0.65rem;
+            background-color: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-family: var(--font-prose);
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-main);
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        }
+        .btn-action:hover { background-color: var(--bg-secondary); border-color: #d1d5db; }
+
+        @media (max-width: 900px) {
+            .layout-wrapper { flex-direction: column; }
+            .narrative-column { width: 100%; padding: 0 1.5rem; }
+            .visualization-column { width: 100%; height: auto; min-height: 85vh; padding: 1rem; z-index: 10; background: var(--bg-color); justify-content: flex-start; }
+            .section { min-height: auto; padding: 3rem 0; }
+            .dash-metrics { gap: 1rem; }
+            .metric-value { font-size: 1.2rem; }
+            .math-overlay { padding: 0.5rem; }
+            .matrix-table { font-size: 0.65rem; }
+            .hero h1 { font-size: 3rem; }
+            .shape-control { width: 100%; justify-content: space-between; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="progress-bar"></div>
+
+    <section class="hero">
+        <canvas id="hero-canvas"></canvas>
+        <div class="hero-content">
+            <div class="topic-badge">Operational Guide</div>
+            <h1>Polynomial Regression</h1>
+            <p>From raw scatterplot to final equation. Learn the exact steps to expand features, evaluate errors, and select a model that actually generalizes.</p>
+        </div>
+        <div class="scroll-cue">Scroll to begin workflow &darr;</div>
+    </section>
+
+    <div class="layout-wrapper">
+        <div class="narrative-column">
+
+            <!-- Stage 1: Inspect -->
+            <div class="section" data-stage="1">
+                <div class="stage-label">Step 01</div>
+                <h2>Inspect the Raw Data</h2>
+                <div class="procedural-step">
+                    <strong>What we do</strong> 
+                    <span>Plot the raw input against the response.</span>
+                </div>
+                <div class="procedural-step">
+                    <strong>Why we do it</strong> 
+                    <span>To visually check the shape. A straight line will naturally fail to capture a curved dataset.</span>
+                </div>
+                <div class="procedural-step">
+                    <strong>What this means</strong> 
+                    <span>If the data forms a hill, a valley, or an S-curve, simple math won't be enough.</span>
+                </div>
+                <p style="margin-top: 0.5rem; font-size: 1rem; color: var(--text-dim);">Let's see what happens if we force a straight line anyway.</p>
+                <div class="look-here">
+                    <div class="look-here-arrow">➔</div>
+                    <div class="look-here-text">Look at the black dots on the chart. Notice how they structurally form a curved shape rather than a straight path.</div>
+                </div>
+            </div>
+
+            <!-- Stage 2: Linear Baseline -->
+            <div class="section" data-stage="2">
+                <div class="stage-label">Step 02</div>
+                <h2>Fit a Straight Line</h2>
+                <div class="procedural-step">
+                    <strong>What we do</strong> 
+                    <span>Fit a basic, flat or sloped straight line.</span>
+                </div>
+                <div class="procedural-step">
+                    <strong>Why we do it</strong> 
+                    <span>To set a baseline and prove that standard linear regression fails on curves.</span>
+                </div>
+                <div class="procedural-step">
+                    <strong>What this means</strong> 
+                    <span>The line completely ignores the true shape of our data. This failure is called underfitting.</span>
+                </div>
+                <p style="margin-top: 0.5rem; font-size: 1rem; color: var(--text-dim);">We need to give the math the flexibility to bend.</p>
+                <div class="look-here">
+                    <div class="look-here-arrow">➔</div>
+                    <div class="look-here-text">See the rigid blue line on the chart and the simple equation in the dashboard.</div>
+                </div>
+            </div>
+
+            <!-- Stage 3: Matrix X -->
+            <div class="section" data-stage="3">
+                <div class="stage-label">Step 03</div>
+                <h2>Expand the Features</h2>
+                <div class="procedural-step">
+                    <strong>What we do</strong> 
+                    <span>Create new columns by squaring and cubing the input data.</span>
+                </div>
+                <div class="procedural-step">
+                    <strong>Why we do it</strong> 
+                    <span>Adding powers of the input gives the underlying formula the ability to curve.</span>
+                </div>
+                <div class="procedural-step">
+                    <strong>What this means</strong> 
+                    <span>First, we shrink the input numbers so squaring them doesn't create huge, unstable values. Then we build our Design Matrix.</span>
+                </div>
+                <p style="margin-top: 0.5rem; font-size: 1rem; color: var(--text-dim);">Now the model has more ingredients to build with.</p>
+                <div class="look-here">
+                    <div class="look-here-arrow">➔</div>
+                    <div class="look-here-text">Check the Design Matrix overlay. The model now sees the squared input as just another normal feature to learn from.</div>
+                </div>
+            </div>
+
+            <!-- Stage 4: Beta -->
+            <div class="section" data-stage="4">
+                <div class="stage-label">Step 04</div>
+                <h2>Fit the Weights</h2>
+                <div class="procedural-step">
+                    <strong>What we do</strong> 
+                    <span>The algorithm calculates the best weights for each column in our matrix.</span>
+                </div>
+                <div class="procedural-step">
+                    <strong>Why we do it</strong> 
+                    <span>To find the exact mathematical combination that fits the dots.</span>
+                </div>
+                <div class="procedural-step">
+                    <strong>What this means</strong> 
+                    <span>The weights act like knobs that tell the curve how strongly to bend and in what direction.</span>
+                </div>
+                <p style="margin-top: 0.5rem; font-size: 1rem; color: var(--text-dim);">Let's check how close our curve actually gets to the data.</p>
+                <div class="look-here">
+                    <div class="look-here-arrow">➔</div>
+                    <div class="look-here-text">Look at the Weights overlay and the new equation in the dashboard. The curve now gracefully follows the data points.</div>
+                </div>
+            </div>
+
+            <!-- Stage 5: Residuals -->
+            <div class="section" data-stage="5">
+                <div class="stage-label">Step 05</div>
+                <h2>Compute Errors</h2>
+                <div class="procedural-step">
+                    <strong>What we do</strong> 
+                    <span>Measure the vertical distance between the true dots and our curve.</span>
+                </div>
+                <div class="procedural-step">
+                    <strong>Why we do it</strong> 
+                    <span>To see exactly where the model is still wrong.</span>
+                </div>
+                <div class="procedural-step">
+                    <strong>What this means</strong> 
+                    <span>Small random misses are normal, but a clear pattern in the misses means the model is still failing.</span>
+                </div>
+                <p style="margin-top: 0.5rem; font-size: 1rem; color: var(--text-dim);">Let's see what happens if we add too many curves.</p>
+                <div class="look-here">
+                    <div class="look-here-arrow">➔</div>
+                    <div class="look-here-text">See the dashed red lines and the Residual Plot. The Train MSE above scores how well the model fits the data it saw.</div>
+                </div>
+            </div>
+
+            <!-- Stage 6: Train vs Test -->
+            <div class="section" data-stage="6">
+                <div class="stage-label">Step 06</div>
+                <h2>Check for Overfitting</h2>
+                <div class="procedural-step">
+                    <strong>What we do</strong> 
+                    <span>Push the model to extreme complexity and test it on hidden data.</span>
+                </div>
+                <div class="procedural-step">
+                    <strong>Why we do it</strong> 
+                    <span>To catch overfitting before we use the model in the real world.</span>
+                </div>
+                <div class="procedural-step">
+                    <strong>What this means</strong> 
+                    <span>Training error can look amazing while test error gets much worse, which is the warning sign of overfitting.</span>
+                </div>
+                <p style="margin-top: 0.5rem; font-size: 1rem; color: var(--text-dim);">We need to find the balance between too simple and too complex.</p>
+                <div class="look-here">
+                    <div class="look-here-arrow">➔</div>
+                    <div class="look-here-text">Look at the Validation Curve. Training error drops, but Test error explodes. The wiggly curve completely misses the new gold dots.</div>
+                </div>
+            </div>
+
+            <!-- Stage 7: Playground -->
+            <div class="section" data-stage="7">
+                <div class="stage-label">Step 07</div>
+                <h2>Find the Sweet Spot</h2>
+                <div class="procedural-step">
+                    <strong>What we do</strong> 
+                    <span>Test different complexities to find the lowest Test Error.</span>
+                </div>
+                <div class="procedural-step">
+                    <strong>Why we do it</strong> 
+                    <span>The best shape changes depending on the data.</span>
+                </div>
+                <div class="procedural-step">
+                    <strong>What this means</strong> 
+                    <span>We want the simplest curve that generalizes well to new situations.</span>
+                </div>
+                <p style="margin-top: 0.5rem; font-size: 1rem; color: var(--text-dim);">Play with the controls until you find the perfect balance.</p>
+                <div class="look-here">
+                    <div class="look-here-arrow">➔</div>
+                    <div class="look-here-text">Change the Dataset Shape, then use the slider to explore. Find the simplest point on the Validation Curve before Test error rises.</div>
+                </div>
+                
+                <div class="controls-card">
+                    <div class="control-group">
+                        <div class="control-label">
+                            <span>Candidate Degree</span>
+                            <span id="degree-readout" class="pill">2</span>
+                        </div>
+                        <input type="range" id="degree-slider" min="1" max="9" value="2" step="1">
+                    </div>
+                    <div class="control-group" style="margin-top: 1rem;">
+                        <label class="toggle-row">
+                            <input type="checkbox" id="toggle-residuals"> 
+                            <span>Show Point Residuals</span>
+                        </label>
+                    </div>
+                    <div class="control-group" style="margin-top: 1rem;">
+                        <button id="btn-regen" class="btn-action">Regenerate Noise Split</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stage 8: Decision -->
+            <div class="section" data-stage="8">
+                <div class="stage-label">Step 08</div>
+                <h2>Lock in the Model</h2>
+                <div class="procedural-step">
+                    <strong>What we do</strong> 
+                    <span>Select the final model and lock in the formula.</span>
+                </div>
+                <div class="procedural-step">
+                    <strong>Why we do it</strong> 
+                    <span>We only deploy a model after validation proves it works.</span>
+                </div>
+                <div class="procedural-step">
+                    <strong>What this means</strong> 
+                    <span>We choose the simplest model that performs almost as well as the absolute best one.</span>
+                </div>
+                <p style="margin-top: 0.5rem; font-size: 1rem; color: var(--text-dim);">This final equation is now ready for the real world.</p>
+                <div class="look-here">
+                    <div class="look-here-arrow">➔</div>
+                    <div class="look-here-text">Review the Model Deployed card below the chart for your final, validated results.</div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="visualization-column">
+            
+            <!-- Dashboard (Always Visible) -->
+            <div class="viz-dashboard" id="main-dashboard">
+                <div class="dash-top">
+                    <div class="shape-control">
+                        <label for="shape-select">Dataset Shape:</label>
+                        <select id="shape-select" class="dash-select">
+                            <option value="hill">Downward Parabola</option>
+                            <option value="valley">Upward Parabola</option>
+                            <option value="cubic">S-Curve (Cubic)</option>
+                            <option value="linear">Near Linear</option>
+                        </select>
+                    </div>
+                    <div class="dash-metrics">
+                        <div class="metric-group">
+                            <div class="metric-label">Complexity</div>
+                            <div class="metric-value">Degree <span id="val-degree">-</span></div>
+                        </div>
+                        <div class="metric-group" id="group-train-mse">
+                            <div class="metric-label">Train MSE</div>
+                            <div class="metric-value" id="val-train-mse">
+                                <span>-</span>
+                            </div>
+                            <div class="metric-desc">FIT TO SEEN</div>
+                        </div>
+                        <div class="metric-group" id="group-test-mse">
+                            <div class="metric-label">Test MSE</div>
+                            <div class="metric-value" id="val-test-mse">
+                                <span>-</span>
+                            </div>
+                            <div class="metric-desc">GENERALIZATION</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="dash-equation" id="eq-text">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+
+            <div class="canvas-container">
+                <!-- Subordinated Math Overlays -->
+                <div id="overlay-matrix" class="math-overlay">
+                    <div class="math-overlay-title">Design Matrix (X)</div>
+                    <table class="matrix-table" id="matrix-content"></table>
+                </div>
+
+                <div id="overlay-beta" class="math-overlay">
+                    <div class="math-overlay-title">Weights (β)</div>
+                    <table class="matrix-table" id="beta-content"></table>
+                </div>
+
+                <div class="legend-panel" id="canvas-legend">
+                    <div class="legend-item"><div class="legend-dot" style="background:var(--train-color)"></div> Training Set (Seen)</div>
+                    <div class="legend-item"><div class="legend-dot" style="background:#fff;border:2px solid var(--test-color)"></div> Test Set (Unseen)</div>
+                </div>
+                
+                <canvas id="viz"></canvas>
+            </div>
+
+            <!-- Decision Panel -->
+            <div class="decision-panel" id="decision-card">
+                <div class="decision-title">Model Deployed ✅</div>
+                <div class="decision-subtitle" id="dec-reason">Chosen because it achieves low test error without unnecessary complexity.</div>
+                
+                <div class="decision-stats">
+                    <div class="d-stat">
+                        <span class="d-val" id="dec-deg" style="color:var(--accent-dark)">2</span>
+                        <span class="d-lbl">Degree</span>
+                    </div>
+                    <div class="d-stat">
+                        <span class="d-val" id="dec-train" style="color:var(--train-color)">-</span>
+                        <span class="d-lbl">Train MSE</span>
+                    </div>
+                    <div class="d-stat">
+                        <span class="d-val" id="dec-test" style="color:var(--success)">-</span>
+                        <span class="d-lbl">Test MSE</span>
+                    </div>
+                </div>
+                
+                <div class="dash-equation" id="dec-eq" style="background: var(--bg-color); font-size: 1.05rem; border: none; padding: 0;">
+                    <!-- Final Eq -->
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        // --- COLORS ---
+        const uiColors = {
+            train: '#1f2937',
+            test: '#d97706',
+            accent: '#6366f1',
+            accentDark: '#4f46e5',
+            error: '#dc2626',
+            border: '#e7e5e4',
+            textMuted: '#6b7280',
+            textMain: '#1f2937',
+            success: '#16a34a'
+        };
+
+        // --- DATA SETUP & PIPELINE ---
+        let trainData = [];
+        let testData = [];
+        let bestDegree = 2;
+        
+        // Normalization bounds
+        const xMin = 0; const xMax = 12;
+        const yMin = 20; const yMax = 130;
+
+        // z is our "scaled x" to keep math stable
+        function normalizeX(val) { return 2 * (val - xMin) / (xMax - xMin) - 1; }
+        
+        function generateData(shapeType = 'hill') {
+            trainData = []; testData = [];
+            const stepSize = 0.15; 
+            
+            for(let x = 1.0; x <= 10.8; x += stepSize) {
+                let y = 0;
+                let noise = (Math.random() * 20) - 10;
+                
+                if (shapeType === 'hill') {
+                    y = 20 + 25*x - 1.8*x*x;
+                } else if (shapeType === 'valley') {
+                    y = 130 - 28*x + 2.2*x*x;
+                } else if (shapeType === 'cubic') {
+                    let u = (x - 6) / 4.5;
+                    y = 70 + 40 * Math.pow(u, 3) - 15 * u;
+                } else if (shapeType === 'linear') {
+                    y = 35 + 7*x - 0.05*x*x;
+                }
+                
+                y += noise;
+                
+                if(Math.random() > 0.30) trainData.push({x, y});
+                else testData.push({x, y});
+            }
+            
+            // Extrapolation traps for test set
+            let trapXs = [11.2, 11.5, 11.8];
+            for(let tx of trapXs) {
+                let ty = 0;
+                if (shapeType === 'hill') ty = 20 + 25*tx - 1.8*tx*tx;
+                else if (shapeType === 'valley') ty = 130 - 28*tx + 2.2*tx*tx;
+                else if (shapeType === 'cubic') { let u = (tx - 6) / 4.5; ty = 70 + 40 * Math.pow(u, 3) - 15 * u; }
+                else if (shapeType === 'linear') ty = 35 + 7*tx - 0.05*tx*tx;
+                
+                ty += (Math.random() * 12 - 6);
+                testData.push({x: tx, y: ty});
+            }
+            
+            precomputeValidationCurve();
+            updateTargetCurve();
+        }
+
+        // --- MATH: POLYNOMIAL LEAST SQUARES ---
+        function solve(A, b) {
+            let n = A.length;
+            for (let i=0; i<n; i++) {
+                let maxEl = Math.abs(A[i][i]), maxRow = i;
+                for (let k=i+1; k<n; k++) { if (Math.abs(A[k][i]) > maxEl) { maxEl = Math.abs(A[k][i]); maxRow = k; } }
+                for (let k=i; k<n; k++) { let tmp=A[maxRow][k]; A[maxRow][k]=A[i][k]; A[i][k]=tmp; }
+                let tmp = b[maxRow]; b[maxRow] = b[i]; b[i] = tmp;
+
+                for (let k=i+1; k<n; k++) {
+                    let c = -A[k][i]/A[i][i];
+                    for (let j=i; j<n; j++) { if(i===j) A[k][j]=0; else A[k][j] += c * A[i][j]; }
+                    b[k] += c * b[i];
+                }
+            }
+            let x = new Array(n).fill(0);
+            for (let i=n-1; i>-1; i--) {
+                x[i] = b[i] / A[i][i];
+                for (let k=i-1; k>-1; k--) b[k] -= A[k][i] * x[i];
+            }
+            return x;
+        }
+
+        function getPolyCoeffs(data, degree) {
+            let n = degree + 1;
+            let A = Array(n).fill(0).map(()=>Array(n).fill(0));
+            let B = Array(n).fill(0);
+            for(let i=0; i<n; i++) {
+                for(let j=0; j<n; j++) {
+                    let sum = 0;
+                    for(let k=0; k<data.length; k++) sum += Math.pow(normalizeX(data[k].x), i+j);
+                    A[i][j] = sum;
+                }
+                let sumY = 0;
+                for(let k=0; k<data.length; k++) sumY += data[k].y * Math.pow(normalizeX(data[k].x), i);
+                B[i] = sumY;
+            }
+            return solve(A, B);
+        }
+
+        function evalPoly(x, coeffs) {
+            let normX = normalizeX(x), y = 0;
+            for(let i=0; i<coeffs.length; i++) y += coeffs[i] * Math.pow(normX, i);
+            return y;
+        }
+
+        function calculateMSE(data, coeffs) {
+            if(data.length === 0) return 0;
+            let error = 0;
+            for(let i=0; i<data.length; i++) {
+                let pred = evalPoly(data[i].x, coeffs);
+                error += Math.pow(pred - data[i].y, 2);
+            }
+            return (error / data.length);
+        }
+
+        let validationCache = [];
+        function precomputeValidationCurve() {
+            validationCache = [];
+            let minTestMSE = Infinity;
+            let absoluteBestD = 1;
+            
+            for(let d=1; d<=9; d++) {
+                let c = getPolyCoeffs(trainData, d);
+                let testE = calculateMSE(testData, c);
+                validationCache[d] = { train: calculateMSE(trainData, c), test: testE };
+                
+                if (testE < minTestMSE) {
+                    minTestMSE = testE;
+                    absoluteBestD = d;
+                }
+            }
+            
+            // Simplicity Heuristic: Pick the lowest degree that is within 10% or +5 of the absolute best MSE
+            bestDegree = absoluteBestD;
+            for(let d=1; d<=absoluteBestD; d++) {
+                if (validationCache[d].test <= minTestMSE * 1.1 + 5) {
+                    bestDegree = d;
+                    break;
+                }
+            }
+        }
+
+        // --- DOM MANIPULATION & FORMATTING ---
+        function formatEquation(coeffs) {
+            if (!coeffs || coeffs.length === 0) return '<span style="color:var(--text-muted)">Awaiting Model...</span>';
+            // We explicitly show "z" instead of "x" to be mathematically accurate about scaling
+            let html = `<div class="dash-equation-main"><span><span style="color:var(--text-muted)">Predictions = </span>${coeffs[0].toFixed(2)}</span>`;
+            for(let i=1; i<coeffs.length; i++) {
+                if(i > 4) { html += ` <span>+ ...</span>`; break; }
+                html += ` <span>${coeffs[i] >= 0 ? '+' : '-'} ${Math.abs(coeffs[i]).toFixed(2)}z${i>1?`<sup>${i}</sup>`:''}</span>`;
+            }
+            html += `</div><div style="font-size:0.65rem; color:var(--text-muted); margin-top:0.2rem; width:100%;">(where z is the scaled input)</div>`;
+            return html;
+        }
+
+        function renderMatrix(degree) {
+            const table = document.getElementById('matrix-content');
+            let html = '<tr><th>1</th><th>z</th>';
+            if(degree >= 2) html += '<th>z²</th>';
+            if(degree >= 3) html += '<th>z³</th>';
+            html += '</tr>';
+            const limit = Math.min(4, trainData.length);
+            for(let i=0; i<limit; i++) {
+                let z = normalizeX(trainData[i].x);
+                html += `<tr><td>1</td><td>${z.toFixed(2)}</td>`;
+                if(degree >= 2) html += `<td>${(z*z).toFixed(2)}</td>`;
+                if(degree >= 3) html += `<td>${(z*z*z).toFixed(2)}</td>`;
+                html += '</tr>';
+            }
+            html += '<tr><td colspan="4" class="matrix-dots">...</td></tr>';
+            table.innerHTML = html;
+        }
+
+        function renderBeta(coeffs) {
+            const table = document.getElementById('beta-content');
+            let html = '<tr><th>Weight</th></tr>';
+            const labels = ['Weight 0', 'Weight 1', 'Weight 2', 'Weight 3'];
+            const limit = Math.min(4, coeffs.length);
+            for(let i=0; i<limit; i++) html += `<tr><td>${labels[i]} = ${coeffs[i].toFixed(2)}</td></tr>`;
+            if(coeffs.length > 4) html += '<tr><td class="matrix-dots">...</td></tr>';
+            table.innerHTML = html;
+        }
+
+        // --- CANVAS STATE & RENDERING ---
+        const canvas = document.getElementById('viz');
+        const ctx = canvas.getContext('2d');
+        
+        let width, height;
+        let currentStage = 1;
+        let interactiveDegree = 2;
+        let showResidualsToggle = false;
+
+        const padding = { top: 30, right: 40, bottom: 50, left: 50 };
+        const resolution = 200; 
+        let xCoords = [];
+        let currentCurveY = Array(resolution).fill(0);
+        let targetCurveY = Array(resolution).fill(0);
+        let currentCurveOpacity = 0;
+        let targetCurveOpacity = 0;
+        let currentCoeffs = [];
+
+        function resize() {
+            const container = canvas.parentElement;
+            width = container.clientWidth;
+            height = container.clientHeight;
+            const dpr = window.devicePixelRatio || 1;
+            
+            ctx.setTransform(1, 0, 0, 1, 0, 0); 
+            canvas.width = width * dpr;
+            canvas.height = height * dpr;
+            ctx.scale(dpr, dpr);
+            
+            xCoords = [];
+            for(let i=0; i<resolution; i++) {
+                xCoords.push(xMin + (xMax - xMin) * (i / (resolution - 1)));
+            }
+            updateTargetCurve();
+        }
+        window.addEventListener('resize', resize);
+
+        function mapX(x) { return padding.left + ((x - xMin) / (xMax - xMin)) * (width - padding.left - padding.right); }
+        function mapY(y) { return height - padding.bottom - ((y - yMin) / (yMax - yMin)) * (height - padding.top - padding.bottom); }
+
+        function updateTargetCurve() {
+            let degree = 1;
+            targetCurveOpacity = 1;
+            
+            // Layout toggles
+            let showTest = false, showLegend = false, forceResiduals = false;
+            let showMatrix = false, showBeta = false, showEquation = false;
+            let showDecision = false, showValidationCurve = false, showResidualPlot = false;
+            let activateTrainMSE = false, activateTestMSE = false;
+
+            switch(currentStage) {
+                case 1: targetCurveOpacity = 0; degree = 1; break; // Inspect
+                case 2: degree = 1; showEquation = true; break; // Linear
+                case 3: degree = 2; showMatrix = true; showEquation = true; break; // Matrix
+                case 4: degree = 2; showBeta = true; showEquation = true; break; // Beta
+                case 5: degree = 2; forceResiduals = true; showEquation = true; showResidualPlot = true; activateTrainMSE = true; break; // Residuals
+                case 6: degree = 9; showTest = true; showLegend = true; showEquation = true; showValidationCurve = true; activateTrainMSE = true; activateTestMSE = true; break; // Train vs Test
+                case 7: degree = interactiveDegree; showTest = true; showLegend = true; showEquation = true; showValidationCurve = true; activateTrainMSE = true; activateTestMSE = true; break; // Playground
+                case 8: degree = bestDegree; showTest = true; showDecision = true; activateTrainMSE = true; activateTestMSE = true; break; // Final
+            }
+
+            currentCoeffs = getPolyCoeffs(trainData, degree);
+            const trainMSE = calculateMSE(trainData, currentCoeffs);
+            const testMSE = calculateMSE(testData, currentCoeffs);
+
+            // Update DOM Overlays
+            document.getElementById('canvas-legend').classList.toggle('visible', showLegend);
+            document.getElementById('overlay-matrix').classList.toggle('visible', showMatrix);
+            document.getElementById('overlay-beta').classList.toggle('visible', showBeta);
+            document.getElementById('decision-card').classList.toggle('visible', showDecision);
+
+            if (showMatrix) renderMatrix(degree);
+            if (showBeta) renderBeta(currentCoeffs);
+            
+            const eqContainer = document.getElementById('eq-text');
+            if (showEquation && !showDecision) {
+                eqContainer.innerHTML = formatEquation(currentCoeffs);
+            } else if (!showDecision) {
+                eqContainer.innerHTML = '<span style="color:var(--text-muted)">Awaiting Model...</span>';
+            }
+
+            // Update Dashboard Metrics
+            document.getElementById('val-degree').innerText = currentStage > 1 ? degree : "-";
+            
+            const groupTrain = document.getElementById('group-train-mse');
+            const valTrain = document.getElementById('val-train-mse');
+            if(activateTrainMSE) {
+                groupTrain.classList.remove('val-fade');
+                valTrain.innerHTML = `<span>${trainMSE.toFixed(1)}</span>`;
+            } else {
+                groupTrain.classList.add('val-fade');
+                valTrain.innerHTML = `<span>-</span>`;
+            }
+
+            const groupTest = document.getElementById('group-test-mse');
+            const valTest = document.getElementById('val-test-mse');
+            if(activateTestMSE) {
+                groupTest.classList.remove('val-fade');
+                valTest.innerHTML = `<span>${testMSE > 999 ? '>999' : testMSE.toFixed(1)}</span>`;
+                
+                // Color warning for overfitting (compare to bestDegree)
+                if(degree > bestDegree + 1 && currentStage >= 6) {
+                    valTest.style.color = uiColors.error;
+                    document.getElementById('val-degree').style.color = uiColors.error;
+                } else {
+                    valTest.style.color = uiColors.test;
+                    document.getElementById('val-degree').style.color = uiColors.textMain;
+                }
+            } else {
+                groupTest.classList.add('val-fade');
+                valTest.innerHTML = `<span>-</span>`;
+                document.getElementById('val-degree').style.color = uiColors.textMain;
+            }
+
+            if (showDecision) {
+                document.getElementById('dec-deg').innerText = degree;
+                document.getElementById('dec-train').innerText = trainMSE.toFixed(1);
+                document.getElementById('dec-test').innerText = testMSE.toFixed(1);
+                document.getElementById('dec-reason').innerText = `Chosen because Degree ${degree} achieves near-best Test Error without adding unnecessary extra wiggles to the curve.`;
+                document.getElementById('dec-eq').innerHTML = formatEquation(currentCoeffs);
+            }
+
+            // Pass flags to render loop
+            window.drawTestPoints = showTest;
+            window.drawResidualLines = forceResiduals || (currentStage === 7 && showResidualsToggle);
+            window.drawValidationCurveFlag = showValidationCurve;
+            window.drawResidualPlotFlag = showResidualPlot;
+
+            for(let i=0; i<resolution; i++) {
+                targetCurveY[i] = evalPoly(xCoords[i], currentCoeffs);
+            }
+        }
+
+        function drawGrid() {
+            ctx.beginPath();
+            ctx.strokeStyle = uiColors.border;
+            ctx.lineWidth = 1;
+            for(let i=1; i<=11; i++) {
+                let x = mapX(i);
+                ctx.moveTo(x, padding.top);
+                ctx.lineTo(x, height - padding.bottom);
+            }
+            for(let i=20; i<=140; i+=20) {
+                let y = mapY(i);
+                ctx.moveTo(padding.left, y);
+                ctx.lineTo(width - padding.right, y);
+            }
+            ctx.stroke();
+
+            // Axes
+            ctx.beginPath();
+            ctx.strokeStyle = uiColors.textMuted;
+            ctx.lineWidth = 2;
+            ctx.moveTo(padding.left, padding.top);
+            ctx.lineTo(padding.left, height - padding.bottom);
+            ctx.lineTo(width - padding.right, height - padding.bottom);
+            ctx.stroke();
+
+            // Labels
+            ctx.fillStyle = uiColors.textMuted;
+            ctx.font = '12px Inter';
+            ctx.textAlign = 'center';
+            ctx.fillText('Input (x)', width/2, height - 15);
+            
+            ctx.save();
+            ctx.translate(20, height/2);
+            ctx.rotate(-Math.PI/2);
+            ctx.fillText('Response (y)', 0, 0);
+            ctx.restore();
+        }
+
+        function drawPointsAndResiduals() {
+            if(window.drawResidualLines && currentCurveOpacity > 0.5) {
+                ctx.lineWidth = 1;
+                ctx.setLineDash([3, 3]);
+                
+                ctx.strokeStyle = 'rgba(220, 38, 38, 0.4)'; // Error line
+                ctx.beginPath();
+                for(let pt of trainData) {
+                    ctx.moveTo(mapX(pt.x), mapY(pt.y));
+                    ctx.lineTo(mapX(pt.x), mapY(evalPoly(pt.x, currentCoeffs)));
+                }
+                ctx.stroke();
+
+                if(window.drawTestPoints) {
+                    ctx.strokeStyle = 'rgba(217, 119, 6, 0.5)';
+                    ctx.beginPath();
+                    for(let pt of testData) {
+                        ctx.moveTo(mapX(pt.x), mapY(pt.y));
+                        ctx.lineTo(mapX(pt.x), mapY(evalPoly(pt.x, currentCoeffs)));
+                    }
+                    ctx.stroke();
+                }
+                ctx.setLineDash([]);
+            }
+
+            // Train Data
+            for(let pt of trainData) {
+                ctx.beginPath();
+                ctx.arc(mapX(pt.x), mapY(pt.y), 3, 0, Math.PI * 2);
+                ctx.fillStyle = 'rgba(31, 41, 55, 0.7)';
+                ctx.fill();
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.8)';
+                ctx.lineWidth = 1;
+                ctx.stroke();
+            }
+
+            // Test Data
+            if(window.drawTestPoints) {
+                for(let pt of testData) {
+                    ctx.beginPath();
+                    ctx.arc(mapX(pt.x), mapY(pt.y), 4, 0, Math.PI * 2);
+                    ctx.fillStyle = 'white';
+                    ctx.fill();
+                    ctx.strokeStyle = 'rgba(217, 119, 6, 0.9)';
+                    ctx.lineWidth = 2;
+                    ctx.stroke();
+                }
+            }
+        }
+
+        function drawCurve() {
+            if (currentCurveOpacity < 0.01) return;
+
+            ctx.beginPath();
+            ctx.strokeStyle = `rgba(99, 102, 241, ${currentCurveOpacity})`; 
+            if (currentStage === 6 || (currentStage >= 7 && interactiveDegree > bestDegree + 2)) {
+                 ctx.strokeStyle = `rgba(220, 38, 38, ${currentCurveOpacity})`; 
+            }
+            ctx.lineWidth = 4;
+            ctx.lineJoin = 'round';
+            ctx.lineCap = 'round';
+
+            let started = false;
+            for(let i=0; i<resolution; i++) {
+                let cx = mapX(xCoords[i]);
+                let cy = mapY(currentCurveY[i]);
+                
+                if(cy < -1000 || cy > height + 1000) {
+                    started = false;
+                    continue; 
+                }
+
+                if (!started) {
+                    ctx.moveTo(cx, cy);
+                    started = true;
+                } else {
+                    ctx.lineTo(cx, cy);
+                }
+            }
+            ctx.stroke();
+        }
+
+        // --- INSETS ---
+        function drawResidualPlotInset() {
+            if(!window.drawResidualPlotFlag) return;
+            
+            const insetW = 180;
+            const insetH = 110;
+            const insetX = width - padding.right - insetW - 10;
+            const insetY = padding.top + 10;
+            
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.95)';
+            ctx.fillRect(insetX, insetY, insetW, insetH);
+            ctx.strokeStyle = uiColors.border;
+            ctx.lineWidth = 1;
+            ctx.strokeRect(insetX, insetY, insetW, insetH);
+            
+            ctx.fillStyle = uiColors.accentDark;
+            ctx.font = 'bold 11px Inter';
+            ctx.textAlign = 'left';
+            ctx.fillText('Residual Plot', insetX + 10, insetY + 16);
+            ctx.fillStyle = uiColors.textMuted;
+            ctx.font = '9px Inter';
+            ctx.fillText('Ideal: Random noise near zero', insetX + 10, insetY + 28);
+
+            let zeroY = insetY + (insetH / 2) + 10;
+            ctx.beginPath();
+            ctx.moveTo(insetX + 10, zeroY);
+            ctx.lineTo(insetX + insetW - 10, zeroY);
+            ctx.strokeStyle = '#9ca3af';
+            ctx.setLineDash([2, 2]);
+            ctx.stroke();
+            ctx.setLineDash([]);
+
+            let maxRes = 40; 
+            for(let pt of trainData) {
+                let res = pt.y - evalPoly(pt.x, currentCoeffs);
+                let px = insetX + 10 + ((pt.x - xMin) / (xMax - xMin)) * (insetW - 20);
+                let py = zeroY - (res / maxRes) * ((insetH / 2) - 20);
+                py = Math.max(insetY + 35, Math.min(insetY + insetH - 5, py)); 
+                
+                ctx.beginPath();
+                ctx.arc(px, py, 2, 0, Math.PI * 2);
+                ctx.fillStyle = 'rgba(220, 38, 38, 0.7)';
+                ctx.fill();
+            }
+        }
+
+        function drawValidationInset() {
+            if(!window.drawValidationCurveFlag) return; 
+            
+            const insetW = 160;
+            const insetH = 100;
+            const insetX = width - padding.right - insetW - 10;
+            const insetY = padding.top + 10; 
+            
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.95)';
+            ctx.fillRect(insetX, insetY, insetW, insetH);
+            ctx.strokeStyle = uiColors.border;
+            ctx.lineWidth = 1;
+            ctx.strokeRect(insetX, insetY, insetW, insetH);
+            
+            ctx.fillStyle = uiColors.train;
+            ctx.font = 'bold 11px Inter';
+            ctx.textAlign = 'left';
+            ctx.fillText('Validation Curve', insetX + 10, insetY + 16);
+
+            ctx.font = '9px Inter';
+            ctx.fillStyle = uiColors.train;
+            ctx.fillText('Train', insetX + 10, insetY + 28);
+            ctx.fillStyle = uiColors.test;
+            ctx.fillText('Test', insetX + 40, insetY + 28);
+
+            let maxErr = 400; 
+
+            function plotLine(isTest, color) {
+                ctx.beginPath();
+                ctx.strokeStyle = color;
+                ctx.lineWidth = 2;
+                for(let d=1; d<=9; d++) {
+                    let err = isTest ? validationCache[d].test : validationCache[d].train;
+                    let px = insetX + 15 + ((d-1)/8) * (insetW - 30);
+                    let py = insetY + insetH - 10 - Math.min((err / maxErr), 1) * (insetH - 45);
+                    if(d===1) ctx.moveTo(px, py);
+                    else ctx.lineTo(px, py);
+                }
+                ctx.stroke();
+            }
+
+            plotLine(false, uiColors.train);
+            plotLine(true, uiColors.test);
+            
+            let curD = (currentStage >= 7) ? interactiveDegree : 9;
+            let px = insetX + 15 + ((curD-1)/8) * (insetW - 30);
+            ctx.beginPath();
+            ctx.moveTo(px, insetY + 35);
+            ctx.lineTo(px, insetY + insetH - 10);
+            ctx.strokeStyle = 'rgba(99, 102, 241, 0.6)';
+            ctx.setLineDash([2, 2]);
+            ctx.stroke();
+            ctx.setLineDash([]);
+        }
+
+        function renderLoop() {
+            currentCurveOpacity += (targetCurveOpacity - currentCurveOpacity) * 0.1;
+            for(let i=0; i<resolution; i++) {
+                currentCurveY[i] += (targetCurveY[i] - currentCurveY[i]) * 0.15;
+            }
+
+            ctx.clearRect(0, 0, width, height);
+            drawGrid();
+            drawCurve();
+            drawPointsAndResiduals();
+            drawResidualPlotInset();
+            drawValidationInset();
+
+            requestAnimationFrame(renderLoop);
+        }
+
+        // --- HERO AMBIENT BACKGROUND ---
+        const heroCanvas = document.getElementById('hero-canvas');
+        const hCtx = heroCanvas.getContext('2d');
+        let heroPoints = [];
+        for(let i=0; i<40; i++) {
+            heroPoints.push({
+                x: Math.random() * window.innerWidth,
+                y: Math.random() * window.innerHeight,
+                vx: (Math.random() - 0.5) * 0.3,
+                vy: (Math.random() - 0.5) * 0.3,
+                r: Math.random() * 3 + 1
+            });
+        }
+        
+        function animateHero() {
+            if(window.scrollY > window.innerHeight) {
+                requestAnimationFrame(animateHero);
+                return;
+            }
+            heroCanvas.width = window.innerWidth;
+            heroCanvas.height = window.innerHeight;
+            hCtx.clearRect(0,0, heroCanvas.width, heroCanvas.height);
+            
+            for(let p of heroPoints) {
+                p.x += p.vx; p.y += p.vy;
+                if(p.x < 0) p.x = heroCanvas.width;
+                if(p.x > heroCanvas.width) p.x = 0;
+                if(p.y < 0) p.y = heroCanvas.height;
+                if(p.y > heroCanvas.height) p.y = 0;
+                
+                hCtx.beginPath();
+                hCtx.arc(p.x, p.y, p.r, 0, Math.PI*2);
+                hCtx.fillStyle = 'rgba(99, 102, 241, 0.2)';
+                hCtx.fill();
+            }
+            requestAnimationFrame(animateHero);
+        }
+        animateHero();
+
+        // --- SCROLL OBSERVER ---
+        const sections = document.querySelectorAll('.section');
+        const progressBar = document.getElementById('progress-bar');
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if(entry.isIntersecting) {
+                    sections.forEach(sec => sec.classList.remove('active'));
+                    entry.target.classList.add('active');
+                    
+                    const stage = parseInt(entry.target.getAttribute('data-stage'));
+                    if (currentStage !== stage) {
+                        currentStage = stage;
+                        updateTargetCurve();
+                    }
+                }
+            });
+        }, { threshold: 0.45 });
+
+        sections.forEach(sec => observer.observe(sec));
+
+        window.addEventListener('scroll', () => {
+            const scrollTotal = document.documentElement.scrollHeight - window.innerHeight;
+            const scrollProgress = (window.scrollY / scrollTotal) * 100;
+            progressBar.style.width = scrollProgress + '%';
+        });
+
+        // --- PLAYGROUND CONTROLS ---
+        const degreeSlider = document.getElementById('degree-slider');
+        const degreeReadout = document.getElementById('degree-readout');
+        const toggleRes = document.getElementById('toggle-residuals');
+        const shapeSelect = document.getElementById('shape-select');
+        const btnRegen = document.getElementById('btn-regen');
+
+        degreeSlider.addEventListener('input', (e) => {
+            interactiveDegree = parseInt(e.target.value);
+            degreeReadout.innerText = interactiveDegree;
+            updateTargetCurve();
+        });
+
+        toggleRes.addEventListener('change', (e) => {
+            showResidualsToggle = e.target.checked;
+            updateTargetCurve();
+        });
+
+        shapeSelect.addEventListener('change', (e) => {
+            generateData(e.target.value);
+            interactiveDegree = bestDegree;
+            degreeSlider.value = bestDegree;
+            degreeReadout.innerText = bestDegree;
+            updateTargetCurve();
+        });
+
+        btnRegen.addEventListener('click', () => { 
+            generateData(shapeSelect.value); 
+        });
+
+        // Init
+        generateData('hill');
+        resize();
+        for(let i=0; i<resolution; i++) currentCurveY[i] = targetCurveY[i];
+        requestAnimationFrame(renderLoop);
+    </script>
+</body>
+</html>

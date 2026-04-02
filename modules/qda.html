@@ -1,0 +1,1212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quadratic Discriminant Analysis (QDA) - Visual Simulator</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <!-- KaTeX for Math Rendering -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+
+    <style>
+        :root {
+            --bg-page: #f7f7f4;
+            --bg-surface: #ffffff;
+            --border-color: #e7e5e4;
+            --text-main: #1f2937;
+            --text-dim: #4b5563;
+            --text-muted: #6b7280;
+            --accent: #6366f1;
+            --accent-dark: #4f46e5;
+            --class-a: #e63946; /* Apple */
+            --class-a-bg: rgba(230, 57, 70, 0.1);
+            --class-b: #2a9d8f; /* Pear */
+            --class-b-bg: rgba(42, 157, 143, 0.1);
+            --success: #16a34a;
+            --warning: #d97706;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-page);
+            color: var(--text-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        code, .mono {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9em;
+        }
+
+        /* Progress Bar */
+        #progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent), var(--accent-dark));
+            width: 0%;
+            z-index: 100;
+            transition: width 0.1s ease-out;
+        }
+
+        /* Hero Section */
+        #hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 2rem;
+            position: relative;
+        }
+
+        .topic-badge {
+            background-color: rgba(99, 102, 241, 0.1);
+            color: var(--accent-dark);
+            padding: 0.5rem 1rem;
+            border-radius: 999px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            margin-bottom: 1.5rem;
+        }
+
+        #hero h1 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            max-width: 800px;
+            background: linear-gradient(135deg, var(--text-main), var(--accent-dark));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        #hero p {
+            font-size: 1.25rem;
+            color: var(--text-dim);
+            max-width: 600px;
+        }
+
+        .scroll-cue {
+            position: absolute;
+            bottom: 3rem;
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+
+        /* Main Layout */
+        #layout-wrapper {
+            display: flex;
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        #narrative-column {
+            width: 45%;
+            padding: 0 4rem 4rem 4rem;
+        }
+
+        #viz-column {
+            width: 55%;
+            height: 100vh;
+            position: sticky;
+            top: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        /* Stages */
+        section.stage {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 4rem 0;
+            opacity: 0.2;
+            transition: opacity 0.5s ease;
+        }
+
+        section.stage.active {
+            opacity: 1;
+        }
+
+        .stage-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--accent);
+            font-weight: 700;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .stage-label::before {
+            content: '';
+            display: inline-block;
+            width: 20px;
+            height: 2px;
+            background-color: var(--accent);
+        }
+
+        section.stage h2 {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            color: var(--text-main);
+        }
+
+        section.stage p {
+            margin-bottom: 1.5rem;
+            font-size: 1.05rem;
+            color: var(--text-dim);
+        }
+
+        /* Cards & Components */
+        .glass-card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+        }
+
+        .formula-block {
+            background-color: rgba(99, 102, 241, 0.05);
+            border-left: 4px solid var(--accent);
+            padding: 1.25rem 1.25rem 0.5rem 1.25rem;
+            border-radius: 0 8px 8px 0;
+            margin: 1.5rem 0;
+            overflow-x: auto;
+            text-align: center;
+            font-size: 1.1rem;
+        }
+
+        .formula-desc {
+            font-size: 0.875rem;
+            color: var(--text-dim);
+            text-align: left;
+            margin-top: 1rem;
+            padding-top: 0.5rem;
+            border-top: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .insight-box {
+            background-color: #fef3c7;
+            border-left: 4px solid var(--warning);
+            padding: 1rem 1.25rem;
+            border-radius: 0 8px 8px 0;
+            margin: 1.5rem 0;
+            font-size: 0.95rem;
+            color: #92400e;
+        }
+
+        .pill {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+        .pill.class-a { background: var(--class-a-bg); color: var(--class-a); }
+        .pill.class-b { background: var(--class-b-bg); color: var(--class-b); }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .metric-card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1rem;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .metric-val {
+            display: block;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-main);
+            margin-bottom: 0.5rem;
+        }
+
+        .metric-lbl {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            letter-spacing: 0.05em;
+        }
+
+        /* Controls */
+        .control-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 0.75rem;
+            font-size: 0.9rem;
+        }
+        .control-row input[type="range"] {
+            flex-grow: 1;
+            margin: 0 1rem;
+            accent-color: var(--accent);
+            cursor: pointer;
+        }
+        
+        /* Compact parameter controls */
+        .control-row.compact {
+            margin-bottom: 0.4rem;
+            font-size: 0.8rem;
+        }
+        .control-row.compact label {
+            width: 50px;
+            color: var(--text-dim);
+        }
+        .control-row.compact input {
+            margin: 0;
+            flex-grow: 1;
+        }
+
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 0.75rem;
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-weight: 600;
+            color: var(--text-main);
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+            margin-top: 1rem;
+        }
+        .btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+            background: rgba(99, 102, 241, 0.05);
+        }
+
+        /* Canvas & Overlays */
+        #viz-container {
+            width: 100%;
+            aspect-ratio: 1;
+            max-height: 80vh;
+            background: var(--bg-surface);
+            border-radius: 16px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+            position: relative;
+            display: grid;
+            grid-template-columns: 3rem minmax(0, 1fr);
+            grid-template-rows: minmax(0, 1fr) auto auto;
+            gap: 0.75rem;
+            padding: 1rem 1rem 1rem 0.75rem;
+            overflow: hidden;
+        }
+
+        #viz-plot-area {
+            position: relative;
+            grid-column: 2;
+            grid-row: 1;
+            min-width: 0;
+            min-height: 0;
+            border-radius: 12px;
+            overflow: hidden;
+            touch-action: none; /* Crucial for custom pointer drag on mobile */
+        }
+
+        canvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+            cursor: crosshair;
+        }
+        
+        /* Overlays */
+        .viz-overlay {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 0.75rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            font-size: 0.85rem;
+            pointer-events: none;
+            backdrop-filter: blur(4px);
+        }
+        #viz-legend {
+            top: 1rem;
+            right: 1rem;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.25rem;
+        }
+        .legend-item:last-child { margin-bottom: 0; }
+        .swatch {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+        
+        #viz-status {
+            position: static;
+            grid-column: 1 / -1;
+            grid-row: 3;
+            font-weight: 500;
+            color: var(--text-dim);
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        /* Probe Tooltip */
+        #tooltip {
+            position: absolute;
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.2s;
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+            font-size: 0.85rem;
+            z-index: 10;
+            transform: translate(-50%, -100%);
+            margin-top: -15px;
+            min-width: 180px;
+        }
+        .tt-title {
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 6px;
+            padding-bottom: 4px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .tt-subtitle {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            text-align: center;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        #tooltip span small {
+            font-size: 0.85em;
+            opacity: 0.75;
+            font-family: 'JetBrains Mono', monospace;
+            margin-left: 0.5rem;
+        }
+
+        /* Axis Labels */
+        .axis-label {
+            position: static;
+            display: inline-block;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            pointer-events: none;
+            white-space: nowrap;
+        }
+        .axis-x {
+            grid-column: 2;
+            grid-row: 2;
+            justify-self: end;
+            padding-right: 0.25rem;
+        }
+        .axis-y {
+            grid-column: 1;
+            grid-row: 1;
+            align-self: center;
+            justify-self: center;
+            transform: rotate(-90deg);
+            transform-origin: center;
+        }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            #layout-wrapper {
+                flex-direction: column-reverse;
+            }
+            #narrative-column {
+                width: 100%;
+                padding: 2rem;
+            }
+            #viz-column {
+                width: 100%;
+                height: 55vh;
+                position: sticky;
+                top: 0;
+                padding: 1rem;
+                z-index: 10;
+                background: var(--bg-page);
+                border-bottom: 1px solid var(--border-color);
+            }
+            #viz-container {
+                max-height: 100%;
+            }
+            section.stage {
+                min-height: auto;
+                padding: 3rem 0;
+            }
+            .param-grid {
+                flex-direction: column;
+                gap: 1rem !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="progress-bar"></div>
+
+    <header id="hero">
+        <div class="topic-badge">Generative Classification</div>
+        <h1>Quadratic Discriminant Analysis</h1>
+        <p>A live simulator: Watch how statistical shape, sample sizes, and smart distance algorithms bend the rules of classification.</p>
+        <div class="scroll-cue">
+            <span>Scroll to begin</span>
+            <span>↓</span>
+        </div>
+    </header>
+
+    <div id="layout-wrapper">
+        <div id="narrative-column">
+            
+            <section class="stage" data-stage="1">
+                <div class="stage-label">Stage 01</div>
+                <h2>The Raw Data Cloud</h2>
+                <p>Imagine sorting fruit into <span class="pill class-a">Apples</span> and <span class="pill class-b">Pears</span> using two measurements: Sweetness and Roundness.</p>
+                <p>In this simulator, we generate data dynamically. Notice that the groups don't just sit in different locations—they have uniquely different <strong>shapes</strong>. Apples form a tight cluster, while Pears stretch diagonally.</p>
+                
+                <div class="glass-card">
+                    <div style="font-weight: 600; margin-bottom: 0.5rem; font-size: 0.85rem; text-transform: uppercase; color: var(--text-muted)">Prior Probability Controls</div>
+                    <div class="control-row">
+                        <label style="color: var(--class-a); font-weight: 600;">Apples ($N_A$):</label>
+                        <input type="range" id="slider-na" min="10" max="200" value="80">
+                        <span id="val-na" class="mono">80</span>
+                    </div>
+                    <div class="control-row">
+                        <label style="color: var(--class-b); font-weight: 600;">Pears ($N_B$):</label>
+                        <input type="range" id="slider-nb" min="10" max="200" value="80">
+                        <span id="val-nb" class="mono">80</span>
+                    </div>
+                    <p style="font-size: 0.8rem; color: var(--text-dim); margin-top: 0.5rem; line-height: 1.4;">Dragging the sliders will rebuild the simulation <em>live</em>. To test the model on a completely new random arrangement of points, use the button below.</p>
+                    <button id="btn-regen" class="btn">Re-scatter Random Points</button>
+                </div>
+            </section>
+
+            <section class="stage" data-stage="2">
+                <div class="stage-label">Stage 02</div>
+                <h2>The Straight-Line Trap (LDA)</h2>
+                <p>The simplest approach is <strong>Linear Discriminant Analysis (LDA)</strong>. It draws a straight boundary to separate the groups.</p>
+                <p>To do this, LDA calculates the pooled average shape of all the data and forces <em>both</em> groups to share that exact same covariance matrix ($\hat{\Sigma}_{shared}$).</p>
+                <div class="insight-box">
+                    <strong>The Limitation:</strong> By forcing the shapes to be identical, LDA misclassifies points near the edges. It completely ignores the unique diagonal stretch of the Pears.
+                </div>
+            </section>
+
+            <section class="stage" data-stage="3">
+                <div class="stage-label">Stage 03</div>
+                <h2>The QDA Shift</h2>
+                <p><strong>Quadratic Discriminant Analysis (QDA)</strong> drops the "same shape" rule. It lets every class have its own unique personality.</p>
+                <p>Instead of a rigid jump rope, QDA acts more like a flexible hula hoop. The model looks at the generated points and empirically estimates a distinct covariance matrix ($\hat{\Sigma}_k$) for each group.</p>
+                <p>Watch the canvas: the ellipses now accurately wrap around the true scatter of each distinct class.</p>
+            </section>
+
+            <section class="stage" data-stage="4">
+                <div class="stage-label">Stage 04</div>
+                <h2>Anatomy of a Learned Class</h2>
+                <p>To learn these shapes, QDA calculates three key statistics directly from the sample data you generated:</p>
+                
+                <div class="glass-card">
+                    <p><strong>1. Prior ( $\pi_k$ )</strong><br>The baseline probability based on sample sizes: $N_k / N_{total}$.</p>
+                    <p><strong>2. Estimated Mean ( $\hat{\mu}_k$ )</strong><br>The empirical center coordinate of the class cloud.</p>
+                    <p><strong>3. Estimated Covariance ( $\hat{\Sigma}_k$ )</strong><br>The shape, width, and tilt of the cloud computed from the points. We also add a tiny regularization ridge to ensure numerical stability!</p>
+                </div>
+                <p>This allows QDA to model the data as separate, multivariate normal distributions without assuming they match.</p>
+            </section>
+
+            <section class="stage" data-stage="5">
+                <div class="stage-label">Stage 05</div>
+                <h2>Testing with Smart Distance</h2>
+                <p>When a new fruit arrives, QDA uses a shape-aware distance metric to see which cloud it fits best.</p>
+                
+                <div class="formula-block">
+                    $$ \delta_k(x) = -\frac{1}{2} \ln |\hat{\Sigma}_k| - \frac{1}{2}(x-\hat{\mu}_k)^T \hat{\Sigma}_k^{-1} (x-\hat{\mu}_k) + \ln(\pi_k) $$
+                    <p class="formula-desc">The Discriminant Function scores each class. The middle term measures distance along the group's natural stretch. The first term penalizes overly wide clouds, and the last term boosts common classes.</p>
+                </div>
+                
+                <div class="insight-box">
+                    <strong>Try it:</strong> Tap and drag anywhere on the canvas to move the test probe point. Watch the <strong>posterior probabilities</strong> update dynamically in the tooltip.
+                </div>
+            </section>
+
+            <section class="stage" data-stage="6">
+                <div class="stage-label">Stage 06</div>
+                <h2>The Curved Boundary</h2>
+                <p>To make a final decision, QDA simply calculates $\delta_k(x)$ for both Apples and Pears across the entire space and maps out where the scores tie.</p>
+                <p>Because the covariance matrices $\hat{\Sigma}_k$ are different, the $(x-\mu)^2$ terms don't cancel out. The math natively produces a <strong>Quadratic Boundary</strong> that elegantly bends to protect the uniquely shaped groups.</p>
+                
+                <div class="glass-card" style="padding: 1.25rem;">
+                    <div style="font-weight: 600; margin-bottom: 0.5rem; font-size: 0.85rem; text-transform: uppercase; color: var(--text-muted)">QDA Shape Playground</div>
+                    <p style="font-size: 0.85rem; color: var(--text-dim); margin-bottom: 1rem; line-height: 1.4;">Modify the true underlying distributions below. The simulator will instantly re-draw points and recalculate QDA to show <em>why</em> the boundary bends.</p>
+                    
+                    <div class="param-grid" style="display: flex; gap: 1.5rem; justify-content: space-between;">
+                        <!-- Class A Params -->
+                        <div class="param-col" style="flex: 1;">
+                            <div style="color: var(--class-a); font-weight: 600; font-size: 0.9rem; border-bottom: 2px solid var(--class-a-bg); padding-bottom: 0.25rem; margin-bottom: 0.75rem;">Apple Base Parameters</div>
+                            <div class="control-row compact"><label>Mean X</label><input type="range" id="a-mx" min="1" max="9" step="0.5" value="3.5"></div>
+                            <div class="control-row compact"><label>Mean Y</label><input type="range" id="a-my" min="1" max="9" step="0.5" value="7.0"></div>
+                            <div class="control-row compact"><label>Spread</label><input type="range" id="a-sz" min="0.2" max="3" step="0.1" value="1.2"></div>
+                            <div class="control-row compact"><label>Stretch</label><input type="range" id="a-st" min="1" max="4" step="0.1" value="1.0"></div>
+                            <div class="control-row compact"><label>Tilt</label><input type="range" id="a-tl" min="0" max="180" step="5" value="0"></div>
+                        </div>
+                        <!-- Class B Params -->
+                        <div class="param-col" style="flex: 1;">
+                            <div style="color: var(--class-b); font-weight: 600; font-size: 0.9rem; border-bottom: 2px solid var(--class-b-bg); padding-bottom: 0.25rem; margin-bottom: 0.75rem;">Pear Base Parameters</div>
+                            <div class="control-row compact"><label>Mean X</label><input type="range" id="b-mx" min="1" max="9" step="0.5" value="7.0"></div>
+                            <div class="control-row compact"><label>Mean Y</label><input type="range" id="b-my" min="1" max="9" step="0.5" value="3.5"></div>
+                            <div class="control-row compact"><label>Spread</label><input type="range" id="b-sz" min="0.2" max="3" step="0.1" value="1.5"></div>
+                            <div class="control-row compact"><label>Stretch</label><input type="range" id="b-st" min="1" max="4" step="0.1" value="3.0"></div>
+                            <div class="control-row compact"><label>Tilt</label><input type="range" id="b-tl" min="0" max="180" step="5" value="45"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="stage" data-stage="7">
+                <div class="stage-label">Stage 07</div>
+                <h2>The Cost of Flexibility</h2>
+                <p>If QDA is so smart, why use LDA at all? The answer is the <strong>Bias-Variance Tradeoff</strong> and parameter complexity.</p>
+                <p>For $K$ classes and $p$ features, let's look at what the models must estimate from the data:</p>
+                
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <span class="metric-val mono" style="font-size: 1rem;">$Kp + \frac{p(p+1)}{2}$</span>
+                        <span class="metric-lbl">LDA Parameters</span>
+                        <span style="font-size:0.7rem; color:var(--text-muted); margin-top:4px;">(Means + 1 Shared Covariance)</span>
+                    </div>
+                    <div class="metric-card">
+                        <span class="metric-val mono" style="font-size: 1rem;">$Kp + K\frac{p(p+1)}{2}$</span>
+                        <span class="metric-lbl">QDA Parameters</span>
+                        <span style="font-size:0.7rem; color:var(--text-muted); margin-top:4px;">(Means + K Covariances)</span>
+                    </div>
+                </div>
+                <p>Estimating a unique covariance matrix for <em>every</em> class requires a lot of data. If your dataset is small or has many features, QDA's flexibility becomes a liability—it will start hallucinating curves out of noise (overfitting).</p>
+            </section>
+
+            <section class="stage" data-stage="8">
+                <div class="stage-label">Stage 08</div>
+                <h2>Synthesis</h2>
+                <p>Generative models don't just guess lines; they map the structural landscape of the data.</p>
+                <p>QDA reigns supreme when classes naturally behave differently—when one is tight and round, and another is wide and stretched.</p>
+                <div class="glass-card">
+                    <ul style="list-style-type: none; gap: 0.75rem; display: flex; flex-direction: column;">
+                        <li>✓ <strong>Best for:</strong> Large datasets, differing group shapes, nonlinear natural boundaries.</li>
+                        <li>✓ <strong>Assumption:</strong> Features follow a multivariate normal distribution within classes.</li>
+                        <li>✓ <strong>Mechanics:</strong> Computes empirical class covariances to enable a curved decision surface based on Mahalanobis distance and priors.</li>
+                    </ul>
+                </div>
+                <p>By letting each class keep its unique shape, QDA transforms classification from drawing rigid lines into understanding probabilities in space.</p>
+            </section>
+        </div>
+
+        <div id="viz-column">
+            <div id="viz-container">
+                <div class="axis-label axis-y">Roundness (Feature 2)</div>
+                <div id="viz-plot-area">
+                    <canvas id="qda-canvas"></canvas>
+
+                    <div id="viz-legend" class="viz-overlay">
+                        <div class="legend-item"><span class="swatch" style="background:var(--class-a)"></span> Apples</div>
+                        <div class="legend-item"><span class="swatch" style="background:var(--class-b)"></span> Pears</div>
+                    </div>
+
+                    <div id="tooltip">
+                        <div class="tt-title" id="tt-pred">Predicted: --</div>
+                        <div class="tt-subtitle">Posterior Probability</div>
+                        <div style="color: var(--class-a); font-weight: 600; margin-bottom: 2px; display: flex; justify-content: space-between; align-items: baseline;">
+                            <span>Apple:</span> <span id="tt-score-a">0% <small>(δ: 0)</small></span>
+                        </div>
+                        <div style="color: var(--class-b); font-weight: 600; display: flex; justify-content: space-between; align-items: baseline;">
+                            <span>Pear:</span> <span id="tt-score-b">0% <small>(δ: 0)</small></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="axis-label axis-x">Sweetness (Feature 1)</div>
+
+                <div id="viz-status" class="viz-overlay">
+                    Status: Initializing Simulator...
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- MATH & ESTIMATION ENGINE ---
+        
+        let currentSeedA = 42;   // Stable seed for Apple point generation
+        let currentSeedB = 4242; // Stable seed for Pear point generation
+
+        // Seeded PRNG ensures smooth updates when dragging sliders
+        function createRand(seed) {
+            let prngState = seed;
+            return function rand() {
+                let x = Math.sin(prngState++) * 10000;
+                return x - Math.floor(x);
+            };
+        }
+
+        // Box-Muller transform for normal distribution
+        function randomNormal(rand) {
+            let u = 0, v = 0;
+            while(u === 0) u = rand();
+            while(v === 0) v = rand();
+            return Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2.0 * Math.PI * v);
+        }
+
+        function buildCovMatrix(size, stretch, tiltDeg) {
+            const tilt = tiltDeg * Math.PI / 180;
+            const l1 = size * stretch;
+            const l2 = size / stretch;
+            const c = Math.cos(tilt);
+            const s = Math.sin(tilt);
+            return [
+                [l1 * c*c + l2 * s*s, (l1 - l2) * c * s],
+                [(l1 - l2) * c * s, l1 * s*s + l2 * c*c]
+            ];
+        }
+
+        function generateClassData(mu, cov, count, seed) {
+            const rand = createRand(seed);
+
+            // Cholesky decomposition
+            const l00 = Math.sqrt(Math.max(cov[0][0], 0.0001));
+            const l10 = cov[1][0] / l00;
+            const l11 = Math.sqrt(Math.max(cov[1][1] - l10 * l10, 0.0001));
+            
+            let pts = [];
+            for (let i = 0; i < count; i++) {
+                const z1 = randomNormal(rand);
+                const z2 = randomNormal(rand);
+                pts.push({
+                    x: mu.x + l00 * z1,
+                    y: mu.y + l10 * z1 + l11 * z2
+                });
+            }
+            return pts;
+        }
+
+        // Empirical Estimators
+        function calcMean(pts) {
+            let sx = 0, sy = 0;
+            for (let p of pts) { sx += p.x; sy += p.y; }
+            return { x: sx / pts.length, y: sy / pts.length };
+        }
+
+        function calcCovariance(pts, mu) {
+            let c00 = 0, c01 = 0, c11 = 0;
+            for (let p of pts) {
+                let dx = p.x - mu.x;
+                let dy = p.y - mu.y;
+                c00 += dx * dx;
+                c01 += dx * dy;
+                c11 += dy * dy;
+            }
+            const n = pts.length > 1 ? pts.length - 1 : 1; 
+            const ridge = 0.05; // Diagonal ridge regularization prevents singularity for small/lucky samples
+            return [
+                [c00 / n + ridge, c01 / n],
+                [c01 / n, c11 / n + ridge]
+            ];
+        }
+
+        function det2x2(m) {
+            let det = m[0][0] * m[1][1] - m[0][1] * m[1][0];
+            return Math.max(det, 1e-6); // Secondary safety net
+        }
+
+        function inv2x2(m, det) {
+            return [
+                [m[1][1] / det, -m[0][1] / det],
+                [-m[1][0] / det, m[0][0] / det]
+            ];
+        }
+
+        // Global State Variables
+        let ptsA = [], ptsB = [];
+        let estMuA, estMuB;
+        let estCovA, estCovB;
+        let estSharedCov;
+        let priorA, priorB;
+        let detA, detB, invA, invB;
+        let detShared, invShared;
+
+        function rebuildSimulation() {
+            // 1. Fetch parameters from all sliders
+            const nA = parseInt(document.getElementById('slider-na').value);
+            const nB = parseInt(document.getElementById('slider-nb').value);
+            
+            const trueMuA = {
+                x: parseFloat(document.getElementById('a-mx').value),
+                y: parseFloat(document.getElementById('a-my').value)
+            };
+            const trueCovA = buildCovMatrix(
+                parseFloat(document.getElementById('a-sz').value),
+                parseFloat(document.getElementById('a-st').value),
+                parseFloat(document.getElementById('a-tl').value)
+            );
+
+            const trueMuB = {
+                x: parseFloat(document.getElementById('b-mx').value),
+                y: parseFloat(document.getElementById('b-my').value)
+            };
+            const trueCovB = buildCovMatrix(
+                parseFloat(document.getElementById('b-sz').value),
+                parseFloat(document.getElementById('b-st').value),
+                parseFloat(document.getElementById('b-tl').value)
+            );
+
+            // 2. Generate Data
+            ptsA = generateClassData(trueMuA, trueCovA, nA, currentSeedA);
+            ptsB = generateClassData(trueMuB, trueCovB, nB, currentSeedB);
+
+            // 3. Compute Priors
+            const total = nA + nB;
+            priorA = nA / total;
+            priorB = nB / total;
+
+            // 4. Estimate Empirical Means & Covariances
+            estMuA = calcMean(ptsA);
+            estMuB = calcMean(ptsB);
+            estCovA = calcCovariance(ptsA, estMuA);
+            estCovB = calcCovariance(ptsB, estMuB);
+
+            // 5. Precompute determinants and inverses for QDA distances
+            detA = det2x2(estCovA);
+            detB = det2x2(estCovB);
+            invA = inv2x2(estCovA, detA);
+            invB = inv2x2(estCovB, detB);
+
+            // 6. Estimate Pooled Covariance for LDA
+            const wA = nA - 1;
+            const wB = nB - 1;
+            const den = total > 2 ? total - 2 : 1;
+            estSharedCov = [
+                [(wA * estCovA[0][0] + wB * estCovB[0][0]) / den, (wA * estCovA[0][1] + wB * estCovB[0][1]) / den],
+                [(wA * estCovA[1][0] + wB * estCovB[1][0]) / den, (wA * estCovA[1][1] + wB * estCovB[1][1]) / den]
+            ];
+            detShared = det2x2(estSharedCov);
+            invShared = inv2x2(estSharedCov, detShared);
+            
+            render();
+        }
+
+        // Distance & Score Functions
+        function mahalanobisSq(x, y, mu, invCov) {
+            const dx = x - mu.x;
+            const dy = y - mu.y;
+            return dx * (invCov[0][0] * dx + invCov[0][1] * dy) + dy * (invCov[1][0] * dx + invCov[1][1] * dy);
+        }
+
+        function scoreQDA(x, y, mu, invCov, det, prior) {
+            return -0.5 * Math.log(det) - 0.5 * mahalanobisSq(x, y, mu, invCov) + Math.log(prior);
+        }
+
+        function scoreLDA(x, y, mu, prior) {
+            return -0.5 * Math.log(detShared) - 0.5 * mahalanobisSq(x, y, mu, invShared) + Math.log(prior);
+        }
+
+        // --- CANVAS RENDERING ---
+        
+        const canvas = document.getElementById('qda-canvas');
+        const ctx = canvas.getContext('2d');
+        const tooltip = document.getElementById('tooltip');
+        const statusBox = document.getElementById('viz-status');
+        
+        let width, height;
+        const VIEW_SIZE = 10; // 0 to 10 scale
+        
+        let currentStage = 1;
+        let probe = { x: 5.5, y: 5.5, active: false };
+        let isDragging = false;
+
+        function resize() {
+            const rect = canvas.parentElement.getBoundingClientRect();
+            const dpr = window.devicePixelRatio || 1;
+            width = rect.width;
+            height = rect.height;
+            canvas.width = width * dpr;
+            canvas.height = height * dpr;
+            
+            // Critical: Reset transform before scaling so resizes don't compound
+            ctx.setTransform(1, 0, 0, 1, 0, 0);
+            ctx.scale(dpr, dpr);
+            render();
+        }
+
+        function mapX(x) { return (x / VIEW_SIZE) * width; }
+        function mapY(y) { return height - (y / VIEW_SIZE) * height; } 
+        function unmapX(px) { return (px / width) * VIEW_SIZE; }
+        function unmapY(py) { return (1 - (py / height)) * VIEW_SIZE; }
+
+        function drawGrid() {
+            ctx.strokeStyle = '#f3f4f6';
+            ctx.lineWidth = 1;
+            for (let i = 0; i <= VIEW_SIZE; i++) {
+                ctx.beginPath(); ctx.moveTo(mapX(i), 0); ctx.lineTo(mapX(i), height); ctx.stroke();
+                ctx.beginPath(); ctx.moveTo(0, mapY(i)); ctx.lineTo(width, mapY(i)); ctx.stroke();
+            }
+        }
+
+        function drawPoints(pts, color) {
+            ctx.fillStyle = color;
+            for (let p of pts) {
+                ctx.beginPath();
+                ctx.arc(mapX(p.x), mapY(p.y), 4, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        function drawEllipse(mu, cov, color, scale = 1, dashed = false) {
+            ctx.strokeStyle = color;
+            ctx.lineWidth = 2;
+            if (dashed) ctx.setLineDash([5, 5]);
+            else ctx.setLineDash([]);
+            
+            // Cholesky for drawing empirical ellipse
+            const l00 = Math.sqrt(Math.max(cov[0][0], 0.0001));
+            const l10 = cov[1][0] / l00;
+            const l11 = Math.sqrt(Math.max(cov[1][1] - l10 * l10, 0.0001));
+            
+            ctx.beginPath();
+            const steps = 60;
+            for (let i = 0; i <= steps; i++) {
+                const theta = (i / steps) * Math.PI * 2;
+                const zx = Math.cos(theta) * scale;
+                const zy = Math.sin(theta) * scale;
+                const ex = mu.x + l00 * zx;
+                const ey = mu.y + l10 * zx + l11 * zy;
+                if (i === 0) ctx.moveTo(mapX(ex), mapY(ey));
+                else ctx.lineTo(mapX(ex), mapY(ey));
+            }
+            ctx.stroke();
+            ctx.setLineDash([]);
+        }
+
+        function drawCenter(mu, color) {
+            const x = mapX(mu.x);
+            const y = mapY(mu.y);
+            ctx.fillStyle = '#ffffff';
+            ctx.strokeStyle = color;
+            ctx.lineWidth = 3;
+            ctx.beginPath(); ctx.arc(x, y, 6, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+            ctx.lineWidth = 2;
+            ctx.beginPath(); ctx.moveTo(x - 8, y); ctx.lineTo(x + 8, y); ctx.moveTo(x, y - 8); ctx.lineTo(x, y + 8); ctx.stroke();
+        }
+
+        function drawDecisionBoundary(type, alpha = 0.15) {
+            const res = 50; // Grid resolution
+            const dx = width / res;
+            const dy = height / res;
+            
+            ctx.globalAlpha = alpha;
+            for (let i = 0; i < res; i++) {
+                for (let j = 0; j < res; j++) {
+                    const cx = dx * i + dx/2;
+                    const cy = dy * j + dy/2;
+                    const valX = unmapX(cx);
+                    const valY = unmapY(cy);
+                    
+                    let sA, sB;
+                    if (type === 'LDA') {
+                        sA = scoreLDA(valX, valY, estMuA, priorA);
+                        sB = scoreLDA(valX, valY, estMuB, priorB);
+                    } else {
+                        sA = scoreQDA(valX, valY, estMuA, invA, detA, priorA);
+                        sB = scoreQDA(valX, valY, estMuB, invB, detB, priorB);
+                    }
+                    
+                    ctx.fillStyle = (sA > sB) ? '#e63946' : '#2a9d8f';
+                    ctx.fillRect(i*dx - 0.5, j*dy - 0.5, dx+1.5, dy+1.5); // Add overlap to prevent seams
+                }
+            }
+            ctx.globalAlpha = 1.0;
+        }
+
+        function drawProbe() {
+            if (!probe.active) return;
+            const px = mapX(probe.x);
+            const py = mapY(probe.y);
+
+            // Lines to centers
+            ctx.strokeStyle = 'rgba(230, 57, 70, 0.4)';
+            ctx.lineWidth = 2;
+            ctx.setLineDash([4, 4]);
+            ctx.beginPath(); ctx.moveTo(px, py); ctx.lineTo(mapX(estMuA.x), mapY(estMuA.y)); ctx.stroke();
+
+            ctx.strokeStyle = 'rgba(42, 157, 143, 0.4)';
+            ctx.beginPath(); ctx.moveTo(px, py); ctx.lineTo(mapX(estMuB.x), mapY(estMuB.y)); ctx.stroke();
+            ctx.setLineDash([]);
+
+            // Pulse ring
+            ctx.strokeStyle = '#1f2937';
+            ctx.lineWidth = 1;
+            ctx.beginPath(); ctx.arc(px, py, 12 + Math.sin(Date.now()/200)*3, 0, Math.PI * 2); ctx.stroke();
+
+            // Point
+            ctx.fillStyle = '#1f2937';
+            ctx.beginPath(); ctx.arc(px, py, 6, 0, Math.PI * 2); ctx.fill();
+        }
+        
+        function updateStatusText() {
+            let txt = "";
+            if (currentStage === 1) txt = "Live Generated Scatter Data";
+            else if (currentStage === 2) txt = "LDA: Assumes Shared Spread + Linear Boundary";
+            else if (currentStage === 3) txt = "QDA: Estimating Unique Class Covariances";
+            else if (currentStage === 4) txt = `Estimated Centers and Covariances from ${ptsA.length + ptsB.length} points`;
+            else if (currentStage === 5) txt = "Test Probe Active: Tap & Drag to view scores";
+            else if (currentStage >= 6) txt = "QDA: Full Curved Decision Boundary";
+            statusBox.innerHTML = txt;
+        }
+
+        function updateProbeTooltip() {
+            if (!probe.active) {
+                tooltip.style.opacity = 0;
+                return;
+            }
+            
+            tooltip.style.opacity = 1;
+            tooltip.style.left = mapX(probe.x) + 'px';
+            tooltip.style.top = mapY(probe.y) + 'px';
+            
+            const sa = scoreQDA(probe.x, probe.y, estMuA, invA, detA, priorA);
+            const sb = scoreQDA(probe.x, probe.y, estMuB, invB, detB, priorB);
+            
+            // Softmax for posterior probability
+            const maxS = Math.max(sa, sb);
+            const expA = Math.exp(sa - maxS);
+            const expB = Math.exp(sb - maxS);
+            const probA = (expA / (expA + expB)) * 100;
+            const probB = (expB / (expA + expB)) * 100;
+
+            document.getElementById('tt-score-a').innerHTML = `${probA.toFixed(1)}% <small>(δ: ${sa.toFixed(2)})</small>`;
+            document.getElementById('tt-score-b').innerHTML = `${probB.toFixed(1)}% <small>(δ: ${sb.toFixed(2)})</small>`;
+            
+            const title = document.getElementById('tt-pred');
+            if(sa > sb) {
+                title.innerText = "Predicted: Apple";
+                title.style.color = "var(--class-a)";
+            } else {
+                title.innerText = "Predicted: Pear";
+                title.style.color = "var(--class-b)";
+            }
+        }
+
+        function render() {
+            ctx.clearRect(0, 0, width, height);
+            drawGrid();
+
+            // Background Regions
+            if (currentStage === 2) drawDecisionBoundary('LDA', 0.12);
+            else if (currentStage >= 6) drawDecisionBoundary('QDA', 0.15);
+
+            // Points
+            drawPoints(ptsA, 'rgba(230, 57, 70, 0.6)');
+            drawPoints(ptsB, 'rgba(42, 157, 143, 0.6)');
+
+            // Models
+            if (currentStage === 2) {
+                // LDA shared covariance assumption centered on empirical means
+                drawEllipse(estMuA, estSharedCov, '#e63946', 1.5, true);
+                drawEllipse(estMuB, estSharedCov, '#2a9d8f', 1.5, true);
+            } 
+            else if (currentStage >= 3) {
+                // True QDA empirically estimated covariances
+                drawEllipse(estMuA, estCovA, '#e63946', 1.5);
+                drawEllipse(estMuB, estCovB, '#2a9d8f', 1.5);
+            }
+
+            // Centers
+            if (currentStage >= 4) {
+                drawCenter(estMuA, '#e63946');
+                drawCenter(estMuB, '#2a9d8f');
+            }
+
+            // Interactive Probe
+            if (currentStage >= 5) {
+                drawProbe();
+                updateProbeTooltip();
+            } else {
+                tooltip.style.opacity = 0;
+            }
+            
+            updateStatusText();
+        }
+
+        // --- INTERACTIVITY & BINDINGS ---
+        
+        function handleProbeMove(px, py) {
+            probe.x = Math.max(0, Math.min(VIEW_SIZE, unmapX(px)));
+            probe.y = Math.max(0, Math.min(VIEW_SIZE, unmapY(py)));
+            probe.active = true;
+            render();
+        }
+
+        // Use modern Pointer Events for combined Mouse & Touch support
+        canvas.addEventListener('pointerdown', (e) => {
+            if (currentStage < 5) return;
+            isDragging = true;
+            canvas.setPointerCapture(e.pointerId);
+            const rect = canvas.getBoundingClientRect();
+            handleProbeMove(e.clientX - rect.left, e.clientY - rect.top);
+        });
+
+        canvas.addEventListener('pointermove', (e) => {
+            if (!isDragging) return;
+            const rect = canvas.getBoundingClientRect();
+            handleProbeMove(e.clientX - rect.left, e.clientY - rect.top);
+        });
+
+        canvas.addEventListener('pointerup', (e) => {
+            isDragging = false;
+            canvas.releasePointerCapture(e.pointerId);
+        });
+
+        canvas.addEventListener('pointercancel', (e) => {
+            isDragging = false;
+            canvas.releasePointerCapture(e.pointerId);
+        });
+
+        // Sliders live-update bindings
+        const sliderIds = ['na', 'nb', 'a-mx', 'a-my', 'a-sz', 'a-st', 'a-tl', 'b-mx', 'b-my', 'b-sz', 'b-st', 'b-tl'];
+        sliderIds.forEach(id => {
+            const el = document.getElementById(id.startsWith('n') ? `slider-${id}` : id);
+            if(el) {
+                el.addEventListener('input', () => {
+                    // Specific span updates
+                    if (id === 'na') document.getElementById('val-na').innerText = el.value;
+                    if (id === 'nb') document.getElementById('val-nb').innerText = el.value;
+                    rebuildSimulation();
+                });
+            }
+        });
+        
+        // Explicit random re-scatter button
+        const btnRegen = document.getElementById('btn-regen');
+        btnRegen.addEventListener('click', () => {
+            currentSeedA = Math.random() * 10000;
+            currentSeedB = Math.random() * 10000 + 10000;
+            rebuildSimulation();
+            if(currentStage < 5) probe.active = false;
+        });
+
+        // --- SCROLL LOGIC ---
+        
+        const stages = document.querySelectorAll('.stage');
+        const progressBar = document.getElementById('progress-bar');
+
+        const observerOptions = {
+            root: null,
+            rootMargin: '-40% 0px -40% 0px',
+            threshold: 0
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    stages.forEach(s => s.classList.remove('active'));
+                    entry.target.classList.add('active');
+                    currentStage = parseInt(entry.target.getAttribute('data-stage'));
+                    
+                    // Activate default probe on stage 5 if not active
+                    if (currentStage >= 5 && !probe.active) {
+                        probe.x = 5.5; probe.y = 5.5; probe.active = true;
+                    }
+                    render();
+                }
+            });
+        }, observerOptions);
+
+        stages.forEach(stage => observer.observe(stage));
+
+        window.addEventListener('scroll', () => {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            progressBar.style.width = scrolled + "%";
+        });
+
+        window.addEventListener('resize', resize);
+        
+        // --- STARTUP ---
+        rebuildSimulation();
+        resize();
+
+        // Animate probe pulsing
+        function animLoop() {
+            if(probe.active && currentStage >= 5) render();
+            requestAnimationFrame(animLoop);
+        }
+        animLoop();
+
+        // Render Math on Load
+        document.addEventListener("DOMContentLoaded", function() {
+            renderMathInElement(document.body, {
+              delimiters: [
+                  {left: '$$', right: '$$', display: true},
+                  {left: '$', right: '$', display: false}
+              ],
+              throwOnError: false
+            });
+        });
+
+    </script>
+</body>
+</html>

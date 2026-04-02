@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Classification Trees — Interactive Visual Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#f7f7f4;--bg2:#f0efeb;--surface:#ffffff;
+  --glass:rgba(255,255,255,0.85);--glass-border:#e7e5e4;
+  --text:#1f2937;--text-dim:#4b5563;--text-muted:#6b7280;
+  --accent:#6366f1;--accent2:#4f46e5;--accent-glow:rgba(99,102,241,0.08);
+  --apple:#2563eb;--apple-soft:rgba(37,99,235,0.1);
+  --orange:#d97706;--orange-soft:rgba(217,119,6,0.1);
+  --green:#16a34a;--green-soft:rgba(22,163,74,0.1);
+  --blue:#3b82f6;--blue-soft:rgba(59,130,246,0.1);
+  --coral:#dc2626;--coral-soft:rgba(220,38,38,0.08);
+  --radius:16px;--radius-sm:10px;
+}
+html{scroll-behavior:smooth;background:var(--bg)}
+body{font-family:'Inter',system-ui,sans-serif;color:var(--text);background:var(--bg);line-height:1.7;overflow-x:hidden}
+.layout{display:flex;min-height:100vh;position:relative}
+.narrative{width:45%;min-width:400px;position:relative;z-index:2}
+.viz-container{width:55%;height:100vh;position:sticky;top:0;right:0;display:flex;align-items:center;justify-content:center;z-index:1;background:var(--bg)}
+#mainCanvas{width:100%;height:100%;display:block}
+.section{min-height:100vh;padding:80px 60px 80px 40px;display:flex;flex-direction:column;justify-content:center;position:relative}
+.section::after{content:'';position:absolute;bottom:0;left:40px;right:60px;height:1px;background:linear-gradient(90deg,transparent,var(--glass-border),transparent)}
+.hero-section{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;width:100vw;position:relative;padding:60px;overflow:hidden}
+.hero-bg{position:absolute;inset:0;z-index:0;pointer-events:none}
+.hero-section h1{font-size:clamp(2.8rem,5vw,4.5rem);font-weight:800;letter-spacing:-0.03em;line-height:1.1;background:linear-gradient(135deg,#1f2937 0%,var(--accent) 50%,var(--accent2) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:20px;position:relative;z-index:1}
+.hero-section .subtitle{font-size:clamp(1rem,1.8vw,1.25rem);color:var(--text-dim);font-weight:400;max-width:600px;margin-bottom:40px;position:relative;z-index:1}
+.hero-section .scroll-hint{font-size:0.85rem;color:var(--text-muted);display:flex;align-items:center;gap:8px;animation:pulse 2s ease-in-out infinite;position:relative;z-index:1}
+@keyframes pulse{0%,100%{opacity:0.5;transform:translateY(0)}50%{opacity:1;transform:translateY(5px)}}
+.hero-badge{display:inline-block;padding:6px 18px;border-radius:100px;background:var(--accent-glow);border:1px solid rgba(99,102,241,0.2);color:var(--accent);font-size:0.8rem;font-weight:500;letter-spacing:0.05em;text-transform:uppercase;margin-bottom:24px;position:relative;z-index:1}
+.stage-num{font-size:0.7rem;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;color:var(--accent);margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.stage-num::before{content:'';width:24px;height:1px;background:var(--accent)}
+h2{font-size:clamp(1.6rem,3vw,2.2rem);font-weight:700;letter-spacing:-0.02em;line-height:1.2;margin-bottom:20px;color:var(--text)}
+h3{font-size:1.1rem;font-weight:600;margin-bottom:12px;color:var(--accent2)}
+p{font-size:0.95rem;color:var(--text-dim);margin-bottom:16px;max-width:520px}
+.glass-card{background:var(--surface);border:1px solid var(--glass-border);border-radius:var(--radius);padding:18px 24px;margin:16px 0;box-shadow:0 1px 3px rgba(0,0,0,0.04)}
+.math-block{font-family:'JetBrains Mono',monospace;font-size:0.85rem;background:rgba(99,102,241,0.05);border:1px solid rgba(99,102,241,0.12);border-radius:var(--radius-sm);padding:16px 20px;margin:12px 0;color:var(--accent2);overflow-x:auto;white-space:pre-wrap;line-height:1.8}
+.data-table{width:100%;border-collapse:collapse;font-size:0.82rem;margin:12px 0}
+.data-table th{text-align:left;padding:8px 12px;font-weight:600;color:var(--accent2);border-bottom:2px solid var(--glass-border);font-size:0.75rem;letter-spacing:0.05em;text-transform:uppercase}
+.data-table td{padding:8px 12px;border-bottom:1px solid #f0efeb;color:var(--text-dim);font-family:'JetBrains Mono',monospace;font-size:0.8rem;vertical-align:top}
+.data-table tr:hover td{background:rgba(99,102,241,0.03)}
+.tag{display:inline-block;padding:3px 10px;border-radius:100px;font-size:0.72rem;font-weight:600}
+.tag-apple{background:var(--apple-soft);color:var(--apple)}
+.tag-orange{background:var(--orange-soft);color:var(--orange)}
+.metric-row{display:flex;gap:12px;margin:12px 0;flex-wrap:wrap}
+.metric-card{flex:1;min-width:100px;background:var(--bg);border:1px solid var(--glass-border);border-radius:var(--radius-sm);padding:14px;text-align:center}
+.metric-card .val{font-size:1.4rem;font-weight:700;font-family:'JetBrains Mono',monospace}
+.metric-card .lbl{font-size:0.7rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.05em;margin-top:4px}
+.insight-box{border-left:3px solid var(--accent);padding:12px 16px;margin:16px 0;background:var(--accent-glow);border-radius:0 var(--radius-sm) var(--radius-sm) 0}
+.insight-box p{margin:0;font-size:0.88rem;color:var(--text)}
+.matrix-grid{display:grid;grid-template-columns:auto 1fr 1fr;gap:0;margin:16px 0;font-family:'JetBrains Mono',monospace;font-size:0.8rem}
+.matrix-grid .cell{padding:10px 14px;text-align:center;border:1px solid var(--glass-border)}
+.matrix-grid .header{font-weight:600;color:var(--accent2);background:rgba(99,102,241,0.05)}
+.matrix-grid .tp{background:rgba(22,163,74,0.08);color:var(--green)}
+.matrix-grid .tn{background:rgba(59,130,246,0.08);color:var(--blue)}
+.matrix-grid .fp{background:rgba(217,119,6,0.06);color:var(--orange)}
+.matrix-grid .fn{background:rgba(220,38,38,0.06);color:var(--coral)}
+.playground-controls{display:flex;gap:12px;margin:16px 0;flex-wrap:wrap;align-items:center}
+.btn{padding:10px 20px;border-radius:var(--radius-sm);border:1px solid var(--glass-border);background:var(--surface);color:var(--text);font-family:'Inter',sans-serif;font-size:0.85rem;font-weight:500;cursor:pointer;transition:all 0.2s}
+.btn:hover{background:var(--accent-glow);border-color:var(--accent)}
+.btn-accent{background:rgba(99,102,241,0.1);border-color:var(--accent);color:var(--accent2)}
+.btn-accent:hover{background:rgba(99,102,241,0.2)}
+.progress-bar{position:fixed;top:0;left:0;height:4px;background:linear-gradient(90deg,var(--accent),var(--accent2));z-index:100;transition:width 0.3s;width:0}
+.trace-block{font-family:'JetBrains Mono',monospace;font-size:0.75rem;color:var(--text-dim);margin-top:6px;line-height:1.4}
+.trace-step{display:block;padding-left:12px;position:relative}
+.trace-step::before{content:'→';position:absolute;left:0;color:var(--accent)}
+@media(max-width:900px){
+  .layout{flex-direction:column}
+  .narrative{width:100%;min-width:unset}
+  .viz-container{width:100%;height:50vh;position:sticky;top:0;border-bottom:1px solid var(--glass-border)}
+  .section{padding:40px 24px}
+  .hero-section{width:100%}
+}
+</style>
+</head>
+<body>
+
+<div class="progress-bar" id="progressBar"></div>
+
+<!-- HERO -->
+<section class="hero-section section" data-stage="0">
+  <canvas id="heroCanvas" class="hero-bg"></canvas>
+  <div class="hero-badge">Machine Learning · Classification Trees</div>
+  <h1>Classification<br>Trees</h1>
+  <p class="subtitle">Watch a tree model learn the best yes-or-no questions to sort fruit.</p>
+  <div class="scroll-hint">↓ Scroll to begin</div>
+</section>
+
+<!-- MAIN LAYOUT -->
+<div class="layout">
+<div class="narrative">
+
+<!-- STAGE 1: Raw Data -->
+<section class="section" data-stage="1">
+  <div class="stage-num">Stage 01</div>
+  <h2>The Raw Data</h2>
+  <p>Every problem starts with data. We have measurements for fruit — <strong>Weight</strong> (x-axis) and <strong>Color Intensity</strong> (y-axis).</p>
+  <p>Each fruit is already labeled: an <span class="tag tag-apple">Apple</span> or an <span class="tag tag-orange">Orange</span>. The goal of our tree is to learn rules to sort them into cleaner groups.</p>
+  <div class="glass-card">
+    <h3>Training Data</h3>
+    <table class="data-table" id="dataTable"></table>
+  </div>
+  <div class="insight-box"><p>💡 This is a classification task because we want to predict a specific type or group (Apple vs Orange), rather than a continuous number.</p></div>
+</section>
+
+<!-- STAGE 2: Root Node -->
+<section class="section" data-stage="2">
+  <div class="stage-num">Stage 02</div>
+  <h2>The Root Node</h2>
+  <p>At the very beginning, a Classification Tree puts <em>all</em> the data into one big group on the fruit map. We call this the <strong>Root Node</strong>.</p>
+  <p>This starting box is very "messy" because it contains a mix of both apples and oranges. The tree's job is to split this box into smaller, cleaner sub-groups.</p>
+  <div class="glass-card">
+    <div class="metric-row">
+      <div class="metric-card"><div class="val" style="color:var(--apple)" id="rootApples">--</div><div class="lbl">Apples</div></div>
+      <div class="metric-card"><div class="val" style="color:var(--orange)" id="rootOranges">--</div><div class="lbl">Oranges</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- STAGE 3: Messiness -->
+<section class="section" data-stage="3">
+  <div class="stage-num">Stage 03</div>
+  <h2>Measuring Messiness</h2>
+  <p>To split effectively, the tree needs a way to measure how mixed a box is. We use a math rule called <strong>Gini Impurity</strong>.</p>
+  <p>A Gini score of <code>0.0</code> means the box is <em>perfectly pure</em> (all one fruit type). A score near <code>0.5</code> means it is completely mixed.</p>
+  <div class="math-block" style="font-size:0.8rem">Gini = 1 - [ (P_apple)² + (P_orange)² ]
+
+Current Root P_apple = 12/26 ≈ 0.46
+Current Root P_orange = 14/26 ≈ 0.54
+Gini = 1 - (0.46² + 0.54²) ≈ 0.498 (Very Mixed)</div>
+  <div class="insight-box"><p>💡 The tree’s ultimate objective is simple: Every time it makes a split, it wants to reduce the total combined Gini impurity of the child boxes as much as possible.</p></div>
+</section>
+
+<!-- STAGE 4: Testing Splits -->
+<section class="section" data-stage="4">
+  <div class="stage-num">Stage 04</div>
+  <h2>Testing Every Question</h2>
+  <p>How does the tree find the best split? It tries testing candidate split points between observed values across the map.</p>
+  <p>Because the tree asks one feature question at a time (e.g., "Is Weight &lt; 6?"), each possible split becomes a straight vertical or horizontal cut across the graph. Here we are visualizing one example search over Weight thresholds; the tree would also test Color thresholds before choosing the best split.</p>
+  <div class="glass-card">
+    <h3>Live Search <span style="font-size:0.7rem;font-weight:normal">(Scanning...)</span></h3>
+    <p id="liveSearchDesc" style="font-family:'JetBrains Mono', monospace; font-size:0.8rem; color:var(--accent2); margin:0;">Testing Split: Weight &lt; 5.0...</p>
+    <p id="liveSearchGini" style="font-family:'JetBrains Mono', monospace; font-size:0.8rem; color:var(--text-dim); margin-top:4px;">Average Gini: ~0.45</p>
+  </div>
+</section>
+
+<!-- STAGE 5: The First Split -->
+<section class="section" data-stage="5">
+  <div class="stage-num">Stage 05</div>
+  <h2>The First Cut</h2>
+  <p>The tree found the single best question! By splitting the data at this specific threshold, it gets the lowest possible combined Gini impurity.</p>
+  <p>This first split is often very influential because it shapes the rest of the tree. It divides the fruit map cleanly into two distinct regions.</p>
+  <div class="glass-card">
+    <h3>The Golden Question</h3>
+    <div class="math-block" id="firstSplitLabel" style="font-size:1.1rem; text-align:center; padding:12px; margin:0; background:rgba(22,163,74,0.1); border:1px solid rgba(22,163,74,0.3); color:var(--green)">Is Weight < X?</div>
+  </div>
+</section>
+
+<!-- STAGE 6: Recursive Splitting -->
+<section class="section" data-stage="6">
+  <div class="stage-num">Stage 06</div>
+  <h2>Recursive Splitting</h2>
+  <p>The tree isn't done. It now treats each of the two new boxes as a separate problem, and asks again: <em>"Can I perform another split to make these even cleaner?"</em></p>
+  <p>It repeats this process recursively, carving the map into smaller and smaller axis-aligned rectangles until a box becomes pure, gets too small, or reaches the depth limit.</p>
+</section>
+
+<!-- STAGE 7: The Final Tree -->
+<section class="section" data-stage="7">
+  <div class="stage-num">Stage 07</div>
+  <h2>The Decision Boundary</h2>
+  <p>Once the tree stops growing, we fill in the colors. Each rectangular box becomes a "Leaf Node". The model assigns a prediction to the entire box based on the fruit type that appears most often in that box.</p>
+  <div class="glass-card">
+    <h3>Live Tree Snapshot</h3>
+    <ul style="font-size:0.85rem; color:var(--text-dim); margin-left:16px; margin-top:8px">
+        <li><strong>Criterion:</strong> Gini Impurity</li>
+        <li><strong>Classes:</strong> Apple, Orange</li>
+        <li><strong>Max Depth:</strong> <span id="treeDepth">--</span></li>
+        <li><strong>Leaf Nodes:</strong> <span id="leafCount">--</span></li>
+    </ul>
+  </div>
+</section>
+
+<!-- STAGE 8: Pruning -->
+<section class="section" data-stage="8">
+  <div class="stage-num">Stage 08</div>
+  <h2>Depth Limiting (Pre-Pruning)</h2>
+  <p>Look closely at the tiny boxes the tree made just to capture one outlier fruit. The tree has started memorizing tiny details in the training dataset. This is called <strong>Overfitting</strong>.</p>
+  <p>If we give the tree new fruit, these hyper-specific rules will likely fail. We fix this by limiting the maximum depth of the tree (Pre-Pruning), so it learns general rules instead of tracking every detail.</p>
+  <div class="glass-card">
+    <h3>Toggle Max Depth</h3>
+    <div style="display:flex; justify-content:center; gap:12px; margin-top:10px">
+      <button class="btn btn-accent" id="btnOverfit" onclick="setTreeMode('overfit')">Deeper Tree</button>
+      <button class="btn" id="btnPruned" onclick="setTreeMode('pruned')">Depth-Limited (Max=3)</button>
+    </div>
+  </div>
+</section>
+
+<!-- STAGE 9: Classifying Test Cases -->
+<section class="section" data-stage="9">
+  <div class="stage-num">Stage 09</div>
+  <h2>Classifying Test Points</h2>
+  <p>Now we bring in a small test dataset the model has not seen during training. We drop each test fruit (plotted as diamonds) onto the map. (Green border = correct prediction, red border = incorrect prediction).</p>
+  <p>At prediction time, the tree simply follows the learned rules from one split to the next until it reaches a leaf box.</p>
+  <div class="glass-card" id="testResults">
+    <h3>Prediction Results Trace</h3>
+    <div id="testResultsList"></div>
+  </div>
+</section>
+
+<!-- STAGE 10: Evaluation -->
+<section class="section" data-stage="10">
+  <div class="stage-num">Stage 10</div>
+  <h2>Performance Metrics</h2>
+  <p>We evaluate the depth-limited tree's accuracy using a <strong>Confusion Matrix</strong>. It breaks down exactly where the tree was correct and where it was confused on the unseen test data.</p>
+  <div class="glass-card">
+    <h3>Confusion Matrix</h3>
+    <div class="matrix-grid" id="confMatrix"></div>
+  </div>
+  <div class="glass-card" id="metricsPanel">
+    <h3>Metrics <span style="font-weight:400;font-size:0.75rem;color:var(--text-muted)">(Apple = Positive)</span></h3>
+    <div class="metric-row" id="metricsRow"></div>
+  </div>
+</section>
+
+<!-- STAGE 11: Playground -->
+<section class="section" data-stage="11">
+  <div class="stage-num">Stage 11</div>
+  <h2>Interactive Playground</h2>
+  <p>Now it's your turn. Use the control panel to adjust depth limits, or click the graph to plot new fruits to instantly classify them.</p>
+  <div class="playground-controls glass-card" style="margin-top:0">
+    <button class="btn btn-accent" onclick="resetPlayground()">Clear Drops</button>
+    <div style="flex:1;">
+      <span style="font-size:0.8rem;color:var(--text-muted);display:block;margin-bottom:4px">Max Depth: <span id="pgDepthVal" style="font-weight:bold;color:var(--accent2)">3</span></span>
+      <input type="range" id="pgDepth" min="1" max="10" value="3" style="width:100%;accent-color:var(--accent)">
+    </div>
+  </div>
+  <div class="insight-box"><p>💡 <strong>Note:</strong> Small depth = simpler rules. Large depth = more detailed map but higher overfitting risk.</p></div>
+  <div id="pgTraceContainer" style="display:none; margin-top:12px;" class="glass-card">
+    <h3 style="font-size:0.9rem;margin-bottom:6px">Last Drop Prediction Route:</h3>
+    <div id="pgTraceResult" class="trace-block" style="font-size:0.85rem;color:var(--text)"></div>
+  </div>
+</section>
+
+</div><!-- /narrative -->
+
+<div class="viz-container">
+  <canvas id="mainCanvas"></canvas>
+</div>
+</div><!-- /layout -->
+
+<script>
+// ---------- CORE SCRIPT ----------
+(function(){
+'use strict';
+
+// 1. DATA DEFINITION
+const DATA = [
+  // Apples (Lighter, Redder/Higher color value)
+  { w: 3.5, c: 8.5, label: 'Apple' }, { w: 4.2, c: 7.8, label: 'Apple' },
+  { w: 3.8, c: 9.0, label: 'Apple' }, { w: 4.0, c: 8.0, label: 'Apple' },
+  { w: 2.8, c: 9.2, label: 'Apple' }, { w: 4.5, c: 6.8, label: 'Apple' },
+  { w: 3.2, c: 8.2, label: 'Apple' }, { w: 4.8, c: 7.5, label: 'Apple' },
+  { w: 5.0, c: 8.4, label: 'Apple' }, { w: 2.5, c: 7.9, label: 'Apple' },
+  { w: 3.9, c: 9.5, label: 'Apple' }, { w: 4.1, c: 8.8, label: 'Apple' },
+
+  // Oranges (Heavier, lower color value / more yellow)
+  { w: 7.0, c: 3.5, label: 'Orange' }, { w: 8.5, c: 4.0, label: 'Orange' },
+  { w: 6.8, c: 2.5, label: 'Orange' }, { w: 7.5, c: 4.5, label: 'Orange' },
+  { w: 8.0, c: 3.2, label: 'Orange' }, { w: 9.2, c: 2.8, label: 'Orange' },
+  { w: 6.5, c: 4.2, label: 'Orange' }, { w: 7.8, c: 3.8, label: 'Orange' },
+  { w: 8.2, c: 5.0, label: 'Orange' }, { w: 7.2, c: 2.2, label: 'Orange' },
+  { w: 8.8, c: 3.5, label: 'Orange' }, { w: 9.5, c: 4.4, label: 'Orange' },
+
+  // Overlap / Outliers (Noise that forces overfitting)
+  { w: 5.8, c: 6.5, label: 'Apple' },  // Heavy Apple
+  { w: 4.8, c: 4.2, label: 'Orange' }, // Light Orange
+  { w: 6.2, c: 7.8, label: 'Orange' }, // Reddish Orange
+  { w: 6.5, c: 6.0, label: 'Apple' }   // Mixed zone Apple
+];
+
+// Test set independent of training
+const TEST_DATA = [
+  { w: 3.3, c: 8.9, label: 'Apple' },
+  { w: 8.1, c: 2.9, label: 'Orange' },
+  { w: 5.2, c: 6.0, label: 'Apple' },
+  { w: 5.5, c: 5.2, label: 'Orange' },
+  { w: 6.0, c: 7.5, label: 'Orange' },
+  { w: 4.5, c: 5.1, label: 'Apple' }
+];
+
+const MIN_W = 1.0, MAX_W = 10.0;
+const MIN_C = 1.0, MAX_C = 10.0;
+
+// Colors matching consistent aesthetic
+const COLORS={
+  apple:'#2563eb', appleFill:'rgba(37,99,235,0.18)', badgeApple:'rgba(37,99,235,0.85)',
+  orange:'#d97706', orangeFill:'rgba(217,119,6,0.18)', badgeOrange:'rgba(217,119,6,0.85)',
+  green:'#16a34a', coral:'#dc2626', accent:'#6366f1',
+  gridLine:'rgba(0,0,0,0.06)', text:'#1f2937', textDim:'#6b7280',
+  boxBorder:'rgba(0,0,0,0.15)', bg:'#f7f7f4'
+};
+
+// State variables
+let currentStage = 0;
+let treeMode = 'overfit'; 
+let playgroundMode = false;
+let playgroundPoints = [];
+let animProgress = 0; 
+
+// 2. CANVAS INIT
+const canvas = document.getElementById('mainCanvas');
+const ctx = canvas.getContext('2d');
+let W, H, pX, pY, pW, pH;
+
+function resize() {
+  const dpr = window.devicePixelRatio || 1;
+  const rect = canvas.parentElement.getBoundingClientRect();
+  canvas.width = rect.width * dpr;
+  canvas.height = rect.height * dpr;
+  canvas.style.width = rect.width + 'px';
+  canvas.style.height = rect.height + 'px';
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  W = rect.width; H = rect.height;
+  pX = 60; pY = 40; pW = W - 120; pH = H - 100;
+}
+window.addEventListener('resize', resize);
+
+function mapX(val) { return pX + ((val - MIN_W)/(MAX_W - MIN_W)) * pW; }
+function mapY(val) { return pY + pH - ((val - MIN_C)/(MAX_C - MIN_C)) * pH; }
+
+const sections = document.querySelectorAll('.section');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if(entry.isIntersecting && entry.intersectionRatio > 0.45) {
+      const stg = parseInt(entry.target.getAttribute('data-stage'));
+      if(currentStage !== stg) {
+        currentStage = stg;
+        animProgress = 0;
+        document.getElementById('progressBar').style.width = (stg / 11 * 100) + '%';
+        onStageEnter(stg);
+      }
+    }
+  });
+},{threshold: [0.45, 0.5, 0.6]});
+sections.forEach(sec => observer.observe(sec));
+
+// 3. TREE ALGORITHM & GINI
+function getGiniForBox(dataset) {
+  if(!dataset || dataset.length === 0) return 0;
+  let a = dataset.filter(d=>d.label==='Apple').length;
+  let o = dataset.filter(d=>d.label==='Orange').length;
+  let pa = a / dataset.length;
+  let po = o / dataset.length;
+  return 1 - (pa*pa + po*po);
+}
+
+function calcCombinedGini(g0, g1) {
+  let tot = g0.length + g1.length;
+  if(tot===0) return 0;
+  return (g0.length/tot)*getGiniForBox(g0) + (g1.length/tot)*getGiniForBox(g1);
+}
+
+function getBestSplit(dataset) {
+  let best = { score: 999, attr: null, val: null, groups: null };
+  const attrs = ['w', 'c'];
+  for(let attr of attrs) {
+    let uniqueVals = [...new Set(dataset.map(d=>d[attr]))].sort((a,b)=>a-b);
+    for(let i=0; i<uniqueVals.length-1; i++) {
+      const val = (uniqueVals[i] + uniqueVals[i+1]) / 2.0;
+      const g0 = dataset.filter(d => d[attr] < val);
+      const g1 = dataset.filter(d => d[attr] >= val);
+      if(g0.length === 0 || g1.length === 0) continue;
+      
+      const gini = calcCombinedGini(g0, g1);
+      if(gini < best.score) {
+        best = {score: gini, attr, val, groups: [g0, g1]};
+      }
+    }
+  }
+  return best;
+}
+
+function buildTree(dataset, maxDepth, minSize, depth=1) {
+  if(dataset.length === 0) return null;
+  
+  let a = dataset.filter(d=>d.label==='Apple').length;
+  let o = dataset.filter(d=>d.label==='Orange').length;
+  let pred = a >= o ? 'Apple' : 'Orange';
+  let gini = getGiniForBox(dataset);
+
+  if(new Set(dataset.map(d=>d.label)).size === 1 || depth >= maxDepth || dataset.length <= minSize) {
+    return { isLeaf: true, prediction: pred, a, o, gini };
+  }
+
+  const split = getBestSplit(dataset);
+  if(!split.groups || split.score >= 900) { 
+    return { isLeaf: true, prediction: pred, a, o, gini };
+  }
+
+  return {
+    isLeaf: false, attr: split.attr, val: split.val,
+    left: buildTree(split.groups[0], maxDepth, minSize, depth+1),
+    right: buildTree(split.groups[1], maxDepth, minSize, depth+1),
+    score: split.score, a, o, gini
+  };
+}
+
+let pruneTree = buildTree(DATA, 3, 1);
+let fullTree = buildTree(DATA, 10, 1);
+let topSplit = getBestSplit(DATA);
+
+function getRects(node, x1, x2, y1, y2, rects=[]) {
+  if(!node) return rects;
+  if(node.isLeaf) {
+    rects.push({x1, x2, y1, y2, pred: node.prediction, a: node.a, o: node.o, gini: node.gini});
+    return rects;
+  }
+  if(node.attr === 'w') {
+    getRects(node.left, x1, node.val, y1, y2, rects);
+    getRects(node.right, node.val, x2, y1, y2, rects);
+  } else {
+    // color intensity. y1 is bottom (lower val), y2 is top (higher val)
+    getRects(node.left, x1, x2, y1, node.val, rects);
+    getRects(node.right, x1, x2, node.val, y2, rects);
+  }
+  return rects;
+}
+
+function getSplits(node, x1, x2, y1, y2, splits=[]) {
+  if(!node || node.isLeaf) return splits;
+  const isW = node.attr === 'w';
+  splits.push({attr: node.attr, val: node.val, x1, x2, y1, y2});
+  if(isW) {
+    getSplits(node.left, x1, node.val, y1, y2, splits);
+    getSplits(node.right, node.val, x2, y1, y2, splits);
+  } else {
+    getSplits(node.left, x1, x2, y1, node.val, splits);
+    getSplits(node.right, x1, x2, node.val, y2, splits);
+  }
+  return splits;
+}
+
+let prunedRects = getRects(pruneTree, MIN_W, MAX_W, MIN_C, MAX_C);
+let fullRects = getRects(fullTree, MIN_W, MAX_W, MIN_C, MAX_C);
+let prunedSplits = getSplits(pruneTree, MIN_W, MAX_W, MIN_C, MAX_C);
+let fullSplits = getSplits(fullTree, MIN_W, MAX_W, MIN_C, MAX_C);
+
+function initUI() {
+  document.getElementById('rootApples').textContent = DATA.filter(d=>d.label==='Apple').length;
+  document.getElementById('rootOranges').textContent = DATA.filter(d=>d.label==='Orange').length;
+  
+  let html = '<thead><tr><th>#</th><th>Weight</th><th>Color</th><th>Label</th></tr></thead><tbody>';
+  DATA.slice(0, 10).forEach((d,i)=>{
+    const cls = d.label==='Apple'?'tag-apple':'tag-orange';
+    html += `<tr><td>${i+1}</td><td>${d.w.toFixed(1)}</td><td>${d.c.toFixed(1)}</td><td><span class="tag ${cls}">${d.label}</span></td></tr>`;
+  });
+  html += `<tr><td colspan="4" style="text-align:center;color:var(--text-muted);font-style:italic">... ${DATA.length-10} more rows</td></tr></tbody>`;
+  document.getElementById('dataTable').innerHTML = html;
+
+  document.getElementById('firstSplitLabel').textContent = `Best Split: ${topSplit.attr==='w'?'Weight':'Color'} < ${topSplit.val.toFixed(1)}`;
+  updateEvaluationUI();
+  updateModelSnapshot();
+}
+
+// 4. MAIN RENDER LOOP
+function draw() {
+  ctx.clearRect(0,0,W,H);
+  if(currentStage === 0) { renderHero(); return; }
+
+  drawGrid();
+
+  // Draw region colors
+  if(currentStage >= 7) {
+    let rects = (treeMode==='pruned' || currentStage===9 || currentStage===10) ? prunedRects : fullRects;
+    if(currentStage === 11) {
+      let d = parseInt(document.getElementById('pgDepth').value);
+      rects = getRects(buildTree(DATA, d, 1), MIN_W, MAX_W, MIN_C, MAX_C);
+    }
+    
+    ctx.save();
+    rects.forEach(r => {
+      let px1 = mapX(r.x1), px2 = mapX(r.x2), py1 = mapY(r.y2), py2 = mapY(r.y1);
+      ctx.fillStyle = r.pred==='Apple' ? COLORS.appleFill : COLORS.orangeFill;
+      ctx.fillRect(px1, Math.min(py1,py2), px2-px1, Math.abs(py2-py1));
+      
+      // Node purity badges
+      if((currentStage >= 7 && currentStage <= 8) || currentStage === 11) {
+        if(Math.abs(px2-px1) > 50 && Math.abs(py2-py1) > 40) {
+          ctx.fillStyle = 'rgba(255,255,255,0.7)';
+          ctx.beginPath(); ctx.roundRect(px1 + (px2-px1)/2 - 30, py2 - Math.abs(py2-py1)/2 - 16, 60, 32, 6); ctx.fill();
+          ctx.fillStyle = COLORS.text; ctx.textAlign='center'; ctx.font='9px Inter';
+          ctx.fillText(`🍎${r.a} 🍊${r.o}`, px1 + (px2-px1)/2, py2 - Math.abs(py2-py1)/2 - 3);
+          ctx.fillText(`G: ${r.gini.toFixed(2)}`, px1 + (px2-px1)/2, py2 - Math.abs(py2-py1)/2 + 8);
+        }
+      }
+    });
+    ctx.restore();
+  }
+
+  if(currentStage === 2 || currentStage === 3) {
+    ctx.strokeStyle = '#4b5563'; ctx.lineWidth = 3; ctx.setLineDash([8,8]);
+    ctx.strokeRect(pX, pY, pW, pH);
+    ctx.setLineDash([]);
+  }
+
+  // Draw splits
+  if(currentStage >= 5) {
+    let splitsToDraw = [];
+    if(currentStage === 5) splitsToDraw = [topSplit];
+    else if(currentStage === 6) splitsToDraw = fullSplits;
+    else if(currentStage >= 7) {
+      if(currentStage === 11) {
+        let d = parseInt(document.getElementById('pgDepth').value);
+        splitsToDraw = getSplits(buildTree(DATA, d, 1), MIN_W, MAX_W, MIN_C, MAX_C);
+      } else {
+        splitsToDraw = (treeMode==='pruned' || currentStage===9 || currentStage===10) ? prunedSplits : fullSplits;
+      }
+    }
+    
+    ctx.strokeStyle = '#374151'; ctx.lineWidth = 2.5;
+    splitsToDraw.forEach(s => {
+      ctx.beginPath();
+      if(s.attr === 'w') {
+        ctx.moveTo(mapX(s.val), mapY(s.y2)); ctx.lineTo(mapX(s.val), mapY(s.y1));
+      } else {
+        ctx.moveTo(mapX(s.x1), mapY(s.val)); ctx.lineTo(mapX(s.x2), mapY(s.val));
+      }
+      ctx.stroke();
+    });
+  }
+
+  // Live Sweeping Search
+  if(currentStage === 4) {
+    animProgress = (animProgress + 0.005) % 2;
+    let isWeight = animProgress < 1;
+    let localProg = isWeight ? animProgress : (animProgress - 1);
+    
+    if(isWeight) {
+      let sweep = MIN_W + (MAX_W - MIN_W) * localProg;
+      let swX = mapX(sweep);
+      
+      ctx.fillStyle = 'rgba(0,0,0,0.03)';
+      ctx.fillRect(pX, pY, swX - pX, pH); 
+
+      ctx.strokeStyle = COLORS.accent2; ctx.lineWidth = 3; ctx.setLineDash([6,4]);
+      ctx.beginPath(); ctx.moveTo(swX, pY); ctx.lineTo(swX, pY+pH); ctx.stroke();
+      ctx.setLineDash([]);
+      
+      let g0 = DATA.filter(d => d.w < sweep);
+      let g1 = DATA.filter(d => d.w >= sweep);
+      let realGini = calcCombinedGini(g0, g1);
+      
+      document.getElementById('liveSearchDesc').textContent = `Testing Split: Weight < ${sweep.toFixed(1)}...`;
+      document.getElementById('liveSearchGini').textContent = `Combined Gini: ${realGini.toFixed(3)}`;
+    } else {
+      let sweep = MIN_C + (MAX_C - MIN_C) * localProg;
+      let swY = mapY(sweep);
+      
+      ctx.fillStyle = 'rgba(0,0,0,0.03)';
+      ctx.fillRect(pX, swY, pW, (pY+pH) - swY); 
+
+      ctx.strokeStyle = COLORS.accent2; ctx.lineWidth = 3; ctx.setLineDash([6,4]);
+      ctx.beginPath(); ctx.moveTo(pX, swY); ctx.lineTo(pX+pW, swY); ctx.stroke();
+      ctx.setLineDash([]);
+      
+      let g0 = DATA.filter(d => d.c < sweep);
+      let g1 = DATA.filter(d => d.c >= sweep);
+      let realGini = calcCombinedGini(g0, g1);
+      
+      document.getElementById('liveSearchDesc').textContent = `Testing Split: Color < ${sweep.toFixed(1)}...`;
+      document.getElementById('liveSearchGini').textContent = `Combined Gini: ${realGini.toFixed(3)}`;
+    }
+  }
+
+  // Draw Train Points
+  DATA.forEach(d => {
+    drawPoint(d.w, d.c, d.label, 6.5);
+  });
+
+  // Draw Test Points (Diamonds)
+  if(currentStage >= 9 && currentStage <= 10) {
+    TEST_DATA.forEach(d => {
+      let trc = classifyTrace(d, pruneTree);
+      let ok = trc.prediction === d.label;
+      drawDiamond(d.w, d.c, d.label, 9, ok?COLORS.green:COLORS.coral);
+    });
+  }
+
+  if(currentStage === 11) {
+    let tObj = buildTree(DATA, parseInt(document.getElementById('pgDepth').value), 1);
+    playgroundPoints.forEach(p => {
+      let trc = classifyTrace(p, tObj);
+      drawDiamond(p.w, p.c, trc.prediction, 9, '#ffffff', true); 
+    });
+  }
+  
+  drawAxes('Weight (x)', 'Color Intensity (y)');
+}
+
+function renderHero() {
+  ctx.fillStyle = COLORS.bg; ctx.fillRect(0,0,W,H);
+  ctx.save(); ctx.translate(W/2, H/2);
+  let t = Date.now()/1000;
+  for(let i=0; i<30; i++) {
+    let x = Math.sin(t*0.5 + i*1.3)*250;
+    let y = Math.cos(t*0.3 + i*2.1)*200;
+    ctx.beginPath(); ctx.arc(x,y, Math.min(6, i%8+2), 0, Math.PI*2);
+    ctx.fillStyle = (i%2===0)? COLORS.appleFill : COLORS.orangeFill;
+    ctx.fill();
+    ctx.strokeStyle = (i%2===0)? COLORS.apple : COLORS.orange;
+    ctx.stroke();
+  }
+  ctx.restore();
+}
+
+function drawGrid() {
+  ctx.strokeStyle = COLORS.gridLine; ctx.lineWidth = 1;
+  for(let i=0; i<=5; i++) {
+    let x = pX + i*(pW/5);
+    let y = pY + i*(pH/5);
+    ctx.beginPath(); ctx.moveTo(x, pY); ctx.lineTo(x, pY+pH); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(pX, y); ctx.lineTo(pX+pW, y); ctx.stroke();
+  }
+}
+
+function drawAxes(lx, ly) {
+  ctx.strokeStyle = '#d1d5db'; ctx.lineWidth = 2;
+  ctx.beginPath(); ctx.moveTo(pX, pY+pH); ctx.lineTo(pX+pW, pY+pH); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(pX, pY); ctx.lineTo(pX, pY+pH); ctx.stroke();
+  
+  ctx.fillStyle = COLORS.text; ctx.font = '500 12px Inter'; ctx.textAlign = 'center';
+  ctx.fillText(lx, pX + pW/2, pY + pH + 35);
+  ctx.save(); ctx.translate(pX - 35, pY + pH/2); ctx.rotate(-Math.PI/2);
+  ctx.fillText(ly, 0, 0); ctx.restore();
+  
+  ctx.font='10px JetBrains Mono'; ctx.fillStyle=COLORS.textDim;
+  for(let i=0; i<=5; i++) {
+    let wV = MIN_W + i*(MAX_W-MIN_W)/5;
+    let cV = MIN_C + i*(MAX_C-MIN_C)/5;
+    ctx.fillText(wV.toFixed(1), pX + i*(pW/5), pY+pH+15);
+    ctx.textAlign = 'right';
+    ctx.fillText(cV.toFixed(1), pX-8, pY+pH - i*(pH/5) + 4);
+    ctx.textAlign = 'center';
+  }
+  
+  const legX = pX + pW - 150, legY = pY + 10;
+  ctx.fillStyle = 'rgba(255,255,255,0.9)'; ctx.fillRect(legX, legY, 140, 68);
+  ctx.strokeStyle = '#e5e7eb'; ctx.strokeRect(legX, legY, 140, 68);
+  
+  ctx.fillStyle = COLORS.apple; ctx.beginPath(); ctx.arc(legX+15, legY+15, 5, 0, Math.PI*2); ctx.fill();
+  ctx.fillStyle = COLORS.text; ctx.textAlign='left'; ctx.font='10px Inter'; ctx.fillText('Train Apple', legX+28, legY+18);
+  
+  ctx.fillStyle = COLORS.orange; ctx.beginPath(); ctx.arc(legX+15, legY+35, 5, 0, Math.PI*2); ctx.fill();
+  ctx.fillStyle = COLORS.text; ctx.fillText('Train Orange', legX+28, legY+38);
+  
+  ctx.fillStyle = 'rgba(0,0,0,0.1)';
+  ctx.beginPath(); ctx.moveTo(legX+15, legY+50); ctx.lineTo(legX+20, legY+55); ctx.lineTo(legX+15, legY+60); ctx.lineTo(legX+10, legY+55); ctx.fill(); 
+  ctx.strokeStyle=COLORS.green; ctx.lineWidth=1.5; ctx.stroke();
+  ctx.fillStyle = COLORS.text; ctx.fillText('Test ✅', legX+28, legY+58);
+
+  ctx.beginPath(); ctx.moveTo(legX+80, legY+50); ctx.lineTo(legX+85, legY+55); ctx.lineTo(legX+80, legY+60); ctx.lineTo(legX+75, legY+55); ctx.fill(); 
+  ctx.strokeStyle=COLORS.coral; ctx.lineWidth=1.5; ctx.stroke();
+  ctx.fillStyle = COLORS.text; ctx.fillText('Test ❌', legX+93, legY+58);
+}
+
+function drawPoint(w, c, label, r=6) {
+  let x = mapX(w), y = mapY(c);
+  ctx.beginPath(); ctx.arc(x,y,r,0,Math.PI*2);
+  ctx.fillStyle = label==='Apple' ? COLORS.apple : COLORS.orange;
+  ctx.fill();
+}
+
+function drawDiamond(w, c, label, size=8, border=null, glow=false) {
+  let x = mapX(w), y = mapY(c);
+  ctx.beginPath();
+  ctx.moveTo(x, y-size); ctx.lineTo(x+size, y); ctx.lineTo(x, y+size); ctx.lineTo(x-size, y);
+  ctx.closePath();
+  ctx.fillStyle = label==='Apple' ? COLORS.apple : COLORS.orange;
+  if(glow) { ctx.shadowColor=ctx.fillStyle; ctx.shadowBlur=12; }
+  ctx.fill();
+  ctx.shadowBlur = 0;
+  if(border) {
+    ctx.strokeStyle = border; ctx.lineWidth=2.5; ctx.stroke();
+  }
+}
+
+function updateModelSnapshot() {
+  let rCount = 0;
+  let tDepth = 0;
+  if (currentStage === 11) {
+    let d = parseInt(document.getElementById('pgDepth').value) || 3;
+    tDepth = d;
+    rCount = getRects(buildTree(DATA, d, 1), MIN_W, MAX_W, MIN_C, MAX_C).length;
+  } else if (currentStage >= 9 && currentStage <= 10) {
+    rCount = prunedRects.length;
+    tDepth = 3;
+  } else {
+    rCount = (treeMode==='pruned') ? prunedRects.length : fullRects.length;
+    tDepth = (treeMode==='pruned') ? 3 : 10;
+  }
+  let lc = document.getElementById('leafCount');
+  let td = document.getElementById('treeDepth');
+  if(lc) lc.textContent = rCount;
+  if(td) td.textContent = tDepth;
+}
+
+function onStageEnter(stg) {
+  if(stg <= 7) {
+    treeMode = 'overfit';
+  }
+  if(stg === 8) { setTreeMode('overfit'); }
+  if(stg >= 9) { treeMode = 'pruned'; }
+  updateModelSnapshot();
+}
+
+window.setTreeMode = function(mode) {
+  treeMode = mode;
+  document.getElementById('btnOverfit').classList.remove('btn-accent');
+  document.getElementById('btnPruned').classList.remove('btn-accent');
+  if(mode==='overfit') document.getElementById('btnOverfit').classList.add('btn-accent');
+  else document.getElementById('btnPruned').classList.add('btn-accent');
+  updateModelSnapshot();
+}
+
+function classifyTrace(pt, node, trace=[]) {
+  if(node.isLeaf) {
+    trace.push(`Predict ${node.prediction} (🍎${node.a} 🍊${node.o})`);
+    return {prediction: node.prediction, trace};
+  }
+  let ax = node.attr==='w'?'Weight':'Color';
+  let isLess = pt[node.attr] < node.val;
+  trace.push(`${ax} < ${node.val.toFixed(1)}? ${isLess?'Yes':'No'}`);
+  return classifyTrace(pt, isLess ? node.left : node.right, trace);
+}
+
+function updateEvaluationUI() {
+  let resultHtml = '';
+  let tp=0, tn=0, fp=0, fn=0;
+  
+  TEST_DATA.forEach((d,i) => {
+    let res = classifyTrace(d, pruneTree, []);
+    let pred = res.prediction;
+    let ok = pred === d.label;
+    if(d.label==='Apple' && pred==='Apple') tp++;
+    if(d.label==='Orange' && pred==='Orange') tn++;
+    if(d.label==='Orange' && pred==='Apple') fp++;
+    if(d.label==='Apple' && pred==='Orange') fn++;
+    let cls = d.label==='Apple'?'tag-apple':'tag-orange';
+    let pcls = pred==='Apple'?'tag-apple':'tag-orange';
+    
+    let pathStr = '<div class="trace-block">';
+    res.trace.forEach(t=> { pathStr += `<span class="trace-step">${t}</span>`; });
+    pathStr += '</div>';
+    
+    resultHtml += `<tr><td><span class="tag ${cls}">${d.label}</span></td><td><span class="tag ${pcls}">${pred}</span></td><td>${ok?'✅':'❌'}${pathStr}</td></tr>`;
+  });
+  document.getElementById('testResultsList').innerHTML = `<table class="data-table"><thead><tr><th>Actual</th><th>Predicted</th><th>Classification Trace Path</th></tr></thead><tbody>${resultHtml}</tbody></table>
+  <p style="margin-top:12px;font-weight:600">${TEST_DATA.length - (fp+fn)}/${TEST_DATA.length} correct</p>`;
+  
+  document.getElementById('confMatrix').innerHTML = `
+    <div class="cell header"></div><div class="cell header">Pred Apple</div><div class="cell header">Pred Orange</div>
+    <div class="cell header">Act Apple</div><div class="cell tp">TP = ${tp}</div><div class="cell fn">FN = ${fn}</div>
+    <div class="cell header">Act Orange</div><div class="cell fp">FP = ${fp}</div><div class="cell tn">TN = ${tn}</div>`;
+    
+  let acc = (tp+tn)/TEST_DATA.length;
+  let prec = tp/(tp+fp) || 0;
+  let rec = tp/(tp+fn) || 0;
+  document.getElementById('metricsRow').innerHTML = `
+    <div class="metric-card"><div class="val">${(acc*100).toFixed(0)}%</div><div class="lbl">Accuracy</div></div>
+    <div class="metric-card"><div class="val">${(prec*100).toFixed(0)}%</div><div class="lbl">Precision</div></div>
+    <div class="metric-card"><div class="val">${(rec*100).toFixed(0)}%</div><div class="lbl">Recall</div></div>`;
+}
+
+canvas.addEventListener('click', (e)=>{
+  if(currentStage !== 11) return;
+  const rect = canvas.getBoundingClientRect();
+  const dpr = window.devicePixelRatio || 1;
+  const cx = (e.clientX - rect.left)*dpr;
+  const cy = (e.clientY - rect.top)*dpr;
+  if(cx >= pX && cx <= pX+pW && cy >= pY && cy <= pY+pH) {
+    let w = MIN_W + ((cx - pX)/pW)*(MAX_W - MIN_W);
+    let c = MIN_C + ((pH - (cy - pY))/pH)*(MAX_C - MIN_C);
+    playgroundPoints.push({w, c});
+    
+    let d = parseInt(document.getElementById('pgDepth').value) || 3;
+    let tObj = buildTree(DATA, d, 1);
+    let trc = classifyTrace({w,c}, tObj, []);
+    let pathStr = '';
+    trc.trace.forEach(t=> { pathStr += `<span class="trace-step">${t}</span>`; });
+    let pgt = document.getElementById('pgTraceContainer');
+    let pgr = document.getElementById('pgTraceResult');
+    if(pgt && pgr) {
+      pgt.style.display = 'block';
+      let tagCls = trc.prediction==='Apple'?'tag-apple':'tag-orange';
+      pgr.innerHTML = `${pathStr}<div style="margin-top:6px">New point mapped as <span class="tag ${tagCls}">${trc.prediction}</span></div>`;
+    }
+  }
+});
+
+window.resetPlayground = function() { 
+  playgroundPoints = []; 
+  let pgt = document.getElementById('pgTraceContainer');
+  if(pgt) pgt.style.display = 'none';
+}
+document.getElementById('pgDepth').addEventListener('input', function(e) {
+  document.getElementById('pgDepthVal').textContent = e.target.value;
+  updateModelSnapshot();
+});
+
+function tick() {
+  draw();
+  requestAnimationFrame(tick);
+}
+
+// Start
+initUI();
+resize();
+tick();
+
+})();
+</script>
+</body>
+</html>
