@@ -78,6 +78,9 @@
         .layout-wrapper {
             display: flex;
             flex-direction: column;
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
         }
         
         .narrative-col {
@@ -189,7 +192,7 @@
             border: 1px solid theme('colors.borderLight');
         }
 
-        /* Sliders */
+        /* Global Sliders */
         input[type=range] {
             -webkit-appearance: none;
             width: 100%;
@@ -211,12 +214,36 @@
             background: theme('colors.borderLight');
             border-radius: 2px;
         }
+
+        /* Enhanced Stage 6 Habit Sliders */
+        .habit-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 24px;
+            width: 24px;
+            margin-top: -9px;
+            background: theme('colors.surface');
+            border: 3px solid theme('colors.accent');
+            border-radius: 50%;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+            cursor: grab;
+            transition: transform 0.1s;
+        }
+        .habit-slider:active::-webkit-slider-thumb {
+            transform: scale(1.15);
+            background: theme('colors.accent');
+            cursor: grabbing;
+        }
+        .habit-slider::-webkit-slider-runnable-track {
+            height: 6px;
+            border-radius: 3px;
+        }
         
         canvas {
             width: 100%;
             height: 100%;
             max-width: 800px;
             max-height: 800px;
+            transition: opacity 0.3s ease;
         }
 
         .axis-label-overlay {
@@ -475,8 +502,14 @@
                 <p class="text-textDim mb-4 leading-relaxed">
                     This is the most critical concept in multiple regression. What does a Study Boost (&beta;<sub>1</sub>) actually mean when we have an optimal fit?
                 </p>
-                <p class="text-textDim leading-relaxed">
+                <p class="text-textDim mb-4 leading-relaxed">
                     It means: If a student studies one extra hour, their score increases by exactly that boost amount—<em>assuming their sleep and practice papers stay exactly the same.</em>
+                </p>
+                <p class="text-textDim mb-4 leading-relaxed">
+                    This logic applies to <em>each</em> predictor's coefficient: <strong>&beta;<sub>1</sub></strong> is the effect of Study while Sleep and Practice are held fixed, <strong>&beta;<sub>2</sub></strong> is the effect of Sleep while Study and Practice are held fixed, and <strong>&beta;<sub>3</sub></strong> is the effect of Practice while Study and Sleep are held fixed.
+                </p>
+                <p class="text-textDim leading-relaxed">
+                    The model does not literally freeze variables in real life—rather, it does this <em>mathematically</em> to estimate each variable's <strong>unique contribution</strong>.
                 </p>
 
                 <div class="glass-card">
@@ -492,121 +525,131 @@
             <!-- Stage 6 -->
             <section class="story-section" data-stage="6">
                 <div class="stage-label">Stage 06</div>
-                <h2 class="text-3xl font-bold mb-4">Moving Beyond 3D</h2>
+                <h2 class="text-3xl font-bold mb-4">Building the Prediction</h2>
                 <p class="text-textDim mb-4 leading-relaxed">
-                    Now we transition away from the 3D plane. With three independent predictors, regression is best understood as a <strong>Multivariable Contribution Panel</strong>.
+                    Now we transition away from the 3D plane. In multiple regression, the prediction is built from a <strong>base intercept</strong> plus separate <strong>contributions</strong> from each predictor.
                 </p>
-                <p class="text-textDim mb-6 leading-relaxed">
-                    The final prediction is built by stacking the individual partial effects of each variable on top of the base intercept. Try adjusting the student's habits below:
+                <p class="text-textDim mb-4 leading-relaxed">
+                    Each predictor adds or subtracts its own specific amount. The final score is simply the sum of all these individual parts. Because of how the model fits the data, each of these contributions is added while the other predictors are treated as fixed.
                 </p>
 
                 <div class="glass-card">
-                    <h3 class="font-semibold text-sm mb-4 uppercase tracking-wide text-textMuted">Predicting a specific student</h3>
-                    <ul class="text-sm space-y-4 font-mono">
-                        <li class="flex justify-between items-center">
-                            <span>Study:</span>
-                            <input type="range" id="input-student-study" min="0" max="10" step="0.5" value="4" class="w-32">
-                            <span id="val-student-study" class="w-16 text-right">4.0 hrs</span>
+                    <h3 class="font-semibold text-sm mb-6 uppercase tracking-wide text-textMuted">Predicting a specific student</h3>
+                    <ul class="text-sm space-y-7 font-mono">
+                        <li class="flex flex-col gap-2.5">
+                            <div class="flex justify-between items-end">
+                                <span class="font-semibold text-textMain text-base">Study</span>
+                                <span id="val-student-study" class="text-blue-600 font-bold text-base">4.0 hrs</span>
+                            </div>
+                            <input type="range" id="input-student-study" min="0" max="10" step="0.5" value="4" class="habit-slider w-full">
                         </li>
-                        <li class="flex justify-between items-center">
-                            <span>Sleep:</span>
-                            <input type="range" id="input-student-sleep" min="0" max="10" step="0.5" value="7.5" class="w-32">
-                            <span id="val-student-sleep" class="w-16 text-right">7.5 hrs</span>
+                        <li class="flex flex-col gap-2.5">
+                            <div class="flex justify-between items-end">
+                                <span class="font-semibold text-textMain text-base">Sleep</span>
+                                <span id="val-student-sleep" class="text-emerald-600 font-bold text-base">7.5 hrs</span>
+                            </div>
+                            <input type="range" id="input-student-sleep" min="0" max="10" step="0.5" value="7.5" class="habit-slider w-full">
                         </li>
-                        <li class="flex justify-between items-center">
-                            <span>Practice:</span>
-                            <input type="range" id="input-student-practice" min="0" max="5" step="1" value="2" class="w-32">
-                            <span id="val-student-practice" class="w-16 text-right">2 pps</span>
+                        <li class="flex flex-col gap-2.5">
+                            <div class="flex justify-between items-end">
+                                <span class="font-semibold text-textMain text-base">Practice</span>
+                                <span id="val-student-practice" class="text-purple-600 font-bold text-base">2 pps</span>
+                            </div>
+                            <input type="range" id="input-student-practice" min="0" max="5" step="1" value="2" class="habit-slider w-full">
                         </li>
                     </ul>
                 </div>
-                <p class="text-xs text-textMuted mt-4 text-center">Watch the live waterfall breakdown on the right.</p>
+
+                <div class="mt-4 text-sm text-textDim bg-white p-4 rounded-lg border border-borderLight shadow-sm">
+                    <div class="font-semibold text-textMain mb-2">How it stacks up:</div>
+                    <ul class="space-y-1">
+                        <li>&bull; <span class="font-mono text-xs">Base Score</span> = Starting point</li>
+                        <li>&bull; <span class="font-mono text-xs text-blue-600">Study Boost</span> = &beta;<sub>1</sub> &times; Study hours</li>
+                        <li>&bull; <span class="font-mono text-xs text-emerald-600">Sleep Boost</span> = &beta;<sub>2</sub> &times; Sleep hours</li>
+                        <li>&bull; <span class="font-mono text-xs text-purple-600">Practice Boost</span> = &beta;<sub>3</sub> &times; Practice papers</li>
+                    </ul>
+                    <div class="mt-2 pt-2 border-t border-borderLight font-mono font-bold text-indigo-700">Final Score = Sum of all parts</div>
+                </div>
             </section>
 
             <!-- Stage 7 -->
             <section class="story-section" data-stage="7">
                 <div class="stage-label">Stage 07</div>
-                <h2 class="text-3xl font-bold mb-4">The Shark & Ice Cream Mystery</h2>
+                <h2 class="text-3xl font-bold mb-4">The Spurious Trap</h2>
                 <p class="text-textDim mb-4 leading-relaxed">
-                    If multiple variables just stack, why use them? Why not run a simple regression for each variable separately?
+                    If multiple variables just stack, why not run a simple regression for each variable separately? Because of <strong>Spurious Correlations</strong>.
                 </p>
-                <p class="text-textDim mb-6 leading-relaxed">
-                    Because of <strong>Spurious Correlations</strong>. If you run a simple regression, Ice Cream Sales look like they cause Shark Attacks.
+                <p class="text-textDim mb-4 leading-relaxed">
+                    Imagine we want to predict <strong>Shark Attacks</strong>. If we run a simple model using <strong>Ice Cream Sales</strong>, the correlation is huge! It looks like ice cream causes shark attacks.
+                </p>
+                <p class="text-textDim mb-4 leading-relaxed">
+                    But the true driver is a lurking variable: <strong>High Temperature</strong>. Hot days cause both ice cream sales <em>and</em> beach visits (which lead to shark attacks).
                 </p>
 
-                <div class="glass-card">
-                    <div class="flex items-center justify-between mb-4 pb-4 border-b border-borderLight">
-                        <div class="text-center">
-                            <span class="text-2xl block mb-1">🍦</span>
-                            <span class="pill">Ice Cream</span>
-                        </div>
-                        <div class="text-error font-bold text-sm">Fake Link ?</div>
-                        <div class="text-center">
-                            <span class="text-2xl block mb-1">🦈</span>
-                            <span class="pill">Shark Attacks</span>
-                        </div>
-                    </div>
-                    <div class="flex flex-col items-center">
-                        <span class="text-xs text-textMuted font-bold uppercase mb-2">The True Driver (Lurking Variable)</span>
-                        <div class="text-center">
-                            <span class="text-2xl block mb-1">☀️</span>
-                            <span class="pill bg-warning text-white border-warning">High Temperature</span>
-                        </div>
-                        <svg class="mt-2 text-borderLight" width="100" height="30" viewBox="0 0 100 30"><path d="M50 0 L20 30 M50 0 L80 30" stroke="currentColor" stroke-width="2" fill="none"/></svg>
-                    </div>
-                </div>
-                
                 <div class="insight-box mt-4">
-                    Multiple regression acts as a detective. If we put both Ice Cream and Temperature into the model, the model realizes Ice Cream's specific effect (holding Temperature constant) is zero!
+                    <strong>The Power of "Holding Constant"</strong><br>
+                    Multiple regression isolates a variable's <em>unique</em> contribution, which can reveal when a variable only looked important because it moved together with another predictor. If we put both Ice Cream and Temperature into the model, the model essentially compares days with the <em>same temperature</em>. Holding temperature constant, changing ice cream sales alone has almost zero unique effect on shark attacks.<br><br>
+                    If a coefficient shrinks close to zero after the other predictors are included, that suggests it has little <em>unique</em> relationship with the predicted outcome (y) after accounting for the others. This does <em>not</em> prove the variable has no real-world effect at all, only that it adds little unique information within this specific model.
                 </div>
+                <p class="text-xs text-textMuted mt-4">
+                    <em>Note: A larger coefficient doesn't always mean a "more important" predictor, as they depend on the unit of measurement.</em>
+                </p>
             </section>
 
             <!-- Stage 8 -->
             <section class="story-section" data-stage="8">
                 <div class="stage-label">Stage 08</div>
-                <h2 class="text-3xl font-bold mb-4">The Model Scorecard</h2>
+                <h2 class="text-3xl font-bold mb-4">The Adjusted R&sup2; Penalty</h2>
                 <p class="text-textDim mb-4 leading-relaxed">
-                    How do we know if our team of variables is actually good? We look at <strong>R&sup2;</strong> (R-Squared), which tells us what percentage of the variance we explained.
+                    How do we know if our team of variables is actually good? <strong>R&sup2;</strong> tells us what percentage of the variance we explained.
                 </p>
                 <p class="text-textDim mb-4 leading-relaxed">
-                    But beware the <strong>Trap of R&sup2;</strong>. Adding <em>any</em> variable—even "Student's Shoe Size"—will mathematically force raw R&sup2; to increase, tricking you into thinking the model is better.
+                    But raw R&sup2; has a flaw: it almost never goes down when you add predictors. Adding <em>any</em> variable—even "Student's Shoe Size"—will mathematically force raw R&sup2; to increase, tricking you into thinking the model is better.
                 </p>
-
-                <div class="grid grid-cols-2 gap-4">
-                    <div class="glass-card !mt-0 flex flex-col justify-center">
-                        <div class="text-xs text-textMuted uppercase font-bold tracking-wide">Live Raw R&sup2;</div>
-                        <div class="text-3xl font-mono text-textMain my-2" id="val-r2">0.000</div>
-                        <div class="text-xs text-textDim">Always goes up. Easily tricked.</div>
-                    </div>
-                    <div class="glass-card !mt-0 flex flex-col justify-center border-l-4 border-l-success">
-                        <div class="text-xs text-textMuted uppercase font-bold tracking-wide">Live Adj R&sup2;</div>
-                        <div class="text-3xl font-mono text-success my-2" id="val-adj-r2">0.000</div>
-                        <div class="text-xs text-textDim">Punishes you for adding useless variables.</div>
-                    </div>
+                
+                <div class="formula-block mb-4">
+                    Adj R&sup2; = 1 - [ (1 - R&sup2;)(n - 1) / (n - p - 1) ]
                 </div>
+                
+                <p class="text-textDim mb-4 leading-relaxed">
+                    <strong>Adjusted R&sup2;</strong> corrects for this by penalizing model complexity.
+                    In the formula, <code class="bg-gray-100 px-1 rounded text-sm text-textMain border border-borderLight">n</code> is the number of observations and <code class="bg-gray-100 px-1 rounded text-sm text-textMain border border-borderLight">p</code> is the number of predictors.
+                </p>
+                <p class="text-textDim leading-relaxed">
+                    Every new predictor (<code class="bg-gray-100 px-1 rounded text-sm text-textMain border border-borderLight">p</code>) uses up flexibility and increases the penalty. A new variable should only stay if it improves the model enough to justify its cost. A useless variable will cause Adjusted R&sup2; to stay flat or drop!
+                </p>
             </section>
 
             <!-- Stage 9 -->
             <section class="story-section" data-stage="9">
                 <div class="stage-label">Stage 09</div>
-                <h2 class="text-3xl font-bold mb-4">Synthesis</h2>
+                <h2 class="text-3xl font-bold mb-4">Reading the Model Output</h2>
                 <p class="text-textDim mb-4 leading-relaxed">
-                    Multiple Linear Regression is the grandfather of data science. It is a smart rule that uses several clues together to predict a continuous number.
+                    When a data analyst fits a multiple linear regression, they don't look at a 3D plot—they look at a summary table to evaluate the results.
                 </p>
-                <ul class="space-y-4 text-sm text-textDim">
+                
+                <ul class="space-y-4 text-sm text-textDim mb-6">
                     <li class="flex items-start">
-                        <svg class="w-5 h-5 text-accent mr-2 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                        <strong>It models additive effects:</strong> Every variable provides a specific "boost" to the baseline.
+                        <span class="font-bold text-textMain w-24 flex-shrink-0">Estimate:</span>
+                        <span>The coefficient (&beta;). How much the prediction changes for a one-unit increase in this predictor, <em>holding all other predictors constant</em>.</span>
                     </li>
                     <li class="flex items-start">
-                        <svg class="w-5 h-5 text-accent mr-2 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                        <strong>It isolates drivers:</strong> It answers "What happens if X changes, while everything else stays perfectly still?"
+                        <span class="font-bold text-textMain w-24 flex-shrink-0">Std. Error:</span>
+                        <span>The uncertainty around the estimate. A smaller standard error means we are more confident in the coefficient.</span>
                     </li>
                     <li class="flex items-start">
-                        <svg class="w-5 h-5 text-accent mr-2 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                        <strong>It minimizes squared error:</strong> The optimal fit finds the absolute lowest sum of squared residuals across all dimensions simultaneously.
+                        <span class="font-bold text-textMain w-24 flex-shrink-0">t value:</span>
+                        <span>The estimate divided by its standard error. A larger absolute value (typically > 2) indicates strong statistical evidence that the true effect is not zero.</span>
                     </li>
                 </ul>
+
+                <p class="text-sm text-textDim mb-6 italic">
+                    Note: Each coefficient should be read as "the change in predicted y for a one-unit increase in this predictor, holding the others constant." Because predictors can be measured in entirely different units, coefficients cannot be compared as pure "importance scores" unless the predictors are on comparable scales.
+                </p>
+
+                <div class="insight-box">
+                    Multiple linear regression is a powerful detective. It models additive effects, isolates individual drivers, and finds the mathematically optimal fit by minimizing squared errors.
+                </div>
             </section>
         </div>
 
@@ -628,10 +671,60 @@
                     </div>
                 </div>
                 
-                <!-- Tooltip overlays -->
-                <div id="viz-overlay" class="absolute top-8 left-8 bg-surface/90 backdrop-blur border border-borderLight rounded-lg p-3 text-xs font-mono hidden shadow-sm transition-opacity">
-                    <!-- Dynamic content -->
+                <!-- Stage 6 Live Equation Overlay -->
+                <div id="viz-overlay-stage6" class="absolute bottom-6 left-0 right-0 flex justify-center pointer-events-none opacity-0 transition-opacity z-20">
+                    <div class="bg-surface/95 backdrop-blur border border-borderLight rounded-lg py-3 px-5 shadow-md font-mono text-xs md:text-sm text-center flex items-center gap-2">
+                        <span class="text-textMuted italic">ŷ =</span>
+                        <span id="eq-b0" class="text-slate-500 font-semibold"></span>
+                        <span class="text-textMuted">+</span>
+                        <span id="eq-b1" class="text-blue-600 font-semibold"></span>
+                        <span class="text-textMuted">+</span>
+                        <span id="eq-b2" class="text-emerald-600 font-semibold"></span>
+                        <span class="text-textMuted">+</span>
+                        <span id="eq-b3" class="text-purple-600 font-semibold"></span>
+                        <span class="text-textMuted">=</span>
+                        <span id="eq-total" class="font-bold text-indigo-600 text-lg ml-1"></span>
+                    </div>
                 </div>
+
+                <!-- Stage 9 Model Output Overlay -->
+                <div id="viz-overlay-stage9" class="absolute inset-0 m-auto max-w-[90%] w-[500px] h-fit bg-surface border border-borderLight rounded-xl shadow-lg opacity-0 transition-opacity z-30 hidden flex-col pointer-events-auto p-5 md:p-6">
+                    <h3 class="text-lg font-bold mb-4 font-mono border-b border-borderLight pb-2 text-textMain">OLS Regression Results</h3>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm text-left font-mono mb-4 min-w-[380px]">
+                            <thead class="text-xs text-textMuted uppercase bg-bgSec">
+                                <tr>
+                                    <th class="py-2 px-3 rounded-tl">Term</th>
+                                    <th class="py-2 px-3 text-right">Estimate</th>
+                                    <th class="py-2 px-3 text-right">Std. Error</th>
+                                    <th class="py-2 px-3 text-right rounded-tr">t value</th>
+                                </tr>
+                            </thead>
+                            <tbody id="table-coefs">
+                                <!-- Populated by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="grid grid-cols-2 gap-3 md:gap-4 text-xs md:text-sm font-mono bg-bgSec p-3 md:p-4 rounded border border-borderLight mt-auto">
+                        <div class="flex justify-between items-center">
+                            <span class="text-textMuted">Observations:</span>
+                            <span class="font-semibold" id="table-n"></span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-textMuted">R-squared:</span>
+                            <span class="font-semibold" id="table-r2"></span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-textMuted">Adj. R-squared:</span>
+                            <span class="font-semibold" id="table-adj-r2"></span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-textMuted">Res. Std. Error:</span>
+                            <span class="font-semibold" id="table-rse"></span>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
@@ -664,8 +757,7 @@
             yMin: 0, yMax: 100   // Score
         };
 
-        // We calculate the exact least-squares optimal coefficients from the data dynamically
-        let optimal = { b0: 0, b1: 0, b2: 0, b3: 0 };
+        let optimal = { b0: 0, b1: 0, b2: 0, b3: 0, stats: null };
         const avgPractice = rawData.reduce((sum, d) => sum + d.practice, 0) / rawData.length;
         const lockedSleep = 6.0;
         const meanScore = rawData.reduce((sum, pt) => sum + pt.score, 0) / rawData.length;
@@ -673,34 +765,14 @@
 
         const state = {
             stage: 0,
-            
-            // Current model parameters
             b0: 0, b1: 0, b2: 0, b3: 0,
-            
-            // Animation targets
             targetB0: 0, targetB1: 0, targetB2: 0, targetB3: 0,
-
-            // Live student prediction values
-            studentStudy: 4.0,
-            studentSleep: 7.5,
-            studentPractice: 2,
-            
-            // 3D View properties
-            angle: Math.PI / 4,
-            pitch: Math.PI / 6,
-            autoRotate: true,
-            
-            // Rendering modes
-            showPoints: false,
-            showPlane: false,
-            showResiduals: false,
-            sliceZ: null, // If set, highlights a line on the plane
-            
-            // View Mode
-            viewMode: '3d', // '3d' or 'waterfall'
-            waterfallProgress: 0, // 0 to 1 for animation
-            
-            // Slider interaction tracking
+            studentStudy: 4.0, studentSleep: 7.5, studentPractice: 2,
+            angle: Math.PI / 4, pitch: Math.PI / 6, autoRotate: true,
+            showPoints: false, showPlane: false, showResiduals: false, sliceZ: null,
+            viewMode: '3d', // '3d', 'waterfall', 'spuriousComparison', 'adjustedR2Penalty', 'modelOutput'
+            waterfallProgress: 0,
+            animProgress: 0,
             userInteracting: false
         };
 
@@ -723,11 +795,8 @@
         const valB2 = document.getElementById('val-b2');
         const valB3 = document.getElementById('val-b3');
         const valSSE = document.getElementById('val-sse');
-        const valR2 = document.getElementById('val-r2');
-        const valAdjR2 = document.getElementById('val-adj-r2');
         const btnOptimize = document.getElementById('btn-optimize');
         
-        // Student inputs
         const inputStudy = document.getElementById('input-student-study');
         const inputSleep = document.getElementById('input-student-sleep');
         const inputPractice = document.getElementById('input-student-practice');
@@ -737,41 +806,79 @@
 
         // --- MATH & PROJECTION ---
         
-        // Gaussian elimination to solve X^T X beta = X^T Y
         function solveLinearSystem(A, B) {
             let n = A.length;
+            let a = A.map(r => [...r]);
+            let b = [...B];
             for (let i = 0; i < n; i++) {
-                let maxEl = Math.abs(A[i][i]);
+                let maxEl = Math.abs(a[i][i]);
                 let maxRow = i;
                 for (let k = i + 1; k < n; k++) {
-                    if (Math.abs(A[k][i]) > maxEl) { maxEl = Math.abs(A[k][i]); maxRow = k; }
+                    if (Math.abs(a[k][i]) > maxEl) { maxEl = Math.abs(a[k][i]); maxRow = k; }
                 }
-                for (let k = i; k < n; k++) { let tmp = A[maxRow][k]; A[maxRow][k] = A[i][k]; A[i][k] = tmp; }
-                let tmp = B[maxRow]; B[maxRow] = B[i]; B[i] = tmp;
+                for (let k = i; k < n; k++) { let tmp = a[maxRow][k]; a[maxRow][k] = a[i][k]; a[i][k] = tmp; }
+                let tmp = b[maxRow]; b[maxRow] = b[i]; b[i] = tmp;
 
                 for (let k = i + 1; k < n; k++) {
-                    let c = -A[k][i] / A[i][i];
-                    for (let j = i; j < n; j++) { if (i === j) A[k][j] = 0; else A[k][j] += c * A[i][j]; }
-                    B[k] += c * B[i];
+                    let c = -a[k][i] / a[i][i];
+                    for (let j = i; j < n; j++) { if (i === j) a[k][j] = 0; else a[k][j] += c * a[i][j]; }
+                    b[k] += c * b[i];
                 }
             }
             let x = new Array(n).fill(0);
             for (let i = n - 1; i >= 0; i--) {
-                x[i] = B[i] / A[i][i];
-                for (let k = i - 1; k >= 0; k--) { B[k] -= A[k][i] * x[i]; }
+                x[i] = b[i] / a[i][i];
+                for (let k = i - 1; k >= 0; k--) { b[k] -= a[k][i] * x[i]; }
             }
             return x;
         }
 
+        function invertMatrix(M) {
+            let n = M.length;
+            let I = Array.from({length: n}, (_, i) => {
+                let row = new Array(n).fill(0);
+                row[i] = 1;
+                return row;
+            });
+            let A = M.map(row => [...row]);
+            for(let i=0; i<n; i++){
+                let maxEl = Math.abs(A[i][i]);
+                let maxRow = i;
+                for(let k=i+1; k<n; k++){
+                    if(Math.abs(A[k][i]) > maxEl){ maxEl = Math.abs(A[k][i]); maxRow = k; }
+                }
+                for(let k=0; k<n; k++){
+                    let tmpA = A[maxRow][k]; A[maxRow][k] = A[i][k]; A[i][k] = tmpA;
+                    let tmpI = I[maxRow][k]; I[maxRow][k] = I[i][k]; I[i][k] = tmpI;
+                }
+                let pivot = A[i][i];
+                for(let k=0; k<n; k++){
+                    A[i][k] /= pivot;
+                    I[i][k] /= pivot;
+                }
+                for(let j=0; j<n; j++){
+                    if(i !== j){
+                        let factor = A[j][i];
+                        for(let k=0; k<n; k++){
+                            A[j][k] -= factor * A[i][k];
+                            I[j][k] -= factor * I[i][k];
+                        }
+                    }
+                }
+            }
+            return I;
+        }
+
         function computeOptimal() {
-            let n = rawData.length;
+            let n_obs = rawData.length;
+            let p_vars = 3;
             let X = rawData.map(d => [1, d.study, d.sleep, d.practice]);
             let Y = rawData.map(d => d.score);
 
             let XtX = Array(4).fill(0).map(() => Array(4).fill(0));
             let XtY = Array(4).fill(0);
 
-            for (let i = 0; i < n; i++) {
+            for (let i = 0; i < n_obs; i++) {
                 for (let j = 0; j < 4; j++) {
                     XtY[j] += X[i][j] * Y[i];
                     for (let k = 0; k < 4; k++) {
@@ -781,22 +888,25 @@
             }
             let beta = solveLinearSystem(XtX, XtY);
             optimal = { b0: beta[0], b1: beta[1], b2: beta[2], b3: beta[3] };
-        }
 
-        function getLiveCoefficients() {
-            return {
-                b0: state.b0,
-                b1: state.b1,
-                b2: state.b2,
-                b3: state.b3
+            // Calculate Model Statistics for Stage 9 Analyst Output
+            let XtX_inv = invertMatrix(XtX);
+            let sse_opt = calculateSSE(optimal);
+            let s2 = sse_opt / (n_obs - p_vars - 1);
+            let se = beta.map((b, i) => Math.sqrt(s2 * XtX_inv[i][i]));
+            let t_stats = beta.map((b, i) => b / se[i]);
+
+            optimal.stats = {
+                se: se,
+                t: t_stats,
+                rse: Math.sqrt(s2)
             };
         }
 
+        function getLiveCoefficients() { return { b0: state.b0, b1: state.b1, b2: state.b2, b3: state.b3 }; }
+
         function predictScore(coefficients, study, sleep, practice) {
-            return coefficients.b0
-                + coefficients.b1 * study
-                + coefficients.b2 * sleep
-                + coefficients.b3 * practice;
+            return coefficients.b0 + coefficients.b1 * study + coefficients.b2 * sleep + coefficients.b3 * practice;
         }
 
         function predictSliceScore(coefficients, study, sleep) {
@@ -826,61 +936,36 @@
 
             return {
                 coefficients,
-                metrics: {
-                    sse,
-                    r2,
-                    adjR2
-                },
-                holdConstant: {
-                    sleep: lockedSleep,
-                    practice: avgPractice,
-                    lockedImpact: coefficients.b2 * lockedSleep + coefficients.b3 * avgPractice
-                },
+                metrics: { sse, r2, adjR2 },
+                holdConstant: { sleep: lockedSleep, practice: avgPractice, lockedImpact: coefficients.b2 * lockedSleep + coefficients.b3 * avgPractice },
                 student: {
-                    study: state.studentStudy,
-                    sleep: state.studentSleep,
-                    practice: state.studentPractice,
+                    study: state.studentStudy, sleep: state.studentSleep, practice: state.studentPractice,
                     components: [
-                        { label: 'Base (&beta;0)', value: coefficients.b0, color: '#94a3b8' },
-                        { label: `Study (${state.studentStudy}h)`, value: predStudy, color: '#3b82f6' },
-                        { label: `Sleep (${state.studentSleep}h)`, value: predSleep, color: '#10b981' },
-                        { label: `Practice (${state.studentPractice}p)`, value: predPractice, color: '#8b5cf6' }
+                        { label: 'Base', value: coefficients.b0, color: '#94a3b8' },
+                        { label: `Study`, value: predStudy, color: '#3b82f6' },
+                        { label: `Sleep`, value: predSleep, color: '#10b981' },
+                        { label: `Practice`, value: predPractice, color: '#8b5cf6' }
                     ],
                     total: coefficients.b0 + predStudy + predSleep + predPractice
                 }
             };
         }
 
-        // Project 3D coordinate (x, y, z) into 2D screen coordinate
-        // Coordinate system: X (right), Y (up), Z (into screen)
         function project(x, y, z, width, height) {
-            // Normalize to roughly [-1, 1] range for scaling
             let nx = ((x - bounds.xMin) / (bounds.xMax - bounds.xMin)) * 2 - 1;
             let ny = ((y - bounds.yMin) / (bounds.yMax - bounds.yMin)) * 2 - 1;
             let nz = ((z - bounds.zMin) / (bounds.zMax - bounds.zMin)) * 2 - 1;
-
-            // Rotation around Y axis (pan)
             let rx = nx * Math.cos(state.angle) - nz * Math.sin(state.angle);
             let rz = nx * Math.sin(state.angle) + nz * Math.cos(state.angle);
-            
-            // Rotation around X axis (pitch)
             let ry = ny * Math.cos(state.pitch) - rz * Math.sin(state.pitch);
             let rz2 = ny * Math.sin(state.pitch) + rz * Math.cos(state.pitch);
-
-            // Simple orthographic/isometric scaling
             let scale = Math.min(width, height) * 0.31;
-            
-            return {
-                x: width/2 + rx * scale,
-                y: height/2 + 20 - ry * scale, // offset Y slightly down
-                depth: rz2
-            };
+            return { x: width/2 + rx * scale, y: height/2 + 20 - ry * scale, depth: rz2 };
         }
 
         // --- RENDERING ENGINE ---
 
         function resize() {
-            // Handle high-DPI displays
             const dpr = window.devicePixelRatio || 1;
             const rect = canvas.parentElement.getBoundingClientRect();
             ctx.setTransform(1, 0, 0, 1, 0, 0);
@@ -893,7 +978,7 @@
         window.addEventListener('resize', resize);
 
         function hideAxisLabels() {
-            [axisLabelX, axisLabelZ, axisLabelY].forEach((label) => {
+            [axisLabelX, axisLabelZ, axisLabelY].forEach(label => {
                 label.style.opacity = '0';
                 label.style.left = '-9999px';
                 label.style.top = '-9999px';
@@ -910,39 +995,17 @@
             const sceneRect = vizScene.getBoundingClientRect();
             const x = canvasRect.left - sceneRect.left + point.x + offsetX;
             const y = canvasRect.top - sceneRect.top + point.y + offsetY;
-            const compact =
-                sceneRect.width < 720 ||
-                x < 90 ||
-                x > sceneRect.width - 90 ||
-                y < 72 ||
-                y > sceneRect.height - 72;
-
+            const compact = sceneRect.width < 720 || x < 90 || x > sceneRect.width - 90 || y < 72 || y > sceneRect.height - 72;
             setAxisLabelText(label, compact);
-            const halfWidth = label.offsetWidth / 2;
-            const halfHeight = label.offsetHeight / 2;
-            const margin = 12;
-            const minX = margin + halfWidth;
-            const maxX = sceneRect.width - margin - halfWidth;
-            const minY = margin + halfHeight;
-            const maxY = sceneRect.height - margin - halfHeight;
-            const clampedX = Math.min(maxX, Math.max(minX, x));
-            const clampedY = Math.min(maxY, Math.max(minY, y));
-            const overflowX = Math.max(minX - x, x - maxX, 0);
-            const overflowY = Math.max(minY - y, y - maxY, 0);
-            const overflow = Math.max(overflowX, overflowY);
-            const fadeDistance = 70;
-            const opacity = Math.max(0, Math.min(1, 1 - overflow / fadeDistance));
+            
+            const halfW = label.offsetWidth / 2, halfH = label.offsetHeight / 2, margin = 12;
+            const clampedX = Math.min(sceneRect.width - margin - halfW, Math.max(margin + halfW, x));
+            const clampedY = Math.min(sceneRect.height - margin - halfH, Math.max(margin + halfH, y));
+            const overflow = Math.max(Math.max(margin + halfW - x, x - (sceneRect.width - margin - halfW), 0), Math.max(margin + halfH - y, y - (sceneRect.height - margin - halfH), 0));
+            const opacity = Math.max(0, Math.min(1, 1 - overflow / 70));
 
-            if (opacity < 0.05) {
-                label.style.opacity = '0';
-                label.style.left = '-9999px';
-                label.style.top = '-9999px';
-                return;
-            }
-
-            label.style.left = `${clampedX}px`;
-            label.style.top = `${clampedY}px`;
-            label.style.opacity = `${0.25 + opacity * 0.75}`;
+            if (opacity < 0.05) { label.style.opacity = '0'; label.style.left = '-9999px'; label.style.top = '-9999px'; return; }
+            label.style.left = `${clampedX}px`; label.style.top = `${clampedY}px`; label.style.opacity = `${0.25 + opacity * 0.75}`;
         }
 
         function updateVizLegend() {
@@ -952,322 +1015,363 @@
             legendPlane.style.opacity = state.showPlane ? '1' : '0.35';
             legendPrediction.style.opacity = state.showResiduals ? '1' : '0.35';
         }
-
-        function updateAxisLabels(xEnd, yEnd, zEnd) {
-            const canvasWidth = canvas.getBoundingClientRect().width;
-            const xOffset = xEnd.x > canvasWidth * 0.68 ? -42 : 38;
-            const zOffset = zEnd.x > canvasWidth * 0.68 ? -42 : 38;
-
-            positionAxisLabel(axisLabelX, xEnd, xOffset, 0);
-            positionAxisLabel(axisLabelZ, zEnd, zOffset, 0);
-            positionAxisLabel(axisLabelY, yEnd, -6, -18);
-        }
         
         function drawAxes(w, h) {
-            ctx.lineWidth = 1;
-            ctx.strokeStyle = '#e7e5e4'; // borderLight
-            
-            // Origin and ends
+            ctx.lineWidth = 1; ctx.strokeStyle = '#e7e5e4';
             let o = project(0, 0, 0, w, h);
             let xEnd = project(bounds.xMax, 0, 0, w, h);
             let yEnd = project(0, bounds.yMax, 0, w, h);
             let zEnd = project(0, 0, bounds.zMax, w, h);
 
-            // Draw X Axis (Study)
             ctx.beginPath(); ctx.moveTo(o.x, o.y); ctx.lineTo(xEnd.x, xEnd.y); ctx.stroke();
-
-            // Draw Z Axis (Sleep)
             ctx.beginPath(); ctx.moveTo(o.x, o.y); ctx.lineTo(zEnd.x, zEnd.y); ctx.stroke();
-
-            // Draw Y Axis (Score)
             ctx.beginPath(); ctx.moveTo(o.x, o.y); ctx.lineTo(yEnd.x, yEnd.y); ctx.stroke();
-            updateAxisLabels(xEnd, yEnd, zEnd);
             
-            // Draw floor grid
+            positionAxisLabel(axisLabelX, xEnd, xEnd.x > w * 0.68 ? -42 : 38, 0);
+            positionAxisLabel(axisLabelZ, zEnd, zEnd.x > w * 0.68 ? -42 : 38, 0);
+            positionAxisLabel(axisLabelY, yEnd, -6, -18);
+            
             ctx.strokeStyle = 'rgba(231, 229, 228, 0.4)';
             ctx.beginPath();
             for(let i=1; i<=10; i++) {
-                let p1 = project(i, 0, 0, w, h);
-                let p2 = project(i, 0, 10, w, h);
+                let p1 = project(i, 0, 0, w, h), p2 = project(i, 0, 10, w, h);
                 ctx.moveTo(p1.x, p1.y); ctx.lineTo(p2.x, p2.y);
-                
-                let p3 = project(0, 0, i, w, h);
-                let p4 = project(10, 0, i, w, h);
+                let p3 = project(0, 0, i, w, h), p4 = project(10, 0, i, w, h);
                 ctx.moveTo(p3.x, p3.y); ctx.lineTo(p4.x, p4.y);
             }
             ctx.stroke();
         }
 
         function drawPlaneAndData(w, h, snapshot) {
-            // To handle basic depth sorting, we collect all renderable items
             let renderQueue = [];
             const coefficients = snapshot.coefficients;
 
-            // 1. Data points & Residuals
             if (state.showPoints) {
                 for (let pt of rawData) {
                     let projReal = project(pt.study, pt.score, pt.sleep, w, h);
                     let predY = predictScore(coefficients, pt.study, pt.sleep, pt.practice);
                     let projPred = project(pt.study, predY, pt.sleep, w, h);
-                    
                     if (state.showResiduals) {
-                        renderQueue.push({
-                            type: 'line',
-                            depth: (projReal.depth + projPred.depth) / 2,
-                            p1: projReal, p2: projPred,
-                            color: '#dc2626',
-                            dash: [6, 4]
-                        });
-                        renderQueue.push({
-                            type: 'prediction-point',
-                            depth: projPred.depth - 0.01,
-                            pos: projPred,
-                            radius: 5
-                        });
+                        renderQueue.push({ type: 'line', depth: (projReal.depth + projPred.depth) / 2, p1: projReal, p2: projPred, color: '#dc2626', dash: [6, 4] });
+                        renderQueue.push({ type: 'prediction-point', depth: projPred.depth - 0.01, pos: projPred, radius: 5 });
                     }
-                    
-                    renderQueue.push({
-                        type: 'point',
-                        depth: projReal.depth,
-                        pos: projReal,
-                        radius: 4
-                    });
+                    renderQueue.push({ type: 'point', depth: projReal.depth, pos: projReal, radius: 4 });
                 }
             }
 
-            // 2. The Regression Plane
             if (state.showPlane) {
-                // Split plane into grid cells for better depth sorting
-                const steps = 5;
-                const stepX = bounds.xMax / steps;
-                const stepZ = bounds.zMax / steps;
-
+                const steps = 5, stepX = bounds.xMax / steps, stepZ = bounds.zMax / steps;
                 for (let i=0; i<steps; i++) {
                     for (let j=0; j<steps; j++) {
-                        let x1 = i * stepX, z1 = j * stepZ;
-                        let x2 = (i+1) * stepX, z2 = (j+1) * stepZ;
-                        
-                        let y11 = predictSliceScore(coefficients, x1, z1);
-                        let y21 = predictSliceScore(coefficients, x2, z1);
-                        let y22 = predictSliceScore(coefficients, x2, z2);
-                        let y12 = predictSliceScore(coefficients, x1, z2);
-                        
-                        let p11 = project(x1, y11, z1, w, h);
-                        let p21 = project(x2, y21, z1, w, h);
-                        let p22 = project(x2, y22, z2, w, h);
-                        let p12 = project(x1, y12, z2, w, h);
-                        
-                        let avgDepth = (p11.depth + p21.depth + p22.depth + p12.depth) / 4;
-                        
-                        renderQueue.push({
-                            type: 'poly',
-                            depth: avgDepth,
-                            pts: [p11, p21, p22, p12]
-                        });
+                        let x1 = i * stepX, z1 = j * stepZ, x2 = (i+1) * stepX, z2 = (j+1) * stepZ;
+                        let y11 = predictSliceScore(coefficients, x1, z1), y21 = predictSliceScore(coefficients, x2, z1);
+                        let y22 = predictSliceScore(coefficients, x2, z2), y12 = predictSliceScore(coefficients, x1, z2);
+                        let p11 = project(x1, y11, z1, w, h), p21 = project(x2, y21, z1, w, h);
+                        let p22 = project(x2, y22, z2, w, h), p12 = project(x1, y12, z2, w, h);
+                        renderQueue.push({ type: 'poly', depth: (p11.depth + p21.depth + p22.depth + p12.depth) / 4, pts: [p11, p21, p22, p12] });
                     }
                 }
             }
 
-            // 3. Slice Line (Holding Constant)
             if (state.sliceZ !== null) {
                 let z = state.sliceZ;
-                let y1 = predictSliceScore(coefficients, 0, z);
-                let y2 = predictSliceScore(coefficients, 10, z);
-                let p1 = project(0, y1, z, w, h);
-                let p2 = project(10, y2, z, w, h);
-                
-                renderQueue.push({
-                    type: 'line',
-                    depth: (p1.depth + p2.depth)/2 - 0.1, // draw slightly over plane
-                    p1: p1, p2: p2,
-                    color: '#1f2937', // dark line
-                    width: 3
-                });
+                let p1 = project(0, predictSliceScore(coefficients, 0, z), z, w, h);
+                let p2 = project(10, predictSliceScore(coefficients, 10, z), z, w, h);
+                renderQueue.push({ type: 'line', depth: (p1.depth + p2.depth)/2 - 0.1, p1: p1, p2: p2, color: '#1f2937', width: 3 });
             }
 
-            // Sort back to front (Painters algorithm)
             renderQueue.sort((a, b) => b.depth - a.depth);
 
-            // Render
             for (let item of renderQueue) {
                 if (item.type === 'poly') {
-                    ctx.beginPath();
-                    ctx.moveTo(item.pts[0].x, item.pts[0].y);
+                    ctx.beginPath(); ctx.moveTo(item.pts[0].x, item.pts[0].y);
                     for (let i=1; i<4; i++) ctx.lineTo(item.pts[i].x, item.pts[i].y);
-                    ctx.closePath();
-                    ctx.fillStyle = 'rgba(99, 102, 241, 0.2)'; // indigo accent with opacity
+                    ctx.closePath(); ctx.fillStyle = 'rgba(99, 102, 241, 0.2)'; ctx.fill();
+                    ctx.strokeStyle = 'rgba(99, 102, 241, 0.4)'; ctx.lineWidth = 1; ctx.stroke();
+                } else if (item.type === 'point' || item.type === 'prediction-point') {
+                    ctx.beginPath(); ctx.arc(item.pos.x, item.pos.y, item.radius, 0, Math.PI*2);
+                    ctx.fillStyle = item.type === 'point' ? '#1f2937' : 'rgba(255, 255, 255, 0.92)';
                     ctx.fill();
-                    ctx.strokeStyle = 'rgba(99, 102, 241, 0.4)';
-                    ctx.lineWidth = 1;
-                    ctx.stroke();
-                } else if (item.type === 'point') {
-                    ctx.beginPath();
-                    ctx.arc(item.pos.x, item.pos.y, item.radius, 0, Math.PI*2);
-                    ctx.fillStyle = '#1f2937';
-                    ctx.fill();
-                    ctx.strokeStyle = '#ffffff';
-                    ctx.lineWidth = 1.5;
-                    ctx.stroke();
-                } else if (item.type === 'prediction-point') {
-                    ctx.beginPath();
-                    ctx.arc(item.pos.x, item.pos.y, item.radius, 0, Math.PI*2);
-                    ctx.fillStyle = 'rgba(255, 255, 255, 0.92)';
-                    ctx.fill();
-                    ctx.strokeStyle = '#dc2626';
-                    ctx.lineWidth = 2;
+                    ctx.strokeStyle = item.type === 'point' ? '#ffffff' : '#dc2626';
+                    ctx.lineWidth = item.type === 'point' ? 1.5 : 2;
                     ctx.stroke();
                 } else if (item.type === 'line') {
-                    ctx.beginPath();
-                    ctx.moveTo(item.p1.x, item.p1.y);
-                    ctx.lineTo(item.p2.x, item.p2.y);
-                    ctx.strokeStyle = item.color;
-                    ctx.lineWidth = item.width || 1.5;
-                    ctx.setLineDash(item.dash || []);
-                    ctx.stroke();
-                    ctx.setLineDash([]);
+                    ctx.beginPath(); ctx.moveTo(item.p1.x, item.p1.y); ctx.lineTo(item.p2.x, item.p2.y);
+                    ctx.strokeStyle = item.color; ctx.lineWidth = item.width || 1.5;
+                    ctx.setLineDash(item.dash || []); ctx.stroke(); ctx.setLineDash([]);
                 }
             }
         }
 
         function drawWaterfall(w, h, snapshot) {
-            // A 2D breakdown charting the live predicted score of the dynamic student
             const { components, total } = snapshot.student;
-
-            const startX = 60;
-            const endX = w - 60;
+            
+            // Layout maximizing sticky panel area safely
+            const startX = Math.max(40, w * 0.08);
+            const endX = Math.min(w - 40, w * 0.92);
             const chartWidth = endX - startX;
-            const chartTop = h * 0.18;
-            const chartBottom = h * 0.8;
+            const chartTop = h * 0.12; 
+            const chartBottom = h * 0.82;
             const chartHeight = chartBottom - chartTop;
+            
             const spacing = chartWidth / 6;
-            const barWidth = chartWidth / 6;
+            const barWidth = Math.min(chartWidth / 6.5, 80);
 
-            let currentAccum = 0;
-            const domainValues = [0];
-            for (const comp of components) {
-                domainValues.push(currentAccum);
-                currentAccum += comp.value;
-                domainValues.push(currentAccum);
+            let currentAccum = 0, domainValues = [0];
+            for (const comp of components) { 
+                domainValues.push(currentAccum); 
+                currentAccum += comp.value; 
+                domainValues.push(currentAccum); 
             }
             domainValues.push(total);
-            const minValue = Math.min(...domainValues);
-            const maxValue = Math.max(...domainValues);
-            const span = Math.max(12, maxValue - minValue);
-            const padding = Math.max(6, span * 0.15);
-            const domainMin = Math.min(0, minValue) - padding;
-            const domainMax = Math.max(0, maxValue) + padding;
-            const valueToY = (value) => chartBottom - ((value - domainMin) / (domainMax - domainMin)) * chartHeight;
+            const padding = Math.max(10, (Math.max(...domainValues) - Math.min(...domainValues)) * 0.15);
+            const domainMin = Math.min(0, Math.min(...domainValues)) - padding;
+            const domainMax = Math.max(0, Math.max(...domainValues)) + padding;
+            const valueToY = (val) => chartBottom - ((val - domainMin) / (domainMax - domainMin)) * chartHeight;
             const zeroY = valueToY(0);
             
-            // Draw axes
-            ctx.strokeStyle = '#e7e5e4';
-            ctx.lineWidth = 1;
-            ctx.beginPath();
-            ctx.moveTo(startX, zeroY);
-            ctx.lineTo(endX, zeroY);
-            ctx.stroke();
-            
-            ctx.font = '12px Inter';
-            ctx.textAlign = 'center';
-            currentAccum = 0;
+            ctx.strokeStyle = '#e7e5e4'; ctx.lineWidth = 1;
+            ctx.beginPath(); ctx.moveTo(startX, zeroY); ctx.lineTo(endX, zeroY); ctx.stroke();
+            ctx.textAlign = 'center'; currentAccum = 0;
 
             for (let i = 0; i < components.length; i++) {
-                let comp = components[i];
+                let comp = components[i], p = Math.max(0, Math.min(1, state.waterfallProgress * 4 - i));
+                let drawVal = comp.value * p, x = startX + spacing + i * barWidth * 1.45;
+                const barStartY = valueToY(currentAccum), barEndY = valueToY(currentAccum + drawVal);
+                let y = Math.min(barStartY, barEndY), height = Math.max(1, Math.abs(barEndY - barStartY));
                 
-                // Animate entrance via waterfallProgress
-                let p = Math.max(0, Math.min(1, state.waterfallProgress * 4 - i));
-                let drawVal = comp.value * p;
-                
-                let x = startX + spacing + i * barWidth * 1.2;
-                
-                // Stack up or down depending on positive/negative
-                const barStartY = valueToY(currentAccum);
-                const barEndY = valueToY(currentAccum + drawVal);
-                let y = Math.min(barStartY, barEndY);
-                let height = Math.max(1, Math.abs(barEndY - barStartY));
-                
-                // Draw connecting line from previous
                 if (i > 0 && p > 0) {
-                    ctx.setLineDash([4, 4]);
-                    ctx.strokeStyle = '#cbd5e1';
-                    ctx.beginPath();
-                    ctx.moveTo(x - barWidth*1.2, valueToY(currentAccum));
-                    ctx.lineTo(x + barWidth, valueToY(currentAccum));
-                    ctx.stroke();
-                    ctx.setLineDash([]);
+                    ctx.setLineDash([4, 4]); ctx.strokeStyle = '#cbd5e1';
+                    ctx.beginPath(); ctx.moveTo(x - barWidth*1.45, valueToY(currentAccum)); ctx.lineTo(x + barWidth, valueToY(currentAccum)); ctx.stroke(); ctx.setLineDash([]);
                 }
-
-                // Draw Bar
-                ctx.fillStyle = comp.color;
-                ctx.fillRect(x - barWidth/2, y, barWidth, height);
-                
-                // Draw label
+                ctx.fillStyle = comp.color; ctx.fillRect(x - barWidth/2, y, barWidth, height);
                 if (p > 0.5) {
-                    ctx.fillStyle = '#1f2937';
-                    ctx.fillText(comp.label, x, chartBottom + 20);
-                    ctx.font = 'bold 12px JetBrains Mono';
-                    ctx.fillText((drawVal >= 0 ? '+' : '') + drawVal.toFixed(1), x, (drawVal >= 0 ? y - 10 : y + height + 15));
-                    ctx.font = '12px Inter';
+                    ctx.fillStyle = '#1f2937'; ctx.font = '14px Inter'; ctx.fillText(comp.label, x, chartBottom + 24);
+                    ctx.font = 'bold 14px JetBrains Mono'; 
+                    ctx.fillText((drawVal >= 0 ? '+' : '') + drawVal.toFixed(1), x, (drawVal >= 0 ? y - 10 : y + height + 22));
                 }
-
                 currentAccum += drawVal;
             }
 
-            // Draw final total
             if (state.waterfallProgress > 0.9) {
-                let x = startX + spacing + 4 * barWidth * 1.2;
+                let x = startX + spacing + 4 * barWidth * 1.45;
                 let fTotal = total * state.waterfallProgress;
-                let totalY = valueToY(fTotal);
-                let y = Math.min(zeroY, totalY);
-                let height = Math.max(1, Math.abs(totalY - zeroY));
+                let totalY = valueToY(fTotal), y = Math.min(zeroY, totalY), height = Math.max(1, Math.abs(totalY - zeroY));
 
-                ctx.fillStyle = '#4f46e5';
-                ctx.fillRect(x - barWidth/2, y, barWidth, height);
-                ctx.fillStyle = '#1f2937';
-                ctx.fillText('Final Score', x, chartBottom + 20);
-                ctx.font = 'bold 14px JetBrains Mono';
-                ctx.fillText(fTotal.toFixed(1), x, (fTotal >= 0 ? y - 10 : y + height + 15));
+                ctx.fillStyle = '#4f46e5'; ctx.fillRect(x - barWidth/2, y, barWidth, height);
+                ctx.fillStyle = '#1f2937'; ctx.font = '14px Inter'; ctx.fillText('Final Score', x, chartBottom + 24);
+                ctx.font = 'bold 16px JetBrains Mono'; 
+                ctx.fillText(fTotal.toFixed(1), x, (fTotal >= 0 ? y - 10 : y + height + 24));
             }
         }
 
-        function render() {
-            const rect = canvas.getBoundingClientRect();
-            const w = rect.width;
-            const h = rect.height;
+        // --- NEW RENDERING MODES FOR STAGES 7 & 8 ---
+        
+        function drawSpuriousComparison(w, h, progress) {
+            ctx.save();
             
-            ctx.clearRect(0, 0, w, h);
+            // Derive layout scaler directly mapped to available window bounds to prevent fuzzy stretching
+            let layoutScale = Math.min(1, w / 750);
+            let hScale = Math.min(1, h / 500);
+            let s = Math.min(layoutScale, hScale);
+            
+            ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
 
-            // Interpolate betas for smooth animation
+            // Push panels apart based strictly on available raw pixels
+            let leftX = w * 0.22;
+            let rightX = w * 0.78;
+            let centerY = h * 0.55;
+
+            let titleY = h * 0.15;
+            let subtitleY = titleY + 24 * s;
+
+            // Scaled typography keeping native crispness
+            let font18 = Math.max(11, 18 * s);
+            let font14 = Math.max(9, 14 * s);
+            let font15 = Math.max(10, 15 * s);
+
+            // Base node geometry
+            let nodeW = 145 * s;
+            let nodeH = 44 * s;
+            let distY = 70 * s;
+
+            // Panel A: Simple Regression
+            ctx.fillStyle = '#1f2937'; ctx.font = `bold ${font18}px Inter`; ctx.fillText('Simple Regression', leftX, titleY);
+            ctx.font = `${font14}px Inter`; ctx.fillStyle = '#6b7280'; ctx.fillText('(Naive View)', leftX, subtitleY);
+
+            drawNode(leftX, centerY - distY, '🍦 Ice Cream', '#fef3c7', '#d97706', nodeW, nodeH, font15);
+            drawNode(leftX, centerY + distY + 10*s, '🦈 Shark Attacks', '#e0f2fe', '#0284c7', nodeW, nodeH, font15);
+            
+            drawArrow(leftX, centerY - distY + nodeH/2 + 5*s, leftX, centerY + distY + 10*s - nodeH/2 - 5*s, '#dc2626', 4 * s);
+            ctx.fillStyle = '#dc2626'; ctx.font = `bold ${font15}px Inter`; ctx.fillText('+ Huge Effect', leftX + nodeW/2 + 20*s, centerY + 5*s);
+
+            // Panel B: Multiple Regression
+            ctx.fillStyle = '#1f2937'; ctx.font = `bold ${font18}px Inter`; ctx.fillText('Multiple Regression', rightX, titleY);
+            ctx.font = `${font14}px Inter`; ctx.fillStyle = '#6b7280'; ctx.fillText('(Holding Constant)', rightX, subtitleY);
+
+            // Expand internal right-panel spread explicitly to avoid crowding
+            let nodeSpread = 100 * s;
+
+            drawNode(rightX, centerY - distY - 20*s, '☀️ Temperature', '#ffedd5', '#ea580c', nodeW, nodeH, font15);
+            
+            drawNode(rightX - nodeSpread, centerY + 30*s, '🍦 Ice Cream', '#fef3c7', '#d97706', nodeW, nodeH, font15);
+            drawNode(rightX + nodeSpread, centerY + 30*s, '🦈 Shark Attacks', '#e0f2fe', '#0284c7', nodeW, nodeH, font15);
+
+            drawArrow(rightX - 25*s, centerY - distY - 20*s + nodeH/2, rightX - nodeSpread + 15*s, centerY + 30*s - nodeH/2, '#10b981', 3 * s);
+            drawArrow(rightX + 25*s, centerY - distY - 20*s + nodeH/2, rightX + nodeSpread - 15*s, centerY + 30*s - nodeH/2, '#10b981', 3 * s);
+            
+            // Connecting holding-constant dotted line
+            let innerGap = nodeW/2 + 8*s;
+            drawArrow(rightX - nodeSpread + innerGap, centerY + 30*s, rightX + nodeSpread - innerGap, centerY + 30*s, '#9ca3af', 3 * s, [6 * s, 4 * s]);
+
+            ctx.fillStyle = '#10b981'; ctx.font = `bold ${font14}px Inter`;
+            ctx.fillText('Causes', rightX - nodeSpread * 0.65, centerY - 35 * s);
+            ctx.fillText('Causes', rightX + nodeSpread * 0.65, centerY - 35 * s);
+            
+            // Raised label avoids overlapping any inner edges of the newly spaced nodes
+            ctx.fillStyle = '#6b7280'; ctx.fillText('~ 0 Effect', rightX, centerY + 16 * s);
+            
+            ctx.restore();
+        }
+
+        function drawNode(x, y, text, bg, border, w=145, h=44, fontSize=15) {
+            ctx.fillStyle = bg; ctx.strokeStyle = border; ctx.lineWidth = 2;
+            ctx.beginPath(); ctx.roundRect(x - w/2, y - h/2, w, h, Math.min(10, h/4));
+            ctx.fill(); ctx.stroke();
+            ctx.fillStyle = '#1f2937'; ctx.font = `500 ${fontSize}px Inter`; ctx.fillText(text, x, y);
+        }
+
+        function drawArrow(x1, y1, x2, y2, color, width, dash = []) {
+            let headlen = width * 3, angle = Math.atan2(y2 - y1, x2 - x1);
+            if (headlen < 8) headlen = 8;
+            ctx.strokeStyle = color; ctx.lineWidth = width; ctx.setLineDash(dash);
+            ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); ctx.stroke(); ctx.setLineDash([]);
+            ctx.beginPath();
+            ctx.moveTo(x2, y2);
+            ctx.lineTo(x2 - headlen * Math.cos(angle - Math.PI / 6), y2 - headlen * Math.sin(angle - Math.PI / 6));
+            ctx.lineTo(x2 - headlen * Math.cos(angle + Math.PI / 6), y2 - headlen * Math.sin(angle + Math.PI / 6));
+            ctx.lineTo(x2, y2);
+            ctx.fillStyle = color; ctx.fill();
+        }
+
+        function drawAdjustedR2Penalty(w, h, progress) {
+            ctx.save();
+            let scale = Math.min(1, w / 500);
+            ctx.scale(scale, scale);
+            let effW = w / scale, effH = h / scale;
+
+            let startY = effH * 0.25, xOffset = effW * 0.15, barMaxWidth = effW * 0.6;
+            ctx.textAlign = 'left'; ctx.fillStyle = '#1f2937'; ctx.font = 'bold 15px Inter';
+            ctx.fillText('Model A: True Drivers (p=3)', xOffset, startY);
+
+            drawMetricBar(ctx, xOffset, startY + 25, 'Raw R²', 0.988, '#94a3b8', barMaxWidth);
+            drawMetricBar(ctx, xOffset, startY + 60, 'Adj R²', 0.985, '#10b981', barMaxWidth);
+
+            let offset2 = startY + 140;
+            ctx.fillStyle = '#1f2937'; ctx.font = 'bold 15px Inter';
+            ctx.fillText('Model B: Add Useless "Shoe Size" (p=4)', xOffset, offset2);
+
+            let ease = 1 - Math.pow(1 - progress, 3);
+            let r2_b = 0.988 + (0.001 * ease), adj_b = 0.985 - (0.004 * ease);
+
+            drawMetricBar(ctx, xOffset, offset2 + 25, 'Raw R²', r2_b, '#94a3b8', barMaxWidth);
+            drawMetricBar(ctx, xOffset, offset2 + 60, 'Adj R²', adj_b, '#dc2626', barMaxWidth, true);
+            ctx.restore();
+        }
+
+        function drawMetricBar(ctx, x, y, label, value, color, maxWidth, showPenalty=false) {
+            ctx.fillStyle = '#6b7280'; ctx.font = '13px JetBrains Mono';
+            ctx.textAlign = 'left'; ctx.textBaseline = 'middle'; ctx.fillText(label, x, y + 10);
+            
+            let barX = x + 70, barWidth = (value / 1.0) * maxWidth;
+            ctx.fillStyle = '#f0efeb'; ctx.fillRect(barX, y, maxWidth, 20);
+            ctx.fillStyle = color; ctx.fillRect(barX, y, barWidth, 20);
+            
+            ctx.fillStyle = '#1f2937'; ctx.font = 'bold 13px JetBrains Mono';
+            ctx.fillText(value.toFixed(3), barX + barWidth + 12, y + 10);
+            if (showPenalty) {
+                ctx.fillStyle = '#dc2626'; ctx.font = 'italic 12px Inter';
+                ctx.fillText('Penalty applied!', barX + barWidth + 60, y + 10);
+            }
+        }
+
+        function populateAnalystTable() {
+            const tbody = document.getElementById('table-coefs');
+            if (tbody.children.length > 0) return;
+            const labels = ['(Intercept)', 'Study', 'Sleep', 'Practice'];
+            tbody.innerHTML = '';
+            for(let i=0; i<4; i++){
+                tbody.innerHTML += `
+                    <tr class="border-b border-borderLight last:border-0 hover:bg-slate-50 transition-colors">
+                        <td class="py-2 px-3">${labels[i]}</td>
+                        <td class="py-2 px-3 font-semibold text-right">${optimal['b'+i].toFixed(4)}</td>
+                        <td class="py-2 px-3 text-textDim text-right">${optimal.stats.se[i].toFixed(4)}</td>
+                        <td class="py-2 px-3 text-textDim text-right">${optimal.stats.t[i].toFixed(2)}</td>
+                    </tr>
+                `;
+            }
+            document.getElementById('table-n').innerText = rawData.length;
+            const r2_opt = 1 - (calculateSSE(optimal) / totalSumSquares);
+            const adjR2_opt = 1 - ((1 - r2_opt) * (rawData.length - 1) / (rawData.length - 3 - 1));
+            document.getElementById('table-r2').innerText = r2_opt.toFixed(4);
+            document.getElementById('table-adj-r2').innerText = adjR2_opt.toFixed(4);
+            document.getElementById('table-rse').innerText = optimal.stats.rse.toFixed(4);
+        }
+
+        function render() {
+            const w = canvas.getBoundingClientRect().width, h = canvas.getBoundingClientRect().height;
+            
+            // Full strict state reset to prevent stage artifacts from bleeding
+            const dpr = window.devicePixelRatio || 1;
+            
+            // CRITICAL FIX: Revert to pure identity matrix BEFORE clearing to destroy lingering pixels correctly
+            ctx.setTransform(1, 0, 0, 1, 0, 0);
+            ctx.clearRect(0, 0, canvas.width, canvas.height); 
+            ctx.setTransform(dpr, 0, 0, dpr, 0, 0); 
+            
+            ctx.globalAlpha = 1.0;
+            ctx.setLineDash([]);
+            ctx.beginPath();
+
             if (!state.userInteracting) {
-                state.b0 += (state.targetB0 - state.b0) * 0.1;
-                state.b1 += (state.targetB1 - state.b1) * 0.1;
-                state.b2 += (state.targetB2 - state.b2) * 0.1;
-                state.b3 += (state.targetB3 - state.b3) * 0.1;
-                
-                // Update DOM sliders to match
-                sliderB0.value = state.b0;
-                sliderB1.value = state.b1;
-                sliderB2.value = state.b2;
-                sliderB3.value = state.b3;
+                state.b0 += (state.targetB0 - state.b0) * 0.1; state.b1 += (state.targetB1 - state.b1) * 0.1;
+                state.b2 += (state.targetB2 - state.b2) * 0.1; state.b3 += (state.targetB3 - state.b3) * 0.1;
+                sliderB0.value = state.b0; sliderB1.value = state.b1;
+                sliderB2.value = state.b2; sliderB3.value = state.b3;
             }
 
             const snapshot = getModelSnapshot();
             syncUI(snapshot);
             updateVizLegend();
 
-            // Auto-rotate 3D view slightly
-            if (state.viewMode === '3d' && state.autoRotate) {
-                state.angle += 0.002;
+            if (state.animProgress < 1) state.animProgress = Math.min(1, state.animProgress + 0.025);
+            if (state.viewMode === '3d' && state.autoRotate) state.angle += 0.002;
+
+            // Overlay Visibility Toggles
+            const overlay6 = document.getElementById('viz-overlay-stage6');
+            const overlay9 = document.getElementById('viz-overlay-stage9');
+            
+            overlay6.style.opacity = (state.viewMode === 'waterfall' && state.stage === 6) ? '1' : '0';
+
+            if (state.viewMode === 'modelOutput') {
+                canvas.style.opacity = '0.05';
+                overlay9.classList.remove('hidden'); overlay9.classList.add('flex');
+                setTimeout(() => overlay9.style.opacity = '1', 10);
+            } else {
+                canvas.style.opacity = '1';
+                overlay9.style.opacity = '0';
+                setTimeout(() => { if(state.viewMode !== 'modelOutput') { overlay9.classList.add('hidden'); overlay9.classList.remove('flex'); } }, 300);
             }
 
+            // Draw current mode
             if (state.viewMode === '3d') {
-                drawAxes(w, h);
-                drawPlaneAndData(w, h, snapshot);
+                drawAxes(w, h); drawPlaneAndData(w, h, snapshot);
             } else if (state.viewMode === 'waterfall') {
-                hideAxisLabels();
-                // Fade in waterfall progress
-                state.waterfallProgress += (1 - state.waterfallProgress) * 0.05;
-                drawWaterfall(w, h, snapshot);
+                hideAxisLabels(); state.waterfallProgress += (1 - state.waterfallProgress) * 0.05; drawWaterfall(w, h, snapshot);
+            } else if (state.viewMode === 'spuriousComparison') {
+                hideAxisLabels(); drawSpuriousComparison(w, h, state.animProgress);
+            } else if (state.viewMode === 'adjustedR2Penalty') {
+                hideAxisLabels(); drawAdjustedR2Penalty(w, h, state.animProgress);
             }
 
             requestAnimationFrame(render);
@@ -1276,67 +1380,54 @@
         // --- INTERACTION & LOGIC ---
 
         function syncUI(snapshot) {
-            valB0.innerText = snapshot.coefficients.b0.toFixed(1);
-            valB1.innerText = snapshot.coefficients.b1.toFixed(1);
-            valB2.innerText = snapshot.coefficients.b2.toFixed(1);
-            valB3.innerText = snapshot.coefficients.b3.toFixed(1);
-            valSSE.innerText = snapshot.metrics.sse.toFixed(0);
-
-            if (valR2) valR2.innerText = Math.max(-0.999, snapshot.metrics.r2).toFixed(3);
-            if (valAdjR2) valAdjR2.innerText = Math.max(-0.999, snapshot.metrics.adjR2).toFixed(3);
-            if (txtStudy) txtStudy.innerText = `${snapshot.student.study.toFixed(1)} hrs`;
-            if (txtSleep) txtSleep.innerText = `${snapshot.student.sleep.toFixed(1)} hrs`;
-            if (txtPractice) txtPractice.innerText = `${snapshot.student.practice} pps`;
+            valB0.innerText = snapshot.coefficients.b0.toFixed(1); valB1.innerText = snapshot.coefficients.b1.toFixed(1);
+            valB2.innerText = snapshot.coefficients.b2.toFixed(1); valB3.innerText = snapshot.coefficients.b3.toFixed(1);
+            if (valSSE) valSSE.innerText = snapshot.metrics.sse.toFixed(0);
 
             const formulaBox = document.getElementById('hold-constant-formula');
-            if (formulaBox) {
-                formulaBox.innerHTML = `Score = ${snapshot.coefficients.b0.toFixed(1)} + <strong>${snapshot.coefficients.b1.toFixed(1)}(Study)</strong> + ${snapshot.holdConstant.lockedImpact.toFixed(1)} (Sleep = ${snapshot.holdConstant.sleep.toFixed(1)}, Practice = avg ${snapshot.holdConstant.practice.toFixed(1)})`;
+            if (formulaBox) formulaBox.innerHTML = `Score = ${snapshot.coefficients.b0.toFixed(1)} + <strong>${snapshot.coefficients.b1.toFixed(1)}(Study)</strong> + ${snapshot.holdConstant.lockedImpact.toFixed(1)} (Sleep = ${snapshot.holdConstant.sleep.toFixed(1)}, Practice = avg ${snapshot.holdConstant.practice.toFixed(1)})`;
+
+            // Stage 6 live equation readout
+            const eqB0 = document.getElementById('eq-b0');
+            if (eqB0) {
+                eqB0.innerText = snapshot.student.components[0].value.toFixed(1);
+                document.getElementById('eq-b1').innerText = snapshot.student.components[1].value.toFixed(1);
+                document.getElementById('eq-b2').innerText = snapshot.student.components[2].value.toFixed(1);
+                document.getElementById('eq-b3').innerText = snapshot.student.components[3].value.toFixed(1);
+                document.getElementById('eq-total').innerText = snapshot.student.total.toFixed(1);
             }
         }
 
         function setupInteractions() {
             const handleInput = (e, prop) => {
-                state.userInteracting = true;
-                state[prop] = parseFloat(e.target.value);
+                state.userInteracting = true; state[prop] = parseFloat(e.target.value);
                 const targetProp = `target${prop.charAt(0).toUpperCase()}${prop.slice(1)}`;
-                state[targetProp] = state[prop];
-                syncUI(getModelSnapshot());
+                state[targetProp] = state[prop]; syncUI(getModelSnapshot());
             };
             const handleRelease = () => state.userInteracting = false;
 
-            sliderB0.addEventListener('input', (e) => handleInput(e, 'b0'));
-            sliderB1.addEventListener('input', (e) => handleInput(e, 'b1'));
-            sliderB2.addEventListener('input', (e) => handleInput(e, 'b2'));
-            sliderB3.addEventListener('input', (e) => handleInput(e, 'b3'));
-            
-            sliderB0.addEventListener('change', handleRelease);
-            sliderB1.addEventListener('change', handleRelease);
-            sliderB2.addEventListener('change', handleRelease);
-            sliderB3.addEventListener('change', handleRelease);
+            sliderB0.addEventListener('input', e => handleInput(e, 'b0')); sliderB1.addEventListener('input', e => handleInput(e, 'b1'));
+            sliderB2.addEventListener('input', e => handleInput(e, 'b2')); sliderB3.addEventListener('input', e => handleInput(e, 'b3'));
+            sliderB0.addEventListener('change', handleRelease); sliderB1.addEventListener('change', handleRelease);
+            sliderB2.addEventListener('change', handleRelease); sliderB3.addEventListener('change', handleRelease);
 
-            // Student input bindings
             const handleStudentInput = (e, prop, textEl, suffix) => {
-                state[prop] = parseFloat(e.target.value);
-                textEl.innerText = `${state[prop].toFixed(1)} ${suffix}`;
-                if (state.viewMode === 'waterfall') state.waterfallProgress = 1; // Snaps to end to show live changes
+                state[prop] = parseFloat(e.target.value); textEl.innerText = `${state[prop].toFixed(1)} ${suffix}`;
+                if (state.viewMode === 'waterfall') state.waterfallProgress = 1;
                 syncUI(getModelSnapshot());
             };
 
-            inputStudy.addEventListener('input', (e) => handleStudentInput(e, 'studentStudy', txtStudy, 'hrs'));
-            inputSleep.addEventListener('input', (e) => handleStudentInput(e, 'studentSleep', txtSleep, 'hrs'));
-            inputPractice.addEventListener('input', (e) => {
-                state.studentPractice = parseInt(e.target.value);
-                txtPractice.innerText = `${state.studentPractice} pps`;
+            inputStudy.addEventListener('input', e => handleStudentInput(e, 'studentStudy', txtStudy, 'hrs'));
+            inputSleep.addEventListener('input', e => handleStudentInput(e, 'studentSleep', txtSleep, 'hrs'));
+            inputPractice.addEventListener('input', e => {
+                state.studentPractice = parseInt(e.target.value); txtPractice.innerText = `${state.studentPractice} pps`;
                 if (state.viewMode === 'waterfall') state.waterfallProgress = 1;
                 syncUI(getModelSnapshot());
             });
 
             btnOptimize.addEventListener('click', () => {
-                state.userInteracting = false;
-                state.targetB0 = optimal.b0;
-                state.targetB1 = optimal.b1;
-                state.targetB2 = optimal.b2;
-                state.targetB3 = optimal.b3;
+                state.userInteracting = false; state.targetB0 = optimal.b0; state.targetB1 = optimal.b1;
+                state.targetB2 = optimal.b2; state.targetB3 = optimal.b3;
             });
         }
 
@@ -1345,18 +1436,12 @@
         const heroSection = document.querySelector('section[data-stage="0"]');
         const storySections = Array.from(document.querySelectorAll('.story-section'));
         const allSections = [heroSection, ...storySections];
-        const stageIndexLookup = new Map(
-            allSections.map((section, index) => [parseInt(section.getAttribute('data-stage'), 10), index])
-        );
+        const stageIndexLookup = new Map(allSections.map((s, i) => [parseInt(s.getAttribute('data-stage'), 10), i]));
         const dotsContainer = document.getElementById('stage-dots');
         
-        // Generate dots
-        allSections.forEach((section) => {
-            let dot = document.createElement('div');
-            dot.className = 'stage-dot';
-            dot.addEventListener('click', () => {
-                section.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            });
+        allSections.forEach(s => {
+            let dot = document.createElement('div'); dot.className = 'stage-dot';
+            dot.addEventListener('click', () => s.scrollIntoView({ behavior: 'smooth', block: 'start' }));
             dotsContainer.appendChild(dot);
         });
         const dots = Array.from(document.querySelectorAll('.stage-dot'));
@@ -1366,109 +1451,36 @@
             if (sectionIndex === undefined) return;
 
             state.stage = stage;
+            state.animProgress = 0; // reset anim trigger
             
-            // UI Updates
-            storySections.forEach((section) => {
-                section.classList.toggle('active', parseInt(section.getAttribute('data-stage'), 10) === stage);
-            });
+            storySections.forEach(s => s.classList.toggle('active', parseInt(s.getAttribute('data-stage'), 10) === stage));
             dots.forEach((dot, index) => dot.classList.toggle('active', index === sectionIndex));
-            
-            // Progress bar
-            const progress = allSections.length > 1 ? (sectionIndex / (allSections.length - 1)) * 100 : 0;
-            document.getElementById('progress-bar').style.width = `${progress}%`;
+            document.getElementById('progress-bar').style.width = `${allSections.length > 1 ? (sectionIndex / (allSections.length - 1)) * 100 : 0}%`;
 
-            // Canvas State Machine
-            state.viewMode = '3d';
-            state.sliceZ = null;
-            state.showPoints = false;
-            state.showPlane = false;
-            state.showResiduals = false;
-            
-            // Reset to identity if leaving 3D later, but keep continuous
-            if (stage < 6) {
-                state.waterfallProgress = 0;
-            }
+            state.viewMode = '3d'; state.sliceZ = null; state.showPoints = false; state.showPlane = false; state.showResiduals = false;
+            if (stage < 6) state.waterfallProgress = 0;
 
             switch(stage) {
-                case 0: // Hero
-                    // Ambient rotation, no data
-                    state.targetB0 = 0; state.targetB1 = 0; state.targetB2 = 0; state.targetB3 = 0;
-                    break;
-                case 1: // The Multi-Variable World
-                    state.showPoints = true;
-                    state.targetB0 = 0; state.targetB1 = 0; state.targetB2 = 0; state.targetB3 = 0;
-                    break;
-                case 2: // The Secret Recipe
-                    state.showPoints = true;
-                    state.showPlane = true;
-                    // Flat plane at y=10
-                    state.targetB0 = 10; state.targetB1 = 0; state.targetB2 = 0; state.targetB3 = 0;
-                    break;
-                case 3: // Finding the Fit (Sliders)
-                    state.showPoints = true;
-                    state.showPlane = true;
-                    state.showResiduals = true;
-                    break;
-                case 4: // Least Squares
-                    state.showPoints = true;
-                    state.showPlane = true;
-                    state.showResiduals = true;
-                    // Note: Optimize button handles the actual snapping
-                    break;
-                case 5: // Holding Constant
-                    state.showPoints = true;
-                    state.showPlane = true;
-                    state.sliceZ = lockedSleep;
-                    state.targetB0 = optimal.b0;
-                    state.targetB1 = optimal.b1;
-                    state.targetB2 = optimal.b2;
-                    state.targetB3 = optimal.b3;
-                    break;
-                case 6: // Moving Beyond 3D (Waterfall)
-                    state.viewMode = 'waterfall';
-                    break;
-                case 7: // Shark & Ice Cream
-                    state.viewMode = 'waterfall';
-                    state.waterfallProgress = 1; // Keep static
-                    break;
-                case 8: // R2 Trap
-                    state.viewMode = 'waterfall';
-                    break;
-                case 9: // Summary
-                    state.viewMode = '3d';
-                    state.showPlane = true;
-                    state.showPoints = true;
-                    state.targetB0 = optimal.b0;
-                    state.targetB1 = optimal.b1;
-                    state.targetB2 = optimal.b2;
-                    state.targetB3 = optimal.b3;
-                    break;
+                case 0: state.targetB0 = 0; state.targetB1 = 0; state.targetB2 = 0; state.targetB3 = 0; break;
+                case 1: state.showPoints = true; state.targetB0 = 0; state.targetB1 = 0; state.targetB2 = 0; state.targetB3 = 0; break;
+                case 2: state.showPoints = true; state.showPlane = true; state.targetB0 = 10; state.targetB1 = 0; state.targetB2 = 0; state.targetB3 = 0; break;
+                case 3: state.showPoints = true; state.showPlane = true; state.showResiduals = true; break;
+                case 4: state.showPoints = true; state.showPlane = true; state.showResiduals = true; break;
+                case 5: state.showPoints = true; state.showPlane = true; state.sliceZ = lockedSleep;
+                    state.targetB0 = optimal.b0; state.targetB1 = optimal.b1; state.targetB2 = optimal.b2; state.targetB3 = optimal.b3; break;
+                case 6: state.viewMode = 'waterfall'; break;
+                case 7: state.viewMode = 'spuriousComparison'; break;
+                case 8: state.viewMode = 'adjustedR2Penalty'; break;
+                case 9: state.viewMode = 'modelOutput'; populateAnalystTable(); break;
             }
         }
 
         const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const idx = parseInt(entry.target.getAttribute('data-stage'));
-                    setStage(idx);
-                }
-            });
-        }, {
-            root: null,
-            threshold: 0.45
-        });
+            entries.forEach(entry => { if (entry.isIntersecting) setStage(parseInt(entry.target.getAttribute('data-stage'))); });
+        }, { root: null, threshold: 0.45 });
 
-        // Initialize
-        computeOptimal(); // Calculate true regression coefficients
-        resize();
-        hideAxisLabels();
-        updateVizLegend();
-        setupInteractions();
-        setStage(0);
-
-        allSections.forEach(section => observer.observe(section));
-        
-        // Start loop
+        computeOptimal(); resize(); hideAxisLabels(); updateVizLegend(); setupInteractions(); setStage(0);
+        allSections.forEach(s => observer.observe(s));
         requestAnimationFrame(render);
         
     </script>
