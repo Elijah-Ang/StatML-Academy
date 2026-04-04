@@ -565,7 +565,7 @@
                 </div>
             </section>
 
-            <!-- Stage 7: Scorecard -->
+            <!-- Stage 7: Scorecard (Enhanced with SST) -->
             <section class="stage-section" data-stage="7">
                 <div class="stage-label">Stage 07</div>
                 <h2>The Model Scorecard</h2>
@@ -574,9 +574,59 @@
                 <div class="glass-card">
                     <p><strong>R² (Proportion of Variance Explained): <span id="stat-r2" style="color:var(--accent-dark); font-family:var(--font-mono); font-weight:bold;">0.00</span></strong><br>
                     R² tells us what percentage of the variance in test scores is explained by study hours. 1.0 is perfect. We compare our line's errors (SSE) against the errors of just guessing the flat average (SST).</p>
-                    <div style="font-family: var(--font-mono); font-size: 0.8rem; margin: 10px 0; padding: 5px; background: #f3f4f6;">R² = 1 - (SSE / SST)</div>
+                    <div style="font-family: var(--font-mono); font-size: 0.8rem; margin: 10px 0; padding: 5px; background: #f3f4f6; text-align: center; border-radius: 4px;">R² = 1 - (SSE / SST)</div>
+                </div>
+
+                <div class="glass-card">
+                    <h3 style="font-size: 1.1rem; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">🧠 What SST actually is</h3>
+                    <p><strong>SST = Total variation in your data</strong></p>
+                    <p style="margin-bottom: 0.75rem;">It measures: <em>"How spread out are the actual scores from the average score?"</em></p>
+                    <div class="formula-block" style="text-align: center; font-size: 1.1rem;">
+                        SST = Σ(y - ȳ)²
+                    </div>
                     
-                    <p style="margin-top: 1.5rem;"><strong>RSE (Residual Standard Error): <span id="stat-rse" style="color:var(--accent-dark); font-family:var(--font-mono); font-weight:bold;">0.00</span></strong><br>
+                    <h4 style="font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; margin-top: 1.5rem; margin-bottom: 0.5rem; color: var(--text-dim);">Translate that into English</h4>
+                    <ul style="padding-left: 1.5rem; font-size: 0.9rem; color: var(--text-dim); margin-bottom: 0;">
+                        <li style="margin-bottom: 0.25rem;"><strong>y</strong> = actual value (like a student's score)</li>
+                        <li style="margin-bottom: 0.25rem;"><strong>ȳ</strong> = average of all scores</li>
+                        <li style="margin-bottom: 0.25rem;"><strong>y - ȳ</strong> = distance from the mean</li>
+                        <li style="margin-bottom: 0.25rem;"><strong>square it</strong> → so negatives don't cancel positives</li>
+                        <li><strong>sum everything (Σ)</strong> → total spread</li>
+                    </ul>
+                </div>
+
+                <div class="glass-card">
+                    <h3 style="font-size: 1.1rem; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">🔢 Step-by-step example</h3>
+                    <p style="font-size: 0.9rem;">Using your live data! The current average score (ȳ) is <strong id="sst-mean-y" style="font-family: var(--font-mono); color: var(--accent-dark);">0.0</strong>.</p>
+                    <div style="max-height: 200px; overflow-y: auto;">
+                        <table class="data-table" id="sst-table">
+                            <thead>
+                                <tr>
+                                    <th>Score (y)</th>
+                                    <th>Distance (y - ȳ)</th>
+                                    <th>Squared (y - ȳ)²</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Populated by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <div style="text-align: right; margin-top: 1rem; font-size: 1.1rem;">
+                        <strong>SST Total = <span id="stat-sst" style="font-family: var(--font-mono); color: var(--accent-dark);">0.0</span></strong>
+                    </div>
+                </div>
+
+                <div class="glass-card">
+                    <h3 style="font-size: 1.1rem; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem;">🔥 Why SST matters in R²</h3>
+                    <ul style="padding-left: 1.5rem; font-size: 0.9rem; color: var(--text-dim); margin-bottom: 1rem;">
+                        <li style="margin-bottom: 0.25rem;"><strong>SST</strong> is the "baseline total spread" (if we just guessed the average).</li>
+                        <li><strong>SSE</strong> is how much error our fitted model still has.</li>
+                    </ul>
+                    <p style="font-size: 0.9rem; margin-bottom: 0;">R² tells us what percentage of the original chaos (SST) our model explains or eliminates. 1.0 is perfect.</p>
+                    
+                    <hr style="border: 0; border-top: 1px solid var(--border); margin: 1.5rem 0;">
+                    <p style="font-size: 0.9rem; margin-bottom: 0;"><strong>RSE (Residual Standard Error): <span id="stat-rse" style="color:var(--accent-dark); font-family:var(--font-mono); font-weight:bold;">0.00</span></strong><br>
                     This is the typical size of our miss. When we predict a score, we are typically off by this many points.</p>
                 </div>
             </section>
@@ -682,7 +732,8 @@
             showResid: 0,
             showSquares: 0,
             showMean: 0,
-            showPlayground: 0
+            showPlayground: 0,
+            showSST: 0
         };
 
         const DEFAULT_BOUNDS = { minX: 0, maxX: 10, minY: 0, maxY: 100 };
@@ -862,6 +913,24 @@
             // Stage 7
             document.getElementById('stat-r2').textContent = stats.r2.toFixed(3);
             document.getElementById('stat-rse').textContent = stats.rse.toFixed(2);
+
+            // Stage 7: SST Table Update
+            const sstTableBody = document.querySelector('#sst-table tbody');
+            if (sstTableBody) {
+                document.getElementById('sst-mean-y').textContent = stats.yBar.toFixed(1);
+                let sstHtml = '';
+                points.forEach(p => {
+                    const dist = p.y - stats.yBar;
+                    const sq = dist * dist;
+                    sstHtml += `<tr>
+                        <td>${p.y}</td>
+                        <td style="color: ${dist >= 0 ? 'var(--success)' : 'var(--error)'}">${dist > 0 ? '+' : ''}${dist.toFixed(1)}</td>
+                        <td>${sq.toFixed(1)}</td>
+                    </tr>`;
+                });
+                sstTableBody.innerHTML = sstHtml;
+                document.getElementById('stat-sst').textContent = stats.sst.toFixed(1);
+            }
 
             // Stage 8
             document.getElementById('play-user-eq').textContent = `y = ${state.userB.toFixed(1)} + ${state.userM.toFixed(1)}x`;
@@ -1326,6 +1395,57 @@
             });
         }
 
+        function drawSST(alpha) {
+            if (alpha <= 0) return;
+            const meanY = stats.yBar;
+            
+            ctx.save();
+            ctx.globalAlpha = alpha;
+            
+            // Draw deviations and squares for SST
+            points.forEach(p => {
+                const pixelYActual = mapY(p.y);
+                const pixelYMean = mapY(meanY);
+                const pixelDiff = Math.abs(pixelYActual - pixelYMean);
+                
+                // Squares (using accent color)
+                ctx.fillStyle = `rgba(99, 102, 241, 0.15)`; 
+                ctx.strokeStyle = `rgba(99, 102, 241, 0.4)`;
+                ctx.lineWidth = 1;
+                
+                const topY = Math.min(pixelYActual, pixelYMean);
+                ctx.fillRect(mapX(p.x), topY, pixelDiff, pixelDiff);
+                ctx.strokeRect(mapX(p.x), topY, pixelDiff, pixelDiff);
+
+                // Vertical deviation line to mean
+                ctx.beginPath();
+                ctx.moveTo(mapX(p.x), pixelYActual);
+                ctx.lineTo(mapX(p.x), pixelYMean);
+                ctx.strokeStyle = `#6366f1`;
+                ctx.lineWidth = 2; 
+                ctx.setLineDash([4, 4]);
+                ctx.stroke(); 
+                ctx.setLineDash([]);
+            });
+
+            // Draw horizontal mean line on top of squares
+            ctx.beginPath();
+            ctx.moveTo(mapX(plotBounds.minX), mapY(meanY));
+            ctx.lineTo(mapX(plotBounds.maxX), mapY(meanY));
+            ctx.strokeStyle = `#6366f1`; // var(--accent)
+            ctx.lineWidth = 3;
+            ctx.stroke();
+            
+            // Label mean line
+            ctx.fillStyle = `#4f46e5`; // var(--accent-dark)
+            ctx.font = 'bold 13px "JetBrains Mono"';
+            ctx.textAlign = 'left';
+            ctx.textBaseline = 'bottom';
+            ctx.fillText("y = ȳ (Mean)", mapX(plotBounds.minX) + 12, mapY(meanY) - 8);
+
+            ctx.restore();
+        }
+
         function drawMeanPoint(alpha) {
             if (alpha <= 0) return;
             const px = mapX(stats.xBar);
@@ -1390,14 +1510,14 @@
             
             // Stage configuration mapping
             const stages = {
-                1: { sP:1, sU:0, sO:0, sR:0, sSq:0, sM:0, sPl:0, tM: state.userM, tB: state.userB }, // Data
-                2: { sP:1, sU:1, sO:0, sR:0, sSq:0, sM:0, sPl:0, tM: state.userM, tB: state.userB }, // User Line
-                3: { sP:1, sU:1, sO:0, sR:1, sSq:0, sM:0, sPl:0, tM: state.userM, tB: state.userB }, // Residuals
-                4: { sP:1, sU:1, sO:0, sR:1, sSq:1, sM:0, sPl:0, tM: state.userM, tB: state.userB }, // Squares
-                5: { sP:1, sU:0, sO:1, sR:1, sSq:1, sM:1, sPl:0, tM: stats.optM,  tB: stats.optB },  // Engine (moves to opt)
-                6: { sP:1, sU:0, sO:1, sR:0, sSq:0, sM:1, sPl:0, tM: stats.optM,  tB: stats.optB },  // Final Opt
-                7: { sP:1, sU:0, sO:1, sR:0, sSq:0, sM:1, sPl:0, tM: stats.optM,  tB: stats.optB },  // Scorecard
-                8: { sP:1, sU:1, sO:1, sR:0, sSq:0, sM:0, sPl:1, tM: stats.optM,  tB: stats.optB }   // Playground
+                1: { sP:1, sU:0, sO:0, sR:0, sSq:0, sM:0, sPl:0, sSST:0, tM: state.userM, tB: state.userB }, // Data
+                2: { sP:1, sU:1, sO:0, sR:0, sSq:0, sM:0, sPl:0, sSST:0, tM: state.userM, tB: state.userB }, // User Line
+                3: { sP:1, sU:1, sO:0, sR:1, sSq:0, sM:0, sPl:0, sSST:0, tM: state.userM, tB: state.userB }, // Residuals
+                4: { sP:1, sU:1, sO:0, sR:1, sSq:1, sM:0, sPl:0, sSST:0, tM: state.userM, tB: state.userB }, // Squares
+                5: { sP:1, sU:0, sO:1, sR:1, sSq:1, sM:1, sPl:0, sSST:0, tM: stats.optM,  tB: stats.optB },  // Engine (moves to opt)
+                6: { sP:1, sU:0, sO:1, sR:0, sSq:0, sM:1, sPl:0, sSST:0, tM: stats.optM,  tB: stats.optB },  // Final Opt
+                7: { sP:1, sU:0, sO:0, sR:0, sSq:0, sM:1, sPl:0, sSST:1, tM: stats.optM,  tB: stats.optB },  // Scorecard (SST focus)
+                8: { sP:1, sU:1, sO:1, sR:0, sSq:0, sM:0, sPl:1, sSST:0, tM: stats.optM,  tB: stats.optB }   // Playground
             };
 
             const t = stages[state.stage] || stages[1];
@@ -1414,9 +1534,13 @@
             state.showSquares = lerp(state.showSquares, t.sSq, spd);
             state.showMean = lerp(state.showMean, t.sM, spd);
             state.showPlayground = lerp(state.showPlayground, t.sPl, spd);
+            state.showSST = lerp(state.showSST, t.sSST, spd);
 
             // Draw sequence
             drawAxes();
+            
+            drawSST(state.showSST);
+            
             drawPoints(state.showPoints);
             
             // Active animated line for stages 2-5 (moves from user -> opt)
