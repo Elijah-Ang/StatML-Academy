@@ -91,6 +91,7 @@
                 <nav class="hidden md:flex items-center gap-8">
                     <a href="#statistics" class="font-mono text-xs uppercase tracking-widest text-slate-500 hover:text-indigo-600 transition-colors">Statistics</a>
                     <a href="#machine-learning" class="font-mono text-xs uppercase tracking-widest text-slate-500 hover:text-indigo-600 transition-colors">Machine Learning</a>
+                    <a href="#model-evaluation-selection" class="font-mono text-xs uppercase tracking-widest text-slate-500 hover:text-indigo-600 transition-colors">Model Evaluation &amp; Selection</a>
                 </nav>
 
                 <!-- Mobile Menu Button -->
@@ -105,6 +106,7 @@
             <div class="px-4 py-4 flex flex-col space-y-4 shadow-sm">
                 <a href="#statistics" class="mobile-nav-link font-mono text-xs uppercase tracking-widest text-slate-600">Statistics</a>
                 <a href="#machine-learning" class="mobile-nav-link font-mono text-xs uppercase tracking-widest text-slate-600">Machine Learning</a>
+                <a href="#model-evaluation-selection" class="mobile-nav-link font-mono text-xs uppercase tracking-widest text-slate-600">Model Evaluation &amp; Selection</a>
             </div>
         </div>
     </header>
@@ -239,6 +241,36 @@
         </div>
     </section>
 
+    <!-- CHAPTER 03: Model Evaluation & Selection -->
+    <section id="model-evaluation-selection" class="py-32 border-b border-slate-200 bg-paper-base">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <header class="mb-24 max-w-2xl">
+                <div class="flex items-center gap-3 mb-4">
+                    <span class="w-8 h-[1px] bg-indigo-600"></span>
+                    <span class="font-mono text-xs text-indigo-600 tracking-widest uppercase">Chapter 03</span>
+                </div>
+                <h2 class="text-3xl font-semibold tracking-tight text-slate-950 mb-6">Model Evaluation &amp; Selection</h2>
+                <p class="text-slate-600 leading-relaxed">Refine predictive systems with disciplined comparison. These modules focus on measuring generalization, balancing complexity, and selecting models that hold up beyond the training set.</p>
+            </header>
+
+            <!-- Evaluation & Selection Methods -->
+            <div>
+                <div class="flex items-end justify-between border-b border-slate-200 pb-3 mb-8">
+                    <div class="flex flex-col gap-1">
+                        <h3 class="font-mono text-xs font-semibold text-slate-600 uppercase tracking-widest">Evaluation &amp; Selection Methods</h3>
+                        <span id="count-model-eval" class="font-mono text-[10px] text-slate-400"></span>
+                    </div>
+                    <span class="font-mono text-[10px] text-slate-400">01</span>
+                </div>
+                <div id="grid-model-eval" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- JS Injected -->
+                </div>
+            </div>
+
+        </div>
+    </section>
+
     <!-- Minimal Footer -->
     <footer class="bg-paper-dark py-12">
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-6">
@@ -308,7 +340,11 @@
             // Machine Learning / Unsupervised
             { id: 'kmeans', title: 'K-Means Clustering', category: 'Machine Learning', subcategory: 'Unsupervised Learning', desc: 'Group unlabeled data into K distinct clusters by iteratively adjusting centroids.', difficulty: 'Beginner', path: 'modules/kmeans.html', order: 14, icon: 'target' },
             { id: 'hclust', title: 'Hierarchical Clustering', category: 'Machine Learning', subcategory: 'Unsupervised Learning', desc: 'Build a structured dendrogram of nested descriptive clusters from the bottom up.', difficulty: 'Intermediate', path: 'modules/hierarchical-clustering.html', order: 15, icon: 'git-pull-request' },
-            { id: 'pca', title: 'Principal Component Analysis (PCA)', category: 'Machine Learning', subcategory: 'Unsupervised Learning', desc: 'Reduce high dimensionality by projecting data onto axes of maximum variance.', difficulty: 'Advanced', path: 'modules/pca.html', order: 16, icon: 'boxes' }
+            { id: 'pca', title: 'Principal Component Analysis (PCA)', category: 'Machine Learning', subcategory: 'Unsupervised Learning', desc: 'Reduce high dimensionality by projecting data onto axes of maximum variance.', difficulty: 'Advanced', path: 'modules/pca.html', order: 16, icon: 'boxes' },
+
+            // Model Evaluation & Selection / Evaluation Methods
+            { id: 'biasvar', title: 'Bias-Variance Trade-Off & Resampling Methods', category: 'Model Evaluation & Selection', subcategory: 'Evaluation & Selection Methods', desc: 'Balance underfitting and overfitting while using resampling methods to estimate model performance.', difficulty: 'Intermediate', path: 'modules/bias-variance.html', order: 17, icon: 'scale' },
+            { id: 'modelsel', title: 'Model Selection & Regularization', category: 'Model Evaluation & Selection', subcategory: 'Evaluation & Selection Methods', desc: 'Compare competing models and constrain complexity with regularization to improve generalization.', difficulty: 'Intermediate', path: 'modules/model-selection.html', order: 18, icon: 'sliders-horizontal' }
         ];
 
         // Editorial Card Generator
@@ -361,6 +397,11 @@
             const unsupData = modulesData.filter(m => m.subcategory === 'Unsupervised Learning').sort((a,b) => a.order - b.order);
             document.getElementById('grid-ml-unsup').innerHTML = unsupData.map(createCardHTML).join('');
             document.getElementById('count-ml-unsup').innerText = `${unsupData.length} module${unsupData.length !== 1 ? 's' : ''}`;
+
+            // Model Evaluation / Selection
+            const modelEvalData = modulesData.filter(m => m.subcategory === 'Evaluation & Selection Methods').sort((a,b) => a.order - b.order);
+            document.getElementById('grid-model-eval').innerHTML = modelEvalData.map(createCardHTML).join('');
+            document.getElementById('count-model-eval').innerText = `${modelEvalData.length} module${modelEvalData.length !== 1 ? 's' : ''}`;
             
             // Re-initialize injected icons
             lucide.createIcons();

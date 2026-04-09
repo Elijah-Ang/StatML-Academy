@@ -1,0 +1,1356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bias-Variance Trade-Off & Resampling Methods</title>
+    
+    <!-- Fonts: Inter for prose, JetBrains Mono for technical -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Base Variables & Reset */
+        :root {
+            --bg-page: #f7f7f4;
+            --bg-surface: #ffffff;
+            --bg-surface-alt: #f0efeb;
+            --border-color: #e7e5e4;
+            --text-main: #1f2937;
+            --text-dim: #4b5563;
+            --text-muted: #6b7280;
+            --accent: #6366f1;
+            --accent-dark: #4f46e5;
+            --accent-tint: #eef2ff;
+            --success: #16a34a;
+            --warning: #d97706;
+            --error: #dc2626;
+            --blue: #3b82f6;
+            --orange: #f97316;
+            --font-sans: 'Inter', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: var(--font-sans);
+            background-color: var(--bg-page);
+            color: var(--text-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Typography */
+        h1, h2, h3 { font-weight: 700; line-height: 1.2; color: var(--text-main); }
+        h2 { font-size: 2rem; margin-bottom: 1rem; letter-spacing: -0.02em; }
+        p { font-size: 0.95rem; margin-bottom: 1.2rem; color: var(--text-dim); }
+        strong { color: var(--text-main); font-weight: 600; }
+
+        /* Progress Bar & Stage Dots */
+        #progress-bar {
+            position: fixed; top: 0; left: 0; height: 4px;
+            background: linear-gradient(90deg, var(--accent), var(--blue));
+            width: 0%; z-index: 1000; transition: width 0.1s ease-out;
+        }
+
+        .stage-dots {
+            position: fixed; right: 20px; top: 50%; transform: translateY(-50%);
+            display: flex; flex-direction: column; gap: 12px; z-index: 100;
+        }
+        .dot {
+            width: 8px; height: 8px; border-radius: 50%;
+            background-color: var(--border-color); transition: all 0.3s ease; cursor: pointer;
+        }
+        .dot.active { background-color: var(--accent); transform: scale(1.5); }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh; display: flex; flex-direction: column;
+            justify-content: center; align-items: center; text-align: center;
+            padding: 2rem; position: relative; overflow: hidden;
+        }
+
+        .hero::before {
+            content: ''; position: absolute; top: -50%; left: -50%;
+            width: 200%; height: 200%; z-index: -2;
+            background-image: radial-gradient(var(--text-muted) 1.5px, transparent 1.5px);
+            background-size: 40px 40px; opacity: 0.08;
+            animation: pan-dots 60s linear infinite; pointer-events: none;
+        }
+        .hero::after {
+            content: ''; position: absolute; inset: 0; z-index: -1;
+            background: radial-gradient(circle at center, transparent 0%, var(--bg-page) 80%);
+            pointer-events: none;
+        }
+        @keyframes pan-dots { 0% { transform: translate(0, 0); } 100% { transform: translate(40px, 40px); } }
+
+        .topic-badge {
+            font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em;
+            background-color: var(--accent-tint); color: var(--accent-dark);
+            padding: 0.4rem 1rem; border-radius: 9999px; margin-bottom: 1.5rem; font-weight: 600;
+        }
+        .hero h1 {
+            font-size: 3.5rem; max-width: 800px; margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, #1f2937, #4f46e5);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.03em;
+        }
+        .hero p { font-size: 1.125rem; max-width: 600px; color: var(--text-muted); }
+        .scroll-cue {
+            position: absolute; bottom: 40px; font-size: 0.8rem; text-transform: uppercase;
+            letter-spacing: 0.1em; color: var(--text-muted); animation: bounce 2s infinite;
+        }
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+
+        /* Main Split Layout */
+        .layout-wrapper { display: flex; max-width: 1400px; margin: 0 auto; position: relative; }
+        .narrative-col { width: 45%; padding: 0 4rem; position: relative; z-index: 2; }
+        .viz-col {
+            width: 55%; height: 100vh; position: sticky; top: 0;
+            display: flex; align-items: center; justify-content: center; padding: 2rem; z-index: 1;
+        }
+
+        /* Narrative Sections */
+        .stage-section {
+            min-height: 100vh; display: flex; flex-direction: column;
+            justify-content: center; padding: 5rem 0; opacity: 0.3; transition: opacity 0.5s ease;
+        }
+        .stage-section.active { opacity: 1; }
+        .stage-label {
+            font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em;
+            color: var(--accent); font-weight: 700; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;
+        }
+        .stage-label::after {
+            content: ""; height: 1px; width: 30px; background-color: var(--accent); display: inline-block;
+        }
+
+        /* Explain Block Pattern */
+        .explain-block { margin-bottom: 1.25rem; }
+        .explain-block span {
+            display: inline-block; font-size: 0.75rem; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 0.05em; margin-bottom: 0.25rem; color: var(--text-muted);
+        }
+        .explain-block p { margin-bottom: 0; }
+        .explain-block.plain span { color: var(--success); }
+        .explain-block.technical span { color: var(--blue); }
+        .explain-block.why span { color: var(--orange); }
+
+        /* Micro-Check Component */
+        details.micro-check {
+            background: var(--bg-surface); border: 1px solid var(--border-color);
+            border-radius: 8px; padding: 1rem; margin: 1.5rem 0; cursor: pointer; transition: all 0.2s;
+        }
+        details.micro-check:hover { border-color: var(--accent); box-shadow: 0 2px 8px rgba(0,0,0,0.02); }
+        details.micro-check summary { font-weight: 600; color: var(--text-main); outline: none; list-style: none; display: flex; justify-content: space-between; }
+        details.micro-check summary::-webkit-details-marker { display: none; }
+        details.micro-check summary::after { content: "+ reveal"; font-size: 0.75rem; color: var(--accent); text-transform: uppercase; font-weight: 700; }
+        details.micro-check[open] summary::after { content: "- hide"; }
+        details.micro-check p { margin-top: 1rem; margin-bottom: 0; padding-top: 1rem; border-top: 1px dashed var(--border-color); color: var(--text-dim); }
+
+        /* Formula Blocks */
+        .formula-block {
+            background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px;
+            padding: 1.25rem; font-family: var(--font-mono); font-size: 0.95rem; color: #334155;
+            margin: 1.5rem 0; overflow-x: auto; display: flex; flex-direction: column; gap: 1.25rem;
+        }
+        .formula-line { display: flex; flex-direction: column; gap: 0.25rem; }
+        .math-term { color: var(--text-main); font-weight: 700; font-size: 1.0rem; }
+        .math-sub { font-size: 0.85rem; color: var(--text-dim); font-family: var(--font-sans); }
+        
+        .insight-box {
+            border-left: 4px solid var(--accent); background-color: var(--accent-tint);
+            padding: 1.25rem; border-radius: 0 8px 8px 0; margin: 1.5rem 0; font-size: 0.9rem; color: var(--accent-dark);
+        }
+        
+        .card {
+            background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: 12px;
+            padding: 1.5rem; box-shadow: 0 4px 6px rgba(0,0,0,0.02); margin: 1.5rem 0;
+        }
+
+        .checklist-box { list-style: none; padding: 0; margin: 1.5rem 0; }
+        .checklist-box li { display: flex; align-items: baseline; gap: 0.5rem; margin-bottom: 0.75rem; font-size: 0.95rem; color: var(--text-dim); }
+        .checklist-box li::before { content: "✓"; color: var(--success); font-weight: bold; font-family: var(--font-mono); }
+
+        /* Table */
+        .eval-matrix {
+            width: 100%; border-collapse: separate; border-spacing: 0;
+            font-size: 0.9rem; margin: 2rem 0; background: var(--bg-surface);
+            border-radius: 12px; overflow: hidden; border: 1px solid var(--border-color);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+        }
+        .eval-matrix th, .eval-matrix td {
+            padding: 1.25rem 1.5rem; text-align: left; border-bottom: 1px solid var(--border-color);
+            vertical-align: middle; line-height: 1.5;
+        }
+        .eval-matrix th {
+            background: var(--bg-surface-alt); font-weight: 600; color: var(--text-main);
+            text-transform: uppercase; letter-spacing: 0.05em; font-size: 0.75rem;
+        }
+        .eval-matrix tr:last-child td { border-bottom: none; }
+
+        /* Controls & Selects */
+        .controls {
+            display: flex; align-items: center; gap: 1rem; margin-top: 1rem; flex-wrap: wrap;
+            background: var(--bg-surface); padding: 1rem; border: 1px solid var(--border-color); border-radius: 8px;
+        }
+        button.control-btn {
+            background-color: var(--accent); border: none; padding: 0.6rem 1.2rem;
+            border-radius: 6px; font-family: var(--font-sans); font-size: 0.85rem; font-weight: 600;
+            cursor: pointer; transition: all 0.2s; color: #ffffff; white-space: nowrap;
+        }
+        button.control-btn:hover { background-color: var(--accent-dark); transform: translateY(-1px); }
+        
+        select.stat-select {
+            padding: 0.5rem; border-radius: 6px; border: 1px solid var(--border-color);
+            font-family: var(--font-sans); font-size: 0.85rem; outline: none; background: var(--bg-surface); cursor: pointer;
+        }
+
+        input[type=range] { -webkit-appearance: none; width: 100%; background: transparent; margin: 10px 0; }
+        input[type=range]:focus { outline: none; }
+        input[type=range]::-webkit-slider-runnable-track {
+            width: 100%; height: 6px; cursor: pointer; background: var(--border-color); border-radius: 3px;
+        }
+        input[type=range]::-webkit-slider-thumb {
+            height: 18px; width: 18px; border-radius: 50%; background: var(--accent);
+            cursor: pointer; -webkit-appearance: none; margin-top: -6px; box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .metrics-bar {
+            display: flex; flex-wrap: wrap; gap: 0.5rem; width: 100%; margin-top: 0.5rem; padding-top: 0.5rem; border-top: 1px dashed var(--border-color);
+        }
+        .metric-badge {
+            background: var(--bg-surface-alt); padding: 0.3rem 0.6rem; border-radius: 4px; font-size: 0.75rem; font-family: var(--font-mono); color: var(--text-dim);
+        }
+
+        .look-right-cue {
+            font-size: 0.85rem; font-weight: 600; color: var(--accent-dark); display: flex; align-items: baseline; gap: 0.5rem; margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--border-color);
+        }
+
+        /* Canvas Wrapper */
+        .canvas-container {
+            width: 100%; aspect-ratio: 1 / 1; max-width: 600px; max-height: 600px; background: var(--bg-surface);
+            border: 1px solid var(--border-color); border-radius: 16px; box-shadow: 0 10px 25px rgba(0,0,0,0.03); position: relative; overflow: hidden;
+        }
+        canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .layout-wrapper { flex-direction: column; }
+            .viz-col { width: 100%; height: 50vh; position: sticky; top: 0; padding: 1rem; background: var(--bg-page); border-bottom: 1px solid var(--border-color); z-index: 10; }
+            .narrative-col { width: 100%; padding: 2rem; z-index: 1; }
+            .stage-section { min-height: 70vh; padding: 2rem 0; }
+            .stage-dots { display: none; }
+            .hero h1 { font-size: 2.5rem; }
+        }
+
+        .pill {
+            display: inline-block; padding: 0.3rem 0.8rem; border-radius: 9999px;
+            font-size: 0.75rem; font-weight: 600; font-family: var(--font-mono); text-transform: uppercase;
+            white-space: nowrap;
+        }
+        .pill.red { background-color: #fee2e2; color: #b91c1c; border: 1px solid #fca5a5; }
+        .pill.green { background-color: #dcfce7; color: #15803d; border: 1px solid #86efac; }
+        .pill.blue { background-color: #dbeafe; color: #1d4ed8; border: 1px solid #93c5fd; }
+        .pill.gray { background-color: #f1f5f9; color: #475569; border: 1px solid #cbd5e1; }
+    </style>
+</head>
+<body>
+
+    <div id="progress-bar"></div>
+    <div class="stage-dots" id="dots-container"></div>
+
+    <section class="hero" data-stage="0">
+        <div class="topic-badge">Statistical Machine Learning</div>
+        <h1>Bias-Variance Trade-Off & Resampling Methods</h1>
+        <p>Finding the delicate balance between a model that is too stubborn to learn, and one that is too easily distracted to generalize.</p>
+        <div class="scroll-cue">Scroll to Begin</div>
+    </section>
+
+    <div class="layout-wrapper">
+        <div class="narrative-col">
+            
+            <section class="stage-section" data-stage="1">
+                <div class="stage-label">Stage 01</div>
+                <h2>The Prediction Problem</h2>
+                <div class="explain-block plain">
+                    <span>Plain English</span>
+                    <p>Every dataset contains two things: the true signal we want to learn, and random static we should ignore.</p>
+                </div>
+                <div class="explain-block technical">
+                    <span>Technical Meaning</span>
+                    <p>A model's goal is to capture the underlying function <span style="font-family:var(--font-mono)">f(x)</span> while ignoring the irreducible error <span style="font-family:var(--font-mono)">ε</span>.</p>
+                </div>
+                
+                <p>For our concrete example, let's predict a person's <strong>Income</strong> based on their <strong>Years of Education</strong>.</p>
+
+                <div class="look-right-cue">
+                    <span>👀</span> <span><strong>Notice on the right:</strong> The dots are our raw historical data. The horizontal axis is Years of Education, and the vertical axis is Income. We need to draw a reliable line through them.</span>
+                </div>
+            </section>
+
+            <section class="stage-section" data-stage="2">
+                <div class="stage-label">Stage 02</div>
+                <h2>High Bias (Underfitting)</h2>
+                <div class="explain-block plain">
+                    <span>Plain English</span>
+                    <p>The model is too stubborn. It assumes the relationship is completely straight and simple, ignoring reality.</p>
+                </div>
+                <div class="explain-block technical">
+                    <span>Technical Meaning</span>
+                    <p>Bias is the error introduced by choosing a model that lacks the complexity to represent the true data distribution.</p>
+                </div>
+                <div class="explain-block why">
+                    <span>Why It Matters</span>
+                    <p>A high bias model makes the exact same systematic mistake over and over again, regardless of how much data you feed it.</p>
+                </div>
+
+                <details class="micro-check">
+                    <summary>Quick Check: Does a high-bias model memorize the noise?</summary>
+                    <p><strong>No.</strong> It does the opposite. It ignores the noise entirely, but unfortunately, it also ignores the genuine shape of the data.</p>
+                </details>
+
+                <div class="look-right-cue">
+                    <span>👀</span> <span><strong>Notice on the right:</strong> The rigid red line forces a straight path through curved data. It is completely missing the underlying wave.</span>
+                </div>
+            </section>
+
+            <section class="stage-section" data-stage="3">
+                <div class="stage-label">Stage 03</div>
+                <h2>High Variance (Overfitting)</h2>
+                <div class="explain-block plain">
+                    <span>Plain English</span>
+                    <p>The model is too easily distracted. It memorizes every single typo and random bounce in our training data.</p>
+                </div>
+                <div class="explain-block technical">
+                    <span>Technical Meaning</span>
+                    <p>Variance is the amount by which our model's curve would change if we estimated it using a different set of training data.</p>
+                </div>
+                <div class="explain-block why">
+                    <span>Why It Matters</span>
+                    <p>Like a student who memorizes a practice exam but fails the real test, an overfitted model cannot generalize to unseen future data.</p>
+                </div>
+
+                <div class="look-right-cue">
+                    <span>👀</span> <span><strong>Notice on the right:</strong> The erratic blue line twists wildly to touch almost every single dot. It has learned the noise alongside the signal.</span>
+                </div>
+            </section>
+
+            <section class="stage-section" data-stage="4">
+                <div class="stage-label">Stage 04</div>
+                <h2>The Error Decomposition</h2>
+                <p>We cannot minimize both perfectly. Mathematically, the expected prediction error on a new observation breaks down into exactly three components:</p>
+                
+                <div class="formula-block">
+                    <div style="font-family: var(--font-mono); font-size: 0.85rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border-color); margin-bottom: 0.5rem;">
+                        Err(x) = [E[f̂(x)] - f(x)]² + E[(f̂(x) - E[f̂(x)])²] + σ²
+                    </div>
+                    
+                    <div class="formula-line" style="border-left: 3px solid #ef4444; padding-left: 1rem;">
+                        <span class="math-term">Bias²</span>
+                        <div class="math-sub"><strong>The Stubbornness Error:</strong> How much the model's rigid average assumption misses the true reality.</div>
+                    </div>
+                    <div class="formula-line" style="border-left: 3px solid #0ea5e9; padding-left: 1rem;">
+                        <span class="math-term">Variance</span>
+                        <div class="math-sub"><strong>The Distraction Error:</strong> How wildly the model's curve jumps around when given slightly different training sets.</div>
+                    </div>
+                    <div class="formula-line" style="border-left: 3px solid #94a3b8; padding-left: 1rem;">
+                        <span class="math-term">Irreducible Error (σ²)</span>
+                        <div class="math-sub"><strong>The Baseline Noise:</strong> The inherent randomness in the real world that no model can ever predict.</div>
+                    </div>
+                </div>
+
+                <div class="look-right-cue">
+                    <span>👀</span> <span><strong>Notice on the right:</strong> The green dashed line is the sweet spot—a gentle curve that follows the main trend but ignores the random static.</span>
+                </div>
+            </section>
+
+            <section class="stage-section" data-stage="5">
+                <div class="stage-label">Stage 05</div>
+                <h2>Interactive: The Trade-Off</h2>
+                <p>Let's look at how error changes step-by-step as we add complexity. As flexibility increases (moving right), Bias drops but Variance eventually spikes.</p>
+                
+                <div class="controls" style="flex-direction: column; align-items: stretch;">
+                    <label style="font-size:0.85rem; font-weight:600; color:var(--text-main);">
+                        Drag to change Model Complexity
+                        <input type="range" id="flexSlider" min="1" max="100" value="50">
+                        <div style="display:flex; justify-content:space-between; font-weight:400; color:var(--text-muted); margin-top:4px;">
+                            <span>Too Simple</span>
+                            <span>Sweet Spot</span>
+                            <span>Too Complex</span>
+                        </div>
+                    </label>
+                    <div class="metrics-bar">
+                        <div class="metric-badge">Complexity: <span id="m-comp" style="color:var(--text-main)">Med</span></div>
+                        <div class="metric-badge">Bias Trend: <span id="m-bias" style="color:#ef4444">0.12</span></div>
+                        <div class="metric-badge">Var Trend: <span id="m-var" style="color:#0ea5e9">0.05</span></div>
+                        <div class="metric-badge" style="background:var(--text-main); color:#fff;">Total Error: <span id="m-tot">0.17</span></div>
+                    </div>
+                </div>
+
+                <div class="look-right-cue">
+                    <span>👀</span> <span><strong>Notice on the right:</strong> The purple model dynamically fits the data above, updating your position on the U-Curve below. Hitting the absolute bottom of the black Total Error curve is the Golden Rule.</span>
+                </div>
+            </section>
+
+            <section class="stage-section" data-stage="6">
+                <div class="stage-label">Stage 06</div>
+                <h2>The Testing Problem</h2>
+                <div class="explain-block plain">
+                    <span>Plain English</span>
+                    <p>A model that aces the practice quiz might still fail the final exam.</p>
+                </div>
+                <div class="explain-block technical">
+                    <span>Technical Meaning</span>
+                    <p>Training error often underestimates test error and is not a reliable estimate of future performance.</p>
+                </div>
+                <div class="explain-block why">
+                    <span>Why It Matters</span>
+                    <p>If we use all our finite data to train the model, we are flying blind. We must safely evaluate models on data they haven't seen yet.</p>
+                </div>
+                
+                <div class="card">
+                    <p><strong>The Solution: Resampling Methods.</strong> Resampling is how we practically estimate where the sweet spot lies using finite data. We strategically recycle our data by making repeated splits, rotating held-out folds, or redrawing samples.</p>
+                </div>
+            </section>
+
+            <section class="stage-section" data-stage="7">
+                <div class="stage-label">Stage 07</div>
+                <h2>1. The Validation Set</h2>
+                <div class="explain-block plain">
+                    <span>Plain English</span>
+                    <p>Think of this like giving a child a few practice questions to learn from, but hiding the rest to use on the final test. If they only memorize the practice questions, they will fail the test.</p>
+                </div>
+                <div class="explain-block technical">
+                    <span>Technical Meaning</span>
+                    <p>The dataset is randomly partitioned into two mutually exclusive sets: a "training set" to build the model, and a "validation set" to test it.</p>
+                </div>
+                <div class="explain-block why">
+                    <span>Why It Matters</span>
+                    <p>It is incredibly simple, but it is risky. If you accidentally put all the hard questions in the test pile, the student gets an unlucky score. The estimate depends entirely on the luck of one random split.</p>
+                </div>
+
+                <p><strong>The Process:</strong><br>1. Shuffle all 100 data points.<br>2. Split the data into a study pile and a test pile.<br>3. Train the model on the study pile.<br>4. Score it on the test pile.</p>
+                
+                <div class="insight-box">
+                    <strong>The Trade-off:</strong> We use a 50/50 split below so it is easy to see on the grid. In real life, an 80/20 split is often better. Giving the model 80% of the data helps it learn a smarter rule. But leaving only 20% for the test means the final score might jump around even more based on luck.
+                </div>
+                
+                <div class="controls">
+                    <div style="display:flex; flex-direction:column; gap:0.5rem; flex:1;">
+                        <select id="valSplitRatio" class="stat-select" onchange="triggerValidationRedraw()">
+                            <option value="0.5">50% Train / 50% Test</option>
+                            <option value="0.8">80% Train / 20% Test</option>
+                        </select>
+                        <button class="control-btn" onclick="triggerValidationRedraw()">Redraw Split</button>
+                    </div>
+                    <div style="display:flex; flex-direction:column; margin-left:auto; text-align:right;">
+                        <span style="font-size:0.75rem; font-weight:600; color:var(--text-muted); text-transform:uppercase;">Computed Test MSE</span>
+                        <span id="val-readout" style="font-family:var(--font-mono); font-size: 1.25rem; font-weight:700; color:var(--text-main);">0.000</span>
+                    </div>
+                </div>
+
+                <div class="look-right-cue">
+                    <span>👀</span> <span><strong>Notice on the right:</strong> Click the Redraw Split button. Watch how the blue (Train) and orange (Test) blocks shift. Because our MSE is genuinely recomputed each click, you can see how wildly the estimated error jumps based solely on a lucky or unlucky shuffle!</span>
+                </div>
+            </section>
+
+            <section class="stage-section" data-stage="8">
+                <div class="stage-label">Stage 08</div>
+                <h2>2. k-Fold Cross-Validation</h2>
+                <div class="explain-block plain">
+                    <span>Plain English</span>
+                    <p>Instead of risking one lucky or unlucky test, we take turns. We divide the class into groups. Every single group gets exactly one chance to be the test group while everyone else studies.</p>
+                </div>
+                <div class="explain-block technical">
+                    <span>Technical Meaning</span>
+                    <p>The data is divided into <em>k</em> equal chunks (folds). We train <em>k</em> separate models, holding out a different chunk for testing each time, then average the <em>k</em> test errors.</p>
+                </div>
+                <div class="explain-block why">
+                    <span>Why It Matters</span>
+                    <p>By averaging multiple different tests together, we dilute the "luck of the draw" from any single random split. It gives us a much fairer, more stable picture of how the model will actually perform in the real world.</p>
+                </div>
+
+                <p><strong>The Process:</strong><br>1. Chop the data into 5 equal chunks (folds).<br>2. Train a new model on 4 chunks. Test it on the 1 chunk left out.<br>3. Rotate. Pick a <em>new</em> chunk to be the test.<br>4. Repeat until every chunk has been the test exactly once.<br>5. Average all 5 test scores together.</p>
+                
+                <div class="controls" style="flex-direction: column; align-items: flex-start; gap: 1rem; width: 100%;">
+                    <button class="control-btn" id="kfold-btn" onclick="triggerKFoldStep()">Train Model 1 (Test on Fold 1)</button>
+                    <div id="kfold-acc-panel" style="width: 100%; background: var(--bg-surface-alt); padding: 1rem; border-radius: 8px; font-family: var(--font-mono); font-size: 0.85rem; color: var(--text-dim); display: flex; flex-direction: column; gap: 0.5rem; min-height: 160px;">
+                        <div style="font-weight: 700; color: var(--text-main); margin-bottom: 0.5rem; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 0.05em; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem;">Running Error Record</div>
+                        <div id="kfold-list" style="display:flex; flex-direction:column; gap:0.25rem;">
+                            <div style="color: var(--text-muted); font-style: italic;">Awaiting first fold...</div>
+                        </div>
+                        <div id="kfold-avg" style="margin-top: auto; padding-top: 0.5rem; border-top: 1px solid var(--border-color); font-weight: 700; color: var(--success); font-size: 1rem; display:none; justify-content: space-between;">
+                            <span>Average MSE:</span> <span id="kfold-readout">0.000</span>
+                        </div>
+                        <div id="kfold-complete-msg" style="color: var(--accent-dark); font-weight: 600; font-size: 0.8rem; display:none; margin-top: 0.25rem; font-family: var(--font-sans);">
+                            ✓ Cycle Complete: Every data point has been used for testing exactly once.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="look-right-cue">
+                    <span>👀</span> <span><strong>Notice on the right:</strong> Step through the folds. The orange test block slides down automatically. We build 5 entirely different models and log their scores. By averaging them all, we smooth out the jumps and find the truth.</span>
+                </div>
+            </section>
+
+            <section class="stage-section" data-stage="9">
+                <div class="stage-label">Stage 09</div>
+                <h2>3. Leave-One-Out (LOOCV)</h2>
+                <div class="explain-block plain">
+                    <span>Plain English</span>
+                    <p>Imagine a class of 100 students. We send exactly one student out of the room. We teach the other 99. Then we test that single missing student. We repeat this 100 times.</p>
+                </div>
+                <div class="explain-block technical">
+                    <span>Technical Meaning</span>
+                    <p>This is cross-validation taken to the absolute extreme. We leave out just one data point, train on the rest, and do this for every point in the dataset.</p>
+                </div>
+                <div class="explain-block why">
+                    <span>Why It Matters</span>
+                    <p>It uses almost all the data to train, which gives the model the best chance to learn perfectly. But training 100 separate models takes a massive amount of computing power.</p>
+                </div>
+
+                <div class="card">
+                    <p><strong>The Hidden Flaw:</strong> Because we only leave out one point, the 100 models we build are almost perfectly identical. Their answers are incredibly similar to each other. When you average answers that are highly correlated, their mistakes don't cancel out well. The final error estimate can still be surprisingly jumpy.</p>
+                    <p style="margin-top: 0.5rem; font-size: 0.85rem;"><strong>Compared to 5-fold CV:</strong> LOOCV uses more training data. But it takes vastly longer to compute and rarely gives a better, more stable answer.</p>
+                </div>
+
+                <div class="controls">
+                    <label style="flex:1; display:flex; flex-direction:column; font-size:0.85rem; font-weight:600; color:var(--text-main);">
+                        Hold Out Observation #<span id="loocv-label" style="color:var(--accent);">1</span>
+                        <input type="range" id="loocvSlider" min="0" max="99" value="0" oninput="triggerLOOCV()">
+                    </label>
+                    <div style="display:flex; flex-direction:column; margin-left:1rem; text-align:right;">
+                        <span style="font-size:0.75rem; font-weight:600; color:var(--text-muted); text-transform:uppercase;">Single Point Error²</span>
+                        <span id="loocv-readout" style="font-family:var(--font-mono); font-size: 1.1rem; font-weight:700; color:var(--text-main);">0.000</span>
+                    </div>
+                </div>
+
+                <div class="look-right-cue">
+                    <span>👀</span> <span><strong>Notice on the right:</strong> Slide the slider to move the orange test block. Look at the 99 blue training blocks—they barely change! This means all 100 tests are too mathematically similar to average out noise effectively.</span>
+                </div>
+            </section>
+
+            <section class="stage-section" data-stage="10">
+                <div class="stage-label">Stage 10</div>
+                <h2>4. The Bootstrap</h2>
+                
+                <div class="explain-block plain">
+                    <span>Plain English</span>
+                    <p>Imagine tasting a giant pot of soup. You take a spoonful and score it a 7.0. Is that score reliable, or was that just a lucky scoop? To find out, you stir the soup and taste it multiple times, getting slightly different scores: 6.8, 7.2, 6.9, 7.1. Bootstrap checks how much these scores vary or "wiggle."</p>
+                </div>
+                
+                <div class="explain-block technical">
+                    <span>Technical Meaning</span>
+                    <p>Bootstrap is about generating many possible answers from the exact same data to check for stability. We repeatedly sample our original data <em>with replacement</em>, and recalculate our target number on each new sample.</p>
+                </div>
+                
+                <div class="explain-block why">
+                    <span>Why It Matters</span>
+                    <p>If our taste scores stay tightly packed together (e.g., 6.8–7.2), our answer is highly stable. If they spread out wildly (e.g., 5.0–9.0), our result is unreliable. This gives us our <strong>margin of error</strong>.</p>
+                </div>
+
+                <div class="explain-block">
+                    <p><strong>The Process:</strong></p>
+                    <ol style="margin-left: 1.5rem; margin-top: 0.5rem; display: flex; flex-direction: column; gap: 0.5rem; color: var(--text-dim); font-size: 0.9rem;">
+                        <li>Start with your original dataset (say it’s got 100 points).</li>
+                        <li>To make one ‘bootstrap sample,’ randomly pick one data point from your original set.</li>
+                        <li>Write it down, but don’t remove it. Put it back, so all points stay equally available.</li>
+                        <li>Repeat this random picking (with putting back) until you have a new sample the same size as the original. So if you started with 100 points, you pick 100 times.</li>
+                        <li>Now, calculate the average (or whatever metric you’re checking) from that new sample.</li>
+                        <li>Repeat this entire process hundreds or thousands of times. Each time, you get a slightly different average.</li>
+                        <li>Finally, look at all those averages. Their spread tells you how stable (or not) your original estimate is.</li>
+                    </ol>
+                </div>
+                
+                <div class="controls" style="align-items: flex-start; flex-direction: column;">
+                    <div style="display:flex; gap:0.5rem; width: 100%;">
+                        <button class="control-btn" id="boot-toggle-btn" onclick="toggleBootstrap()" style="background-color: var(--text-main);">▶ Run Bootstrap</button>
+                        <button class="control-btn" onclick="resetBootstrap()" style="background-color: var(--bg-surface); color: var(--text-main); border: 1px solid var(--border-color);">↺ Reset</button>
+                        <select class="stat-select" id="bootStat" onchange="resetBootstrap()" style="margin-left: auto;">
+                            <option value="mean">Calculate Average Income</option>
+                            <option value="slope">Calculate Trend Slope</option>
+                        </select>
+                    </div>
+                    
+                    <div style="width: 100%; background: var(--bg-surface-alt); padding: 1rem; border-radius: 8px; margin-top: 0.5rem; font-family: var(--font-mono); font-size: 0.85rem;">
+                        <div style="display:flex; justify-content:space-between; color: var(--text-muted); text-transform: uppercase; font-weight: 700; font-family: var(--font-sans); font-size: 0.75rem; letter-spacing: 0.05em; margin-bottom: 0.25rem;">
+                            <span>Generating Answers (<span id="boot-count">0</span>)</span>
+                        </div>
+                        <div id="boot-recent-readout" style="color: var(--accent-dark); font-weight: 700; font-size: 1.1rem; margin-bottom: 0.75rem; min-height: 1.5rem;">--</div>
+                        
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; border-top: 1px solid var(--border-color); padding-top: 0.75rem;">
+                            <div><span style="color: var(--text-muted);">Avg Across All Tries (Mean):</span> <br><span id="boot-mean-readout" style="color: var(--text-main); font-weight: 600;">0.000</span></div>
+                            <div><span style="color: var(--text-muted);">How Much It Wiggles (Std Error):</span> <br><span id="boot-se-readout" style="color: var(--text-main); font-weight: 600;">0.000</span></div>
+                            <div style="grid-column: span 2; margin-top: 0.25rem;"><span style="color: var(--text-muted);">Where 95% of Answers Fall (Confidence Interval):</span> <br><span id="boot-ci-readout" style="color: var(--success); font-weight: 700; font-size: 0.95rem;">[- , -]</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="look-right-cue">
+                    <span>👀</span> <span><strong>One-Sentence Takeaway:</strong> Click Run. Each pretend dataset produces one new answer, dropping as a single dot below. Watch how the spread tells us exactly how trustworthy our answer is!</span>
+                </div>
+            </section>
+
+            <section class="stage-section" data-stage="11">
+                <div class="stage-label">Stage 11</div>
+                <h2>Limitations in Practice</h2>
+                <p>Each method carries trade-offs. Here is what they mean for your daily work:</p>
+                
+                <ul style="list-style-type: none; padding: 0; display:flex; flex-direction:column; gap:1rem;">
+                    <li><strong style="color:var(--error)">Validation Set:</strong> Be cautious with this when data are small; your results will change randomly every time you run the script.</li>
+                    <li><strong style="color:var(--blue)">LOOCV:</strong> Takes forever to run on large data. It tends to have very low bias, but averaging nearly identical models makes the final estimate jumpy.</li>
+                    <li><strong style="color:var(--success)">k-Fold CV:</strong> In practice, 5-fold or 10-fold CV is often a strong default because it balances stability and computation well.</li>
+                    <li><strong style="color:var(--text-main)">Bootstrap:</strong> Excellent for answering "how confident are we in this specific number?", but not the first choice for estimating pure test error.</li>
+                </ul>
+
+                <details class="micro-check">
+                    <summary>Micro-Check: If I want to publish the uncertainty of my new variable, which do I use?</summary>
+                    <p><strong>Bootstrap.</strong> Bootstrap is commonly used to estimate uncertainty, standard errors, and confidence intervals.</p>
+                </details>
+            </section>
+
+            <section class="stage-section" data-stage="12">
+                <div class="stage-label">Stage 12</div>
+                <h2>Summary & Synthesis</h2>
+                <p>A successful model must navigate the error puzzle. It requires enough complexity to avoid Bias, but enough restraint to avoid Variance. We rely on computational resampling to <strong>estimate</strong> how our model will generalize to the real world.</p>
+
+                <div class="card" style="background-color: var(--accent-tint); border-color: var(--accent);">
+                    <h3 style="font-size: 1rem; margin-bottom: 0.5rem; color: var(--accent-dark);">Memory Checklist</h3>
+                    <ul class="checklist-box">
+                        <li><strong>Bias:</strong> The model is too rigid (Underfitting).</li>
+                        <li><strong>Variance:</strong> The model is too jumpy (Overfitting).</li>
+                        <li><strong>Cross-Validation:</strong> Used to estimate future Test Error.</li>
+                        <li><strong>Bootstrap:</strong> Used to estimate Uncertainty and Std Errors.</li>
+                    </ul>
+                </div>
+
+                <table class="eval-matrix">
+                    <thead>
+                        <tr>
+                            <th>Method</th>
+                            <th>Best Use Case</th>
+                            <th>Key Trait</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Validation Set</strong></td>
+                            <td>Quick, rough checks</td>
+                            <td><span class="pill red">High Variability</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>k-Fold CV</strong></td>
+                            <td>Model selection & Test Error</td>
+                            <td><span class="pill green">Balanced</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>LOOCV</strong></td>
+                            <td>Very small datasets</td>
+                            <td><span class="pill blue">Low Bias</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Bootstrap</strong></td>
+                            <td>Uncertainty / std errors</td>
+                            <td><span class="pill gray">With Replacement</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+        </div>
+        
+        <div class="viz-col">
+            <div class="canvas-container">
+                <canvas id="mainCanvas"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- 1. Math & Stat Helpers ---
+        function gaussianKernel(z) { return Math.exp(-0.5 * z * z); }
+        function predictNW(x, trainData, bandwidth) {
+            let num = 0; let den = 0;
+            for (let i = 0; i < trainData.length; i++) {
+                let k = gaussianKernel((x - trainData[i].x) / bandwidth);
+                num += k * trainData[i].y;
+                den += k;
+            }
+            return den === 0 ? 0 : num / den;
+        }
+        function computeMSE(train, test, bandwidth) {
+            if (test.length === 0) return 0;
+            let mse = 0;
+            for (let i=0; i < test.length; i++) {
+                let pred = predictNW(test[i].x, train, bandwidth);
+                mse += Math.pow(test[i].y - pred, 2);
+            }
+            return mse / test.length;
+        }
+
+        // --- 2. Global Config & Honest Data Generation ---
+        const gridCols = 10;
+        const gridRows = 10;
+        const numPoints = 100;
+        const scatterData = [];
+        
+        function trueFunc(x) { return 0.5 + 0.35 * Math.sin(x * Math.PI * 1.5 - 0.5); }
+        
+        function mulberry32(a) {
+            return function() {
+              var t = a += 0x6D2B79F5;
+              t = Math.imul(t ^ t >>> 15, t | 1);
+              t ^= t + Math.imul(t ^ t >>> 7, t | 61);
+              return ((t ^ t >>> 14) >>> 0) / 4294967296;
+            }
+        }
+        const rng = mulberry32(42);
+        
+        for (let i = 0; i < numPoints; i++) {
+            let x = (i + 0.5) / numPoints;
+            let noise = (rng() - 0.5) * 0.25; 
+            scatterData.push({ x: x, y: trueFunc(x) + noise });
+        }
+
+        const baselineBandwidth = 0.08; 
+
+        let sumX=0, sumY=0, sumXY=0, sumX2=0;
+        scatterData.forEach(p => { sumX+=p.x; sumY+=p.y; sumXY+=p.x*p.y; sumX2+=p.x*p.x; });
+        const m_reg = (numPoints*sumXY - sumX*sumY) / (numPoints*sumX2 - sumX*sumX);
+        const c_reg = (sumY - m_reg*sumX) / numPoints;
+        function biasFunc(x) { return m_reg*x + c_reg; } 
+        function varFunc(x) { return predictNW(x, scatterData, 0.005); } 
+
+        function fBiasSq(x) { return 0.7 * Math.exp(-4*x); }
+        function fVar(x) { return 0.6 * Math.pow(x, 3); }
+        const irredux = 0.15;
+        function fTot(x) { return fBiasSq(x) + fVar(x) + irredux; }
+
+        // --- 3. Interactive Resampling State ---
+        let valSplitArray = Array(numPoints).fill(0).map(() => Math.random() > 0.5 ? 1 : 0);
+        let foldAssignments = Array(numPoints).fill(0).map((_, i) => Math.floor((i % gridCols) / 2));
+        let currentKFold = -1;
+        let foldErrors = [];
+        
+        let bootStats = [];
+        let bootstrapFrequencies = new Array(numPoints).fill(0);
+        let bootInterval = null;
+        let bootOriginalHighlights = new Array(numPoints).fill(0);
+        let isBootRunning = false;
+        let bootPhase = 0;
+        let bootTargetSample = [];
+        let bootCurrentPicks = 0;
+        const maxBootSamples = 200;
+
+        window.triggerValidationRedraw = function() {
+            let ratioElem = document.getElementById('valSplitRatio');
+            let ratio = ratioElem ? parseFloat(ratioElem.value) : 0.5;
+            
+            valSplitArray = Array(numPoints).fill(0).map(() => Math.random() > ratio ? 1 : 0);
+            let train = scatterData.filter((_, i) => valSplitArray[i] === 0);
+            let test = scatterData.filter((_, i) => valSplitArray[i] === 1);
+            let mse = computeMSE(train, test, baselineBandwidth);
+            let readout = document.getElementById('val-readout');
+            if(readout) readout.innerText = mse.toFixed(4);
+        };
+
+        window.triggerKFoldStep = function() {
+            let btn = document.getElementById('kfold-btn');
+            let list = document.getElementById('kfold-list');
+            let avgContainer = document.getElementById('kfold-avg');
+            let completeMsg = document.getElementById('kfold-complete-msg');
+
+            if(foldErrors.length === 5) {
+                foldErrors = [];
+                currentKFold = -1;
+                if(list) list.innerHTML = "";
+                if(avgContainer) avgContainer.style.display = "none";
+                if(completeMsg) completeMsg.style.display = "none";
+            }
+
+            currentKFold++;
+            targetState.kFoldIndex = currentKFold;
+            
+            let train = scatterData.filter((_, i) => foldAssignments[i] !== currentKFold);
+            let test = scatterData.filter((_, i) => foldAssignments[i] === currentKFold);
+            let mse = computeMSE(train, test, baselineBandwidth);
+            
+            foldErrors.push(mse);
+            
+            if(foldErrors.length === 1 && list) {
+                list.innerHTML = ""; 
+            }
+            
+            if(list) {
+                let div = document.createElement('div');
+                div.style.display = 'flex';
+                div.style.justifyContent = 'space-between';
+                div.innerHTML = `<span><span style="color:var(--text-main); font-weight:600;">Model ${currentKFold + 1}</span> (Fold ${currentKFold + 1} Test)</span> <span>${mse.toFixed(4)}</span>`;
+                list.appendChild(div);
+            }
+
+            let runningAvg = foldErrors.reduce((a,b)=>a+b) / foldErrors.length;
+            let readoutEl = document.getElementById('kfold-readout');
+            if(readoutEl) readoutEl.innerText = runningAvg.toFixed(4);
+            if(avgContainer) avgContainer.style.display = "flex";
+
+            if(foldErrors.length === 5) {
+                if(btn) btn.innerText = "↺ Restart k-Fold Cycle";
+                if(completeMsg) completeMsg.style.display = "block";
+            } else {
+                if(btn) btn.innerText = `Train Model ${currentKFold + 2} (Test on Fold ${currentKFold + 2})`;
+            }
+        };
+
+        window.triggerLOOCV = function() {
+            let slider = document.getElementById('loocvSlider');
+            let holdoutIdx = slider ? parseInt(slider.value) : 0;
+            
+            let labelEl = document.getElementById('loocv-label');
+            if (labelEl) labelEl.innerText = holdoutIdx + 1;
+            
+            let train = scatterData.filter((_, i) => i !== holdoutIdx);
+            let test = [scatterData[holdoutIdx]];
+            let mse = computeMSE(train, test, baselineBandwidth);
+            
+            let readoutEl = document.getElementById('loocv-readout');
+            if (readoutEl) readoutEl.innerText = mse.toFixed(4);
+        };
+
+        window.toggleBootstrap = function() {
+            let btn = document.getElementById('boot-toggle-btn');
+            if (isBootRunning) {
+                isBootRunning = false;
+                if(btn) {
+                    btn.innerHTML = "▶ Resume";
+                    btn.style.backgroundColor = "var(--text-main)";
+                }
+            } else {
+                if (bootStats.length >= maxBootSamples) window.resetBootstrap();
+                isBootRunning = true;
+                if(btn) {
+                    btn.innerHTML = "⏸ Pause";
+                    btn.style.backgroundColor = "var(--warning)";
+                }
+            }
+        }
+
+        window.resetBootstrap = function() {
+            isBootRunning = false;
+            bootPhase = 0;
+            let btn = document.getElementById('boot-toggle-btn');
+            if(btn) {
+                btn.innerHTML = "▶ Run Bootstrap";
+                btn.style.backgroundColor = "var(--text-main)";
+            }
+            bootStats = [];
+            bootstrapFrequencies.fill(0);
+            bootOriginalHighlights.fill(0);
+            
+            updateBootstrapUI();
+        }
+
+        function updateBootstrapUI() {
+            let countEl = document.getElementById('boot-count');
+            if (countEl) countEl.innerText = bootStats.length;
+            
+            let recentEl = document.getElementById('boot-recent-readout');
+            if (recentEl) {
+                if (bootStats.length === 0) {
+                    recentEl.innerText = "--";
+                } else {
+                    let recentText = bootStats.slice(-4).map(v => v.toFixed(2)).join(', ');
+                    if(bootStats.length > 4) recentText = "..., " + recentText;
+                    recentEl.innerText = recentText;
+                }
+            }
+
+            let meanEl = document.getElementById('boot-mean-readout');
+            let seEl = document.getElementById('boot-se-readout');
+            let ciEl = document.getElementById('boot-ci-readout');
+
+            if (bootStats.length > 0) {
+                let mean = bootStats.reduce((a,b)=>a+b, 0) / bootStats.length;
+                if (meanEl) meanEl.innerText = mean.toFixed(3);
+                
+                if (bootStats.length > 1) {
+                    let variance = bootStats.reduce((sq, val) => sq + Math.pow(val - mean, 2), 0) / (bootStats.length - 1);
+                    let se = Math.sqrt(variance);
+                    if (seEl) seEl.innerText = se.toFixed(3);
+                    
+                    let sorted = [...bootStats].sort((a,b)=>a-b);
+                    let lower = sorted[Math.floor(sorted.length * 0.025)] || sorted[0];
+                    let upper = sorted[Math.floor(sorted.length * 0.975)] || sorted[sorted.length-1];
+                    if (ciEl) ciEl.innerText = `[${lower.toFixed(2)}, ${upper.toFixed(2)}]`;
+                } else {
+                    if (seEl) seEl.innerText = "0.000";
+                    if (ciEl) ciEl.innerText = "[- , -]";
+                }
+            } else {
+                if (meanEl) meanEl.innerText = "0.000";
+                if (seEl) seEl.innerText = "0.000";
+                if (ciEl) ciEl.innerText = "[- , -]";
+            }
+        }
+
+        function processBootstrapTick() {
+            if (!isBootRunning) return;
+
+            if (bootPhase === 0) {
+                if (bootStats.length >= maxBootSamples) {
+                    window.toggleBootstrap();
+                    let btn = document.getElementById('boot-toggle-btn');
+                    if(btn) {
+                        btn.innerHTML = "▶ Run Again";
+                        btn.style.backgroundColor = "var(--success)";
+                    }
+                    return;
+                }
+                bootTargetSample = [];
+                for(let i=0; i<numPoints; i++) bootTargetSample.push(Math.floor(Math.random() * numPoints));
+                bootCurrentPicks = 0;
+                bootstrapFrequencies.fill(0);
+                bootOriginalHighlights.fill(0);
+                bootPhase = 1;
+            } 
+            else if (bootPhase === 1) {
+                let picksPerFrame = 5; 
+                if (bootStats.length > 5) picksPerFrame = 10;
+                if (bootStats.length > 20) picksPerFrame = 25;
+                if (bootStats.length > 50) picksPerFrame = 100;
+
+                for(let i=0; i<picksPerFrame && bootCurrentPicks < numPoints; i++) {
+                    let pick = bootTargetSample[bootCurrentPicks];
+                    bootOriginalHighlights[pick] = 1.0; 
+                    bootstrapFrequencies[pick]++;
+                    bootCurrentPicks++;
+                }
+
+                for(let i=0; i<numPoints; i++) {
+                    if(bootOriginalHighlights[i] > 0) {
+                        bootOriginalHighlights[i] -= 0.08;
+                        if(bootOriginalHighlights[i] < 0) bootOriginalHighlights[i] = 0;
+                    }
+                }
+
+                if (bootCurrentPicks >= numPoints) {
+                    bootPhase = 2;
+                }
+            }
+            else if (bootPhase === 2) {
+                let sampleData = bootTargetSample.map(idx => scatterData[idx]);
+                
+                let typeElem = document.getElementById('bootStat');
+                let type = typeElem ? typeElem.value : 'mean';
+                let statValue = 0;
+                
+                if (type === 'mean') {
+                    statValue = sampleData.reduce((sum, d) => sum + d.y, 0) / numPoints;
+                } else { 
+                    let sX = 0, sY = 0, sXY = 0, sX2 = 0;
+                    sampleData.forEach(p => { sX+=p.x; sY+=p.y; sXY+=p.x*p.y; sX2+=p.x*p.x; });
+                    statValue = (numPoints*sXY - sX*sY) / (numPoints*sX2 - sX*sX);
+                }
+                bootStats.push(statValue);
+                
+                updateBootstrapUI();
+                bootOriginalHighlights.fill(0);
+                bootPhase = 0; 
+            }
+        }
+
+        // --- 4. Canvas & Rendering System ---
+        const canvas = document.getElementById('mainCanvas');
+        const ctx = canvas.getContext('2d');
+        let cw, ch;
+
+        function resize() {
+            const rect = canvas.parentElement.getBoundingClientRect();
+            const dpr = window.devicePixelRatio || 1;
+            canvas.width = rect.width * dpr; canvas.height = rect.height * dpr;
+            ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.scale(dpr, dpr);
+            cw = rect.width; ch = rect.height;
+        }
+        window.addEventListener('resize', resize); window.addEventListener('load', resize);
+
+        const targetState = {
+            scatterOpacity: 0, biasLineOpacity: 0, varLineOpacity: 0, optLineOpacity: 0,
+            flexLineOpacity: 0, errorSpaceOpacity: 0, layoutSplit: 0, 
+            gridSpaceOpacity: 0, gridMode: 0, kFoldIndex: 0
+        };
+
+        const state = {
+            scatterOpacity: 0, biasLineOpacity: 0, varLineOpacity: 0, optLineOpacity: 0,
+            flexLineOpacity: 0, errorSpaceOpacity: 0, layoutSplit: 0, 
+            gridSpaceOpacity: 0, gridModeVal: 0, kFoldIndexVal: 0
+        };
+
+        function lerp(start, end, amt) { return (1 - amt) * start + amt * end; }
+
+        function drawScatter(alpha, sTop, sBottom, sWidth) {
+            if(alpha <= 0.01) return;
+            const padX = cw * 0.1; const plotH = sBottom - sTop;
+
+            ctx.fillStyle = `rgba(71, 85, 105, ${alpha})`; ctx.font = '500 11px Inter'; ctx.textAlign = 'center';
+            ctx.fillText("Years of Education →", cw/2, sBottom + 20);
+            ctx.save(); ctx.translate(padX - 25, sTop + plotH/2); ctx.rotate(-Math.PI/2); ctx.fillText("Income", 0, 0); ctx.restore();
+
+            scatterData.forEach(p => {
+                ctx.fillStyle = `rgba(100, 116, 139, ${alpha})`; ctx.beginPath();
+                ctx.arc(padX + p.x * sWidth, sBottom - (p.y * plotH), 4, 0, Math.PI*2); ctx.fill();
+            });
+        }
+
+        function drawCurve(func, color, alpha, dash, sTop, sBottom, sWidth) {
+            if(alpha <= 0.01) return;
+            const padX = cw * 0.1; const plotH = sBottom - sTop;
+            ctx.strokeStyle = color.replace(')', `, ${alpha})`).replace('rgb', 'rgba');
+            ctx.lineWidth = 3; ctx.setLineDash(dash); ctx.beginPath();
+            
+            for(let i=0; i<=100; i++) {
+                let nx = i / 100; let ny = func(nx);
+                let px = padX + nx * sWidth; let py = sBottom - (ny * plotH);
+                if(i===0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+            }
+            ctx.stroke(); ctx.setLineDash([]);
+        }
+
+        function drawErrorSpace(alpha, eTop, eBottom, eWidth) {
+            if(alpha <= 0.01) return;
+            const padX = cw * 0.1; const plotH = eBottom - eTop;
+
+            ctx.strokeStyle = `rgba(148, 163, 184, ${alpha})`; ctx.lineWidth = 2; ctx.beginPath();
+            ctx.moveTo(padX, eBottom); ctx.lineTo(cw-padX, eBottom); ctx.moveTo(padX, eBottom); ctx.lineTo(padX, eTop); ctx.stroke();
+
+            ctx.fillStyle = `rgba(71, 85, 105, ${alpha})`; ctx.font = '500 11px Inter'; ctx.textAlign = 'center';
+            ctx.fillText("Model Complexity →", cw/2, eBottom + 20);
+            ctx.save(); ctx.translate(padX - 25, eTop + plotH/2); ctx.rotate(-Math.PI/2); ctx.fillText("Error", 0, 0); ctx.restore();
+
+            ctx.strokeStyle = `rgba(239, 68, 68, ${alpha})`; ctx.beginPath();
+            for(let i=0; i<=100; i++) { let x = i/100; ctx[i?'lineTo':'moveTo'](padX + x*eWidth, eBottom - fBiasSq(x)*plotH); } ctx.stroke();
+
+            ctx.strokeStyle = `rgba(14, 165, 233, ${alpha})`; ctx.beginPath();
+            for(let i=0; i<=100; i++) { let x = i/100; ctx[i?'lineTo':'moveTo'](padX + x*eWidth, eBottom - fVar(x)*plotH); } ctx.stroke();
+
+            ctx.strokeStyle = `rgba(31, 41, 55, ${alpha})`; ctx.lineWidth = 4; ctx.beginPath();
+            for(let i=0; i<=100; i++) { let x = i/100; ctx[i?'lineTo':'moveTo'](padX + x*eWidth, eBottom - fTot(x)*plotH); } ctx.stroke(); ctx.lineWidth = 3;
+
+            let flexSlider = document.getElementById('flexSlider');
+            let flexVal = flexSlider ? flexSlider.value / 100 : 0.5;
+            
+            if (state.layoutSplit > 0.01) {
+                let markerX = padX + flexVal * eWidth; let markerY = eBottom - fTot(flexVal) * plotH;
+                ctx.strokeStyle = `rgba(168, 85, 247, ${alpha})`; ctx.setLineDash([5, 5]); ctx.beginPath();
+                ctx.moveTo(markerX, eBottom); ctx.lineTo(markerX, markerY); ctx.stroke(); ctx.setLineDash([]);
+                ctx.fillStyle = `rgba(168, 85, 247, ${alpha})`; ctx.beginPath(); ctx.arc(markerX, markerY, 5, 0, Math.PI*2); ctx.fill();
+            } else {
+                let minX = 0, minY = 100; for(let i=0; i<=100; i++) { let y = fTot(i/100); if(y < minY) { minY = y; minX = i/100; } }
+                ctx.strokeStyle = `rgba(156, 163, 175, ${alpha})`; ctx.setLineDash([5, 5]); ctx.beginPath();
+                ctx.moveTo(padX + minX*eWidth, eBottom); ctx.lineTo(padX + minX*eWidth, eBottom - minY*plotH); ctx.stroke(); ctx.setLineDash([]);
+            }
+            
+            ctx.textAlign = 'left'; ctx.font = '600 11px Inter';
+            ctx.fillStyle = `rgba(239, 68, 68, ${alpha})`; ctx.fillText("Bias²", padX + 20, eTop + 20);
+            ctx.fillStyle = `rgba(14, 165, 233, ${alpha})`; ctx.fillText("Variance", padX + 20, eTop + 40);
+            ctx.fillStyle = `rgba(31, 41, 55, ${alpha})`; ctx.fillText("Total Error", padX + 20, eTop + 60);
+        }
+
+        function drawGridSpace(alpha, modeVal) {
+            if(alpha <= 0.01) return;
+            const pad = 40; let availableW = cw - pad*2; let availableH = ch - pad*2;
+            
+            let isBootstrap = modeVal > 4.5;
+            let gridH = isBootstrap ? availableH * 0.18 : availableH * 0.8;
+            let gridW = availableW * 0.8;
+            let startX = pad + (availableW - gridW)/2;
+            let startY = isBootstrap ? pad : pad + (availableH - gridH)/2;
+
+            let cellW = gridW / gridCols; let cellH = gridH / gridRows;
+
+            const colorTrain = `rgba(59, 130, 246, ${alpha})`; const colorTest = `rgba(249, 115, 22, ${alpha})`; const colorNeutral = `rgba(226, 232, 240, ${alpha})`;
+
+            function getCellColor(r, c) {
+                let idx = r * gridCols + c;
+                if(modeVal < 0.5) return colorNeutral; 
+                if(modeVal < 1.5) return colorTrain; 
+                if(modeVal < 2.5) return valSplitArray[idx] ? colorTest : colorTrain;
+                
+                if(modeVal < 3.5) {
+                    let activeCol = Math.round(state.kFoldIndexVal) % 5;
+                    let chunk = Math.floor(c / 2); 
+                    return chunk === activeCol ? colorTest : `rgba(59, 130, 246, ${alpha * 0.3})`; // Dimmed train
+                }
+                
+                let loocvSlider = document.getElementById('loocvSlider');
+                let targetIdx = loocvSlider ? parseInt(loocvSlider.value) : 0;
+                if(modeVal < 4.5) return idx == targetIdx ? colorTest : colorTrain;
+                
+                if (modeVal >= 4.5 && bootOriginalHighlights[idx] > 0) {
+                    let hl = bootOriginalHighlights[idx];
+                    return `rgba(${59*(1-hl) + 249*hl}, ${130*(1-hl) + 115*hl}, ${246*(1-hl) + 22*hl}, ${alpha})`;
+                }
+                
+                return colorTrain; 
+            }
+
+            // Draw primary grid
+            for(let r=0; r<gridRows; r++) {
+                for(let c=0; c<gridCols; c++) {
+                    ctx.fillStyle = getCellColor(r, c); ctx.beginPath();
+                    ctx.roundRect(startX + c*cellW + 1, startY + r*cellH + 1, cellW - 2, cellH - 2, 2); ctx.fill();
+                }
+            }
+            
+            // Labels for primary grid
+            ctx.fillStyle = `rgba(100, 116, 139, ${alpha})`; ctx.font = '600 13px Inter'; ctx.textAlign = 'center';
+            if(!isBootstrap) {
+                if(modeVal > 0.5 && modeVal < 1.5) ctx.fillText("The Full Available Dataset", cw/2, startY - 15);
+                else if(modeVal >= 1.5 && modeVal < 2.5) {
+                    let ratioElem = document.getElementById('valSplitRatio');
+                    let splitText = (ratioElem && ratioElem.value === "0.8") ? "80% Training / 20% Validation" : "50% Training / 50% Validation";
+                    ctx.fillText(`Random Split: ${splitText}`, cw/2, startY - 15);
+                }
+                else if(modeVal >= 2.5 && modeVal < 3.5) {
+                    // Draw master title
+                    ctx.fillText(`k-Fold Cross-Validation (k=5)`, cw/2, startY - 25);
+                    
+                    let activeCol = Math.round(state.kFoldIndexVal) % 5;
+                    // FOLD LABELS above chunks
+                    for(let f=0; f<5; f++) {
+                        let fx = startX + (f * 2 * cellW) + cellW;
+                        let fy = startY - 8;
+                        ctx.fillStyle = (f === activeCol) ? `rgba(249, 115, 22, ${alpha})` : `rgba(148, 163, 184, ${alpha})`;
+                        ctx.font = (f === activeCol) ? '700 11px Inter' : '600 11px Inter';
+                        ctx.fillText(`Fold ${f+1}`, fx, fy);
+                    }
+
+                    // MODEL INDICATORS below the grid
+                    let totalModelsWidth = 5 * 60; // 300px
+                    let mStartX = startX + (gridW - totalModelsWidth)/2 + 30;
+                    for(let m=0; m<5; m++) {
+                        let mx = mStartX + (m * 60);
+                        let my = startY + gridH + 25;
+                        ctx.fillStyle = (m === activeCol) ? `rgba(59, 130, 246, ${alpha})` : `rgba(148, 163, 184, ${alpha*0.5})`;
+                        ctx.font = (m === activeCol) ? '700 12px Inter' : '500 12px Inter';
+                        ctx.beginPath();
+                        ctx.arc(mx - 25, my - 4, 4, 0, Math.PI*2);
+                        ctx.fill();
+                        ctx.fillText(`Model ${m+1}`, mx, my);
+                    }
+                }
+                else if(modeVal >= 3.5 && modeVal < 4.5) ctx.fillText("Leave-One-Out (1 Test, N-1 Train)", cw/2, startY - 15);
+            } else {
+                ctx.fillText("Original Dataset (Size N=100)", cw/2, startY - 10);
+            }
+
+            // Bootstrap specific visuals
+            if(isBootstrap) {
+                let startY2 = startY + gridH + 35;
+                let sampleLabel = (isBootRunning && bootPhase === 1) 
+                    ? "Building 1 bootstrap sample from the original 100 points..." 
+                    : "Bootstrap Sample (Size N=100, With Replacement)";
+                ctx.fillText(sampleLabel, cw/2, startY2 - 10);
+                
+                for(let r=0; r<gridRows; r++) {
+                    for(let c=0; c<gridCols; c++) {
+                        let idx = r * gridCols + c; let freq = bootstrapFrequencies[idx];
+                        let fillStyle = colorNeutral;
+                        if(freq > 0) {
+                            let intensity = Math.min(1, 0.4 + freq * 0.2);
+                            fillStyle = `rgba(59, 130, 246, ${alpha * intensity})`;
+                        }
+                        ctx.fillStyle = fillStyle; ctx.beginPath();
+                        ctx.roundRect(startX + c*cellW + 1, startY2 + r*cellH + 1, cellW - 2, cellH - 2, 2); ctx.fill();
+                        
+                        if(freq > 1) {
+                            ctx.fillStyle = `rgba(255,255,255,${alpha})`; ctx.beginPath();
+                            ctx.arc(startX + c*cellW + cellW/2, startY2 + r*cellH + cellH/2, 2, 0, Math.PI*2); ctx.fill();
+                        }
+                    }
+                }
+
+                // Dynamic Live Histogram Plot
+                let histTop = startY2 + gridH + 45;
+                let statElem = document.getElementById('bootStat');
+                let statLabel = (statElem && statElem.value === 'mean') ? 'Average Incomes' : 'Trend Slopes';
+                ctx.fillStyle = `rgba(100, 116, 139, ${alpha})`; 
+                ctx.fillText(`All the ${statLabel} from many bootstrap samples`, cw/2, histTop);
+                
+                let baseLineY = pad + availableH - 5;
+                ctx.strokeStyle = `rgba(226, 232, 240, ${alpha})`; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(pad, baseLineY); ctx.lineTo(cw-pad, baseLineY); ctx.stroke();
+
+                if(bootStats.length > 0) {
+                    let minM = Math.min(...bootStats); let maxM = Math.max(...bootStats);
+                    if(minM === maxM) { minM -= 0.1; maxM += 0.1; } // pad slightly
+                    let range = maxM - minM; minM -= range*0.1; maxM += range*0.1; 
+                    
+                    let binCounts = {};
+                    bootStats.forEach(m => {
+                        let bin = Math.floor( ((m - minM)/(maxM-minM)) * 40 ); 
+                        if(bin < 0) bin = 0; if(bin > 40) bin = 40;
+                        if(!binCounts[bin]) binCounts[bin] = 0;
+                        binCounts[bin]++;
+                    });
+
+                    let maxCount = Math.max(...Object.values(binCounts));
+                    let availablePixelHeight = baseLineY - histTop - 25;
+                    let dotSpacing = 7; 
+                    let dotRadius = 3;
+                    if (maxCount > 0 && (maxCount * dotSpacing > availablePixelHeight)) {
+                        dotSpacing = availablePixelHeight / maxCount;
+                        dotRadius = Math.max(1, dotSpacing * 0.4);
+                    }
+
+                    let currentBinCounts = {};
+                    let lastDot = null;
+                    bootStats.forEach((m, i) => {
+                        let bin = Math.floor( ((m - minM)/(maxM-minM)) * 40 ); 
+                        if(bin < 0) bin = 0; if(bin > 40) bin = 40;
+                        if(!currentBinCounts[bin]) currentBinCounts[bin] = 0;
+                        
+                        let px = pad + (bin/40)*(availableW);
+                        let py = baseLineY - dotRadius - 2 - (currentBinCounts[bin] * dotSpacing);
+                        
+                        if (i === bootStats.length - 1) {
+                            lastDot = {px, py, m};
+                        } else {
+                            ctx.fillStyle = `rgba(99, 102, 241, ${alpha})`; 
+                            ctx.beginPath(); ctx.arc(px, py, dotRadius, 0, Math.PI*2); ctx.fill();
+                        }
+                        currentBinCounts[bin]++;
+                    });
+
+                    // Draw the newest sample dot on top with a distinct color and value label
+                    if (lastDot) {
+                        ctx.fillStyle = `rgba(249, 115, 22, ${alpha})`; // Orange
+                        ctx.beginPath(); ctx.arc(lastDot.px, lastDot.py, dotRadius * 1.5, 0, Math.PI*2); ctx.fill();
+                        ctx.font = '700 11px Inter';
+                        ctx.fillText(lastDot.m.toFixed(2), lastDot.px, lastDot.py - 8);
+                    }
+                }
+            }
+        }
+
+        function render(time) {
+            processBootstrapTick(); // Handle any automated bootstrap frames
+
+            if(cw && ch) {
+                ctx.clearRect(0, 0, cw, ch);
+
+                state.scatterOpacity = lerp(state.scatterOpacity, targetState.scatterOpacity, 0.05);
+                state.biasLineOpacity = lerp(state.biasLineOpacity, targetState.biasLineOpacity, 0.05);
+                state.varLineOpacity = lerp(state.varLineOpacity, targetState.varLineOpacity, 0.05);
+                state.optLineOpacity = lerp(state.optLineOpacity, targetState.optLineOpacity, 0.05);
+                state.flexLineOpacity = lerp(state.flexLineOpacity, targetState.flexLineOpacity, 0.05);
+                state.errorSpaceOpacity = lerp(state.errorSpaceOpacity, targetState.errorSpaceOpacity, 0.05);
+                state.layoutSplit = lerp(state.layoutSplit, targetState.layoutSplit, 0.05);
+                state.gridSpaceOpacity = lerp(state.gridSpaceOpacity, targetState.gridSpaceOpacity, 0.05);
+                state.gridModeVal = lerp(state.gridModeVal, targetState.gridMode, 0.08);
+                state.kFoldIndexVal = lerp(state.kFoldIndexVal, targetState.kFoldIndex, 0.15); 
+
+                let splitL = state.layoutSplit;
+                let sPadX = cw * 0.1; let sPadY = ch * 0.1;
+                let sTop = sPadY; let sBottom = lerp(ch - sPadY, ch * 0.45, splitL); let sWidth = cw - sPadX * 2;
+                let ePadX = cw * 0.1; let eTop = lerp(sPadY, ch * 0.55, splitL); let eBottom = ch - sPadY; let eWidth = cw - ePadX * 2;
+
+                if(state.scatterOpacity > 0.01) {
+                    ctx.strokeStyle = `rgba(226, 232, 240, ${state.scatterOpacity})`; ctx.lineWidth = 1; ctx.beginPath();
+                    let plotH = sBottom - sTop;
+                    for(let i=0; i<=5; i++) { let y = sTop + plotH * (i/5); ctx.moveTo(sPadX, y); ctx.lineTo(cw - sPadX, y); } ctx.stroke();
+
+                    drawScatter(state.scatterOpacity, sTop, sBottom, sWidth);
+                    drawCurve(biasFunc, 'rgb(239, 68, 68)', state.biasLineOpacity, [], sTop, sBottom, sWidth);
+                    drawCurve(varFunc, 'rgb(14, 165, 233)', state.varLineOpacity, [], sTop, sBottom, sWidth);
+                    drawCurve(trueFunc, 'rgb(34, 197, 94)', state.optLineOpacity, [5, 5], sTop, sBottom, sWidth);
+                    
+                    if (state.flexLineOpacity > 0.01) {
+                        let flexSlider = document.getElementById('flexSlider');
+                        let flexVal = flexSlider ? flexSlider.value / 100 : 0.5;
+                        let activeH = 0.5 * Math.pow((0.005 / 0.5), flexVal); 
+                        let liveFunc = function(x) { return predictNW(x, scatterData, activeH); };
+                        drawCurve(liveFunc, 'rgb(168, 85, 247)', state.flexLineOpacity, [], sTop, sBottom, sWidth);
+                    }
+                }
+
+                drawErrorSpace(state.errorSpaceOpacity, eTop, eBottom, eWidth);
+                drawGridSpace(state.gridSpaceOpacity, state.gridModeVal);
+            }
+            requestAnimationFrame(render);
+        }
+
+        // --- 5. Observers & Scroll Logic ---
+        const sections = document.querySelectorAll('[data-stage]');
+        const dotsContainer = document.getElementById('dots-container');
+        const progressBar = document.getElementById('progress-bar');
+        
+        sections.forEach((sec, idx) => {
+            const dot = document.createElement('div'); dot.className = 'dot'; dot.dataset.target = idx;
+            dot.onclick = () => sec.scrollIntoView({ behavior: 'smooth' }); 
+            if(dotsContainer) dotsContainer.appendChild(dot);
+        });
+        const dots = document.querySelectorAll('.dot');
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if(entry.isIntersecting) {
+                    const stage = parseInt(entry.target.dataset.stage);
+                    updateStage(stage);
+                    sections.forEach(s => s.classList.remove('active')); entry.target.classList.add('active');
+                    dots.forEach(d => d.classList.remove('active')); if(dots[stage]) dots[stage].classList.add('active');
+                }
+            });
+        }, { threshold: 0.45 });
+
+        sections.forEach(sec => observer.observe(sec));
+
+        window.addEventListener('scroll', () => {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            if(progressBar) progressBar.style.width = ((winScroll / height) * 100) + "%";
+        });
+
+        function updateStage(s) {
+            targetState.scatterOpacity = 0; targetState.biasLineOpacity = 0; targetState.varLineOpacity = 0;
+            targetState.optLineOpacity = 0; targetState.flexLineOpacity = 0; targetState.errorSpaceOpacity = 0;
+            targetState.layoutSplit = 0; targetState.gridSpaceOpacity = 0; targetState.gridMode = 0;
+
+            switch(s) {
+                case 0: targetState.scatterOpacity = 0.2; break;
+                case 1: targetState.scatterOpacity = 1; break;
+                case 2: targetState.scatterOpacity = 1; targetState.biasLineOpacity = 1; break;
+                case 3: targetState.scatterOpacity = 1; targetState.varLineOpacity = 1; targetState.biasLineOpacity = 0.1; break;
+                case 4: targetState.scatterOpacity = 1; targetState.optLineOpacity = 1; targetState.biasLineOpacity = 0.1; targetState.varLineOpacity = 0.1; break;
+                case 5: targetState.scatterOpacity = 1; targetState.flexLineOpacity = 1; targetState.errorSpaceOpacity = 1; targetState.layoutSplit = 1; break;
+                case 6: targetState.gridSpaceOpacity = 1; targetState.gridMode = 1; break;
+                case 7: targetState.gridSpaceOpacity = 1; targetState.gridMode = 2; 
+                        let valReadout = document.getElementById('val-readout');
+                        if(valReadout && valReadout.innerText === "0.000") triggerValidationRedraw(); 
+                        break;
+                case 8: targetState.gridSpaceOpacity = 1; targetState.gridMode = 3; if(currentKFold===-1) triggerKFoldStep(); break;
+                case 9: targetState.gridSpaceOpacity = 1; targetState.gridMode = 4; triggerLOOCV(); break;
+                case 10: targetState.gridSpaceOpacity = 1; targetState.gridMode = 5; break;
+                case 11: targetState.gridSpaceOpacity = 0.4; targetState.gridMode = 5; break;
+                case 12: targetState.gridSpaceOpacity = 0.1; targetState.gridMode = 5; break;
+            }
+        }
+
+        // Initialize
+        window.addEventListener('DOMContentLoaded', () => {
+            resize();
+            requestAnimationFrame(render);
+            resetBootstrap();
+        });
+        
+        // Fallback for execution environments that miss DOMContentLoaded
+        resize();
+        requestAnimationFrame(render);
+        resetBootstrap(); 
+    </script>
+</body>
+</html>

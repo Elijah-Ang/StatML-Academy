@@ -1,0 +1,1674 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Model Selection & Regularization</title>
+    
+    <!-- MathJax for rendering formulas -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']],
+          displayMath: [['$$', '$$'], ['\\[', '\\]']]
+        }
+      };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+
+    <style>
+        :root {
+            --bg-primary: #f7f7f4;
+            --bg-secondary: #f0efeb;
+            --surface: #ffffff;
+            --border: #e7e5e4;
+            --text-main: #1f2937;
+            --text-dim: #4b5563;
+            --text-muted: #6b7280;
+            --accent: #6366f1;
+            --accent-dark: #4f46e5;
+            --accent-light: #e0e7ff;
+            --success: #16a34a;
+            --warning: #d97706;
+            --error: #dc2626;
+            --blue: #2563eb;
+            --font-prose: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-prose);
+            background-color: var(--bg-primary);
+            color: var(--text-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Progress Bar */
+        #progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent), var(--blue));
+            width: 0%;
+            z-index: 1000;
+            transition: width 0.1s ease-out;
+        }
+
+        /* Stage Dots */
+        #stage-dots {
+            position: fixed;
+            right: 2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            z-index: 100;
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: var(--border);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .dot.active {
+            background-color: var(--accent);
+            transform: scale(1.5);
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 2rem;
+            position: relative;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: radial-gradient(circle at center, var(--accent-light) 0%, transparent 70%);
+            opacity: 0.3;
+            z-index: -1;
+        }
+
+        .topic-badge {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--accent-dark);
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            background: var(--surface);
+            padding: 0.5rem 1rem;
+            border-radius: 999px;
+            border: 1px solid var(--border);
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 5vw, 4.5rem);
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            max-width: 900px;
+            background: linear-gradient(135deg, #111827 0%, var(--accent-dark) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            color: var(--text-dim);
+            max-width: 650px;
+        }
+
+        .scroll-cue {
+            position: absolute;
+            bottom: 3rem;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.5; transform: translateY(0); }
+            50% { opacity: 1; transform: translateY(5px); }
+        }
+
+        /* Split Layout */
+        .layout-wrapper {
+            display: grid;
+            grid-template-columns: 45% 55%;
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        .narrative {
+            padding: 0 4rem 10rem 4rem;
+        }
+
+        .visualization {
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            padding: 2rem 2rem 2rem 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .canvas-container {
+            width: 100%;
+            height: 90%;
+            background: var(--surface);
+            border-radius: 1.5rem;
+            box-shadow: 0 10px 30px -10px rgba(0,0,0,0.05);
+            border: 1px solid var(--border);
+            overflow: hidden;
+            position: relative;
+        }
+
+        canvas {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        /* Canvas Annotation Overlay */
+        #canvas-annotation {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            background: rgba(255, 255, 255, 0.95);
+            border: 1px solid var(--accent);
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--accent-dark);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            transition: opacity 0.3s;
+            opacity: 0;
+            z-index: 10;
+        }
+
+        /* Stages */
+        .stage {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 4rem 0;
+        }
+
+        .stage-label {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--accent);
+            font-weight: 700;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .stage-label::after {
+            content: '';
+            height: 2px;
+            width: 2rem;
+            background-color: var(--accent);
+        }
+
+        h2 {
+            font-size: 2.25rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: var(--text-main);
+            line-height: 1.2;
+        }
+
+        p {
+            font-size: 1.05rem;
+            color: var(--text-dim);
+            margin-bottom: 1.25rem;
+        }
+
+        /* Components */
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }
+
+        .formula-block {
+            background: var(--bg-secondary);
+            font-family: var(--font-mono);
+            font-size: 0.95rem;
+            padding: 1.25rem;
+            border-radius: 0.75rem;
+            border: 1px solid var(--border);
+            margin: 1.5rem 0;
+            color: var(--text-main);
+            overflow-x: auto;
+        }
+
+        .breakdown {
+            font-size: 0.95rem;
+            margin: 1.5rem 0;
+            padding: 1rem 1.5rem;
+            background: var(--surface);
+            border-left: 4px solid var(--accent);
+            border-radius: 0 0.5rem 0.5rem 0;
+        }
+        
+        .breakdown summary {
+            font-weight: 600;
+            cursor: pointer;
+            color: var(--accent-dark);
+            outline: none;
+            margin-bottom: 0.5rem;
+        }
+
+        .breakdown ul {
+            margin-top: 0.75rem;
+            margin-left: 1.5rem;
+            color: var(--text-dim);
+        }
+
+        .breakdown li {
+            margin-bottom: 0.5rem;
+        }
+
+        .insight-box {
+            border-left: 4px solid var(--accent);
+            background: var(--accent-light);
+            padding: 1.25rem 1.5rem;
+            border-radius: 0 0.75rem 0.75rem 0;
+            margin: 1.5rem 0;
+        }
+
+        .insight-box p {
+            margin: 0;
+            color: var(--text-main);
+            font-size: 0.95rem;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .metric-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 0.75rem;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .metric-card .value {
+            font-family: var(--font-mono);
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--accent-dark);
+        }
+
+        .metric-card .label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+        }
+
+        .pill {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .pill.red { background: #fee2e2; color: #991b1b; }
+        .pill.blue { background: #dbeafe; color: #1e40af; }
+        .pill.purple { background: #f3e8ff; color: #6b21a8; }
+
+        .control-panel {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 0.75rem;
+            padding: 1.25rem;
+            margin: 1.5rem 0;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+        
+        .control-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            accent-color: var(--accent);
+            cursor: pointer;
+        }
+
+        .slider-readout {
+            font-size: 0.85rem;
+            color: var(--text-dim);
+            margin-top: 0.25rem;
+            text-align: right;
+            min-height: 1.2rem;
+            transition: color 0.2s;
+        }
+
+        /* Tooltips for Jargon */
+        .tooltip {
+            border-bottom: 2px dotted var(--accent);
+            cursor: help;
+            position: relative;
+            color: var(--accent-dark);
+            font-weight: 500;
+        }
+
+        .tooltip:hover::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 120%; 
+            left: 50%; 
+            transform: translateX(-50%);
+            background: var(--text-main); 
+            color: white;
+            padding: 0.75rem; 
+            border-radius: 0.5rem;
+            font-size: 0.85rem; 
+            width: max-content;
+            max-width: 250px;
+            white-space: normal; 
+            z-index: 20;
+            line-height: 1.4;
+            font-weight: 400;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        /* Mini-Check */
+        .mini-check {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 0.75rem;
+            padding: 1.25rem;
+            margin: 2rem 0;
+        }
+
+        .mini-check h4 {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--accent-dark);
+            margin-bottom: 0.75rem;
+        }
+
+        .mini-check button {
+            display: block;
+            width: 100%;
+            text-align: left;
+            padding: 0.75rem 1rem;
+            margin-bottom: 0.5rem;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 0.95rem;
+            color: var(--text-main);
+            transition: all 0.2s;
+        }
+
+        .mini-check button:hover {
+            border-color: var(--accent);
+            background: var(--accent-light);
+        }
+
+        .mini-check button.correct {
+            background: #dcfce7;
+            border-color: #16a34a;
+            color: #166534;
+        }
+
+        .mini-check button.wrong {
+            background: #fee2e2;
+            border-color: #dc2626;
+            color: #991b1b;
+        }
+        
+        .feedback-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            min-height: 1.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .feedback {
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin: 0;
+        }
+        
+        .retry-btn {
+            cursor: pointer;
+            color: var(--text-muted);
+            text-decoration: underline;
+            font-size: 0.85rem;
+            user-select: none;
+            transition: color 0.2s;
+        }
+        .retry-btn:hover {
+            color: var(--text-main);
+        }
+
+        /* Fold Animation CSS */
+        .folds-container {
+            display: flex;
+            gap: 0.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .fold-box {
+            flex: 1;
+            text-align: center;
+            padding: 0.75rem 0;
+            border-radius: 0.5rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+            border: 1px solid var(--border);
+            background: var(--surface);
+            color: var(--text-dim);
+            animation: foldCycle 10s infinite;
+        }
+
+        @keyframes foldCycle {
+            0%, 15% { background: var(--surface); color: var(--text-dim); border-color: var(--border); }
+            20%, 35% { background: var(--accent); color: white; border-color: var(--accent-dark); }
+            40%, 100% { background: var(--surface); color: var(--text-dim); border-color: var(--border); }
+        }
+
+        .fold-box:nth-child(1) { animation-delay: 0s; }
+        .fold-box:nth-child(2) { animation-delay: 2s; }
+        .fold-box:nth-child(3) { animation-delay: 4s; }
+        .fold-box:nth-child(4) { animation-delay: 6s; }
+        .fold-box:nth-child(5) { animation-delay: 8s; }
+        
+        /* Decision Helper Interactive Buttons */
+        .decision-btn {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            padding: 0.5rem 1rem;
+            border-radius: 999px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            color: var(--text-dim);
+            transition: all 0.2s;
+        }
+        .decision-btn.active {
+            background: var(--accent);
+            color: white;
+            border-color: var(--accent-dark);
+        }
+        
+        .decision-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .decision-card.inactive {
+            opacity: 0.1;
+            transform: scale(0.95);
+            filter: grayscale(1) blur(1px);
+            pointer-events: none;
+        }
+        .decision-card.active {
+            opacity: 1;
+            transform: scale(1);
+            filter: none;
+            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1), 0 8px 10px -6px rgba(0,0,0,0.1);
+        }
+
+        .recommended-badge {
+            display: none;
+            color: white;
+            font-size: 0.7rem;
+            padding: 0.2rem 0.6rem;
+            border-radius: 999px;
+            font-weight: 700;
+            float: right;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .decision-card.active .recommended-badge {
+            display: inline-block;
+        }
+        .decision-card[data-tags*="interpret"] .recommended-badge {
+            background-color: var(--accent);
+        }
+        .decision-card[data-tags*="accuracy"] .recommended-badge {
+            background-color: var(--blue);
+        }
+
+        /* Mobile */
+        @media (max-width: 900px) {
+            .layout-wrapper {
+                grid-template-columns: 1fr;
+            }
+            .visualization {
+                position: sticky;
+                top: 0;
+                height: 50vh;
+                padding: 1rem;
+                z-index: 10;
+                background: var(--bg-primary);
+                border-bottom: 1px solid var(--border);
+            }
+            .narrative {
+                padding: 2rem 1.5rem;
+            }
+            .stage {
+                min-height: auto;
+                padding: 3rem 0;
+            }
+            #stage-dots {
+                display: none;
+            }
+            #canvas-annotation {
+                top: 0.5rem;
+                right: 0.5rem;
+                font-size: 0.75rem;
+                padding: 0.25rem 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="progress-bar"></div>
+    <div id="stage-dots"></div>
+
+    <header class="hero">
+        <div class="topic-badge">Statistical Methods</div>
+        <h1>Model Selection & Regularization</h1>
+        <p>A beginner-friendly guide to balancing complexity, solving the $n-p$ puzzle, and building predictors that actually work in the real world.</p>
+        <div class="scroll-cue">Scroll to begin</div>
+    </header>
+
+    <div class="layout-wrapper">
+        <div class="narrative">
+
+            <!-- Stage 1: The Big Picture -->
+            <section class="stage" data-stage="1">
+                <div class="stage-label">Stage 01</div>
+                <h2>The Overfitting Trap</h2>
+                <p>Building a predictive model is tricky. It is tempting to include every available piece of data. We often assume that more clues guarantee better answers.</p>
+                <p>However, adding too many variables introduces massive noise. This noise obscures the true relationship. The model ends up memorizing random accidents in the <span class="tooltip" data-tooltip="The specific dataset used to teach the model its rules.">training data</span> rather than learning the actual signal.</p>
+                
+                <div class="insight-box">
+                    <p><b>The Illusion of Accuracy:</b> A highly complex model performs flawlessly on its "homework" (the training data). But it collapses in the real world on unseen data. This failure is called <b>overfitting</b>.</p>
+                </div>
+            </section>
+
+            <!-- Stage 2: The n-p Puzzle -->
+            <section class="stage" data-stage="2">
+                <div class="stage-label">Stage 02</div>
+                <h2>The <i>n-p</i> Puzzle</h2>
+                <p>To build a reliable model, we must balance two things. First is the number of samples ($n$). Second is the number of variables or clues ($p$).</p>
+                
+                <p>Think of this in three simple steps:</p>
+                <div class="card">
+                    <ol style="margin-left: 1.5rem; color: var(--text-main); display: flex; flex-direction: column; gap: 0.75rem;">
+                        <li><b>Step 1:</b> You need enough examples to prove a real pattern exists.</li>
+                        <li><b>Step 2:</b> Every new variable adds a whole new dimension for the model to search.</li>
+                        <li><b>Step 3:</b> If your variables ($p$) outnumber your samples ($n$), the model is completely lost. It has too many options and not enough proof.</li>
+                    </ol>
+                </div>
+                
+                <p>At this point, standard math breaks down. The underlying matrix becomes <span class="tooltip" data-tooltip="A matrix that cannot be inverted. This means the math equations have no unique solution.">singular</span>. Without a unique solution, the model just perfectly fits the noise.</p>
+            </section>
+
+            <!-- Stage 3: Subset Selection -->
+            <section class="stage" data-stage="3">
+                <div class="stage-label">Stage 03</div>
+                <h2>Picking the Best Team</h2>
+                <p>One way to fix this is <b>Subset Selection</b>. This means literally picking a specific group of variables and throwing the rest out.</p>
+                
+                <div class="card">
+                    <p><span class="pill blue">Forward</span> Start empty. Add the single best predictor. Then add the next one that helps the most. Keep going.</p>
+                    <hr style="border: none; border-top: 1px solid var(--border); margin: 0.75rem 0;">
+                    <p><span class="pill red">Backward</span> Start with all variables. Find the weakest predictor and bench them. Repeat until only the best are left.</p>
+                    <hr style="border: none; border-top: 1px solid var(--border); margin: 0.75rem 0;">
+                    <p><span class="pill purple">Hybrid</span> Add the best predictors one by one. But constantly re-evaluate. If an old predictor becomes redundant, remove it.</p>
+                </div>
+                
+                <div class="mini-check">
+                    <h4>Mini-Check</h4>
+                    <p>Why don't we just test every single combination of variables?</p>
+                    <button onclick="checkAnswer(this, false)">It decreases accuracy.</button>
+                    <button onclick="checkAnswer(this, true)">It is computationally impossible. Just 40 predictors creates over a billion models.</button>
+                    <div class="feedback-container">
+                        <span class="feedback"></span>
+                        <a class="retry-btn" style="display: none;" onclick="resetCheck(this)">Reset / Try Again ↻</a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Stage 4: Scorecards -->
+            <section class="stage" data-stage="4">
+                <div class="stage-label">Stage 04</div>
+                <h2>The Scorecards</h2>
+                <p>As we add variables, the raw training error always goes down. The model looks better, even if it is just memorizing noise. To find the truly best model, we need scorecards.</p>
+                
+                <p>These scorecards punish us for adding unnecessary complexity.</p>
+
+                <div class="grid-2">
+                    <div class="metric-card">
+                        <div class="value">$C_p$, AIC, BIC</div>
+                        <div class="label">Like a golf score: Lower is better. They measure Total Error + Complexity Penalty.</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="value">Adj. $R^2$</div>
+                        <div class="label">Higher is better. Adjusts the traditional $R^2$ relative to total variation and complexity.</div>
+                    </div>
+                </div>
+
+                <div class="formula-block">
+                    $C_p = \frac{1}{n}(RSS + 2p\hat{\sigma}^2)$<br><br>
+                    $AIC = \frac{2p}{n} - \frac{2}{n}\ln(L)$<br><br>
+                    $BIC = -2\ln(L) + p\ln(n)$<br><br>
+                    $\text{Adj. } R^2 = 1 - \frac{RSS/(n-p-1)}{TSS/(n-1)}$
+                </div>
+
+                <details class="breakdown">
+                    <summary>Plain English Breakdown</summary>
+                    <p>Most scorecards use the same basic logic: <b>Total Score = Error + Penalty</b>.</p>
+                    <ul>
+                        <li><b>$C_p$, AIC, and BIC:</b> These measure how much your model's guesses miss the actual marks ($RSS$ or $-2\ln(L)$) and add a mathematical tax for every variable ($p$) you use. You want these to be <b>low</b>.</li>
+                        <li><b>BIC's extra strictness:</b> BIC multiplies the penalty by $\ln(n)$, meaning for most datasets, it applies a much harsher penalty than AIC, strongly forcing you to choose simpler models.</li>
+                        <li><b>Adjusted $R^2$:</b> Unlike the others, higher is better here. It measures the percentage of variation your model explains, but mathematically penalizes you if you add useless variables to artificially inflate the score.</li>
+                    </ul>
+                </details>
+            </section>
+
+            <!-- Stage 5: Shrinking & Preprocessing -->
+            <section class="stage" data-stage="5">
+                <div class="stage-label">Stage 05</div>
+                <h2>The Shrinking Trick</h2>
+                <p>Subset selection is an "all-or-nothing" approach. A variable is either in or out. But what if we just made a weak variable's influence smaller?</p>
+                <p>This is called <b>Regularization</b>. Imagine a soundboard where each slider controls a variable. Regularization turns down the volume on loud, messy variables. It shrinks their coefficients ($\beta$) toward zero using a tuning dial called $\lambda$ (Lambda).</p>
+                
+                <div class="insight-box">
+                    <p><b>Crucial Step:</b> Variables should be <i>centered</i> first, and usually <span class="tooltip" data-tooltip="Adjusting variables so they have a standard deviation of 1.">standardized</span> when their scales differ, to create a level playing field. Otherwise, a variable measured in huge numbers (like dollars) would face unfair shrinkage compared to a variable measured in small numbers (like years).</p>
+                </div>
+
+                <div class="mini-check">
+                    <h4>Mini-Check</h4>
+                    <p>What is the main goal of Regularization?</p>
+                    <button onclick="checkAnswer(this, false)">To delete all the variables and start over.</button>
+                    <button onclick="checkAnswer(this, true)">To turn down the volume (shrink the coefficients) of noisy or less useful variables.</button>
+                    <div class="feedback-container">
+                        <span class="feedback"></span>
+                        <a class="retry-btn" style="display: none;" onclick="resetCheck(this)">Reset / Try Again ↻</a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Stage 6: Ridge -->
+            <section class="stage" data-stage="6">
+                <div class="stage-label">Stage 06</div>
+                <h2>Ridge Regression (L2)</h2>
+                <p>Ridge regression acts like a <b>"Gentle Parent."</b> It looks at the noisy variables and says, <i>"Everybody calm down a little."</i></p>
+                
+                <div class="formula-block">
+                    Minimize: $RSS + \lambda \sum \beta_j^2$
+                </div>
+
+                <details class="breakdown">
+                    <summary>Plain English Breakdown</summary>
+                    <ul>
+                        <li><b>$RSS$:</b> The raw error of your predictions.</li>
+                        <li><b>$\lambda$ (Lambda):</b> The strength of the penalty. You control this dial.</li>
+                        <li><b>$\sum \beta_j^2$:</b> The sum of all your squared coefficients. Ridge hates large coefficients.</li>
+                        <li><b>What to notice:</b> Ridge adds a squared penalty. This mathematically forces all coefficients to shrink, but crucially, <b>they never reach exactly zero</b>.</li>
+                    </ul>
+                </details>
+                
+                <p><b>Watch this:</b> Slide the $\lambda$ dial below. Notice how the colorful bars shrink together, but none of them vanish completely.</p>
+                
+                <div class="control-panel">
+                    <div class="control-header">
+                        <span>Ridge Penalty ($\lambda$)</span>
+                        <span id="ridge-val" style="font-family: var(--font-mono); color: var(--accent);">0</span>
+                    </div>
+                    <input type="range" id="ridge-slider" min="0" max="100" value="0">
+                    <div id="ridge-readout" class="slider-readout"><strong>λ = 0:</strong> No penalty applied (Standard OLS).</div>
+                </div>
+            </section>
+
+            <!-- Stage 7: Lasso -->
+            <section class="stage" data-stage="7">
+                <div class="stage-label">Stage 07</div>
+                <h2>Lasso Regression (L1)</h2>
+                <p>Lasso regression is the <b>"Strict Parent."</b> It looks at the variables and says, <i>"Some of you are helping. Some of you are just standing here. Leave."</i></p>
+
+                <div class="formula-block">
+                    Minimize: $RSS + \lambda \sum |\beta_j|$
+                </div>
+
+                <details class="breakdown">
+                    <summary>Plain English Breakdown</summary>
+                    <ul>
+                        <li><b>$\sum |\beta_j|$:</b> Instead of squaring the coefficients, Lasso takes their absolute value.</li>
+                        <li><b>What to notice:</b> Because it uses absolute values, the geometry changes. Lasso can force coefficients to drop to <b>exactly zero</b>.</li>
+                    </ul>
+                </details>
+
+                <p><b>Watch this:</b> Slide the $\lambda$ dial. Watch how Lasso completely removes the useless grey noise variables, creating a simpler, cleaner model.</p>
+
+                <div class="control-panel">
+                    <div class="control-header">
+                        <span>Lasso Penalty ($\lambda$)</span>
+                        <span id="lasso-val" style="font-family: var(--font-mono); color: var(--accent);">0</span>
+                    </div>
+                    <input type="range" id="lasso-slider" min="0" max="100" value="0">
+                    <div id="lasso-readout" class="slider-readout"><strong>λ = 0:</strong> No penalty applied (Standard OLS).</div>
+                </div>
+            </section>
+
+            <!-- Stage 8: Cross Validation -->
+            <section class="stage" data-stage="8">
+                <div class="stage-label">Stage 08</div>
+                <h2>Finding the Sweet Spot</h2>
+                <p>How do we know the right amount of shrinkage? We use <b>K-Fold Cross-Validation</b> to find the optimal $\lambda$ dial setting.</p>
+
+                <p>First, we divide our training data into chunks called "folds".</p>
+                
+                <div class="folds-container">
+                    <div class="fold-box">Train</div>
+                    <div class="fold-box">Train</div>
+                    <div class="fold-box">Train</div>
+                    <div class="fold-box">Train</div>
+                    <div class="fold-box">Validate</div>
+                </div>
+
+                <p>We train the model on four folds. We then validate it on the one held-out fold (highlighted above). We repeat this process, rotating which fold is held out, until every fold has been tested. Finally, we average the errors.</p>
+                
+                <div class="insight-box">
+                    <p><b>Why average them?</b> Averaging prevents a "lucky split." It stops us from accidentally choosing a model that just happened to get easy data during validation.</p>
+                </div>
+                
+                <div class="control-panel">
+                    <div class="control-header">
+                        <span>Sweep $\lambda$ to find Minimum Error</span>
+                        <span id="cv-val" style="font-family: var(--font-mono); color: var(--accent);">0</span>
+                    </div>
+                    <input type="range" id="cv-slider" min="0" max="100" value="0">
+                    <div id="cv-readout" class="slider-readout">Current λ: <strong>0</strong> | CV Error: <strong>...</strong> | <span style="color:var(--warning); font-weight:600;">Too low! (Overfitting)</span></div>
+                </div>
+            </section>
+
+            <!-- Stage 9: Dimension Reduction -->
+            <section class="stage" data-stage="9">
+                <div class="stage-label">Stage 09</div>
+                <h2>The "Super-Variable" Secret</h2>
+                <p>If we have 100 highly correlated variables, they provide redundant information. <b>Dimension Reduction</b> allows us to "squish" them into a few super-variables called Principal Components.</p>
+                
+                <div class="grid-2">
+                    <div class="card" style="margin:0; border-top: 4px solid var(--blue);">
+                        <h3 style="font-size: 1.1rem; margin-bottom: 0.5rem;">PCR</h3>
+                        <p style="font-size: 0.95rem; margin:0;"><b>Compress first, predict later.</b> It squishes variables together without looking at what you are trying to predict.</p>
+                    </div>
+                    <div class="card" style="margin:0; border-top: 4px solid var(--accent);">
+                        <h3 style="font-size: 1.1rem; margin-bottom: 0.5rem;">PLS</h3>
+                        <p style="font-size: 0.95rem; margin:0;"><b>Compress while paying attention.</b> It squishes variables together by finding directions that best explain the target you want to predict.</p>
+                    </div>
+                </div>
+                
+                <p style="margin-top: 1.5rem;">Think of PCR as combining 100 photos of a dog into a single "Super-Photo" of the whole dog. PLS knows you are trying to predict happiness, so it squishes the photos specifically to highlight the wagging tail.</p>
+            </section>
+
+            <!-- Stage 10: Which Tool to Use? -->
+            <section class="stage" data-stage="10">
+                <div class="stage-label">Stage 10</div>
+                <h2>Decision Helper</h2>
+                <p>Select your goals to see which tool fits best (you can select multiple):</p>
+
+                <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1.5rem;">
+                    <button class="decision-btn active" data-tag="interpret" onclick="toggleDecision('interpret', this)">I need to explain "Why"</button>
+                    <button class="decision-btn" data-tag="fewer" onclick="toggleDecision('fewer', this)">I want fewer variables</button>
+                    <button class="decision-btn" data-tag="accuracy" onclick="toggleDecision('accuracy', this)">I only care about pure accuracy</button>
+                    <button class="decision-btn" data-tag="correlated" onclick="toggleDecision('correlated', this)">I have highly correlated variables</button>
+                </div>
+
+                <p id="decision-result" style="font-weight: 600; font-size: 1.05rem; color: var(--text-main); margin-bottom: 1rem; border-bottom: 2px solid var(--border); padding-bottom: 0.5rem;">Best match: <span id="decision-result-text" style="color: var(--accent-dark);">Lasso & Best Subset Selection</span><span id="decision-explanation" style="font-weight: 400; font-size: 0.95rem; color: var(--text-dim); display: block; margin-top: 0.25rem;"> You prioritize explaining 'why' and keeping models simple.</span></p>
+
+                <div id="card-lasso" class="card decision-card active" data-tags="interpret fewer" style="border-left: 4px solid var(--accent); margin: 0; margin-bottom: 1rem;">
+                    <div class="recommended-badge">Recommended</div>
+                    <h3 style="font-size: 1.1rem; margin-bottom: 0.5rem; color: var(--accent-dark);">Lasso & Best Subset Selection</h3>
+                    <p style="font-size: 0.95rem;"><b>Best for Interpretability & Simplicity.</b> These methods drop variables entirely, leaving a clean, short list of the most important drivers. Essential in healthcare or finance where explaining the "why" matters.</p>
+                </div>
+                
+                <div id="card-ridge" class="card decision-card inactive" data-tags="accuracy correlated" style="border-left: 4px solid var(--blue); margin: 0;">
+                    <div class="recommended-badge">Recommended</div>
+                    <h3 style="font-size: 1.1rem; margin-bottom: 0.5rem; color: var(--blue);">Ridge & PCR</h3>
+                    <p style="font-size: 0.95rem;"><b>Best for Pure Prediction & Correlated Data.</b> When you have many overlapping clues and prediction accuracy matters more than a simple explanation, keeping all variables with smaller, stable weights helps minimize error on new data.</p>
+                </div>
+            </section>
+
+            <!-- Stage 11: Limitations -->
+            <section class="stage" data-stage="11">
+                <div class="stage-label">Stage 11</div>
+                <h2>Common Mistakes</h2>
+                <p>Even advanced statistical methods are not magic. Here is how to avoid common traps.</p>
+                
+                <div class="card">
+                    <p style="color: var(--error); font-weight: 600; font-size: 0.9rem; text-transform: uppercase;">Mistake 1</p>
+                    <p style="margin-bottom: 1rem;">Choosing a model based on training accuracy.</p>
+                    <p style="color: var(--success); font-weight: 600; font-size: 0.9rem; text-transform: uppercase;">Correct Practice</p>
+                    <p style="margin-bottom: 0;">Always compare and judge models based on cross-validation error. Training accuracy is always overly optimistic.</p>
+                </div>
+                
+                <div class="card">
+                    <p style="color: var(--error); font-weight: 600; font-size: 0.9rem; text-transform: uppercase;">Mistake 2</p>
+                    <p style="margin-bottom: 1rem;">Testing on the final test set multiple times.</p>
+                    <p style="color: var(--success); font-weight: 600; font-size: 0.9rem; text-transform: uppercase;">Correct Practice</p>
+                    <p style="margin-bottom: 0;">Lock the final test set in a vault. Use it only once at the very end to check your final model. If you use it to tweak parameters, it is no longer an honest test.</p>
+                </div>
+            </section>
+
+            <!-- Stage 12: Synthesis -->
+            <section class="stage" data-stage="12">
+                <div class="stage-label">Stage 12</div>
+                <h2>Final Synthesis</h2>
+                <p>We do not want a model that is too simple (underfitting). We do not want a model that is too dramatic (overfitting).</p>
+                <p>By using <b>Cross-Validation</b>, we compare and validate models fairly. By applying <b>Regularization</b> or <b>Subset Selection</b>, we penalize messiness and force the model to focus only on what matters.</p>
+                <p>The ultimate goal is <b>Generalization</b>. We want to build a model that stays trustworthy and useful when reality shows up and starts ruining everyone's assumptions.</p>
+                
+                <div class="mini-check">
+                    <h4>Final Check</h4>
+                    <p>What is the ultimate goal of model selection and regularization?</p>
+                    <button onclick="checkAnswer(this, false)">To achieve 0% error on the training data.</button>
+                    <button onclick="checkAnswer(this, true)">Generalization: performing well on unseen real-world data.</button>
+                    <div class="feedback-container">
+                        <span class="feedback"></span>
+                        <a class="retry-btn" style="display: none;" onclick="resetCheck(this)">Reset / Try Again ↻</a>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+        
+        <div class="visualization">
+            <div class="canvas-container">
+                <div id="canvas-annotation">Loading...</div>
+                <canvas id="sim-canvas"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Decision Helper Logic (Stage 10)
+        let activeDecisions = new Set(['interpret']);
+        
+        function renderDecisionHelper() {
+            let scoreLasso = (activeDecisions.has('interpret') ? 1 : 0) + (activeDecisions.has('fewer') ? 1 : 0);
+            let scoreRidge = (activeDecisions.has('accuracy') ? 1 : 0) + (activeDecisions.has('correlated') ? 1 : 0);
+            
+            let cardLasso = document.getElementById('card-lasso');
+            let cardRidge = document.getElementById('card-ridge');
+            let resultText = document.getElementById('decision-result-text');
+            let explanationText = document.getElementById('decision-explanation');
+            
+            cardLasso.classList.remove('active', 'inactive');
+            cardRidge.classList.remove('active', 'inactive');
+            
+            if (scoreLasso === 0 && scoreRidge === 0) {
+                cardLasso.classList.add('inactive');
+                cardRidge.classList.add('inactive');
+                resultText.textContent = "Select a goal above";
+                resultText.style.color = "var(--text-muted)";
+                explanationText.textContent = "";
+            } else if (scoreLasso > scoreRidge) {
+                cardLasso.classList.add('active');
+                cardRidge.classList.add('inactive');
+                resultText.textContent = "Lasso & Best Subset Selection";
+                resultText.style.color = "var(--accent-dark)";
+                explanationText.textContent = " You prioritize explaining 'why' and keeping models simple.";
+            } else if (scoreRidge > scoreLasso) {
+                cardRidge.classList.add('active');
+                cardLasso.classList.add('inactive');
+                resultText.textContent = "Ridge & PCR";
+                resultText.style.color = "var(--blue)";
+                explanationText.textContent = " You prioritize pure prediction and managing correlated features.";
+            } else {
+                // Tie or both active
+                cardLasso.classList.add('active');
+                cardRidge.classList.add('active');
+                resultText.textContent = "Balanced / Mixed Priorities";
+                resultText.style.color = "var(--text-main)";
+                explanationText.textContent = " You care about both interpretability and prediction, so both method families may be worth comparing.";
+            }
+        }
+        
+        function toggleDecision(tag, btn) {
+            btn.classList.toggle('active');
+            
+            if (btn.classList.contains('active')) {
+                activeDecisions.add(tag);
+            } else {
+                activeDecisions.delete(tag);
+            }
+            
+            renderDecisionHelper();
+        }
+
+        // Mini-Check Logic
+        function checkAnswer(btn, isCorrect) {
+            const container = btn.closest('.mini-check');
+            const buttons = container.querySelectorAll('button:not(.retry-btn)');
+            const feedback = container.querySelector('.feedback');
+            const retryBtn = container.querySelector('.retry-btn');
+            
+            buttons.forEach(b => {
+                b.classList.remove('correct', 'wrong');
+                b.style.pointerEvents = 'none';
+            });
+            
+            if(isCorrect) {
+                btn.classList.add('correct');
+                feedback.textContent = "Correct! Spot on.";
+                feedback.style.color = "var(--success)";
+            } else {
+                btn.classList.add('wrong');
+                // Find the correct one to highlight
+                buttons.forEach(b => {
+                    if(b.getAttribute('onclick').includes('true')) b.classList.add('correct');
+                });
+                feedback.textContent = "Not quite. Check the highlighted answer.";
+                feedback.style.color = "var(--error)";
+            }
+            
+            // Always allow retry
+            retryBtn.style.display = "block";
+        }
+
+        function resetCheck(retryBtn) {
+            const container = retryBtn.closest('.mini-check');
+            const buttons = container.querySelectorAll('button:not(.retry-btn)');
+            const feedback = container.querySelector('.feedback');
+            
+            buttons.forEach(b => {
+                b.classList.remove('correct', 'wrong');
+                b.style.pointerEvents = 'auto';
+            });
+            
+            feedback.textContent = "";
+            retryBtn.style.display = "none";
+        }
+
+        // Data and State Management
+        const state = {
+            stage: 1,
+            progress: 0,
+            
+            // Interaction states for lambda (0 to 100)
+            ridgeLambda: 0,
+            lassoLambda: 0,
+            cvLambda: 0,
+            
+            // Current visual mode
+            bottomMode: 'bias-variance', // 'bias-variance', 'paths-ridge', 'paths-lasso', 'cv-error', 'pca'
+            
+            // Base True Coefficients: [x1, x2, x3(corr), x4(weak), noise1, noise2, noise3, noise4]
+            baseCoeffs: [90, 85, -70, 40, -60, 50, -45, 30],
+            currentCoeffs: [90, 85, -70, 40, -60, 50, -45, 30],
+            features: ['Size', 'Rooms', 'Age', 'Dist', 'Noise1', 'Noise2', 'Noise3', 'Noise4'],
+            isPca: false,
+            
+            // For Bias-Variance curve interpolation
+            complexity: 1.0, 
+            targetComplexity: 1.0
+        };
+
+        const canvas = document.getElementById('sim-canvas');
+        const ctx = canvas.getContext('2d');
+        const annotationBox = document.getElementById('canvas-annotation');
+
+        // Font settings safely defined without CSS vars for Canvas API
+        const fontProse = "system-ui, -apple-system, sans-serif";
+        const fontMono = "ui-monospace, monospace";
+
+        // Fallback for rounded rectangles
+        function fillRoundRect(ctx, x, y, w, h, radii) {
+            const tl = radii[0], tr = radii[1], br = radii[2], bl = radii[3];
+            ctx.beginPath();
+            ctx.moveTo(x + tl, y);
+            ctx.lineTo(x + w - tr, y);
+            ctx.quadraticCurveTo(x + w, y, x + w, y + tr);
+            ctx.lineTo(x + w, y + h - br);
+            ctx.quadraticCurveTo(x + w, y + h, x + w - br, y + h);
+            ctx.lineTo(x + bl, y + h);
+            ctx.quadraticCurveTo(x, y + h, x, y + h - bl);
+            ctx.lineTo(x, y + tl);
+            ctx.quadraticCurveTo(x, y, x + tl, y);
+            ctx.fill();
+        }
+
+        // Resize handling
+        function resize() {
+            const rect = canvas.parentElement.getBoundingClientRect();
+            const dpr = window.devicePixelRatio || 1;
+            // Prevent transform accumulation
+            ctx.setTransform(1, 0, 0, 1, 0, 0);
+            canvas.width = rect.width * dpr;
+            canvas.height = rect.height * dpr;
+            ctx.scale(dpr, dpr);
+            canvas.style.width = `${rect.width}px`;
+            canvas.style.height = `${rect.height}px`;
+        }
+        window.addEventListener('resize', resize);
+        resize();
+
+        // Mathematics for Paths
+        function getRidgeCoeff(base, lambda) {
+            return base / (1 + lambda * 0.15);
+        }
+
+        function getLassoCoeff(base, lambda) {
+            const shrink = lambda * 1.2; 
+            if (Math.abs(base) <= shrink) return 0;
+            return Math.sign(base) * (Math.abs(base) - shrink);
+        }
+
+        function getTrainError(c) {
+            return 80 - 60 * Math.pow(c, 0.5);
+        }
+        
+        function getTestError(c) {
+            const optimalC = 0.45;
+            return 30 + 150 * Math.pow(c - optimalC, 2);
+        }
+
+        function getCVError(lambda) {
+            const optimalL = 35;
+            return 25 + 0.03 * Math.pow(lambda - optimalL, 2);
+        }
+
+        function lerp(start, end, amt) {
+            return (1 - amt) * start + amt * end;
+        }
+
+        // Draw loop
+        function draw() {
+            const w = canvas.width / (window.devicePixelRatio || 1);
+            const h = canvas.height / (window.devicePixelRatio || 1);
+
+            ctx.clearRect(0, 0, w, h);
+
+            state.complexity = lerp(state.complexity, state.targetComplexity, 0.05);
+            
+            if (state.bottomMode === 'paths-ridge') {
+                for(let i=0; i<8; i++) state.currentCoeffs[i] = lerp(state.currentCoeffs[i], getRidgeCoeff(state.baseCoeffs[i], state.ridgeLambda), 0.15);
+            } else if (state.bottomMode === 'paths-lasso') {
+                for(let i=0; i<8; i++) state.currentCoeffs[i] = lerp(state.currentCoeffs[i], getLassoCoeff(state.baseCoeffs[i], state.lassoLambda), 0.15);
+            } else if (state.bottomMode === 'cv-error') {
+                for(let i=0; i<8; i++) state.currentCoeffs[i] = lerp(state.currentCoeffs[i], getLassoCoeff(state.baseCoeffs[i], state.cvLambda), 0.15);
+            } else if (state.bottomMode === 'pca') {
+                const target = [80, 40, 0, 0, 0, 0, 0, 0];
+                for(let i=0; i<8; i++) state.currentCoeffs[i] = lerp(state.currentCoeffs[i], target[i], 0.08);
+            } else {
+                const target = state.stage === 3 ? [90, 85, -70, 40, 0, 0, 0, 0] : [...state.baseCoeffs];
+                for(let i=0; i<8; i++) state.currentCoeffs[i] = lerp(state.currentCoeffs[i], target[i], 0.08);
+            }
+
+            const splitY = h * 0.48;
+
+            drawCoefficients(w, splitY);
+            
+            ctx.beginPath();
+            ctx.moveTo(40, splitY);
+            ctx.lineTo(w - 40, splitY);
+            ctx.strokeStyle = '#e7e5e4';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            const bottomH = h - splitY;
+            if (state.bottomMode === 'bias-variance' || state.bottomMode === 'pca') {
+                drawBiasVariance(w, bottomH, splitY);
+            } else if (state.bottomMode === 'paths-ridge') {
+                drawCoefficientPaths(w, bottomH, splitY, 'ridge', state.ridgeLambda);
+            } else if (state.bottomMode === 'paths-lasso') {
+                drawCoefficientPaths(w, bottomH, splitY, 'lasso', state.lassoLambda);
+            } else if (state.bottomMode === 'cv-error') {
+                drawCVError(w, bottomH, splitY, state.cvLambda);
+            }
+
+            requestAnimationFrame(draw);
+        }
+
+        function drawCoefficients(w, hMax) {
+            const margin = {top: 40, bottom: 40, left: 60, right: 40};
+            const chartW = w - margin.left - margin.right;
+            const chartH = hMax - margin.top - margin.bottom;
+            
+            const zeroY = margin.top + chartH / 2;
+            ctx.beginPath();
+            ctx.moveTo(margin.left, zeroY);
+            ctx.lineTo(w - margin.right, zeroY);
+            ctx.strokeStyle = '#9ca3af';
+            ctx.lineWidth = 1;
+            ctx.stroke();
+
+            ctx.fillStyle = '#6b7280';
+            ctx.font = `600 0.8rem ${fontProse}`;
+            ctx.textAlign = 'left';
+            ctx.fillText('CURRENT MODEL COEFFICIENTS (β)', margin.left, 25);
+
+            const barW = chartW / 8 - 15;
+            
+            for(let i=0; i<8; i++) {
+                let val = state.currentCoeffs[i];
+                let isZero = Math.abs(val) < 0.5;
+                
+                if (state.isPca && i > 1) continue;
+
+                const x = margin.left + i * (chartW / 8) + 7.5;
+                const barH = (val / 100) * (chartH / 2); 
+
+                if (state.isPca) {
+                    ctx.fillStyle = i === 0 ? '#4f46e5' : '#8b5cf6';
+                } else if (isZero) {
+                    ctx.fillStyle = '#e5e7eb'; 
+                } else if (i < 4) { 
+                    ctx.fillStyle = val > 0 ? '#6366f1' : '#f43f5e';
+                } else { 
+                    ctx.fillStyle = '#9ca3af';
+                }
+
+                if (barH < 0) {
+                    fillRoundRect(ctx, x, zeroY, barW, -barH, [0,0,4,4]);
+                } else {
+                    fillRoundRect(ctx, x, zeroY - barH, barW, barH, [4,4,0,0]);
+                }
+
+                let currentFeatures = state.isPca ? ['PC 1', 'PC 2', '', '', '', '', '', ''] : state.features;
+                ctx.fillStyle = isZero ? '#9ca3af' : '#4b5563';
+                ctx.font = `500 0.75rem ${fontMono}`;
+                ctx.textAlign = 'center';
+                
+                let lblY = val >= 0 ? zeroY + 20 : zeroY - 10;
+                ctx.fillText(currentFeatures[i], x + barW/2, lblY);
+            }
+
+            if (state.stage === 4) {
+                ctx.fillStyle = 'rgba(217, 119, 6, 0.08)';
+                ctx.fillRect(margin.left, 35, chartW, chartH);
+                ctx.fillStyle = '#d97706';
+                ctx.font = `600 0.85rem ${fontProse}`;
+                ctx.textAlign = 'right';
+                ctx.fillText('+ COMPLEXITY PENALTY', w - margin.right, 25);
+            }
+        }
+
+        function drawBiasVariance(w, panelH, startY) {
+            const margin = {top: 40, bottom: 40, left: 60, right: 40};
+            const chartH = panelH - margin.top - margin.bottom;
+            const y0 = startY + margin.top;
+            const chartW = w - margin.left - margin.right;
+
+            ctx.fillStyle = '#6b7280';
+            ctx.font = `600 0.8rem ${fontProse}`;
+            ctx.textAlign = 'left';
+            ctx.fillText('BIAS-VARIANCE TRADEOFF', margin.left, y0 - 15);
+
+            ctx.beginPath();
+            ctx.moveTo(margin.left, y0);
+            ctx.lineTo(margin.left, y0 + chartH);
+            ctx.lineTo(w - margin.right, y0 + chartH);
+            ctx.strokeStyle = '#e7e5e4';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            ctx.fillStyle = '#9ca3af';
+            ctx.font = `400 0.75rem ${fontProse}`;
+            ctx.textAlign = 'center';
+            ctx.fillText('Model Complexity (p)', margin.left + chartW/2, y0 + chartH + 25);
+            
+            ctx.save();
+            ctx.translate(margin.left - 20, y0 + chartH/2);
+            ctx.rotate(-Math.PI/2);
+            ctx.fillText('Error', 0, 0);
+            ctx.restore();
+
+            const steps = 50;
+            
+            ctx.beginPath();
+            for(let i=0; i<=steps; i++) {
+                let c = i / steps;
+                let err = getTrainError(c);
+                let px = margin.left + c * chartW;
+                let py = y0 + chartH - (err / 100) * chartH;
+                if(i===0) ctx.moveTo(px, py);
+                else ctx.lineTo(px, py);
+            }
+            ctx.strokeStyle = '#6366f1';
+            ctx.lineWidth = 3;
+            ctx.stroke();
+
+            ctx.beginPath();
+            for(let i=0; i<=steps; i++) {
+                let c = i / steps;
+                let err = getTestError(c);
+                let px = margin.left + c * chartW;
+                let py = y0 + chartH - (err / 100) * chartH;
+                if(i===0) ctx.moveTo(px, py);
+                else ctx.lineTo(px, py);
+            }
+            ctx.strokeStyle = '#ef4444';
+            ctx.lineWidth = 3;
+            ctx.stroke();
+
+            let currC = state.complexity;
+            let px = margin.left + currC * chartW;
+            
+            ctx.beginPath();
+            ctx.setLineDash([5, 5]);
+            ctx.moveTo(px, y0);
+            ctx.lineTo(px, y0 + chartH);
+            ctx.strokeStyle = '#9ca3af';
+            ctx.lineWidth = 1;
+            ctx.stroke();
+            ctx.setLineDash([]);
+
+            let trainPy = y0 + chartH - (getTrainError(currC) / 100) * chartH;
+            let testPy = y0 + chartH - (getTestError(currC) / 100) * chartH;
+
+            ctx.beginPath(); ctx.arc(px, trainPy, 6, 0, Math.PI*2); ctx.fillStyle = '#6366f1'; ctx.fill();
+            ctx.beginPath(); ctx.arc(px, testPy, 6, 0, Math.PI*2); ctx.fillStyle = '#ef4444'; ctx.fill();
+
+            ctx.font = `500 0.75rem ${fontProse}`;
+            ctx.textAlign = 'right';
+            ctx.fillStyle = '#6366f1';
+            ctx.fillText('Training Error', w - margin.right, y0 + 10);
+            ctx.fillStyle = '#ef4444';
+            ctx.fillText('Expected Test Error', w - margin.right, y0 + 30);
+        }
+
+        function drawCoefficientPaths(w, panelH, startY, type, currentLambda) {
+            const margin = {top: 40, bottom: 40, left: 60, right: 40};
+            const chartH = panelH - margin.top - margin.bottom;
+            const y0 = startY + margin.top;
+            const chartW = w - margin.left - margin.right;
+            const zeroY = y0 + chartH / 2;
+
+            ctx.fillStyle = '#6b7280';
+            ctx.font = `600 0.8rem ${fontProse}`;
+            ctx.textAlign = 'left';
+            const title = type === 'ridge' ? 'RIDGE PATHS (L2 PENALTY)' : 'LASSO PATHS (L1 PENALTY)';
+            ctx.fillText(title, margin.left, y0 - 15);
+
+            ctx.beginPath();
+            ctx.moveTo(margin.left, y0);
+            ctx.lineTo(margin.left, y0 + chartH);
+            ctx.moveTo(margin.left, zeroY);
+            ctx.lineTo(w - margin.right, zeroY);
+            ctx.strokeStyle = '#e7e5e4';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            ctx.fillStyle = '#9ca3af';
+            ctx.font = `400 0.75rem ${fontProse}`;
+            ctx.textAlign = 'center';
+            ctx.fillText('Penalty Parameter (λ)', margin.left + chartW/2, y0 + chartH + 25);
+
+            const steps = 100;
+            for(let i=0; i<8; i++) {
+                ctx.beginPath();
+                const base = state.baseCoeffs[i];
+                for(let j=0; j<=steps; j++) {
+                    let lam = (j / steps) * 100;
+                    let val = type === 'ridge' ? getRidgeCoeff(base, lam) : getLassoCoeff(base, lam);
+                    let px = margin.left + (lam / 100) * chartW;
+                    let py = zeroY - (val / 100) * (chartH / 2);
+                    
+                    if(j===0) ctx.moveTo(px, py);
+                    else ctx.lineTo(px, py);
+                }
+                
+                if (i < 4) { 
+                    ctx.strokeStyle = base > 0 ? 'rgba(99, 102, 241, 0.4)' : 'rgba(244, 63, 94, 0.4)';
+                } else { 
+                    ctx.strokeStyle = 'rgba(156, 163, 175, 0.4)';
+                }
+                ctx.lineWidth = 2;
+                ctx.stroke();
+            }
+
+            let px = margin.left + (currentLambda / 100) * chartW;
+            ctx.beginPath();
+            ctx.setLineDash([4, 4]);
+            ctx.moveTo(px, y0);
+            ctx.lineTo(px, y0 + chartH);
+            ctx.strokeStyle = '#4f46e5';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+            ctx.setLineDash([]);
+            
+            for(let i=0; i<8; i++) {
+                const base = state.baseCoeffs[i];
+                let val = type === 'ridge' ? getRidgeCoeff(base, currentLambda) : getLassoCoeff(base, currentLambda);
+                let py = zeroY - (val / 100) * (chartH / 2);
+                
+                ctx.beginPath();
+                ctx.arc(px, py, 4, 0, Math.PI*2);
+                ctx.fillStyle = (i < 4) ? (base > 0 ? '#6366f1' : '#f43f5e') : '#9ca3af';
+                ctx.fill();
+            }
+        }
+
+        function drawCVError(w, panelH, startY, currentLambda) {
+            const margin = {top: 40, bottom: 40, left: 60, right: 40};
+            const chartH = panelH - margin.top - margin.bottom;
+            const y0 = startY + margin.top;
+            const chartW = w - margin.left - margin.right;
+
+            ctx.fillStyle = '#6b7280';
+            ctx.font = `600 0.8rem ${fontProse}`;
+            ctx.textAlign = 'left';
+            ctx.fillText('VALIDATION ERROR VS λ', margin.left, y0 - 15);
+
+            ctx.beginPath();
+            ctx.moveTo(margin.left, y0);
+            ctx.lineTo(margin.left, y0 + chartH);
+            ctx.lineTo(w - margin.right, y0 + chartH);
+            ctx.strokeStyle = '#e7e5e4';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            ctx.fillStyle = '#9ca3af';
+            ctx.font = `400 0.75rem ${fontProse}`;
+            ctx.textAlign = 'center';
+            ctx.fillText('Penalty Parameter (λ)', margin.left + chartW/2, y0 + chartH + 25);
+            ctx.save();
+            ctx.translate(margin.left - 20, y0 + chartH/2);
+            ctx.rotate(-Math.PI/2);
+            ctx.fillText('CV Error', 0, 0);
+            ctx.restore();
+
+            const steps = 100;
+            ctx.beginPath();
+            for(let j=0; j<=steps; j++) {
+                let lam = (j / steps) * 100;
+                let err = getCVError(lam);
+                let px = margin.left + (lam / 100) * chartW;
+                let py = y0 + chartH - (err / 100) * chartH;
+                if(j===0) ctx.moveTo(px, py);
+                else ctx.lineTo(px, py);
+            }
+            ctx.strokeStyle = '#ef4444';
+            ctx.lineWidth = 3;
+            ctx.stroke();
+
+            let px = margin.left + (currentLambda / 100) * chartW;
+            ctx.beginPath();
+            ctx.setLineDash([5, 5]);
+            ctx.moveTo(px, y0);
+            ctx.lineTo(px, y0 + chartH);
+            ctx.strokeStyle = '#4f46e5';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+            ctx.setLineDash([]);
+
+            let py = y0 + chartH - (getCVError(currentLambda) / 100) * chartH;
+            ctx.beginPath(); 
+            ctx.arc(px, py, 6, 0, Math.PI*2); 
+            ctx.fillStyle = '#ef4444'; 
+            ctx.fill();
+            
+            if (Math.abs(currentLambda - 35) < 5) {
+                ctx.fillStyle = '#10b981';
+                ctx.font = `600 0.8rem ${fontProse}`;
+                ctx.textAlign = 'center';
+                ctx.fillText('OPTIMAL λ', px, py - 15);
+            }
+        }
+
+
+        // Scroll and Intersection Observer
+        const stageElements = document.querySelectorAll('.stage');
+        const dotsContainer = document.getElementById('stage-dots');
+        const progressBar = document.getElementById('progress-bar');
+
+        stageElements.forEach((el, index) => {
+            const dot = document.createElement('div');
+            dot.className = 'dot';
+            dot.addEventListener('click', () => {
+                el.scrollIntoView({ behavior: 'smooth' });
+            });
+            dotsContainer.appendChild(dot);
+        });
+        const dots = document.querySelectorAll('.dot');
+
+        const observerOptions = {
+            root: null,
+            rootMargin: '-40% 0px -50% 0px',
+            threshold: 0
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const stg = parseInt(entry.target.getAttribute('data-stage'));
+                    setStage(stg);
+                    
+                    dots.forEach((d, i) => {
+                        d.classList.toggle('active', i === stg - 1);
+                    });
+                }
+            });
+        }, observerOptions);
+
+        stageElements.forEach(el => observer.observe(el));
+
+        window.addEventListener('scroll', () => {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            progressBar.style.width = scrolled + "%";
+        });
+
+        // Event Listeners for Sliders (both input and change)
+        const ridgeSlider = document.getElementById('ridge-slider');
+        const ridgeVal = document.getElementById('ridge-val');
+        if(ridgeSlider) {
+            ['input', 'change'].forEach(evt => {
+                ridgeSlider.addEventListener(evt, (e) => {
+                    state.ridgeLambda = parseInt(e.target.value);
+                    ridgeVal.textContent = state.ridgeLambda;
+                    updateAnnotation(6);
+                    updateReadouts();
+                });
+            });
+        }
+
+        const lassoSlider = document.getElementById('lasso-slider');
+        const lassoVal = document.getElementById('lasso-val');
+        if(lassoSlider) {
+            ['input', 'change'].forEach(evt => {
+                lassoSlider.addEventListener(evt, (e) => {
+                    state.lassoLambda = parseInt(e.target.value);
+                    lassoVal.textContent = state.lassoLambda;
+                    updateAnnotation(7);
+                    updateReadouts();
+                });
+            });
+        }
+
+        const cvSlider = document.getElementById('cv-slider');
+        const cvVal = document.getElementById('cv-val');
+        if(cvSlider) {
+            ['input', 'change'].forEach(evt => {
+                cvSlider.addEventListener(evt, (e) => {
+                    state.cvLambda = parseInt(e.target.value);
+                    cvVal.textContent = state.cvLambda;
+                    updateAnnotation(8);
+                    updateReadouts();
+                });
+            });
+        }
+        
+        function updateReadouts() {
+            // Ridge Readout
+            const ridgeReadout = document.getElementById('ridge-readout');
+            if (ridgeReadout) {
+                if (state.ridgeLambda === 0) {
+                    ridgeReadout.innerHTML = "<strong>λ = 0:</strong> No penalty applied (Standard OLS).";
+                } else {
+                    let maxC = 0;
+                    for(let i=0; i<8; i++) {
+                        let c = Math.abs(getRidgeCoeff(state.baseCoeffs[i], state.ridgeLambda));
+                        if (c > maxC) maxC = c;
+                    }
+                    ridgeReadout.innerHTML = `<strong>λ = ${state.ridgeLambda}:</strong> All 8 variables active. Strongest remaining coefficient shrunken to <strong>~${maxC.toFixed(1)}</strong>.`;
+                }
+            }
+            
+            // Lasso Readout
+            const lassoReadout = document.getElementById('lasso-readout');
+            if (lassoReadout) {
+                let sigRemoved = 0; 
+                let noiseRemoved = 0;
+                for (let i = 0; i < 4; i++) if (getLassoCoeff(state.baseCoeffs[i], state.lassoLambda) === 0) sigRemoved++;
+                for (let i = 4; i < 8; i++) if (getLassoCoeff(state.baseCoeffs[i], state.lassoLambda) === 0) noiseRemoved++;
+                
+                if (state.lassoLambda === 0) {
+                    lassoReadout.innerHTML = "<strong>λ = 0:</strong> No penalty applied (Standard OLS).";
+                } else {
+                    lassoReadout.innerHTML = `<strong>λ = ${state.lassoLambda}:</strong> Removed <strong>${noiseRemoved} of 4</strong> likely noise variables and <strong>${sigRemoved} of 4</strong> true signals.`;
+                }
+            }
+            
+            // CV Readout
+            const cvReadout = document.getElementById('cv-readout');
+            if (cvReadout) {
+                let err = getCVError(state.cvLambda).toFixed(1);
+                let status = "";
+                let color = "var(--text-dim)";
+                
+                if (state.cvLambda < 25) { 
+                    status = "Too low! (Overfitting)"; 
+                    color = "var(--warning)"; 
+                } else if (state.cvLambda > 45) { 
+                    status = "Too high! (Underfitting)"; 
+                    color = "var(--error)"; 
+                } else { 
+                    status = "Optimal zone (λ ≈ 35)"; 
+                    color = "var(--success)"; 
+                }
+                
+                cvReadout.innerHTML = `Current λ: <strong>${state.cvLambda}</strong> | CV Error: <strong>${err}</strong> | <span style="color:${color}; font-weight:600;">${status}</span>`;
+            }
+        }
+
+        function updateAnnotation(stg) {
+            annotationBox.style.opacity = 1;
+            if (stg <= 2) {
+                annotationBox.innerHTML = "All variables active. Overfitting risk high.";
+            } else if (stg === 3) {
+                annotationBox.innerHTML = "Subset: Weak variables forced to exactly zero.";
+            } else if (stg === 4 || stg === 5) {
+                annotationBox.innerHTML = "Evaluating penalty tradeoffs.";
+            } else if (stg === 6) {
+                if(state.ridgeLambda === 0) annotationBox.innerHTML = "No penalty. OLS solution.";
+                else annotationBox.innerHTML = "Ridge: Variables shrink, but never hit zero.";
+            } else if (stg === 7) {
+                if(state.lassoLambda === 0) annotationBox.innerHTML = "No penalty. OLS solution.";
+                else annotationBox.innerHTML = "Lasso: Weak variables forced to exactly zero.";
+            } else if (stg === 8) {
+                if (Math.abs(state.cvLambda - 35) < 5) annotationBox.innerHTML = "Optimal sweet spot found.";
+                else annotationBox.innerHTML = "Testing different penalty strengths.";
+            } else if (stg === 9) {
+                annotationBox.innerHTML = "Variables squished into Principal Components.";
+            } else {
+                annotationBox.style.opacity = 0;
+            }
+        }
+
+        // Stage State logic
+        function setStage(stg) {
+            state.stage = stg;
+            state.isPca = false;
+            
+            updateAnnotation(stg);
+            updateReadouts();
+            
+            if (stg <= 2) {
+                state.bottomMode = 'bias-variance';
+                state.targetComplexity = 1.0;
+            } else if (stg === 3) {
+                state.bottomMode = 'bias-variance';
+                state.targetComplexity = 0.6;
+            } else if (stg === 4 || stg === 5) {
+                state.bottomMode = 'bias-variance';
+                state.targetComplexity = 0.6;
+            } else if (stg === 6) {
+                state.bottomMode = 'paths-ridge';
+            } else if (stg === 7) {
+                state.bottomMode = 'paths-lasso';
+            } else if (stg === 8) {
+                state.bottomMode = 'cv-error';
+            } else if (stg === 9) {
+                state.bottomMode = 'pca';
+                state.isPca = true;
+            } else if (stg >= 10) {
+                state.bottomMode = 'bias-variance';
+                state.targetComplexity = 0.45; 
+            }
+        }
+
+        // Initialize helper setup once the DOM is ready
+        document.addEventListener('DOMContentLoaded', () => {
+            renderDecisionHelper();
+        });
+
+        // Init draw
+        requestAnimationFrame(draw);
+    </script>
+</body>
+</html>
