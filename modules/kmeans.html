@@ -113,7 +113,9 @@
             <section data-stage="1">
                 <div class="stage-label">Stage 01</div>
                 <h2>The Unlabeled Data</h2>
-                <p>Imagine a database of customers. We have their <strong>Age</strong> and <strong>Spending</strong>. There are no predefined groups; it's just raw information plotted in space.</p>
+                <p>Imagine we have a list of customers. We know two things about each one: their <strong>Age</strong> and their <strong>Spending</strong>.</p>
+                <p>Let's draw them! Each customer becomes a dot on our map. Their age moves them left or right, and their spending moves them up or down.</p>
+                <p>Right now, there are no predefined group labels like ‘Cluster 1’ or ‘Cluster 2.’ The algorithm is simply looking at a scattered cloud of dots and trying to discover if some dots naturally sit close together in teams.</p>
                 <div class="card">
                     <table>
                         <tr><th>Customer</th><th>Age</th><th>Spending</th></tr>
@@ -122,76 +124,98 @@
                         <tr><td>...</td><td>...</td><td>...</td></tr>
                     </table>
                 </div>
-                <div class="takeaway">💡 Takeaway: Data starts as a scattered collection of observations with no inherent group labels.</div>
+                <div class="takeaway">💡 Child-friendly summary: We turn our list of customers into dots on a map. Our goal is to figure out which dots naturally belong together in teams.</div>
             </section>
 
             <section data-stage="2">
                 <div class="stage-label">Stage 02</div>
                 <h2>The Blind Guess (Initialization)</h2>
-                <p>We must choose how many groups (<strong>K</strong>) we want. But the algorithm has to start somewhere. It must make a blind guess.</p>
-                <p>In this demo, we use <strong>Random Partition</strong>: assigning every point to a random cluster and finding the center of those random teams. </p>
-                <p><em>Note: Another common method is <strong>Forgy</strong> (picking random data points as initial centers). Real-world applications mostly use <strong>k-means++</strong> to smartly space out the initial guesses.</em></p>
-                <div class="takeaway">💡 Takeaway: K-Means cannot learn until it makes an initial, often terrible, guess at the cluster centers (centroids).</div>
+                <p>Before we can group the dots, we have to decide how many teams we want. We call this number <strong>K</strong>. But there is a catch: the algorithm needs a starting guess before it can ask which centroid (center star) is closest.</p>
+                <p>In this demo, we use <strong>Random Partition</strong>. Here is how it makes its first guess:</p>
+                <p><strong>First</strong>, every dot is secretly assigned to a random, temporary team.<br>
+                <strong>Next</strong>, it looks at all the dots in a team and finds their exact middle by averaging their x and y values.<br>
+                <strong>Then</strong>, that average middle spot becomes the first centroid (star) for the team!</p>
+                <p>Because the first teams were completely random, these starting stars are usually in weird, unhelpful spots. That is okay, the algorithm will fix them soon!</p>
+                <div class="takeaway">💡 Child-friendly summary: The computer needs a starting guess. It puts dots into random teams, finds the exact middle of each random team, and places a star there to act as the first center.</div>
             </section>
 
             <section data-stage="3">
                 <div class="stage-label">Stage 03</div>
                 <h2>Nearest Neighbor Assignment</h2>
-                <p>Every data point ignores its random assignment, measures the straight-line (Euclidean) distance to all current centroids, and joins the closest centroid for this round.</p>
+                <p>Now that we have our starting stars, every dot looks around and asks a simple question: <em>Which star is closest to me right now?</em></p>
+                <p>The dot measures the shortest straight-line distance to every star on the graph. The math formula below might look fancy, but it just calculates that simple, straight-line distance from one point to another.</p>
                 <div class="formula">Dist = √[ (x₂ - x₁)² + (y₂ - y₁)² ]</div>
-                <p>Hover over the points on the canvas to see their exact distance to their newly chosen centroid.</p>
-                <div class="takeaway">💡 Takeaway: Points greedily choose the closest center to minimize their individual distance.</div>
+                <p>Every dot joins the team of the star that is closest to it. Hover over the dots on the canvas with your mouse to see their current distance to the star they joined!</p>
+                <p>Remember, this team choice is only temporary. When the stars move, the dots might change their minds.</p>
+                <div class="takeaway">💡 Child-friendly summary: Every dot measures the straight-line distance to all the stars. It then joins the team of the star that is closest to it.</div>
             </section>
 
             <section data-stage="4">
                 <div class="stage-label">Stage 04</div>
                 <h2>Recentering</h2>
-                <p>The points have formed groups, but the original guess (the star) is no longer in the true center of its new team.</p>
-                <p>The algorithm calculates the <strong>mean (average)</strong> position of all points in a cluster, and the centroid slides exactly to that mathematical center of mass.</p>
-                <div class="takeaway">💡 Takeaway: Centroids dynamically update to reflect the actual center of the points assigned to them.</div>
+                <p>After the dots pick their teams, each star is surrounded by its new points. But the star is probably not sitting in the true middle of its new team anymore.</p>
+                <p>So, the algorithm has to move the star to the perfect center of its dots. It does this by finding the <strong>average position</strong> of all the points assigned to that cluster.</p>
+                <p>Here is a simple worked example of how that works:<br>
+                • Imagine a team has two dots.<br>
+                • One dot is at <strong>(2, 4)</strong> and the other is at <strong>(4, 8)</strong>.<br>
+                • We average the x-values: (2 + 4) / 2 = <strong>3</strong>.<br>
+                • We average the y-values: (4 + 8) / 2 = <strong>6</strong>.<br>
+                • The star moves to the exact new middle at <strong>(3, 6)</strong>!</p>
+                <p>The star slides to this new spot. It does <strong>not</strong> need to sit on top of a real customer dot. It just moves to the mathematical center of its team.</p>
+                <div class="takeaway">💡 Child-friendly summary: The star looks at all the dots on its new team and slides over to sit perfectly in the middle of them.</div>
             </section>
 
             <section data-stage="5">
                 <div class="stage-label">Stage 05</div>
                 <h2>The Convergence Loop</h2>
-                <p>Because the centroids moved, the boundaries changed. A point that was in the Blue cluster might now be closer to the Red centroid.</p>
-                <p>We loop Steps 3 and 4: Re-assign, Re-center, Re-assign, Re-center. Use the <strong>Step</strong> button to advance manually. When no points swap teams, the algorithm has <strong>converged</strong>.</p>
-                <button class="btn primary" id="btn-narrative-step">Step Algorithm</button>
-                <div class="takeaway">💡 Takeaway: The algorithm loops until stable. It is guaranteed to converge, though not always to the perfect global solution.</div>
+                <p>When the stars move, the map changes! A dot that used to be closest to the Blue star might suddenly find that the Red star is closer.</p>
+                <p>So, K-Means repeats the same two steps over and over again:<br>
+                <strong>First</strong>, dots join the nearest star.<br>
+                <strong>Then</strong>, the stars move to the exact middle of their new teams.</p>
+                <p>This loop keeps going until the clustering becomes stable. In practice, the algorithm stops when almost nothing changes anymore. That stable stopping point is called <strong>convergence</strong>.</p>
+                <p>Convergence means things have settled down—but it doesn't guarantee this is the globally best clustering possible. Click the <strong>Step</strong> button to watch the loop happen!</p>
+                <button class="btn primary" id="btn-narrative-step">Run Algorithm</button>
+                <div class="takeaway">💡 Child-friendly summary: The computer loops the same two steps over and over until the dots stop switching teams and everything finally settles down.</div>
             </section>
 
             <section data-stage="6">
                 <div class="stage-label">Stage 06</div>
                 <h2>Measuring Tightness (WCSS)</h2>
-                <p>How good are these clusters? We measure the <strong>Within-Cluster Sum of Squares (WCSS)</strong>. It is the sum of the squared distances from every point to its assigned centroid.</p>
-                <p>Look at the Status Strip above the canvas. Lower WCSS means tighter, denser clusters. We want this number to be as small as possible.</p>
-                <div class="takeaway">💡 Takeaway: WCSS is the score K-Means tries to minimize. Smaller means tighter clusters.</div>
+                <p>How do we judge whether our teams are tight or loose? We want the dots in a team to be packed closely around their star.</p>
+                <p>To measure this, K-Means uses a score called <strong>Within-Cluster Sum of Squares (WCSS)</strong>. It measures the distance from every dot to its assigned star, squares that number, and adds them all up.</p>
+                <p>Why square the distances? Because squaring makes large distances count much more strongly than small ones. A point that sits very far away from its star hurts the score a lot.</p>
+                <p>We want this WCSS score to be as tiny as possible. Look at the Status Strip above the canvas. As the clustering improves, you will see the WCSS number move downward.</p>
+                <div class="takeaway">💡 Child-friendly summary: The computer scores the teams by measuring how far every dot is from its star. A lower score means the dots are tightly hugging their centers.</div>
             </section>
 
             <section data-stage="7">
                 <div class="stage-label">Stage 07</div>
                 <h2>The Elbow Heuristic</h2>
-                <p>How do we choose K? We compute K-Means for K=1, 2, 3, 4, 5... and plot the final WCSS for each.</p>
-                <p>The chart on the right is a <strong>fast demo estimate based on repeated runs</strong> using the current data. We look for the "Elbow" — the point where adding more clusters yields diminishing returns.</p>
-                <p><em>Warning: This is just a heuristic. It doesn't magically reveal a single unquestionable "correct" K. Real datasets are messy and often do not produce a clean bend.</em></p>
-                <div class="takeaway">💡 Takeaway: The Elbow method helps guess the optimal K, but human judgment is still required.</div>
+                <p>How do we choose K (the number of teams)? One common idea is to test out 1 team, then 2 teams, then 3 teams, and so on, recording the WCSS score for each.</p>
+                <p>As you add more teams, the dots naturally get closer to a star, so the score almost always drops. But we don't want a million teams! We are looking for the bend or <strong>elbow</strong> in the chart.</p>
+                <p>The elbow is the exact point where adding more clusters stops helping very much. The chart on the right is a fast demo showing the scores for our data. Can you spot the bend?</p>
+                <p><em>Important: the elbow method is just a helpful hint. Some datasets show a clear bend, while others do not. It helps guide us, but it is not a magical rule.</em></p>
+                <div class="takeaway">💡 Child-friendly summary: To find the best number of teams, we test different numbers and look for the "elbow" bend on a chart. It tells us when to stop adding more teams.</div>
             </section>
 
             <section data-stage="8">
                 <div class="stage-label">Stage 08</div>
                 <h2>The Scaling Trap</h2>
-                <p>Age is a small number (20-60). Spending is a massive number ($100-$10,000). Because K-Means uses raw geometric distance, the Y-axis (Spending) completely swallows the X-axis.</p>
-                <p>Look at the canvas: this is a <strong>demo visualization of scale imbalance</strong>. Without standardization, the data visually forms a thin vertical line, and the algorithm essentially ignores Age entirely!</p>
-                <p>Standardization doesn't magically change the dataset's meaning; it simply adjusts the feature scale <em>before</em> clustering so all columns contribute equally to the distance.</p>
-                <div class="takeaway">💡 Takeaway: Always Standardize/Scale your data (e.g., StandardScaler) so all features contribute equally to the distance.</div>
+                <p>K-Means measures distance with a simple ruler, but our data has a trap! <strong>Age</strong> ranges roughly from 20 to 60, while <strong>Spending</strong> is huge and ranges from 100 to 10,000.</p>
+                <p>If we use these numbers directly, the giant Spending numbers completely dominate the calculation. Look at the canvas: this is a <strong>demo visualization of scale imbalance</strong>. The dots look like a tall, squished line!</p>
+                <p>The computer is essentially ignoring Age because the numbers are too small to fight against the giant Spending numbers. This makes the distance calculation very unfair.</p>
+                <p><strong>Standardization</strong> fixes this! It shrinks and stretches the numbers so Age and Spending are placed on a fair, equal playing field before we measure the distance.</p>
+                <div class="takeaway">💡 Child-friendly summary: If one category has giant numbers and another has tiny numbers, the giant ones take over. We have to standardize them so everything is fair.</div>
             </section>
 
             <section data-stage="9">
                 <div class="stage-label">Stage 09</div>
                 <h2>Limitations & Outliers</h2>
-                <p>K-Means is incredibly fast, but rigid. It assumes clusters are roughly circular (spherical) and equally sized.</p>
-                <p>Furthermore, because it calculates averages, it is highly sensitive to <strong>Outliers</strong>. An outlier has been added to the canvas—watch how it physically drags its centroid away from the true cluster mass.</p>
-                <div class="takeaway">💡 Takeaway: K-Means struggles with complex shapes and outliers. Data preparation is 90% of the battle.</div>
+                <p>K-Means is super fast and helpful, but it has a few blind spots. Because it uses a single star and a simple ruler, it assumes every team is shaped like a neat, even circle.</p>
+                <p>If the real teams are shaped like bananas, stretched out, or very uneven, K-Means might force them into awkward slices. It is also very sensitive to <strong>outliers</strong>.</p>
+                <p>An outlier is a weird dot that sits super far away from everyone else. Because the star always moves to the <em>average</em> middle, one weird outlier can drag the star completely away from the main group.</p>
+                <p>In this demo, an outlier has been added. Watch how that one lonely dot pulls its centroid away from the main mass of points!</p>
+                <div class="takeaway">💡 Child-friendly summary: K-Means likes neat, round teams. A single weird dot that is very far away can easily trick the star and drag it in the wrong direction.</div>
             </section>
 
         </div>
@@ -232,8 +256,6 @@
                 </div>
                 <div class="control-group">
                     <button class="btn" id="ctrl-rerun">New Data</button>
-                    <button class="btn" id="ctrl-autorun">Auto-Run</button>
-                    <button class="btn primary" id="ctrl-step">Step</button>
                 </div>
             </div>
         </div>
@@ -354,7 +376,8 @@
             if (autoRunInterval) {
                 clearInterval(autoRunInterval);
                 autoRunInterval = null;
-                document.getElementById('ctrl-autorun').innerText = 'Auto-Run';
+                const narrativeBtn = document.getElementById('btn-narrative-step');
+                if (narrativeBtn) narrativeBtn.innerText = 'Run Algorithm';
             }
             let K = parseInt(ctrlK.value);
             iteration = 0;
@@ -383,7 +406,7 @@
             legend.innerHTML = '';
             let k = parseInt(ctrlK.value);
             for(let i=0; i<k; i++) {
-                legend.innerHTML += `<div class="legend-item"><div class="legend-dot" style="background: ${colors[i]}"></div>Cluster ${i}</div>`;
+                legend.innerHTML += `<div class="legend-item"><div class="legend-dot" style="background: ${colors[i]}"></div>Cluster ${i + 1}</div>`;
             }
             if(ctrlOutlier.checked) {
                 legend.innerHTML += `<div class="legend-item"><div class="legend-dot" style="background: #fff; border: 2px solid #1f2937"></div>Outlier</div>`;
@@ -528,28 +551,28 @@
         }
 
         // --- Interaction Handlers ---
-        document.getElementById('ctrl-step').addEventListener('click', stepLogic);
-        document.getElementById('btn-narrative-step').addEventListener('click', stepLogic);
-        document.getElementById('ctrl-rerun').addEventListener('click', () => { generateData(); if(currentStage===7) computeLiveElbow(); });
+        const btnNarrativeStep = document.getElementById('btn-narrative-step');
         
-        document.getElementById('ctrl-autorun').addEventListener('click', () => {
+        btnNarrativeStep.addEventListener('click', () => {
             if (autoRunInterval) {
                 clearInterval(autoRunInterval);
                 autoRunInterval = null;
-                document.getElementById('ctrl-autorun').innerText = 'Auto-Run';
+                btnNarrativeStep.innerText = 'Run Algorithm';
             } else {
                 if (hasConverged) resetAlgorithm();
-                document.getElementById('ctrl-autorun').innerText = 'Stop';
+                btnNarrativeStep.innerText = 'Pause Algorithm';
                 autoRunInterval = setInterval(() => {
                     stepLogic();
                     if (hasConverged) {
                         clearInterval(autoRunInterval);
                         autoRunInterval = null;
-                        document.getElementById('ctrl-autorun').innerText = 'Auto-Run';
+                        btnNarrativeStep.innerText = 'Run Algorithm';
                     }
                 }, 400);
             }
         });
+
+        document.getElementById('ctrl-rerun').addEventListener('click', () => { generateData(); if(currentStage===7) computeLiveElbow(); });
         
         ctrlK.addEventListener('input', () => { uiK.innerText = ctrlK.value; resetAlgorithm(); });
         ctrlInit.addEventListener('change', resetAlgorithm);
@@ -578,7 +601,7 @@
                 tooltip.style.opacity = 1;
                 tooltip.style.left = e.clientX + 'px';
                 tooltip.style.top = e.clientY + 'px';
-                tooltip.innerHTML = `Cluster: <span style="color:${colors[hoveredPoint.cluster]}">${hoveredPoint.cluster}</span><br>Dist: ${d}`;
+                tooltip.innerHTML = `Cluster: <span style="color:${colors[hoveredPoint.cluster]}">${hoveredPoint.cluster + 1}</span><br>Dist: ${d}`;
             } else {
                 tooltip.style.opacity = 0;
             }
