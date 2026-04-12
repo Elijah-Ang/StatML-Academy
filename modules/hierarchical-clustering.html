@@ -137,7 +137,7 @@
             height: 100vh;
             position: sticky;
             top: 0;
-            padding: 2rem;
+            padding: 1.5rem 2rem;
             display: flex;
             flex-direction: column;
             justify-content: stretch;
@@ -148,19 +148,19 @@
             height: 100%;
             min-height: 0;
             display: grid;
-            grid-template-columns: minmax(0, 1fr) 340px;
-            grid-template-rows: minmax(0, 1fr) auto;
-            gap: 1rem;
-            align-items: stretch;
-        }
-
-        .viz-stage.is-expanded {
             grid-template-columns: minmax(0, 1fr);
+            grid-template-rows: minmax(0, 1fr) max-content max-content;
+            gap: 0.75rem;
         }
 
         .canvas-wrapper {
             width: 100%;
             height: 100%;
+            max-height: 100%;
+            max-width: 100%;
+            aspect-ratio: 1 / 1;
+            margin: 0 auto;
+            place-self: center;
             background: var(--surface);
             border: 1px solid var(--border);
             border-radius: 1.5rem;
@@ -324,8 +324,127 @@
             color: white;
         }
 
-        #randomize-btn,
-        .linkage-mini-card {
+        /* --- Worked Example UI --- */
+        .worked-example-widget {
+            margin-top: 1.5rem;
+            border-top: 1px dashed var(--border);
+            padding-top: 1.25rem;
+        }
+        
+        .example-heading {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--text-main);
+            margin-bottom: 1rem;
+        }
+        
+        .example-content {
+            padding: 1.25rem;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 0.75rem;
+            font-size: 0.9rem;
+        }
+        
+        .example-hint-badge {
+            display: inline-block;
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            background: var(--accent-dark);
+            color: white;
+            padding: 0.35rem 0.65rem;
+            border-radius: 0.35rem;
+            margin-bottom: 1.25rem;
+            font-weight: 500;
+            letter-spacing: 0.05em;
+        }
+        
+        .example-matrices-container {
+            display: flex;
+            align-items: center;
+            gap: 1.25rem;
+            margin-bottom: 1.5rem;
+            overflow-x: auto;
+            padding-bottom: 0.5rem;
+        }
+        
+        .matrix-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .matrix-wrapper .label {
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .mini-table {
+            border-collapse: collapse;
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            background: var(--surface);
+            border-radius: 0.35rem;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+        
+        .mini-table th, .mini-table td {
+            border: 1px solid var(--border);
+            padding: 0.4rem 0.6rem;
+            text-align: center;
+            min-width: 42px;
+        }
+        
+        .mini-table th { 
+            background: rgba(0,0,0,0.02); 
+            font-weight: 600; 
+            color: var(--text-main);
+        }
+
+        .mini-table td.matrix-cell-empty,
+        .matrix-table td.matrix-cell-empty {
+            background: rgba(0, 0, 0, 0.015);
+            pointer-events: none;
+        }
+        
+        .cell-highlight-old { 
+            background: rgba(245, 158, 11, 0.15); 
+            color: var(--amber); 
+            font-weight: 700; 
+        }
+        
+        .cell-highlight-new { 
+            background: rgba(99, 102, 241, 0.15); 
+            color: var(--accent-dark); 
+            font-weight: 700; 
+        }
+        
+        .example-arrow {
+            color: var(--text-muted);
+            font-size: 1.5rem;
+            font-weight: 300;
+        }
+        
+        .example-steps-list {
+            padding-left: 1.25rem;
+            color: var(--text-dim);
+            line-height: 1.5;
+        }
+        
+        .example-steps-list li {
+            margin-bottom: 0.65rem;
+        }
+        
+        .example-steps-list strong {
+            color: var(--text-main);
+        }
+
+        #randomize-btn {
             flex: 0 0 auto;
         }
 
@@ -402,8 +521,8 @@
         }
 
         .support-card {
-            padding: 1rem;
-            border-radius: 1rem;
+            padding: 0.75rem 1.25rem;
+            border-radius: 0.85rem;
             min-width: 0;
         }
 
@@ -413,110 +532,117 @@
         }
 
         .support-card h3 {
-            font-size: 0.95rem;
-            margin-bottom: 0.2rem;
+            font-size: 0.85rem;
+            margin-bottom: 0.15rem;
         }
 
         .support-card .panel-note {
-            font-size: 0.78rem;
+            font-size: 0.7rem;
             color: var(--text-muted);
             margin-bottom: 0;
         }
 
         #process-panel {
-            grid-column: 2;
-            grid-row: 1;
-            display: flex;
-            flex-direction: column;
+            grid-column: 1;
+            grid-row: 2;
+            display: grid;
+            grid-template-columns: minmax(200px, 1fr) 2.2fr;
+            column-gap: 1.5rem;
+            align-items: start;
             min-height: 0;
         }
 
-        #scrubber-panel {
-            grid-column: 1 / span 2;
-            grid-row: 2;
-        }
+        #process-panel > .panel-kicker { grid-column: 1; grid-row: 1; }
+        #process-panel > h3 { grid-column: 1; grid-row: 2; }
+        #process-panel > .panel-hero { grid-column: 1; grid-row: 3; }
+        #process-panel > .panel-mini-metrics { grid-column: 1; grid-row: 4; margin-bottom: 0; align-self: end; }
+        
+        #process-panel > .matrix-panel-header { grid-column: 2; grid-row: 1; margin-bottom: 0.4rem; }
+        #process-panel > .matrix-shell { grid-column: 2; grid-row: 2 / span 2; margin-bottom: 0.4rem; }
+        #process-panel > #matrix-note { grid-column: 2; grid-row: 4; align-self: end; margin-bottom: 0; }
 
-        .viz-stage.is-expanded #scrubber-panel {
+        #scrubber-panel {
             grid-column: 1;
+            grid-row: 3;
         }
 
         .panel-kicker {
-            font-size: 0.72rem;
+            font-size: 0.65rem;
             text-transform: uppercase;
             letter-spacing: 0.08em;
             color: var(--accent);
-            margin-bottom: 0.35rem;
+            margin-bottom: 0.15rem;
         }
 
         .panel-hero {
             font-family: var(--font-mono);
-            font-size: 1.1rem;
+            font-size: 0.95rem;
             color: var(--accent-dark);
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.4rem;
         }
 
         .panel-mini-metrics {
             display: grid;
             grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 0.75rem;
-            margin-bottom: 0.85rem;
+            gap: 0.5rem;
+            margin-bottom: 0;
         }
 
         .panel-mini-metrics div {
             background: rgba(99, 102, 241, 0.05);
             border: 1px solid rgba(99, 102, 241, 0.1);
-            border-radius: 0.75rem;
-            padding: 0.65rem 0.75rem;
+            border-radius: 0.5rem;
+            padding: 0.4rem 0.5rem;
         }
 
         .panel-mini-metrics strong {
             display: block;
             font-family: var(--font-mono);
-            font-size: 0.95rem;
+            font-size: 0.85rem;
             color: var(--accent-dark);
         }
 
         .panel-mini-metrics span {
             display: block;
-            font-size: 0.72rem;
+            font-size: 0.65rem;
             text-transform: uppercase;
             letter-spacing: 0.05em;
             color: var(--text-muted);
-            margin-top: 0.2rem;
+            margin-top: 0.1rem;
         }
 
         .matrix-panel-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            gap: 0.75rem;
-            margin-bottom: 0.7rem;
+            gap: 0.5rem;
+            margin-bottom: 0.4rem;
             flex-wrap: wrap;
         }
 
         .matrix-mode-toggle {
             display: inline-flex;
-            gap: 0.45rem;
+            gap: 0.35rem;
             flex-wrap: wrap;
         }
 
         .matrix-mode-toggle button {
             flex: 0 0 auto;
-            padding: 0.45rem 0.7rem;
-            font-size: 0.78rem;
+            padding: 0.25rem 0.5rem;
+            font-size: 0.7rem;
         }
 
         .matrix-shell {
             overflow: auto;
-            margin-bottom: 0.7rem;
-            max-height: 220px;
+            margin-bottom: 0.4rem;
+            max-height: 100px;
             border: 1px solid var(--border);
-            border-radius: 0.85rem;
+            border-radius: 0.5rem;
             background: rgba(99, 102, 241, 0.03);
         }
 
         .matrix-shell.is-full {
-            max-height: 320px;
+            max-height: 150px;
         }
 
         .matrix-table {
@@ -524,21 +650,34 @@
             min-width: 100%;
             border-collapse: collapse;
             font-family: var(--font-mono);
-            font-size: 0.74rem;
+            font-size: 0.68rem;
             color: var(--text-dim);
         }
 
         .matrix-table th,
         .matrix-table td {
             border: 1px solid var(--border);
-            padding: 0.45rem;
+            padding: 0.25rem 0.35rem;
             text-align: center;
-            min-width: 46px;
+            min-width: 38px;
         }
 
         .matrix-table th {
             background: rgba(99, 102, 241, 0.05);
             color: var(--text-main);
+        }
+
+        .matrix-table th.matrix-header-highlight {
+            background: rgba(99, 102, 241, 0.15);
+            color: var(--accent-dark);
+            font-weight: 700;
+        }
+
+        .matrix-table td.matrix-cell-highlight {
+            background: rgba(99, 102, 241, 0.15);
+            color: var(--accent-dark);
+            font-weight: 700;
+            box-shadow: inset 0 0 0 1px rgba(99, 102, 241, 0.4);
         }
 
         .viz-tooltip {
@@ -551,48 +690,6 @@
             font-size: 0.78rem;
             color: var(--text-main);
             pointer-events: none;
-        }
-
-        .linkage-compare-grid {
-            display: grid;
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 0.85rem;
-            margin-top: 1rem;
-        }
-
-        .linkage-mini-card {
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: stretch;
-            gap: 0.55rem;
-            padding: 0.9rem;
-            text-align: left;
-        }
-
-        .linkage-mini-title {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 0.5rem;
-            font-size: 0.86rem;
-            font-weight: 600;
-            color: var(--text-main);
-        }
-
-        .linkage-mini-title span:last-child {
-            font-size: 0.72rem;
-            font-weight: 500;
-            color: var(--text-muted);
-        }
-
-        .linkage-mini-card canvas {
-            display: block;
-            width: 100%;
-            height: 108px;
-            border-radius: 0.65rem;
-            background: rgba(99, 102, 241, 0.04);
-            border: 1px solid rgba(99, 102, 241, 0.08);
         }
 
         .stage-dots {
@@ -634,17 +731,20 @@
             }
             .viz-stage {
                 height: auto;
-                grid-template-columns: 1fr;
-                grid-template-rows: minmax(320px, 50vh) auto auto;
+                display: flex;
+                flex-direction: column;
+                gap: 1rem;
             }
             .canvas-wrapper {
-                grid-column: 1;
-                grid-row: 1;
+                width: 100%;
+                max-width: 100%;
+                height: auto;
+                aspect-ratio: 1 / 1;
+                place-self: center;
             }
             .stage-dots { display: none; }
             section { min-height: auto; padding: 3rem 0; }
-            .metric-grid.metric-grid-3,
-            .linkage-compare-grid {
+            .metric-grid.metric-grid-3 {
                 grid-template-columns: repeat(2, minmax(0, 1fr));
             }
             .viz-toolbar {
@@ -655,12 +755,14 @@
                 max-width: none;
             }
             #process-panel {
-                grid-column: 1;
-                grid-row: 2;
+                grid-template-columns: 1fr;
             }
-            #scrubber-panel {
-                grid-column: 1;
-                grid-row: 3;
+            #process-panel > * {
+                grid-column: 1 !important;
+                grid-row: auto !important;
+            }
+            #process-panel > .panel-mini-metrics {
+                margin-bottom: 1rem !important;
             }
             .viz-tooltip {
                 top: auto;
@@ -746,27 +848,39 @@
                     <ul style="font-size:0.85rem; color:var(--text-dim); margin-top:0.5rem; padding-left:1.5rem;">
                         <li id="link-desc"><strong>Average:</strong> Mean distance between all pairs. Balanced.</li>
                     </ul>
-                </div>
-                <div class="glass-card">
-                    <p style="font-size:0.9rem; margin-bottom:0.3rem;">Same dataset, different linkage rules:</p>
-                    <p style="font-size:0.85rem; color:var(--text-dim); margin-bottom:0;">Click any mini tree to load that linkage into the main visualization.</p>
-                    <div class="linkage-compare-grid" id="linkage-compare-grid">
-                        <button class="linkage-mini-card active" type="button" data-preview-linkage="average">
-                            <div class="linkage-mini-title"><span>Average</span><span>Balanced</span></div>
-                            <canvas data-mini-linkage="average"></canvas>
-                        </button>
-                        <button class="linkage-mini-card" type="button" data-preview-linkage="single">
-                            <div class="linkage-mini-title"><span>Single</span><span>Chain-friendly</span></div>
-                            <canvas data-mini-linkage="single"></canvas>
-                        </button>
-                        <button class="linkage-mini-card" type="button" data-preview-linkage="complete">
-                            <div class="linkage-mini-title"><span>Complete</span><span>Compact</span></div>
-                            <canvas data-mini-linkage="complete"></canvas>
-                        </button>
-                        <button class="linkage-mini-card" type="button" data-preview-linkage="ward">
-                            <div class="linkage-mini-title"><span>Ward</span><span>Variance-aware</span></div>
-                            <canvas data-mini-linkage="ward"></canvas>
-                        </button>
+
+                    <div class="worked-example-widget">
+                        <h3 class="example-heading">Worked Example: How is this calculated?</h3>
+                        <div class="example-content">
+                            <div class="example-hint-badge" id="example-hint">Average = mean(...)</div>
+                            
+                            <div class="example-matrices-container">
+                                <div class="matrix-wrapper">
+                                    <span class="label">Step 1: Before Merge</span>
+                                    <table class="mini-table">
+                                        <tr><th></th><th>A</th><th>B</th><th>C</th></tr>
+                                        <tr><th>A</th><td>—</td><td class="cell-highlight-old">2</td><td>10</td></tr>
+                                        <tr><th>B</th><td class="matrix-cell-empty"></td><td>—</td><td>12</td></tr>
+                                        <tr><th>C</th><td class="matrix-cell-empty"></td><td class="matrix-cell-empty"></td><td>—</td></tr>
+                                    </table>
+                                </div>
+                                
+                                <div class="example-arrow">→</div>
+                                
+                                <div class="matrix-wrapper">
+                                    <span class="label">Step 3: After Merging [A,B]</span>
+                                    <table class="mini-table">
+                                        <tr><th></th><th>[A,B]</th><th>C</th></tr>
+                                        <tr><th>[A,B]</th><td>—</td><td class="cell-highlight-new" id="example-result-1">11</td></tr>
+                                        <tr><th>C</th><td class="matrix-cell-empty"></td><td>—</td></tr>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <ol class="example-steps-list" id="example-steps-list">
+                                <!-- Steps dynamically populated based on linkage rule -->
+                            </ol>
+                        </div>
                     </div>
                 </div>
                 <p class="takeaway"><strong>Takeaway:</strong> Linkage is the rulebook for deciding which groups are "closest" once clusters start to grow.</p>
@@ -980,8 +1094,6 @@
         const canvas = document.getElementById('viz-canvas');
         const ctx = canvas.getContext('2d');
         const linkBtns = document.getElementById('linkage-btns').querySelectorAll('button');
-        const previewCards = document.querySelectorAll('[data-preview-linkage]');
-        const previewCanvases = document.querySelectorAll('[data-mini-linkage]');
         const linkDesc = document.getElementById('link-desc');
         const cutSlider = document.getElementById('cut-slider');
         const cutValDisplay = document.getElementById('cut-val-display');
@@ -1004,11 +1116,59 @@
         const scrubberNote = document.getElementById('scrubber-note');
         const hoverTooltip = document.getElementById('hover-tooltip');
 
+        // Worked example DOM
+        const exampleHint = document.getElementById('example-hint');
+        const exampleResult1 = document.getElementById('example-result-1');
+        const exampleStepsList = document.getElementById('example-steps-list');
+
         const descriptions = {
             average: '<strong>Average:</strong> Mean distance between all pairs. Balanced clusters.',
             single: '<strong>Single:</strong> Smallest distance. Can create long, trailing chains.',
             complete: '<strong>Complete:</strong> Largest distance. Forces tight, compact clusters.',
             ward: '<strong>Ward:</strong> Merges clusters that least increase within-cluster spread. Often yields compact, balanced groups.'
+        };
+
+        const linkageExamples = {
+            single: {
+                hint: 'Single Linkage = min(...)',
+                result: '10',
+                steps: [
+                    '<strong>Step 1:</strong> Find the smallest distance in the matrix. A and B are closest (distance = 2).',
+                    '<strong>Step 2:</strong> Merge A and B into a new group: <strong>[A,B]</strong>.',
+                    '<strong>Step 3:</strong> Rebuild the matrix. We need the new distance between <strong>[A,B]</strong> and the remaining point <strong>C</strong>.',
+                    '<strong>Step 4:</strong> Check old distances: A to C was 10, B to C was 12. Single uses the <em>minimum</em>, so <strong>min(10, 12) = 10</strong>.'
+                ]
+            },
+            complete: {
+                hint: 'Complete Linkage = max(...)',
+                result: '12',
+                steps: [
+                    '<strong>Step 1:</strong> Find the smallest distance in the matrix. A and B are closest (distance = 2).',
+                    '<strong>Step 2:</strong> Merge A and B into a new group: <strong>[A,B]</strong>.',
+                    '<strong>Step 3:</strong> Rebuild the matrix. We need the new distance between <strong>[A,B]</strong> and the remaining point <strong>C</strong>.',
+                    '<strong>Step 4:</strong> Check old distances: A to C was 10, B to C was 12. Complete uses the <em>maximum</em>, so <strong>max(10, 12) = 12</strong>.'
+                ]
+            },
+            average: {
+                hint: 'Average Linkage = mean(...)',
+                result: '11',
+                steps: [
+                    '<strong>Step 1:</strong> Find the smallest distance in the matrix. A and B are closest (distance = 2).',
+                    '<strong>Step 2:</strong> Merge A and B into a new group: <strong>[A,B]</strong>.',
+                    '<strong>Step 3:</strong> Rebuild the matrix. We need the new distance between <strong>[A,B]</strong> and the remaining point <strong>C</strong>.',
+                    '<strong>Step 4:</strong> Check old distances: A to C was 10, B to C was 12. Average uses the <em>mean</em>, so <strong>(10 + 12) / 2 = 11</strong>.'
+                ]
+            },
+            ward: {
+                hint: 'Ward Linkage = min variance increase',
+                result: 'cost',
+                steps: [
+                    '<strong>Step 1:</strong> Find the pair that, when merged, creates the tightest, most compact spherical cluster.',
+                    '<strong>Step 2:</strong> Merge A and B into a new group: <strong>[A,B]</strong>.',
+                    '<strong>Step 3:</strong> Instead of comparing direct distances to C, Ward calculates where the geometric center of [A,B,C] would be.',
+                    '<strong>Step 4:</strong> The new "distance" is the geometric cost (spread/variance) of forming that larger group. (More math, but beautiful clusters!)'
+                ]
+            }
         };
 
         const renderCache = {
@@ -1242,7 +1402,6 @@
             mergeScrubber.max = clusterTree.length;
             setMergeStep(state.scrubStep, true);
             syncLinkageControls();
-            renderLinkagePreviews();
             updateDynamicUI();
         }
 
@@ -1350,12 +1509,39 @@
             matrixDisplay.classList.toggle('is-full', matrixView.isFull);
             matrixNote.textContent = matrixView.note;
 
-            const header = matrixView.labels.map(label => `<th>${label}</th>`).join('');
-            const rows = matrixView.labels.map((label, rowIndex) => {
-                const cells = matrixView.values[rowIndex].map((value, colIndex) => (
-                    `<td>${rowIndex === colIndex ? '—' : value.toFixed(2)}</td>`
-                )).join('');
-                return `<tr><th>${label}</th>${cells}</tr>`;
+            const pairA = snapshot.closestPairLabels[0];
+            const pairB = snapshot.closestPairLabels[1];
+
+            const header = matrixView.labels.map(label => {
+                const isTarget = label === pairA || label === pairB;
+                const cls = isTarget ? ' class="matrix-header-highlight"' : '';
+                return `<th${cls}>${label}</th>`;
+            }).join('');
+
+            const rows = matrixView.labels.map((rowLabel, rowIndex) => {
+                const isRowTarget = rowLabel === pairA || rowLabel === pairB;
+                const rowHeaderCls = isRowTarget ? ' class="matrix-header-highlight"' : '';
+
+                const cells = matrixView.values[rowIndex].map((value, colIndex) => {
+                    if (colIndex < rowIndex) {
+                        return `<td class="matrix-cell-empty"></td>`;
+                    }
+                    if (colIndex === rowIndex) {
+                        return `<td>—</td>`;
+                    }
+
+                    const colLabel = matrixView.labels[colIndex];
+                    const isColTarget = colLabel === pairA || colLabel === pairB;
+                    
+                    let cls = '';
+                    if (isRowTarget && isColTarget) {
+                        cls = ' class="matrix-cell-highlight"';
+                    }
+                    
+                    return `<td${cls}>${value.toFixed(2)}</td>`;
+                }).join('');
+                
+                return `<tr><th${rowHeaderCls}>${rowLabel}</th>${cells}</tr>`;
             }).join('');
 
             matrixDisplay.innerHTML = `
@@ -1400,7 +1586,7 @@
             const wasProcessHidden = processPanel.classList.contains('is-hidden');
             const wasScrubberHidden = scrubberPanel.classList.contains('is-hidden');
 
-            processPanel.classList.toggle('is-hidden', !(state.stage >= 2 && state.stage <= 5));
+            processPanel.classList.toggle('is-hidden', !(state.stage >= 4 && state.stage <= 5));
             scrubberPanel.classList.toggle('is-hidden', !(state.stage >= 3 && state.stage <= 6));
             vizStage.classList.toggle('is-expanded', processPanel.classList.contains('is-hidden'));
 
@@ -1428,10 +1614,14 @@
             linkBtns.forEach(button => {
                 button.classList.toggle('active', button.getAttribute('data-link') === state.linkage);
             });
-            previewCards.forEach(card => {
-                card.classList.toggle('active', card.getAttribute('data-preview-linkage') === state.linkage);
-            });
             linkDesc.innerHTML = descriptions[state.linkage];
+
+            const exampleData = linkageExamples[state.linkage];
+            if (exampleData) {
+                exampleHint.textContent = exampleData.hint;
+                exampleResult1.textContent = exampleData.result;
+                exampleStepsList.innerHTML = exampleData.steps.map(step => `<li>${step}</li>`).join('');
+            }
         }
 
         function setMergeStep(step, immediate = false) {
@@ -1462,7 +1652,6 @@
             state.scrubStep = clamp(state.scrubStep, 0, clusterTree.length);
             setMergeStep(state.scrubStep, true);
             syncLinkageControls();
-            renderLinkagePreviews();
             updateDynamicUI();
         }
 
@@ -1556,60 +1745,10 @@
             updateHoverTooltip(closestId);
         }
 
-        function drawMiniDendrogram(previewCanvas, model, active) {
-            const previewCtx = previewCanvas.getContext('2d');
-            const { width, height } = resizeHiDPICanvas(previewCanvas, previewCtx);
-            previewCtx.clearRect(0, 0, width, height);
-
-            const padX = 12;
-            const padY = 10;
-            const drawW = width - padX * 2;
-            const drawH = height - padY * 2;
-            const maxDistance = model.maxDistance || 1;
-            const strokeColor = active ? varColor('--accent', '#6366f1') : '#9ca3af';
-
-            previewCtx.lineWidth = active ? 2 : 1.6;
-            previewCtx.lineCap = 'round';
-
-            model.clusterTree.forEach(merge => {
-                const lx = padX + merge.left.dendroX * drawW;
-                const ly = height - padY - (merge.left.dendroY / maxDistance) * drawH;
-                const rx = padX + merge.right.dendroX * drawW;
-                const ry = height - padY - (merge.right.dendroY / maxDistance) * drawH;
-                const py = height - padY - (merge.dendroY / maxDistance) * drawH;
-
-                previewCtx.strokeStyle = strokeColor;
-                previewCtx.beginPath();
-                previewCtx.moveTo(lx, ly);
-                previewCtx.lineTo(lx, py);
-                previewCtx.lineTo(rx, py);
-                previewCtx.lineTo(rx, ry);
-                previewCtx.stroke();
-            });
-
-            model.points.forEach(point => {
-                previewCtx.beginPath();
-                previewCtx.arc(padX + point.dendroX * drawW, height - padY, 2.6, 0, Math.PI * 2);
-                previewCtx.fillStyle = active ? strokeColor : '#6b7280';
-                previewCtx.fill();
-            });
-        }
-
-        function renderLinkagePreviews() {
-            previewCanvases.forEach(previewCanvas => {
-                const linkage = previewCanvas.getAttribute('data-mini-linkage');
-                const model = clusteringModels[linkage];
-                if (model) {
-                    drawMiniDendrogram(previewCanvas, model, linkage === state.linkage);
-                }
-            });
-        }
-
         function resize() {
             const dimensions = resizeHiDPICanvas(canvas, ctx);
             cw = dimensions.width;
             ch = dimensions.height;
-            renderLinkagePreviews();
         }
 
         function drawCurrentClosestPairLine(snapshot) {
@@ -1848,12 +1987,6 @@
         linkBtns.forEach(button => {
             button.addEventListener('click', () => {
                 setLinkage(button.getAttribute('data-link'));
-            });
-        });
-
-        previewCards.forEach(card => {
-            card.addEventListener('click', () => {
-                setLinkage(card.getAttribute('data-preview-linkage'));
             });
         });
 
