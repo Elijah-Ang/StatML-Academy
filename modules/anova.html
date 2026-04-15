@@ -161,6 +161,8 @@
             content: ''; position: absolute; top: 100%; left: 50%; transform: translateX(-50%);
             border-width: 6px; border-style: solid; border-color: var(--text-main) transparent transparent transparent;
         }
+        
+        .eta-col { transition: background-color 0.4s ease; }
 
         .stage-dot {
             width: 10px; height: 10px; border-radius: 999px;
@@ -181,14 +183,9 @@
 
         header,
         main,
-        #viz-table {
-            background-color: var(--bg) !important;
-        }
-
         aside,
-        #viz-scatter,
-        #viz-interaction {
-            background-color: var(--surface) !important;
+        .canvas-layer {
+            background-color: transparent !important;
         }
 
         #stage-dots {
@@ -280,10 +277,10 @@
         </div>
     </header>
 
-    <div id="content-start" class="flex flex-col md:flex-row min-h-screen relative">
+    <div id="content-start" class="flex flex-col md:flex-row min-h-screen relative max-w-[1400px] mx-auto w-full">
         
         <!-- TEXT COLUMN (Scrollable) -->
-        <main class="order-2 md:order-1 w-full md:w-[45%] lg:w-[40%] px-6 md:px-12 lg:px-20 pb-32 md:pb-64 md:border-r border-stone-200 z-10 bg-stone-50">
+        <main class="order-2 md:order-1 w-full md:w-[45%] lg:w-[40%] px-6 md:px-10 lg:px-12 pb-32 md:pb-64 z-10 bg-stone-50">
             
             <article class="step active" data-stage="1">
                 <div class="step-label">Stage 01</div>
@@ -370,47 +367,74 @@
 
             <article class="step" data-stage="5">
                 <div class="step-label">Stage 05</div>
-                <h2 class="text-3xl font-bold mb-4">The F-Statistic & Significance</h2>
+                <h2 class="text-3xl font-bold mb-4">The F-Statistic</h2>
                 <p class="mb-4 text-stone-700 leading-relaxed font-serif">
                     ANOVA summarizes this decomposition into a single ratio, the <strong>F-statistic</strong>. It compares the size of the treatment effect to the size of the error.
                 </p>
                 <div class="my-6 p-6 bg-white border border-stone-200 rounded-xl shadow-sm text-center">
                     $$F = \frac{\text{Between-Group Variance}}{\text{Within-Group Variance}}$$
                 </div>
-                <div class="bg-stone-800 text-stone-100 p-5 rounded-lg font-serif text-sm leading-relaxed mb-4">
-                    <strong>Crucial Nuance:</strong> A large F value means the signal is stronger than the noise. But "large" does not automatically mean "statistically significant." Significance (a p-value < 0.05) depends heavily on <em>Degrees of Freedom</em>—how many groups you have and your sample size. A small signal can be significant with 10,000 students, while a large signal might not be with only 10.
-                </div>
             </article>
 
             <article class="step" data-stage="6">
                 <div class="step-label">Stage 06</div>
-                <h2 class="text-3xl font-bold mb-4">A Worked Example</h2>
+                <h2 class="text-3xl font-bold mb-4">Degrees of Freedom</h2>
                 <p class="mb-4 text-stone-700 leading-relaxed font-serif">
-                    Let’s calculate this for the data currently on display. Each teaching method has 12 observations, so the example uses <strong>N = 36</strong> students in total.
+                    Before we can calculate our true variance (Mean Squares) for the F-statistic, we need to divide our Sum of Squares by our <strong>Degrees of Freedom (df)</strong>. 
                 </p>
-                <div class="space-y-4 my-6">
-                    <div class="p-5 bg-white border border-stone-200 rounded-xl shadow-sm">
-                        <p class="text-xs font-semibold uppercase tracking-wide text-stone-500 mb-2">From The Displayed Scores</p>
-                        <p id="calc-summary" class="font-mono-ui text-sm text-stone-700 leading-relaxed">Group means: A = 72, B = 69, C = 63. Grand mean = 68. Each group has n = 12, so N = 36.</p>
-                    </div>
-                    <div class="p-5 bg-indigo-50 border border-indigo-100 rounded-xl">
-                        <p class="text-xs font-semibold uppercase tracking-wide text-indigo-700 mb-2">Between-Group Sum Of Squares</p>
-                        <p id="calc-ss-between" class="font-mono-ui text-sm text-indigo-900 leading-relaxed">SS<sub>between</sub> = 12[(72 - 68)<sup>2</sup> + (69 - 68)<sup>2</sup> + (63 - 68)<sup>2</sup>] = 504</p>
-                    </div>
-                    <div class="p-5 bg-red-50 border border-red-100 rounded-xl">
-                        <p class="text-xs font-semibold uppercase tracking-wide text-red-700 mb-2">Within-Group Sum Of Squares</p>
-                        <p id="calc-ss-within" class="font-mono-ui text-sm text-red-900 leading-relaxed">SS<sub>within</sub> = 132 + 132 + 132 = 396</p>
-                    </div>
-                    <div class="p-5 bg-stone-800 text-stone-100 rounded-xl shadow-sm">
-                        <p class="text-xs font-semibold uppercase tracking-wide text-stone-300 mb-2">Degrees Of Freedom, Mean Squares, And F</p>
-                        <p id="calc-final" class="font-mono-ui text-sm leading-relaxed">df<sub>between</sub> = 3 - 1 = 2; df<sub>within</sub> = 36 - 3 = 33. Then MS<sub>between</sub> = 504 / 2 = 252, MS<sub>within</sub> = 396 / 33 = 12, and F = 252 / 12 = 21.</p>
-                    </div>
+                <div class="bg-blue-50 p-5 rounded-lg border border-blue-100 mb-6">
+                    <p class="text-sm text-blue-900 font-serif leading-relaxed">
+                        In statistics, df simply means <em>how many values are still free to vary once a constraint has been imposed</em>. Imagine picking 3 numbers that must average to 10. You can freely choose the first two (say, 8 and 15), but the third is locked (-13). You have 2 degrees of freedom.
+                    </p>
                 </div>
-                <p class="text-stone-500 italic text-sm">Scroll down to see the same quantities organized into the universal language of statisticians: the ANOVA table.</p>
+                <p class="mb-4 text-stone-700 leading-relaxed font-serif">
+                    In our specific teaching example, we have <strong>N = 36</strong> total students spread across <strong>k = 3</strong> groups:
+                </p>
+                <ul class="space-y-4 my-6 text-sm">
+                    <li class="flex flex-col gap-1">
+                        <strong class="text-indigo-700">df<sub>between</sub> = k - 1 = 3 - 1 = 2</strong>
+                        <span class="text-stone-600 font-serif">Once the overall Grand Mean is set, only 2 of our 3 group means are free to vary.</span>
+                    </li>
+                    <li class="flex flex-col gap-1">
+                        <strong class="text-red-700">df<sub>within</sub> = N - k = 36 - 3 = 33</strong>
+                        <span class="text-stone-600 font-serif">Within each group, the students' scores must average out to their respective group mean. We lose 1 degree of freedom per group constraint.</span>
+                    </li>
+                    <li class="flex flex-col gap-1">
+                        <strong class="text-stone-700">df<sub>total</sub> = N - 1 = 36 - 1 = 35</strong>
+                        <span class="text-stone-600 font-serif">If we only knew the Grand Mean, 35 out of the 36 students' scores would be free to vary.</span>
+                    </li>
+                </ul>
             </article>
 
             <article class="step" data-stage="7">
                 <div class="step-label">Stage 07</div>
+                <h2 class="text-3xl font-bold mb-4">A Worked Example</h2>
+                <p class="mb-4 text-stone-700 leading-relaxed font-serif">
+                    Let’s bring this together using the data currently on display. We divide our raw distances (Sum of Squares, SS) by our degrees of freedom to get the Mean Squares (MS), which act as our final variance values.
+                </p>
+                <div class="space-y-4 my-6">
+                    <div class="p-5 bg-white border border-stone-200 rounded-xl shadow-sm">
+                        <p class="text-xs font-semibold uppercase tracking-wide text-stone-500 mb-2">From The Displayed Scores</p>
+                        <p id="calc-summary" class="font-mono-ui text-sm text-stone-700 leading-relaxed">Group means: A = 80, B = 68, C = 56. Grand mean = 68. Each group has n = 12, so N = 36.</p>
+                    </div>
+                    <div class="p-5 bg-indigo-50 border border-indigo-100 rounded-xl">
+                        <p class="text-xs font-semibold uppercase tracking-wide text-indigo-700 mb-2">Between-Group Signal</p>
+                        <p id="calc-ss-between" class="font-mono-ui text-sm text-indigo-900 leading-relaxed">SS<sub>between</sub> = 12[(80 - 68)<sup>2</sup> + (68 - 68)<sup>2</sup> + (56 - 68)<sup>2</sup>] = 3456</p>
+                    </div>
+                    <div class="p-5 bg-red-50 border border-red-100 rounded-xl">
+                        <p class="text-xs font-semibold uppercase tracking-wide text-red-700 mb-2">Within-Group Noise</p>
+                        <p id="calc-ss-within" class="font-mono-ui text-sm text-red-900 leading-relaxed">SS<sub>within</sub> = 132 + 132 + 132 = 396</p>
+                    </div>
+                    <div class="p-5 bg-stone-800 text-stone-100 rounded-xl shadow-sm">
+                        <p class="text-xs font-semibold uppercase tracking-wide text-stone-300 mb-2">Applying Degrees of Freedom</p>
+                        <p id="calc-final" class="font-mono-ui text-sm leading-relaxed">df<sub>between</sub> = 2; df<sub>within</sub> = 33.<br>MS<sub>between</sub> = 3456 / 2 = 1728.<br>MS<sub>within</sub> = 396 / 33 = 12.<br>F = 1728 / 12 = 144.</p>
+                    </div>
+                </div>
+                <p class="text-stone-500 italic text-sm">Scroll down to see these quantities organized into the universal language of statisticians: the ANOVA table.</p>
+            </article>
+
+            <article class="step" data-stage="8">
+                <div class="step-label">Stage 08</div>
                 <h2 class="text-3xl font-bold mb-4">Reading the ANOVA Table</h2>
                 <p class="mb-4 text-stone-700 leading-relaxed font-serif">
                     When you run ANOVA in software like R, SPSS, or Python, the output is standardized into this table format.
@@ -424,8 +448,34 @@
                 </div>
             </article>
 
-            <article class="step" data-stage="8">
-                <div class="step-label">Stage 08</div>
+            <article class="step" data-stage="9">
+                <div class="step-label">Stage 09</div>
+                <h2 class="text-3xl font-bold mb-4">How Big Is The Effect?</h2>
+                <p class="mb-4 text-stone-700 leading-relaxed font-serif">
+                    A significant p-value tells us the result is likely real, but not necessarily if it's <em>meaningful</em>. A tiny signal can be highly significant if you have 10,000 students. For practical meaning, we measure the <strong>Effect Size</strong>.
+                </p>
+                <div class="my-6 p-5 bg-white border border-indigo-200 rounded-xl shadow-sm text-center relative overflow-hidden">
+                    <div class="absolute inset-0 bg-indigo-50 opacity-50"></div>
+                    <div class="relative z-10">
+                        <p class="text-sm font-bold text-indigo-900 mb-3">Eta-Squared ($\eta^2$)</p>
+                        <p class="text-sm text-stone-700 font-serif mb-4 leading-relaxed">
+                            Eta-squared shows the <em>proportion</em> of the total variation in scores that is directly associated with the teaching method. We calculate it using the Sum of Squares from the table:
+                        </p>
+                        <div class="bg-white py-3 rounded-lg border border-indigo-100 font-mono-ui text-indigo-800 mb-4 inline-block px-6">
+                            <span id="live-eta-calc-text" class="text-base">$\eta^2 = \frac{SS_{between}}{SS_{total}} = \frac{3456}{3852} = 0.90$</span>
+                        </div>
+                        <p id="eta-interpretation" class="text-sm text-indigo-900 font-medium">
+                            About 90% of the variance is explained by the group differences.
+                        </p>
+                    </div>
+                </div>
+                <p class="mb-4 text-stone-700 leading-relaxed font-serif text-sm">
+                    Notice the new column added to the ANOVA table in the visual panel. Depending on your software, this might be reported as Eta Squared, Partial Eta Squared, or $R^2$.
+                </p>
+            </article>
+
+            <article class="step" data-stage="10">
+                <div class="step-label">Stage 10</div>
                 <h2 class="text-3xl font-bold mb-4">Post-Hoc Testing</h2>
                 <p class="mb-4 text-stone-700 leading-relaxed font-serif">
                     A significant ANOVA is an omnibus test—it tells you a difference exists, but not <em>where</em>. Is A different from B? Is B different from C? 
@@ -437,60 +487,197 @@
                     </p>
                 </div>
                 <p class="mb-4 text-stone-700 leading-relaxed font-serif">
-                    To follow up, we use Post-Hoc tests like <strong>Tukey's HSD</strong>. Under its assumptions, Tukey's controls the family-wise error rate at the chosen alpha level across the full set of pairwise comparisons.
+                    To follow up safely, we use Post-Hoc tests like <strong>Tukey's HSD</strong>. Under its assumptions, Tukey's controls the family-wise error rate at the chosen alpha level across the full set of pairwise comparisons. Look at the visual panel for the breakdown.
                 </p>
-            </article>
-
-            <article class="step" data-stage="9">
-                <div class="step-label">Stage 09</div>
-                <h2 class="text-3xl font-bold mb-4">Enter Two-Way ANOVA</h2>
-                <p class="mb-4 text-stone-700 leading-relaxed font-serif">
-                    So far, we've used a One-Way ANOVA (One independent variable: Teaching Method). But reality is complex. What if we want to know the effect of Teaching Method <strong>AND</strong> the student's Sleep Level (High vs. Low)?
-                </p>
-                <p class="mb-4 text-stone-700 leading-relaxed font-serif">
-                    A Two-Way ANOVA tests three things simultaneously:
-                </p>
-                <ol class="list-decimal pl-5 space-y-2 text-stone-700 font-serif mb-6">
-                    <li>The Main Effect of Factor 1 (Method).</li>
-                    <li>The Main Effect of Factor 2 (Sleep).</li>
-                    <li>The <strong>Interaction Effect</strong> between them.</li>
-                </ol>
-            </article>
-
-            <article class="step" data-stage="10">
-                <div class="step-label">Stage 10</div>
-                <h2 class="text-3xl font-bold mb-4">The Interaction Effect</h2>
-                <p class="mb-4 text-stone-700 leading-relaxed font-serif">
-                    An interaction effect answers the ultimate scientific caveat: <em>"It depends."</em>
-                </p>
-                <p class="mb-4 text-stone-700 leading-relaxed font-serif">
-                    Does Teaching Method A work better than Method B? If there is a significant interaction, the answer is "It depends on how much sleep they got." 
-                </p>
-                
-                <div class="mt-6 p-5 bg-white border border-stone-200 rounded-xl shadow-sm">
-                    <p class="text-sm font-bold text-stone-800 mb-3">Teaching Interaction: Plotting Two-Way</p>
-                    <div class="flex gap-2">
-                        <button class="interactive-btn" onclick="setInteraction('none', this)">No Interaction (Parallel)</button>
-                        <button class="interactive-btn active-btn" onclick="setInteraction('synergy', this)">Interaction (Crossing)</button>
-                    </div>
-                    <p class="text-xs text-stone-500 mt-3 font-serif">Notice how, in the interaction plot, non-parallel lines indicate an interaction: Method A is better when sleep is high, but Method B is better when sleep is low.</p>
-                </div>
             </article>
 
             <article class="step" data-stage="11">
                 <div class="step-label">Stage 11</div>
+                <h2 class="text-3xl font-bold mb-4">Enter Two-Way ANOVA</h2>
+                <p class="mb-4 text-stone-700 leading-relaxed font-serif">
+                    So far, we've used a One-Way ANOVA to ask a single question: <em>Does the teaching method matter?</em> But reality is complex.
+                </p>
+                <p class="mb-4 text-stone-700 leading-relaxed font-serif">
+                    Let's extend our example. We take our original three teaching methods (A, B, and C) and introduce a second factor: the student's <strong>Sleep Level</strong> (High vs. Low). 
+                </p>
+                <div class="bg-indigo-50 p-5 rounded-lg border border-indigo-100 my-6">
+                    <p class="text-sm text-indigo-900 font-serif leading-relaxed">
+                        Two-Way ANOVA now asks three questions at once: Does teaching method matter? Does sleep matter? And crucially, <strong>does the effect of one depend on the other?</strong> We are no longer comparing only 3 group means, but 6 distinct cells (3 methods × 2 sleep levels).
+                    </p>
+                </div>
+                <p class="text-stone-700 leading-relaxed font-serif">
+                    This allows us to explore how both variables simultaneously influence test scores.
+                </p>
+            </article>
+
+            <article class="step" data-stage="12">
+                <div class="step-label">Stage 12</div>
+                <h2 class="text-3xl font-bold mb-4">Cells & Marginal Means</h2>
+                <p class="mb-4 text-stone-700 leading-relaxed font-serif">
+                    To understand a two-way design, it helps to see how the data is organized. Look at this numeric structure for our extended teaching example:
+                </p>
+                
+                <div class="my-6 bg-white border border-stone-200 rounded-xl overflow-hidden shadow-sm">
+                    <div class="bg-stone-50 px-4 py-2 border-b border-stone-200">
+                        <p class="text-xs font-bold text-stone-500 uppercase tracking-wide">Two-Way Data Structure</p>
+                    </div>
+                    <table class="w-full text-sm text-center border-collapse">
+                        <thead class="bg-stone-100 border-b border-stone-200 text-stone-600 font-bold">
+                            <tr>
+                                <th class="p-3 text-left border-r border-stone-200">Sleep \ Method</th>
+                                <th class="p-3 w-[18%]">A</th>
+                                <th class="p-3 w-[18%]">B</th>
+                                <th class="p-3 w-[18%]">C</th>
+                                <th class="p-3 w-[22%] bg-stone-200/50 text-stone-800 border-l border-stone-200">Sleep Mean</th>
+                            </tr>
+                        </thead>
+                        <tbody class="font-mono-ui text-stone-700 text-sm">
+                            <tr class="border-b border-stone-100">
+                                <td class="p-3 text-left font-semibold font-sans bg-stone-50 border-r border-stone-200">High Sleep</td>
+                                <td class="p-3 text-indigo-700 bg-indigo-50/30 font-bold">82</td>
+                                <td class="p-3 text-indigo-700 bg-indigo-50/30">74</td>
+                                <td class="p-3 text-indigo-700 bg-indigo-50/30">66</td>
+                                <td class="p-3 bg-stone-100/50 border-l border-stone-200 font-bold text-stone-800">74</td>
+                            </tr>
+                            <tr class="border-b border-stone-200">
+                                <td class="p-3 text-left font-semibold font-sans bg-stone-50 border-r border-stone-200">Low Sleep</td>
+                                <td class="p-3 text-red-700 bg-red-50/30">62</td>
+                                <td class="p-3 text-red-700 bg-red-50/30 font-bold">66</td>
+                                <td class="p-3 text-red-700 bg-red-50/30">70</td>
+                                <td class="p-3 bg-stone-100/50 border-l border-stone-200 font-bold text-stone-800">66</td>
+                            </tr>
+                            <tr class="bg-stone-50">
+                                <td class="p-3 text-left font-semibold font-sans border-r border-stone-200 text-stone-800">Method Mean</td>
+                                <td class="p-3 font-bold text-stone-800">72</td>
+                                <td class="p-3 font-bold text-stone-800">70</td>
+                                <td class="p-3 font-bold text-stone-800">68</td>
+                                <td class="p-3 border-l border-stone-200 text-stone-500 text-xs font-sans">Grand: 70</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <ul class="space-y-4 text-sm my-6">
+                    <li class="p-4 bg-stone-100 rounded-lg">
+                        <strong class="text-stone-800 block mb-1">Cell Means (The middle grid)</strong>
+                        <span class="text-stone-600 font-serif">A <em>cell mean</em> is the average score for one exact combination—like the students who received <strong>Method A AND High Sleep (82)</strong>. Our design has 6 distinct cells.</span>
+                    </li>
+                    <li class="p-4 bg-stone-100 rounded-lg">
+                        <strong class="text-stone-800 block mb-1">Marginal Means (The outer edges)</strong>
+                        <span class="text-stone-600 font-serif">A <em>marginal mean</em> averages across one factor while ignoring the other. The marginal mean for Method A (72) combines both sleep levels. "Main effects" look only at these outer marginal means.</span>
+                    </li>
+                </ul>
+            </article>
+
+            <article class="step" data-stage="13">
+                <div class="step-label">Stage 13</div>
+                <h2 class="text-3xl font-bold mb-4">The Interaction Effect</h2>
+                <p class="mb-4 text-stone-700 leading-relaxed font-serif">
+                    If the gap between methods stays consistent regardless of sleep, the lines in our plot will be roughly parallel. That suggests <strong>no interaction</strong>.
+                </p>
+                <p class="mb-4 text-stone-700 leading-relaxed font-serif">
+                    But if the lines are <strong>not parallel</strong>, it suggests an <strong>interaction</strong>. Crossing lines are not technically required for an interaction, but this example uses a strong crossing pattern to make the concept visually obvious: the effect of Method completely flips depending on Sleep.
+                </p>
+                
+                <div class="mt-6 p-5 bg-white border border-stone-200 rounded-xl shadow-sm">
+                    <p class="text-sm font-bold text-stone-800 mb-3">How to Read the Interaction Plot</p>
+                    <ol class="list-decimal pl-5 space-y-2 text-xs text-stone-600 font-serif mb-5">
+                        <li><strong>Step 1: Check for parallel lines.</strong> If lines are roughly parallel, there is likely no interaction. If they cross or clearly change relative position, an interaction is present.</li>
+                        <li><strong>Step 2: Look at overall height.</strong> If one line tends to sit higher on average, that suggests a main effect of Sleep.</li>
+                        <li><strong>Step 3: Look at how the ranking changes.</strong> Notice which method is best under High Sleep, and then notice how that changes under Low Sleep. Here, the best method completely reverses!</li>
+                    </ol>
+                    <div class="flex gap-2">
+                        <button class="interactive-btn" onclick="setInteraction('none', this)">No Interaction (Parallel)</button>
+                        <button class="interactive-btn active-btn" onclick="setInteraction('synergy', this)">Interaction (Crossover)</button>
+                    </div>
+                </div>
+            </article>
+
+            <article class="step" data-stage="14">
+                <div class="step-label">Stage 14</div>
+                <h2 class="text-3xl font-bold mb-4">Building the ANOVA Table</h2>
+                <p class="mb-4 text-stone-700 leading-relaxed font-serif">
+                    How do we get from our six cells to the statistical output? We partition the total variation into four distinct buckets:
+                </p>
+                
+                <div class="grid grid-cols-1 gap-3 text-sm my-6">
+                    <div class="bg-indigo-50 p-4 rounded-lg border border-indigo-100 flex items-start gap-3">
+                        <div class="w-8 h-8 rounded bg-indigo-200 text-indigo-800 flex items-center justify-center font-bold shrink-0">1</div>
+                        <div>
+                            <strong class="text-indigo-900 block mb-1">Method (Main Effect)</strong>
+                            <span class="text-indigo-800 font-serif">Variation among the three Method marginal means (<strong>72 vs 70 vs 68</strong>). It asks if one teaching method is better on average.</span>
+                        </div>
+                    </div>
+                    <div class="bg-indigo-50 p-4 rounded-lg border border-indigo-100 flex items-start gap-3">
+                        <div class="w-8 h-8 rounded bg-indigo-200 text-indigo-800 flex items-center justify-center font-bold shrink-0">2</div>
+                        <div>
+                            <strong class="text-indigo-900 block mb-1">Sleep (Main Effect)</strong>
+                            <span class="text-indigo-800 font-serif">Variation between the two Sleep marginal means (<strong>74 vs 66</strong>). It asks if well-rested students do better on average.</span>
+                        </div>
+                    </div>
+                    <div class="bg-amber-50 p-4 rounded-lg border border-amber-100 flex items-start gap-3">
+                        <div class="w-8 h-8 rounded bg-amber-200 text-amber-800 flex items-center justify-center font-bold shrink-0">3</div>
+                        <div>
+                            <strong class="text-amber-900 block mb-1">Method × Sleep (Interaction)</strong>
+                            <span class="text-amber-800 font-serif">The leftover structured variance when the gaps between methods change across sleep levels. For High Sleep, A beats C by <strong>+16</strong> points. But for Low Sleep, C beats A by <strong>+8</strong> points.</span>
+                        </div>
+                    </div>
+                    <div class="bg-red-50 p-4 rounded-lg border border-red-100 flex items-start gap-3">
+                        <div class="w-8 h-8 rounded bg-red-200 text-red-800 flex items-center justify-center font-bold shrink-0">4</div>
+                        <div>
+                            <strong class="text-red-900 block mb-1">Error (Within-Cell Noise)</strong>
+                            <span class="text-red-800 font-serif">The natural random noise of individual students <em>within</em> each of the six specific cells.</span>
+                        </div>
+                    </div>
+                </div>
+
+                <p class="mb-4 text-stone-700 leading-relaxed font-serif">
+                    To turn these buckets into our final results, each source gets its own <strong>Sum of Squares (SS)</strong>. We divide each SS by its degrees of freedom (df) to get a <strong>Mean Square (MS)</strong>. Finally, we compare each effect's MS to the Error MS to produce an <strong>F-ratio</strong>.
+                </p>
+
+                <div class="bg-stone-800 p-4 rounded-lg border border-stone-700 shadow-sm mt-6">
+                    <p class="text-sm font-semibold text-stone-200 mb-1 flex items-center gap-2"><i data-lucide="alert-triangle" class="w-4 h-4 text-amber-400"></i> Why Averages Can Hide The Truth</p>
+                    <p class="text-sm text-stone-300 font-serif leading-relaxed">
+                        Notice that our Method marginal means are quite close (72, 70, 68). Because the crossover pattern partly cancels out when averaged across sleep levels, the main effect of Method looks modest. But the interaction is large because the best method changes completely depending on sleep! This is why we always read the interaction row first.
+                    </p>
+                </div>
+            </article>
+
+            <article class="step" data-stage="15">
+                <div class="step-label">Stage 15</div>
+                <h2 class="text-3xl font-bold mb-4">Reading the Two-Way Table</h2>
+                <p class="mb-4 text-stone-700 leading-relaxed font-serif">
+                    Notice how the ANOVA table expands in the visual panel. Our single "Between Groups" signal is now cleanly split into three specific rows: <strong>Method</strong>, <strong>Sleep</strong>, and <strong>Method × Sleep</strong>.
+                </p>
+                
+                <div class="bg-blue-50 p-5 rounded-lg border border-blue-100 mb-6">
+                    <p class="text-sm font-bold text-blue-900 mb-3">Correct Reading Order</p>
+                    <ol class="list-decimal pl-5 space-y-2 text-sm text-blue-800 font-serif">
+                        <li><strong>Read the interaction row first.</strong> If the interaction is significant, the effect of one factor depends on the other.</li>
+                        <li><strong>Be careful with main effects.</strong> If the interaction is significant, interpreting the main effect of Method or Sleep on its own can be highly misleading.</li>
+                        <li><strong>Then read the main effects.</strong> Look at Method and Sleep to see if they matter on average across all conditions.</li>
+                    </ol>
+                </div>
+
+                <p class="text-sm text-stone-700 font-serif leading-relaxed">
+                    <strong>Our Example's Conclusion:</strong> The Interaction is highly significant (<strong>p &lt; 0.001</strong>). This confirms what we visually saw—the lines clearly cross between Method B and Method C. Method A provides a large advantage for well-rested students, but Method C becomes the best option for tired students. The main effects (Method and Sleep) are also significant, but the interaction tells us the true story of <em>how</em> they combine.
+                </p>
+            </article>
+
+            <article class="step" data-stage="16">
+                <div class="step-label">Stage 16</div>
                 <h2 class="text-3xl font-bold mb-4">Caveats & Recap</h2>
                 <p class="mb-4 text-stone-700 leading-relaxed font-serif">
                     ANOVA is a beautiful, mathematically elegant tool for partitioning variance. But it is only a model of reality.
                 </p>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
                     <div class="bg-stone-100 p-4 rounded-lg">
-                        <h4 class="font-bold text-stone-800 text-sm mb-1">Effect Size Matters</h4>
-                        <p class="text-xs text-stone-600 font-serif">A significant p-value doesn't mean the effect is practically meaningful. Always report measures like Eta-squared ($\eta^2$) to show the <em>proportion</em> of variance explained.</p>
+                        <h4 class="font-bold text-stone-800 text-sm mb-1">Assumptions are Key</h4>
+                        <p class="text-xs text-stone-600 font-serif">ANOVA is robust, but severe violations of normality or independence will produce a completely meaningless F-statistic. Always check your residuals.</p>
                     </div>
                     <div class="bg-stone-100 p-4 rounded-lg">
                         <h4 class="font-bold text-stone-800 text-sm mb-1">Look at the Data</h4>
-                        <p class="text-xs text-stone-600 font-serif">Never rely solely on the p-value or bar charts. Plot the raw data, check the boxplots, and ensure extreme outliers aren't driving the omnibus F-test.</p>
+                        <p class="text-xs text-stone-600 font-serif">Never rely solely on the p-value, tables, or bar charts. Plot the raw data (like our dot plot), check the boxplots, and ensure extreme outliers aren't driving the omnibus result.</p>
                     </div>
                 </div>
                 <p class="text-stone-700 leading-relaxed font-serif font-medium">
@@ -501,76 +688,82 @@
         </main>
 
         <!-- VISUAL COLUMN (Sticky Canvas) -->
-        <aside class="order-1 md:order-2 w-full md:w-[55%] lg:w-[60%] sticky top-0 h-[52vh] sm:h-[56vh] md:h-screen bg-white overflow-hidden border-b md:border-b-0 md:border-l border-stone-200 flex items-center justify-center relative z-20 md:z-0">
+        <aside class="order-1 md:order-2 w-full md:w-[55%] lg:w-[60%] sticky top-0 h-[52vh] sm:h-[56vh] md:h-screen bg-transparent overflow-hidden flex flex-col items-center justify-center relative z-20 md:z-0">
             
-            <!-- LAYER 1: The Dot Plot (Stages 1-5) -->
-            <div id="viz-scatter" class="canvas-layer active w-full h-full relative max-w-2xl max-h-[600px] mx-auto p-4 sm:p-6 md:p-12">
+            <!-- LAYER 1: The Dot Plot (Stages 1-7) -->
+            <div id="viz-scatter" class="canvas-layer active w-full h-full relative max-w-2xl max-h-[600px] mx-auto p-4 sm:p-6 md:p-8">
                 <!-- Axes -->
                 <div class="absolute bottom-12 left-12 right-12 h-px bg-stone-300"></div>
                 <div class="absolute bottom-12 left-12 top-12 w-px bg-stone-300"></div>
-                <span class="absolute bottom-4 left-1/2 -translate-x-1/2 text-sm font-semibold text-stone-500 uppercase tracking-wide">Teaching Method Group</span>
+                <span class="absolute bottom-1 left-1/2 -translate-x-1/2 text-xs font-semibold text-stone-500 uppercase tracking-wide">Teaching Method Group</span>
                 <span class="absolute top-1/2 left-4 -translate-y-1/2 -rotate-90 text-sm font-semibold text-stone-500 uppercase tracking-wide">Test Score</span>
 
                 <!-- Group Labels -->
-                <div class="absolute bottom-6 left-[20%] -translate-x-1/2 text-lg font-bold text-indigo-800">A</div>
-                <div class="absolute bottom-6 left-[50%] -translate-x-1/2 text-lg font-bold text-teal-800">B</div>
-                <div class="absolute bottom-6 left-[80%] -translate-x-1/2 text-lg font-bold text-red-800">C</div>
+                <div class="absolute bottom-5 left-[20%] -translate-x-1/2 text-lg font-bold text-indigo-800">A</div>
+                <div class="absolute bottom-5 left-[50%] -translate-x-1/2 text-lg font-bold text-teal-800">B</div>
+                <div class="absolute bottom-5 left-[80%] -translate-x-1/2 text-lg font-bold text-red-800">C</div>
 
-                <!-- Grand Mean Line (Hidden initially) -->
+                <!-- Grand Mean Line -->
                 <div id="grand-mean" class="grand-mean-line top-[50%] flex items-center justify-end pr-2 text-xs font-bold text-stone-500">Grand Mean</div>
 
                 <!-- Dynamic container for dots & means -->
                 <div id="plot-container" class="absolute inset-12"></div>
             </div>
 
-            <!-- LAYER 2: The ANOVA Table (Stages 6-8) -->
-            <div id="viz-table" class="canvas-layer w-full h-full bg-stone-50 p-4 sm:p-6 md:p-8 flex flex-col justify-center">
-                <div class="max-w-2xl mx-auto w-full bg-white rounded-xl shadow-lg border border-stone-200 overflow-hidden">
+            <!-- LAYER 2: The One-Way ANOVA Table (Stages 8-10) -->
+            <div id="viz-table" class="canvas-layer w-full h-full bg-transparent p-4 sm:p-6 md:p-8 flex flex-col justify-center">
+                <div class="max-w-[800px] mx-auto w-full bg-white rounded-xl shadow border border-stone-200 overflow-hidden">
                     <div class="bg-stone-800 px-6 py-4">
-                        <h3 class="text-white font-serif text-lg">ANOVA Output Table</h3>
+                        <h3 class="text-white font-serif text-lg">One-Way ANOVA Output</h3>
                     </div>
-                    <table class="w-full text-left border-collapse">
-                        <thead>
-                            <tr class="bg-stone-100 border-b border-stone-200 text-sm font-bold text-stone-600">
-                                <th class="p-4 hover-cell">Source <div class="tooltip-card font-normal">Where is the variance coming from? The model (Between) or the residuals (Within)?</div></th>
-                                <th class="p-4 hover-cell font-mono-ui">SS <div class="tooltip-card font-normal"><strong>Sum of Squares:</strong> The total squared distance of data points from means.</div></th>
-                                <th class="p-4 hover-cell font-mono-ui">df <div class="tooltip-card font-normal"><strong>Degrees of Freedom:</strong> (Number of groups - 1) for Between. (Total N - Number of groups) for Within.</div></th>
-                                <th class="p-4 hover-cell font-mono-ui">MS <div class="tooltip-card font-normal"><strong>Mean Square (Variance):</strong> SS divided by df. The average squared deviation.</div></th>
-                                <th class="p-4 hover-cell font-mono-ui">F <div class="tooltip-card font-normal"><strong>F-Ratio:</strong> MS(Between) / MS(Within). The ratio of Signal to Noise.</div></th>
-                                <th class="p-4 hover-cell font-mono-ui">p-value <div class="tooltip-card font-normal">Probability of observing this F-ratio (or larger) if the null hypothesis were true.</div></th>
-                            </tr>
-                        </thead>
-                        <tbody class="text-sm">
-                            <tr class="border-b border-stone-100">
-                                <td class="p-4 font-semibold text-indigo-700 hover-cell">Between Groups (Treatment)<div class="tooltip-card font-normal">The signal: variance associated with different teaching methods.</div></td>
-                                <td id="anova-ss-between" class="p-4 font-mono-ui">504</td>
-                                <td class="p-4 font-mono-ui">2</td>
-                                <td id="anova-ms-between" class="p-4 font-mono-ui">252</td>
-                                <td id="anova-f-value" class="p-4 font-mono-ui font-bold text-stone-800">21</td>
-                                <td id="anova-p-value" class="p-4 font-mono-ui font-bold text-green-600">&lt; 0.001</td>
-                            </tr>
-                            <tr class="border-b border-stone-100">
-                                <td class="p-4 font-semibold text-red-700">Within Groups (Error)</td>
-                                <td id="anova-ss-within" class="p-4 font-mono-ui">396</td>
-                                <td id="anova-df-within" class="p-4 font-mono-ui">33</td>
-                                <td id="anova-ms-within" class="p-4 font-mono-ui">12</td>
-                                <td class="p-4 font-mono-ui text-stone-400">-</td>
-                                <td class="p-4 font-mono-ui text-stone-400">-</td>
-                            </tr>
-                            <tr class="bg-stone-50 font-semibold text-stone-600">
-                                <td class="p-4">Total</td>
-                                <td id="anova-ss-total" class="p-4 font-mono-ui">900</td>
-                                <td id="anova-df-total" class="p-4 font-mono-ui">35</td>
-                                <td class="p-4 font-mono-ui">-</td>
-                                <td class="p-4 font-mono-ui">-</td>
-                                <td class="p-4 font-mono-ui">-</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse min-w-[600px]">
+                            <thead>
+                                <tr class="bg-stone-100 border-b border-stone-200 text-sm font-bold text-stone-600">
+                                    <th class="p-4 hover-cell">Source <div class="tooltip-card font-normal">Where is the variance coming from? The model (Between) or the residuals (Within)?</div></th>
+                                    <th class="p-4 hover-cell font-mono-ui">SS <div class="tooltip-card font-normal"><strong>Sum of Squares:</strong> The total squared distance of data points from means.</div></th>
+                                    <th class="p-4 hover-cell font-mono-ui">df <div class="tooltip-card font-normal"><strong>Degrees of Freedom:</strong> The number of values free to vary. (Groups - 1) for Between. (Total N - Groups) for Within.</div></th>
+                                    <th class="p-4 hover-cell font-mono-ui">MS <div class="tooltip-card font-normal"><strong>Mean Square (Variance):</strong> SS divided by df. The average squared deviation.</div></th>
+                                    <th class="p-4 hover-cell font-mono-ui">F <div class="tooltip-card font-normal"><strong>F-Ratio:</strong> MS(Between) / MS(Within). The ratio of Signal to Noise.</div></th>
+                                    <th class="p-4 hover-cell font-mono-ui">p-value <div class="tooltip-card font-normal">Probability of observing this F-ratio (or larger) if the null hypothesis were true.</div></th>
+                                    <th class="p-4 hover-cell font-mono-ui eta-col text-indigo-700">η² <div class="tooltip-card font-normal text-stone-800"><strong>Eta-squared (η²):</strong> The proportion of total variance explained by this factor.</div></th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-sm">
+                                <tr class="border-b border-stone-100">
+                                    <td class="p-4 font-semibold text-indigo-700 hover-cell">Between Groups (Method)<div class="tooltip-card font-normal">The signal: variance associated with different teaching methods.</div></td>
+                                    <td id="anova-ss-between" class="p-4 font-mono-ui">3456</td>
+                                    <td class="p-4 font-mono-ui">2</td>
+                                    <td id="anova-ms-between" class="p-4 font-mono-ui">1728</td>
+                                    <td id="anova-f-value" class="p-4 font-mono-ui font-bold text-stone-800">144</td>
+                                    <td id="anova-p-value" class="p-4 font-mono-ui font-bold text-green-600">&lt; 0.001</td>
+                                    <td id="anova-eta-value" class="p-4 font-mono-ui font-bold text-indigo-700 eta-col">0.90</td>
+                                </tr>
+                                <tr class="border-b border-stone-100">
+                                    <td class="p-4 font-semibold text-red-700">Within Groups (Error)</td>
+                                    <td id="anova-ss-within" class="p-4 font-mono-ui">396</td>
+                                    <td id="anova-df-within" class="p-4 font-mono-ui">33</td>
+                                    <td id="anova-ms-within" class="p-4 font-mono-ui">12</td>
+                                    <td class="p-4 font-mono-ui text-stone-400">-</td>
+                                    <td class="p-4 font-mono-ui text-stone-400">-</td>
+                                    <td class="p-4 font-mono-ui text-stone-400 eta-col">-</td>
+                                </tr>
+                                <tr class="bg-stone-50 font-semibold text-stone-600">
+                                    <td class="p-4">Total</td>
+                                    <td id="anova-ss-total" class="p-4 font-mono-ui">3852</td>
+                                    <td id="anova-df-total" class="p-4 font-mono-ui">35</td>
+                                    <td class="p-4 font-mono-ui">-</td>
+                                    <td class="p-4 font-mono-ui">-</td>
+                                    <td class="p-4 font-mono-ui">-</td>
+                                    <td class="p-4 font-mono-ui eta-col">-</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
                 
-                <!-- Stage 8: Post Hoc additions -->
-                <div id="post-hoc-viz" class="max-w-2xl mx-auto w-full mt-6 bg-white rounded-xl shadow border border-red-100 p-6 opacity-0 transition-opacity duration-500 transform translate-y-4">
+                <!-- Stage 10: Post Hoc additions -->
+                <div id="post-hoc-viz" class="max-w-[800px] mx-auto w-full mt-6 bg-white rounded-xl shadow border border-red-100 p-6 opacity-0 transition-opacity duration-500 transform translate-y-4">
                     <h4 class="font-serif text-red-900 font-bold mb-3 border-b border-red-100 pb-2">Tukey's HSD Results</h4>
                     <div class="grid grid-cols-3 gap-4 text-center text-sm font-mono-ui">
                         <div id="posthoc-ab" class="p-3 bg-stone-50 rounded border border-stone-200">A vs B: <span class="text-stone-400">Not Sig (p = 0.101)</span></div>
@@ -581,46 +774,126 @@
                 </div>
             </div>
 
-            <!-- LAYER 3: Interaction Plot (Stages 9-11) -->
-            <div id="viz-interaction" class="canvas-layer w-full h-full bg-white p-4 sm:p-6 md:p-12">
-                <div class="w-full h-full relative max-w-xl max-h-[500px] mx-auto">
-                    <h3 class="absolute -top-12 w-full text-center font-serif text-xl text-stone-800">Effect of Method & Sleep on Scores</h3>
+            <!-- LAYER 3: Interaction Plot & Two-Way Table (Stages 11-16) -->
+            <div id="viz-interaction" class="canvas-layer w-full h-full bg-transparent p-4 sm:p-6 md:p-8 flex flex-col justify-center items-center gap-6 overflow-hidden">
+                
+                <!-- Interaction Title -->
+                <h3 class="w-full text-center font-serif text-xl text-stone-800 shrink-0">Effect of Method & Sleep on Scores</h3>
+                
+                <!-- Interaction Plot -->
+                <div id="interaction-plot-container" class="w-full relative max-w-xl mx-auto transition-all duration-700 h-[300px] md:h-[400px]">
                     
                     <!-- Axes -->
                     <div class="absolute bottom-0 left-0 right-0 h-px bg-stone-300"></div>
                     <div class="absolute bottom-0 left-0 top-0 w-px bg-stone-300"></div>
-                    <span class="absolute top-1/2 -left-14 -translate-y-1/2 -rotate-90 text-sm font-semibold text-stone-500 uppercase tracking-wide">Mean Score</span>
+                    <span class="absolute top-1/2 -left-12 -translate-y-1/2 -rotate-90 text-xs font-semibold text-stone-500 uppercase tracking-wide">Mean Score</span>
+                    
                     <div class="absolute inset-0 pointer-events-none">
                         <div class="absolute left-0 right-0 top-[20%] border-t border-dashed border-stone-200"></div>
                         <div class="absolute left-0 right-0 top-[40%] border-t border-dashed border-stone-200"></div>
                         <div class="absolute left-0 right-0 top-[60%] border-t border-dashed border-stone-200"></div>
                         <div class="absolute left-0 right-0 top-[80%] border-t border-dashed border-stone-200"></div>
-                        <span class="absolute -left-10 top-[20%] -translate-y-1/2 text-xs font-semibold text-stone-500">80</span>
-                        <span class="absolute -left-10 top-[40%] -translate-y-1/2 text-xs font-semibold text-stone-500">70</span>
-                        <span class="absolute -left-10 top-[60%] -translate-y-1/2 text-xs font-semibold text-stone-500">60</span>
-                        <span class="absolute -left-10 top-[80%] -translate-y-1/2 text-xs font-semibold text-stone-500">50</span>
+                        <span class="absolute -left-8 top-[20%] -translate-y-1/2 text-xs font-semibold text-stone-500">80</span>
+                        <span class="absolute -left-8 top-[40%] -translate-y-1/2 text-xs font-semibold text-stone-500">70</span>
+                        <span class="absolute -left-8 top-[60%] -translate-y-1/2 text-xs font-semibold text-stone-500">60</span>
+                        <span class="absolute -left-8 top-[80%] -translate-y-1/2 text-xs font-semibold text-stone-500">50</span>
                     </div>
-                    <span class="absolute -bottom-8 left-1/4 -translate-x-1/2 text-sm font-semibold text-stone-700">Method A</span>
-                    <span class="absolute -bottom-8 left-3/4 -translate-x-1/2 text-sm font-semibold text-stone-700">Method B</span>
+
+                    <!-- Labels for Method A, B, C matching x coords -->
+                    <span class="absolute -bottom-4 left-[16.6%] -translate-x-1/2 text-xs sm:text-sm font-semibold text-stone-700">Method A</span>
+                    <span class="absolute -bottom-4 left-[50%] -translate-x-1/2 text-xs sm:text-sm font-semibold text-stone-700">Method B</span>
+                    <span class="absolute -bottom-4 left-[83.3%] -translate-x-1/2 text-xs sm:text-sm font-semibold text-stone-700">Method C</span>
                     
                     <!-- Legend -->
-                    <div class="absolute top-0 right-0 border border-stone-200 p-3 rounded bg-stone-50 shadow-sm text-sm">
+                    <div class="absolute top-0 right-0 border border-stone-200 p-2 sm:p-3 rounded bg-white shadow-sm text-xs sm:text-sm z-10">
                         <div class="flex items-center gap-2 mb-2"><div class="w-4 h-1 bg-indigo-500"></div> High Sleep</div>
                         <div class="flex items-center gap-2"><div class="w-4 h-1 bg-red-400 border-t border-dashed border-red-600"></div> Low Sleep</div>
                     </div>
 
-                    <!-- SVG Lines (Updated via JS) -->
-                    <svg class="absolute inset-0 w-full h-full" preserveAspectRatio="none">
-                        <line id="line-high-sleep" x1="25%" y1="20%" x2="75%" y2="50%" stroke="#6366f1" stroke-width="4" stroke-linecap="round" class="transition-all duration-700"/>
-                        <line id="line-low-sleep" x1="25%" y1="80%" x2="75%" y2="30%" stroke="#dc2626" stroke-width="4" stroke-linecap="round" stroke-dasharray="8,4" class="transition-all duration-700"/>
+                    <!-- SVG Lines & Points -->
+                    <svg class="absolute inset-0 w-full h-full overflow-visible" preserveAspectRatio="none">
+                        <!-- High Sleep Line Segments -->
+                        <line id="line-h-1" x1="16.6%" y1="16%" x2="50%" y2="32%" stroke="#6366f1" stroke-width="3" stroke-linecap="round" class="transition-all duration-700"/>
+                        <line id="line-h-2" x1="50%" y1="32%" x2="83.3%" y2="48%" stroke="#6366f1" stroke-width="3" stroke-linecap="round" class="transition-all duration-700"/>
+                        
+                        <!-- Low Sleep Line Segments -->
+                        <line id="line-l-1" x1="16.6%" y1="56%" x2="50%" y2="48%" stroke="#dc2626" stroke-width="3" stroke-dasharray="6,4" stroke-linecap="round" class="transition-all duration-700"/>
+                        <line id="line-l-2" x1="50%" y1="48%" x2="83.3%" y2="40%" stroke="#dc2626" stroke-width="3" stroke-dasharray="6,4" stroke-linecap="round" class="transition-all duration-700"/>
                         
                         <!-- Points -->
-                        <circle id="pt-h1" cx="25%" cy="20%" r="6" fill="#4f46e5" class="transition-all duration-700"/>
-                        <circle id="pt-h2" cx="75%" cy="50%" r="6" fill="#4f46e5" class="transition-all duration-700"/>
-                        <circle id="pt-l1" cx="25%" cy="80%" r="6" fill="#dc2626" class="transition-all duration-700"/>
-                        <circle id="pt-l2" cx="75%" cy="30%" r="6" fill="#dc2626" class="transition-all duration-700"/>
+                        <circle id="pt-h1" cx="16.6%" cy="16%" r="5" fill="#4f46e5" class="transition-all duration-700"/>
+                        <circle id="pt-h2" cx="50%" cy="32%" r="5" fill="#4f46e5" class="transition-all duration-700"/>
+                        <circle id="pt-h3" cx="83.3%" cy="48%" r="5" fill="#4f46e5" class="transition-all duration-700"/>
+
+                        <circle id="pt-l1" cx="16.6%" cy="56%" r="5" fill="#dc2626" class="transition-all duration-700"/>
+                        <circle id="pt-l2" cx="50%" cy="48%" r="5" fill="#dc2626" class="transition-all duration-700"/>
+                        <circle id="pt-l3" cx="83.3%" cy="40%" r="5" fill="#dc2626" class="transition-all duration-700"/>
                     </svg>
                 </div>
+
+                <!-- Two-Way ANOVA Table Wrapper (Stage 15+) -->
+                <div id="two-way-table-wrapper" class="w-full max-w-[800px] mx-auto transition-all duration-700 overflow-hidden max-h-0 opacity-0 transform translate-y-4">
+                    <div id="two-way-table-viz" class="w-full bg-white rounded-xl shadow border border-stone-200 overflow-hidden">
+                        <div class="bg-stone-800 px-4 py-2 sm:px-6 sm:py-3">
+                            <h3 class="text-white font-serif text-sm sm:text-base">Two-Way ANOVA Output (Method & Sleep)</h3>
+                        </div>
+                        <table class="w-full text-left border-collapse min-w-[500px] text-xs sm:text-sm">
+                            <thead>
+                                <tr class="bg-stone-100 border-b border-stone-200 font-bold text-stone-600">
+                                    <th class="p-3 sm:p-4">Source</th>
+                                    <th class="p-3 sm:p-4 font-mono-ui">SS</th>
+                                    <th class="p-3 sm:p-4 font-mono-ui">df</th>
+                                    <th class="p-3 sm:p-4 font-mono-ui">MS</th>
+                                    <th class="p-3 sm:p-4 font-mono-ui">F</th>
+                                    <th class="p-3 sm:p-4 font-mono-ui">p-value</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="border-b border-stone-100">
+                                    <td class="p-3 sm:p-4 font-semibold text-indigo-700">Method (Main Effect)</td>
+                                    <td class="p-3 sm:p-4 font-mono-ui">96</td>
+                                    <td class="p-3 sm:p-4 font-mono-ui">2</td>
+                                    <td class="p-3 sm:p-4 font-mono-ui">48</td>
+                                    <td class="p-3 sm:p-4 font-mono-ui font-bold text-stone-800">4.0</td>
+                                    <td class="p-3 sm:p-4 font-mono-ui font-bold text-green-600">0.029</td>
+                                </tr>
+                                <tr class="border-b border-stone-100">
+                                    <td class="p-3 sm:p-4 font-semibold text-indigo-700">Sleep (Main Effect)</td>
+                                    <td class="p-3 sm:p-4 font-mono-ui">576</td>
+                                    <td class="p-3 sm:p-4 font-mono-ui">1</td>
+                                    <td class="p-3 sm:p-4 font-mono-ui">576</td>
+                                    <td class="p-3 sm:p-4 font-mono-ui font-bold text-stone-800">48.0</td>
+                                    <td class="p-3 sm:p-4 font-mono-ui font-bold text-green-600">&lt; 0.001</td>
+                                </tr>
+                                <tr class="border-b border-amber-100 bg-amber-50/30">
+                                    <td class="p-3 sm:p-4 font-semibold text-amber-700">Method × Sleep (Interaction)</td>
+                                    <td class="p-3 sm:p-4 font-mono-ui text-amber-900">864</td>
+                                    <td class="p-3 sm:p-4 font-mono-ui text-amber-900">2</td>
+                                    <td class="p-3 sm:p-4 font-mono-ui text-amber-900">432</td>
+                                    <td class="p-3 sm:p-4 font-mono-ui font-bold text-amber-900">36.0</td>
+                                    <td class="p-3 sm:p-4 font-mono-ui font-bold text-amber-600">&lt; 0.001</td>
+                                </tr>
+                                <tr class="border-b border-stone-100">
+                                    <td class="p-3 sm:p-4 font-semibold text-red-700">Within Groups (Error)</td>
+                                    <td class="p-3 sm:p-4 font-mono-ui">360</td>
+                                    <td class="p-3 sm:p-4 font-mono-ui">30</td>
+                                    <td class="p-3 sm:p-4 font-mono-ui">12</td>
+                                    <td class="p-3 sm:p-4 font-mono-ui text-stone-400">-</td>
+                                    <td class="p-3 sm:p-4 font-mono-ui text-stone-400">-</td>
+                                </tr>
+                                <tr class="bg-stone-50 font-semibold text-stone-600">
+                                    <td class="p-3 sm:p-4">Total</td>
+                                    <td class="p-3 sm:p-4 font-mono-ui">1896</td>
+                                    <td class="p-3 sm:p-4 font-mono-ui">35</td>
+                                    <td class="p-3 sm:p-4 font-mono-ui">-</td>
+                                    <td class="p-3 sm:p-4 font-mono-ui">-</td>
+                                    <td class="p-3 sm:p-4 font-mono-ui">-</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
             </div>
 
         </aside>
@@ -638,37 +911,19 @@
 
         // --- Data & State Setup ---
         const GROUPS = [
-            { id: 'A', x: '20%', color: 'bg-indigo-500', baseMean: 68, effectMean: 72 },
-            { id: 'B', x: '50%', color: 'bg-teal-500', baseMean: 68, effectMean: 69 },
-            { id: 'C', x: '80%', color: 'bg-red-500', baseMean: 68, effectMean: 63 }
+            { id: 'A', x: '20%', color: 'bg-indigo-500', baseMean: 68, effectMean: 80 },
+            { id: 'B', x: '50%', color: 'bg-teal-500', baseMean: 68, effectMean: 68 },
+            { id: 'C', x: '80%', color: 'bg-red-500', baseMean: 68, effectMean: 56 }
         ];
         const LOW_OFFSETS = [-6, -4, -3, -2, -1, 0, 0, 1, 2, 3, 4, 6];
         const HIGH_OFFSETS = [-12, -8, -6, -4, -2, 0, 0, 2, 4, 6, 8, 12];
         const X_JITTERS = [-3.6, -1.8, 1.6, 3.5, -2.7, 2.5, -0.8, 0.9, -4.2, 4.1, -2.1, 2.2];
         // Exact Tukey HSD adjusted p-value labels for the deterministic scenarios generated
-        // by the fixed means and offsets above. The pairwise significance decisions themselves
-        // are computed live from the displayed data via the Tukey HSD cutoff below.
         const TUKEY_REFERENCE_P_VALUES = {
-            'low-large': {
-                ab: '0.101',
-                ac: '< 0.001',
-                bc: '0.001'
-            },
-            'low-none': {
-                ab: '1.000',
-                ac: '1.000',
-                bc: '1.000'
-            },
-            'high-large': {
-                ab: '0.545',
-                ac: '0.009',
-                bc: '0.101'
-            },
-            'high-none': {
-                ab: '1.000',
-                ac: '1.000',
-                bc: '1.000'
-            }
+            'low-large': { ab: '< 0.001', ac: '< 0.001', bc: '< 0.001' },
+            'low-none': { ab: '1.000', ac: '1.000', bc: '1.000' },
+            'high-large': { ab: '0.019', ac: '< 0.001', bc: '0.019' },
+            'high-none': { ab: '1.000', ac: '1.000', bc: '1.000' }
         };
         const TUKEY_HSD_Q_CRITICAL = 3.4701894886275673; // alpha = 0.05, k = 3, df_within = 33
         const N_PER_GROUP = 12;
@@ -708,14 +963,9 @@
 
         function logGamma(z) {
             const coefficients = [
-                676.5203681218851,
-                -1259.1392167224028,
-                771.3234287776531,
-                -176.6150291621406,
-                12.507343278686905,
-                -0.13857109526572012,
-                9.984369578019572e-6,
-                1.5056327351493116e-7
+                676.5203681218851, -1259.1392167224028, 771.3234287776531,
+                -176.6150291621406, 12.507343278686905, -0.13857109526572012,
+                9.984369578019572e-6, 1.5056327351493116e-7
             ];
             if (z < 0.5) {
                 return Math.log(Math.PI) - Math.log(Math.sin(Math.PI * z)) - logGamma(1 - z);
@@ -730,50 +980,31 @@
         }
 
         function betaContinuedFraction(x, a, b) {
-            const maxIterations = 200;
-            const epsilon = 3e-7;
-            const fpMin = 1e-30;
-            let qab = a + b;
-            let qap = a + 1;
-            let qam = a - 1;
-            let c = 1;
-            let d = 1 - ((qab * x) / qap);
+            const maxIterations = 200, epsilon = 3e-7, fpMin = 1e-30;
+            let qab = a + b, qap = a + 1, qam = a - 1;
+            let c = 1, d = 1 - ((qab * x) / qap);
             if (Math.abs(d) < fpMin) d = fpMin;
             d = 1 / d;
             let h = d;
-
             for (let m = 1; m <= maxIterations; m += 1) {
                 const m2 = 2 * m;
                 let aa = (m * (b - m) * x) / ((qam + m2) * (a + m2));
-                d = 1 + (aa * d);
-                if (Math.abs(d) < fpMin) d = fpMin;
-                c = 1 + (aa / c);
-                if (Math.abs(c) < fpMin) c = fpMin;
-                d = 1 / d;
-                h *= d * c;
-
+                d = 1 + (aa * d); if (Math.abs(d) < fpMin) d = fpMin;
+                c = 1 + (aa / c); if (Math.abs(c) < fpMin) c = fpMin;
+                d = 1 / d; h *= d * c;
                 aa = (-(a + m) * (qab + m) * x) / ((a + m2) * (qap + m2));
-                d = 1 + (aa * d);
-                if (Math.abs(d) < fpMin) d = fpMin;
-                c = 1 + (aa / c);
-                if (Math.abs(c) < fpMin) c = fpMin;
-                d = 1 / d;
-                const delta = d * c;
-                h *= delta;
-
+                d = 1 + (aa * d); if (Math.abs(d) < fpMin) d = fpMin;
+                c = 1 + (aa / c); if (Math.abs(c) < fpMin) c = fpMin;
+                d = 1 / d; const delta = d * c; h *= delta;
                 if (Math.abs(delta - 1) < epsilon) break;
             }
-
             return h;
         }
 
         function regularizedIncompleteBeta(x, a, b) {
-            if (x <= 0) return 0;
-            if (x >= 1) return 1;
-
+            if (x <= 0) return 0; if (x >= 1) return 1;
             const logBeta = logGamma(a + b) - logGamma(a) - logGamma(b) + (a * Math.log(x)) + (b * Math.log(1 - x));
             const front = Math.exp(logBeta);
-
             if (x < ((a + 1) / (a + b + 2))) {
                 return (front * betaContinuedFraction(x, a, b)) / a;
             }
@@ -790,11 +1021,7 @@
             const groupMeansById = Object.fromEntries(GROUPS.map((group, index) => [group.id, stats.groupMeans[index]]));
             const hsdThreshold = TUKEY_HSD_Q_CRITICAL * Math.sqrt(stats.msWithin / N_PER_GROUP);
             const pairLabels = TUKEY_REFERENCE_P_VALUES[getScenarioKey()] || { ab: '?', ac: '?', bc: '?' };
-            const pairs = [
-                ['ab', 'A', 'B'],
-                ['ac', 'A', 'C'],
-                ['bc', 'B', 'C']
-            ];
+            const pairs = [['ab', 'A', 'B'], ['ac', 'A', 'C'], ['bc', 'B', 'C']];
 
             return Object.fromEntries(pairs.map(([id, left, right]) => {
                 const diff = Math.abs(groupMeansById[left] - groupMeansById[right]);
@@ -839,10 +1066,7 @@
                 const tooltip = cell.querySelector('.tooltip-card');
                 if (!tooltip) return;
 
-                if (!tooltip.id) {
-                    tooltip.id = `anova-tooltip-${index + 1}`;
-                }
-
+                if (!tooltip.id) tooltip.id = `anova-tooltip-${index + 1}`;
                 cell.setAttribute('tabindex', '0');
                 cell.setAttribute('role', 'button');
                 cell.setAttribute('aria-expanded', 'false');
@@ -856,25 +1080,18 @@
 
                 cell.addEventListener('keydown', (event) => {
                     if (event.key === 'Enter' || event.key === ' ') {
-                        event.preventDefault();
-                        toggleTableTooltip(cell);
+                        event.preventDefault(); toggleTableTooltip(cell);
                     } else if (event.key === 'Escape') {
-                        closeTableTooltips();
-                        cell.blur();
+                        closeTableTooltips(); cell.blur();
                     }
                 });
             });
 
             document.addEventListener('click', (event) => {
-                if (!event.target.closest('#viz-table .hover-cell')) {
-                    closeTableTooltips();
-                }
+                if (!event.target.closest('#viz-table .hover-cell')) closeTableTooltips();
             });
-
             document.addEventListener('keydown', (event) => {
-                if (event.key === 'Escape') {
-                    closeTableTooltips();
-                }
+                if (event.key === 'Escape') closeTableTooltips();
             });
         }
 
@@ -882,7 +1099,7 @@
             const dotNav = document.getElementById('stage-dots');
             const steps = document.querySelectorAll('.step');
 
-            steps.forEach(step => {
+            steps.forEach((step, idx) => {
                 const stage = step.getAttribute('data-stage');
                 const title = step.querySelector('h2')?.textContent?.trim() || `Stage ${stage}`;
                 const dot = document.createElement('button');
@@ -909,13 +1126,16 @@
             const pValue = fSurvivalValue(stats.f, stats.dfBetween, stats.dfWithin);
             const pDisplay = formatPValueDisplay(pValue);
             const significant = pValue < 0.05;
+            const etaSq = stats.ssBetween / stats.ssTotal;
             const postHocResults = derivePostHocResults(stats);
 
+            // Stage 7 (Worked Example text)
             document.getElementById('calc-summary').textContent = `Group means: A = ${formatNumber(meanA)}, B = ${formatNumber(meanB)}, C = ${formatNumber(meanC)}. Grand mean = ${formatNumber(stats.grandMean)}. Each group has n = ${N_PER_GROUP}, so N = ${stats.totalN}.`;
             document.getElementById('calc-ss-between').innerHTML = `SS<sub>between</sub> = ${N_PER_GROUP}[(${formatNumber(meanA)} - ${formatNumber(stats.grandMean)})<sup>2</sup> + (${formatNumber(meanB)} - ${formatNumber(stats.grandMean)})<sup>2</sup> + (${formatNumber(meanC)} - ${formatNumber(stats.grandMean)})<sup>2</sup>] = ${formatNumber(stats.ssBetween)}`;
             document.getElementById('calc-ss-within').innerHTML = `SS<sub>within</sub> = ${formatNumber(stats.withinByGroup[0])} + ${formatNumber(stats.withinByGroup[1])} + ${formatNumber(stats.withinByGroup[2])} = ${formatNumber(stats.ssWithin)}`;
-            document.getElementById('calc-final').innerHTML = `df<sub>between</sub> = 3 - 1 = ${stats.dfBetween}; df<sub>within</sub> = ${stats.totalN} - 3 = ${stats.dfWithin}. Then MS<sub>between</sub> = ${formatNumber(stats.ssBetween)} / ${stats.dfBetween} = ${formatNumber(stats.msBetween)}, MS<sub>within</sub> = ${formatNumber(stats.ssWithin)} / ${stats.dfWithin} = ${formatNumber(stats.msWithin)}, and F = ${formatNumber(stats.msBetween)} / ${formatNumber(stats.msWithin)} = ${formatNumber(stats.f)}.`;
+            document.getElementById('calc-final').innerHTML = `df<sub>between</sub> = ${stats.dfBetween}; df<sub>within</sub> = ${stats.dfWithin}.<br>MS<sub>between</sub> = ${formatNumber(stats.ssBetween)} / ${stats.dfBetween} = ${formatNumber(stats.msBetween)}.<br>MS<sub>within</sub> = ${formatNumber(stats.ssWithin)} / ${stats.dfWithin} = ${formatNumber(stats.msWithin)}.<br>F = ${formatNumber(stats.msBetween)} / ${formatNumber(stats.msWithin)} = ${formatNumber(stats.f)}.`;
 
+            // Stage 8 (Table UI)
             document.getElementById('anova-ss-between').textContent = formatNumber(stats.ssBetween);
             document.getElementById('anova-ms-between').textContent = formatNumber(stats.msBetween);
             document.getElementById('anova-f-value').textContent = formatNumber(stats.f);
@@ -923,6 +1143,15 @@
             document.getElementById('anova-p-value').className = significant
                 ? 'p-4 font-mono-ui font-bold text-green-600'
                 : 'p-4 font-mono-ui font-bold text-stone-500';
+            
+            // Eta-squared UI
+            document.getElementById('anova-eta-value').textContent = formatNumber(etaSq);
+            document.getElementById('live-eta-calc-text').innerHTML = `$\\eta^2 = \\frac{${formatNumber(stats.ssBetween)}}{${formatNumber(stats.ssTotal)}} = ${formatNumber(etaSq)}$`;
+            if (window.renderMathInElement) {
+                renderMathInElement(document.getElementById('live-eta-calc-text'), { delimiters: [{left: '$', right: '$', display: false}] });
+            }
+            document.getElementById('eta-interpretation').innerHTML = `About ${(etaSq * 100).toFixed(1)}% of the variance is explained by the group differences.`;
+
             document.getElementById('anova-ss-within').textContent = formatNumber(stats.ssWithin);
             document.getElementById('anova-df-within').textContent = `${stats.dfWithin}`;
             document.getElementById('anova-ms-within').textContent = formatNumber(stats.msWithin);
@@ -954,25 +1183,14 @@
             const msWithin = ssWithin / dfWithin;
 
             return {
-                groupMeans,
-                grandMean,
-                withinByGroup,
-                ssBetween,
-                ssWithin,
-                ssTotal: ssBetween + ssWithin,
-                dfBetween,
-                dfWithin,
-                dfTotal,
-                msBetween,
-                msWithin,
-                f: msWithin === 0 ? 0 : msBetween / msWithin,
-                totalN
+                groupMeans, grandMean, withinByGroup, ssBetween, ssWithin, ssTotal: ssBetween + ssWithin,
+                dfBetween, dfWithin, dfTotal, msBetween, msWithin,
+                f: msWithin === 0 ? 0 : msBetween / msWithin, totalN
             };
         }
 
         function initPlot() {
             GROUPS.forEach((g, gIdx) => {
-                // Mean line element
                 const mLine = document.createElement('div');
                 mLine.className = `mean-line group-${gIdx}`;
                 mLine.style.left = `calc(${g.x} - 7.5%)`;
@@ -997,12 +1215,8 @@
                     container.appendChild(dot);
                     
                     dataPoints.push({
-                        element: dot,
-                        devElement: devLine,
-                        groupObj: g,
-                        offsetIndex: i,
-                        plotLeft: dot.style.left,
-                        showWithin: i % 3 === 0
+                        element: dot, devElement: devLine, groupObj: g, offsetIndex: i,
+                        plotLeft: dot.style.left, showWithin: i % 3 === 0
                     });
                 }
             });
@@ -1015,15 +1229,10 @@
             let groupMeans = [0,0,0];
             const groupValues = { A: [], B: [], C: [] };
 
-            // 1. Calculate positions
             dataPoints.forEach(p => {
                 const targetMean = state.signal === 'large' ? p.groupObj.effectMean : p.groupObj.baseMean;
                 p.currentVal = targetMean + offsets[p.offsetIndex];
-                
-                // Keep bounded 5 to 95 for visual sanity
                 p.currentVal = Math.max(5, Math.min(95, p.currentVal));
-                
-                // Convert score to top % (inverted Y axis)
                 p.element.style.top = `${100 - p.currentVal}%`;
                 
                 if(p.groupObj.id==='A') groupMeans[0] += p.currentVal;
@@ -1037,17 +1246,13 @@
             const grandMean = totalSum / dataPoints.length;
             const stats = calculateAnovaStats(groupValues, groupMeans, grandMean);
 
-            // 2. Update Lines
-            const meanLines = document.querySelectorAll('.mean-line');
-            meanLines.forEach((m, i) => m.style.top = `${100 - groupMeans[i]}%`);
+            document.querySelectorAll('.mean-line').forEach((m, i) => m.style.top = `${100 - groupMeans[i]}%`);
             document.getElementById('grand-mean').style.top = `${100 - grandMean}%`;
 
-            // 3. Update Deviation Shading based on Stage
             dataPoints.forEach(p => {
                 const gIdx = p.groupObj.id === 'A' ? 0 : p.groupObj.id === 'B' ? 1 : 2;
                 const topVal = 100 - p.currentVal;
                 const meanTop = 100 - groupMeans[gIdx];
-
                 p.devElement.className = 'deviation-line dev-within';
                 p.devElement.style.left = p.plotLeft;
                 if (state.stage === 4 && p.showWithin) {
@@ -1064,7 +1269,6 @@
                 const betweenLine = betweenLines[group.id];
                 const meanTop = 100 - groupMeans[index];
                 const grandTop = 100 - grandMean;
-
                 if (state.stage === 4) {
                     betweenLine.style.opacity = 0.6;
                     betweenLine.style.top = `${Math.min(meanTop, grandTop)}%`;
@@ -1081,34 +1285,43 @@
         // --- Interactive Button Toggles ---
         window.setNoise = function(val, btn) {
             state.noise = val;
-            updateBtnUI(btn);
-            updatePlotPositions();
+            updateBtnUI(btn); updatePlotPositions();
         }
         window.setSignal = function(val, btn) {
             state.signal = val;
-            updateBtnUI(btn);
-            updatePlotPositions();
+            updateBtnUI(btn); updatePlotPositions();
         }
         window.setInteraction = function(val, btn) {
             updateBtnUI(btn);
-            const lHigh = document.getElementById('line-high-sleep');
-            const lLow = document.getElementById('line-low-sleep');
-            const [ph1, ph2, pl1, pl2] = ['pt-h1','pt-h2','pt-l1','pt-l2'].map(id => document.getElementById(id));
-            
+            const lh1 = document.getElementById('line-h-1'), lh2 = document.getElementById('line-h-2');
+            const ll1 = document.getElementById('line-l-1'), ll2 = document.getElementById('line-l-2');
+            const ph1 = document.getElementById('pt-h1'), ph2 = document.getElementById('pt-h2'), ph3 = document.getElementById('pt-h3');
+            const pl1 = document.getElementById('pt-l1'), pl2 = document.getElementById('pt-l2'), pl3 = document.getElementById('pt-l3');
+
+            // Data-driven scale mapping: 80 -> 20%, 70 -> 40%, 60 -> 60%, 50 -> 80%
+            const valToY = (val) => `${20 + (80 - val) * 2}%`;
+
+            let hY, lY;
+
             if (val === 'synergy') {
-                // Crossing
-                lHigh.setAttribute('y1', '20%'); ph1.setAttribute('cy', '20%');
-                lHigh.setAttribute('y2', '80%'); ph2.setAttribute('cy', '80%');
-                lLow.setAttribute('y1', '75%'); pl1.setAttribute('cy', '75%');
-                lLow.setAttribute('y2', '25%'); pl2.setAttribute('cy', '25%');
+                // Crossing Effect (Maps exactly to our 3x2 grid values)
+                hY = [82, 74, 66].map(valToY);
+                lY = [62, 66, 70].map(valToY);
             } else {
-                // Parallel
-                lHigh.setAttribute('y1', '20%'); ph1.setAttribute('cy', '20%');
-                lHigh.setAttribute('y2', '40%'); ph2.setAttribute('cy', '40%');
-                lLow.setAttribute('y1', '60%'); pl1.setAttribute('cy', '60%');
-                lLow.setAttribute('y2', '80%'); pl2.setAttribute('cy', '80%');
+                // Parallel Effect (No interaction, consistent gap of 12)
+                hY = [76, 70, 64].map(valToY);
+                lY = [64, 58, 52].map(valToY);
             }
+
+            lh1.setAttribute('y1', hY[0]); lh1.setAttribute('y2', hY[1]);
+            lh2.setAttribute('y1', hY[1]); lh2.setAttribute('y2', hY[2]);
+            ll1.setAttribute('y1', lY[0]); ll1.setAttribute('y2', lY[1]);
+            ll2.setAttribute('y1', lY[1]); ll2.setAttribute('y2', lY[2]);
+
+            ph1.setAttribute('cy', hY[0]); ph2.setAttribute('cy', hY[1]); ph3.setAttribute('cy', hY[2]);
+            pl1.setAttribute('cy', lY[0]); pl2.setAttribute('cy', lY[1]); pl3.setAttribute('cy', lY[2]);
         }
+
         function updateBtnUI(clickedBtn) {
             const siblings = clickedBtn.parentElement.querySelectorAll('button');
             siblings.forEach(b => b.classList.remove('active-btn'));
@@ -1131,7 +1344,6 @@
                     progressTicking = false;
                 });
             };
-
             window.addEventListener('scroll', onScroll, { passive: true });
             window.addEventListener('resize', updateScrollProgress);
             updateScrollProgress();
@@ -1146,21 +1358,51 @@
 
             document.querySelectorAll('.canvas-layer').forEach(layer => layer.classList.remove('active'));
 
-            if (stage >= 1 && stage <= 5) {
+            if (stage >= 1 && stage <= 7) {
+                // Display Scatter Plot Layer
                 document.getElementById('viz-scatter').classList.add('active');
                 document.querySelectorAll('.mean-line').forEach(line => line.style.opacity = stage >= 2 ? 1 : 0);
                 document.getElementById('grand-mean').style.opacity = stage >= 4 ? 1 : 0;
                 updatePlotPositions();
-            } else if (stage >= 6 && stage <= 8) {
+
+            } else if (stage >= 8 && stage <= 10) {
+                // Display ANOVA Table Layer
                 document.getElementById('viz-table').classList.add('active');
+                
                 const postHoc = document.getElementById('post-hoc-viz');
-                if (stage === 8) {
+                if (stage === 10) {
                     postHoc.classList.remove('opacity-0', 'translate-y-4');
                 } else {
                     postHoc.classList.add('opacity-0', 'translate-y-4');
                 }
-            } else if (stage >= 9) {
+
+                // Highlight Eta Squared column during Stage 9
+                const etaCells = document.querySelectorAll('.eta-col');
+                if (stage === 9) {
+                    etaCells.forEach(cell => cell.classList.add('bg-indigo-50/50'));
+                } else {
+                    etaCells.forEach(cell => cell.classList.remove('bg-indigo-50/50'));
+                }
+
+            } else if (stage >= 11) {
+                // Display Two-Way Interaction Layer
                 document.getElementById('viz-interaction').classList.add('active');
+                
+                const tableWrapper = document.getElementById('two-way-table-wrapper');
+                const plotContainer = document.getElementById('interaction-plot-container');
+
+                if (stage >= 15) {
+                    // Show Two-Way Table & slightly compress plot to fit
+                    tableWrapper.classList.remove('opacity-0', 'translate-y-4', 'max-h-0');
+                    tableWrapper.classList.add('max-h-[600px]', 'mt-4');
+                    plotContainer.classList.remove('h-[300px]', 'md:h-[400px]');
+                    plotContainer.classList.add('h-[200px]', 'md:h-[260px]');
+                } else {
+                    tableWrapper.classList.add('opacity-0', 'translate-y-4', 'max-h-0');
+                    tableWrapper.classList.remove('max-h-[600px]', 'mt-4');
+                    plotContainer.classList.add('h-[300px]', 'md:h-[400px]');
+                    plotContainer.classList.remove('h-[200px]', 'md:h-[260px]');
+                }
             }
         }
 
