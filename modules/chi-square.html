@@ -27,7 +27,7 @@
             --positive-text: #0284c7;
             --negative-bg: rgba(244, 63, 94, 0.1);
             --negative-text: #e11d48;
-            
+
             /* Typography */
             --font-sans: 'Inter', sans-serif;
             --font-mono: 'JetBrains Mono', monospace;
@@ -347,6 +347,100 @@
             font-size: 0.75rem;
         }
 
+        /* Residual Table & Shading Styles */
+        .residual-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+            font-size: 0.9rem;
+        }
+        .residual-table th, .residual-table td {
+            border: 1px solid var(--border);
+            padding: 8px;
+            text-align: center;
+        }
+        .residual-table th {
+            background-color: var(--bg);
+            color: var(--text-dim);
+            font-weight: 600;
+        }
+        .res-pos {
+            color: var(--positive-text) !important;
+            background-color: var(--positive-bg) !important;
+            font-weight: bold;
+        }
+        .res-neg {
+            color: var(--negative-text) !important;
+            background-color: var(--negative-bg) !important;
+            font-weight: bold;
+        }
+
+        /* Quiz components style */
+        .quiz-card {
+            background-color: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }
+        .quiz-option {
+            display: block;
+            width: 100%;
+            padding: 0.75rem 1rem;
+            margin-top: 0.5rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background-color: var(--bg);
+            text-align: left;
+            font-size: 0.95rem;
+            color: var(--text-main);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .quiz-option:hover {
+            border-color: var(--accent);
+            background-color: var(--accent-light);
+            color: var(--accent-dark);
+        }
+        .quiz-option.correct {
+            border-color: var(--success) !important;
+            background-color: rgba(22, 163, 74, 0.08) !important;
+            color: var(--success) !important;
+            font-weight: 600;
+        }
+        .quiz-option.incorrect {
+            border-color: var(--error) !important;
+            background-color: rgba(244, 63, 94, 0.08) !important;
+            color: var(--error) !important;
+        }
+        .quiz-feedback {
+            margin-top: 1rem;
+            padding: 0.75rem 1rem;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            line-height: 1.45;
+            display: none;
+        }
+
+        /* Interactive dropdown styles */
+        .interactive-select {
+            width: 100%;
+            padding: 0.6rem;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            background-color: var(--surface);
+            font-family: var(--font-sans);
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+            color: var(--text-main);
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        .interactive-select:focus {
+            border-color: var(--accent);
+        }
+
         /* Visualization: Matrix */
         .matrix-container {
             width: 100%;
@@ -381,7 +475,7 @@
             border-radius: 8px;
             transition: all 0.3s ease;
         }
-        
+
         .m-cell {
             background: var(--bg);
             border: 1px solid var(--border);
@@ -394,14 +488,21 @@
             position: relative;
             transition: all 0.5s ease;
             min-height: 100px;
-            cursor: crosshair;
+            cursor: pointer;
         }
 
         .m-cell:hover {
-            box-shadow: 0 0 0 2px var(--accent-light);
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.1);
+            border-color: var(--accent);
             z-index: 10;
         }
-        
+
+        .m-cell.selected-cell {
+            border: 2px dashed var(--accent-dark) !important;
+            box-shadow: 0 0 0 4px var(--accent-light) !important;
+            background-color: var(--surface) !important;
+        }
+
         /* Cell States */
         .m-val {
             font-family: var(--font-mono);
@@ -410,13 +511,13 @@
             transition: all 0.3s ease;
             position: absolute;
         }
-        
+
         .val-obs, .val-exp, .val-res, .val-chi {
             opacity: 0;
             transform: translateY(10px);
             pointer-events: none;
         }
-        
+
         .val-label {
             font-family: var(--font-sans);
             font-size: 0.65rem;
@@ -486,28 +587,28 @@
         /* Matrix State Classes (Controlled by JS) */
         .state-1 .val-obs { opacity: 1; transform: translateY(-8px); }
         .state-1 .label-obs { opacity: 1; }
-        
+
         .state-2 .val-obs { opacity: 1; transform: translateY(-8px); }
         .state-2 .label-obs { opacity: 1; }
         .state-2 .m-margin { background: var(--accent-light); color: var(--accent-dark); border: 1px solid var(--accent); }
-        
+
         .state-3 .val-exp { opacity: 1; transform: translateY(-8px); color: var(--accent-dark); }
         .state-3 .label-exp { opacity: 1; }
-        
+
         .state-4 .val-res { opacity: 1; transform: translateY(-8px); }
         .state-4 .label-res { opacity: 1; }
         .state-4 .cell-pos { background: var(--positive-bg); border-color: var(--positive-text); }
         .state-4 .cell-pos .val-res { color: var(--positive-text); }
         .state-4 .cell-neg { background: var(--negative-bg); border-color: var(--negative-text); }
         .state-4 .cell-neg .val-res { color: var(--negative-text); }
-        
+
         .state-5 .val-chi { opacity: 1; transform: translateY(-8px); color: var(--accent-dark); }
         .state-5 .label-chi { opacity: 1; }
         .state-6 .val-chi { opacity: 1; transform: translateY(-8px); color: var(--accent-dark); }
         .state-6 .label-chi { opacity: 1; }
         .state-7 .val-chi { opacity: 1; transform: translateY(-8px); color: var(--accent-dark); }
         .state-7 .label-chi { opacity: 1; }
-        
+
         /* Distribution Canvas */
         .dist-container {
             width: 100%;
@@ -590,7 +691,7 @@
 <body>
 
     <div id="progress-bar"></div>
-    
+
     <div class="stage-dots" id="stage-dots">
         <!-- Populated by JS -->
     </div>
@@ -604,13 +705,13 @@
 
     <main class="split-layout">
         <div class="narrative">
-            
+
             <section class="section" data-stage="1" id="stage-1">
                 <div class="stage-label">Stage 01</div>
                 <h2>The Raw Counts</h2>
                 <p>The Chi-Square test evaluates <strong>categorical data</strong>—data placed into distinct bins or groups without an inherent numeric value.</p>
                 <p>Imagine we survey 50 students to see if there is a relationship between two categorical variables: <strong>Club Choice</strong> (Art vs. Sports) and <strong>Favorite Snack</strong> (Apples vs. Chips).</p>
-                
+
                 <div class="insight-box">
                     <strong>Rule of thumb:</strong> Chi-Square works with <em>frequencies</em> (counts), not averages. Every individual belongs to exactly one cell in our table.
                 </div>
@@ -620,7 +721,7 @@
                 <div class="stage-label">Stage 02</div>
                 <h2>Hypotheses & Marginals</h2>
                 <p>Are club choice and favorite snack related, or are they completely independent? We formalize this question using hypotheses.</p>
-                
+
                 <div class="card">
                     <div class="hypothesis-row">
                         <div class="hyp-label">H₀</div>
@@ -631,47 +732,174 @@
                         <div><strong>Alternative Hypothesis:</strong> Club choice and favorite snack are <em>not independent</em>. (There is a relationship).</div>
                     </div>
                 </div>
-                
+
                 <p>To test this, we must first look at the margins. The <strong>row totals</strong> and <strong>column totals</strong> tell us the overall preferences of the group, ignoring the split between the variables.</p>
             </section>
 
             <section class="section" data-stage="3" id="stage-3">
                 <div class="stage-label">Stage 03</div>
                 <h2>Expected Counts</h2>
-                <p>If the Null Hypothesis is perfectly true, the counts inside the table should be directly proportional to the totals on the margins.</p>
-                
+                <p>If the Null Hypothesis is perfectly true, the counts inside the table should be directly proportional to the totals on the margins. This gives us our <strong>Expected Counts</strong>—the baseline of what we would expect if there were no relationship at all between club choice and snack preference.</p>
+
+                <p>To find the expected count for any cell in our table, we use this simple formula:</p>
+
                 <div class="formula-block">
+                    Expected Count = (Row Total × Column Total) ÷ Grand Total
+                </div>
+
+                <p>In standard algebraic shorthand, it is written as:</p>
+
+                <div class="formula-block" style="color: var(--accent-dark); font-weight: bold;">
                     E = (Row Total × Column Total) / Grand Total
                 </div>
-                
-                <p>For example, if half of all students like apples (<span class="pill">25/50</span>), and there are 30 Art students, we would <em>expect</em> half of those Art students (<span class="pill">15</span>) to like apples if there is no special relationship.</p>
+
+                <div class="card">
+                    <div class="card-title">Step-by-Step Calculation: Art &amp; Apple</div>
+                    <p style="margin-bottom: 0.75rem;">Let's calculate the expected value for the first cell (Art students who prefer Apples):</p>
+                    <div class="formula-block" style="background-color: var(--bg); text-align: left; padding: 1rem; font-size: 1rem; color: var(--text-main);">
+                        Row Total (Art) = 30<br>
+                        Column Total (Apple) = 25<br>
+                        Grand Total = 50<br><br>
+                        E = (30 × 25) / 50 = 750 / 50 = 15
+                    </div>
+                    <p style="margin-top: 0.75rem; font-weight: 600; color: var(--text-main);">Why does this work?</p>
+                    <p style="font-size: 0.95rem; color: var(--text-dim); margin-bottom: 0.5rem;">
+                        Out of 50 total surveyed students, 25 like apples. That is exactly half (50%) of all students.
+                        If snack preference and club choice are completely unrelated (independent), then apples should be spread proportionally across both clubs.
+                    </p>
+                    <p style="font-size: 0.95rem; color: var(--text-dim); margin-bottom: 0.75rem;">
+                        Since 50% of the entire sample likes apples, we expect 50% of each club to like apples. Art has 30 students, and half of 30 is 15.
+                    </p>
+                    <p style="font-style: italic; font-weight: 500; color: var(--accent-dark);">
+                        "If everything were random, about half of the Art students should like apples."
+                    </p>
+                </div>
+
+                <!-- Build the Expected Count Mini-Activity -->
+                <div class="card" id="expected-calculator" style="margin-top: 1.5rem;">
+                    <div class="card-title">Interactive: Build an Expected Count</div>
+                    <p style="font-size: 0.95rem; margin-bottom: 0.75rem; color: var(--text-dim);">
+                        Select a cell to see how expected frequencies are generated under the assumption of independence:
+                    </p>
+                    <select id="calc-cell-select" class="interactive-select">
+                        <option value="" disabled selected>-- Choose a cell to calculate --</option>
+                        <option value="art-apple">Art &amp; Apple</option>
+                        <option value="art-chips">Art &amp; Chips</option>
+                        <option value="sports-apple">Sports &amp; Apple</option>
+                        <option value="sports-chips">Sports &amp; Chips</option>
+                    </select>
+                    <div id="calc-result" style="display: none;">
+                        <div class="formula-block" id="calc-steps" style="background-color: var(--bg); text-align: left; padding: 1rem; font-size: 0.95rem; color: var(--text-main);">
+                            <!-- Populated by JS -->
+                        </div>
+                        <button id="show-why-btn" class="pill" style="border: none; background-color: var(--accent-light); color: var(--accent-dark); cursor: pointer; padding: 6px 12px; font-weight: 600; margin-top: 0.5rem; font-family: var(--font-sans);">Show me why</button>
+                        <div id="why-explanation" style="display: none; margin-top: 0.75rem; padding: 0.75rem; border-left: 2px solid var(--accent); font-size: 0.9rem; color: var(--text-dim); line-height: 1.45; background-color: rgba(99, 102, 241, 0.02);">
+                            <!-- Populated by JS -->
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">Calculating the Remaining Cells</div>
+                    <p style="margin-bottom: 0.5rem; font-size: 0.95rem;">We apply the exact same formula to the other three cells:</p>
+                    <ul style="list-style-type: none; padding-left: 0; font-size: 0.95rem; color: var(--text-dim);">
+                        <li style="margin-bottom: 0.5rem;"><strong>Art &amp; Chips:</strong> E = (30 × 25) / 50 = 15</li>
+                        <li style="margin-bottom: 0.5rem;"><strong>Sports &amp; Apple:</strong> E = (20 × 25) / 50 = 10</li>
+                        <li style="margin-bottom: 0.5rem;"><strong>Sports &amp; Chips:</strong> E = (20 × 25) / 50 = 10</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">What is really happening?</div>
+                    <p style="margin-bottom: 0.75rem; font-size: 0.95rem;">
+                        The total number of apples is 25. If independent, we split these apples across the rows based on the size of each club:
+                    </p>
+                    <ul style="list-style-type: none; padding-left: 0; font-size: 0.95rem; color: var(--text-dim); margin-bottom: 0.75rem;">
+                        <li style="margin-bottom: 0.5rem; padding-left: 0.75rem; border-left: 2px solid var(--accent-light);"><strong>Art</strong> has 30 out of 50 students (60% of the sample). Therefore, Art gets 60% of the expected apples: 60% of 25 = 15.</li>
+                        <li style="margin-bottom: 0.5rem; padding-left: 0.75rem; border-left: 2px solid var(--accent-light);"><strong>Sports</strong> has 20 out of 50 students (40% of the sample). Therefore, Sports gets 40% of the expected apples: 40% of 25 = 10.</li>
+                    </ul>
+                    <p style="font-size: 0.95rem; color: var(--text-dim);">
+                        The same logic applies to the chips category, which also has a column total of 25.
+                    </p>
+                </div>
+
+                <div class="insight-box">
+                    <strong>Expected count means:</strong> how much this row deserves × how much this column deserves.
+                </div>
+
+                <div class="insight-box" style="border-left-color: var(--warning); background-color: rgba(217, 119, 6, 0.05);">
+                    <strong>Warning:</strong> Expected counts are not guesses from our opinion. They are calculated from the table totals under the assumption that the variables are independent.
+                </div>
+
+                <!-- Quiz 1 -->
+                <div class="quiz-card" id="quiz-1">
+                    <div class="card-title">Check Your Progress: Expected Counts</div>
+                    <p style="font-size: 0.95rem; margin-bottom: 1rem; font-weight: 500;">
+                        Question: What is the expected count for Sports &amp; Chips?
+                    </p>
+                    <button class="quiz-option" data-correct="false" onclick="checkQuiz(1, this)">A. 5</button>
+                    <button class="quiz-option" data-correct="true" onclick="checkQuiz(1, this)">B. 10</button>
+                    <button class="quiz-option" data-correct="false" onclick="checkQuiz(1, this)">C. 15</button>
+                    <button class="quiz-option" data-correct="false" onclick="checkQuiz(1, this)">D. 25</button>
+                    <div class="quiz-feedback" id="quiz-1-feedback"></div>
+                </div>
             </section>
 
             <section class="section" data-stage="4" id="stage-4">
                 <div class="stage-label">Stage 04</div>
                 <h2>Residuals & Contributions</h2>
                 <p>The core intuition of Chi-Square is to compare what we <strong>Observed (O)</strong> with what we <strong>Expected (E)</strong>. We square the residuals and divide by the expected count to scale the difference.</p>
-                
+
                 <div class="formula-block">
                     χ² = Σ [ (O - E)² / E ]
                 </div>
-                
+
+                <div class="card">
+                    <div class="card-title">Worked Example: Art &amp; Apple contribution</div>
+                    <p style="font-size: 0.95rem; color: var(--text-dim); margin-bottom: 0.75rem;">
+                        Let's calculate the individual score contribution for Art students who prefer Apples:
+                    </p>
+                    <div class="formula-block" style="background-color: var(--bg); text-align: left; padding: 1rem; font-size: 0.95rem; color: var(--text-main); margin-bottom: 0.75rem;">
+                        Observed (O) = 20<br>
+                        Expected (E) = 15<br>
+                        Residual (O - E) = 20 - 15 = 5<br>
+                        Square the residual: 5² = 25<br>
+                        Divide by expected: 25 ÷ 15 = 1.67
+                    </div>
+                    <p style="font-size: 0.95rem; color: var(--text-dim);">
+                        This cell contributes exactly <strong>1.67</strong> points to the overall Chi-Square statistic. Bigger contributions mean that cell is more responsible for the overall relationship.
+                    </p>
+                </div>
+
                 <div class="insight-box">
                     <strong>Interactive Matrix:</strong> Hover over any cell in the table to inspect its Observed, Expected, Residual, and individual χ² contribution.
                 </div>
 
                 <p>We do this for every cell and add them all together to get our final test statistic. <em>(Note: visual contributions are shown rounded to two decimals, but the true sum is roughly 8.33).</em></p>
+
+                <!-- Quiz 2 -->
+                <div class="quiz-card" id="quiz-2">
+                    <div class="card-title">Check Your Progress: Residuals</div>
+                    <p style="font-size: 0.95rem; margin-bottom: 1rem; font-weight: 500;">
+                        Question: If observed = 20 and expected = 15, what does residual = +5 mean?
+                    </p>
+                    <button class="quiz-option" data-correct="false" onclick="checkQuiz(2, this)">A. There were 5 fewer people than expected.</button>
+                    <button class="quiz-option" data-correct="true" onclick="checkQuiz(2, this)">B. There were 5 more people than expected.</button>
+                    <button class="quiz-option" data-correct="false" onclick="checkQuiz(2, this)">C. There were exactly 5 people in total.</button>
+                    <button class="quiz-option" data-correct="false" onclick="checkQuiz(2, this)">D. The p-value is 5.</button>
+                    <div class="quiz-feedback" id="quiz-2-feedback"></div>
+                </div>
             </section>
 
             <section class="section" data-stage="5" id="stage-5">
                 <div class="stage-label">Stage 05</div>
                 <h2>The Reference Distribution</h2>
                 <p>To evaluate our test statistic of <span class="pill">8.33</span>, we map it onto a Chi-Square distribution. The curve's exact shape is determined by the <strong>Degrees of Freedom (df)</strong>.</p>
-                
+
                 <div class="formula-block">
                     df = (Rows - 1) × (Cols - 1) = 1
                 </div>
-                
+
                 <p>If our statistic lands past the critical boundary (here, 3.84 for α = 0.05), the deviation is too large to be attributed to random chance.</p>
             </section>
 
@@ -679,7 +907,7 @@
                 <div class="stage-label">Stage 06</div>
                 <h2>Reading the Output</h2>
                 <p>Statistical software synthesizes these steps into a standard output summary. Here is how to read the final result:</p>
-                
+
                 <div class="card">
                     <div class="card-title">Analysis Output</div>
                     <div class="software-output">
@@ -715,21 +943,220 @@
                     </div>
                 </div>
 
+                <div class="insight-box" style="border-left-color: var(--blue); background-color: rgba(37, 99, 235, 0.05);">
+                    <strong>Understanding our p-value:</strong> The p-value is <strong>0.0039</strong>. This means: if club choice and snack preference were truly unrelated, getting a pattern this strong or stronger would be very unlikely. So, we have strong evidence against the null hypothesis.
+                </div>
+
+                <div class="insight-box" style="border-left-color: var(--error); background-color: rgba(244, 63, 94, 0.05); margin-top: -0.75rem;">
+                    ⚠️ <strong>Important:</strong> The p-value is <em>not</em> the probability that the null hypothesis is true. It is the probability of seeing a result this extreme or more extreme, assuming the null hypothesis were true.
+                </div>
+
                 <p>Because the p-value (0.0039) is much smaller than our alpha threshold (0.05), we officially reject the null hypothesis. The Phi value of 0.41 confirms this is a moderate relationship.</p>
+
+                <div class="card">
+                    <div class="card-title">What kind of relationship is it?</div>
+                    <p style="margin-bottom: 1rem;">
+                        The p-value tells us: <strong>“Something is going on.”</strong> (The variables are associated).<br>
+                        The residuals tell us: <strong>“What exactly is going on.”</strong> (The direction and pattern of the association).
+                    </p>
+
+                    <table class="residual-table">
+                        <thead>
+                            <tr>
+                                <th>Group</th>
+                                <th>Apple</th>
+                                <th>Chips</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td style="font-weight: 600; color: var(--text-dim);">Art</td>
+                                <td class="res-pos">+5</td>
+                                <td class="res-neg">-5</td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: 600; color: var(--text-dim);">Sports</td>
+                                <td class="res-neg">-5</td>
+                                <td class="res-pos">+5</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <p style="margin-bottom: 0.75rem; font-size: 0.95rem; font-weight: 500;">Let's break this down in human language:</p>
+                    <ul style="list-style-type: none; padding-left: 0; margin-bottom: 1rem; font-size: 0.95rem; color: var(--text-dim);">
+                        <li style="margin-bottom: 0.75rem; padding-left: 1rem; border-left: 3px solid var(--positive-text);">
+                            <strong>Art students:</strong> The Art &amp; Apple residual is <span class="pill res-pos" style="border-radius: 4px; padding: 2px 6px;">+5</span> (more Art students liked apples than expected) and the Art &amp; Chips residual is <span class="pill res-neg" style="border-radius: 4px; padding: 2px 6px;">-5</span> (fewer Art students liked chips than expected). Therefore, Art students lean toward apples.
+                        </li>
+                        <li style="margin-bottom: 0.75rem; padding-left: 1rem; border-left: 3px solid var(--negative-text);">
+                            <strong>Sports students:</strong> The Sports &amp; Apple residual is <span class="pill res-neg" style="border-radius: 4px; padding: 2px 6px;">-5</span> (fewer Sports students liked apples than expected) and the Sports &amp; Chips residual is <span class="pill res-pos" style="border-radius: 4px; padding: 2px 6px;">+5</span> (more Sports students liked chips than expected). Therefore, Sports students lean toward chips.
+                        </li>
+                    </ul>
+
+                    <p style="font-weight: 600; color: var(--accent-dark); margin-bottom: 0.5rem;">Final Relationship Statement:</p>
+                    <p style="font-style: italic; margin-bottom: 1rem; color: var(--text-main); padding-left: 0.5rem; border-left: 2px solid var(--accent);">
+                        "There is a relationship between club choice and snack preference: Art students are more likely than expected to prefer apples, while Sports students are more likely than expected to prefer chips."
+                    </p>
+
+                    <div class="insight-box" style="margin: 0; border-left-color: var(--warning); background-color: rgba(217, 119, 6, 0.05); font-size: 0.85rem;">
+                        <strong>Caution:</strong> This is an association, not causation. We cannot say that joining Art causes students to like apples, or that joining Sports causes students to like chips.
+                    </div>
+                </div>
+
+                <!-- Quiz 3 -->
+                <div class="quiz-card" id="quiz-3">
+                    <div class="card-title">Check Your Progress: Interpretation</div>
+                    <p style="font-size: 0.95rem; margin-bottom: 1rem; font-weight: 500;">
+                        Question: What does the p-value mainly tell us?
+                    </p>
+                    <button class="quiz-option" data-correct="false" onclick="checkQuiz(3, this)">A. The exact cause of the relationship.</button>
+                    <button class="quiz-option" data-correct="true" onclick="checkQuiz(3, this)">B. Whether there is evidence against the null hypothesis.</button>
+                    <button class="quiz-option" data-correct="false" onclick="checkQuiz(3, this)">C. Which group caused the result.</button>
+                    <button class="quiz-option" data-correct="false" onclick="checkQuiz(3, this)">D. The number of students surveyed.</button>
+                    <div class="quiz-feedback" id="quiz-3-feedback"></div>
+                </div>
             </section>
 
             <section class="section" data-stage="7" id="stage-7">
                 <div class="stage-label">Stage 07</div>
                 <h2>Assumptions & Caveats</h2>
                 <p>Before closing the book on this relationship, we must acknowledge the strict assumptions required for a valid Chi-Square test.</p>
-                
+
                 <div class="card">
-                    <div class="card-title">Required Conditions</div>
-                    <ul class="check-list">
-                        <li><strong>Count Data:</strong> Measurements are frequencies, not means.</li>
-                        <li><strong>Independence:</strong> Each person belongs to only one category combination.</li>
-                        <li><strong>Sufficient Size:</strong> Ideally, all expected counts should be at least 5. If they are too tiny, the test breaks down.</li>
-                    </ul>
+                    <div class="card-title">Required Conditions (Assumptions)</div>
+                    <p style="font-size: 0.95rem; color: var(--text-dim); margin-bottom: 1rem;">
+                        Before trusting any Chi-Square test, you must ensure your study meets these three non-negotiable assumptions:
+                    </p>
+
+                    <div style="display: flex; flex-direction: column; gap: 1rem;">
+                        <!-- Assumption 1 -->
+                        <div style="border: 1px solid var(--border); border-radius: 8px; padding: 1rem; background-color: var(--bg);">
+                            <div style="font-weight: 700; font-size: 1rem; color: var(--accent-dark); margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+                                <span style="background-color: var(--accent-light); padding: 2px 8px; border-radius: 4px; font-size: 0.8rem; font-weight: bold; font-family: var(--font-mono);">1</span>
+                                Count Data (Frequencies)
+                            </div>
+                            <p style="font-size: 0.9rem; color: var(--text-dim); margin-bottom: 0.5rem;">
+                                <strong>Beginner meaning:</strong> You must use actual counts of people or items falling into categories, not averages or scores.
+                            </p>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; font-size: 0.85rem;">
+                                <div style="background-color: rgba(244, 63, 94, 0.05); border-left: 3px solid var(--error); padding: 0.5rem; border-radius: 0 4px 4px 0; color: var(--text-dim);">
+                                    <strong style="color: var(--error);">❌ Bad:</strong> using average happiness ratings or continuous test scores.
+                                </div>
+                                <div style="background-color: rgba(22, 163, 74, 0.05); border-left: 3px solid var(--success); padding: 0.5rem; border-radius: 0 4px 4px 0; color: var(--text-dim);">
+                                    <strong style="color: var(--success);">✓ Good:</strong> counting how many students chose apples or chips.
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Assumption 2 -->
+                        <div style="border: 1px solid var(--border); border-radius: 8px; padding: 1rem; background-color: var(--bg);">
+                            <div style="font-weight: 700; font-size: 1rem; color: var(--accent-dark); margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+                                <span style="background-color: var(--accent-light); padding: 2px 8px; border-radius: 4px; font-size: 0.8rem; font-weight: bold; font-family: var(--font-mono);">2</span>
+                                Independence of Observations
+                            </div>
+                            <p style="font-size: 0.9rem; color: var(--text-dim); margin-bottom: 0.5rem;">
+                                <strong>Beginner meaning:</strong> Each person should only appear once in the table. They cannot belong to multiple cells.
+                            </p>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; font-size: 0.85rem;">
+                                <div style="background-color: rgba(244, 63, 94, 0.05); border-left: 3px solid var(--error); padding: 0.5rem; border-radius: 0 4px 4px 0; color: var(--text-dim);">
+                                    <strong style="color: var(--error);">❌ Bad:</strong> the same student is counted under both Art and Sports.
+                                </div>
+                                <div style="background-color: rgba(22, 163, 74, 0.05); border-left: 3px solid var(--success); padding: 0.5rem; border-radius: 0 4px 4px 0; color: var(--text-dim);">
+                                    <strong style="color: var(--success);">✓ Good:</strong> each student belongs to one club category and one snack category.
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Assumption 3 -->
+                        <div style="border: 1px solid var(--border); border-radius: 8px; padding: 1rem; background-color: var(--bg);">
+                            <div style="font-weight: 700; font-size: 1rem; color: var(--accent-dark); margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+                                <span style="background-color: var(--accent-light); padding: 2px 8px; border-radius: 4px; font-size: 0.8rem; font-weight: bold; font-family: var(--font-mono);">3</span>
+                                Expected Counts are Large Enough
+                            </div>
+                            <p style="font-size: 0.9rem; color: var(--text-dim); margin-bottom: 0.5rem;">
+                                <strong>Beginner meaning:</strong> The expected numbers computed under independence should not be too tiny.
+                            </p>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; font-size: 0.85rem;">
+                                <div style="background-color: rgba(244, 63, 94, 0.05); border-left: 3px solid var(--error); padding: 0.5rem; border-radius: 0 4px 4px 0; color: var(--text-dim);">
+                                    <strong style="color: var(--error);">❌ Bad:</strong> many expected cells are 1 or 2 (which invalidates our p-value).
+                                </div>
+                                <div style="background-color: rgba(22, 163, 74, 0.05); border-left: 3px solid var(--success); padding: 0.5rem; border-radius: 0 4px 4px 0; color: var(--text-dim);">
+                                    <strong style="color: var(--success);">✓ Good:</strong> all expected counts in this example are at least 5 (our cells are 15, 15, 10, and 10).
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <p style="font-size: 0.9rem; color: var(--text-dim); margin-top: 1rem;">
+                        Tiny expected counts can make the mathematical Chi-Square approximation highly unreliable. If this happens, researchers usually use Yates' continuity correction or switch to Fisher's Exact Test.
+                    </p>
+                </div>
+
+                <!-- Final interpretation practice card -->
+                <div class="card" id="practice-card" style="margin-top: 1.5rem;">
+                    <div class="card-title">Interactive: Test Your Interpretation</div>
+                    <p style="font-size: 0.95rem; margin-bottom: 1rem; color: var(--text-dim);">
+                        Complete the sentences below to craft the final conclusion in plain English:
+                    </p>
+                    <div style="font-size: 0.95rem; color: var(--text-main); line-height: 2.2; margin-bottom: 1.25rem;">
+                        "There is evidence of a relationship between
+                        <select id="p-input-1" style="padding: 4px 8px; border: 1px solid var(--border); border-radius: 4px; background: var(--bg); font-family: var(--font-sans); outline: none;">
+                            <option value="">-- select --</option>
+                            <option value="wrong1">Apple and Chips</option>
+                            <option value="correct">club choice and snack preference</option>
+                            <option value="wrong2">Art and Sports</option>
+                        </select>.<br>
+                        Art students are more likely than expected to prefer
+                        <select id="p-input-2" style="padding: 4px 8px; border: 1px solid var(--border); border-radius: 4px; background: var(--bg); font-family: var(--font-sans); outline: none;">
+                            <option value="">-- select --</option>
+                            <option value="correct">apples</option>
+                            <option value="wrong">chips</option>
+                        </select>.<br>
+                        Sports students are more likely than expected to prefer
+                        <select id="p-input-3" style="padding: 4px 8px; border: 1px solid var(--border); border-radius: 4px; background: var(--bg); font-family: var(--font-sans); outline: none;">
+                            <option value="">-- select --</option>
+                            <option value="wrong">apples</option>
+                            <option value="correct">chips</option>
+                        </select>."
+                    </div>
+                    <div style="display: flex; gap: 0.5rem; align-items: center;">
+                        <button id="check-practice-btn" class="pill" style="border: none; background-color: var(--accent); color: white; cursor: pointer; padding: 6px 14px; font-weight: 600; font-family: var(--font-sans);" onclick="verifyPractice()">Check Answers</button>
+                        <button id="show-practice-btn" class="pill" style="border: none; background-color: var(--accent-light); color: var(--accent-dark); cursor: pointer; padding: 6px 14px; font-weight: 600; font-family: var(--font-sans);" onclick="showPracticeAnswer()">Show Answer</button>
+                    </div>
+                    <div id="practice-feedback" style="display: none; margin-top: 1rem; padding: 0.75rem 1rem; border-radius: 6px; font-size: 0.9rem; line-height: 1.45;"></div>
+                </div>
+
+                <!-- Whole Story Recap Card -->
+                <div class="card" style="border: 2px solid var(--accent-light); background: linear-gradient(180deg, var(--surface) 0%, rgba(99, 102, 241, 0.02) 100%);">
+                    <div class="card-title" style="color: var(--accent-dark); font-size: 0.95rem; font-weight: 700; letter-spacing: 0.05em; display: flex; align-items: center; gap: 0.5rem;">
+                        <span>📖</span> The Whole Story in Plain English
+                    </div>
+                    <p style="font-size: 0.95rem; color: var(--text-dim); margin-bottom: 1rem;">
+                        Let's connect all the dots we've covered on this page into one simple, logical narrative:
+                    </p>
+
+                    <ol style="padding-left: 1.25rem; font-size: 0.95rem; color: var(--text-main); display: flex; flex-direction: column; gap: 0.75rem;">
+                        <li>
+                            <strong style="color: var(--accent-dark);">We counted students by club and snack:</strong> We started by putting students into categories based on two characteristics: their club (Art/Sports) and snack preference (Apples/Chips).
+                        </li>
+                        <li>
+                            <strong style="color: var(--accent-dark);">We assumed independence:</strong> We asked: <em>"What would this table look like if club and snack preferences had absolutely nothing to do with each other?"</em>
+                        </li>
+                        <li>
+                            <strong style="color: var(--accent-dark);">That gave us expected counts:</strong> Answering that question mathematically gave us our expected baseline counts (15, 15, 10, 10).
+                        </li>
+                        <li>
+                            <strong style="color: var(--accent-dark);">We compared observed counts to expected counts:</strong> We looked at how far our actual observed numbers (20, 10, 5, 15) fell from that independent baseline.
+                        </li>
+                        <li>
+                            <strong style="color: var(--accent-dark);">The differences were large enough:</strong> We squared and scaled these discrepancies, giving us a final test statistic of <span class="pill" style="font-family: var(--font-mono); font-weight: bold; background-color: var(--accent-light); color: var(--accent-dark);">χ² = 8.33</span>.
+                        </li>
+                        <li>
+                            <strong style="color: var(--accent-dark);">The p-value was small, so we rejected independence:</strong> Seeing a total discrepancy of 8.33 by pure chance alone is extremely rare (p = 0.0039), so we concluded the two variables are definitely related.
+                        </li>
+                        <li>
+                            <strong style="color: var(--accent-dark);">The residuals showed the pattern:</strong> Looking closely at our cells, we saw the exact direction of this pattern—Art students lean apples, Sports students lean chips.
+                        </li>
+                    </ol>
                 </div>
 
                 <div class="card">
@@ -741,7 +1168,7 @@
         </div>
 
         <div class="visualization-container">
-            
+
             <div class="matrix-container state-1" id="viz-matrix">
                 <div class="matrix">
                     <!-- Header Row -->
@@ -752,7 +1179,7 @@
 
                     <!-- Row 1 -->
                     <div class="m-row-label">Art</div>
-                    <div class="m-cell cell-pos">
+                    <div class="m-cell cell-pos" id="m-cell-art-apple" onclick="selectMatrixCell('art-apple')">
                         <div class="m-val val-obs">20</div>
                         <div class="val-label label-obs">Observed</div>
                         <div class="m-val val-exp">15</div>
@@ -761,7 +1188,7 @@
                         <div class="val-label label-res">Residual</div>
                         <div class="m-val val-chi">1.67</div>
                         <div class="val-label label-chi">χ² contribution</div>
-                        
+
                         <!-- Hover Info -->
                         <div class="cell-tooltip">
                             <div class="tt-row"><span class="tt-label">Observed:</span> <span class="tt-val">20</span></div>
@@ -770,8 +1197,8 @@
                             <div class="tt-row"><span class="tt-label">χ² Contrib:</span> <span class="tt-val">1.67</span></div>
                         </div>
                     </div>
-                    
-                    <div class="m-cell cell-neg">
+
+                    <div class="m-cell cell-neg" id="m-cell-art-chips" onclick="selectMatrixCell('art-chips')">
                         <div class="m-val val-obs">10</div>
                         <div class="val-label label-obs">Observed</div>
                         <div class="m-val val-exp">15</div>
@@ -793,7 +1220,7 @@
 
                     <!-- Row 2 -->
                     <div class="m-row-label">Sports</div>
-                    <div class="m-cell cell-neg">
+                    <div class="m-cell cell-neg" id="m-cell-sports-apple" onclick="selectMatrixCell('sports-apple')">
                         <div class="m-val val-obs">5</div>
                         <div class="val-label label-obs">Observed</div>
                         <div class="m-val val-exp">10</div>
@@ -811,7 +1238,7 @@
                             <div class="tt-row"><span class="tt-label">χ² Contrib:</span> <span class="tt-val">2.50</span></div>
                         </div>
                     </div>
-                    <div class="m-cell cell-pos">
+                    <div class="m-cell cell-pos" id="m-cell-sports-chips" onclick="selectMatrixCell('sports-chips')">
                         <div class="m-val val-obs">15</div>
                         <div class="val-label label-obs">Observed</div>
                         <div class="m-val val-exp">10</div>
@@ -836,6 +1263,11 @@
                     <div class="m-margin">25</div>
                     <div class="m-margin">25</div>
                     <div class="m-margin" style="background: var(--text-main); color: var(--surface);">50</div>
+                </div>
+
+                <!-- Click-to-explain panel -->
+                <div id="cell-explanation-panel" style="margin-top: 1.5rem; padding-top: 1.25rem; border-top: 1px dashed var(--border); font-size: 0.85rem; color: var(--text-dim); min-height: 80px;">
+                    <p style="text-align: center; font-style: italic; color: var(--text-muted);">💡 Click any cell in the table above to inspect its step-by-step calculation breakdown.</p>
                 </div>
             </div>
 
@@ -866,7 +1298,7 @@
             const dot = document.createElement('div');
             dot.className = 'dot';
             dot.dataset.target = i + 1;
-            
+
             const tooltip = document.createElement('div');
             tooltip.className = 'dot-tooltip';
             tooltip.innerText = `Stage ${i + 1}`;
@@ -886,12 +1318,265 @@
         const matrixContainer = document.getElementById('viz-matrix');
         const distContainer = document.getElementById('viz-dist');
         const distMetric = document.getElementById('dist-metric');
-        
+
         // Canvas Setup
         const canvas = document.getElementById('chiCanvas');
         const ctx = canvas.getContext('2d');
         let animationProgress = 0;
         let animationReq;
+
+        // Interactive Features Logic
+
+        // 1. Click-to-explain matrix cells
+        const cellData = {
+            'art-apple': {
+                name: 'Art & Apple',
+                observed: 20,
+                expected: 15,
+                expectedCalc: '(30 × 25) / 50 = 15',
+                residualCalc: '20 - 15 = +5',
+                residual: '+5',
+                meaning: 'More Art students liked apples than expected.',
+                chiCalc: '(20 - 15)² / 15 = 25 / 15 = 1.67',
+                chiContribution: '1.67'
+            },
+            'art-chips': {
+                name: 'Art & Chips',
+                observed: 10,
+                expected: 15,
+                expectedCalc: '(30 × 25) / 50 = 15',
+                residualCalc: '10 - 15 = -5',
+                residual: '-5',
+                meaning: 'Fewer Art students liked chips than expected.',
+                chiCalc: '(10 - 15)² / 15 = 25 / 15 = 1.67',
+                chiContribution: '1.67'
+            },
+            'sports-apple': {
+                name: 'Sports & Apple',
+                observed: 5,
+                expected: 10,
+                expectedCalc: '(20 × 25) / 50 = 10',
+                residualCalc: '5 - 10 = -5',
+                residual: '-5',
+                meaning: 'Fewer Sports students liked apples than expected.',
+                chiCalc: '(5 - 10)² / 10 = 25 / 10 = 2.50',
+                chiContribution: '2.50'
+            },
+            'sports-chips': {
+                name: 'Sports & Chips',
+                observed: 15,
+                expected: 10,
+                expectedCalc: '(20 × 25) / 50 = 10',
+                residualCalc: '15 - 10 = +5',
+                residual: '+5',
+                meaning: 'More Sports students liked chips than expected.',
+                chiCalc: '(15 - 10)² / 10 = 25 / 10 = 2.50',
+                chiContribution: '2.50'
+            }
+        };
+
+        function selectMatrixCell(cellId) {
+            // Remove highlighting from all cells
+            document.querySelectorAll('.m-cell').forEach(el => {
+                el.classList.remove('selected-cell');
+            });
+
+            // Highlight chosen cell
+            const targetCell = document.getElementById(`m-cell-${cellId}`);
+            if (targetCell) {
+                targetCell.classList.add('selected-cell');
+            }
+
+            // Populate explanation panel
+            const panel = document.getElementById('cell-explanation-panel');
+            const data = cellData[cellId];
+            if (data) {
+                const resColor = parseFloat(data.residual) >= 0 ? 'var(--positive-text)' : 'var(--negative-text)';
+                const resBg = parseFloat(data.residual) >= 0 ? 'var(--positive-bg)' : 'var(--negative-bg)';
+
+                panel.innerHTML = `
+                    <div style="font-weight: 700; color: var(--text-main); font-size: 1rem; margin-bottom: 0.75rem; display: flex; justify-content: space-between; align-items: center;">
+                        <span>🔬 Cell: ${data.name} Breakdown</span>
+                        <span class="pill" style="background-color: var(--accent-light); color: var(--accent-dark); font-weight: 600;">Active Selection</span>
+                    </div>
+                    <div style="display: flex; flex-direction: column; gap: 0.75rem; margin-top: 0.5rem; border-top: 1px dashed var(--border); padding-top: 0.75rem;">
+
+                        <div style="background-color: var(--bg); padding: 0.5rem 0.75rem; border-radius: 8px; border-left: 3px solid var(--text-muted);">
+                            <div style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); font-weight: bold; margin-bottom: 0.15rem;">1. What we saw:</div>
+                            <div style="font-size: 0.95rem; font-family: var(--font-mono); font-weight: 600; color: var(--text-main);">Observed = ${data.observed}</div>
+                        </div>
+
+                        <div style="background-color: var(--bg); padding: 0.5rem 0.75rem; border-radius: 8px; border-left: 3px solid var(--accent);">
+                            <div style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); font-weight: bold; margin-bottom: 0.15rem;">2. What independence predicted:</div>
+                            <div style="font-size: 0.95rem; font-family: var(--font-mono); font-weight: 600; color: var(--accent-dark);">Expected = ${data.expectedCalc}</div>
+                        </div>
+
+                        <div style="background-color: ${resBg}; padding: 0.5rem 0.75rem; border-radius: 8px; border-left: 3px solid ${resColor};">
+                            <div style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); font-weight: bold; margin-bottom: 0.15rem;">3. Difference:</div>
+                            <div style="font-size: 0.95rem; font-family: var(--font-mono); font-weight: 700; color: ${resColor};">Residual = ${data.residualCalc}</div>
+                        </div>
+
+                        <div style="background-color: var(--bg); padding: 0.5rem 0.75rem; border-radius: 8px; border-left: 3px solid var(--blue);">
+                            <div style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); font-weight: bold; margin-bottom: 0.15rem;">4. Human meaning:</div>
+                            <div style="font-size: 0.95rem; color: var(--text-main); font-weight: 500;">${data.meaning}</div>
+                        </div>
+
+                        <div style="background-color: var(--bg); padding: 0.5rem 0.75rem; border-radius: 8px; border-left: 3px solid var(--warning);">
+                            <div style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); font-weight: bold; margin-bottom: 0.15rem;">5. Chi-Square contribution:</div>
+                            <div style="font-size: 0.95rem; font-family: var(--font-mono); font-weight: 600; color: var(--accent-dark);">${data.chiCalc}</div>
+                        </div>
+
+                    </div>
+                `;
+            }
+        }
+
+        // 2. expected count builder interactive panel
+        const expectedCalcExpl = {
+            'art-apple': {
+                row: 30, col: 25, grand: 50, val: 15,
+                why: "Art students make up 60% of our entire study sample (30 out of 50 total students). If snack preference has absolutely no relationship to the clubs students join (meaning they are independent), then the 25 total apple choices should be distributed purely proportionally. Thus, 60% of those 25 total apples should logically be expected in the Art club: 0.60 × 25 = 15."
+            },
+            'art-chips': {
+                row: 30, col: 25, grand: 50, val: 15,
+                why: "With Art representing 60% of the sample (30 out of 50 students), if snack preferences are independent of club choice, Art students are expected to take up 60% of the 25 total chip choices: 60% of 25 chips = 15 Expected Chips."
+            },
+            'sports-apple': {
+                row: 20, col: 25, grand: 50, val: 10,
+                why: "Sports students represent exactly 40% of our total sample (20 out of 50 students). Under complete independence, Sports students should receive precisely 40% of the 25 total apple snack preferences: 40% of 25 apples = 10 Expected Apples."
+            },
+            'sports-chips': {
+                row: 20, col: 25, grand: 50, val: 10,
+                why: "Since Sports club comprises 40% of the surveyed population (20 out of 50 students), independence mandates they should account for exactly 40% of the 25 overall chip snacks expected: 40% of 25 chips = 10 Expected Chips."
+            }
+        };
+
+        const calcSelect = document.getElementById('calc-cell-select');
+        const calcResultDiv = document.getElementById('calc-result');
+        const calcSteps = document.getElementById('calc-steps');
+        const showWhyBtn = document.getElementById('show-why-btn');
+        const whyExplanation = document.getElementById('why-explanation');
+
+        calcSelect.addEventListener('change', (e) => {
+            const val = e.target.value;
+            const data = expectedCalcExpl[val];
+            if (data) {
+                calcResultDiv.style.display = 'block';
+                whyExplanation.style.display = 'none'; // hide previous explanation
+                showWhyBtn.innerText = 'Show me why';
+
+                calcSteps.innerHTML = `
+                    <strong>Expected Count (E) Formula:</strong><br>
+                    E = (Row Total × Column Total) / Grand Total<br><br>
+                    <strong>Inserting Totals:</strong><br>
+                    E = (${data.row} × ${data.col}) / ${data.grand}<br>
+                    E = ${data.row * data.col} / ${data.grand}<br><br>
+                    <strong>Final Expected Value:</strong> ${data.val}
+                `;
+
+                whyExplanation.innerHTML = data.why;
+            }
+        });
+
+        showWhyBtn.addEventListener('click', () => {
+            if (whyExplanation.style.display === 'none') {
+                whyExplanation.style.display = 'block';
+                showWhyBtn.innerText = 'Hide explanation';
+            } else {
+                whyExplanation.style.display = 'none';
+                showWhyBtn.innerText = 'Show me why';
+            }
+        });
+
+        // 3. Quiz evaluation function
+        const quizFeedbackText = {
+            1: {
+                correct: "🎉 Correct! Sports has 20 out of 50 total students (representing 40% of the sample). Chips has 25 total choices. 40% of 25 total choices is exactly 10 expected count.",
+                incorrect: "❌ Incorrect. Remember the formula: (Row Total × Column Total) ÷ Grand Total. For Sports & Chips, that is (20 × 25) ÷ 50."
+            },
+            2: {
+                correct: "🎉 Correct! A positive residual score (+5) explicitly indicates that the Observed count (what we saw: 20) was higher than the baseline Expected count (what independence predicted: 15).",
+                incorrect: "❌ Incorrect. A positive residual indicates that the Observed frequency exceeds the Expected frequency."
+            },
+            3: {
+                correct: "🎉 Correct! The p-value assesses probability under the assumption that the Null Hypothesis is true. A small p-value indicates evidence of statistical discrepancy against independence. The direction is clarified by residuals.",
+                incorrect: "❌ Incorrect. The p-value does not determine causal factor mechanisms, nor does it establish specific group outcomes directly. It purely measures evidence strength against the null hypothesis."
+            }
+        };
+
+        function checkQuiz(quizNum, element) {
+            const isCorrect = element.getAttribute('data-correct') === 'true';
+            const parent = element.parentElement;
+            // Clear current highlights
+            parent.querySelectorAll('.quiz-option').forEach(opt => {
+                opt.classList.remove('correct', 'incorrect');
+            });
+
+            // Highlight target option
+            if (isCorrect) {
+                element.classList.add('correct');
+            } else {
+                element.classList.add('incorrect');
+                // Auto highlight correct answer as help
+                parent.querySelectorAll('.quiz-option').forEach(opt => {
+                    if (opt.getAttribute('data-correct') === 'true') {
+                        opt.classList.add('correct');
+                    }
+                });
+            }
+
+            // Display feedback
+            const feedbackBox = document.getElementById(`quiz-${quizNum}-feedback`);
+            feedbackBox.style.display = 'block';
+            if (isCorrect) {
+                feedbackBox.className = 'quiz-feedback';
+                feedbackBox.style.backgroundColor = 'rgba(22, 163, 74, 0.08)';
+                feedbackBox.style.color = 'var(--success)';
+                feedbackBox.style.border = '1px solid var(--success)';
+                feedbackBox.innerHTML = quizFeedbackText[quizNum].correct;
+            } else {
+                feedbackBox.className = 'quiz-feedback';
+                feedbackBox.style.backgroundColor = 'rgba(244, 63, 94, 0.08)';
+                feedbackBox.style.color = 'var(--error)';
+                feedbackBox.style.border = '1px solid var(--error)';
+                feedbackBox.innerHTML = quizFeedbackText[quizNum].incorrect;
+            }
+        }
+
+        // 6. Stage 7 practice exercise validator
+        function verifyPractice() {
+            const ans1 = document.getElementById('p-input-1').value;
+            const ans2 = document.getElementById('p-input-2').value;
+            const ans3 = document.getElementById('p-input-3').value;
+            const feedback = document.getElementById('practice-feedback');
+
+            feedback.style.display = 'block';
+
+            if (ans1 === 'correct' && ans2 === 'correct' && ans3 === 'correct') {
+                feedback.style.backgroundColor = 'rgba(22, 163, 74, 0.08)';
+                feedback.style.color = 'var(--success)';
+                feedback.style.border = '1px solid var(--success)';
+                feedback.innerHTML = "🎉 <strong>Perfect score!</strong> You have successfully and accurately interpreted the results of this Chi-Square test in plain English.";
+            } else {
+                feedback.style.backgroundColor = 'rgba(217, 119, 6, 0.08)';
+                feedback.style.color = 'var(--warning)';
+                feedback.style.border = '1px solid var(--warning)';
+                feedback.innerHTML = "⚠️ <strong>Almost there!</strong> Double-check your dropdown selections and try again. Focus on which snack matches the positive residuals.";
+            }
+        }
+
+        function showPracticeAnswer() {
+            document.getElementById('p-input-1').value = 'correct';
+            document.getElementById('p-input-2').value = 'correct';
+            document.getElementById('p-input-3').value = 'correct';
+
+            const feedback = document.getElementById('practice-feedback');
+            feedback.style.display = 'block';
+            feedback.style.backgroundColor = 'rgba(99, 102, 241, 0.08)';
+            feedback.style.color = 'var(--accent-dark)';
+            feedback.style.border = '1px solid var(--accent)';
+            feedback.innerHTML = "💡 <strong>Answer revealed:</strong> There is evidence of a relationship between <strong>club choice and snack preference</strong>. Art students are more likely than expected to prefer <strong>apples</strong>, while Sports students are more likely than expected to prefer <strong>chips</strong>.";
+        }
 
         // Chi-Square PDF approximation for drawing
         function chiSquarePDF(x) {
@@ -901,17 +1586,17 @@
 
         function drawDistribution(progress = 0) {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            
+
             const w = canvas.width;
             const h = canvas.height;
             const padding = 20;
-            
-            const xMax = 12; 
-            const yMax = 0.8; 
-            
+
+            const xMax = 12;
+            const yMax = 0.8;
+
             const scaleX = (w - 2 * padding) / xMax;
             const scaleY = (h - 2 * padding) / yMax;
-            
+
             // Draw axes
             ctx.beginPath();
             ctx.moveTo(padding, padding);
@@ -941,9 +1626,9 @@
 
             // Draw p-value tail and animation dot
             if (progress > 0) {
-                const targetX = 8.33; 
-                const currentX = critX + (targetX - critX) * Math.min(1, progress); 
-                
+                const targetX = 8.33;
+                const currentX = critX + (targetX - critX) * Math.min(1, progress);
+
                 // Draw actual p-value shading starting from current position
                 ctx.beginPath();
                 let startedPval = false;
@@ -962,7 +1647,7 @@
                 ctx.fill();
 
                 const px = padding + currentX * scaleX;
-                
+
                 ctx.beginPath();
                 ctx.moveTo(px, h - padding);
                 ctx.lineTo(px, padding + 35);
@@ -993,7 +1678,7 @@
                 const y = Math.min(chiSquarePDF(x), yMax);
                 const px = padding + x * scaleX;
                 const py = h - padding - y * scaleY;
-                
+
                 if (!started) {
                     ctx.moveTo(px, py);
                     started = true;
@@ -1004,13 +1689,13 @@
             ctx.strokeStyle = '#6b7280';
             ctx.lineWidth = 2;
             ctx.stroke();
-            
+
             // Labels
             ctx.fillStyle = '#6b7280';
             ctx.font = "12px 'JetBrains Mono'";
             ctx.fillText("0", padding - 5, h - padding + 15);
             ctx.fillText("3.84", padding + critX * scaleX - 15, h - padding + 15);
-            
+
             ctx.fillStyle = '#d97706';
             ctx.font = "bold 11px 'Inter'";
             ctx.fillText("Critical Region", padding + critX * scaleX + 8, padding + 25);
@@ -1034,7 +1719,7 @@
         function updateVisuals(stage) {
             stage = parseInt(stage);
             currentStage = stage;
-            
+
             // Update dots
             dots.forEach((d, i) => {
                 d.classList.toggle('active', i + 1 === stage);
@@ -1042,7 +1727,7 @@
 
             // Reset Matrix Classes
             matrixContainer.className = `matrix-container state-${stage}`;
-            
+
             // Handle Distribution Canvas visibility & animation
             if (stage >= 5) {
                 distContainer.classList.add('visible');
@@ -1068,7 +1753,7 @@
                 cancelAnimationFrame(animationReq);
                 drawDistribution(0);
             }
-            
+
             if (stage >= 5) {
                 distMetric.style.opacity = 1;
             } else {
@@ -1085,7 +1770,7 @@
                 }
             });
         }, {
-            rootMargin: '-30% 0px -50% 0px', 
+            rootMargin: '-30% 0px -50% 0px',
             threshold: 0
         });
 
