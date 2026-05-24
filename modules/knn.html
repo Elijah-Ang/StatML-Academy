@@ -79,6 +79,66 @@ p{font-size:0.95rem;color:var(--text-dim);margin-bottom:16px;max-width:520px}
 .k-slider-wrap input[type=range]{flex:1;accent-color:var(--accent)}
 .k-slider-wrap .k-val{font-family:'JetBrains Mono',monospace;font-size:1.1rem;font-weight:700;color:var(--accent2);min-width:30px;text-align:center}
 
+/* QUIZ STYLING */
+.quiz-card {
+  border-left: 4px solid var(--accent) !important;
+  transition: all 0.3s;
+}
+.quiz-option {
+  text-align: left !important;
+  padding: 10px 14px !important;
+  font-size: 0.85rem !important;
+  border-radius: var(--radius-sm) !important;
+  background: var(--surface) !important;
+  border: 1px solid var(--glass-border) !important;
+  cursor: pointer;
+  width: 100%;
+  margin-top: 6px;
+  transition: all 0.2s;
+  display: block;
+}
+.quiz-option:hover {
+  background: var(--accent-glow) !important;
+  border-color: var(--accent) !important;
+}
+.quiz-option.correct {
+  background-color: var(--green-soft) !important;
+  border-color: var(--green) !important;
+  color: var(--green) !important;
+  font-weight: 600;
+}
+.quiz-option.incorrect {
+  background-color: var(--coral-soft) !important;
+  border-color: var(--coral) !important;
+  color: var(--coral) !important;
+}
+.quiz-feedback {
+  margin-top: 10px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  display: none;
+  padding: 8px 12px;
+  border-radius: var(--radius-sm);
+  background: var(--bg);
+}
+
+/* WIDER SCROLL CHART WRAPPER */
+.chart-scroll-wrap {
+  width: 100%;
+  overflow-x: auto;
+  padding-bottom: 8px;
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  margin: 12px 0;
+}
+#kAccChart {
+  width: 100%;
+  min-width: 680px;
+  height: 320px;
+  display: block;
+}
+
 @media(max-width:900px){
   .layout{flex-direction:column}
   .narrative{width:100%;min-width:unset}
@@ -114,7 +174,42 @@ p{font-size:0.95rem;color:var(--text-dim);margin-bottom:16px;max-width:520px}
   <div class="stage-num">Stage 01</div>
   <h2>The Raw Data</h2>
   <p>Every machine learning model starts with data. Here we have measurements of fruits — each one scored on <strong>Sweetness</strong> and <strong>Color Intensity</strong>.</p>
+
+  <!-- Supervised Learning Explanation -->
   <p>Each fruit is already labeled: it's either an <span class="tag tag-apple">Apple</span> or an <span class="tag tag-orange">Orange</span>. Because we have labels, this is <em>supervised learning</em>.</p>
+
+  <div class="insight-box">
+    <p>💡 <strong>Supervised learning</strong> means the model learns from examples where the answer is already known. Here, each fruit already has a known label: Apple or Orange. Later, KNN uses these known examples as its "memory" to classify any new, unknown fruit.</p>
+  </div>
+
+  <!-- Whole Idea of KNN -->
+  <div class="glass-card">
+    <h3 style="color: var(--accent2);">The Whole Idea of KNN</h3>
+    <p><strong>KNN</strong> stands for <strong>K-Nearest Neighbors</strong>. The concept is incredibly straightforward:</p>
+    <p style="font-size: 0.9rem; border-left: 2px solid var(--accent); padding-left: 12px; background: rgba(99,102,241,0.03); margin-bottom: 12px;">
+      To classify a new unknown item, look at the <strong>K</strong> closest known examples (neighbors) in your dataset. Then, simply copy the label that appears most often among those neighbors!
+    </p>
+    <p><strong>Example:</strong> If we want to identify a mystery fruit, and its 3 closest neighbors are 🍎, 🍎, and 🍊, then Apple gets 2 votes and Orange gets 1 vote. KNN predicts <strong>Apple</strong>.</p>
+    <div class="math-block" style="text-align: center; font-weight: 600; font-size: 0.78rem;">
+New unknown fruit → Find closest old fruits → Count their labels → Predict majority label
+    </div>
+  </div>
+
+  <!-- Tiny ML Dictionary -->
+  <div class="glass-card">
+    <h3 style="color: var(--accent2);">Tiny ML Dictionary</h3>
+    <p style="margin-bottom: 8px;">Before moving forward, let's establish a few basic terms:</p>
+    <div style="display: flex; flex-direction: column; gap: 10px; font-size: 0.88rem;">
+      <div><strong>• Feature:</strong> A measurement used to make a prediction (e.g., <em>Sweetness</em> or <em>Color Intensity</em>).</div>
+      <div><strong>• Label:</strong> The correct answer already known for our examples (e.g., <em>Apple</em> or <em>Orange</em>).</div>
+      <div><strong>• Class:</strong> The category we are trying to predict (e.g., <em>Apple class</em> vs. <em>Orange class</em>).</div>
+      <div><strong>• Query Point:</strong> The new, unknown item we want to classify. In our visual plots, the query point is represented by a star <strong>★</strong>.</div>
+    </div>
+    <p style="margin-top: 10px; font-style: italic; font-size: 0.85rem; color: var(--text-muted);">
+      "We know the query point's features, but we do not know its label yet. KNN tries to guess the label based on its neighbors."
+    </p>
+  </div>
+
   <div class="glass-card">
     <h3>Training Dataset</h3>
     <table class="data-table" id="dataTable"></table>
@@ -128,9 +223,26 @@ p{font-size:0.95rem;color:var(--text-dim);margin-bottom:16px;max-width:520px}
   <h2>Choosing Good Features</h2>
   <p>Not every measurement helps separate classes. We pick features where the groups actually differ — like Sweetness and Color Intensity.</p>
   <p>Bad features (random IDs, row numbers) add noise without signal. KNN is especially sensitive to irrelevant features because they pollute the distance calculation.</p>
+
+  <!-- Feature Selection Details -->
+  <div class="glass-card">
+    <h3>Why Feature Selection Matters</h3>
+    <p style="font-size: 0.88rem;">A <strong>good feature</strong> helps separate the classes clearly. A <strong>bad feature</strong> adds confusion and distorts the distance between points.</p>
+    <p style="font-size: 0.88rem; margin-top: 8px;"><strong>Useful Examples:</strong></p>
+    <ul style="font-size: 0.85rem; margin-left: 20px; color: var(--text-dim); margin-bottom: 8px;">
+      <li><strong>Sweetness</strong> helps because apples and oranges have different natural sweetness profiles.</li>
+      <li><strong>Color Intensity</strong> helps separate reddish apples from yellowish-orange citrus fruits.</li>
+    </ul>
+    <p style="font-size: 0.88rem;"><strong>Not Useful Examples:</strong></p>
+    <ul style="font-size: 0.85rem; margin-left: 20px; color: var(--text-dim);">
+      <li><strong>Row number</strong> is just the order in the table; it contains zero predictive power.</li>
+      <li><strong>Day picked</strong> is unrelated to fruit sweetness or species and would only add noise.</li>
+    </ul>
+  </div>
+
   <div class="glass-card">
     <h3>Feature Quality</h3>
-    <p style="margin:0">✅ <strong>Sweetness</strong> — Oranges tend to be sweeter<br>
+    <p style="margin:0">✅ <strong>Sweetness</strong> — The two fruit groups show different sweetness patterns<br>
     ✅ <strong>Color Intensity</strong> — Apples score higher on red<br>
     ❌ Row number — meaningless for prediction<br>
     ❌ Day picked — no predictive power</p>
@@ -144,6 +256,19 @@ p{font-size:0.95rem;color:var(--text-dim);margin-bottom:16px;max-width:520px}
   <h2>Train / Test Split</h2>
   <p>We hold out a small <strong>test set</strong> (2 apples + 2 oranges) that the model will not see during training. The remaining points are used as the "memory" KNN will search through.</p>
   <p>Testing on training data is one of the most common mistakes — it gives inflated confidence. A model that memorizes isn't smart; it's just a parrot.</p>
+
+  <!-- Train/Test Split Details -->
+  <div class="glass-card">
+    <h3>Training vs. Testing Sets</h3>
+    <div style="display: flex; flex-direction: column; gap: 10px; font-size: 0.88rem; margin-bottom: 12px;">
+      <div><strong>• Training Set:</strong> The collection of examples KNN is allowed to remember and search through. This is the model's "memory".</div>
+      <div><strong>• Test Set:</strong> Hidden examples set aside from the beginning, used ONLY at the very end to check if the model can accurately classify new, unseen data.</div>
+    </div>
+    <div class="insight-box" style="border-left-color: var(--coral); background: rgba(220,38,38,0.03);">
+      <p style="color: var(--text); font-size: 0.85rem;">⚠️ <strong>Critical Warning (Data Leakage):</strong> Do not use the test set to choose K or tune features. If the model is exposed to the test set during its construction, your evaluation results are no longer honest. This is called <em>data leakage</em>!</p>
+    </div>
+  </div>
+
   <div class="glass-card" id="splitInfo">
     <div class="metric-row">
       <div class="metric-card"><div class="val" id="trainCount">—</div><div class="lbl">Training</div></div>
@@ -158,12 +283,36 @@ p{font-size:0.95rem;color:var(--text-dim);margin-bottom:16px;max-width:520px}
   <h2>Feature Scaling</h2>
   <p>This is the <strong>most common mistake</strong> with KNN. If Sweetness ranges 0–10 but Color ranges 0–100, the Color feature would completely dominate distance calculations.</p>
   <p>We use <em>Min-Max Scaling</em> to squish every feature into the 0–1 range, giving each feature equal voice.</p>
-  <div class="math-block">Scaled Value = (Value − Min) / (Max − Min)
 
-Example: Sweetness 7, Min=2, Max=9
-→ (7 − 2) / (9 − 2) = 5/7 ≈ 0.71</div>
+  <div class="math-block">Scaled Value = (Value − Min) ÷ (Max − Min)
+
+Example: Sweetness = 7, Min = 2, Max = 9
+Scaled Value = (7 − 2) ÷ (9 − 2) = 5 ÷ 7 ≈ 0.71</div>
+
+  <!-- Scale Using Training Only -->
+  <div class="glass-card">
+    <h3>Important: Scale Using Training Data Only</h3>
+    <p style="font-size: 0.88rem;">To prevent data leakage, we calculate the Minimum and Maximum values using <strong>only</strong> the training set. We then use this exact same scale factor for training, test, and any future query points.</p>
+    <div class="math-block" style="text-align: center; font-size: 0.8rem; margin: 10px 0;">
+Training Data finds Min/Max ➔ same Min/Max scales training, test, and new query points
+    </div>
+    <p style="font-size: 0.82rem; color: var(--text-muted); margin-top: 6px;">If we used the test set to calculate the scale range, information from the test set would leak into the training process, leading to over-optimistic performance estimates.</p>
+  </div>
+
+  <!-- Quiz 1 -->
+  <div class="glass-card quiz-card" data-quiz-id="q1">
+    <h4 style="font-weight: 700; margin-bottom: 8px; color: var(--accent2); display: flex; align-items: center; gap: 6px;">🧠 Concept Check</h4>
+    <p style="font-size: 0.88rem; margin-bottom: 12px;"><strong>Why do we scale features before using KNN?</strong></p>
+    <div class="quiz-options">
+      <button class="quiz-option" data-correct="false">To make the dataset smaller and faster to process.</button>
+      <button class="quiz-option" data-correct="true">Because KNN relies on distances, and features with larger numeric ranges could unfairly dominate the calculations.</button>
+      <button class="quiz-option" data-correct="false">To make sure all values are converted into whole integers.</button>
+    </div>
+    <div class="quiz-feedback"></div>
+  </div>
+
   <div class="glass-card" id="scaleInfo"></div>
-  <div class="insight-box"><p>💡 Watch the points shift on the plot — they're being rescaled to [0, 1] on each axis. The shape of the clusters stays the same, but the axes are now comparable.</p></div>
+  <div class="insight-box"><p>💡 Watch the points shift on the plot — they're being rescaled to [0, 1] on each axis. The order of points along each axis stays the same, but the scale changes. This makes distance fairer because Sweetness and Color now use comparable ranges.</p></div>
 </section>
 
 <!-- S5: Distance Metrics -->
@@ -172,10 +321,40 @@ Example: Sweetness 7, Min=2, Max=9
   <h2>Measuring Distance</h2>
   <p>KNN's entire logic boils down to one question: <em>"Who lives closest to me?"</em> To answer that, we need a way to measure distance between points.</p>
   <p>The most common choice is <strong>Euclidean distance</strong> — the straight-line distance between two points.</p>
+
   <div class="math-block">d(a, b) = √[(x₂ − x₁)² + (y₂ − y₁)²]
 
 This is just the Pythagorean theorem —
 the same formula you learned in geometry class.</div>
+
+  <!-- What does distance mean here? -->
+  <div class="glass-card">
+    <h3>What Does Distance Mean Here?</h3>
+    <p style="font-size: 0.88rem;">In machine learning, <strong>distance</strong> represents <strong>dissimilarity</strong> between items:</p>
+    <ul style="font-size: 0.85rem; margin-left: 20px; color: var(--text-dim); margin-bottom: 12px;">
+      <li><strong>Short distance</strong> means high similarity. The items have very similar features.</li>
+      <li><strong>Long distance</strong> means high difference. The items are very dissimilar.</li>
+    </ul>
+
+    <h4 style="font-weight:600; margin-bottom: 6px; font-size:0.88rem; color: var(--accent2);">Step-by-Step Distance Calculation:</h4>
+    <p style="font-size: 0.82rem; margin-bottom: 6px;">Let's calculate the distance between our mystery fruit and a training fruit manually:</p>
+
+    <div style="font-size: 0.8rem; background: rgba(0,0,0,0.02); padding: 10px; border-radius: 6px; font-family: monospace; border: 1px solid var(--glass-border); line-height: 1.4; margin-bottom: 12px;">
+<strong>Query point (Mystery Fruit ★):</strong><br>
+Sweetness = 0.45, Color = 0.55<br><br>
+<strong>Training point (Known Fruit):</strong><br>
+Sweetness = 0.50, Color = 0.65<br><br>
+<strong>Euclidean Distance Formula:</strong><br>
+d = √[(0.50 − 0.45)² + (0.65 − 0.55)²]<br>
+d = √[(0.05)² + (0.10)²]<br>
+d = √[0.0025 + 0.0100]<br>
+d = √0.0125<br>
+<strong>d ≈ 0.1118</strong> (the straight-line distance)
+    </div>
+
+    <p style="font-size: 0.82rem; color: var(--text-muted);">Note: While <strong>Euclidean distance</strong> is the straight-line default, other metrics exist (e.g., <strong>Manhattan distance</strong>, which calculates distance along grid paths like city streets). This page uses Euclidean distance.</p>
+  </div>
+
   <div class="glass-card" id="distanceInfo">
     <h3>Live Distance Calculation</h3>
     <p id="distCalcText">Lines on the plot show the distance from a query point (★) to every training point. The darker lines emphasize the current teaching K nearest neighbors.</p>
@@ -189,6 +368,76 @@ the same formula you learned in geometry class.</div>
   <p>K is <strong>one of the most important hyperparameters</strong> in KNN — the number of neighbors to consult before making a prediction.</p>
   <p><strong>Small K</strong> (e.g. K=1): Very sensitive to noise. One outlier can flip the prediction.<br>
   <strong>Large K</strong> (e.g. K=15): Too smooth. Local patterns get drowned out by distant voters.</p>
+
+  <p>We do not just guess K blindly. Later, in Stage 12, we compare several K values using cross-validation and look for a sensible choice.</p>
+
+  <!-- Who chooses K? -->
+  <div class="glass-card">
+    <h3>Who Chooses K?</h3>
+    <p style="font-size: 0.88rem;"><strong>K</strong> is a <strong>hyperparameter</strong>. In machine learning, a hyperparameter is a setting chosen by the human designer <em>before</em> the model starts predicting, rather than learned automatically from training data.</p>
+
+    <p style="font-size: 0.88rem; margin-top: 8px;"><strong>The Trade-Off:</strong></p>
+    <ul style="font-size: 0.85rem; margin-left: 20px; color: var(--text-dim); margin-bottom: 12px;">
+      <li><strong>Too Small K (e.g., K=1):</strong> Extremely sensitive to outliers and noise. The model may <strong>overfit</strong> (memorize noise as pattern).</li>
+      <li><strong>Too Large K (e.g., K=15):</strong> Overly smooth and generic. Local patterns are drowned out by far-away votes. The model may <strong>underfit</strong> (miss the actual pattern).</li>
+    </ul>
+
+    <h4 style="font-weight:600; margin-bottom: 6px; font-size:0.88rem; color: var(--accent2);">How a Machine Learning Task is Configured:</h4>
+    <table class="data-table" style="font-size: 0.78rem;">
+      <thead>
+        <tr>
+          <th>Component</th>
+          <th>Who Decides?</th>
+          <th>Meaning</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Features</strong></td>
+          <td>Human / Designer</td>
+          <td>Measurements selected to describe items (e.g., Sweetness)</td>
+        </tr>
+        <tr>
+          <td><strong>Scaling Method</strong></td>
+          <td>Human choice</td>
+          <td>How feature ranges are made comparable (e.g., Min-Max)</td>
+        </tr>
+        <tr>
+          <td><strong>Distance Metric</strong></td>
+          <td>Human choice</td>
+          <td>Mathematical formula to measure closeness (e.g., Euclidean)</td>
+        </tr>
+        <tr>
+          <td><strong>K value</strong></td>
+          <td>Human choice</td>
+          <td>Number of neighboring votes allowed to participate</td>
+        </tr>
+        <tr>
+          <td><strong>Training labels</strong></td>
+          <td>Existing Data</td>
+          <td>The ground-truth answers for old examples</td>
+        </tr>
+        <tr>
+          <td><strong>Prediction</strong></td>
+          <td>KNN vote rule</td>
+          <td>Majority vote among the K closest neighbors</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Quiz 2 -->
+  <div class="glass-card quiz-card" data-quiz-id="q2">
+    <h4 style="font-weight: 700; margin-bottom: 8px; color: var(--accent2); display: flex; align-items: center; gap: 6px;">🧠 Concept Check</h4>
+    <p style="font-size: 0.88rem; margin-bottom: 12px;"><strong>Who decides the value of K in K-Nearest Neighbors?</strong></p>
+    <div class="quiz-options">
+      <button class="quiz-option" data-correct="false">The KNN algorithm automatically discovers the best K during training.</button>
+      <button class="quiz-option" data-correct="true">The human designer chooses K as a hyperparameter before run time.</button>
+      <button class="quiz-option" data-correct="false">The query points themselves decide based on how far away they are.</button>
+    </div>
+    <div class="quiz-feedback"></div>
+  </div>
+
   <div class="glass-card">
     <h3>Adjust K</h3>
     <div class="k-slider-wrap">
@@ -218,13 +467,43 @@ the same formula you learned in geometry class.</div>
   <div class="stage-num">Stage 08</div>
   <h2>The Majority Vote</h2>
   <p>Classification is now a democracy. Each of the K nearest neighbors gets one vote. The class with the most votes wins.</p>
+
+  <!-- Equal Vote Democracy & Tie Breaking -->
+  <div class="glass-card">
+    <h3>Equal Vote Democracy</h3>
+    <p style="font-size: 0.88rem;">In standard KNN, each neighbor inside the K-limit gets exactly <strong>one equal vote</strong>. The category with the highest vote count wins the prediction.</p>
+
+    <div class="insight-box" style="border-left-color: var(--orange); background: rgba(217,119,6,0.03);">
+      <p style="font-size: 0.85rem; color: var(--text);">⚠️ <strong>Note: Vote share is not probability!</strong> If K=3 and Apples win 2-1, this does <strong>not</strong> mean the fruit has a 66.7% probability of being an Apple. It only means 2 of the 3 nearest examples in our training memory were apples. Do not confuse vote tally with actual likelihood!</p>
+    </div>
+
+    <h4 style="font-weight:600; margin-bottom: 6px; font-size:0.88rem; color: var(--accent2);">Why odd numbers for K?</h4>
+    <p style="font-size: 0.82rem; margin-bottom: 12px;">In two-class (binary) classification, choosing an <strong>odd K</strong> guarantees there will be no ties. If we used an even number (like K=4) and got 2 Apple votes and 2 Orange votes, the model would require a complex, arbitrary tie-breaking rule. Using odd K values elegantly prevents this!</p>
+
+    <!-- Vote Chip Display -->
+    <h4 style="font-weight:600; margin-bottom: 8px; font-size:0.88rem; color: var(--accent2);">Current Vote Tally Breakdown:</h4>
+    <div id="dynamicVoteChips" style="display: flex; gap: 8px; margin-bottom: 12px; flex-wrap: wrap;"></div>
+  </div>
+
+  <!-- Quiz 3 -->
+  <div class="glass-card quiz-card" data-quiz-id="q3">
+    <h4 style="font-weight: 700; margin-bottom: 8px; color: var(--accent2); display: flex; align-items: center; gap: 6px;">🧠 Concept Check</h4>
+    <p style="font-size: 0.88rem; margin-bottom: 12px;"><strong>If K=3 and the 3 nearest neighbors are Apple, Apple, Orange, what does KNN predict?</strong></p>
+    <div class="quiz-options">
+      <button class="quiz-option" data-correct="false">Orange, because it is the unique outlier.</button>
+      <button class="quiz-option" data-correct="true">Apple, because it wins the majority vote (2 votes to 1).</button>
+      <button class="quiz-option" data-correct="false">Undecided, because votes are split.</button>
+    </div>
+    <div class="quiz-feedback"></div>
+  </div>
+
   <div class="glass-card" id="voteInfo">
     <h3>Vote Tally</h3>
     <div id="voteTally"></div>
   </div>
-  <div class="math-block">If K=3 and neighbors are: 🍎 🍊 🍎
-→ Apple: 2 votes | Orange: 1 vote
-→ Prediction: 🍎 Apple!</div>
+
+  <div class="math-block" id="voteExampleBlock"></div>
+
   <div class="insight-box"><p>💡 For regression tasks, instead of voting, KNN takes the <strong>average value</strong> of the K neighbors. But for classification like ours, it's pure democracy.</p></div>
 </section>
 
@@ -234,6 +513,33 @@ the same formula you learned in geometry class.</div>
   <h2>Decision Boundary</h2>
   <p>What if we classified <em>every possible point</em> on the plot? The result is a colorful map showing which regions belong to which class.</p>
   <p>Unlike linear models, KNN boundaries are <strong>non-linear</strong> — they bend and curve around the data naturally. The boundary is just wherever the majority vote flips from one class to the other.</p>
+
+  <!-- What is a decision boundary? -->
+  <div class="glass-card">
+    <h3>What is a Decision Boundary?</h3>
+    <p style="font-size: 0.88rem; margin-bottom: 8px;">A <strong>Decision Boundary</strong> is the invisible dividing line or contour across the feature space where the model switches from predicting one class to another. Any point that falls on one side is predicted as Apple; any point on the other is Orange.</p>
+
+    <div style="display: flex; flex-direction: column; gap: 8px; font-size: 0.85rem; margin-bottom: 12px;">
+      <div><strong>• Non-parametric:</strong> KNN has no underlying assumptions or mathematical weights to fit (unlike linear equations). The boundary adapts organically to the data density.</div>
+      <div><strong>• Bias-Variance Tradeoff:</strong> Adjusting K alters this boundary:</div>
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px;">
+      <div style="padding: 10px; border-radius: 8px; background: rgba(181,90,82,0.04); border-left: 3px solid var(--apple);">
+        <strong style="color: var(--apple); font-size: 0.85rem;">K = 1 (High Variance / Low Bias):</strong>
+        <p style="font-size: 0.8rem; margin: 2px 0 0 0;">Extremely flexible, wiggly, and complex boundary. It fits every outlier precisely, memorizing noise and likely overfitting.</p>
+      </div>
+      <div style="padding: 10px; border-radius: 8px; background: rgba(99,102,241,0.04); border-left: 3px solid var(--accent);">
+        <strong style="color: var(--accent); font-size: 0.85rem;">Medium K (Balanced Tradeoff):</strong>
+        <p style="font-size: 0.8rem; margin: 2px 0 0 0;">Smooth, reasonable boundary shapes that filter out minor noise while preserving genuine group clusters.</p>
+      </div>
+      <div style="padding: 10px; border-radius: 8px; background: rgba(217,119,6,0.04); border-left: 3px solid var(--orange);">
+        <strong style="color: var(--orange); font-size: 0.85rem;">Large K (Low Variance / High Bias):</strong>
+        <p style="font-size: 0.8rem; margin: 2px 0 0 0;">Highly smooth, almost straight boundaries. It ignores localized trends completely, risking underfitting.</p>
+      </div>
+    </div>
+  </div>
+
   <div class="glass-card" id="boundaryInfo">
     <h3>Boundary Properties</h3>
     <p id="boundaryText">The decision boundary emerges organically from the data — no formula is fitted. This is what makes KNN a <em>non-parametric</em> model.</p>
@@ -258,10 +564,29 @@ the same formula you learned in geometry class.</div>
   <div class="stage-num">Stage 11</div>
   <h2>Evaluating the Model</h2>
   <p>We don't just say "it works." We inspect <em>how</em> it works and where it fails using a <strong>confusion matrix</strong> and derived metrics.</p>
+
+  <!-- Confusion Matrix & Plain English click definitions -->
   <div class="glass-card">
     <h3>Confusion Matrix</h3>
+    <p style="font-size:0.82rem; color:var(--text-muted); margin-bottom: 10px;">Click any quadrant below to see what it means in plain English:</p>
     <div class="matrix-grid" id="confMatrix"></div>
+    <div id="confMatrixExplanation" style="margin-top: 12px; padding: 12px; border-radius: 8px; font-size: 0.85rem; background: var(--bg); border: 1px solid var(--glass-border); font-style: italic;">
+      💡 Click a grid cell above to display its evaluation description here.
+    </div>
   </div>
+
+  <!-- Quiz 4 -->
+  <div class="glass-card quiz-card" data-quiz-id="q4">
+    <h4 style="font-weight: 700; margin-bottom: 8px; color: var(--accent2); display: flex; align-items: center; gap: 6px;">🧠 Concept Check</h4>
+    <p style="font-size: 0.88rem; margin-bottom: 12px;"><strong>If Apple is the Positive Class, what does a False Positive mean in our fruit classification task?</strong></p>
+    <div class="quiz-options">
+      <button class="quiz-option" data-correct="false">The model correctly predicted that the fruit was an Apple.</button>
+      <button class="quiz-option" data-correct="true">The model predicted Apple, but the fruit was actually an Orange.</button>
+      <button class="quiz-option" data-correct="false">The model predicted Orange, but the fruit was actually an Apple.</button>
+    </div>
+    <div class="quiz-feedback"></div>
+  </div>
+
   <div class="glass-card" id="metricsPanel">
     <h3>Performance Metrics <span style="font-weight:400;font-size:0.78rem;color:var(--text-muted)">(Apple = positive class)</span></h3>
     <div class="metric-row" id="metricsRow"></div>
@@ -275,6 +600,52 @@ the same formula you learned in geometry class.</div>
   <div class="stage-num">Stage 12</div>
   <h2>The Effect of K</h2>
   <p>K is one of the most important tuning knobs. Watch how the decision boundary changes as K increases.</p>
+
+  <!-- LOOCV cross-validation -->
+  <div class="glass-card">
+    <h3>What is Leave-One-Out Cross-Validation (LOOCV)?</h3>
+    <p style="font-size: 0.88rem;">To choose the optimal value of K honestly, we cannot test different values on our final held-out test set (as that would leak information). Instead, we perform cross-validation inside our <strong>training set only</strong>.</p>
+
+    <p style="font-size: 0.88rem; margin-top: 8px;"><strong>The Leave-One-Out Recipe:</strong></p>
+    <ol style="font-size: 0.85rem; margin-left: 20px; color: var(--text-dim); line-height: 1.5; margin-bottom: 12px;">
+      <li>Select one point from the training set and "hide" it.</li>
+      <li>Treat the remaining training points as the model's memory.</li>
+      <li>Use KNN with a specific K to predict the label of the hidden point.</li>
+      <li>Record whether the prediction was correct.</li>
+      <li>Repeat this sequence until every single training point has had a turn being hidden.</li>
+      <li>Calculate the average accuracy across all attempts.</li>
+    </ol>
+
+    <div class="math-block" style="text-align: center; font-size: 0.8rem; margin: 10px 0;">
+Training set only ➔ Try K values (1 to 15) ➔ CV accuracy ➔ Choose optimal K ➔ Final test set used ONCE
+    </div>
+
+    <div class="insight-box" style="border-left-color: var(--coral); background: rgba(220,38,38,0.03);">
+      <p style="font-size: 0.85rem; color: var(--text);">⚠️ <strong>Rule of thumb:</strong> Do NOT select your hyperparameters using the final test set. If you test multiple K values on the test set and pick the one with highest accuracy, your test set is no longer an independent evaluator!</p>
+    </div>
+  </div>
+
+  <!-- Elbow/Knee Method Explanation -->
+  <div class="glass-card">
+    <h3>The Elbow / Knee Method for Choosing K</h3>
+    <p style="font-size: 0.88rem; margin-bottom: 10px;">For KNN, we usually choose K using validation or cross-validation performance. We can plot K against validation accuracy or validation error. Sometimes we look for an elbow or knee point: a place where increasing K no longer improves performance much. This is an elbow-style validation curve, not the K-means inertia elbow method. Here, the y-axis is cross-validation accuracy, not clustering inertia.</p>
+
+    <div class="insight-box" style="border-left-color: var(--accent); background: rgba(99,102,241,0.03); margin: 12px 0;">
+      <p style="font-size: 0.85rem; color: var(--text);">
+        <strong>Simple Hypothetical Example of Knee Selection:</strong><br>
+        • K = 1: 75% accuracy, noisy and overfit.<br>
+        • K = 3: 88% accuracy, big improvement.<br>
+        • K = 5: 92% accuracy, smaller improvement.<br>
+        • K = 7: 92% accuracy, no real improvement.<br>
+        ➔ Clear interpretation: <strong>K = 5 is the clearest knee</strong> because accuracy improves up to K = 5, then barely improves after that. K = 3 may still be acceptable if you want a smaller-neighbor model, but K = 5 is the cleaner elbow-style choice in this example.<br><br>
+        <em>In the actual chart below, look for the marked ‘Possible knee’ point. That marker comes from the current training data and cross-validation results.</em>
+      </p>
+    </div>
+    <p style="font-size: 0.82rem; color: var(--text-muted); line-height: 1.5;">
+      ⚠️ <strong>Warning:</strong> The best K is not always the absolute peak accuracy on one tiny split. Prefer cross-validation and choose a K that performs robustly without being paranoiacally small or generic.
+    </p>
+  </div>
+
   <div class="glass-card">
     <h3>Compare K Values</h3>
     <div class="k-slider-wrap">
@@ -286,15 +657,76 @@ the same formula you learned in geometry class.</div>
   </div>
   <div class="glass-card">
     <h3>K vs Cross-Validation Accuracy</h3>
+    <p style="font-size: 0.88rem; margin-bottom: 12px;">
+      The chart below is the elbow/knee visual. We are looking for the point where the curve starts to flatten.
+    </p>
     <p style="font-size:0.82rem;color:var(--text-muted);margin:0 0 12px 0">This chart uses leave-one-out cross-validation on the training set only, not the held-out test set.</p>
-    <canvas id="kAccChart" width="400" height="200" style="width:100%;max-height:200px"></canvas>
+    <!-- Wider & Clearer scroll wrap -->
+    <div class="chart-scroll-wrap">
+      <canvas id="kAccChart"></canvas>
+    </div>
+    <!-- Caption -->
+    <p style="font-size:0.8rem;color:var(--accent2);margin-top:10px;font-style:italic;line-height:1.4;">
+      💡 <strong>K vs Cross-Validation Accuracy = the validation curve used to choose K.</strong> The elbow/knee is the point where increasing K stops improving cross-validation accuracy much.
+    </p>
   </div>
   <div class="insight-box"><p>💡 K=1 overfits — it memorizes noise. Very large K underfits — it becomes too generic. The sweet spot is found through <strong>cross-validation</strong>.</p></div>
 </section>
 
-<!-- S13: Playground -->
+<!-- S13: Strengths and Weaknesses -->
 <section class="section" data-stage="13" id="sec-13">
   <div class="stage-num">Stage 13</div>
+  <h2>Strengths and Weaknesses</h2>
+  <p>Before using K-Nearest Neighbors in practice, it is vital to know when it shines and where it struggles.</p>
+
+  <div class="glass-card" style="border-top: 3px solid var(--green);">
+    <h3 style="color: var(--green);">💪 Strengths</h3>
+    <ul style="font-size: 0.88rem; margin-left: 20px; color: var(--text-dim); line-height: 1.5; display: flex; flex-direction: column; gap: 6px;">
+      <li><strong>Simple to understand:</strong> Intuitive to explain to stakeholders.</li>
+      <li><strong>No Parameter-Learning Phase:</strong> KNN does not fit weights or coefficients. It stores the training examples and uses them during prediction.</li>
+      <li><strong>Highly Flexible:</strong> Can easily construct complex, non-linear decision boundaries.</li>
+      <li><strong>Naturally Multi-class:</strong> Works seamlessly for predicting 3 or more classes.</li>
+    </ul>
+  </div>
+
+  <div class="glass-card" style="border-top: 3px solid var(--coral);">
+    <h3 style="color: var(--coral);">⚠️ Weaknesses & Limitations</h3>
+    <ul style="font-size: 0.88rem; margin-left: 20px; color: var(--text-dim); line-height: 1.5; display: flex; flex-direction: column; gap: 6px;">
+      <li><strong>Sensitive to Scale:</strong> Requires mandatory feature scaling; otherwise, features with larger ranges dominate.</li>
+      <li><strong>The Curse of Dimensionality:</strong> When there are too many features, distance often becomes less useful because many points start to seem similarly far apart. This makes it harder for KNN to find truly meaningful neighbors.</li>
+      <li><strong>Slow at Scale:</strong> Must calculate distance to every single stored point for every new query. High memory and computing costs.</li>
+      <li><strong>Class Imbalance:</strong> If you have 95% Apples and 5% Oranges, votes will naturally skew heavily to Apple.</li>
+    </ul>
+  </div>
+
+  <!-- Final Summary -->
+  <div class="glass-card">
+    <h3>The Whole Story in Plain English</h3>
+    <p style="font-size: 0.85rem; line-height: 1.6; color: var(--text);">
+      Here is the complete machine learning workflow we walked through today:
+    </p>
+    <ol style="font-size: 0.82rem; margin-left: 20px; color: var(--text-dim); line-height: 1.6; display: flex; flex-direction: column; gap: 4px;">
+      <li><strong>Labeled Examples:</strong> Start with known data (fruits with known categories).</li>
+      <li><strong>Feature Selection:</strong> Select high-quality, relevant properties (sweetness, color).</li>
+      <li><strong>Train/Test Split:</strong> Set aside a final held-out test set to keep final evaluation fair.</li>
+      <li><strong>Feature Scaling:</strong> Force all scales to 0–1 so distance checks remain unbiased.</li>
+      <li><strong>Mystery Input:</strong> Introduce an unknown query point (★) on the plot.</li>
+      <li><strong>Distance Measuring:</strong> Run Euclidean distance against all stored training examples.</li>
+      <li><strong>Hyperparameter K:</strong> Choose K (the count of voting neighbors).</li>
+      <li><strong>Locate Neighbors:</strong> Gather the K nearest samples.</li>
+      <li><strong>Tally Votes:</strong> Perform a democratic, equal-weight majority vote.</li>
+      <li><strong>Predict:</strong> Assign the winning class to the unknown query point.</li>
+      <li><strong>Independent Testing:</strong> Run the held-out test points to check the model's accuracy.</li>
+      <li><strong>Evaluate Quality:</strong> Read the confusion matrix, recall, precision, and F1 metrics.</li>
+      <li><strong>Tune K:</strong> Use cross-validation inside the training memory to find the best K.</li>
+      <li><strong>Analyze Trade-offs:</strong> Know KNN's limits, such as scale sensitivity and the curse of dimensionality.</li>
+    </ol>
+  </div>
+</section>
+
+<!-- S14: Playground -->
+<section class="section" data-stage="14" id="sec-14">
+  <div class="stage-num">Stage 14</div>
   <h2>Interactive Playground</h2>
   <p>Click anywhere on the plot to drop a new point. The model will classify it in real time using KNN.</p>
   <div class="playground-controls">
@@ -357,6 +789,15 @@ const COLORS={
 let currentData = null;
 let lastPlaygroundPoint = null;
 
+const DATA_INSET = 0.035; // Visual inset to prevent point cropping
+
+// Global Annotation Lane Variables
+let CAN_USE_ANNOTATION_LANE = false;
+let annotationW = 0;
+let annotationX = 0;
+let annotationY = 0;
+let annotationInnerW = 0;
+
 function shuffleArray(items){
   for(let i=items.length-1;i>0;i--){
     const j=Math.floor(Math.random()*(i+1));
@@ -367,18 +808,27 @@ function shuffleArray(items){
 
 function getActiveK(stage=currentStage){
   if(stage===12)return compareK;
-  if(stage===13)return playgroundK;
+  if(stage===14)return playgroundK;
   return mainK;
 }
 
-// ===== INIT =====
-function initData(){
-  if(!currentData) currentData = BASE_DATA.map(d=>({...d}));
-  const shuffled=shuffleArray([...currentData]);
-  const testApples=shuffled.filter(d=>d.label==='Apple').slice(0,2);
-  const testOranges=shuffled.filter(d=>d.label==='Orange').slice(0,2);
-  testData=[...testApples,...testOranges];
-  trainData=shuffled.filter(d=>!testData.includes(d));
+// ===== INIT (Deterministic default splits) =====
+function initData(randomize = false){
+  if(!currentData) {
+    currentData = BASE_DATA.map(d=>({...d}));
+  }
+  if (!randomize) {
+    // Deterministic selection of 2 Apples and 2 Oranges for testing
+    const TEST_INDICES = [1, 5, 13, 19];
+    testData = TEST_INDICES.map(i => currentData[i]);
+    trainData = currentData.filter((_, i) => !TEST_INDICES.includes(i));
+  } else {
+    const shuffled=shuffleArray([...currentData]);
+    const testApples=shuffled.filter(d=>d.label==='Apple').slice(0,2);
+    const testOranges=shuffled.filter(d=>d.label==='Orange').slice(0,2);
+    testData=[...testApples,...testOranges];
+    trainData=shuffled.filter(d=>!testData.includes(d));
+  }
   allData=[...trainData,...testData];
   computeScaling();
   scaledTrain=trainData.map(d=>({s:scale(d.s,'s'),c:scale(d.c,'c'),label:d.label,raw:d}));
@@ -392,8 +842,30 @@ function computeScaling(){
   cMin=Math.min(...trainC);cMax=Math.max(...trainC);
 }
 
+// Scale factors
 function scale(v,feat){return feat==='s'?(v-sMin)/(sMax-sMin):(v-cMin)/(cMax-cMin)}
 function unscale(v,feat){return feat==='s'?v*(sMax-sMin)+sMin:v*(cMax-cMin)+cMin}
+
+// Coordinates map helper with visual boundary insets
+function toPixel(s,c){
+  const sx = DATA_INSET + s * (1 - 2 * DATA_INSET);
+  const cy = DATA_INSET + c * (1 - 2 * DATA_INSET);
+  return {
+    x: plotInnerX + sx * plotInnerW,
+    y: plotInnerY + plotInnerH - cy * plotInnerH
+  };
+}
+
+function fromPixel(px,py){
+  const s_raw = (px - plotInnerX) / plotInnerW;
+  const c_raw = (plotInnerY + plotInnerH - py) / plotInnerH;
+  if(s_raw < 0 || s_raw > 1 || c_raw < 0 || c_raw > 1) return null;
+  let s = (s_raw - DATA_INSET) / (1 - 2 * DATA_INSET);
+  let c = (c_raw - DATA_INSET) / (1 - 2 * DATA_INSET);
+  s = Math.max(0, Math.min(1, s));
+  c = Math.max(0, Math.min(1, c));
+  return { s, c };
+}
 
 function euclidean(a,b){return Math.sqrt((a.s-b.s)**2+(a.c-b.c)**2)}
 
@@ -418,17 +890,28 @@ function resizeCanvas(){
   canvas.style.width=rect.width+'px';canvas.style.height=rect.height+'px';
   ctx.setTransform(r,0,0,r,0,0);
   W=rect.width;H=rect.height;
-  plotX=60;plotY=50;plotW=W-120;plotH=H-140;
+
+  // Set up Annotation Lane Globally safely
+  CAN_USE_ANNOTATION_LANE = W > 1050 && (W - 120 - 210) > 650;
+  annotationW = CAN_USE_ANNOTATION_LANE ? 210 : 0;
+
+  plotX=60;
+  plotY=50;
+  plotW=W-120-annotationW;
+  plotH=H-140;
+
   plotPad=Math.min(24,Math.max(16,Math.min(plotW,plotH)*0.05));
   plotInnerX=plotX+plotPad;
   plotInnerY=plotY+plotPad;
   plotInnerW=plotW-(plotPad*2);
   plotInnerH=plotH-(plotPad*2);
+
+  annotationX = plotX + plotW + 20;
+  annotationY = plotY + 10;
+  annotationInnerW = Math.max(0, annotationW - 30);
+
   decisionBoundaryImg=null;
 }
-
-function toPixel(s,c){return{x:plotInnerX+s*plotInnerW,y:plotInnerY+plotInnerH-c*plotInnerH}}
-function fromPixel(px,py){return{s:(px-plotInnerX)/plotInnerW,c:(plotInnerY+plotInnerH-py)/plotInnerH}}
 
 function clipPlotArea(){
   ctx.beginPath();
@@ -472,35 +955,141 @@ function drawAxes(labelX,labelY){
   ctx.restore();
 }
 
-function drawPoint(s,c,label,opts={}){
-  const {x,y}=toPixel(s,c);
-  const r=opts.radius||6;
-  const isApple=label==='Apple';
+// ===== CANVAS DRAWING HELPERS =====
+
+function drawPoint(s, c, label, opts = {}) {
+  const { x, y } = toPixel(s, c);
+  const r = opts.radius || 6;
+  const isApple = label === 'Apple';
+
   ctx.save();
-  if(opts.glow){
-    ctx.shadowColor=isApple?COLORS.apple:COLORS.orange;
-    ctx.shadowBlur=12;
+
+  if (opts.glow) {
+    ctx.shadowColor = isApple ? COLORS.apple : COLORS.orange;
+    ctx.shadowBlur = 12;
   }
-  ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);
-  ctx.fillStyle=opts.fill||(isApple?COLORS.apple:COLORS.orange);
-  ctx.globalAlpha=opts.alpha||1;
+
+  ctx.globalAlpha = opts.alpha ?? 1;
+  ctx.beginPath();
+  ctx.arc(x, y, r, 0, Math.PI * 2);
+  ctx.fillStyle = opts.fill || (isApple ? COLORS.apple : COLORS.orange);
   ctx.fill();
-  if(opts.stroke){ctx.strokeStyle=opts.stroke;ctx.lineWidth=opts.strokeWidth||2;ctx.stroke();}
+
+  if (opts.stroke) {
+    ctx.strokeStyle = opts.stroke;
+    ctx.lineWidth = opts.strokeWidth || 2;
+    ctx.stroke();
+  }
+
   ctx.restore();
 }
 
-function drawStar(s,c,color,size){
-  const {x,y}=toPixel(s,c);
-  ctx.save();ctx.fillStyle=color;ctx.font=`${size||18}px sans-serif`;ctx.textAlign='center';ctx.textBaseline='middle';
-  ctx.fillText('★',x,y);ctx.restore();
+function drawLine(s1, c1, s2, c2, color, width = 1, dash = []) {
+  const a = toPixel(s1, c1);
+  const b = toPixel(s2, c2);
+
+  ctx.save();
+  ctx.strokeStyle = color;
+  ctx.lineWidth = width;
+  ctx.setLineDash(dash);
+  ctx.beginPath();
+  ctx.moveTo(a.x, a.y);
+  ctx.lineTo(b.x, b.y);
+  ctx.stroke();
+  ctx.restore();
 }
 
-function drawLine(s1,c1,s2,c2,color,width,dash){
-  const a=toPixel(s1,c1),b=toPixel(s2,c2);
-  ctx.save();ctx.strokeStyle=color;ctx.lineWidth=width||1;
-  if(dash)ctx.setLineDash(dash);
-  ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke();
+function drawStar(s, c, color, size = 20) {
+  const { x, y } = toPixel(s, c);
+
+  ctx.save();
+  ctx.fillStyle = color;
+  ctx.font = `${size}px sans-serif`;
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText('★', x, y);
   ctx.restore();
+}
+
+function canShowDetailedLabels() {
+  return W > 700 && plotInnerW > 420 && plotInnerH > 300;
+}
+
+// ===== SMART POSITIONING FOR OVERLAY CARDS =====
+function getSmartCardPosition(cardW, cardH) {
+  const corners = [
+    { name: 'TL', x: plotInnerX + 12, y: plotInnerY + 12 },
+    { name: 'BL', x: plotInnerX + 12, y: plotInnerY + plotInnerH - cardH - 12 },
+    { name: 'BR', x: plotInnerX + plotInnerW - cardW - 12, y: plotInnerY + plotInnerH - cardH - 12 },
+    { name: 'TR', x: plotInnerX + plotInnerW - cardW - 12, y: plotInnerY + 12 }
+  ];
+
+  // Legend box boundaries
+  const legX = plotInnerX + plotInnerW - 130;
+  const legY = plotInnerY + 10;
+  const legW = 125;
+  const legH = (currentStage >= 5 && currentStage <= 8) ? 80 : 55;
+
+  let bestCorner = corners[0];
+  let minPenalty = Infinity;
+
+  corners.forEach(c => {
+    let penalty = 0;
+
+    // Check legend overlap
+    if (c.x < legX + legW && c.x + cardW > legX && c.y < legY + legH && c.y + cardH > legY) {
+      penalty += 10000;
+    }
+
+    // Check query point overlap (if visible)
+    if (currentStage >= 5 && currentStage <= 8 && queryPoint) {
+      const qPx = toPixel(queryPoint.s, queryPoint.c);
+      if (qPx.x > c.x - 20 && qPx.x < c.x + cardW + 20 && qPx.y > c.y - 20 && qPx.y < c.y + cardH + 20) {
+        penalty += 2000;
+      }
+    }
+
+    // Count training/testing points inside card bounds
+    const dataset = getHoverCandidates(currentStage);
+    dataset.forEach(d => {
+      let px;
+      if (currentStage >= 4) {
+        px = toPixel(d.s, d.c);
+      } else {
+        // Raw dataset mapping
+        const allS = allData.map(pt => pt.s), allC = allData.map(pt => pt.c);
+        const rsMin = Math.min(...allS) - 0.5, rsMax = Math.max(...allS) + 0.5;
+        const rcMin = Math.min(...allC) - 0.5, rcMax = Math.max(...allC) + 0.5;
+        const s_scaled = (d.s - rsMin) / (rsMax - rsMin);
+        const c_scaled = (d.c - rcMin) / (rcMax - rcMin);
+        px = toPixel(s_scaled, c_scaled);
+      }
+
+      if (px.x > c.x - 12 && px.x < c.x + cardW + 12 && px.y > c.y - 12 && px.y < c.y + cardH + 12) {
+        penalty += 100; // penalty per covered point
+      }
+    });
+
+    if (penalty < minPenalty) {
+      minPenalty = penalty;
+      bestCorner = c;
+    }
+  });
+
+  return bestCorner;
+}
+
+// ===== KNEE DETECTION LOGIC =====
+function findKneePoint(ks, accs) {
+  let kneeK = 5; // Default safe choice
+  for (let i = 1; i < ks.length; i++) {
+    const gain = accs[i] - accs[i - 1];
+    if (i > 1 && gain <= 0.02) {
+      kneeK = ks[i - 1];
+      break;
+    }
+  }
+  return kneeK;
 }
 
 // ===== DECISION BOUNDARY =====
@@ -510,7 +1099,11 @@ function computeDecisionBoundary(k,res){
   const imgData=ctx.createImageData(imgW,imgH);
   for(let py=0;py<imgH;py++){
     for(let px=0;px<imgW;px++){
-      const s=px/imgW,c=1-py/imgH;
+      // Back map boundary pixels to the insetting scale system
+      const s_raw = px/imgW;
+      const c_raw = 1-py/imgH;
+      const s = (s_raw - DATA_INSET) / (1 - 2 * DATA_INSET);
+      const c = (c_raw - DATA_INSET) / (1 - 2 * DATA_INSET);
       const result=knn({s,c},scaledTrain,k);
       const isApple=result.prediction==='Apple';
       const idx=(py*imgW+px)*4;
@@ -536,18 +1129,25 @@ function drawDecisionBoundary(k){
 function render(){
   ctx.clearRect(0,0,W,H);
   if(currentStage===0)return renderHero();
-  if(currentStage>=4){
-    renderScaled();
-  } else {
-    renderRaw();
+  if(currentStage===13)return renderStrengthsWeaknesses(); // Summary Analysis Panel
+
+  ctx.save();
+  try {
+    ctx.setLineDash([]); // Prevent line dash leaks from active sub-graphs
+    if(currentStage>=4){
+      renderScaled();
+    } else {
+      renderRaw();
+    }
+  } finally {
+    ctx.restore();
   }
 }
 
-function renderHero(){/* hero canvas handles its own animation */}
+function renderHero(){/* hero canvas animation callback handles its own drawing */}
 
 function renderRaw(){
   drawGrid();
-  const useRaw=true;
   const xLabel='Sweetness (raw)';
   const yLabel='Color Intensity (raw)';
   // map raw to 0-1 for plotting using raw range
@@ -570,46 +1170,97 @@ function renderRaw(){
   }
   ctx.restore();
 
+  // Safely encapsulate the clipping path execution
   ctx.save();
-  clipPlotArea();
-  if(currentStage>=3){
-    // show train/test split
-    trainData.forEach(d=>{const p=rawToPlot(d);drawPoint(p.s,p.c,d.label);});
-    testData.forEach(d=>{const p=rawToPlot(d);drawPoint(p.s,p.c,d.label,{alpha:0.25,stroke:'#9ca3af',strokeWidth:2});});
-  } else if(currentStage===2){
-    // feature selection - highlight axes
-    allData.forEach(d=>{const p=rawToPlot(d);drawPoint(p.s,p.c,d.label,{glow:true});});
-  } else {
-    allData.forEach(d=>{const p=rawToPlot(d);drawPoint(p.s,p.c,d.label);});
+  try {
+    clipPlotArea();
+    if(currentStage>=3){
+      // show train/test split
+      trainData.forEach(d=>{const p=rawToPlot(d);drawPoint(p.s,p.c,d.label);});
+      testData.forEach(d=>{const p=rawToPlot(d);drawPoint(p.s,p.c,d.label,{alpha:0.25,stroke:'#9ca3af',strokeWidth:2});});
+
+      // Stage 3 Split Canvas Legend
+      ctx.save();
+      const lx=plotInnerX+10, ly=plotInnerY+10;
+      ctx.fillStyle='rgba(255,255,255,0.96)';
+      ctx.strokeStyle='#e5e7eb';
+      ctx.lineWidth=1;
+      roundRect(ctx,lx,ly,170,50,6);
+      ctx.fill(); ctx.stroke();
+      ctx.fillStyle=COLORS.text;
+      ctx.font='bold 10px Inter,sans-serif';
+      ctx.fillText('• Solid = Training Memory', lx+10, ly+20);
+      ctx.fillText('• Faded + Ring = Hidden Test Set', lx+10, ly+38);
+      ctx.restore();
+    } else if(currentStage===2){
+      // feature selection - highlight axes
+      allData.forEach(d=>{const p=rawToPlot(d);drawPoint(p.s,p.c,d.label,{glow:true});});
+
+      if (canShowDetailedLabels()) {
+        ctx.save();
+        ctx.fillStyle = COLORS.accent;
+        ctx.font = 'bold 11px Inter,sans-serif';
+        ctx.fillText('Useful Feature: Sweetness (X) ➔', plotInnerX + plotInnerW/2 - 60, plotInnerY + plotInnerH + 45);
+        ctx.save();
+        ctx.translate(35, plotInnerY + plotInnerH/2 + 70);
+        ctx.rotate(-Math.PI/2);
+        ctx.fillText('Useful Feature: Color Intensity (Y) ➔', 0, 0);
+        ctx.restore();
+
+        ctx.fillStyle = 'rgba(220, 38, 38, 0.9)';
+        ctx.font = '500 11px Inter,sans-serif';
+        ctx.fillText('⚠️ Bad features (like Row ID) would distort distance!', plotInnerX + 15, plotInnerY + 25);
+        ctx.restore();
+      } else {
+        ctx.save();
+        ctx.fillStyle = COLORS.accent;
+        ctx.font = 'bold 10px Inter,sans-serif';
+        ctx.fillText('Sweetness & Color form clear distinct clusters', plotInnerX + 10, plotInnerY + 20);
+        ctx.restore();
+      }
+    } else {
+      // Stage 1 raw markers
+      allData.forEach(d=>{const p=rawToPlot(d);drawPoint(p.s,p.c,d.label);});
+
+      ctx.save();
+      ctx.fillStyle = COLORS.text;
+      ctx.font = 'bold 10px Inter,sans-serif';
+      ctx.fillText('Each dot = One measured fruit', plotInnerX + 15, plotInnerY + 25);
+      ctx.restore();
+    }
+  } finally {
+    ctx.restore();
   }
-  ctx.restore();
   drawLegend();
 }
 
 function renderScaled(){
   const activeK=getActiveK();
-  if(currentStage>=9){drawDecisionBoundary(activeK);}
-  drawGrid();drawAxes('Sweetness (scaled)','Color (scaled)');
 
+  // 1. If stage >= 9 and stage !== 11, draw decision boundary
+  if(currentStage>=9 && currentStage!==11){drawDecisionBoundary(activeK);}
+
+  // 2. Draw grid and axes
+  drawGrid();
+  drawAxes('Sweetness (scaled)','Color (scaled)');
+
+  // 3. Enter clipped plot area safely
   ctx.save();
-  clipPlotArea();
-  if(currentStage>=10){
-    // show test points with prediction
-    scaledTest.forEach(d=>{
-      const pred=knn(d,scaledTrain,activeK);
-      const correct=pred.prediction===d.label;
-      drawPoint(d.s,d.c,d.label,{radius:8,stroke:correct?COLORS.green:COLORS.coral,strokeWidth:3});
+  try {
+    clipPlotArea();
+
+    // 4. Draw training points first
+    scaledTrain.forEach(d=>{
+      if (currentStage === 11) {
+        drawPoint(d.s, d.c, d.label, { alpha: 0.25 }); // Dim training points during evaluation
+      } else {
+        drawPoint(d.s, d.c, d.label);
+      }
     });
-  }
 
-  // training points
-  scaledTrain.forEach(d=>{
-    drawPoint(d.s,d.c,d.label);
-  });
-
-  if(currentStage>=5&&currentStage<=8&&queryPoint){
-    // distance lines
-    if(currentStage>=5){
+    // 5. Draw query star / distance lines / nearest-neighbor highlights for stages 5–8
+    if(currentStage>=5&&currentStage<=8&&queryPoint){
+      // distance lines
       const dists=scaledTrain.map((d,i)=>({dist:euclidean(queryPoint,d),d,i})).sort((a,b)=>a.dist-b.dist);
       if(currentStage===5){
         // all lines
@@ -620,6 +1271,23 @@ function renderScaled(){
         dists.slice(0,activeK).forEach(({d})=>{
           drawLine(queryPoint.s,queryPoint.c,d.s,d.c,COLORS.accent,2);
         });
+
+        // Highlight closest neighbor and label it
+        const closestItem = dists[0].d;
+        const ptClosest = toPixel(closestItem.s, closestItem.c);
+        ctx.save();
+        ctx.strokeStyle = COLORS.green;
+        ctx.lineWidth = 2.5;
+        ctx.beginPath();
+        ctx.arc(ptClosest.x, ptClosest.y, 14, 0, Math.PI*2);
+        ctx.stroke();
+
+        if (canShowDetailedLabels()) {
+          ctx.fillStyle = COLORS.green;
+          ctx.font = 'bold 10px Inter,sans-serif';
+          ctx.fillText('Closest neighbor', ptClosest.x + 18, ptClosest.y + 4);
+        }
+        ctx.restore();
       }
       if(currentStage>=7){
         // highlight K neighbors
@@ -647,45 +1315,269 @@ function renderScaled(){
           ctx.beginPath();ctx.arc(x,y,12,0,Math.PI*2);ctx.stroke();ctx.restore();
           drawLine(queryPoint.s,queryPoint.c,d.s,d.c,COLORS.accent,1.5,[4,3]);
         });
+
+        // Human chosen hyperparameter labels
+        ctx.save();
+        ctx.fillStyle = COLORS.accent;
+        if (canShowDetailedLabels()) {
+          ctx.font = 'bold 11px Inter,sans-serif';
+          ctx.fillText('💡 K is a human-chosen hyperparameter', plotInnerX + 15, plotInnerY + 25);
+          ctx.font = '500 11px Inter,sans-serif';
+          ctx.fillStyle = COLORS.text;
+          ctx.fillText(`K = ${activeK} neighbors allowed to vote`, plotInnerX + 15, plotInnerY + 42);
+        } else {
+          ctx.font = 'bold 10px Inter,sans-serif';
+          ctx.fillText(`K = ${activeK} neighbors chosen by human`, plotInnerX + 12, plotInnerY + 20);
+        }
+        ctx.restore();
       }
+
+      drawStar(queryPoint.s,queryPoint.c,COLORS.accent,20);
+
+      // Label Star as query point
+      const qPx = toPixel(queryPoint.s, queryPoint.c);
+      ctx.save();
+      ctx.fillStyle = COLORS.accent;
+      ctx.font = 'bold 10px Inter,sans-serif';
+      ctx.fillText('★ = query point / mystery fruit', qPx.x + 12, qPx.y - 12);
+      ctx.restore();
     }
-    drawStar(queryPoint.s,queryPoint.c,COLORS.accent,20);
+
+    // 6. Draw vote highlight for stage 8
+    if(currentStage===8&&queryPoint){
+      const result=knn(queryPoint,scaledTrain,activeK);
+      const {x,y}=toPixel(queryPoint.s,queryPoint.c);
+      const isApple=result.prediction==='Apple';
+      ctx.save();ctx.fillStyle=isApple?COLORS.apple:COLORS.orange;
+      ctx.globalAlpha=0.2;ctx.beginPath();ctx.arc(x,y,22,0,Math.PI*2);ctx.fill();ctx.restore();
+    }
+
+    // 7. Draw test points for stages 10 and 11 last (Fix 3: Restrict strictly to Stages 10 & 11)
+    if(currentStage === 10 || currentStage === 11){
+      // show test points with prediction
+      scaledTest.forEach((d, tIdx)=>{
+        const pred=knn(d,scaledTrain,activeK);
+        const correct=pred.prediction===d.label;
+        if (currentStage === 11) {
+          drawPoint(d.s, d.c, d.label, {radius: 9, stroke: correct ? COLORS.green : COLORS.coral, strokeWidth: 3, glow: true});
+        } else {
+          drawPoint(d.s, d.c, d.label, {radius: 8, stroke: correct ? COLORS.green : COLORS.coral, strokeWidth: 3});
+        }
+
+        // TP/TN/FP/FN Canvas Labels
+        if (currentStage === 11 && canShowDetailedLabels()) {
+          let txt = '';
+          if (d.label === 'Apple' && pred.prediction === 'Apple') txt = 'TP';
+          else if (d.label === 'Orange' && pred.prediction === 'Orange') txt = 'TN';
+          else if (d.label === 'Orange' && pred.prediction === 'Apple') txt = 'FP';
+          else txt = 'FN';
+
+          const pt = toPixel(d.s, d.c);
+          ctx.save();
+          ctx.fillStyle = correct ? COLORS.green : COLORS.coral;
+          ctx.font = 'bold 10px JetBrains Mono, monospace';
+          ctx.fillText(txt, pt.x - 6, pt.y - 12);
+          ctx.restore();
+        }
+      });
+    }
+
+    // 8. Draw playground points for stage 14
+    if(currentStage===14){
+      playgroundPoints.forEach(pp=>{
+        const pred=knn(pp,scaledTrain,activeK);
+        drawPoint(pp.s,pp.c,pred.prediction,{radius:8,stroke:'#fff',strokeWidth:2,glow:true});
+      });
+    }
+  } finally {
+    ctx.restore(); // 9. Exit clipped plot area safely
   }
 
-  if(currentStage===8&&queryPoint){
-    const result=knn(queryPoint,scaledTrain,activeK);
-    const {x,y}=toPixel(queryPoint.s,queryPoint.c);
-    const isApple=result.prediction==='Apple';
-    ctx.save();ctx.fillStyle=isApple?COLORS.apple:COLORS.orange;
-    ctx.globalAlpha=0.2;ctx.beginPath();ctx.arc(x,y,22,0,Math.PI*2);ctx.fill();ctx.restore();
+  // 10. Draw legend and any annotation-lane labels outside the clipped area
+
+  // Draw scaled parameters compact overlay card
+  if (currentStage === 4) {
+    ctx.save();
+
+    // Draw subtle transition background text in main plot
+    ctx.fillStyle = COLORS.accent;
+    ctx.font = 'bold 11px Inter, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('Raw values scaled to 0–1', plotInnerX + plotInnerW / 2, plotInnerY + 25);
+
+    if (CAN_USE_ANNOTATION_LANE) {
+      // Draw inside annotation lane
+      const cardX = plotX + plotW + 20;
+      const cardY = plotY + 10 + 65 + 15; // Placed neatly below the legend
+      const cardW = annotationW - 20;
+      const cardH = 105;
+
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.94)';
+      ctx.strokeStyle = '#e7e5e4';
+      ctx.lineWidth = 1.5;
+      roundRect(ctx, cardX, cardY, cardW, cardH, 8);
+      ctx.fill(); ctx.stroke();
+
+      ctx.fillStyle = COLORS.accent;
+      ctx.font = 'bold 11px Inter, sans-serif';
+      ctx.textAlign = 'left';
+      ctx.fillText('Min-Max Scaling', cardX + 12, cardY + 22);
+
+      ctx.fillStyle = '#4b5563';
+      ctx.font = '500 10px Inter, sans-serif';
+      ctx.fillText('Raw ranges ➔ scaled to 0–1', cardX + 12, cardY + 40);
+
+      ctx.fillStyle = '#6b7280';
+      ctx.font = '400 10px JetBrains Mono, monospace';
+      ctx.fillText(`Sweetness: ${sMin.toFixed(1)}–${sMax.toFixed(1)} ➔ 0–1`, cardX + 12, cardY + 62);
+      ctx.fillText(`Color: ${cMin.toFixed(1)}–${cMax.toFixed(1)} ➔ 0–1`, cardX + 12, cardY + 82);
+    } else {
+      const cardW = 140;
+      const cardH = 30;
+      const bestPos = getSmartCardPosition(cardW, cardH);
+      const cardX = bestPos.x;
+      const cardY = bestPos.y;
+
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.94)';
+      ctx.strokeStyle = '#e7e5e4';
+      ctx.lineWidth = 1;
+      roundRect(ctx, cardX, cardY, cardW, cardH, 6);
+      ctx.fill(); ctx.stroke();
+
+      ctx.fillStyle = COLORS.accent;
+      ctx.font = 'bold 10px Inter, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('Features scaled to 0–1', cardX + cardW/2, cardY + 18);
+    }
+    ctx.restore();
   }
 
-  // playground points
-  if(currentStage===13){
-    playgroundPoints.forEach(pp=>{
-      const pred=knn(pp,scaledTrain,activeK);
-      drawPoint(pp.s,pp.c,pred.prediction,{radius:8,stroke:'#fff',strokeWidth:2,glow:true});
-    });
+  // Draw decision boundary region zones
+  if (currentStage === 9) {
+    ctx.save();
+    ctx.fillStyle = 'rgba(181,90,82,0.95)';
+    ctx.font = 'bold 11px Inter,sans-serif';
+    if (canShowDetailedLabels()) {
+      ctx.fillText('Apple Region', plotInnerX + plotInnerW - 90, plotInnerY + 25);
+      ctx.fillStyle = 'rgba(217,119,6,0.95)';
+      ctx.fillText('Orange Region', plotInnerX + 20, plotInnerY + plotInnerH - 20);
+      ctx.fillStyle = '#1f2937';
+      ctx.font = 'bold 10px Inter,sans-serif';
+      ctx.fillText('Boundary Zone', plotInnerX + plotInnerW/2 - 40, plotInnerY + plotInnerH/2 + 20);
+    } else {
+      ctx.font = 'bold 9px Inter,sans-serif';
+      ctx.fillText('Apple', plotInnerX + plotInnerW - 45, plotInnerY + 20);
+      ctx.fillStyle = 'rgba(217,119,6,0.95)';
+      ctx.fillText('Orange', plotInnerX + 15, plotInnerY + plotInnerH - 15);
+    }
+    ctx.restore();
   }
 
-  ctx.restore();
+  // Stage 11 Evaluation Side Guide
+  if (currentStage === 11) {
+    ctx.save();
+
+    if (CAN_USE_ANNOTATION_LANE) {
+      const cardX = plotX + plotW + 20;
+      const cardY = plotY + 10 + 65 + 15; // aligned nicely below compact legend
+      const cardW = annotationW - 20;
+      const cardH = 110;
+
+      ctx.fillStyle = 'rgba(255,255,255,0.96)';
+      ctx.strokeStyle = '#e5e7eb';
+      ctx.lineWidth = 1;
+      roundRect(ctx, cardX, cardY, cardW, cardH, 8);
+      ctx.fill(); ctx.stroke();
+
+      ctx.fillStyle = COLORS.accent;
+      ctx.font = 'bold 11px Inter, sans-serif';
+      ctx.textAlign = 'left';
+      ctx.fillText('Evaluation Guide', cardX + 12, cardY + 22);
+
+      ctx.fillStyle = '#4b5563';
+      ctx.font = '500 10px Inter, sans-serif';
+      ctx.fillText('• Dim dots = training memory', cardX + 12, cardY + 42);
+      ctx.fillText('• Ringed dots = held-out test', cardX + 12, cardY + 58);
+      ctx.fillText('• Green ring = correct prediction', cardX + 12, cardY + 74);
+      ctx.fillText('• Red ring = wrong prediction', cardX + 12, cardY + 90);
+    } else {
+      // Compact fallback
+      const cardW = 170;
+      const cardH = 75;
+      const bestPos = getSmartCardPosition(cardW, cardH);
+      const cardX = bestPos.x;
+      const cardY = bestPos.y;
+
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.94)';
+      ctx.strokeStyle = '#e7e5e4';
+      ctx.lineWidth = 1.5;
+      roundRect(ctx, cardX, cardY, cardW, cardH, 8);
+      ctx.fill(); ctx.stroke();
+
+      ctx.fillStyle = COLORS.accent;
+      ctx.font = 'bold 10px Inter, sans-serif';
+      ctx.fillText('Evaluation Guide', cardX + 10, cardY + 18);
+
+      ctx.fillStyle = '#4b5563';
+      ctx.font = '400 9px Inter, sans-serif';
+      ctx.fillText('• Dim dots = training memory', cardX + 10, cardY + 34);
+      ctx.fillText('• Green = correct, Red = wrong', cardX + 10, cardY + 50);
+    }
+    ctx.restore();
+  }
+
+  // Stage 12 decision boundary changes + validation curve connection
+  if (currentStage === 12 && canShowDetailedLabels()) {
+    drawMiniValidationCurve();
+  }
+
   drawLegend();
 }
 
 function drawLegend(){
   ctx.save();
-  const lx=plotInnerX+plotInnerW-130,ly=plotInnerY+10;
-  ctx.fillStyle='rgba(255,255,255,0.96)';
-  ctx.strokeStyle='#e5e7eb';ctx.lineWidth=1;
-  roundRect(ctx,lx,ly,125,currentStage>=5&&currentStage<=8?80:55,8);
-  ctx.fill();ctx.stroke();
-  ctx.fillStyle=COLORS.apple;ctx.beginPath();ctx.arc(lx+16,ly+20,5,0,Math.PI*2);ctx.fill();
-  ctx.fillStyle=COLORS.text;ctx.font='400 11px Inter';ctx.textAlign='left';ctx.fillText('Apple',lx+28,ly+24);
-  ctx.fillStyle=COLORS.orange;ctx.beginPath();ctx.arc(lx+16,ly+40,5,0,Math.PI*2);ctx.fill();
-  ctx.fillStyle=COLORS.text;ctx.fillText('Orange',lx+28,ly+44);
-  if(currentStage>=5&&currentStage<=8){
-    ctx.fillStyle=COLORS.accent;ctx.font='16px sans-serif';ctx.fillText('★',lx+12,ly+64);
-    ctx.fillStyle=COLORS.text;ctx.font='400 11px Inter';ctx.fillText('Query',lx+28,ly+64);
+  let lx, ly, lw, lh;
+
+  if (CAN_USE_ANNOTATION_LANE) {
+    lx = plotX + plotW + 20;
+    ly = plotY + 10;
+    lw = annotationW - 20;
+    lh = (currentStage >= 5 && currentStage <= 8) ? 90 : 65;
+
+    ctx.fillStyle='rgba(255,255,255,0.96)';
+    ctx.strokeStyle='#e5e7eb';ctx.lineWidth=1;
+    roundRect(ctx, lx, ly, lw, lh, 8);
+    ctx.fill(); ctx.stroke();
+
+    ctx.fillStyle=COLORS.apple; ctx.beginPath(); ctx.arc(lx + 16, ly + 20, 5, 0, Math.PI*2); ctx.fill();
+    ctx.fillStyle=COLORS.text; ctx.font='400 11px Inter'; ctx.textAlign='left'; ctx.fillText('Apple', lx + 28, ly + 24);
+
+    ctx.fillStyle=COLORS.orange; ctx.beginPath(); ctx.arc(lx + 16, ly + 40, 5, 0, Math.PI*2); ctx.fill();
+    ctx.fillStyle=COLORS.text; ctx.fillText('Orange', lx + 28, ly + 44);
+
+    if(currentStage>=5&&currentStage<=8){
+      ctx.fillStyle=COLORS.accent; ctx.font='16px sans-serif'; ctx.fillText('★', lx + 12, ly + 64);
+      ctx.fillStyle=COLORS.text; ctx.font='400 11px Inter'; ctx.fillText('Query', lx + 28, ly + 64);
+    }
+  } else {
+    lx=plotInnerX+plotInnerW-130; ly=plotInnerY+10;
+    lw=125; lh=(currentStage>=5&&currentStage<=8)?80:55;
+
+    ctx.fillStyle='rgba(255,255,255,0.96)';
+    ctx.strokeStyle='#e5e7eb';ctx.lineWidth=1;
+    roundRect(ctx,lx,ly,lw,lh,8);
+    ctx.fill();ctx.stroke();
+
+    ctx.fillStyle=COLORS.apple;ctx.beginPath();ctx.arc(lx+16,ly+20,5,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle=COLORS.text;ctx.font='400 11px Inter';ctx.textAlign='left';ctx.fillText('Apple',lx+28,ly+24);
+
+    ctx.fillStyle=COLORS.orange;ctx.beginPath();ctx.arc(lx+16,ly+40,5,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle=COLORS.text;ctx.fillText('Orange',lx+28,ly+44);
+
+    if(currentStage>=5&&currentStage<=8){
+      ctx.fillStyle=COLORS.accent;ctx.font='16px sans-serif';ctx.fillText('★',lx+12,ly+64);
+      ctx.fillStyle=COLORS.text;ctx.font='400 11px Inter';ctx.fillText('Query',lx+28,ly+64);
+    }
   }
   ctx.restore();
 }
@@ -695,6 +1587,312 @@ function roundRect(c,x,y,w,h,r){
   c.lineTo(x+w,y+h-r);c.quadraticCurveTo(x+w,y+h,x+w-r,y+h);
   c.lineTo(x+r,y+h);c.quadraticCurveTo(x,y+h,x,y+h-r);
   c.lineTo(x,y+r);c.quadraticCurveTo(x,y,x+r,y);c.closePath();
+}
+
+// ===== IN-CANVAS DYNAMIC MINI VALIDATION CURVE =====
+function drawMiniValidationCurve() {
+  const cardW = CAN_USE_ANNOTATION_LANE ? (annotationW - 20) : 155;
+  const cardH = 112; // increased slightly from 100 to fit bottom note (Fix 3)
+
+  let cardX, cardY;
+
+  if (CAN_USE_ANNOTATION_LANE) {
+    cardX = plotX + plotW + 20;
+    cardY = plotY + 10 + 65 + 15; // Placed neatly below the legend
+  } else {
+    const bestPos = getSmartCardPosition(cardW, cardH);
+    cardX = bestPos.x;
+    cardY = bestPos.y;
+  }
+
+  ctx.save();
+  ctx.fillStyle = 'rgba(255, 255, 255, 0.95)';
+  ctx.strokeStyle = '#e7e5e4';
+  ctx.lineWidth = 1.5;
+  roundRect(ctx, cardX, cardY, cardW, cardH, 8);
+  ctx.fill(); ctx.stroke();
+
+  // Title text
+  ctx.fillStyle = COLORS.accent2;
+  ctx.font = 'bold 9px Inter, sans-serif';
+  ctx.textAlign = 'left';
+  ctx.fillText('K vs CV Accuracy (Knee)', cardX + 10, cardY + 18);
+
+  const ks = [1, 3, 5, 7, 9, 11, 13, 15];
+  const accs = ks.map(k => {
+    let correct = 0;
+    scaledTrain.forEach((d, i) => {
+      const trainSet = scaledTrain.filter((_, idx) => idx !== i);
+      if (knn(d, trainSet, k).prediction === d.label) correct++;
+    });
+    return correct / scaledTrain.length;
+  });
+
+  const chartX = cardX + 15;
+  const chartY = cardY + 30;
+  const chartW = cardW - 25;
+  const chartH = cardH - 55; // adjusted slightly to make room for note at the bottom
+
+  // Draw miniature axes
+  ctx.strokeStyle = '#d1d5db';
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.moveTo(chartX, chartY);
+  ctx.lineTo(chartX, chartY + chartH);
+  ctx.lineTo(chartX + chartW, chartY + chartH);
+  ctx.stroke();
+
+  // Plot CV line
+  ctx.strokeStyle = COLORS.accent;
+  ctx.lineWidth = 1.5;
+  ctx.beginPath();
+  ks.forEach((k, i) => {
+    const px = chartX + i / (ks.length - 1) * chartW;
+    const py = chartY + chartH - (accs[i] * chartH);
+    if (i === 0) ctx.moveTo(px, py);
+    else ctx.lineTo(px, py);
+  });
+  ctx.stroke();
+
+  // Draw coordinates
+  ks.forEach((k, i) => {
+    const px = chartX + i / (ks.length - 1) * chartW;
+    const py = chartY + chartH - (accs[i] * chartH);
+    ctx.beginPath();
+    ctx.arc(px, py, k === compareK ? 3.5 : 1.5, 0, Math.PI * 2);
+    ctx.fillStyle = k === compareK ? COLORS.accent : '#9ca3af';
+    ctx.fill();
+  });
+
+  // Highlight knee point K=5
+  const kneeK = findKneePoint(ks, accs);
+  const kneeIdx = ks.indexOf(kneeK);
+  if (kneeIdx !== -1) {
+    const kneeX = chartX + kneeIdx / (ks.length - 1) * chartW;
+    const kneeY = chartY + chartH - (accs[kneeIdx] * chartH);
+    ctx.strokeStyle = '#eab308'; // gold highlight
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.arc(kneeX, kneeY, 5.5, 0, Math.PI * 2);
+    ctx.stroke();
+
+    // Miniature annotation
+    ctx.fillStyle = '#6b7280';
+    ctx.font = '500 7px Inter, sans-serif';
+    ctx.fillText(`K=${kneeK} (knee)`, kneeX - 16, kneeY - 8);
+  }
+
+  // Label current interactive K value
+  ctx.fillStyle = COLORS.accent2;
+  ctx.font = 'bold 7px Inter, sans-serif';
+  ctx.fillText(`Active: K=${compareK}`, chartX + chartW - 40, chartY + 10);
+
+  // Subtle Note (Fix 3: Prevent Stage 12 visual implication around test set vs cross-validation)
+  ctx.fillStyle = '#6b7280';
+  ctx.font = '500 7.5px Inter, sans-serif';
+  ctx.textAlign = 'center';
+  ctx.fillText('K is chosen via training CV, not test set.', cardX + cardW / 2, cardY + cardH - 6);
+
+  ctx.restore();
+}
+
+// ===== LIGHT THEMED STRENGTHS & WEAKNESSES VISUAL WITH AUTO TEXT WRAPPING =====
+function drawWrappedText(ctx, text, x, y, maxWidth, lineHeight) {
+  const words = text.split(' ');
+  let line = '';
+  let currentY = y;
+
+  for (let n = 0; n < words.length; n++) {
+    const testLine = line + words[n] + ' ';
+    const metrics = ctx.measureText(testLine);
+    const testWidth = metrics.width;
+    if (testWidth > maxWidth && n > 0) {
+      ctx.fillText(line, x, currentY);
+      line = words[n] + ' ';
+      currentY += lineHeight;
+    } else {
+      line = testLine;
+    }
+  }
+  ctx.fillText(line, x, currentY);
+  return currentY;
+}
+
+function renderStrengthsWeaknesses() {
+  ctx.save();
+  try {
+    ctx.setLineDash([]); // Ensure dashed paths are reset
+    ctx.fillStyle = '#f7f7f4'; // Safe background HEX
+    ctx.fillRect(0, 0, W, H);
+
+    ctx.fillStyle = '#1f2937';
+    ctx.font = 'bold 16px Inter, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('KNN: Weighing the Balance', W/2, 45);
+
+    const pad = 20;
+    const isNarrow = W < 700 || H < 650; // Triggers responsive stacking on short screens too
+
+    if (isNarrow) {
+      // Narrow layout: Stack cards vertically to prevent text overflow
+      const cardW = W - pad * 2;
+      const cardH = Math.min(185, (H - 180) / 2);
+
+      // Strengths Column
+      const colX1 = pad;
+      const colY1 = 75;
+
+      ctx.fillStyle = '#ffffff';
+      ctx.strokeStyle = '#e7e5e4';
+      ctx.lineWidth = 1;
+      roundRect(ctx, colX1, colY1, cardW, cardH, 12);
+      ctx.fill(); ctx.stroke();
+
+      ctx.fillStyle = 'rgba(22, 163, 74, 0.08)'; // green-soft
+      roundRect(ctx, colX1 + 1, colY1 + 1, cardW - 2, 35, 11);
+      ctx.fill();
+
+      ctx.fillStyle = '#16a34a'; // green
+      ctx.font = 'bold 13px Inter, sans-serif';
+      ctx.textAlign = 'left';
+      ctx.fillText('💪 Strengths', colX1 + 15, colY1 + 22);
+
+      const strengths = [
+        '• Simple to explain',
+        '• Flexible boundaries',
+        '• No learned weights',
+        '• Multi-class friendly'
+      ];
+      ctx.font = '500 11px Inter, sans-serif';
+      ctx.fillStyle = '#4b5563';
+      strengths.forEach((item, idx) => {
+        if (54 + idx * 24 < cardH - 10) {
+          ctx.fillText(item, colX1 + 15, colY1 + 54 + idx * 24);
+        }
+      });
+
+      // Weaknesses Column
+      const colY2 = colY1 + cardH + 18;
+      ctx.fillStyle = '#ffffff';
+      roundRect(ctx, colX1, colY2, cardW, cardH, 12);
+      ctx.fill(); ctx.stroke();
+
+      ctx.fillStyle = 'rgba(220, 38, 38, 0.06)'; // coral-soft
+      roundRect(ctx, colX1 + 1, colY2 + 1, cardW - 2, 35, 11);
+      ctx.fill();
+
+      ctx.fillStyle = '#dc2626'; // coral
+      ctx.font = 'bold 13px Inter, sans-serif';
+      ctx.fillText('⚠️ Weaknesses', colX1 + 15, colY2 + 22);
+
+      const weaknesses = [
+        '• Needs scaling',
+        '• Sensitive to noise',
+        '• Slow on huge data',
+        '• Weak in high dimensions',
+        '• Affected by class imbalance'
+      ];
+      ctx.font = '500 11px Inter, sans-serif';
+      ctx.fillStyle = '#4b5563';
+      weaknesses.forEach((item, idx) => {
+        if (54 + idx * 22 < cardH - 10) {
+          ctx.fillText(item, colX1 + 15, colY2 + 54 + idx * 22);
+        }
+      });
+
+      // Short footer banner
+      const footerY = H - 55;
+      ctx.fillStyle = 'rgba(99, 102, 241, 0.05)';
+      ctx.strokeStyle = 'rgba(99, 102, 241, 0.15)';
+      roundRect(ctx, pad, footerY, W - pad * 2, 40, 8);
+      ctx.fill(); ctx.stroke();
+
+      ctx.fillStyle = '#4f46e5';
+      ctx.font = 'italic 500 11px Inter, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('“KNN is simple, but distance quality decides everything.”', W/2, footerY + 24);
+
+    } else {
+      // Elegant Dual Column Layout
+      const colW = (W - pad * 3) / 2;
+      const colY = 75;
+      const colH = H - colY - 70;
+
+      // Left Column: Strengths Card
+      ctx.fillStyle = '#ffffff';
+      ctx.strokeStyle = '#e7e5e4';
+      ctx.lineWidth = 1;
+      roundRect(ctx, pad, colY, colW, colH, 12);
+      ctx.fill(); ctx.stroke();
+
+      ctx.fillStyle = 'rgba(22, 163, 74, 0.08)'; // green-soft
+      roundRect(ctx, pad + 1, colY + 1, colW - 2, 40, 11);
+      ctx.fill();
+
+      ctx.fillStyle = '#16a34a'; // green
+      ctx.font = 'bold 13px Inter, sans-serif';
+      ctx.textAlign = 'left';
+      ctx.fillText('💪 Strengths', pad + 15, colY + 25);
+
+      const strengths = [
+        '• Simple to explain',
+        '• Flexible boundaries',
+        '• No learned weights',
+        '• Multi-class friendly'
+      ];
+      ctx.font = '500 12px Inter, sans-serif';
+      const lineGap = Math.min(35, Math.max(22, (colH - 50) / 5));
+      strengths.forEach((item, idx) => {
+        const itemY = colY + 60 + idx * lineGap;
+        ctx.fillStyle = '#4b5563';
+        drawWrappedText(ctx, item, pad + 15, itemY, colW - 30, 14);
+      });
+
+      // Right Column: Weaknesses Card
+      ctx.fillStyle = '#ffffff';
+      ctx.strokeStyle = '#e7e5e4';
+      ctx.lineWidth = 1;
+      roundRect(ctx, pad * 2 + colW, colY, colW, colH, 12);
+      ctx.fill(); ctx.stroke();
+
+      ctx.fillStyle = 'rgba(220, 38, 38, 0.06)'; // coral-soft
+      roundRect(ctx, pad * 2 + colW + 1, colY + 1, colW - 2, 40, 11);
+      ctx.fill();
+
+      ctx.fillStyle = '#dc2626'; // coral/red
+      ctx.font = 'bold 13px Inter, sans-serif';
+      ctx.textAlign = 'left';
+      ctx.fillText('⚠️ Weaknesses', pad * 2 + colW + 15, colY + 25);
+
+      const weaknesses = [
+        '• Needs scaling',
+        '• Sensitive to noise',
+        '• Slow on huge data',
+        '• Weak in high dimensions',
+        '• Affected by class imbalance'
+      ];
+      ctx.font = '500 12px Inter, sans-serif';
+      weaknesses.forEach((item, idx) => {
+        const itemY = colY + 60 + idx * lineGap;
+        ctx.fillStyle = '#4b5563';
+        drawWrappedText(ctx, item, pad * 2 + colW + 15, itemY, colW - 30, 14);
+      });
+
+      // Footer Card
+      const footerY = H - 55;
+      ctx.fillStyle = 'rgba(99, 102, 241, 0.05)';
+      ctx.strokeStyle = 'rgba(99, 102, 241, 0.15)';
+      roundRect(ctx, pad, footerY, W - pad * 2, 40, 8);
+      ctx.fill(); ctx.stroke();
+
+      ctx.fillStyle = '#4f46e5';
+      ctx.font = 'italic 500 11px Inter, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('“KNN is simple, but distance quality decides everything.”', W/2, footerY + 24);
+    }
+  } finally {
+    ctx.restore();
+  }
 }
 
 // ===== POPULATE HTML =====
@@ -746,7 +1944,7 @@ function populateDistanceInfo(){
   const c=closest[0];
   el.innerHTML=`Lines on plot show distances from ★ to all training points. The darker lines currently emphasize the nearest ${mainK} neighbors from the teaching flow.<br><br>
   <span class="live-calc">Closest point: ${c.d.label} at (${c.d.s.toFixed(2)}, ${c.d.c.toFixed(2)})<br>
-  d = √[(${queryPoint.s.toFixed(2)}−${c.d.s.toFixed(2)})² + (${queryPoint.c.toFixed(2)}−${c.d.c.toFixed(2)})²]<br>
+  d = √[(${queryPoint.s.toFixed(2)} − ${c.d.s.toFixed(2)})² + (${queryPoint.c.toFixed(2)} − ${c.d.c.toFixed(2)})²]<br>
   d = ${c.dist.toFixed(4)}</span>`;
 }
 
@@ -778,6 +1976,30 @@ function populateVoteInfo(){
     <div style="width:${oW}%;background:${COLORS.orange};transition:width 0.5s"></div>
   </div>
   <p style="font-size:0.88rem;font-weight:600;margin:0">Prediction: <span style="color:${result.prediction==='Apple'?COLORS.apple:COLORS.orange}">${result.prediction==='Apple'?'🍎 Apple':'🍊 Orange'}</span></p>`;
+
+  // Update vote chips
+  const chipsContainer = document.getElementById('dynamicVoteChips');
+  if (chipsContainer) {
+    let chipsHtml = '';
+    result.neighbors.forEach(n => {
+      const icon = n.point.label === 'Apple' ? '🍎' : '🍊';
+      const col = n.point.label === 'Apple' ? 'var(--apple)' : 'var(--orange)';
+      const bg = n.point.label === 'Apple' ? 'var(--apple-soft)' : 'var(--orange-soft)';
+      chipsHtml += `<span style="padding: 6px 12px; border-radius: 20px; font-size: 0.82rem; font-weight: 600; background: ${bg}; color: ${col}; border: 1px solid ${col}; display: inline-flex; align-items: center; gap: 4px;">
+        ${icon} ${n.point.label} (d: ${n.dist.toFixed(2)})
+      </span>`;
+    });
+    chipsContainer.innerHTML = chipsHtml;
+  }
+
+  // Dynamic Vote Example Block
+  const voteExampleBlock = document.getElementById('voteExampleBlock');
+  if (voteExampleBlock) {
+    const icons = result.neighbors.map(n => n.point.label === 'Apple' ? '🍎' : '🍊').join(' ');
+    voteExampleBlock.innerHTML = `If K=${k} and the current neighbors are: ${icons}
+→ Apple: ${result.votes.Apple} vote${result.votes.Apple !== 1 ? 's' : ''} | Orange: ${result.votes.Orange} vote${result.votes.Orange !== 1 ? 's' : ''}
+→ Prediction: ${result.prediction === 'Apple' ? '🍎 Apple' : '🍊 Orange'}`;
+  }
 }
 
 function populateTestResults(){
@@ -807,19 +2029,87 @@ function populateConfusionMatrix(){
   });
   const grid=document.getElementById('confMatrix');
   grid.innerHTML=`
-    <div class="cell header"></div><div class="cell header">Pred Apple</div><div class="cell header">Pred Orange</div>
-    <div class="cell header">Actual Apple</div><div class="cell tp">TP = ${tp}</div><div class="cell fn">FN = ${fn}</div>
-    <div class="cell header">Actual Orange</div><div class="cell fp">FP = ${fp}</div><div class="cell tn">TN = ${tn}</div>`;
+    <div class="cell header">Actual \\ Pred</div>
+    <div class="cell header" style="cursor:help;" onclick="showMatrixExplanation('pred_apple')">Pred Apple (+)</div>
+    <div class="cell header" style="cursor:help;" onclick="showMatrixExplanation('pred_orange')">Pred Orange (-)</div>
+
+    <div class="cell header" style="cursor:help;" onclick="showMatrixExplanation('act_apple')">Actual Apple (+)</div>
+    <div class="cell tp" style="cursor:pointer; font-weight:bold; font-size:1rem;" onclick="showMatrixExplanation('tp')">TP = ${tp}</div>
+    <div class="cell fn" style="cursor:pointer; font-weight:bold; font-size:1rem;" onclick="showMatrixExplanation('fn')">FN = ${fn}</div>
+
+    <div class="cell header" style="cursor:help;" onclick="showMatrixExplanation('act_orange')">Actual Orange (-)</div>
+    <div class="cell fp" style="cursor:pointer; font-weight:bold; font-size:1rem;" onclick="showMatrixExplanation('fp')">FP = ${fp}</div>
+    <div class="cell tn" style="cursor:pointer; font-weight:bold; font-size:1rem;" onclick="showMatrixExplanation('tn')">TN = ${tn}</div>`;
+
   const acc=(tp+tn)/scaledTest.length;
   const prec=tp+fp>0?tp/(tp+fp):0;
   const rec=tp+fn>0?tp/(tp+fn):0;
   const f1=prec+rec>0?2*prec*rec/(prec+rec):0;
+
+  // Clean plain-text formula layout
   document.getElementById('metricsRow').innerHTML=`
-    <div class="metric-card"><div class="val">${(acc*100).toFixed(0)}%</div><div class="lbl">Accuracy</div></div>
-    <div class="metric-card"><div class="val">${(prec*100).toFixed(0)}%</div><div class="lbl">Precision</div></div>
-    <div class="metric-card"><div class="val">${(rec*100).toFixed(0)}%</div><div class="lbl">Recall</div></div>
-    <div class="metric-card"><div class="val">${(f1*100).toFixed(0)}%</div><div class="lbl">F1 Score</div></div>`;
+    <div class="metric-card" style="border-top: 3px solid var(--accent); padding: 10px;">
+      <div class="val" style="font-size:1.2rem;">${(acc*100).toFixed(0)}%</div>
+      <div class="lbl" style="font-size:0.65rem;">Accuracy</div>
+      <div style="font-size:0.65rem; color:var(--text-muted); margin-top:2px;">(TP + TN) ÷ Total</div>
+      <div style="font-size:0.6rem; color:var(--text-dim); line-height:1.2; margin-top:4px;">Percentage correct.</div>
+    </div>
+    <div class="metric-card" style="border-top: 3px solid var(--green); padding: 10px;">
+      <div class="val" style="font-size:1.2rem;">${(prec*100).toFixed(0)}%</div>
+      <div class="lbl" style="font-size:0.65rem;">Precision</div>
+      <div style="font-size:0.65rem; color:var(--text-muted); margin-top:2px;">TP ÷ (TP + FP)</div>
+      <div style="font-size:0.6rem; color:var(--text-dim); line-height:1.2; margin-top:4px;">Of predicted Apples, how many real?</div>
+    </div>
+    <div class="metric-card" style="border-top: 3px solid var(--blue); padding: 10px;">
+      <div class="val" style="font-size:1.2rem;">${(rec*100).toFixed(0)}%</div>
+      <div class="lbl" style="font-size:0.65rem;">Recall</div>
+      <div style="font-size:0.65rem; color:var(--text-muted); margin-top:2px;">TP ÷ (TP + FN)</div>
+      <div style="font-size:0.6rem; color:var(--text-dim); line-height:1.2; margin-top:4px;">Of actual Apples, how many found?</div>
+    </div>
+    <div class="metric-card" style="border-top: 3px solid var(--orange); padding: 10px;">
+      <div class="val" style="font-size:1.2rem;">${(f1*100).toFixed(0)}%</div>
+      <div class="lbl" style="font-size:0.65rem;">F1 Score</div>
+      <div style="font-size:0.65rem; color:var(--text-muted); margin-top:2px;">2 × (Prec × Rec) ÷ (Prec + Rec)</div>
+      <div style="font-size:0.6rem; color:var(--text-dim); line-height:1.2; margin-top:4px;">Low if either Precision or Recall fails.</div>
+    </div>`;
 }
+
+// Global helper for explaining confusion matrix quadrants (Fix 2: Replace validation with test-set)
+window.showMatrixExplanation = function(type) {
+  const exp = document.getElementById('confMatrixExplanation');
+  if(!exp) return;
+
+  let html = '';
+  switch(type) {
+    case 'tp':
+      html = `<strong>🟢 True Positive (TP):</strong> The model predicted Apple, and the fruit was indeed an Apple! This is a correct positive prediction.`;
+      break;
+    case 'tn':
+      html = `<strong>🔵 True Negative (TN):</strong> The model predicted Orange, and the fruit was indeed an Orange! This is a correct negative prediction.`;
+      break;
+    case 'fp':
+      html = `<strong>🟠 False Positive (FP):</strong> The model predicted Apple, but the fruit was actually an Orange. This is a "False Alarm".`;
+      break;
+    case 'fn':
+      html = `<strong>🔴 False Negative (FN):</strong> The model predicted Orange, but the fruit was actually an Apple. This is a "Missed Target".`;
+      break;
+    case 'pred_apple':
+      html = `<strong>Predicted Apple (+):</strong> The column representing all instances where the model guessed "Apple".`;
+      break;
+    case 'pred_orange':
+      html = `<strong>Predicted Orange (-):</strong> The column representing all instances where the model guessed "Orange".`;
+      break;
+    case 'act_apple':
+      html = `<strong>Actual Apple (+):</strong> The row representing fruits that are truly Apples in our held-out test set.`;
+      break;
+    case 'act_orange':
+      html = `<strong>Actual Orange (-):</strong> The row representing fruits that are truly Oranges in our held-out test set.`;
+      break;
+    default:
+      html = `💡 Click any cell to see its detailed plain-English definition here.`;
+  }
+  exp.innerHTML = html;
+};
 
 function populateKCompare(){
   const k=compareK;
@@ -836,58 +2126,199 @@ function populateKCompare(){
 }
 
 function drawKAccChart(highlightK){
-  const cvs=document.getElementById('kAccChart');
-  const c=cvs.getContext('2d');
-  const dpr=window.devicePixelRatio||1;
-  cvs.width=cvs.clientWidth*dpr;cvs.height=cvs.clientHeight*dpr;
-  c.setTransform(dpr,0,0,dpr,0,0);
-  const w=cvs.clientWidth,h=cvs.clientHeight;
-  const pad={l:40,r:20,t:15,b:30};
-  const pw=w-pad.l-pad.r,ph=h-pad.t-pad.b;
-  c.clearRect(0,0,w,h);
-  const ks=[1,3,5,7,9,11,13,15];
-  const accs=ks.map(k=>{
-    let correct=0;
-    scaledTrain.forEach((d, i)=>{
-      const trainSet = scaledTrain.filter((_, idx)=>idx!==i);
-      if(knn(d,trainSet,k).prediction===d.label)correct++;
+  const cvs = document.getElementById('kAccChart');
+  if (!cvs) return;
+  const rect = cvs.getBoundingClientRect();
+  const width = Math.max(680, rect.width || 680);
+  const height = 320;
+  const dpr = window.devicePixelRatio || 1;
+  cvs.width = width * dpr;
+  cvs.height = height * dpr;
+  cvs.style.width = width + 'px';
+  cvs.style.height = height + 'px';
+
+  const c = cvs.getContext('2d');
+  c.setTransform(dpr, 0, 0, dpr, 0, 0);
+  const pad = { l: 55, r: 40, t: 45, b: 50 };
+  const pw = width - pad.l - pad.r;
+  const ph = height - pad.t - pad.b;
+  c.clearRect(0, 0, width, height);
+
+  const ks = [1, 3, 5, 7, 9, 11, 13, 15];
+  const accs = ks.map(k => {
+    let correct = 0;
+    scaledTrain.forEach((d, i) => {
+      const trainSet = scaledTrain.filter((_, idx) => idx !== i);
+      if (knn(d, trainSet, k).prediction === d.label) correct++;
     });
-    return correct/scaledTrain.length;
+    return correct / scaledTrain.length;
   });
+
+  // 1. Chart Header Title
+  c.save();
+  c.fillStyle = '#1f2937';
+  c.font = 'bold 12px Inter, sans-serif';
+  c.textAlign = 'center';
+  c.fillText('Validation Curve for Choosing K (LOOCV)', width / 2, 22);
+  c.restore();
+
+  const kneeK = findKneePoint(ks, accs);
+
+  // 3. Shaded Stable Knee Region
+  const xK3 = pad.l + (ks.indexOf(3))/(ks.length-1)*pw;
+  const xK7 = pad.l + (ks.indexOf(7))/(ks.length-1)*pw;
+  c.save();
+  c.fillStyle = 'rgba(22, 163, 74, 0.04)';
+  c.fillRect(xK3, pad.t, xK7 - xK3, ph);
+  c.restore();
+
   // grid
   c.strokeStyle='rgba(0,0,0,0.06)';c.lineWidth=1;
   for(let i=0;i<=4;i++){
     const y=pad.t+i*(ph/4);
     c.beginPath();c.moveTo(pad.l,y);c.lineTo(pad.l+pw,y);c.stroke();
   }
-  // line
-  c.beginPath();c.strokeStyle=COLORS.accent;c.lineWidth=2;
+
+  // Label Stable Knee Region
+  c.save();
+  c.fillStyle = '#16a34a';
+  c.font = '600 9px Inter, sans-serif';
+  c.textAlign = 'center';
+  c.fillText('Stable Knee Region', (xK3 + xK7)/2, pad.t + 18);
+  c.restore();
+
+  // Highlight Knee point K=5
+  const kneeIdx = ks.indexOf(kneeK);
+  if (kneeIdx !== -1) {
+    const xKnee = pad.l + kneeIdx / (ks.length - 1) * pw;
+    const yKnee = pad.t + ph - (accs[kneeIdx] * ph);
+
+    c.save();
+    c.strokeStyle = '#4f46e5'; // accent2
+    c.lineWidth = 1.5;
+    c.setLineDash([4, 4]);
+    c.beginPath();
+    c.moveTo(xKnee, pad.t);
+    c.lineTo(xKnee, pad.t + ph);
+    c.stroke();
+
+    // Knee circle marker (larger highlighted circle)
+    c.beginPath();
+    c.arc(xKnee, yKnee, 9, 0, Math.PI * 2);
+    c.strokeStyle = '#eab308';
+    c.lineWidth = 2;
+    c.stroke();
+
+    // Callouts & labels
+    c.fillStyle = '#4f46e5';
+    c.font = 'bold 10px Inter, sans-serif';
+    c.textAlign = 'center';
+    c.fillText(`Possible knee (K=${kneeK})`, xKnee, pad.t - 8);
+
+    c.fillStyle = '#6b7280';
+    c.font = '500 9px Inter, sans-serif';
+    c.textAlign = 'left';
+    c.fillText('➔ After this, gains flatten', xKnee + 8, pad.t + 32);
+    c.restore();
+  }
+
+  // Highlight best K with gold highlight
+  const maxAcc = Math.max(...accs);
+  let bestK = 5;
+  ks.forEach((k, i) => {
+    if (accs[i] === maxAcc) {
+      bestK = k;
+      const x=pad.l+i/(ks.length-1)*pw;
+      const y=pad.t+ph-(accs[i]*ph);
+      c.save();
+      c.strokeStyle = '#eab308';
+      c.lineWidth = 2;
+      c.beginPath();
+      c.arc(x, y, 12, 0, Math.PI*2);
+      c.stroke();
+
+      c.fillStyle = '#eab308';
+      c.font = 'bold 9px Inter';
+      c.fillText('Best K', x - 13, y - 16);
+      c.restore();
+    }
+  });
+
+  // Draw line
+  c.save();
+  c.beginPath();c.strokeStyle=COLORS.accent;c.lineWidth=2.5;
   ks.forEach((k,i)=>{
     const x=pad.l+i/(ks.length-1)*pw;
     const y=pad.t+ph-(accs[i]*ph);
-    i===0?c.moveTo(x,y):c.lineTo(x,y);
+    if(i===0) c.moveTo(x,y);
+    else c.lineTo(x,y);
   });
   c.stroke();
-  // dots
+  c.restore();
+
+  // Dots
   ks.forEach((k,i)=>{
     const x=pad.l+i/(ks.length-1)*pw;
     const y=pad.t+ph-(accs[i]*ph);
-    c.beginPath();c.arc(x,y,k===highlightK?6:4,0,Math.PI*2);
+    c.beginPath();c.arc(x,y,k===highlightK?7:5,0,Math.PI*2);
     c.fillStyle=k===highlightK?COLORS.accent:'#d1d5db';c.fill();
-    if(k===highlightK){c.strokeStyle='rgba(99,102,241,0.3)';c.lineWidth=3;c.stroke();}
+    if(k===highlightK){
+      c.strokeStyle='rgba(99,102,241,0.3)';
+      c.lineWidth=4;
+      c.stroke();
+    }
   });
-  // labels
+
+  // Staggered labels vertically to prevent overlap
+  ks.forEach((k, i) => {
+    const x = pad.l + i / (ks.length - 1) * pw;
+    const y = pad.t + ph - (accs[i] * ph);
+
+    if (k === highlightK) {
+      c.save();
+      c.fillStyle = COLORS.accent2;
+      c.font = 'bold 9px Inter, sans-serif';
+
+      let yOffset = 18;
+      if (Math.abs(k - bestK) <= 2) {
+        yOffset = 28; // Stagger if close to bestK
+      }
+      if (Math.abs(k - kneeK) <= 2) {
+        yOffset = 38; // Stagger even more if near kneeK
+      }
+
+      c.fillText(`Selected K`, x - 22, y + yOffset);
+      c.restore();
+    }
+  });
+
+  // ticks & labels
   c.fillStyle=COLORS.textDim;c.font='10px JetBrains Mono';c.textAlign='center';
   ks.forEach((k,i)=>{
     const x=pad.l+i/(ks.length-1)*pw;
-    c.fillText('K='+k,x,h-5);
+    c.fillText('K='+k,x,height-20);
   });
+
   c.textAlign='right';
   for(let i=0;i<=4;i++){
     const v=(i*25)+'%';
     const y=pad.t+ph-i*(ph/4);
-    c.fillText(v,pad.l-5,y+4);
+    c.fillText(v,pad.l-8,y+4);
   }
+
+  // Axis Titles
+  c.save();
+  c.fillStyle = COLORS.text;
+  c.font = 'bold 10px Inter, sans-serif';
+  c.textAlign = 'center';
+  c.fillText('K value (number of voting neighbors)', pad.l + pw/2, height - 5);
+
+  c.translate(14, pad.t + ph/2);
+  c.rotate(-Math.PI/2);
+  c.fillText('Cross-Validation Accuracy', 0, 0);
+  c.restore();
+
+  // Fix 5: Removed guidance quote label from plot inside area to clear visual clutter.
 }
 
 function updatePlaygroundCalc(point){
@@ -928,7 +2359,7 @@ function getHoverCandidates(stage){
       }))
     ];
 
-    if(stage>=10){
+    if(stage === 10 || stage === 11){
       candidates.push(...scaledTest.map(d => ({
         kind:'Held-out test',
         label:d.label,
@@ -938,7 +2369,7 @@ function getHoverCandidates(stage){
       })));
     }
 
-    if(stage===13){
+    if(stage===14){
       candidates.push(...playgroundPoints.map((d, index) => {
         const pred = knn(d,scaledTrain,playgroundK).prediction;
         return {
@@ -976,10 +2407,11 @@ function formatHoverTooltip(found, stage){
 
 // ===== SCROLL LOGIC =====
 const sections=document.querySelectorAll('[data-stage]');
-const TOTAL_STAGES=14;
+const TOTAL_STAGES=15; // stages 0 to 14
 
 function setupStageDots(){
   const container=document.getElementById('stageDots');
+  container.innerHTML = '';
   for(let i=0;i<=TOTAL_STAGES-1;i++){
     const dot=document.createElement('div');dot.className='stage-dot';
     dot.addEventListener('click',()=>{document.getElementById('sec-'+i)?.scrollIntoView({behavior:'smooth'});});
@@ -992,17 +2424,44 @@ function updateStageDots(stage){
   dots.forEach((d,i)=>{d.classList.toggle('active',i===stage);});
 }
 
-const observer=new IntersectionObserver(entries=>{
-  entries.forEach(e=>{
-    if(e.isIntersecting){
-      const stage=parseInt(e.target.dataset.stage);
-      if(stage!==currentStage){
-        currentStage=stage;
-        onStageChange(stage);
+// Coordinate based marker line scroll synchronization with requestAnimationFrame throttling
+let isScrolling = false;
+function updateActiveStage() {
+  if (isScrolling) return;
+  isScrolling = true;
+  requestAnimationFrame(() => {
+    isScrolling = false;
+    const layout = document.querySelector('.layout');
+    if (!layout) return;
+
+    const layoutRect = layout.getBoundingClientRect();
+
+    if (layoutRect.top > window.innerHeight * 0.6) {
+      if (currentStage !== 0) {
+        currentStage = 0;
+        onStageChange(0);
       }
+      return;
+    }
+
+    const markerY = window.innerHeight * 0.35;
+    let activeStage = currentStage || 1;
+
+    sections.forEach(sec => {
+      const rect = sec.getBoundingClientRect();
+      const stage = Number(sec.dataset.stage);
+
+      if (rect.top <= markerY && rect.bottom >= markerY) {
+        activeStage = stage;
+      }
+    });
+
+    if (activeStage !== currentStage) {
+      currentStage = activeStage;
+      onStageChange(activeStage);
     }
   });
-},{threshold:0.4});
+}
 
 function onStageChange(stage){
   updateStageDots(stage);
@@ -1022,7 +2481,7 @@ function onStageChange(stage){
     compareK=parseInt(document.getElementById('kCompareSlider').value,10);
     populateKCompare();
   }
-  if(stage===13){
+  if(stage===14){
     playgroundK=parseInt(document.getElementById('kPlaySlider').value,10);
     refreshPlaygroundCalc();
   }
@@ -1123,11 +2582,11 @@ document.getElementById('kPlaySlider').addEventListener('input',function(){
 
 // ===== PLAYGROUND =====
 canvas.addEventListener('click',function(e){
-  if(currentStage!==13)return;
+  if(currentStage!==14)return;
   const rect=canvas.getBoundingClientRect();
   const px=e.clientX-rect.left,py=e.clientY-rect.top;
   const pt=fromPixel(px,py);
-  if(pt.s<0||pt.s>1||pt.c<0||pt.c>1)return;
+  if(!pt)return;
   const point={s:pt.s,c:pt.c};
   playgroundPoints.push(point);
   lastPlaygroundPoint=point;
@@ -1144,7 +2603,8 @@ window.regenerateData=function(){
     c: d.c + ((Math.random()-0.5)*0.8),
     label: d.label
   }));
-  initData();playgroundPoints=[];lastPlaygroundPoint=null;decisionBoundaryImg=null;
+  initData(true); // Generates randomized dataset on click
+  playgroundPoints=[];lastPlaygroundPoint=null;decisionBoundaryImg=null;
   refreshAllStagePanels();
   if(currentStage===7)startNeighborSearch();
   render();
@@ -1153,7 +2613,10 @@ window.regenerateData=function(){
 
 // ===== TOOLTIP =====
 canvas.addEventListener('mousemove',function(e){
-  if(currentStage<1)return;
+  if(currentStage<1 || currentStage===13) {
+    document.getElementById('tooltip').style.display='none';
+    return;
+  }
   const rect=canvas.getBoundingClientRect();
   const px=e.clientX-rect.left,py=e.clientY-rect.top;
   const data=getHoverCandidates(currentStage);
@@ -1178,13 +2641,85 @@ canvas.addEventListener('mousemove',function(e){
 });
 canvas.addEventListener('mouseleave',()=>{document.getElementById('tooltip').style.display='none';});
 
-// ===== BOOT =====
-initData();resizeCanvas();setupStageDots();setupHeroCanvas();
-sections.forEach(s=>observer.observe(s));
-window.addEventListener('resize',()=>{resizeCanvas();decisionBoundaryImg=null;render();});
-populateDataTable();
+// ===== QUIZ INTERACTION SETUP =====
+function setupQuizListeners() {
+  document.querySelectorAll('.quiz-option').forEach(btn => {
+    btn.addEventListener('click', function() {
+      const parent = this.closest('.quiz-card');
+      const feedback = parent.querySelector('.quiz-feedback');
+      const isCorrect = this.getAttribute('data-correct') === 'true';
 
+      parent.querySelectorAll('.quiz-option').forEach(b => {
+        b.classList.remove('correct', 'incorrect');
+      });
+
+      if (isCorrect) {
+        this.classList.add('correct');
+        feedback.style.color = 'var(--green)';
+        feedback.style.borderLeft = '3px solid var(--green)';
+        feedback.innerHTML = '✨ Correct! Excellent job checking your understanding.';
+        feedback.style.display = 'block';
+      } else {
+        this.classList.add('incorrect');
+        feedback.style.color = 'var(--coral)';
+        feedback.style.borderLeft = '3px solid var(--coral)';
+        feedback.innerHTML = '❌ Not quite. Think about how distance calculations or hyperparameters behave, and try another choice!';
+        feedback.style.display = 'block';
+      }
+    });
+  });
+}
+
+// ===== DIAGNOSTICS SELF-CHECK HELPER =====
+function selfCheckHelpers() {
+  console.assert(typeof drawPoint === 'function', 'drawPoint missing');
+  console.assert(typeof drawLine === 'function', 'drawLine missing');
+  console.assert(typeof drawStar === 'function', 'drawStar missing');
+  console.assert(typeof canShowDetailedLabels === 'function', 'canShowDetailedLabels missing');
+  console.assert(typeof roundRect === 'function', 'roundRect missing');
+}
+
+// ===== BOOT SEQUENCE =====
+selfCheckHelpers();
+
+initData(false); // Default deterministic startup sequence
+resizeCanvas();
+
+// Populate HTML elements in correct chronological dependency order
+populateDataTable();
+populateSplitInfo();
+populateScaleInfo();
+populateDistanceInfo();
+populateNeighborInfo();
+populateVoteInfo();
+populateTestResults();
+populateConfusionMatrix();
+populateKCompare();
+
+// Install page components
+setupStageDots();
+setupHeroCanvas();
+setupQuizListeners();
+
+// Initialize starting coordinates and sync view
+updateActiveStage();
 render();
+
+// Setup scroll and resize bindings
+window.addEventListener('scroll', updateActiveStage);
+window.addEventListener('load', () => {
+  updateActiveStage();
+  render();
+});
+window.addEventListener('resize',()=>{
+  resizeCanvas();
+  decisionBoundaryImg=null;
+  render();
+  // Force accurate validation curve resizing
+  if (document.getElementById('kAccChart')) {
+    requestAnimationFrame(() => drawKAccChart(compareK));
+  }
+});
 
 })();
 </script>
