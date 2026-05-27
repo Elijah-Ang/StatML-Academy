@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quadratic Discriminant Analysis (QDA) - Visual Simulator</title>
+    <title>Quadratic Discriminant Analysis (QDA) - Visual Learning Guide</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-    
+
     <!-- KaTeX for Math Rendering -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
     <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
@@ -60,6 +60,59 @@
             width: 0%;
             z-index: 100;
             transition: width 0.1s ease-out;
+        }
+
+        /* Stage Nav Dots (Sidebar) */
+        #stage-dots-container {
+            position: fixed;
+            left: 1.5rem;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            z-index: 90;
+        }
+        @media (max-width: 900px) {
+            #stage-dots-container { display: none; }
+        }
+        .stage-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--border-color);
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+        }
+        .stage-dot:hover {
+            background: var(--accent);
+            transform: scale(1.2);
+        }
+        .stage-dot.active {
+            background: var(--accent-dark);
+            border-color: var(--bg-page);
+            transform: scale(1.3);
+            box-shadow: 0 0 0 2px var(--accent);
+        }
+        .stage-dot-tooltip {
+            position: absolute;
+            left: 1.5rem;
+            top: 50%;
+            transform: translateY(-50%);
+            background: var(--text-main);
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s;
+        }
+        .stage-dot:hover .stage-dot-tooltip {
+            opacity: 1;
         }
 
         /* Hero Section */
@@ -262,12 +315,20 @@
             display: flex;
             flex-direction: column;
             justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .metric-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.08);
         }
 
         .metric-val {
             display: block;
-            font-size: 1.1rem;
-            font-weight: 600;
+            font-size: 1.3rem;
+            font-weight: 700;
             color: var(--text-main);
             margin-bottom: 0.5rem;
         }
@@ -293,7 +354,7 @@
             accent-color: var(--accent);
             cursor: pointer;
         }
-        
+
         /* Compact parameter controls */
         .control-row.compact {
             margin-bottom: 0.4rem;
@@ -354,7 +415,7 @@
             min-height: 0;
             border-radius: 12px;
             overflow: hidden;
-            touch-action: none; /* Crucial for custom pointer drag on mobile */
+            touch-action: none;
         }
 
         canvas {
@@ -363,7 +424,7 @@
             height: 100%;
             cursor: crosshair;
         }
-        
+
         /* Overlays */
         .viz-overlay {
             position: absolute;
@@ -375,9 +436,10 @@
             font-size: 0.85rem;
             pointer-events: none;
             backdrop-filter: blur(4px);
+            z-index: 5;
         }
         #viz-legend {
-            top: 1rem;
+            bottom: 1rem;
             right: 1rem;
         }
         .legend-item {
@@ -393,7 +455,7 @@
             border-radius: 50%;
             display: inline-block;
         }
-        
+
         #viz-status {
             position: static;
             grid-column: 1 / -1;
@@ -419,7 +481,7 @@
             z-index: 10;
             transform: translate(-50%, -100%);
             margin-top: -15px;
-            min-width: 180px;
+            min-width: 200px;
         }
         .tt-title {
             font-weight: 700;
@@ -469,6 +531,314 @@
             transform-origin: center;
         }
 
+        /* Boundary toggles */
+        .btn-group {
+            display: flex;
+            gap: 2px;
+            background: var(--border-color);
+            padding: 2px;
+            border-radius: 8px;
+            margin-top: 0.5rem;
+        }
+        .toggle-btn {
+            flex: 1;
+            background: var(--bg-surface);
+            border: none;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            border-radius: 6px;
+            transition: all 0.2s;
+            color: var(--text-dim);
+        }
+        .toggle-btn:hover {
+            color: var(--text-main);
+        }
+        .toggle-btn.active {
+            background: var(--accent);
+            color: white;
+        }
+
+        /* Fit statistics cards */
+        .fit-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        .fit-class-card {
+            border: 1px solid var(--border-color);
+            padding: 1rem;
+            border-radius: 8px;
+            background: var(--bg-surface);
+        }
+        .fit-class-card.apple-border { border-left: 4px solid var(--class-a); }
+        .fit-class-card.pear-border { border-left: 4px solid var(--class-b); }
+        .fit-class-card h4 { margin-bottom: 0.5rem; font-size: 0.95rem; }
+        .fit-metric { font-size: 0.85rem; margin-bottom: 0.25rem; }
+        .matrix-container {
+            margin-top: 0.5rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            background: var(--bg-page);
+            border-radius: 6px;
+            text-align: center;
+            transition: background 0.2s;
+        }
+        .matrix-container:hover {
+            background: #e2e8f0;
+        }
+        .click-tip { font-size: 0.7rem; color: var(--text-muted); text-align: right; margin-top: 0.25rem; }
+
+        /* Floating Popover Styles */
+        .output-popover {
+            position: fixed;
+            z-index: 1000;
+            width: min(390px, calc(100vw - 32px));
+            max-height: min(520px, calc(100vh - 32px));
+            overflow-y: auto;
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-left: 4px solid var(--accent);
+            border-radius: 14px;
+            box-shadow: 0 18px 48px rgba(0,0,0,0.18);
+            padding: 1.25rem 1.35rem;
+        }
+
+        .output-popover.hidden {
+            display: none;
+        }
+
+        .output-popover-close {
+            position: absolute;
+            top: 0.7rem;
+            right: 0.8rem;
+            background: none;
+            border: none;
+            font-size: 1.4rem;
+            cursor: pointer;
+            color: var(--text-muted);
+            line-height: 1;
+        }
+
+        .output-popover-close:hover {
+            color: var(--text-main);
+        }
+
+        @media (max-width: 900px) {
+            .output-popover {
+                left: 16px !important;
+                right: 16px !important;
+                bottom: 16px !important;
+                top: auto !important;
+                width: auto;
+                max-height: 50vh;
+            }
+        }
+
+        /* Interactive Quiz Cards */
+        .quiz-card {
+            margin-top: 1.5rem;
+            border-left: 4px solid var(--accent);
+        }
+        .quiz-question {
+            font-size: 0.95rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            color: var(--text-main);
+        }
+        .quiz-options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        .quiz-option {
+            background: var(--bg-page);
+            border: 1px solid var(--border-color);
+            padding: 0.6rem 1rem;
+            border-radius: 8px;
+            text-align: left;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: var(--text-dim);
+        }
+        .quiz-option:hover {
+            border-color: var(--accent);
+            background: rgba(99, 102, 241, 0.03);
+        }
+        .quiz-option.correct {
+            background: #dcfce7;
+            border-color: var(--success);
+            color: #14532d;
+            font-weight: 500;
+        }
+        .quiz-option.incorrect {
+            background: #fee2e2;
+            border-color: #ef4444;
+            color: #7f1d1d;
+        }
+        .quiz-feedback {
+            margin-top: 0.75rem;
+            padding-top: 0.75rem;
+            border-top: 1px dashed var(--border-color);
+            font-size: 0.85rem;
+        }
+        .quiz-feedback.correct-feedback { color: #15803d; }
+        .quiz-feedback.incorrect-feedback { color: #b91c1c; }
+        .hidden { display: none !important; }
+
+        /* Confusion Matrix Style */
+        .confusion-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+            font-size: 0.85rem;
+            text-align: center;
+        }
+        .confusion-table th, .confusion-table td {
+            border: 1px solid var(--border-color);
+            padding: 0.75rem;
+        }
+        .confusion-table th { font-weight: 600; }
+        .matrix-cell {
+            cursor: pointer;
+            transition: all 0.2s;
+            background: var(--bg-surface);
+            position: relative;
+        }
+        .matrix-cell:hover, .matrix-cell.active {
+            background: #f3f4f6;
+            transform: scale(1.02);
+            z-index: 2;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+        .cell-val { display: block; font-size: 1.35rem; font-weight: 700; }
+        .cell-lbl { display: block; font-size: 0.65rem; color: var(--text-muted); }
+        .tp-cell { border-left: 4px solid var(--success) !important; }
+        .tn-cell { border-left: 4px solid var(--success) !important; }
+        .fp-cell { border-left: 4px solid #ef4444 !important; }
+        .fn-cell { border-left: 4px solid #ef4444 !important; }
+
+        /* Hotspot Console block */
+        .terminal-card {
+            background: #1e293b;
+            color: #f1f5f9;
+            border-radius: 12px;
+            padding: 1.25rem;
+            margin: 1.5rem 0;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+        }
+        .terminal-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            border-bottom: 1px solid #334155;
+            padding-bottom: 0.5rem;
+            margin-bottom: 0.75rem;
+        }
+        .terminal-header .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+        .terminal-header .dot.red { background: #ef4444; }
+        .terminal-header .dot.yellow { background: #eab308; }
+        .terminal-header .dot.green { background: #22c55e; }
+        .terminal-title {
+            font-size: 0.75rem;
+            color: #94a3b8;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        .terminal-body {
+            font-size: 0.8rem;
+            line-height: 1.7;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        .hotspot {
+            padding: 0.4rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+            border-left: 3px solid transparent;
+        }
+        .hotspot:hover, .hotspot.active {
+            background: #334155;
+            border-left-color: var(--accent);
+            padding-left: 0.6rem;
+        }
+        .hotspot-tag {
+            color: #38bdf8;
+            font-weight: 600;
+        }
+
+        /* Class colors for dynamic calculations */
+        .apple-text { color: var(--class-a); }
+        .pear-text { color: var(--class-b); }
+        .class-score-card {
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 0.75rem;
+            background: var(--bg-page);
+        }
+        .class-score-card.apple-border { border-left: 3px solid var(--class-a); }
+        .class-score-card.pear-border { border-left: 3px solid var(--class-b); }
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            margin-bottom: 2px;
+        }
+
+        /* Detailed evaluation metrics layout */
+        .metric-explain-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 0.85rem;
+            margin-top: 1rem;
+        }
+
+        .metric-explain-card {
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 1rem;
+            background: var(--bg-page);
+            transition: all 0.3s ease;
+        }
+
+        .metric-explain-card.highlight {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+            background: rgba(99, 102, 241, 0.02);
+        }
+
+        .metric-explain-card h4 {
+            margin-bottom: 0.35rem;
+            color: var(--accent-dark);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .metric-explain-card p {
+            font-size: 0.84rem;
+            margin-bottom: 0.4rem;
+            color: var(--text-dim);
+        }
+
+        .metric-warning {
+            color: var(--text-muted);
+            font-style: italic;
+            font-size: 0.8rem !important;
+            border-top: 1px dashed var(--border-color);
+            padding-top: 0.3rem;
+            margin-top: 0.3rem;
+        }
+
         /* Responsive */
         @media (max-width: 900px) {
             #layout-wrapper {
@@ -504,99 +874,326 @@
 </head>
 <body>
     <div id="progress-bar"></div>
+    <div id="stage-dots-container"></div>
 
     <header id="hero">
         <div class="topic-badge">Generative Classification</div>
         <h1>Quadratic Discriminant Analysis</h1>
-        <p>A live simulator: Watch how statistical shape, sample sizes, and smart distance algorithms bend the rules of classification.</p>
+        <p>A comprehensive learning simulator: Watch statistical shape, sample sizes, and shape-aware distance mathematically bend decision boundaries.</p>
         <div class="scroll-cue">
-            <span>Scroll to begin</span>
+            <span>Scroll to explore</span>
             <span>↓</span>
         </div>
     </header>
 
     <div id="layout-wrapper">
         <div id="narrative-column">
-            
+
+            <!-- STAGE 1 -->
             <section class="stage" data-stage="1">
                 <div class="stage-label">Stage 01</div>
                 <h2>The Raw Data Cloud</h2>
-                <p>Imagine sorting fruit into <span class="pill class-a">Apples</span> and <span class="pill class-b">Pears</span> using two measurements: Sweetness and Roundness.</p>
-                <p>In this simulator, we generate data dynamically. Notice that the groups don't just sit in different locations—they have uniquely different <strong>shapes</strong>. Apples form a tight cluster, while Pears stretch diagonally.</p>
-                
+                <p>Imagine sorting fruit into <span class="pill class-a">Apples</span> and <span class="pill class-b">Pears</span> based on two measurements: Sweetness ($X_1$) and Roundness ($X_2$).</p>
+                <p>In generative modeling, we look at where each class cluster sits and how the points are distributed across the features.</p>
+
+                <div class="glass-card">
+                    <h3 style="margin-bottom:0.75rem; font-size:1.1rem; border-bottom:1px solid var(--border-color); padding-bottom:0.25rem;">The Whole Idea of QDA</h3>
+                    <p style="font-size:0.9rem; margin-bottom:0.75rem;"><strong>Quadratic Discriminant Analysis (QDA)</strong> is a supervised classification method. It models each class as its own independent multi-dimensional probability cloud.</p>
+                    <p style="font-size:0.9rem; margin-bottom:0.75rem;">Simple intuition: QDA asks: <em>"Which of these distinct class clouds does this new coordinate fit into best?"</em></p>
+                    <p style="font-size:0.9rem;">Unlike LDA (which forces every class to share the exact same shape), QDA allows each class to have its own unique spread, stretch, and tilt. This mathematical flexibility is what creates <strong>curved boundaries</strong>.</p>
+                    <div class="insight-box" style="margin: 0.75rem 0 0 0; font-size:0.8rem; padding:0.5rem 0.75rem;">
+                        <strong>QDA Pipeline:</strong> Labeled data &rarr; Split Train/Test &rarr; Fit class-specific shapes &rarr; Score new test coordinates &rarr; Make prediction &rarr; Evaluate performance
+                    </div>
+                </div>
+
+                <div class="glass-card">
+                    <h3 style="margin-bottom:0.75rem; font-size:1.1rem; border-bottom:1px solid var(--border-color); padding-bottom:0.25rem;">Tiny QDA Dictionary</h3>
+                    <div style="font-size:0.85rem; display:flex; flex-direction:column; gap:0.5rem; max-height: 250px; overflow-y:auto; padding-right:0.25rem;">
+                        <p>🔹 <strong>Feature:</strong> An input variable/measurement (e.g., Sweetness, Roundness).</p>
+                        <p>🔹 <strong>Label / Class:</strong> The category we want to predict (e.g., Apple, Pear).</p>
+                        <p>🔹 <strong>Mean ($\mu$):</strong> The center coordinate of a class's data cloud.</p>
+                        <p>🔹 <strong>Covariance Matrix ($\Sigma$):</strong> The learned shape, spread, and tilt of a class cloud.</p>
+                        <p>🔹 <strong>Prior Probability ($\pi$):</strong> The baseline proportion of each class in the dataset.</p>
+                        <p>🔹 <strong>Mahalanobis Distance:</strong> A shape-aware distance metric scaled by a class cloud's variance.</p>
+                        <p>🔹 <strong>Posterior Probability:</strong> The calculated probability that a point belongs to a class <em>after</em> measuring its features.</p>
+                        <p>🔹 <strong>Discriminant Score ($\delta$):</strong> The classification value calculated by QDA; highest score wins.</p>
+                        <p>🔹 <strong>Regularization:</strong> Adding a small constant diagonal shift to stabilize covariance estimation.</p>
+                    </div>
+                </div>
+
                 <div class="glass-card">
                     <div style="font-weight: 600; margin-bottom: 0.5rem; font-size: 0.85rem; text-transform: uppercase; color: var(--text-muted)">Prior Probability Controls</div>
                     <div class="control-row">
                         <label style="color: var(--class-a); font-weight: 600;">Apples ($N_A$):</label>
-                        <input type="range" id="slider-na" min="10" max="200" value="80">
+                        <input type="range" id="slider-na" min="15" max="200" value="80">
                         <span id="val-na" class="mono">80</span>
                     </div>
                     <div class="control-row">
                         <label style="color: var(--class-b); font-weight: 600;">Pears ($N_B$):</label>
-                        <input type="range" id="slider-nb" min="10" max="200" value="80">
+                        <input type="range" id="slider-nb" min="15" max="200" value="80">
                         <span id="val-nb" class="mono">80</span>
                     </div>
-                    <p style="font-size: 0.8rem; color: var(--text-dim); margin-top: 0.5rem; line-height: 1.4;">Dragging the sliders will rebuild the simulation <em>live</em>. To test the model on a completely new random arrangement of points, use the button below.</p>
                     <button id="btn-regen" class="btn">Re-scatter Random Points</button>
+                </div>
+
+                <!-- QUIZ 1 -->
+                <div class="quiz-card glass-card" data-explanation="QDA estimates a unique covariance matrix for each class k, whereas LDA forces a single shared covariance matrix across all classes. This allows QDA's decision boundary to curve.">
+                    <div class="quiz-question">Concept Check: What is the primary difference between LDA and QDA?</div>
+                    <div class="quiz-options">
+                        <button class="quiz-option" data-correct="false">LDA is a non-linear classifier while QDA can only handle straight-line separations.</button>
+                        <button class="quiz-option" data-correct="true">QDA allows each class to estimate and keep its own unique covariance shape, whereas LDA forces a shared pooled covariance shape.</button>
+                        <button class="quiz-option" data-correct="false">QDA requires the classes to have identical prior probabilities, whereas LDA does not.</button>
+                    </div>
+                    <div class="quiz-feedback hidden"></div>
                 </div>
             </section>
 
+            <!-- STAGE 2 -->
             <section class="stage" data-stage="2">
                 <div class="stage-label">Stage 02</div>
+                <h2>Train / Test Split</h2>
+                <p>To perform proper Machine Learning, we cannot estimate our model and test its performance on the same data points. This is known as <strong>Data Leakage</strong>.</p>
+                <div class="glass-card">
+                    <p style="margin-bottom:0.75rem;"><strong>The Rules of the Split:</strong></p>
+                    <ul style="margin-left:1.5rem; margin-bottom:0.75rem; font-size:0.9rem; display:flex; flex-direction:column; gap:0.4rem;">
+                        <li><strong>Training Set (80%):</strong> Used exclusively to calculate Class Priors, Means, and Covariance Matrices.</li>
+                        <li><strong>Test Set (20%):</strong> Hidden away completely during the learning phase. Used only for final model evaluation.</li>
+                    </ul>
+                    <div class="insight-box" style="margin: 0; font-size: 0.85rem;">
+                        <strong>Warning:</strong> Including testing data in your mean or covariance calculations will falsely inflate performance metrics, making you think your model generalizes better than it actually does!
+                    </div>
+                </div>
+
+                <div class="glass-card" style="padding:1.25rem;">
+                    <div style="font-weight: 600; margin-bottom: 0.5rem; font-size: 0.85rem; text-transform: uppercase; color: var(--text-muted)">Live Partition Counts</div>
+                    <div style="display:flex; justify-content:space-between; font-size:0.9rem; margin-bottom:0.25rem;">
+                        <span>Apple Train / Test:</span>
+                        <strong class="mono" id="split-lbl-a">-- / --</strong>
+                    </div>
+                    <div style="display:flex; justify-content:space-between; font-size:0.9rem;">
+                        <span>Pear Train / Test:</span>
+                        <strong class="mono" id="split-lbl-b">-- / --</strong>
+                    </div>
+                </div>
+
+                <!-- QUIZ 2 -->
+                <div class="quiz-card glass-card" data-explanation="Training data must be kept completely separate from test data to ensure a fair, unbiased assessment of model generalization capability on unseen points.">
+                    <div class="quiz-question">Concept Check: Why must we fit QDA's parameters using ONLY the training partition?</div>
+                    <div class="quiz-options">
+                        <button class="quiz-option" data-correct="false">Because KaTeX cannot render equations if there are too many total data points.</button>
+                        <button class="quiz-option" data-correct="true">To prevent data leakage. Using test data during parameter estimation leads to overly optimistic evaluation metrics.</button>
+                        <button class="quiz-option" data-correct="false">Because test data points do not possess true class labels.</button>
+                    </div>
+                    <div class="quiz-feedback hidden"></div>
+                </div>
+            </section>
+
+            <!-- STAGE 3 -->
+            <section class="stage" data-stage="3">
+                <div class="stage-label">Stage 03</div>
                 <h2>The Straight-Line Trap (LDA)</h2>
                 <p>The simplest approach is <strong>Linear Discriminant Analysis (LDA)</strong>. It draws a straight boundary to separate the groups.</p>
                 <p>To do this, LDA calculates the pooled average shape of all the data and forces <em>both</em> groups to share that exact same covariance matrix ($\hat{\Sigma}_{shared}$).</p>
                 <div class="insight-box">
-                    <strong>The Limitation:</strong> By forcing the shapes to be identical, LDA misclassifies points near the edges. It completely ignores the unique diagonal stretch of the Pears.
+                    <strong>The Limitation:</strong> Look at the dotted ellipses on the canvas. Because LDA forces them to be identical in shape and tilt, it misclassifies points near the edges. It completely ignores the unique diagonal stretch of the Pears.
+                </div>
+
+                <!-- QUIZ 3 -->
+                <div class="quiz-card glass-card" data-explanation="When class spreads differ, forcing a shared covariance averages out vital shape information, leading to an inappropriate straight line boundary.">
+                    <div class="quiz-question">Concept Check: What happens when we force classes with different spreads to share a covariance matrix?</div>
+                    <div class="quiz-options">
+                        <button class="quiz-option" data-correct="false">The model becomes highly flexible and always overfits the dataset.</button>
+                        <button class="quiz-option" data-correct="false">We can no longer invert the matrix, resulting in computational errors.</button>
+                        <button class="quiz-option" data-correct="true">We average out their unique shape characteristics, resulting in an inappropriate straight decision boundary.</button>
+                    </div>
+                    <div class="quiz-feedback hidden"></div>
                 </div>
             </section>
 
-            <section class="stage" data-stage="3">
-                <div class="stage-label">Stage 03</div>
-                <h2>The QDA Shift</h2>
-                <p><strong>Quadratic Discriminant Analysis (QDA)</strong> drops the "same shape" rule. It lets every class have its own unique personality.</p>
-                <p>Instead of a rigid jump rope, QDA acts more like a flexible hula hoop. The model looks at the generated points and empirically estimates a distinct covariance matrix ($\hat{\Sigma}_k$) for each group.</p>
-                <p>Watch the canvas: the ellipses now accurately wrap around the true scatter of each distinct class.</p>
-            </section>
-
+            <!-- STAGE 4 -->
             <section class="stage" data-stage="4">
                 <div class="stage-label">Stage 04</div>
-                <h2>Anatomy of a Learned Class</h2>
-                <p>To learn these shapes, QDA calculates three key statistics directly from the sample data you generated:</p>
-                
-                <div class="glass-card">
-                    <p><strong>1. Prior ( $\pi_k$ )</strong><br>The baseline probability based on sample sizes: $N_k / N_{total}$.</p>
-                    <p><strong>2. Estimated Mean ( $\hat{\mu}_k$ )</strong><br>The empirical center coordinate of the class cloud.</p>
-                    <p><strong>3. Estimated Covariance ( $\hat{\Sigma}_k$ )</strong><br>The shape, width, and tilt of the cloud computed from the points. We also add a tiny regularization ridge to ensure numerical stability!</p>
+                <h2>Fitting QDA: What the Model Learns</h2>
+                <p>To fit QDA, we estimate three key statistical parameters directly from our <strong>training set</strong> for each class $k$:</p>
+
+                <div id="fitSummaryPanel">
+                    <!-- Dynamic Live Panel loaded by JS -->
                 </div>
-                <p>This allows QDA to model the data as separate, multivariate normal distributions without assuming they match.</p>
+
+                <div class="glass-card" style="margin-top:1rem;">
+                    <h3 style="margin-bottom:0.5rem; font-size:1rem;">Covariance Matrix Anatomy</h3>
+                    <p style="font-size:0.85rem; margin-bottom:0.5rem;">For our two features, the 2x2 Covariance Matrix is represented as:</p>
+                    <div style="text-align:center; font-size:1rem; background:var(--bg-page); padding:0.5rem; border-radius:6px; margin-bottom:0.75rem;">
+                        $\Sigma = \begin{pmatrix} \text{Variance}(X_1) & \text{Covariance}(X_1, X_2) \\ \text{Covariance}(X_1, X_2) & \text{Variance}(X_2) \end{pmatrix}$
+                    </div>
+                    <p style="font-size:0.85rem; line-height:1.4;">
+                        📊 <strong>Diagonal entries:</strong> Represent the independent spread of Sweetness and Roundness. <br>
+                        🔄 <strong>Off-diagonal entries:</strong> Represent the relationship. A positive value means sweeter fruit is generally rounder, creating a diagonal tilt!
+                    </p>
+                </div>
+
+                <div class="glass-card">
+                    <h3 style="margin-bottom:0.5rem; font-size:1rem;">Determinants & Inverses</h3>
+                    <p style="font-size:0.85rem; margin-bottom:0.5rem;"><strong>The Determinant ($|\Sigma_k|$):</strong> Represents the total area/volume the cloud occupies. Tight clusters have small determinants, while widely dispersed clusters have large determinants.</p>
+                    <p style="font-size:0.85rem;"><strong>The Inverse ($\Sigma_k^{-1}$):</strong> Acts as a scaling standardizer. It mathematically divides distances by the variance in that specific direction so wide directions aren't artificially penalized.</p>
+                </div>
+
+                <!-- QUIZ 4 -->
+                <div class="quiz-card glass-card" data-explanation="The diagonal entries (top-left and bottom-right) represent the independent variances of Feature 1 (X1) and Feature 2 (X2).">
+                    <div class="quiz-question">Concept Check: What do the diagonal values in a covariance matrix represent?</div>
+                    <div class="quiz-options">
+                        <button class="quiz-option" data-correct="false">The correlation between the two features.</button>
+                        <button class="quiz-option" data-correct="true">The individual variances of each feature.</button>
+                        <button class="quiz-option" data-correct="false">The coordinates of the class center.</button>
+                    </div>
+                    <div class="quiz-feedback hidden"></div>
+                </div>
             </section>
 
+            <!-- STAGE 5 -->
             <section class="stage" data-stage="5">
                 <div class="stage-label">Stage 05</div>
-                <h2>Testing with Smart Distance</h2>
-                <p>When a new fruit arrives, QDA uses a shape-aware distance metric to see which cloud it fits best.</p>
-                
-                <div class="formula-block">
-                    $$ \delta_k(x) = -\frac{1}{2} \ln |\hat{\Sigma}_k| - \frac{1}{2}(x-\hat{\mu}_k)^T \hat{\Sigma}_k^{-1} (x-\hat{\mu}_k) + \ln(\pi_k) $$
-                    <p class="formula-desc">The Discriminant Function scores each class. The middle term measures distance along the group's natural stretch. The first term penalizes overly wide clouds, and the last term boosts common classes.</p>
-                </div>
-                
+                <h2>Testing with Shape-Aware Distance</h2>
+                <p>Euclidean distance only measures straight-line distance. It assumes classes are perfect, un-tilted circles.</p>
+                <p>QDA uses <strong>Mahalanobis Distance</strong>, which measures distance in units of class-specific standard deviations, aligning with the class's natural stretch and tilt.</p>
+
                 <div class="insight-box">
-                    <strong>Try it:</strong> Tap and drag anywhere on the canvas to move the test probe point. Watch the <strong>posterior probabilities</strong> update dynamically in the tooltip.
+                    <strong>Try it:</strong> Tap and drag on the canvas to reposition the test probe. Look at the contour lines of equal distance wrapping around each class mean.
+                </div>
+
+                <div id="probeScorePanel">
+                    <!-- Dynamic Live Panel loaded by JS -->
+                </div>
+
+                <div id="workedFormulaCard">
+                    <!-- Dynamic Live worked math example loaded by JS -->
+                </div>
+
+                <div class="glass-card">
+                    <h3 style="margin-bottom:0.5rem; font-size:1rem; color:var(--warning)">A Note on Posterior Probabilities</h3>
+                    <p style="font-size:0.85rem; line-height:1.4;">The posteriors are calculated assuming the features are strictly normally (Gaussian) distributed. If your real-world data is heavily skewed or multimodal, the model's confidence scores will be poorly calibrated!</p>
+                </div>
+
+                <!-- QUIZ 5 -->
+                <div class="quiz-card glass-card" data-explanation="Mahalanobis distance divides distance in any direction by the standard deviation of the distribution in that direction, making it shape-aware.">
+                    <div class="quiz-question">Concept Check: Why is Mahalanobis distance superior to Euclidean distance for elliptical clusters?</div>
+                    <div class="quiz-options">
+                        <button class="quiz-option" data-correct="true">It accounts for class-specific variance and correlation, standardizing distance along the cluster's actual tilt.</button>
+                        <button class="quiz-option" data-correct="false">It ignores the units of the features entirely to simplify calculations.</button>
+                        <button class="quiz-option" data-correct="false">It guarantees that all distances are transformed into positive integers.</button>
+                    </div>
+                    <div class="quiz-feedback hidden"></div>
                 </div>
             </section>
 
+            <!-- STAGE 6 -->
             <section class="stage" data-stage="6">
                 <div class="stage-label">Stage 06</div>
                 <h2>The Curved Boundary</h2>
-                <p>To make a final decision, QDA simply calculates $\delta_k(x)$ for both Apples and Pears across the entire space and maps out where the scores tie.</p>
-                <p>Because the covariance matrices $\hat{\Sigma}_k$ are different, the $(x-\mu)^2$ terms don't cancel out. The math natively produces a <strong>Quadratic Boundary</strong> that elegantly bends to protect the uniquely shaped groups.</p>
-                
+                <p>The decision boundary is defined mathematically as the curve where the score for Apples exactly equals the score for Pears:</p>
+                <div style="text-align:center; font-size:1.1rem; font-weight:600; padding:0.5rem; background:rgba(99,102,241,0.05); border-radius:6px; margin:1rem 0;">
+                    $\delta_{\text{Apple}}(x) = \delta_{\text{Pear}}(x)$
+                </div>
+                <p>Because the covariance matrices $\hat{\Sigma}_{\text{Apple}} \neq \hat{\Sigma}_{\text{Pear}}$, the quadratic terms in the equation do not cancel. The boundary naturally curves to encapsulate the unique shape characteristics of each class.</p>
+
+                <div class="glass-card" style="padding:1.25rem;">
+                    <div style="font-weight: 600; margin-bottom: 0.5rem; font-size: 0.85rem; text-transform: uppercase; color: var(--text-muted)">Boundary Visualization Toggle</div>
+                    <p style="font-size:0.8rem; color:var(--text-dim); margin-bottom:0.5rem;">Use the controls below to directly overlay and compare LDA and QDA decision boundaries:</p>
+                    <div class="btn-group">
+                        <button id="btn-boundary-lda" class="toggle-btn" onclick="setBoundaryMode('LDA')">Show LDA (Linear)</button>
+                        <button id="btn-boundary-qda" class="toggle-btn active" onclick="setBoundaryMode('QDA')">Show QDA (Curved)</button>
+                        <button id="btn-boundary-both" class="toggle-btn" onclick="setBoundaryMode('BOTH')">Show Both</button>
+                    </div>
+                </div>
+
+                <!-- QUIZ 6 -->
+                <div class="quiz-card glass-card" data-explanation="Because the covariance matrices are not identical, the second-order (quadratic) terms do not cancel out, resulting in a curved decision surface.">
+                    <div class="quiz-question">Concept Check: Why does the QDA decision boundary curve while LDA's is a straight line?</div>
+                    <div class="quiz-options">
+                        <button class="quiz-option" data-correct="false">LDA uses non-linear activation functions while QDA does not.</button>
+                        <button class="quiz-option" data-correct="true">Because the classes have different covariance matrices, the quadratic terms in the score equations do not cancel out.</button>
+                        <button class="quiz-option" data-correct="false">Because QDA uses more training data points than LDA.</button>
+                    </div>
+                    <div class="quiz-feedback hidden"></div>
+                </div>
+            </section>
+
+            <!-- STAGE 7 -->
+            <section class="stage" data-stage="7">
+                <div class="stage-label">Stage 07</div>
+                <h2>Evaluating QDA on Unseen Data</h2>
+                <p>We evaluate our fitted model using our held-out <strong>test set</strong>. Watch the canvas: test points are highlighted as green (correctly predicted) or red (incorrectly predicted) rings.</p>
+
+                <div id="confusionMatrixContainer">
+                    <!-- Dynamic Confusion table loaded by JS -->
+                </div>
+
+                <p style="font-size:0.85rem; color:var(--text-dim); margin-top:0.5rem;">Accuracy, Precision, Recall, and F1 Score are computed using standard equations. Observe how changing sample sizes or shapes on other stages immediately alters these test scores!</p>
+
+                <!-- Dynamic Explanations for Metrics -->
+                <div id="metricExplanationPanel"></div>
+
+                <!-- QUIZ 7 -->
+                <div class="quiz-card glass-card" data-explanation="A False Positive occurs when the model incorrectly predicts the positive class (Apple) when the true label was the negative class (Pear).">
+                    <div class="quiz-question">Concept Check: Defining Apple as the positive class, what is a False Positive?</div>
+                    <div class="quiz-options">
+                        <button class="quiz-option" data-correct="false">Predicting Pear when the actual class was Apple.</button>
+                        <button class="quiz-option" data-correct="true">Predicting Apple when the actual class was Pear.</button>
+                        <button class="quiz-option" data-correct="false">Correctly predicting Apple.</button>
+                    </div>
+                    <div class="quiz-feedback hidden"></div>
+                </div>
+            </section>
+
+            <!-- STAGE 8 -->
+            <section class="stage" data-stage="8">
+                <div class="stage-label">Stage 08</div>
+                <h2>Reading QDA Output</h2>
+                <p>When running QDA in standard statistical software like R or Python's <code>scikit-learn</code>, you are presented with a summary output. Click the highlighted items in the simulated log block below to understand what they represent:</p>
+
+                <div id="qdaOutputGuide">
+                    <!-- Dynamic console hot spots loaded by JS -->
+                </div>
+
+                <!-- QUIZ 8 -->
+                <div class="quiz-card glass-card" data-explanation="Prior probability is the baseline percentage of that class in the training data (e.g. 0.70 means that class makes up 70% of the training points).">
+                    <div class="quiz-question">Concept Check: What does a prior probability of 0.70 for Apple mean?</div>
+                    <div class="quiz-options">
+                        <button class="quiz-option" data-correct="true">Apples represent 70% of the training set.</button>
+                        <button class="quiz-option" data-correct="false">The model is 70% confident that every new fruit is an Apple.</button>
+                        <button class="quiz-option" data-correct="false">Apples have an average sweetness rating of 7.0.</button>
+                    </div>
+                    <div class="quiz-feedback hidden"></div>
+                </div>
+            </section>
+
+            <!-- STAGE 9 -->
+            <section class="stage" data-stage="9">
+                <div class="stage-label">Stage 09</div>
+                <h2>Regularization & Shape Playground</h2>
+                <p>When class distributions are close or contain few data points, the empirical covariance matrices can become unstable or singular (zero determinant), causing inverse division errors.</p>
+                <p>To solve this, we add a <strong>regularization ridge</strong> ($\lambda$) directly to the diagonals of the covariance matrices:</p>
+                <div style="text-align:center; font-size:1.1rem; padding:0.5rem; background:var(--bg-page); border-radius:6px; margin:0.75rem 0;">
+                    $\Sigma_{\text{regularized}} = \Sigma + \lambda I$
+                </div>
+
+                <div class="glass-card">
+                    <div style="font-weight: 600; margin-bottom: 0.5rem; font-size: 0.85rem; text-transform: uppercase; color: var(--text-muted)">Regularization Control</div>
+                    <div class="control-row">
+                        <label>Ridge Parameter ($\lambda$):</label>
+                        <input type="range" id="slider-ridge" min="0.0" max="1.5" step="0.05" value="0.10">
+                        <span id="val-ridge" class="mono">0.10</span>
+                    </div>
+                    <p style="font-size:0.8rem; color:var(--text-dim); line-height:1.4;">
+                        📈 <strong>Low Ridge (0.0):</strong> Maximum flexibility, but highly sensitive to noise and singularity.<br>
+                        📉 <strong>High Ridge (1.5):</strong> Increases stability, squeezing matrices to be circular. The curved boundary smooths out, behaving more like LDA!
+                    </p>
+                </div>
+
                 <div class="glass-card" style="padding: 1.25rem;">
                     <div style="font-weight: 600; margin-bottom: 0.5rem; font-size: 0.85rem; text-transform: uppercase; color: var(--text-muted)">QDA Shape Playground</div>
-                    <p style="font-size: 0.85rem; color: var(--text-dim); margin-bottom: 1rem; line-height: 1.4;">Modify the true underlying distributions below. The simulator will instantly re-draw points and recalculate QDA to show <em>why</em> the boundary bends.</p>
-                    
+                    <p style="font-size: 0.85rem; color: var(--text-dim); margin-bottom: 1rem; line-height: 1.4;">Modify the true underlying distributions below. The simulator will instantly re-draw points and recalculate QDA:</p>
+
                     <div class="param-grid" style="display: flex; gap: 1.5rem; justify-content: space-between;">
                         <!-- Class A Params -->
                         <div class="param-col" style="flex: 1;">
@@ -618,42 +1215,74 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- QUIZ 9 -->
+                <div class="quiz-card glass-card" data-explanation="Adding a diagonal shift forces the eigenvalues of the matrix away from zero, stabilizing the inverse calculation and smoothing the boundary towards circular shapes.">
+                    <div class="quiz-question">Concept Check: What is the primary benefit of regularization in QDA?</div>
+                    <div class="quiz-options">
+                        <button class="quiz-option" data-correct="false">It eliminates the need for prior probability calculations.</button>
+                        <button class="quiz-option" data-correct="true">It prevents computational instability (singular matrix errors) and smooths out noisy decision boundaries.</button>
+                        <button class="quiz-option" data-correct="false">It forces the decision boundary to remain strictly linear.</button>
+                    </div>
+                    <div class="quiz-feedback hidden"></div>
+                </div>
             </section>
 
-            <section class="stage" data-stage="7">
-                <div class="stage-label">Stage 07</div>
-                <h2>The Cost of Flexibility</h2>
-                <p>If QDA is so smart, why use LDA at all? The answer is the <strong>Bias-Variance Tradeoff</strong> and parameter complexity.</p>
-                <p>For $K$ classes and $p$ features, let's look at what the models must estimate from the data:</p>
-                
-                <div class="metrics-grid">
-                    <div class="metric-card">
-                        <span class="metric-val mono" style="font-size: 1rem;">$Kp + \frac{p(p+1)}{2}$</span>
-                        <span class="metric-lbl">LDA Parameters</span>
-                        <span style="font-size:0.7rem; color:var(--text-muted); margin-top:4px;">(Means + 1 Shared Covariance)</span>
+            <!-- STAGE 10 -->
+            <section class="stage" data-stage="10">
+                <div class="stage-label">Stage 10</div>
+                <h2>Assumptions, Complexity & Synthesis</h2>
+                <p>Every algorithm is a balance of flexibility and parameters. QDA estimates a separate covariance matrix for each class, which comes at a significant parameter cost.</p>
+
+                <div class="glass-card">
+                    <div style="font-weight: 600; margin-bottom: 0.5rem; font-size: 0.85rem; text-transform: uppercase; color: var(--text-muted)">Parameter Complexity Calculator</div>
+                    <p style="font-size:0.8rem; color:var(--text-dim); margin-bottom:0.75rem;">Adjust the class count ($K$) and feature count ($p$) to compare parameter counts:</p>
+                    <div class="control-row">
+                        <label>Classes ($K$):</label>
+                        <input type="range" id="param-k" min="2" max="10" value="2">
+                        <span id="val-param-k" class="mono">2</span>
                     </div>
-                    <div class="metric-card">
-                        <span class="metric-val mono" style="font-size: 1rem;">$Kp + K\frac{p(p+1)}{2}$</span>
-                        <span class="metric-lbl">QDA Parameters</span>
-                        <span style="font-size:0.7rem; color:var(--text-muted); margin-top:4px;">(Means + K Covariances)</span>
+                    <div class="control-row">
+                        <label>Features ($p$):</label>
+                        <input type="range" id="param-p" min="1" max="30" value="2">
+                        <span id="val-param-p" class="mono">2</span>
+                    </div>
+                    <div style="margin-top:0.75rem; border-top:1px dashed var(--border-color); padding-top:0.75rem; font-size:0.85rem;">
+                        <div style="display:flex; justify-content:space-between; margin-bottom:4px;">
+                            <span>LDA Parameters:</span>
+                            <strong id="lda-param-count">7</strong>
+                        </div>
+                        <div style="display:flex; justify-content:space-between;">
+                            <span>QDA Parameters:</span>
+                            <strong id="qda-param-count" style="color:var(--accent-dark);">10</strong>
+                        </div>
+                        <div id="complexity-ratio-msg" style="margin-top:0.5rem; font-size:0.8rem; color:var(--text-dim); font-style:italic;"></div>
                     </div>
                 </div>
-                <p>Estimating a unique covariance matrix for <em>every</em> class requires a lot of data. If your dataset is small or has many features, QDA's flexibility becomes a liability—it will start hallucinating curves out of noise (overfitting).</p>
-            </section>
 
-            <section class="stage" data-stage="8">
-                <div class="stage-label">Stage 08</div>
-                <h2>Synthesis</h2>
-                <p>Generative models don't just guess lines; they map the structural landscape of the data.</p>
-                <p>QDA reigns supreme when classes naturally behave differently—when one is tight and round, and another is wide and stretched.</p>
                 <div class="glass-card">
-                    <ul style="list-style-type: none; gap: 0.75rem; display: flex; flex-direction: column;">
-                        <li>✓ <strong>Best for:</strong> Large datasets, differing group shapes, nonlinear natural boundaries.</li>
-                        <li>✓ <strong>Assumption:</strong> Features follow a multivariate normal distribution within classes.</li>
-                        <li>✓ <strong>Mechanics:</strong> Computes empirical class covariances to enable a curved decision surface based on Mahalanobis distance and priors.</li>
+                    <p style="margin-bottom:0.5rem;"><strong>When QDA Thrives:</strong></p>
+                    <ul style="margin-left:1.5rem; margin-bottom:1rem; font-size:0.9rem; display:flex; flex-direction:column; gap:0.25rem;">
+                        <li>✓ Classes have completely different shapes and orientations.</li>
+                        <li>✓ The dataset is large enough to estimate parameters reliably.</li>
+                        <li>✓ Boundaries are naturally curved.</li>
+                    </ul>
+                    <p style="margin-bottom:0.5rem;"><strong>When QDA Struggles:</strong></p>
+                    <ul style="margin-left:1.5rem; font-size:0.9rem; display:flex; flex-direction:column; gap:0.25rem;">
+                        <li>✗ Extremely small datasets (leads to overfitting and singular matrices).</li>
+                        <li>✗ Datasets with many features (parameter explosion).</li>
+                        <li>✗ Outliers present that distort covariance matrix estimation.</li>
                     </ul>
                 </div>
-                <p>By letting each class keep its unique shape, QDA transforms classification from drawing rigid lines into understanding probabilities in space.</p>
+
+                <div class="glass-card">
+                    <p style="margin-bottom:0.5rem;"><strong>Alternatives to QDA:</strong></p>
+                    <ul style="margin-left:1.5rem; font-size:0.9rem; display:flex; flex-direction:column; gap:0.25rem;">
+                        <li>💡 <strong>LDA:</strong> If dataset is small or class spreads are similar.</li>
+                        <li>💡 <strong>Logistic Regression:</strong> If you prefer to model class boundaries without making Gaussian distribution assumptions.</li>
+                        <li>💡 <strong>KNN or SVM:</strong> If decision boundaries are highly complex or non-Gaussian.</li>
+                    </ul>
+                </div>
             </section>
         </div>
 
@@ -664,8 +1293,11 @@
                     <canvas id="qda-canvas"></canvas>
 
                     <div id="viz-legend" class="viz-overlay">
-                        <div class="legend-item"><span class="swatch" style="background:var(--class-a)"></span> Apples</div>
-                        <div class="legend-item"><span class="swatch" style="background:var(--class-b)"></span> Pears</div>
+                        <div style="font-weight:600; font-size:0.8rem; border-bottom:1px solid var(--border-color); margin-bottom:4px; padding-bottom:2px;">Legend</div>
+                        <div class="legend-item"><span class="swatch" style="background:var(--class-a)"></span> Train Apples</div>
+                        <div class="legend-item"><span class="swatch" style="background:var(--class-b)"></span> Train Pears</div>
+                        <div class="legend-item"><span class="swatch" style="background:transparent; border:2px solid var(--class-a); border-radius:50%; box-sizing:border-box;"></span> Test Apples</div>
+                        <div class="legend-item"><span class="swatch" style="background:transparent; border:2px solid var(--class-b); border-radius:50%; box-sizing:border-box;"></span> Test Pears</div>
                     </div>
 
                     <div id="tooltip">
@@ -688,13 +1320,18 @@
         </div>
     </div>
 
+    <!-- Floating Popover (Replacing old Backdrop-blur Modal) -->
+    <div id="outputPopover" class="output-popover hidden" aria-hidden="true">
+        <button class="output-popover-close" type="button" onclick="closeOutputPopover()">&times;</button>
+        <div id="outputPopoverBody"></div>
+    </div>
+
     <script>
         // --- MATH & ESTIMATION ENGINE ---
-        
-        let currentSeedA = 42;   // Stable seed for Apple point generation
-        let currentSeedB = 4242; // Stable seed for Pear point generation
 
-        // Seeded PRNG ensures smooth updates when dragging sliders
+        let currentSeedA = 42;
+        let currentSeedB = 4242;
+
         function createRand(seed) {
             let prngState = seed;
             return function rand() {
@@ -703,7 +1340,6 @@
             };
         }
 
-        // Box-Muller transform for normal distribution
         function randomNormal(rand) {
             let u = 0, v = 0;
             while(u === 0) u = rand();
@@ -723,27 +1359,26 @@
             ];
         }
 
-        function generateClassData(mu, cov, count, seed) {
+        function generateClassData(mu, cov, count, seed, isApple) {
             const rand = createRand(seed);
 
-            // Cholesky decomposition
             const l00 = Math.sqrt(Math.max(cov[0][0], 0.0001));
             const l10 = cov[1][0] / l00;
             const l11 = Math.sqrt(Math.max(cov[1][1] - l10 * l10, 0.0001));
-            
+
             let pts = [];
             for (let i = 0; i < count; i++) {
                 const z1 = randomNormal(rand);
                 const z2 = randomNormal(rand);
                 pts.push({
                     x: mu.x + l00 * z1,
-                    y: mu.y + l10 * z1 + l11 * z2
+                    y: mu.y + l10 * z1 + l11 * z2,
+                    isApple: isApple
                 });
             }
             return pts;
         }
 
-        // Empirical Estimators
         function calcMean(pts) {
             let sx = 0, sy = 0;
             for (let p of pts) { sx += p.x; sy += p.y; }
@@ -759,8 +1394,13 @@
                 c01 += dx * dy;
                 c11 += dy * dy;
             }
-            const n = pts.length > 1 ? pts.length - 1 : 1; 
-            const ridge = 0.05; // Diagonal ridge regularization prevents singularity for small/lucky samples
+            const n = pts.length > 1 ? pts.length - 1 : 1;
+
+            // Read dynamic ridge from slider
+            let ridge = 0.10;
+            const slider = document.getElementById('slider-ridge');
+            if (slider) ridge = parseFloat(slider.value);
+
             return [
                 [c00 / n + ridge, c01 / n],
                 [c01 / n, c11 / n + ridge]
@@ -769,7 +1409,7 @@
 
         function det2x2(m) {
             let det = m[0][0] * m[1][1] - m[0][1] * m[1][0];
-            return Math.max(det, 1e-6); // Secondary safety net
+            return Math.max(det, 1e-6);
         }
 
         function inv2x2(m, det) {
@@ -781,18 +1421,21 @@
 
         // Global State Variables
         let ptsA = [], ptsB = [];
+        let ptsA_train = [], ptsA_test = [];
+        let ptsB_train = [], ptsB_test = [];
+
         let estMuA, estMuB;
         let estCovA, estCovB;
         let estSharedCov;
         let priorA, priorB;
         let detA, detB, invA, invB;
         let detShared, invShared;
+        let evalMetrics = { tp:0, tn:0, fp:0, fn:0, accuracy:0, precision:0, recall:0, f1:0 };
 
         function rebuildSimulation() {
-            // 1. Fetch parameters from all sliders
             const nA = parseInt(document.getElementById('slider-na').value);
             const nB = parseInt(document.getElementById('slider-nb').value);
-            
+
             const trueMuA = {
                 x: parseFloat(document.getElementById('a-mx').value),
                 y: parseFloat(document.getElementById('a-my').value)
@@ -813,38 +1456,62 @@
                 parseFloat(document.getElementById('b-tl').value)
             );
 
-            // 2. Generate Data
-            ptsA = generateClassData(trueMuA, trueCovA, nA, currentSeedA);
-            ptsB = generateClassData(trueMuB, trueCovB, nB, currentSeedB);
+            // 1. Generate full dataset
+            ptsA = generateClassData(trueMuA, trueCovA, nA, currentSeedA, true);
+            ptsB = generateClassData(trueMuB, trueCovB, nB, currentSeedB, false);
 
-            // 3. Compute Priors
-            const total = nA + nB;
-            priorA = nA / total;
-            priorB = nB / total;
+            // 2. Perform 80/20 train/test split (leakage protection!)
+            const nTrainA = Math.min(nA - 2, Math.max(5, Math.round(nA * 0.8)));
+            const nTrainB = Math.min(nB - 2, Math.max(5, Math.round(nB * 0.8)));
 
-            // 4. Estimate Empirical Means & Covariances
-            estMuA = calcMean(ptsA);
-            estMuB = calcMean(ptsB);
-            estCovA = calcCovariance(ptsA, estMuA);
-            estCovB = calcCovariance(ptsB, estMuB);
+            ptsA_train = ptsA.slice(0, nTrainA);
+            ptsA_test = ptsA.slice(nTrainA);
 
-            // 5. Precompute determinants and inverses for QDA distances
+            ptsB_train = ptsB.slice(0, nTrainB);
+            ptsB_test = ptsB.slice(nTrainB);
+
+            // Update UI split labels
+            document.getElementById('split-lbl-a').innerText = `${ptsA_train.length} / ${ptsA_test.length}`;
+            document.getElementById('split-lbl-b').innerText = `${ptsB_train.length} / ${ptsB_test.length}`;
+
+            // 3. Estimate priors using training set size
+            const totalTrain = ptsA_train.length + ptsB_train.length;
+            priorA = ptsA_train.length / totalTrain;
+            priorB = ptsB_train.length / totalTrain;
+
+            // 4. Estimate statistics ONLY using the training set!
+            estMuA = calcMean(ptsA_train);
+            estMuB = calcMean(ptsB_train);
+            estCovA = calcCovariance(ptsA_train, estMuA);
+            estCovB = calcCovariance(ptsB_train, estMuB);
+
+            // 5. Precompute determinants and inverses
             detA = det2x2(estCovA);
             detB = det2x2(estCovB);
             invA = inv2x2(estCovA, detA);
             invB = inv2x2(estCovB, detB);
 
-            // 6. Estimate Pooled Covariance for LDA
-            const wA = nA - 1;
-            const wB = nB - 1;
-            const den = total > 2 ? total - 2 : 1;
+            // 6. Estimate pooled shared covariance for LDA
+            const wA = ptsA_train.length - 1;
+            const wB = ptsB_train.length - 1;
+            const den = totalTrain > 2 ? totalTrain - 2 : 1;
             estSharedCov = [
                 [(wA * estCovA[0][0] + wB * estCovB[0][0]) / den, (wA * estCovA[0][1] + wB * estCovB[0][1]) / den],
                 [(wA * estCovA[1][0] + wB * estCovB[1][0]) / den, (wA * estCovA[1][1] + wB * estCovB[1][1]) / den]
             ];
             detShared = det2x2(estSharedCov);
             invShared = inv2x2(estSharedCov, detShared);
-            
+
+            // Run metrics calculation
+            runEvaluation();
+
+            // Update custom dynamic panels
+            updateFitSummary();
+            updateProbeScorePanel();
+            updateWorkedFormulaCard();
+            updateQdaOutputGuide();
+            updateMetricExplanationPanel();
+
             render();
         }
 
@@ -863,19 +1530,728 @@
             return -0.5 * Math.log(detShared) - 0.5 * mahalanobisSq(x, y, mu, invShared) + Math.log(prior);
         }
 
+        // Run evaluation on test set only
+        function runEvaluation() {
+            let tp = 0, tn = 0, fp = 0, fn = 0;
+
+            for (let p of ptsA_test) {
+                const sa = scoreQDA(p.x, p.y, estMuA, invA, detA, priorA);
+                const sb = scoreQDA(p.x, p.y, estMuB, invB, detB, priorB);
+                if (sa > sb) tp++;
+                else fn++;
+            }
+
+            for (let p of ptsB_test) {
+                const sa = scoreQDA(p.x, p.y, estMuA, invA, detA, priorA);
+                const sb = scoreQDA(p.x, p.y, estMuB, invB, detB, priorB);
+                if (sa > sb) fp++;
+                else tn++;
+            }
+
+            const total = tp + tn + fp + fn;
+            const accuracy = total > 0 ? (tp + tn) / total : 0;
+            const precision = (tp + fp) > 0 ? tp / (tp + fp) : 0;
+            const recall = (tp + fn) > 0 ? tp / (tp + fn) : 0;
+            const f1 = (precision + recall) > 0 ? 2 * precision * recall / (precision + recall) : 0;
+
+            evalMetrics = { tp, tn, fp, fn, accuracy, precision, recall, f1 };
+
+            updateEvaluationUI();
+        }
+
+        // Live stats panel renderer
+        function updateFitSummary() {
+            const el = document.getElementById('fitSummaryPanel');
+            if (!el) return;
+
+            el.innerHTML = `
+            <div class="fit-grid">
+                <div class="fit-class-card apple-border">
+                    <h4 class="apple-text">🍎 Apple Class Statistics ($k=A$)</h4>
+                    <div class="fit-metric">Prior probability: <span class="mono">$\\pi_A = ${priorA.toFixed(3)}$</span></div>
+                    <div class="fit-metric">Mean vector: <span class="mono">$\\hat{\\mu}_A = [${estMuA.x.toFixed(2)}, ${estMuA.y.toFixed(2)}]^T$</span></div>
+                    <div class="fit-metric" style="margin-top:0.4rem;">Covariance Matrix:</div>
+                    <div class="matrix-container" onclick="showCovExplainer('apple', this, event)">
+                        $$\\hat{\\Sigma}_A = \\begin{pmatrix} ${estCovA[0][0].toFixed(3)} & ${estCovA[0][1].toFixed(3)} \\\\ ${estCovA[1][0].toFixed(3)} & ${estCovA[1][1].toFixed(3)} \\end{pmatrix}$$
+                    </div>
+                    <div class="click-tip">💡 Click covariance matrix to inspect anatomy!</div>
+                </div>
+                <div class="fit-class-card pear-border">
+                    <h4 class="pear-text">🍐 Pear Class Statistics ($k=B$)</h4>
+                    <div class="fit-metric">Prior probability: <span class="mono">$\\pi_B = ${priorB.toFixed(3)}$</span></div>
+                    <div class="fit-metric">Mean vector: <span class="mono">$\\hat{\\mu}_B = [${estMuB.x.toFixed(2)}, ${estMuB.y.toFixed(2)}]^T$</span></div>
+                    <div class="fit-metric" style="margin-top:0.4rem;">Covariance Matrix:</div>
+                    <div class="matrix-container" onclick="showCovExplainer('pear', this, event)">
+                        $$\\hat{\\Sigma}_B = \\begin{pmatrix} ${estCovB[0][0].toFixed(3)} & ${estCovB[0][1].toFixed(3)} \\\\ ${estCovB[1][0].toFixed(3)} & ${estCovB[1][1].toFixed(3)} \\end{pmatrix}$$
+                    </div>
+                    <div class="click-tip">💡 Click covariance matrix to inspect anatomy!</div>
+                </div>
+            </div>
+            `;
+            triggerMathRender(el);
+        }
+
+        // Click handler to launch floating explainer popup of Covariance Anatomy
+        function showCovExplainer(classType, sourceEl, event) {
+            if (event) event.stopPropagation();
+
+            const isApple = (classType === 'apple');
+            const name = isApple ? 'Apple (Class A)' : 'Pear (Class B)';
+            const colorClass = isApple ? 'apple-text' : 'pear-text';
+            const cov = isApple ? estCovA : estCovB;
+
+            const var1 = cov[0][0];
+            const var2 = cov[1][1];
+            const cov12 = cov[0][1];
+
+            let relationText = "";
+            if (cov12 > 0.05) {
+                relationText = `<strong>Positive Covariance (${cov12.toFixed(3)}):</strong> As Sweetness increases, Roundness tends to increase. This gives the cloud an <strong>upward diagonal tilt (/)</strong>.`;
+            } else if (cov12 < -0.05) {
+                relationText = `<strong>Negative Covariance (${cov12.toFixed(3)}):</strong> As Sweetness increases, Roundness tends to decrease. This gives the cloud a <strong>downward diagonal tilt (\\)</strong>.`;
+            } else {
+                relationText = `<strong>Near-Zero Covariance (${cov12.toFixed(3)}):</strong> Sweetness and Roundness are uncorrelated. The cloud behaves as an <strong>upright ellipse or circular shape</strong>.`;
+            }
+
+            const body = `
+                <h3 class="${colorClass}" style="margin-bottom: 1rem; font-size: 1.15rem; font-weight:700;">📊 Covariance Matrix Anatomy: ${name}</h3>
+                <p style="margin-bottom: 1rem; font-size:0.88rem; line-height: 1.55;">Here is the empirical covariance matrix estimated live from your active training partition:</p>
+
+                <div class="formula-block" style="font-size: 1.1rem; margin:1rem 0; padding:1rem 1rem 0.5rem 1rem;">
+                    $$\\hat{\\Sigma} = \\begin{pmatrix} \\sigma_{1}^2 & \\sigma_{12} \\\\ \\sigma_{12} & \\sigma_{2}^2 \\end{pmatrix} = \\begin{pmatrix} ${var1.toFixed(3)} & ${cov12.toFixed(3)} \\\\ ${cov12.toFixed(3)} & ${var2.toFixed(3)} \\end{pmatrix}$$
+                </div>
+
+                <div class="glass-card" style="border-left: 4px solid var(--accent); margin-bottom: 1rem; padding: 0.85rem;">
+                    <p style="font-size:0.88rem; font-weight:600;"><strong>Diagonal Entries (Variance):</strong></p>
+                    <ul style="margin-left: 1.25rem; margin-top: 0.25rem; font-size:0.82rem; display: flex; flex-direction: column; gap: 0.25rem;">
+                        <li><strong>Variance in Feature 1 ($\sigma_{1}^2 = ${var1.toFixed(3)}$)</strong>: Represents the horizontal dispersion (Sweetness spread).</li>
+                        <li><strong>Variance in Feature 2 ($\sigma_{2}^2 = ${var2.toFixed(3)}$)</strong>: Represents the vertical dispersion (Roundness spread).</li>
+                    </ul>
+                </div>
+
+                <div class="glass-card" style="border-left: 4px solid var(--warning); margin-bottom: 1rem; padding: 0.85rem; font-size:0.84rem;">
+                    <p style="font-weight:600;"><strong>Off-Diagonal Entries (Covariance):</strong></p>
+                    <p style="margin-top: 0.25rem;"><strong>Covariance ($\sigma_{12} = ${cov12.toFixed(3)}$)</strong>: Measures whether the two features move together.</p>
+                    <p style="margin-top: 0.25rem; color:var(--text-dim); line-height: 1.55;">${relationText}</p>
+                </div>
+
+                <div class="insight-box" style="margin-top: 1rem; font-size:0.8rem; line-height: 1.45; padding: 0.75rem 1rem;">
+                    <strong>Why this matters:</strong> While LDA forces both classes to share a single compromise shape, QDA preserves these unique shapes, allowing the Apple cloud to stay round and Pear to remain stretched!
+                </div>
+            `;
+
+            const popover = document.getElementById('outputPopover');
+            if (popover) {
+                document.getElementById('outputPopoverBody').innerHTML = body;
+                popover.classList.remove('hidden');
+                popover.removeAttribute('aria-hidden');
+                positionOutputPopover(popover, sourceEl);
+                triggerMathRender(document.getElementById('outputPopoverBody'));
+            }
+        }
+
+        // Live worked formula panel
+        function updateWorkedFormulaCard() {
+            const el = document.getElementById('workedFormulaCard');
+            if (!el) return;
+            if (!probe.active) {
+                el.innerHTML = `<p style="color:var(--text-muted); font-size:0.85rem; text-align:center; padding:1rem;">Activate the interactive probe (tap & drag on canvas) to view a live, step-by-step mathematical score breakdown!</p>`;
+                return;
+            }
+
+            const sa = scoreQDA(probe.x, probe.y, estMuA, invA, detA, priorA);
+            const sb = scoreQDA(probe.x, probe.y, estMuB, invB, detB, priorB);
+            const dmSqA = mahalanobisSq(probe.x, probe.y, estMuA, invA);
+            const dmSqB = mahalanobisSq(probe.x, probe.y, estMuB, invB);
+
+            const lDetA = Math.log(detA);
+            const lDetB = Math.log(detB);
+            const lPriorA = Math.log(priorA);
+            const lPriorB = Math.log(priorB);
+
+            const term1A = -0.5 * lDetA;
+            const term2A = -0.5 * dmSqA;
+            const term3A = lPriorA;
+
+            const term1B = -0.5 * lDetB;
+            const term2B = -0.5 * dmSqB;
+            const term3B = lPriorB;
+
+            const decisionText = sa > sb
+                ? `$\\delta_{\\text{Apple}}(x) > \\delta_{\\text{Pear}}(x)$, classifying the coordinate as an <span style="color:var(--class-a); font-weight:700;">Apple</span>.`
+                : `$\\delta_{\\text{Pear}}(x) > \\delta_{\\text{Apple}}(x)$, classifying the coordinate as a <span style="color:var(--class-b); font-weight:700;">Pear</span>.`;
+
+            el.innerHTML = `
+            <div class="glass-card" style="font-size: 0.9rem; border-top: 4px solid var(--accent);">
+                <h4 style="margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+                    <span>🧮 Live Worked QDA Formula Score</span>
+                </h4>
+                <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom: 0.75rem;">Evaluating current coordinates: $x = [${probe.x.toFixed(2)}, ${probe.y.toFixed(2)}]^T$</p>
+
+                <div style="margin-bottom: 0.85rem; border-left: 3px solid var(--class-a); padding-left: 0.65rem; background: var(--bg-page); padding-top: 0.4rem; padding-bottom: 0.4rem; border-radius: 0 6px 6px 0;">
+                    <p style="font-weight:700; color:var(--class-a); font-size:0.85rem; margin-bottom: 0.35rem;">Apple Class Score: $\\delta_{\\text{Apple}}(x)$</p>
+                    <ul style="list-style: none; padding-left: 0; font-size: 0.82rem; display: flex; flex-direction: column; gap: 2px;">
+                        <li>📐 Size Penalty ($-0.5 \\ln |\\Sigma_{\\text{Apple}}|$): <strong class="mono">${term1A.toFixed(3)}</strong></li>
+                        <li>📏 Distance Penalty ($-0.5 D_M^2$): <strong class="mono">${term2A.toFixed(3)}</strong></li>
+                        <li>📈 Prior Boost ($\\ln \\pi_{\\text{Apple}}$): <strong class="mono">${term3A.toFixed(3)}</strong></li>
+                        <li style="border-top: 1px dashed var(--border-color); margin-top: 4px; padding-top: 2px; font-weight: 700;">
+                            🏆 Total Score $\\delta_{\\text{Apple}}(x)$: <span class="mono">${sa.toFixed(3)}</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div style="margin-bottom: 0.85rem; border-left: 3px solid var(--class-b); padding-left: 0.65rem; background: var(--bg-page); padding-top: 0.4rem; padding-bottom: 0.4rem; border-radius: 0 6px 6px 0;">
+                    <p style="font-weight:700; color:var(--class-b); font-size:0.85rem; margin-bottom: 0.35rem;">Pear Class Score: $\\delta_{\\text{Pear}}(x)$</p>
+                    <ul style="list-style: none; padding-left: 0; font-size: 0.82rem; display: flex; flex-direction: column; gap: 2px;">
+                        <li>📐 Size Penalty ($-0.5 \\ln |\\Sigma_{\\text{Pear}}|$): <strong class="mono">${term1B.toFixed(3)}</strong></li>
+                        <li>📏 Distance Penalty ($-0.5 D_M^2$): <strong class="mono">${term2B.toFixed(3)}</strong></li>
+                        <li>📈 Prior Boost ($\\ln \\pi_{\\text{Pear}}$): <strong class="mono">${term3B.toFixed(3)}</strong></li>
+                        <li style="border-top: 1px dashed var(--border-color); margin-top: 4px; padding-top: 2px; font-weight: 700;">
+                            🏆 Total Score $\\delta_{\\text{Pear}}(x)$: <span class="mono">${sb.toFixed(3)}</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <p style="margin-top: 0.5rem; border-top: 1px dashed var(--border-color); padding-top: 0.5rem; font-size:0.85rem;">
+                    <strong>Decision:</strong> Since ${decisionText}
+                </p>
+            </div>
+            `;
+            triggerMathRender(el);
+        }
+
+        // Live probe stats panel
+        function updateProbeScorePanel() {
+            const el = document.getElementById('probeScorePanel');
+            if (!el) return;
+            if (!probe.active) {
+                el.innerHTML = "";
+                return;
+            }
+
+            const sa = scoreQDA(probe.x, probe.y, estMuA, invA, detA, priorA);
+            const sb = scoreQDA(probe.x, probe.y, estMuB, invB, detB, priorB);
+
+            const dmSqA = mahalanobisSq(probe.x, probe.y, estMuA, invA);
+            const dmSqB = mahalanobisSq(probe.x, probe.y, estMuB, invB);
+            const dmA = Math.sqrt(dmSqA);
+            const dmB = Math.sqrt(dmSqB);
+
+            const maxS = Math.max(sa, sb);
+            const expA = Math.exp(sa - maxS);
+            const expB = Math.exp(sb - maxS);
+            const probA = (expA / (expA + expB)) * 100;
+            const probB = (expB / (expA + expB)) * 100;
+
+            const pred = sa > sb ? '🍎 Apple' : '🍐 Pear';
+            const predColor = sa > sb ? 'var(--class-a)' : 'var(--class-b)';
+
+            el.innerHTML = `
+            <div class="glass-card" style="border-left: 4px solid ${predColor}; padding: 1.25rem;">
+                <h4 style="color: ${predColor}; margin-bottom: 0.5rem; font-size:0.95rem;">Interactive Probe Live Metrics</h4>
+                <p style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em;">Current Coordinate: (${probe.x.toFixed(2)}, ${probe.y.toFixed(2)})</p>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 0.75rem;">
+                    <div class="class-score-card apple-border">
+                        <span class="apple-text" style="font-weight: 700; display: block; margin-bottom: 0.25rem; font-size:0.8rem;">🍎 Apple Class</span>
+                        <div class="stat-row"><span>Mahalanobis $D_M$:</span> <strong class="mono">${dmA.toFixed(2)}</strong></div>
+                        <div class="stat-row"><span>Score $\\delta_A$:</span> <strong class="mono">${sa.toFixed(2)}</strong></div>
+                        <div class="stat-row"><span>Posterior Prob:</span> <strong class="mono">${probA.toFixed(1)}%</strong></div>
+                    </div>
+
+                    <div class="class-score-card pear-border">
+                        <span class="pear-text" style="font-weight: 700; display: block; margin-bottom: 0.25rem; font-size:0.8rem;">🍐 Pear Class</span>
+                        <div class="stat-row"><span>Mahalanobis $D_M$:</span> <strong class="mono">${dmB.toFixed(2)}</strong></div>
+                        <div class="stat-row"><span>Score $\\delta_B$:</span> <strong class="mono">${sb.toFixed(2)}</strong></div>
+                        <div class="stat-row"><span>Posterior Prob:</span> <strong class="mono">${probB.toFixed(1)}%</strong></div>
+                    </div>
+                </div>
+
+                <div style="background: rgba(99,102,241,0.03); padding: 0.5rem; border-radius: 6px; border: 1px solid var(--border-color); text-align: center; font-size:0.85rem;">
+                    <strong>QDA Decision:</strong> <span style="color: ${predColor}; font-weight: 700;">${pred}</span>
+                </div>
+            </div>
+            `;
+            triggerMathRender(el);
+        }
+
+        // Live evaluation card updating
+        function updateEvaluationUI() {
+            const el = document.getElementById('confusionMatrixContainer');
+            if (!el) return;
+
+            const { tp, tn, fp, fn, accuracy, precision, recall, f1 } = evalMetrics;
+
+            el.innerHTML = `
+            <div class="metrics-grid">
+                <div class="metric-card" onclick="highlightMetricCard('accuracy')">
+                    <span class="metric-val mono">${(accuracy * 100).toFixed(1)}%</span>
+                    <span class="metric-lbl">Accuracy 🔍</span>
+                </div>
+                <div class="metric-card" onclick="highlightMetricCard('precision')">
+                    <span class="metric-val mono">${(precision * 100).toFixed(1)}%</span>
+                    <span class="metric-lbl">Precision 🎯</span>
+                </div>
+                <div class="metric-card" onclick="highlightMetricCard('recall')">
+                    <span class="metric-val mono">${(recall * 100).toFixed(1)}%</span>
+                    <span class="metric-lbl">Recall 🔎</span>
+                </div>
+                <div class="metric-card" onclick="highlightMetricCard('f1')">
+                    <span class="metric-val mono">${(f1 * 100).toFixed(1)}%</span>
+                    <span class="metric-lbl">F1 Score ⚖️</span>
+                </div>
+            </div>
+
+            <div style="font-weight: 600; margin-bottom: 0.25rem; font-size: 0.8rem; text-transform: uppercase; color: var(--text-muted)">Confusion Matrix (Click cells for explanation)</div>
+            <table class="confusion-table">
+                <thead>
+                    <tr>
+                        <th style="border:none;"></th>
+                        <th colspan="2" style="background:#f3f4f6; border-radius:4px 4px 0 0; font-size:0.75rem; padding:0.25rem;">Predicted Class</th>
+                    </tr>
+                    <tr>
+                        <th style="border:none;"></th>
+                        <th class="apple-text" style="background:var(--class-a-bg); font-size:0.8rem; padding:0.4rem;">🍎 Apple</th>
+                        <th class="pear-text" style="background:var(--class-b-bg); font-size:0.8rem; padding:0.4rem;">🍐 Pear</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th class="apple-text" style="background:var(--class-a-bg); width:20%; font-size:0.75rem; padding:0.4rem;">Actual Apple</th>
+                        <td class="matrix-cell tp-cell" onclick="explainMatrixCell('tp', this, event)">
+                            <span class="cell-val mono">${tp}</span>
+                            <span class="cell-lbl">True Positive (TP)</span>
+                        </td>
+                        <td class="matrix-cell fn-cell" onclick="explainMatrixCell('fn', this, event)">
+                            <span class="cell-val mono">${fn}</span>
+                            <span class="cell-lbl">False Negative (FN)</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="pear-text" style="background:var(--class-b-bg); font-size:0.75rem; padding:0.4rem;">Actual Pear</th>
+                        <td class="matrix-cell fp-cell" onclick="explainMatrixCell('fp', this, event)">
+                            <span class="cell-val mono">${fp}</span>
+                            <span class="cell-lbl">False Positive (FP)</span>
+                        </td>
+                        <td class="matrix-cell tn-cell" onclick="explainMatrixCell('tn', this, event)">
+                            <span class="cell-val mono">${tn}</span>
+                            <span class="cell-lbl">True Negative (TN)</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            `;
+        }
+
+        // Click jump and pulsed highlighting of detailed metric card
+        function highlightMetricCard(metricType) {
+            const cardId = `explain-${metricType}`;
+            const card = document.getElementById(cardId);
+            if (!card) return;
+
+            card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+            document.querySelectorAll('.metric-explain-card').forEach(c => c.classList.remove('highlight'));
+            card.classList.add('highlight');
+
+            setTimeout(() => {
+                card.classList.remove('highlight');
+            }, 2500);
+        }
+
+        // Detailed live equations explanation panel
+        function updateMetricExplanationPanel() {
+            const el = document.getElementById('metricExplanationPanel');
+            if (!el) return;
+
+            const { tp, tn, fp, fn, accuracy, precision, recall, f1 } = evalMetrics;
+            const total = tp + tn + fp + fn;
+
+            function pct(x) {
+                return `${(x * 100).toFixed(1)}%`;
+            }
+
+            const precisionDec = Number.isFinite(precision) ? precision : 0;
+            const recallDec = Number.isFinite(recall) ? recall : 0;
+            const f1Dec = Number.isFinite(f1) ? f1 : 0;
+
+            function dec(x) {
+                return x.toFixed(2);
+            }
+
+            el.innerHTML = `
+                <div class="glass-card" style="margin-top: 1.5rem;">
+                    <h3 style="margin-bottom:0.75rem; font-size:1.1rem; border-bottom:1px solid var(--border-color); padding-bottom:0.25rem;">How to Read the Evaluation Metrics</h3>
+                    <p style="font-size:0.88rem; margin-bottom:0.75rem;">
+                        We treat <strong>Apple</strong> as the positive class. These scores are calculated from the held-out test set only. Click any of the metric cards above to quickly jump and highlight its details.
+                    </p>
+
+                    <div class="metric-explain-grid">
+                        <div class="metric-explain-card" id="explain-accuracy">
+                            <h4><span>Accuracy</span> <span style="font-size: 1.2rem;">🔍</span></h4>
+                            <p><strong>Formula:</strong> $\\frac{\\text{TP} + \\text{TN}}{\\text{Total}}$</p>
+                            <p><strong>Live calculation:</strong> $\\frac{${tp} + ${tn}}{${total}} = ${pct(accuracy)}$</p>
+                            <p><strong>Meaning:</strong> Out of all test fruits, how many did the model classify correctly?</p>
+                            <p class="metric-warning">Warning: Accuracy can look high even when one class is being ignored, especially with imbalanced data.</p>
+                        </div>
+
+                        <div class="metric-explain-card" id="explain-precision">
+                            <h4><span>Precision</span> <span style="font-size: 1.2rem;">🎯</span></h4>
+                            <p><strong>Formula:</strong> $\\frac{\\text{TP}}{\\text{TP} + \\text{FP}}$</p>
+                            <p><strong>Live calculation:</strong> $\\frac{${tp}}{${tp} + ${fp}} = ${pct(precision)}$</p>
+                            <p><strong>Meaning:</strong> When the model predicts Apple, how often is it actually Apple?</p>
+                            <p class="metric-warning">Precision focuses on false alarms: predicted Apple but actually Pear.</p>
+                        </div>
+
+                        <div class="metric-explain-card" id="explain-recall">
+                            <h4><span>Recall</span> <span style="font-size: 1.2rem;">🔎</span></h4>
+                            <p><strong>Formula:</strong> $\\frac{\\text{TP}}{\\text{TP} + \\text{FN}}$</p>
+                            <p><strong>Live calculation:</strong> $\\frac{${tp}}{${tp} + ${fn}} = ${pct(recall)}$</p>
+                            <p><strong>Meaning:</strong> Of all real Apples, how many did the model successfully find?</p>
+                            <p class="metric-warning">Recall focuses on missed Apples: actual Apple but predicted Pear.</p>
+                        </div>
+
+                        <div class="metric-explain-card" id="explain-f1">
+                            <h4><span>F1 Score</span> <span style="font-size: 1.2rem;">⚖️</span></h4>
+                            <p><strong>Formula:</strong> $2 \\times \\frac{\\text{Precision} \\times \\text{Recall}}{\\text{Precision} + \\text{Recall}}$</p>
+                            <p><strong>Live calculation:</strong><br>
+                                Precision = ${dec(precisionDec)}, Recall = ${dec(recallDec)}<br>
+                                F1 = 2 × ${dec(precisionDec)} × ${dec(recallDec)} / (${dec(precisionDec)} + ${dec(recallDec)}) = ${dec(f1Dec)} = ${pct(f1Dec)}
+                            </p>
+                            <p><strong>Meaning:</strong> A balance score between precision and recall.</p>
+                            <p class="metric-warning">Useful when both false positives and false negatives matter.</p>
+                        </div>
+                    </div>
+
+                    <div class="insight-box" style="margin-bottom:0; margin-top: 1rem; font-size: 0.85rem;">
+                        <strong>Do not overtrust 100%:</strong> If all metrics are 100%, it only means the current simulated test split was classified perfectly. It does not prove QDA will always be perfect.
+                    </div>
+                </div>
+            `;
+            triggerMathRender(el);
+        }
+
+        // Deep explanation popup trigger for confusion cells
+        function explainMatrixCell(type, sourceEl, event) {
+            if (event) event.stopPropagation();
+
+            // Remove active highlight from all confusion matrix cells
+            document.querySelectorAll('.matrix-cell').forEach(el => el.classList.remove('active'));
+            if (sourceEl) sourceEl.classList.add('active');
+
+            let title = "", desc = "", formula = "", mistake = "";
+
+            if (type === 'tp') {
+                title = "True Positive (TP)";
+                desc = "The model predicted <strong>Apple</strong> and the actual class was indeed <strong>Apple</strong>.";
+                formula = "Correct Classification";
+                mistake = "No mistake here! The model's learned distribution matched this coordinate correctly.";
+            } else if (type === 'tn') {
+                title = "True Negative (TN)";
+                desc = "The model predicted <strong>Pear</strong> and the actual class was indeed <strong>Pear</strong>.";
+                formula = "Correct Classification";
+                mistake = "No mistake here! The model successfully rejected Apple in favor of the Pear distribution.";
+            } else if (type === 'fp') {
+                title = "False Positive (FP) - Type I Error";
+                desc = "The model predicted <strong>Apple</strong>, but the actual class was <strong>Pear</strong>.";
+                formula = "Incorrect Classification";
+                mistake = "<strong>Why it happens:</strong> This occurs if Pear points spill into Apple territory, or if your prior probability for Apple was high, biasing the boundary against Pear.";
+            } else if (type === 'fn') {
+                title = "False Negative (FN) - Type II Error";
+                desc = "The model predicted <strong>Pear</strong>, but the actual class was <strong>Apple</strong>.";
+                formula = "Incorrect Classification";
+                mistake = "<strong>Why it happens:</strong> This occurs if Apple points fall in Pear territory, or if the Apple variance was estimated too tightly, artificially penalizing points slightly far from the mean.";
+            }
+
+            const body = `
+                <h3 style="margin-bottom: 0.75rem; font-size: 1.15rem; color: var(--accent-dark); font-weight: 700;">📊 ${title}</h3>
+                <p style="font-size: 0.88rem; line-height: 1.55; margin-bottom: 0.85rem;">${desc}</p>
+                <div class="glass-card" style="border-left: 3px solid var(--accent); margin-bottom: 0.85rem; padding: 0.75rem 0.95rem; font-size:0.84rem; background: var(--bg-page);">
+                    <strong>Classification Status:</strong> ${formula}
+                </div>
+                <div class="insight-box" style="margin: 0; font-size:0.8rem; padding:0.65rem 0.85rem; line-height:1.45;">
+                    ${mistake}
+                </div>
+            `;
+
+            const popover = document.getElementById('outputPopover');
+            if (popover) {
+                document.getElementById('outputPopoverBody').innerHTML = body;
+                popover.classList.remove('hidden');
+                popover.removeAttribute('aria-hidden');
+                positionOutputPopover(popover, sourceEl);
+                triggerMathRender(document.getElementById('outputPopoverBody'));
+            }
+        }
+
+        // Live statistical log console renderer with Clickable Hotspots
+        function updateQdaOutputGuide() {
+            const el = document.getElementById('qdaOutputGuide');
+            if (!el) return;
+
+            const sa = probe.active ? scoreQDA(probe.x, probe.y, estMuA, invA, detA, priorA) : 0;
+            const sb = probe.active ? scoreQDA(probe.x, probe.y, estMuB, invB, detB, priorB) : 0;
+            const maxS = Math.max(sa, sb);
+            const expA = Math.exp(sa - maxS);
+            const expB = Math.exp(sb - maxS);
+            const probA = probe.active ? (expA / (expA + expB)) * 100 : 0;
+            const probB = probe.active ? (expB / (expA + expB)) * 100 : 0;
+            const pred = sa > sb ? 'Apple (k=A)' : 'Pear (k=B)';
+
+            const { tp, tn, fp, fn, accuracy, precision, recall, f1 } = evalMetrics;
+
+            el.innerHTML = `
+            <div class="terminal-card">
+                <div class="terminal-header">
+                    <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                    <span class="terminal-title">qda_model_output.log</span>
+                </div>
+                <div class="terminal-body mono">
+                    <div class="hotspot" onclick="showHotspotExplainer('priors', this, event)">
+                        <span class="hotspot-tag">[Priors]</span> Class Priors:
+                        &nbsp;&nbsp;π_Apple = ${priorA.toFixed(3)}, π_Pear = ${priorB.toFixed(3)}
+                    </div>
+
+                    <div class="hotspot" onclick="showHotspotExplainer('means', this, event)">
+                        <span class="hotspot-tag">[Means]</span> Empirical Class Means:
+                        &nbsp;&nbsp;μ_Apple = [${estMuA.x.toFixed(2)}, ${estMuA.y.toFixed(2)}]
+                        &nbsp;&nbsp;μ_Pear  = [${estMuB.x.toFixed(2)}, ${estMuB.y.toFixed(2)}]
+                    </div>
+
+                    <div class="hotspot" onclick="showHotspotExplainer('covariance', this, event)">
+                        <span class="hotspot-tag">[Covariance]</span> Class Covariance Matrices:
+                        &nbsp;&nbsp;Σ_Apple = [[${estCovA[0][0].toFixed(3)}, ${estCovA[0][1].toFixed(3)}], [${estCovA[1][0].toFixed(3)}, ${estCovA[1][1].toFixed(3)}]]
+                        &nbsp;&nbsp;Σ_Pear  = [[${estCovB[0][0].toFixed(3)}, ${estCovB[0][1].toFixed(3)}], [${estCovB[1][0].toFixed(3)}, ${estCovB[1][1].toFixed(3)}]]
+                    </div>
+
+                    <div class="hotspot" onclick="showHotspotExplainer('determinants', this, event)">
+                        <span class="hotspot-tag">[Determinants]</span> Determinants (Volume):
+                        &nbsp;&nbsp;|Σ_Apple| = ${detA.toFixed(4)}
+                        &nbsp;&nbsp;|Σ_Pear|  = ${detB.toFixed(4)}
+                    </div>
+
+                    <div class="hotspot" onclick="showHotspotExplainer('scores', this, event)">
+                        <span class="hotspot-tag">[Scores]</span> Active Probe Scores:
+                        &nbsp;&nbsp;δ_Apple = ${probe.active ? sa.toFixed(3) : '--'}
+                        &nbsp;&nbsp;δ_Pear  = ${probe.active ? sb.toFixed(3) : '--'}
+                    </div>
+
+                    <div class="hotspot" onclick="showHotspotExplainer('posterior', this, event)">
+                        <span class="hotspot-tag">[Posteriors]</span> Probabilities:
+                        &nbsp;&nbsp;P(Apple|x) = ${probe.active ? probA.toFixed(1) + '%' : '--'}
+                        &nbsp;&nbsp;P(Pear|x)  = ${probe.active ? probB.toFixed(1) + '%' : '--'}
+                        &nbsp;&nbsp;Prediction: ${probe.active ? pred : '--'}
+                    </div>
+
+                    <div class="hotspot" onclick="showHotspotExplainer('confusion', this, event)">
+                        <span class="hotspot-tag">[Confusion]</span> Test Set Counts:
+                        &nbsp;&nbsp;TP: ${tp}, TN: ${tn}, FP: ${fp}, FN: ${fn}
+                    </div>
+
+                    <div class="hotspot" onclick="showHotspotExplainer('metrics', this, event)">
+                        <span class="hotspot-tag">[Metrics]</span> Evaluation Metrics:
+                        &nbsp;&nbsp;Accuracy: ${(accuracy * 100).toFixed(1)}%, Precision: ${(precision * 100).toFixed(1)}%
+                        &nbsp;&nbsp;Recall: ${(recall * 100).toFixed(1)}%, F1: ${(f1 * 100).toFixed(1)}%
+                    </div>
+                </div>
+            </div>
+            <p style="font-size:0.8rem; text-align:center; color:var(--text-muted); margin-top:-0.5rem; margin-bottom:1.5rem;">👆 Click any highlighted log row above to open an interactive explainer!</p>
+            `;
+        }
+
+        // Log Hotspot popup triggers
+        function showHotspotExplainer(type, sourceEl, event) {
+            if (event) event.stopPropagation();
+
+            // Remove active highlight from all hotspots
+            document.querySelectorAll('.hotspot, .matrix-cell').forEach(el => el.classList.remove('active'));
+            if (sourceEl) sourceEl.classList.add('active');
+
+            let title = "", desc = "", interpretation = "", warning = "";
+
+            if (type === 'priors') {
+                title = "Class Prior Probabilities (πₖ)";
+                desc = "Priors represent the starting probability of each class based on training sample sizes: <br>$$\\pi_k = \\frac{N_{k,\\text{train}}}{N_{\\text{total, train}}}$$";
+                interpretation = "QDA uses priors as a baseline boost. A larger prior increases the respective class's score, biasing the boundary slightly in its favor.";
+                warning = "<strong>Mistake to Avoid:</strong> If your training ratios do not match real-world proportions (class imbalance), your learned priors will distort accuracy when deployed in production!";
+            } else if (type === 'means') {
+                title = "Class Mean Vectors (μ̂ₖ)";
+                desc = "The learned coordinate center of each class cloud in training space.";
+                interpretation = "Apple's estimated center coordinates are Sweetness = " + estMuA.x.toFixed(2) + " and Roundness = " + estMuA.y.toFixed(2) + ".";
+                warning = "<strong>Mistake to Avoid:</strong> Mean vectors are sensitive to outliers. A single extreme outlier (e.g., a super sweet pear) can shift the mean significantly, leading to poor boundary scaling.";
+            } else if (type === 'covariance') {
+                title = "Class Covariance Matrices (Σ̂ₖ)";
+                desc = "Defines the shape, stretch, and tilt angle of each class. QDA estimates a completely separate matrix for each class.";
+                interpretation = "This allows the Apple class to remain compact and circular, while the Pear class stretches diagonally.";
+                warning = "<strong>Mistake to Avoid:</strong> If you have very few training samples (fewer than the number of features), the covariance matrix becomes singular, leading to mathematical division errors. Regularization prevents this!";
+            } else if (type === 'determinants') {
+                title = "Covariance Determinant |Σₖ|";
+                desc = "Represents the area or volume covered by the class cloud.";
+                interpretation = "Tight clusters have smaller determinants, while wide clusters have larger determinants. QDA penalizes wide classes with $-0.5 \\ln |\\Sigma_k|$ to prevent them from taking over empty space.";
+                warning = "<strong>Mistake to Avoid:</strong> Extreme outliers can inflate determinants, causing the model to excessively penalize that class.";
+            } else if (type === 'scores') {
+                title = "Discriminant Scores δₖ(x)";
+                desc = "Calculates the score of a coordinate belonging to a class. QDA selects the class with the highest score.";
+                interpretation = "A higher score (closer to zero) is selected. The decision boundary lies exactly where scores tie: $\\delta_A(x) = \\delta_B(x)$.";
+                warning = "<strong>Mistake to Avoid:</strong> Discriminant scores are typically negative. Remember that a value of -2.5 is higher than -8.0!";
+            } else if (type === 'posterior') {
+                title = "Posterior Probabilities";
+                desc = "Represents the model's confidence in its predictions, mapped using a softmax function over the scores: <br>$$P(k|x) = \\frac{e^{\\delta_k(x)}}{\\sum_j e^{\\delta_j(x)}}$$";
+                interpretation = "A posterior of 98% represents high confidence, while 51% is a close toss-up near the boundary.";
+                warning = "<strong>Mistake to Avoid:</strong> Posteriors rely on the assumption of normal distributions. If your real data is skewed or multimodal, the model's confidence calculations may be poorly calibrated.";
+            } else if (type === 'confusion') {
+                title = "Confusion Matrix counts";
+                desc = "Summarizes the TP, TN, FP, and FN classification counts on the test set.";
+                interpretation = "Enables you to see where the model makes errors (e.g., misclassifying Pears as Apples).";
+                warning = "<strong>Mistake to Avoid:</strong> Never compute your confusion matrix on your training set, as it does not reflect the model's true generalization performance!";
+            } else if (type === 'metrics') {
+                title = "Evaluation Metrics";
+                desc = "Key performance indicators computed from the test set: Accuracy, Precision, Recall, and F1 score.";
+                interpretation = "Provides a standardized benchmark to compare different modeling configurations.";
+                warning = "<strong>Mistake to Avoid:</strong> Accuracy can be misleading with highly imbalanced classes. Always look at Precision, Recall, or F1 score!";
+            }
+
+            const body = `
+                <h3 style="margin-bottom: 0.75rem; font-size: 1.15rem; color: var(--accent-dark); font-weight: 700;">🔍 ${title}</h3>
+                <p style="font-size: 0.88rem; line-height: 1.55; margin-bottom: 0.85rem;">${desc}</p>
+                <div class="glass-card" style="border-left: 3px solid var(--accent); margin-bottom: 0.85rem; padding: 0.75rem 0.95rem; font-size:0.84rem; background: var(--bg-page);">
+                    <strong>Interpretation:</strong> ${interpretation}
+                </div>
+                <div class="insight-box" style="margin: 0; font-size:0.8rem; padding:0.65rem 0.85rem; line-height:1.45;">
+                    ${warning}
+                </div>
+            `;
+
+            const popover = document.getElementById('outputPopover');
+            if (popover) {
+                document.getElementById('outputPopoverBody').innerHTML = body;
+                popover.classList.remove('hidden');
+                popover.removeAttribute('aria-hidden');
+                positionOutputPopover(popover, sourceEl);
+                triggerMathRender(document.getElementById('outputPopoverBody'));
+            }
+        }
+
+        function positionOutputPopover(popover, sourceEl) {
+            if (!sourceEl) {
+                // Center fixed positioning as a safe fallback
+                popover.style.left = '50%';
+                popover.style.top = '50%';
+                popover.style.transform = 'translate(-50%, -50%)';
+                popover.style.right = 'auto';
+                popover.style.bottom = 'auto';
+                return;
+            }
+
+            // Remove translation transform in normal cases
+            popover.style.transform = 'none';
+
+            if (window.innerWidth <= 900) {
+                popover.style.left = '16px';
+                popover.style.right = '16px';
+                popover.style.top = 'auto';
+                popover.style.bottom = '16px';
+                return;
+            }
+
+            const rect = sourceEl.getBoundingClientRect();
+            const gap = 14;
+            const popoverWidth = Math.min(390, window.innerWidth - 32);
+
+            let left = rect.right + gap;
+            if (left + popoverWidth > window.innerWidth - 16) {
+                left = rect.left - popoverWidth - gap;
+            }
+            if (left < 16) left = 16;
+
+            let top = rect.top;
+            const estimatedHeight = Math.min(480, window.innerHeight - 32);
+            if (top + estimatedHeight > window.innerHeight - 16) {
+                top = window.innerHeight - estimatedHeight - 16;
+            }
+            if (top < 16) top = 16;
+
+            popover.style.left = `${left}px`;
+            popover.style.top = `${top}px`;
+            popover.style.right = 'auto';
+            popover.style.bottom = 'auto';
+        }
+
+        function closeOutputPopover() {
+            const popover = document.getElementById('outputPopover');
+            if (!popover) return;
+            popover.classList.add('hidden');
+            popover.setAttribute('aria-hidden', 'true');
+            document.querySelectorAll('.hotspot, .matrix-cell').forEach(el => el.classList.remove('active'));
+        }
+
+        // Global Keydown & Click listener to handle dismissals cleanly
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeOutputPopover();
+        });
+
+        document.addEventListener('click', (e) => {
+            const popover = document.getElementById('outputPopover');
+            if (!popover || popover.classList.contains('hidden')) return;
+
+            const clickedPopover = popover.contains(e.target);
+            const clickedHotspot = e.target.closest('.hotspot');
+            const clickedCell = e.target.closest('.matrix-cell');
+
+            if (!clickedPopover && !clickedHotspot && !clickedCell) {
+                closeOutputPopover();
+            }
+        });
+
+        // Dynamic Parameter Complexity Calculator
+        function updateParameterComplexity() {
+            const kVal = parseInt(document.getElementById('param-k').value);
+            const pVal = parseInt(document.getElementById('param-p').value);
+
+            document.getElementById('val-param-k').innerText = kVal;
+            document.getElementById('val-param-p').innerText = pVal;
+
+            // LDA = K*p + p*(p+1)/2
+            const ldaCount = kVal * pVal + (pVal * (pVal + 1)) / 2;
+            // QDA = K*p + K*p*(p+1)/2
+            const qdaCount = kVal * pVal + kVal * (pVal * (pVal + 1)) / 2;
+
+            document.getElementById('lda-param-count').innerText = ldaCount;
+            document.getElementById('qda-param-count').innerText = qdaCount;
+
+            const ratio = qdaCount / ldaCount;
+            let msg = "";
+            if (pVal > 10) {
+                msg = `⚠️ With ${pVal} features, QDA requires ${ratio.toFixed(1)}x more parameters than LDA! QDA is highly vulnerable to overfitting unless your dataset is extremely large.`;
+            } else {
+                msg = `For small $p=${pVal}$, QDA is manageable. But notice how fast QDA's parameter count increases as you add more features!`;
+            }
+            document.getElementById('complexity-ratio-msg').innerHTML = msg;
+        }
+
         // --- CANVAS RENDERING ---
-        
+
         const canvas = document.getElementById('qda-canvas');
         const ctx = canvas.getContext('2d');
         const tooltip = document.getElementById('tooltip');
         const statusBox = document.getElementById('viz-status');
-        
+
         let width, height;
-        const VIEW_SIZE = 10; // 0 to 10 scale
-        
+        const VIEW_SIZE = 10;
+
         let currentStage = 1;
         let probe = { x: 5.5, y: 5.5, active: false };
         let isDragging = false;
+        let boundaryMode = 'QDA'; // 'LDA', 'QDA', 'BOTH'
+
+        function setBoundaryMode(mode) {
+            boundaryMode = mode;
+            document.querySelectorAll('.toggle-btn').forEach(btn => btn.classList.remove('active'));
+            if (mode === 'LDA') document.getElementById('btn-boundary-lda').classList.add('active');
+            if (mode === 'QDA') document.getElementById('btn-boundary-qda').classList.add('active');
+            if (mode === 'BOTH') document.getElementById('btn-boundary-both').classList.add('active');
+            render();
+        }
 
         function resize() {
             const rect = canvas.parentElement.getBoundingClientRect();
@@ -884,15 +2260,14 @@
             height = rect.height;
             canvas.width = width * dpr;
             canvas.height = height * dpr;
-            
-            // Critical: Reset transform before scaling so resizes don't compound
+
             ctx.setTransform(1, 0, 0, 1, 0, 0);
             ctx.scale(dpr, dpr);
             render();
         }
 
         function mapX(x) { return (x / VIEW_SIZE) * width; }
-        function mapY(y) { return height - (y / VIEW_SIZE) * height; } 
+        function mapY(y) { return height - (y / VIEW_SIZE) * height; }
         function unmapX(px) { return (px / width) * VIEW_SIZE; }
         function unmapY(py) { return (1 - (py / height)) * VIEW_SIZE; }
 
@@ -905,12 +2280,42 @@
             }
         }
 
-        function drawPoints(pts, color) {
-            ctx.fillStyle = color;
+        // Draw points with Train vs Test set differences
+        function drawPoints(pts, color, isTest = false, evaluate = false) {
             for (let p of pts) {
                 ctx.beginPath();
-                ctx.arc(mapX(p.x), mapY(p.y), 4, 0, Math.PI * 2);
-                ctx.fill();
+                if (isTest) {
+                    if (evaluate) {
+                        const sa = scoreQDA(p.x, p.y, estMuA, invA, detA, priorA);
+                        const sb = scoreQDA(p.x, p.y, estMuB, invB, detB, priorB);
+                        const predApple = (sa > sb);
+                        const correct = (predApple === p.isApple);
+
+                        ctx.strokeStyle = correct ? 'var(--success)' : '#ef4444';
+                        ctx.lineWidth = 2.5;
+                        ctx.arc(mapX(p.x), mapY(p.y), 6, 0, Math.PI * 2);
+                        ctx.stroke();
+
+                        ctx.fillStyle = color;
+                        ctx.beginPath();
+                        ctx.arc(mapX(p.x), mapY(p.y), 2.5, 0, Math.PI * 2);
+                        ctx.fill();
+                    } else {
+                        ctx.strokeStyle = color;
+                        ctx.lineWidth = 2;
+                        ctx.arc(mapX(p.x), mapY(p.y), 5, 0, Math.PI * 2);
+                        ctx.stroke();
+
+                        ctx.fillStyle = color.replace('0.6', '0.15').replace(')', ', 0.15)');
+                        ctx.beginPath();
+                        ctx.arc(mapX(p.x), mapY(p.y), 2, 0, Math.PI * 2);
+                        ctx.fill();
+                    }
+                } else {
+                    ctx.fillStyle = color;
+                    ctx.arc(mapX(p.x), mapY(p.y), 4.5, 0, Math.PI * 2);
+                    ctx.fill();
+                }
             }
         }
 
@@ -919,12 +2324,11 @@
             ctx.lineWidth = 2;
             if (dashed) ctx.setLineDash([5, 5]);
             else ctx.setLineDash([]);
-            
-            // Cholesky for drawing empirical ellipse
+
             const l00 = Math.sqrt(Math.max(cov[0][0], 0.0001));
             const l10 = cov[1][0] / l00;
             const l11 = Math.sqrt(Math.max(cov[1][1] - l10 * l10, 0.0001));
-            
+
             ctx.beginPath();
             const steps = 60;
             for (let i = 0; i <= steps; i++) {
@@ -951,33 +2355,90 @@
             ctx.beginPath(); ctx.moveTo(x - 8, y); ctx.lineTo(x + 8, y); ctx.moveTo(x, y - 8); ctx.lineTo(x, y + 8); ctx.stroke();
         }
 
-        function drawDecisionBoundary(type, alpha = 0.15) {
-            const res = 50; // Grid resolution
+        // Trace sign changes to draw boundary curves
+        function drawDecisionBoundary(alpha = 0.15) {
+            const res = 80;
             const dx = width / res;
             const dy = height / res;
-            
-            ctx.globalAlpha = alpha;
+
+            let qdaGrid = [];
+            let ldaGrid = [];
+
             for (let i = 0; i < res; i++) {
+                qdaGrid[i] = [];
+                ldaGrid[i] = [];
                 for (let j = 0; j < res; j++) {
                     const cx = dx * i + dx/2;
                     const cy = dy * j + dy/2;
                     const valX = unmapX(cx);
                     const valY = unmapY(cy);
-                    
-                    let sA, sB;
-                    if (type === 'LDA') {
-                        sA = scoreLDA(valX, valY, estMuA, priorA);
-                        sB = scoreLDA(valX, valY, estMuB, priorB);
+
+                    const sA_qda = scoreQDA(valX, valY, estMuA, invA, detA, priorA);
+                    const sB_qda = scoreQDA(valX, valY, estMuB, invB, detB, priorB);
+                    qdaGrid[i][j] = sA_qda - sB_qda;
+
+                    const sA_lda = scoreLDA(valX, valY, estMuA, priorA);
+                    const sB_lda = scoreLDA(valX, valY, estMuB, priorB);
+                    ldaGrid[i][j] = sA_lda - sB_lda;
+                }
+            }
+
+            // Background opacity shading
+            ctx.globalAlpha = alpha;
+            for (let i = 0; i < res; i++) {
+                for (let j = 0; j < res; j++) {
+                    let isApple = false;
+                    if (boundaryMode === 'LDA') {
+                        isApple = ldaGrid[i][j] > 0;
                     } else {
-                        sA = scoreQDA(valX, valY, estMuA, invA, detA, priorA);
-                        sB = scoreQDA(valX, valY, estMuB, invB, detB, priorB);
+                        isApple = qdaGrid[i][j] > 0;
                     }
-                    
-                    ctx.fillStyle = (sA > sB) ? '#e63946' : '#2a9d8f';
-                    ctx.fillRect(i*dx - 0.5, j*dy - 0.5, dx+1.5, dy+1.5); // Add overlap to prevent seams
+                    ctx.fillStyle = isApple ? 'rgba(230, 57, 70, 1)' : 'rgba(42, 157, 143, 1)';
+                    ctx.fillRect(i*dx - 0.5, j*dy - 0.5, dx+1.5, dy+1.5);
                 }
             }
             ctx.globalAlpha = 1.0;
+
+            // Draw actual crisp boundary line(s)
+            ctx.lineWidth = 3;
+
+            if (boundaryMode === 'QDA' || boundaryMode === 'BOTH') {
+                ctx.strokeStyle = '#1e293b';
+                ctx.beginPath();
+                for (let i = 0; i < res - 1; i++) {
+                    for (let j = 0; j < res - 1; j++) {
+                        if ((qdaGrid[i][j] > 0) !== (qdaGrid[i+1][j] > 0)) {
+                            ctx.moveTo(mapX(unmapX(dx * (i + 0.5))), mapY(unmapY(dy * (j + 0.5))));
+                            ctx.lineTo(mapX(unmapX(dx * (i + 1.5))), mapY(unmapY(dy * (j + 0.5))));
+                        }
+                        if ((qdaGrid[i][j] > 0) !== (qdaGrid[i][j+1] > 0)) {
+                            ctx.moveTo(mapX(unmapX(dx * (i + 0.5))), mapY(unmapY(dy * (j + 0.5))));
+                            ctx.lineTo(mapX(unmapX(dx * (i + 0.5))), mapY(unmapY(dy * (j + 1.5))));
+                        }
+                    }
+                }
+                ctx.stroke();
+            }
+
+            if (boundaryMode === 'LDA' || boundaryMode === 'BOTH') {
+                ctx.strokeStyle = '#6366f1';
+                ctx.setLineDash([4, 4]);
+                ctx.beginPath();
+                for (let i = 0; i < res - 1; i++) {
+                    for (let j = 0; j < res - 1; j++) {
+                        if ((ldaGrid[i][j] > 0) !== (ldaGrid[i+1][j] > 0)) {
+                            ctx.moveTo(mapX(unmapX(dx * (i + 0.5))), mapY(unmapY(dy * (j + 0.5))));
+                            ctx.lineTo(mapX(unmapX(dx * (i + 1.5))), mapY(unmapY(dy * (j + 0.5))));
+                        }
+                        if ((ldaGrid[i][j] > 0) !== (ldaGrid[i][j+1] > 0)) {
+                            ctx.moveTo(mapX(unmapX(dx * (i + 0.5))), mapY(unmapY(dy * (j + 0.5))));
+                            ctx.lineTo(mapX(unmapX(dx * (i + 0.5))), mapY(unmapY(dy * (j + 1.5))));
+                        }
+                    }
+                }
+                ctx.stroke();
+                ctx.setLineDash([]);
+            }
         }
 
         function drawProbe() {
@@ -985,34 +2446,38 @@
             const px = mapX(probe.x);
             const py = mapY(probe.y);
 
-            // Lines to centers
-            ctx.strokeStyle = 'rgba(230, 57, 70, 0.4)';
-            ctx.lineWidth = 2;
+            // Lines to estimated centers
+            ctx.strokeStyle = 'rgba(230, 57, 70, 0.45)';
+            ctx.lineWidth = 1.5;
             ctx.setLineDash([4, 4]);
             ctx.beginPath(); ctx.moveTo(px, py); ctx.lineTo(mapX(estMuA.x), mapY(estMuA.y)); ctx.stroke();
 
-            ctx.strokeStyle = 'rgba(42, 157, 143, 0.4)';
+            ctx.strokeStyle = 'rgba(42, 157, 143, 0.45)';
             ctx.beginPath(); ctx.moveTo(px, py); ctx.lineTo(mapX(estMuB.x), mapY(estMuB.y)); ctx.stroke();
             ctx.setLineDash([]);
 
-            // Pulse ring
+            // Pulsing ring
             ctx.strokeStyle = '#1f2937';
             ctx.lineWidth = 1;
             ctx.beginPath(); ctx.arc(px, py, 12 + Math.sin(Date.now()/200)*3, 0, Math.PI * 2); ctx.stroke();
 
-            // Point
+            // Coordinate point
             ctx.fillStyle = '#1f2937';
             ctx.beginPath(); ctx.arc(px, py, 6, 0, Math.PI * 2); ctx.fill();
         }
-        
+
         function updateStatusText() {
             let txt = "";
-            if (currentStage === 1) txt = "Live Generated Scatter Data";
-            else if (currentStage === 2) txt = "LDA: Assumes Shared Spread + Linear Boundary";
-            else if (currentStage === 3) txt = "QDA: Estimating Unique Class Covariances";
-            else if (currentStage === 4) txt = `Estimated Centers and Covariances from ${ptsA.length + ptsB.length} points`;
-            else if (currentStage === 5) txt = "Test Probe Active: Tap & Drag to view scores";
-            else if (currentStage >= 6) txt = "QDA: Full Curved Decision Boundary";
+            if (currentStage === 1) txt = "Stage 1: Live Generated Scatter Data";
+            else if (currentStage === 2) txt = "Stage 2: Partitioning Train vs Test";
+            else if (currentStage === 3) txt = "Stage 3: LDA Pooled Ellipse & Shared Spread";
+            else if (currentStage === 4) txt = "Stage 4: Fitting Class Statistics from Training Data";
+            else if (currentStage === 5) txt = "Stage 5: Test Probe & Concentric Distance Contours";
+            else if (currentStage === 6) txt = `Stage 6: Decision Boundaries (Mode: ${boundaryMode})`;
+            else if (currentStage === 7) txt = "Stage 7: Evaluating on Test Set (Accuracy Check)";
+            else if (currentStage === 8) txt = "Stage 8: Click logs below for details!";
+            else if (currentStage === 9) txt = "Stage 9: Adjust Playground & Regularization";
+            else if (currentStage === 10) txt = "Stage 10: Assumptions, Complexity & Synthesis";
             statusBox.innerHTML = txt;
         }
 
@@ -1021,24 +2486,23 @@
                 tooltip.style.opacity = 0;
                 return;
             }
-            
+
             tooltip.style.opacity = 1;
             tooltip.style.left = mapX(probe.x) + 'px';
             tooltip.style.top = mapY(probe.y) + 'px';
-            
+
             const sa = scoreQDA(probe.x, probe.y, estMuA, invA, detA, priorA);
             const sb = scoreQDA(probe.x, probe.y, estMuB, invB, detB, priorB);
-            
-            // Softmax for posterior probability
+
             const maxS = Math.max(sa, sb);
             const expA = Math.exp(sa - maxS);
             const expB = Math.exp(sb - maxS);
             const probA = (expA / (expA + expB)) * 100;
             const probB = (expB / (expA + expB)) * 100;
 
-            document.getElementById('tt-score-a').innerHTML = `${probA.toFixed(1)}% <small>(δ: ${sa.toFixed(2)})</small>`;
-            document.getElementById('tt-score-b').innerHTML = `${probB.toFixed(1)}% <small>(δ: ${sb.toFixed(2)})</small>`;
-            
+            document.getElementById('tt-score-a').innerHTML = `${probA.toFixed(1)}% <small>(δ: ${sa.toFixed(1)})</small>`;
+            document.getElementById('tt-score-b').innerHTML = `${probB.toFixed(1)}% <small>(δ: ${sb.toFixed(1)})</small>`;
+
             const title = document.getElementById('tt-pred');
             if(sa > sb) {
                 title.innerText = "Predicted: Apple";
@@ -1053,55 +2517,97 @@
             ctx.clearRect(0, 0, width, height);
             drawGrid();
 
-            // Background Regions
-            if (currentStage === 2) drawDecisionBoundary('LDA', 0.12);
-            else if (currentStage >= 6) drawDecisionBoundary('QDA', 0.15);
+            const showBoundary = (currentStage === 3 || currentStage === 6 || currentStage === 7 || currentStage === 8 || currentStage === 9 || currentStage === 10);
 
-            // Points
-            drawPoints(ptsA, 'rgba(230, 57, 70, 0.6)');
-            drawPoints(ptsB, 'rgba(42, 157, 143, 0.6)');
+            // 1. Draw boundary regions
+            if (showBoundary) {
+                if (currentStage === 3) {
+                    // Force LDA in stage 3
+                    const oldMode = boundaryMode;
+                    boundaryMode = 'LDA';
+                    drawDecisionBoundary(0.12);
+                    boundaryMode = oldMode;
+                } else if (currentStage === 7) {
+                    // Force QDA in evaluation stage
+                    const oldMode = boundaryMode;
+                    boundaryMode = 'QDA';
+                    drawDecisionBoundary(0.15);
+                    boundaryMode = oldMode;
+                } else {
+                    drawDecisionBoundary(0.15);
+                }
+            }
 
-            // Models
-            if (currentStage === 2) {
-                // LDA shared covariance assumption centered on empirical means
+            // 2. Draw scatter points (training vs testing)
+            const showSplit = (currentStage >= 2);
+            const showEval = (currentStage === 7);
+
+            if (showSplit) {
+                drawPoints(ptsA_train, 'rgba(230, 57, 70, 0.6)', false, false);
+                drawPoints(ptsB_train, 'rgba(42, 157, 143, 0.6)', false, false);
+                drawPoints(ptsA_test, 'rgba(230, 57, 70, 0.8)', true, showEval);
+                drawPoints(ptsB_test, 'rgba(42, 157, 143, 0.8)', true, showEval);
+            } else {
+                drawPoints(ptsA, 'rgba(230, 57, 70, 0.6)', false, false);
+                drawPoints(ptsB, 'rgba(42, 157, 143, 0.6)', false, false);
+            }
+
+            // 3. Draw model outlines & shapes
+            if (currentStage === 3) {
+                // Shared average shape for LDA
                 drawEllipse(estMuA, estSharedCov, '#e63946', 1.5, true);
                 drawEllipse(estMuB, estSharedCov, '#2a9d8f', 1.5, true);
-            } 
-            else if (currentStage >= 3) {
-                // True QDA empirically estimated covariances
+            }
+            else if (currentStage === 5) {
+                // Concentric equal-distance contours for Mahalanobis
+                drawEllipse(estMuA, estCovA, 'rgba(230, 57, 70, 0.25)', 0.8);
+                drawEllipse(estMuA, estCovA, 'rgba(230, 57, 70, 0.55)', 1.5);
+                drawEllipse(estMuA, estCovA, 'rgba(230, 57, 70, 0.25)', 2.2);
+
+                drawEllipse(estMuB, estCovB, 'rgba(42, 157, 143, 0.25)', 0.8);
+                drawEllipse(estMuB, estCovB, 'rgba(42, 157, 143, 0.55)', 1.5);
+                drawEllipse(estMuB, estCovB, 'rgba(42, 157, 143, 0.25)', 2.2);
+            }
+            else if (currentStage >= 4) {
+                // Unique covariance shapes for QDA
                 drawEllipse(estMuA, estCovA, '#e63946', 1.5);
                 drawEllipse(estMuB, estCovB, '#2a9d8f', 1.5);
             }
 
-            // Centers
+            // 4. Draw mean center markers
             if (currentStage >= 4) {
                 drawCenter(estMuA, '#e63946');
                 drawCenter(estMuB, '#2a9d8f');
             }
 
-            // Interactive Probe
-            if (currentStage >= 5) {
+            // 5. Draw active interactive probe tool
+            const showProbe = (currentStage === 5 || currentStage === 6 || currentStage === 8 || currentStage === 9 || currentStage === 10);
+            if (showProbe && probe.active) {
                 drawProbe();
                 updateProbeTooltip();
             } else {
                 tooltip.style.opacity = 0;
             }
-            
+
             updateStatusText();
         }
 
         // --- INTERACTIVITY & BINDINGS ---
-        
+
         function handleProbeMove(px, py) {
             probe.x = Math.max(0, Math.min(VIEW_SIZE, unmapX(px)));
             probe.y = Math.max(0, Math.min(VIEW_SIZE, unmapY(py)));
             probe.active = true;
+
+            updateProbeScorePanel();
+            updateWorkedFormulaCard();
+            updateQdaOutputGuide();
             render();
         }
 
-        // Use modern Pointer Events for combined Mouse & Touch support
         canvas.addEventListener('pointerdown', (e) => {
-            if (currentStage < 5) return;
+            const allowedStages = [5, 6, 8, 9, 10];
+            if (!allowedStages.includes(currentStage)) return;
             isDragging = true;
             canvas.setPointerCapture(e.pointerId);
             const rect = canvas.getBoundingClientRect();
@@ -1124,37 +2630,74 @@
             canvas.releasePointerCapture(e.pointerId);
         });
 
-        // Sliders live-update bindings
-        const sliderIds = ['na', 'nb', 'a-mx', 'a-my', 'a-sz', 'a-st', 'a-tl', 'b-mx', 'b-my', 'b-sz', 'b-st', 'b-tl'];
+        // Sliders & Controls configuration
+        const sliderIds = ['na', 'nb', 'a-mx', 'a-my', 'a-sz', 'a-st', 'a-tl', 'b-mx', 'b-my', 'b-sz', 'b-st', 'b-tl', 'ridge'];
         sliderIds.forEach(id => {
-            const el = document.getElementById(id.startsWith('n') ? `slider-${id}` : id);
+            const el = document.getElementById(id.startsWith('n') || id === 'ridge' ? `slider-${id}` : id);
             if(el) {
                 el.addEventListener('input', () => {
-                    // Specific span updates
                     if (id === 'na') document.getElementById('val-na').innerText = el.value;
                     if (id === 'nb') document.getElementById('val-nb').innerText = el.value;
+                    if (id === 'ridge') document.getElementById('val-ridge').innerText = parseFloat(el.value).toFixed(2);
                     rebuildSimulation();
                 });
             }
         });
-        
-        // Explicit random re-scatter button
+
         const btnRegen = document.getElementById('btn-regen');
         btnRegen.addEventListener('click', () => {
             currentSeedA = Math.random() * 10000;
             currentSeedB = Math.random() * 10000 + 10000;
             rebuildSimulation();
-            if(currentStage < 5) probe.active = false;
+            if(![5,6,8,9,10].includes(currentStage)) probe.active = false;
         });
 
-        // --- SCROLL LOGIC ---
-        
+        // Parameter complexity sliders
+        const paramK = document.getElementById('param-k');
+        const paramP = document.getElementById('param-p');
+        paramK.addEventListener('input', updateParameterComplexity);
+        paramP.addEventListener('input', updateParameterComplexity);
+
+        // --- CONCEPT CHECK QUIZ HANDLERS ---
+
+        document.querySelectorAll('.quiz-option').forEach(button => {
+            button.addEventListener('click', (e) => {
+                const option = e.currentTarget;
+                const parent = option.closest('.quiz-card');
+                if (parent.dataset.answered === 'true') return;
+
+                const isCorrect = option.getAttribute('data-correct') === 'true';
+                const options = parent.querySelectorAll('.quiz-option');
+
+                options.forEach(opt => opt.classList.remove('correct', 'incorrect'));
+
+                const feedback = parent.querySelector('.quiz-feedback');
+                feedback.classList.remove('hidden', 'correct-feedback', 'incorrect-feedback');
+
+                if (isCorrect) {
+                    option.classList.add('correct');
+                    feedback.classList.add('correct-feedback');
+                    feedback.innerHTML = `<strong>Correct!</strong> ${parent.dataset.explanation || "Well explained!"}`;
+                    parent.dataset.answered = 'true';
+                    options.forEach(opt => {
+                        if (opt !== option) opt.style.opacity = '0.6';
+                    });
+                } else {
+                    option.classList.add('incorrect');
+                    feedback.classList.add('incorrect-feedback');
+                    feedback.innerHTML = `<strong>Try again!</strong> Double check the mathematical concepts and illustrations above.`;
+                }
+            });
+        });
+
+        // --- SCROLL & STAGE MANAGEMENT ---
+
         const stages = document.querySelectorAll('.stage');
         const progressBar = document.getElementById('progress-bar');
 
         const observerOptions = {
             root: null,
-            rootMargin: '-40% 0px -40% 0px',
+            rootMargin: '-30% 0px -30% 0px',
             threshold: 0
         };
 
@@ -1164,11 +2707,18 @@
                     stages.forEach(s => s.classList.remove('active'));
                     entry.target.classList.add('active');
                     currentStage = parseInt(entry.target.getAttribute('data-stage'));
-                    
-                    // Activate default probe on stage 5 if not active
-                    if (currentStage >= 5 && !probe.active) {
+
+                    updateStageDots(currentStage);
+
+                    // Auto-enable probe on appropriate stages
+                    const probeStages = [5, 6, 8, 9, 10];
+                    if (probeStages.includes(currentStage) && !probe.active) {
                         probe.x = 5.5; probe.y = 5.5; probe.active = true;
                     }
+
+                    updateProbeScorePanel();
+                    updateWorkedFormulaCard();
+                    updateQdaOutputGuide();
                     render();
                 }
             });
@@ -1184,27 +2734,80 @@
         });
 
         window.addEventListener('resize', resize);
-        
+
+        // Sidebar dot builders
+        const stageTitles = [
+            "The Raw Data Cloud",
+            "Train/Test Split",
+            "The Straight-Line Trap",
+            "Fitting QDA Statistics",
+            "Testing & Probe Score",
+            "The Curved Boundary",
+            "Evaluating on Test Set",
+            "Reading QDA Output",
+            "Regularization Control",
+            "Assumptions & Complexity"
+        ];
+
+        function buildStageDots() {
+            const container = document.getElementById('stage-dots-container');
+            container.innerHTML = '';
+            stages.forEach((stage, index) => {
+                const dot = document.createElement('div');
+                dot.className = 'stage-dot';
+                if (index === 0) dot.classList.add('active');
+
+                const tooltip = document.createElement('div');
+                tooltip.className = 'stage-dot-tooltip';
+                tooltip.innerText = `${index + 1}. ${stageTitles[index]}`;
+                dot.appendChild(tooltip);
+
+                dot.addEventListener('click', () => {
+                    stage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                });
+                container.appendChild(dot);
+            });
+        }
+
+        function updateStageDots(activeStageIndex) {
+            const dots = document.querySelectorAll('.stage-dot');
+            dots.forEach((dot, idx) => {
+                if (idx === activeStageIndex - 1) {
+                    dot.classList.add('active');
+                } else {
+                    dot.classList.remove('active');
+                }
+            });
+        }
+
+        // Helper to rerun math rendering on dynamic blocks
+        function triggerMathRender(el) {
+            if (typeof renderMathInElement !== 'undefined') {
+                renderMathInElement(el, {
+                    delimiters: [
+                        {left: '$$', right: '$$', display: true},
+                        {left: '$', right: '$', display: false}
+                    ],
+                    throwOnError: false
+                });
+            }
+        }
+
         // --- STARTUP ---
+        buildStageDots();
         rebuildSimulation();
+        updateParameterComplexity();
         resize();
 
-        // Animate probe pulsing
         function animLoop() {
-            if(probe.active && currentStage >= 5) render();
+            const probeStages = [5, 6, 8, 9, 10];
+            if (probe.active && probeStages.includes(currentStage)) render();
             requestAnimationFrame(animLoop);
         }
         animLoop();
 
-        // Render Math on Load
         document.addEventListener("DOMContentLoaded", function() {
-            renderMathInElement(document.body, {
-              delimiters: [
-                  {left: '$$', right: '$$', display: true},
-                  {left: '$', right: '$', display: false}
-              ],
-              throwOnError: false
-            });
+            triggerMathRender(document.body);
         });
 
     </script>
