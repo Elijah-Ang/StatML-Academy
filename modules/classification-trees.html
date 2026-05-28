@@ -8,16 +8,29 @@
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 :root{
-  --bg:#f7f7f4;--bg2:#f0efeb;--surface:#ffffff;
-  --glass:rgba(255,255,255,0.85);--glass-border:#e7e5e4;
-  --text:#1f2937;--text-dim:#4b5563;--text-muted:#6b7280;
-  --accent:#6366f1;--accent2:#4f46e5;--accent-glow:rgba(99,102,241,0.08);
-  --apple:#2563eb;--apple-soft:rgba(37,99,235,0.1);
-  --orange:#d97706;--orange-soft:rgba(217,119,6,0.1);
-  --green:#16a34a;--green-soft:rgba(22,163,74,0.1);
-  --blue:#3b82f6;--blue-soft:rgba(59,130,246,0.1);
-  --coral:#dc2626;--coral-soft:rgba(220,38,38,0.08);
-  --radius:16px;--radius-sm:10px;
+  --bg:#f7f7f4;
+  --bg2:#f0efeb;
+  --surface:#ffffff;
+  --glass:rgba(255,255,255,0.85);
+  --glass-border:#e7e5e4;
+  --text:#1f2937;
+  --text-dim:#4b5563;
+  --text-muted:#6b7280;
+  --accent:#6366f1;
+  --accent2:#4f46e5;
+  --accent-glow:rgba(99,102,241,0.08);
+  --apple:#2563eb;
+  --apple-soft:rgba(37,99,235,0.1);
+  --orange:#d97706;
+  --orange-soft:rgba(217,119,6,0.1);
+  --green:#16a34a;
+  --green-soft:rgba(22,163,74,0.1);
+  --blue:#3b82f6;
+  --blue-soft:rgba(59,130,246,0.1);
+  --coral:#dc2626;
+  --coral-soft:rgba(220,38,38,0.08);
+  --radius:16px;
+  --radius-sm:10px;
 }
 html{scroll-behavior:smooth;background:var(--bg)}
 body{font-family:'Inter',system-ui,sans-serif;color:var(--text);background:var(--bg);line-height:1.7;overflow-x:hidden}
@@ -49,18 +62,20 @@ p{font-size:0.95rem;color:var(--text-dim);margin-bottom:16px;max-width:520px}
 .tag-apple{background:var(--apple-soft);color:var(--apple)}
 .tag-orange{background:var(--orange-soft);color:var(--orange)}
 .metric-row{display:flex;gap:12px;margin:12px 0;flex-wrap:wrap}
-.metric-card{flex:1;min-width:100px;background:var(--bg);border:1px solid var(--glass-border);border-radius:var(--radius-sm);padding:14px;text-align:center}
+.metric-card{flex:1;min-width:100px;background:var(--bg);border:1px solid var(--glass-border);border-radius:var(--radius-sm);padding:14px;text-align:center;transition:transform 0.2s, border-color 0.2s}
+.metric-card:hover{transform:translateY(-2px);border-color:var(--accent)}
 .metric-card .val{font-size:1.4rem;font-weight:700;font-family:'JetBrains Mono',monospace}
 .metric-card .lbl{font-size:0.7rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.05em;margin-top:4px}
 .insight-box{border-left:3px solid var(--accent);padding:12px 16px;margin:16px 0;background:var(--accent-glow);border-radius:0 var(--radius-sm) var(--radius-sm) 0}
 .insight-box p{margin:0;font-size:0.88rem;color:var(--text)}
-.matrix-grid{display:grid;grid-template-columns:auto 1fr 1fr;gap:0;margin:16px 0;font-family:'JetBrains Mono',monospace;font-size:0.8rem}
-.matrix-grid .cell{padding:10px 14px;text-align:center;border:1px solid var(--glass-border)}
+.matrix-grid{display:grid;grid-template-columns:auto 1fr 1fr;gap:4px;margin:16px 0;font-family:'JetBrains Mono',monospace;font-size:0.8rem}
+.matrix-grid .cell{padding:12px 14px;text-align:center;border:1px solid var(--glass-border);border-radius:6px;transition:all 0.2s}
+.matrix-grid .cell:hover{filter:brightness(0.96)}
 .matrix-grid .header{font-weight:600;color:var(--accent2);background:rgba(99,102,241,0.05)}
-.matrix-grid .tp{background:rgba(22,163,74,0.08);color:var(--green)}
-.matrix-grid .tn{background:rgba(59,130,246,0.08);color:var(--blue)}
-.matrix-grid .fp{background:rgba(217,119,6,0.06);color:var(--orange)}
-.matrix-grid .fn{background:rgba(220,38,38,0.06);color:var(--coral)}
+.matrix-grid .tp{background:rgba(16,185,129,0.08);color:var(--green);border-color:var(--green)}
+.matrix-grid .tn{background:rgba(59,130,246,0.08);color:var(--blue);border-color:var(--blue)}
+.matrix-grid .fp{background:rgba(217,119,6,0.06);color:var(--orange);border-color:var(--orange)}
+.matrix-grid .fn{background:rgba(239,68,68,0.06);color:var(--coral);border-color:var(--coral)}
 .playground-controls{display:flex;gap:12px;margin:16px 0;flex-wrap:wrap;align-items:center}
 .btn{padding:10px 20px;border-radius:var(--radius-sm);border:1px solid var(--glass-border);background:var(--surface);color:var(--text);font-family:'Inter',sans-serif;font-size:0.85rem;font-weight:500;cursor:pointer;transition:all 0.2s}
 .btn:hover{background:var(--accent-glow);border-color:var(--accent)}
@@ -70,25 +85,76 @@ p{font-size:0.95rem;color:var(--text-dim);margin-bottom:16px;max-width:520px}
 .trace-block{font-family:'JetBrains Mono',monospace;font-size:0.75rem;color:var(--text-dim);margin-top:6px;line-height:1.4}
 .trace-step{display:block;padding-left:12px;position:relative}
 .trace-step::before{content:'→';position:absolute;left:0;color:var(--accent)}
+
+/* DOT NAVIGATION */
+.stage-nav-dots{position:fixed;right:24px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:10px;z-index:100}
+.stage-dot{width:10px;height:10px;border-radius:50%;background:var(--text-muted);opacity:0.35;cursor:pointer;transition:all 0.2s ease;position:relative}
+.stage-dot:hover{opacity:1;transform:scale(1.25)}
+.stage-dot.active{background:var(--accent);opacity:1;transform:scale(1.4)}
+.stage-dot-tooltip{position:absolute;right:22px;top:50%;transform:translateY(-50%);background:var(--text);color:var(--surface);padding:4px 10px;border-radius:6px;font-size:0.7rem;font-weight:500;white-space:nowrap;pointer-events:none;opacity:0;transition:opacity 0.15s ease}
+.stage-dot:hover .stage-dot-tooltip{opacity:1}
+
+/* HOTSPOTS & POPOVERS */
+.hotspot{cursor:pointer;color:var(--accent);text-decoration:underline dashed;font-weight:600;transition:all 0.2s}
+.hotspot:hover{color:var(--accent2);background:var(--accent-glow)}
+.popover{position:absolute;background:var(--surface);border:1px solid var(--accent);border-radius:var(--radius-sm);box-shadow:0 10px 25px -5px rgba(0,0,0,0.1),0 8px 10px -6px rgba(0,0,0,0.1);padding:14px;width:290px;z-index:1000;display:none;font-size:0.8rem;line-height:1.6;color:var(--text)}
+.popover-header{font-weight:700;margin-bottom:6px;color:var(--accent2);font-size:0.85rem;display:flex;align-items:center;justify-content:space-between}
+.popover-close{cursor:pointer;font-weight:bold;font-size:1.1em;color:var(--text-muted)}
+.popover-close:hover{color:var(--coral)}
+
+/* QUIZ STYLES */
+.quiz-card{border-left:4px solid var(--accent);background:var(--surface);padding:20px;margin:20px 0}
+.quiz-badge{display:inline-block;padding:3px 8px;background:var(--accent-glow);color:var(--accent);border-radius:4px;font-size:0.72rem;font-weight:600;text-transform:uppercase;margin-bottom:10px}
+.quiz-question{font-weight:600;margin-bottom:14px !important;color:var(--text)}
+.quiz-options{display:flex;flex-direction:column;gap:8px}
+.quiz-opt{padding:10px 14px;border-radius:var(--radius-sm);border:1px solid var(--glass-border);background:var(--bg);color:var(--text-dim);text-align:left;cursor:pointer;font-size:0.88rem;transition:all 0.2s ease}
+.quiz-opt:hover{background:var(--glass-border);border-color:var(--text-muted)}
+.quiz-opt.correct{background:var(--green-soft);border-color:var(--green);color:var(--green);font-weight:500}
+.quiz-opt.incorrect{background:var(--coral-soft);border-color:var(--coral);color:var(--coral)}
+.quiz-feedback{margin-top:12px;font-size:0.85rem;font-weight:500;padding:8px 12px;border-radius:var(--radius-sm)}
+
+/* INTERACTION RULES */
+.guide-item{margin-bottom:8px;padding-bottom:8px;border-bottom:1px dashed var(--glass-border)}
+.guide-item:last-child{border-bottom:none}
+#treeOutputGuide{font-size:0.8rem;line-height:1.45}
+.model-report-block{padding:18px 22px;line-height:1.45}
+.report-row{display:grid;grid-template-columns:160px 1fr;gap:10px;align-items:start;margin:6px 0;padding:6px 0}
+.rules-container{max-height:200px;overflow-y:auto;font-family:'JetBrains Mono',monospace;font-size:0.78rem;background:var(--bg2);padding:10px;border-radius:var(--radius-sm);margin-top:8px;line-height:1.4}
+.rule-row{margin-bottom:6px;border-bottom:1px solid rgba(0,0,0,0.03);padding-bottom:4px}
+.rule-row:last-child{border-bottom:none;margin-bottom:0}
+.importance-bars-container{margin-top:10px}
+.importance-bar-row{display:flex;align-items:center;gap:12px;margin-bottom:8px;cursor:pointer;padding:4px;border-radius:4px;transition:background 0.2s}
+.importance-bar-row:hover{background:var(--accent-glow)}
+.imp-label{width:60px;font-size:0.82rem;font-weight:600}
+.imp-track{flex:1;height:10px;background:var(--bg2);border-radius:5px;overflow:hidden}
+.imp-fill{height:100%;border-radius:5px;transition:width 0.3s ease}
+.imp-value{width:50px;font-size:0.8rem;font-family:'JetBrains Mono',monospace;text-align:right;font-weight:600}
+.small-hint{font-size:0.72rem;color:var(--text-muted);margin-top:4px}
+.data-table tr.clickable-row{cursor:pointer;transition:background 0.2s}
+.data-table tr.clickable-row:hover{background:var(--accent-glow) !important}
+.data-table tr.clickable-row.selected{background:var(--accent-glow) !important;border-left:3px solid var(--accent)}
+
 @media(max-width:900px){
   .layout{flex-direction:column}
   .narrative{width:100%;min-width:unset}
   .viz-container{width:100%;height:50vh;position:sticky;top:0;border-bottom:1px solid var(--glass-border)}
   .section{padding:40px 24px}
   .hero-section{width:100%}
+  .stage-nav-dots{display:none}
 }
 </style>
 </head>
 <body>
 
 <div class="progress-bar" id="progressBar"></div>
+<div class="stage-nav-dots" id="stageNavDots"></div>
 
 <!-- HERO -->
 <section class="hero-section section" data-stage="0">
   <canvas id="heroCanvas" class="hero-bg"></canvas>
   <div class="hero-badge">Machine Learning · Classification Trees</div>
   <h1>Classification<br>Trees</h1>
-  <p class="subtitle">Watch a tree model learn the best yes-or-no questions to sort fruit.</p>
+  <p class="subtitle">Watch an intuitive machine learning algorithm learn yes-or-no flowchart questions to segment data.</p>
   <div class="scroll-hint">↓ Scroll to begin</div>
 </section>
 
@@ -102,20 +168,95 @@ p{font-size:0.95rem;color:var(--text-dim);margin-bottom:16px;max-width:520px}
   <h2>The Raw Data</h2>
   <p>Every problem starts with data. We have measurements for fruit — <strong>Weight</strong> (x-axis) and <strong>Color Intensity</strong> (y-axis).</p>
   <p>Each fruit is already labeled: an <span class="tag tag-apple">Apple</span> or an <span class="tag tag-orange">Orange</span>. The goal of our tree is to learn rules to sort them into cleaner groups.</p>
+
   <div class="glass-card">
-    <h3>Training Data</h3>
+    <h3>💡 The Whole Idea of Classification Trees</h3>
+    <p style="font-size:0.88rem; color:var(--text-dim); line-height:1.6">
+      A <strong>Classification Tree</strong> is a supervised machine-learning model that learns a sequence of simple yes/no flowchart-like questions to sort data into categories.
+    </p>
+    <div style="background:rgba(99,102,241,0.05); padding:12px; border-radius:var(--radius-sm); border:1px solid rgba(99,102,241,0.15); font-size:0.8rem; font-family:'JetBrains Mono',monospace; line-height:1.4">
+      Raw Labeled Data → Root Node → Scan Best Question → Split Data → Repeat Recursively → Leaf Prediction → Evaluation
+    </div>
+  </div>
+
+  <div class="glass-card">
+    <h3>📕 Tiny Tree Dictionary</h3>
+    <div style="font-size:0.8rem; display:grid; grid-template-columns:1fr; gap:8px; max-height:220px; overflow-y:auto; padding-right:6px">
+      <div><strong>• Feature:</strong> A measurable property or input variable used to make predictions (e.g., Weight, Color Intensity).</div>
+      <div><strong>• Label:</strong> The target outcome or true answer we want the model to predict (e.g., Apple, Orange).</div>
+      <div><strong>• Class:</strong> One of the specific categorical outcomes (e.g., Apples vs. Oranges).</div>
+      <div><strong>• Root Node:</strong> The very first top-level block containing 100% of the training data.</div>
+      <div><strong>• Split:</strong> A division of a parent node into two child nodes based on a feature question.</div>
+      <div><strong>• Child Node:</strong> The subgroups created after splitting a parent node.</div>
+      <div><strong>• Leaf Node:</strong> A final terminal node that does not split further. It makes the final prediction.</div>
+      <div><strong>• Impurity:</strong> A measure of how mixed or diverse the class labels are within a particular node.</div>
+      <div><strong>• Gini Impurity:</strong> A mathematical metric used to calculate impurity (0.0 means perfectly pure, 0.5 means a perfect 50/50 mix).</div>
+      <div><strong>• Weighted Impurity:</strong> The combined impurity of child nodes, weighted by the proportion of samples that went into each child.</div>
+      <div><strong>• Impurity Decrease:</strong> The difference between parent Gini and weighted child Gini. The tree maximizes this "gain".</div>
+      <div><strong>• Decision Boundary:</strong> The geometric line(s) dividing different class zones on the coordinate map.</div>
+      <div><strong>• Tree Depth:</strong> The length of the longest path from the root node down to any leaf node.</div>
+      <div><strong>• Pruning:</strong> Cutting back branches to simplify the model and improve generalizability on unseen data.</div>
+      <div><strong>• Overfitting:</strong> Memorizing noise in the training set, causing failure on unseen test data.</div>
+      <div><strong>• Underfitting:</strong> Creating a model that is too simple (e.g. too shallow) to learn the real underlying patterns.</div>
+    </div>
+  </div>
+
+  <div class="glass-card">
+    <h3>Training Data Preview</h3>
     <table class="data-table" id="dataTable"></table>
   </div>
-  <div class="insight-box"><p>💡 This is a classification task because we want to predict a specific type or group (Apple vs Orange), rather than a continuous number.</p></div>
+  <div class="insight-box"><p>💡 This is a classification task because we want to predict a specific category or discrete group, rather than a continuous number.</p></div>
 </section>
 
-<!-- STAGE 2: Root Node -->
+<!-- STAGE 2: Train/Test Split (NEW) -->
 <section class="section" data-stage="2">
   <div class="stage-num">Stage 02</div>
+  <h2>The Train / Test Split</h2>
+  <p>To build a robust model, we never evaluate our tree on the exact same data it used for learning. Instead, we divide our original dataset into two parts:</p>
+  <div class="glass-card">
+    <h3>📁 Data Partitioning</h3>
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:12px 0;">
+      <div style="background:var(--apple-soft); border:1px solid var(--apple); padding:12px; border-radius:var(--radius-sm)">
+        <h4 style="color:var(--apple); margin-bottom:4px">🍎 Training Set</h4>
+        <p style="font-size:0.8rem; margin:0; color:var(--text-dim)">
+          Used to scan thresholds, calculate Gini, and build rules.<br>
+          <strong>Count: <span id="lblTrainCount">28</span> fruits</strong>
+        </p>
+      </div>
+      <div style="background:var(--orange-soft); border:1px solid var(--orange); padding:12px; border-radius:var(--radius-sm)">
+        <h4 style="color:var(--orange); margin-bottom:4px">🍊 Test Set (Held out)</h4>
+        <p style="font-size:0.8rem; margin:0; color:var(--text-dim)">
+          Kept completely hidden from the tree during training.<br>
+          <strong>Count: <span id="lblTestCount">6</span> fruits</strong>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="insight-box">
+    <p>⚠️ <strong>Data Leakage Warning:</strong> Using test data to choose splits, tune tree depth, or pick stopping criteria is a cardinal sin of machine learning. The test set must ONLY be used for final generalizability assessment.</p>
+  </div>
+
+  <div class="quiz-card glass-card">
+    <span class="quiz-badge">Check Your Knowledge</span>
+    <p class="quiz-question">Why is a Train/Test split essential for decision trees?</p>
+    <div class="quiz-options">
+      <button class="quiz-opt" data-correct="false">It helps the tree grow deeper and generate more rules.</button>
+      <button class="quiz-opt" data-correct="true">It allows us to detect overfitting by measuring performance on unseen samples.</button>
+      <button class="quiz-opt" data-correct="false">It guarantees that Gini impurity reaches exactly 0.0.</button>
+    </div>
+    <div class="quiz-feedback" style="display:none"></div>
+  </div>
+</section>
+
+<!-- STAGE 3: Root Node -->
+<section class="section" data-stage="3">
+  <div class="stage-num">Stage 03</div>
   <h2>The Root Node</h2>
-  <p>At the very beginning, a Classification Tree puts <em>all</em> the data into one big group on the fruit map. We call this the <strong>Root Node</strong>.</p>
+  <p>At the very beginning, a Classification Tree puts <em>all</em> the training data into one big group on the fruit map. We call this the <strong>Root Node</strong>.</p>
   <p>This starting box is very "messy" because it contains a mix of both apples and oranges. The tree's job is to split this box into smaller, cleaner sub-groups.</p>
   <div class="glass-card">
+    <h3>Root Node Content</h3>
     <div class="metric-row">
       <div class="metric-card"><div class="val" style="color:var(--apple)" id="rootApples">--</div><div class="lbl">Apples</div></div>
       <div class="metric-card"><div class="val" style="color:var(--orange)" id="rootOranges">--</div><div class="lbl">Oranges</div></div>
@@ -123,26 +264,72 @@ p{font-size:0.95rem;color:var(--text-dim);margin-bottom:16px;max-width:520px}
   </div>
 </section>
 
-<!-- STAGE 3: Messiness -->
-<section class="section" data-stage="3">
-  <div class="stage-num">Stage 03</div>
+<!-- STAGE 4: Messiness -->
+<section class="section" data-stage="4">
+  <div class="stage-num">Stage 04</div>
   <h2>Measuring Messiness</h2>
   <p>To split effectively, the tree needs a way to measure how mixed a box is. We use a math rule called <strong>Gini Impurity</strong>.</p>
   <p>A Gini score of <code>0.0</code> means the box is <em>perfectly pure</em> (all one fruit type). A score near <code>0.5</code> means it is completely mixed.</p>
-  <div class="math-block" style="font-size:0.8rem">Gini = 1 - [ (P_apple)² + (P_orange)² ]
 
-Current Root P_apple = 12/26 ≈ 0.46
-Current Root P_orange = 14/26 ≈ 0.54
-Gini = 1 - (0.46² + 0.54²) ≈ 0.498 (Very Mixed)</div>
-  <div class="insight-box"><p>💡 The tree’s ultimate objective is simple: Every time it makes a split, it wants to reduce the total combined Gini impurity of the child boxes as much as possible.</p></div>
+  <div class="glass-card">
+    <h3>🧮 Gini Impurity Formula</h3>
+    <div class="math-block" style="font-size:0.9rem">
+Gini = 1 - Σ pᵢ²
+
+For two classes (Apple & Orange):
+Gini = 1 - [ P(Apple)² + P(Orange)² ]
+    </div>
+  </div>
+
+  <div class="glass-card">
+    <h3>📈 Live Root Node Calculation</h3>
+    <div id="rootGiniExplanation"></div>
+  </div>
+
+  <div class="glass-card">
+    <h3>🧪 Gini Impurity vs. Entropy</h3>
+    <p style="font-size:0.85rem; color:var(--text-dim)">
+      While Gini is highly popular in CART (Classification and Regression Trees), another metric called <strong>Entropy</strong> is also widely used:
+    </p>
+    <div style="font-family:'JetBrains Mono',monospace; font-size:0.8rem; background:rgba(0,0,0,0.02); padding:10px; border-radius:var(--radius-sm); margin:8px 0; color:var(--text-dim)">
+      Entropy = - Σ pᵢ log₂(pᵢ)
+    </div>
+    <p style="font-size:0.82rem; color:var(--text-muted); margin:0">
+      Both metrics measure the same core property: disorder. A node with equal proportions of classes has a Gini score of 0.50 and an Entropy score of 1.0. Both reach 0.0 when a node is perfectly pure. In practice, Gini and entropy often choose very similar splits, but not always. This guide uses Gini because it is simple, common, and easy to compute.
+    </p>
+  </div>
+
+  <div class="quiz-card glass-card">
+    <span class="quiz-badge">Concept Quiz</span>
+    <p class="quiz-question">What does a Gini Impurity of 0.0 indicate about a subset of fruit?</p>
+    <div class="quiz-options">
+      <button class="quiz-opt" data-correct="false">The subset contains exactly 50% Apples and 50% Oranges.</button>
+      <button class="quiz-opt" data-correct="true">The subset is 100% pure (contains only one type of fruit).</button>
+      <button class="quiz-opt" data-correct="false">The subset is empty.</button>
+    </div>
+    <div class="quiz-feedback" style="display:none"></div>
+  </div>
 </section>
 
-<!-- STAGE 4: Testing Splits -->
-<section class="section" data-stage="4">
-  <div class="stage-num">Stage 04</div>
+<!-- STAGE 5: Testing Splits -->
+<section class="section" data-stage="5">
+  <div class="stage-num">Stage 05</div>
   <h2>Testing Every Question</h2>
   <p>How does the tree find the best split? It tries testing candidate split points between observed values across the map.</p>
-  <p>Because the tree asks one feature question at a time (e.g., "Is Weight &lt; 6?"), each possible split becomes a straight vertical or horizontal cut across the graph. Here we are visualizing one example search over Weight thresholds; the tree would also test Color thresholds before choosing the best split.</p>
+  <p>Because the tree asks one feature question at a time (e.g., "Is Weight &lt; X?"), each possible split becomes a straight vertical or horizontal cut across the graph. Watch the sweeping line on the canvas analyze both features.</p>
+
+  <div class="glass-card">
+    <h3>🔍 The Candidate Search Strategy</h3>
+    <p style="font-size:0.85rem; color:var(--text-dim)">
+      How does a decision tree find the best threshold? It doesn't guess random decimals. Instead, it uses a deterministic mathematical process:
+    </p>
+    <ol style="font-size:0.82rem; color:var(--text-dim); margin-left:18px; margin-top:8px; display:flex; flex-direction:column; gap:6px">
+      <li><strong>Sort values:</strong> For a given feature (like Weight), it sorts all observed training values in ascending order.</li>
+      <li><strong>Compute Midpoints:</strong> It calculates the halfway points (midpoints) between every adjacent pair of unique values.</li>
+      <li><strong>Evaluate Splits:</strong> It treats each midpoint as a candidate threshold (e.g., <code>Weight &lt; 5.40</code>), splits the data, and evaluates the resulting weighted Gini impurity.</li>
+    </ol>
+  </div>
+
   <div class="glass-card">
     <h3>Live Search <span style="font-size:0.7rem;font-weight:normal">(Scanning...)</span></h3>
     <p id="liveSearchDesc" style="font-family:'JetBrains Mono', monospace; font-size:0.8rem; color:var(--accent2); margin:0;">Testing Split: Weight &lt; 5.0...</p>
@@ -150,31 +337,89 @@ Gini = 1 - (0.46² + 0.54²) ≈ 0.498 (Very Mixed)</div>
   </div>
 </section>
 
-<!-- STAGE 5: The First Split -->
-<section class="section" data-stage="5">
-  <div class="stage-num">Stage 05</div>
-  <h2>The First Cut</h2>
+<!-- STAGE 6: How the Tree Scores One Split -->
+<section class="section" data-stage="6">
+  <div class="stage-num">Stage 06</div>
+  <h2>How the Tree Scores One Split</h2>
   <p>The tree found the single best question! By splitting the data at this specific threshold, it gets the lowest possible combined Gini impurity.</p>
   <p>This first split is often very influential because it shapes the rest of the tree. It divides the fruit map cleanly into two distinct regions.</p>
   <div class="glass-card">
     <h3>The Golden Question</h3>
     <div class="math-block" id="firstSplitLabel" style="font-size:1.1rem; text-align:center; padding:12px; margin:0; background:rgba(22,163,74,0.1); border:1px solid rgba(22,163,74,0.3); color:var(--green)">Is Weight < X?</div>
   </div>
+
+  <div class="glass-card">
+    <h3>🧮 How the Tree Scores This Split</h3>
+    <div id="splitScoreExplanation"></div>
+  </div>
+
+  <div class="quiz-card glass-card">
+    <span class="quiz-badge">Split Calculation Quiz</span>
+    <p class="quiz-question">What property makes a candidate split the absolute "winner" in a decision tree?</p>
+    <div class="quiz-options">
+      <button class="quiz-opt" data-correct="false">It always splits the dataset exactly 50/50 by quantity.</button>
+      <button class="quiz-opt" data-correct="true">It yields the largest Gini impurity decrease (lowest weighted children impurity).</button>
+      <button class="quiz-opt" data-correct="false">It guarantees that both left and right child nodes become 100% pure instantly.</button>
+    </div>
+    <div class="quiz-feedback" style="display:none"></div>
+  </div>
 </section>
 
-<!-- STAGE 6: Recursive Splitting -->
-<section class="section" data-stage="6">
-  <div class="stage-num">Stage 06</div>
+<!-- STAGE 7: Recursive Splitting -->
+<section class="section" data-stage="7">
+  <div class="stage-num">Stage 07</div>
   <h2>Recursive Splitting</h2>
   <p>The tree isn't done. It now treats each of the two new boxes as a separate problem, and asks again: <em>"Can I perform another split to make these even cleaner?"</em></p>
   <p>It repeats this process recursively, carving the map into smaller and smaller axis-aligned rectangles until a box becomes pure, gets too small, or reaches the depth limit.</p>
+
+  <div class="glass-card">
+    <h3>🌿 Tree Stopping Rules</h3>
+    <p style="font-size:0.85rem; color:var(--text-dim)">
+      To prevent the tree from growing infinitely, we define stopping constraints (hyperparameters in ML frameworks):
+    </p>
+    <ul style="font-size:0.8rem; color:var(--text-dim); margin-left:18px; display:flex; flex-direction:column; gap:6px">
+      <li><strong>Node Purity:</strong> Stop if all items in a node belong to a single class (Gini = 0).</li>
+      <li><strong>Max Depth (`max_depth`):</strong> Stop if the path length from the root matches our limit.</li>
+      <li><strong>Min Samples Split (`min_samples_split`):</strong> Stop if a node contains too few samples to allow another split.</li>
+      <li><strong>Min Samples Leaf (`min_samples_leaf`):</strong> Prevent splits that leave a child with too few samples.</li>
+      <li><strong>Min Impurity Decrease (`min_impurity_decrease`):</strong> Stop if Gini gain is below a small threshold.</li>
+    </ul>
+  </div>
+
+  <div class="quiz-card glass-card">
+    <span class="quiz-badge">Stopping Rules Quiz</span>
+    <p class="quiz-question">What is the main danger of growing a classification tree completely unchecked without any stopping rules?</p>
+    <div class="quiz-options">
+      <button class="quiz-opt" data-correct="false">The tree will underfit and fail to capture simple boundaries.</button>
+      <button class="quiz-opt" data-correct="true">The tree will overfit by creating hyper-specific rules to capture training noise.</button>
+      <button class="quiz-opt" data-correct="false">The root Gini impurity will increase beyond 0.50.</button>
+    </div>
+    <div class="quiz-feedback" style="display:none"></div>
+  </div>
 </section>
 
-<!-- STAGE 7: The Final Tree -->
-<section class="section" data-stage="7">
-  <div class="stage-num">Stage 07</div>
+<!-- STAGE 8: The Final Tree -->
+<section class="section" data-stage="8">
+  <div class="stage-num">Stage 08</div>
   <h2>The Decision Boundary</h2>
   <p>Once the tree stops growing, we fill in the colors. Each rectangular box becomes a "Leaf Node". The model assigns a prediction to the entire box based on the fruit type that appears most often in that box.</p>
+
+  <div class="glass-card">
+    <h3>🌿 Leaf Nodes: How Predictions Are Made</h3>
+    <p style="font-size:0.85rem; color:var(--text-dim)">
+      Every final sub-box is a terminal <strong>Leaf Node</strong>. It predicts the majority class contained within its boundary.
+    </p>
+    <p style="font-size:0.85rem; color:var(--text-dim)">
+      We can also calculate a <strong>Class Probability Estimate</strong> simply as the proportion of that class in the leaf box:
+    </p>
+    <div style="font-family:'JetBrains Mono',monospace; font-size:0.8rem; background:rgba(0,0,0,0.03); padding:10px; border-radius:var(--radius-sm); margin:8px 0; color:var(--accent2)">
+      P(Apple) = Leaf_Apples / Total_Leaf_Samples
+    </div>
+    <p style="font-size:0.82rem; color:var(--text-muted); margin:0">
+      ⚠️ <strong>Warning:</strong> These leaf-proportion probabilities can be overconfident, especially in deep trees with small sample sizes in leaf boxes (e.g. predicting 100% confidence because a leaf contains exactly 1 Apple).
+    </p>
+  </div>
+
   <div class="glass-card">
     <h3>Live Tree Snapshot</h3>
     <ul style="font-size:0.85rem; color:var(--text-dim); margin-left:16px; margin-top:8px">
@@ -186,51 +431,154 @@ Gini = 1 - (0.46² + 0.54²) ≈ 0.498 (Very Mixed)</div>
   </div>
 </section>
 
-<!-- STAGE 8: Pruning -->
-<section class="section" data-stage="8">
-  <div class="stage-num">Stage 08</div>
-  <h2>Depth Limiting (Pre-Pruning)</h2>
-  <p>Look closely at the tiny boxes the tree made just to capture one outlier fruit. The tree has started memorizing tiny details in the training dataset. This is called <strong>Overfitting</strong>.</p>
+<!-- STAGE 9: Depth Limiting -->
+<section class="section" data-stage="9">
+  <div class="stage-num">Stage 09</div>
+  <h2>Depth Limiting vs. Post-Pruning</h2>
+  <p>Look closely at the tiny boxes the tree made just to capture one outlier fruit. The tree has started memorizing noise in the training dataset. This is called <strong>Overfitting</strong>.</p>
   <p>If we give the tree new fruit, these hyper-specific rules will likely fail. We fix this by limiting the maximum depth of the tree (Pre-Pruning), so it learns general rules instead of tracking every detail.</p>
+
   <div class="glass-card">
-    <h3>Toggle Max Depth</h3>
+    <h3>Pre-Pruning vs. Post-Pruning</h3>
+    <table class="data-table" style="font-size:0.8rem">
+      <thead>
+        <tr>
+          <th>Method</th>
+          <th>How it works</th>
+          <th>Pros / Cons</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Pre-Pruning</strong></td>
+          <td>Stop tree growth early using rules like <code>max_depth</code> or <code>min_samples_split</code>.</td>
+          <td>Very fast to compute, but might stop too early before discovering complex interactions.</td>
+        </tr>
+        <tr>
+          <td><strong>Post-Pruning</strong></td>
+          <td>Grow the full complex tree first, then cut back nodes that do not add predictive value (e.g. cost-complexity pruning).</td>
+          <td>Often more systematic, but computationally heavier because you build the full tree first.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="glass-card">
+    <h3>Toggle Max Depth Model</h3>
     <div style="display:flex; justify-content:center; gap:12px; margin-top:10px">
-      <button class="btn btn-accent" id="btnOverfit" onclick="setTreeMode('overfit')">Deeper Tree</button>
-      <button class="btn" id="btnPruned" onclick="setTreeMode('pruned')">Depth-Limited (Max=3)</button>
+      <button class="btn btn-accent" id="btnOverfit" onclick="setTreeMode('overfit')">Overfit Tree (Depth=10)</button>
+      <button class="btn" id="btnPruned" onclick="setTreeMode('pruned')">Pruned Tree (Depth=3)</button>
     </div>
+  </div>
+
+  <div class="quiz-card glass-card">
+    <span class="quiz-badge">Generalization Quiz</span>
+    <p class="quiz-question">Which of the following is a classic consequence of underfitting?</p>
+    <div class="quiz-options">
+      <button class="quiz-opt" data-correct="false">The model achieves 100% accuracy on both training and test data.</button>
+      <button class="quiz-opt" data-correct="false">The model fits training noise perfectly but fails on test data.</button>
+      <button class="quiz-opt" data-correct="true">The model is too simple to capture the true underlying pattern, performing poorly on both datasets.</button>
+    </div>
+    <div class="quiz-feedback" style="display:none"></div>
   </div>
 </section>
 
-<!-- STAGE 9: Classifying Test Cases -->
-<section class="section" data-stage="9">
-  <div class="stage-num">Stage 09</div>
+<!-- STAGE 10: Choosing Tree Depth -->
+<section class="section" data-stage="10">
+  <div class="stage-num">Stage 10</div>
+  <h2>Choosing Tree Depth</h2>
+  <p>How do we select the perfect <code>max_depth</code> parameter? We plot a <strong>Validation Curve</strong>.</p>
+  <p>Below, we train 10 different trees with maximum depths ranging from 1 to 10. We calculate and plot their Accuracy on both the <strong>Training Set</strong> and the <strong>Test Set</strong>.</p>
+
+  <div class="glass-card">
+    <h3>📈 Tree Depth Validation Curve</h3>
+    <div style="text-align:center; margin:16px 0;">
+      <svg id="validationCurveSvg" width="100%" height="200" viewBox="0 0 450 200" style="background:#ffffff; border-radius:var(--radius-sm); border:1px solid var(--glass-border); overflow:visible;"></svg>
+    </div>
+    <div style="display:flex; justify-content:center; gap:16px; font-size:0.75rem; color:var(--text-dim); margin-bottom:8px">
+      <div><span style="display:inline-block; width:12px; height:3px; background:var(--apple); vertical-align:middle; margin-right:4px"></span> Training Accuracy</div>
+      <div><span style="display:inline-block; width:12px; height:3px; background:var(--orange); vertical-align:middle; margin-right:4px"></span> Test Accuracy</div>
+    </div>
+    <p style="font-size:0.85rem; color:var(--text-dim)">
+      🏆 <strong>Optimal Max Depth:</strong> <span id="bestDepthValue" style="font-weight:700; color:var(--accent)">Depth 3</span>
+    </p>
+  </div>
+
+  <div class="insight-box">
+    <p>💡 <strong>Key Takeaway:</strong> Notice how Training Accuracy continues to rise toward 100% as depth increases, but Test Accuracy peaks early and then degrades. This gap represents the onset of <strong>Overfitting</strong>!</p>
+    <p style="font-size:0.85rem; color:var(--text-dim); margin-top:10px; border-top:1px dashed var(--glass-border); padding-top:10px;">
+      ⚠️ <strong>Teaching note:</strong> This demo uses test accuracy in the curve so you can see overfitting clearly. In real projects, do not tune <code>max_depth</code> on the final test set. Use a validation set or cross-validation to choose depth, then reserve the test set for final evaluation.
+    </p>
+  </div>
+</section>
+
+<!-- STAGE 11: Classifying Test Cases -->
+<section class="section" data-stage="11">
+  <div class="stage-num">Stage 11</div>
   <h2>Classifying Test Points</h2>
-  <p>Now we bring in a small test dataset the model has not seen during training. We drop each test fruit (plotted as diamonds) onto the map. (Green border = correct prediction, red border = incorrect prediction).</p>
-  <p>At prediction time, the tree simply follows the learned rules from one split to the next until it reaches a leaf box.</p>
+  <p>Now we bring in our small test dataset the model has not seen during training. We drop each test fruit (plotted as diamonds) onto the map. (Green border = correct prediction, red border = incorrect prediction).</p>
+  <p>Click on any row in the table below to trace exactly how that specific fruit traverses the tree rules on the canvas.</p>
   <div class="glass-card" id="testResults">
     <h3>Prediction Results Trace</h3>
     <div id="testResultsList"></div>
   </div>
 </section>
 
-<!-- STAGE 10: Evaluation -->
-<section class="section" data-stage="10">
-  <div class="stage-num">Stage 10</div>
+<!-- STAGE 12: Evaluation -->
+<section class="section" data-stage="12">
+  <div class="stage-num">Stage 12</div>
   <h2>Performance Metrics</h2>
-  <p>We evaluate the depth-limited tree's accuracy using a <strong>Confusion Matrix</strong>. It breaks down exactly where the tree was correct and where it was confused on the unseen test data.</p>
+  <p>To evaluate how well our pruned tree performs on completely unseen data, we check the results of classifying our hidden Test set.</p>
+
   <div class="glass-card">
-    <h3>Confusion Matrix</h3>
+    <h3>📊 Interactive Confusion Matrix</h3>
+    <p style="font-size:0.85rem; color:var(--text-dim); margin-bottom:12px">
+      Click on any cell in the grid below to inspect exactly what it means:
+    </p>
     <div class="matrix-grid" id="confMatrix"></div>
+    <div id="confMatrixDetail" style="margin-top:10px; padding:12px; border-radius:var(--radius-sm); background:var(--bg2); font-size:0.85rem; display:none; border-left: 3px solid var(--accent)"></div>
   </div>
-  <div class="glass-card" id="metricsPanel">
-    <h3>Metrics <span style="font-weight:400;font-size:0.75rem;color:var(--text-muted)">(Apple = Positive)</span></h3>
-    <div class="metric-row" id="metricsRow"></div>
+
+  <div class="glass-card">
+    <h3>✨ Detailed Performance Metrics</h3>
+    <p style="font-size:0.85rem; color:var(--text-dim); margin-bottom:12px">
+      Click on any card to see its mathematical definition and intuitive meaning in plain English.
+    </p>
+    <div class="metric-row" id="metricsRow" style="display:flex; gap:12px; flex-wrap:wrap;"></div>
+
+    <div id="metricExplanationPanel" style="margin-top:14px; display:none; border-left:4px solid var(--accent); background:var(--accent-glow); padding:16px; border-radius:0 var(--radius-sm) var(--radius-sm) 0"></div>
+  </div>
+
+  <div class="quiz-card glass-card">
+    <span class="quiz-badge">Evaluation Quiz</span>
+    <p class="quiz-question">If Apples are the positive class, what does a False Positive mean in this context?</p>
+    <div class="quiz-options">
+      <button class="quiz-opt" data-correct="false">We predicted Apple, and the fruit was actually an Apple.</button>
+      <button class="quiz-opt" data-correct="true">We predicted Apple, but the fruit was actually an Orange.</button>
+      <button class="quiz-opt" data-correct="false">We predicted Orange, but the fruit was actually an Apple.</button>
+    </div>
+    <div class="quiz-feedback" style="display:none"></div>
   </div>
 </section>
 
-<!-- STAGE 11: Playground -->
-<section class="section" data-stage="11">
-  <div class="stage-num">Stage 11</div>
+<!-- STAGE 13: Reading Tree Output -->
+<section class="section" data-stage="13">
+  <div class="stage-num">Stage 13</div>
+  <h2>Reading Tree Output</h2>
+  <p>When software packages train a decision tree, they output a comprehensive model summary. Let's learn to interpret these metrics directly.</p>
+
+  <div class="glass-card">
+    <h3>📋 Model Report Dashboard</h3>
+    <p style="font-size:0.82rem; color:var(--text-muted); margin-bottom:10px">
+      Click on any underlined <span class="hotspot">Key Concept</span> to view an explanation of its role in the model summary.
+    </p>
+    <div id="treeOutputGuide"></div>
+  </div>
+</section>
+
+<!-- STAGE 14: Interactive Playground -->
+<section class="section" data-stage="14">
+  <div class="stage-num">Stage 14</div>
   <h2>Interactive Playground</h2>
   <p>Now it's your turn. Use the control panel to adjust depth limits, or click the graph to plot new fruits to instantly classify them.</p>
   <div class="playground-controls glass-card" style="margin-top:0">
@@ -244,6 +592,80 @@ Gini = 1 - (0.46² + 0.54²) ≈ 0.498 (Very Mixed)</div>
   <div id="pgTraceContainer" style="display:none; margin-top:12px;" class="glass-card">
     <h3 style="font-size:0.9rem;margin-bottom:6px">Last Drop Prediction Route:</h3>
     <div id="pgTraceResult" class="trace-block" style="font-size:0.85rem;color:var(--text)"></div>
+  </div>
+</section>
+
+<!-- STAGE 15: Limitations and Model Choice -->
+<section class="section" data-stage="15">
+  <div class="stage-num">Stage 15</div>
+  <h2>Limitations &amp; Model Choice</h2>
+  <p>Classification Trees are incredibly intuitive, but they are not always the best tool for every job. Understanding their trade-offs is crucial for a data scientist.</p>
+
+  <div class="glass-card">
+    <h3>✅ Strengths vs. ❌ Weaknesses</h3>
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:12px 0;">
+      <div style="background:rgba(16,185,129,0.05); border:1px solid var(--green); padding:12px; border-radius:var(--radius-sm)">
+        <h4 style="color:var(--green); margin-bottom:6px">When they shine:</h4>
+        <ul style="font-size:0.8rem; color:var(--text-dim); margin-left:14px; display:flex; flex-direction:column; gap:4px">
+          <li><strong>Explainability:</strong> Outputs simple rules that any non-expert can read and audit.</li>
+          <li><strong>No Scaling Required:</strong> Features are evaluated independently, so feature magnitude does not matter.</li>
+          <li><strong>Handles Mixed Types:</strong> Gracefully fits both numerical and categorical inputs out of the box.</li>
+        </ul>
+      </div>
+      <div style="background:rgba(239,68,68,0.05); border:1px solid var(--coral); padding:12px; border-radius:var(--radius-sm)">
+        <h4 style="color:var(--coral); margin-bottom:6px">When they struggle:</h4>
+        <ul style="font-size:0.8rem; color:var(--text-dim); margin-left:14px; display:flex; flex-direction:column; gap:4px">
+          <li><strong>High Variance:</strong> Extremely sensitive to tiny training set alterations, which can yield completely different splits.</li>
+          <li><strong>Axis-Aligned Boundaries:</strong> Since splits are purely horizontal or vertical, diagonal patterns require jagged, inefficient steps.</li>
+          <li><strong>Overfitting:</strong> Easily memorize noise if depth is unchecked.</li>
+          <li><strong>Class Imbalance:</strong> If one class is much more common, the tree may favor that class unless class weights, resampling, or better evaluation metrics are used.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="glass-card">
+    <h3>🗺️ Model Comparison Roadmap</h3>
+    <table class="data-table" style="font-size:0.78rem">
+      <thead>
+        <tr>
+          <th>Model</th>
+          <th>Boundary Type</th>
+          <th>Interpretability</th>
+          <th>Best Used For...</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Decision Tree</strong></td>
+          <td>Axis-Aligned Boxes</td>
+          <td>High (Flowchart)</td>
+          <td>Rules-based audits, mixed categorical/numerical data.</td>
+        </tr>
+        <tr>
+          <td><strong>Logistic Regression</strong></td>
+          <td>Smooth Linear</td>
+          <td>Medium (Weights)</td>
+          <td>Linear associations, computing well-calibrated odds.</td>
+        </tr>
+        <tr>
+          <td><strong>K-Nearest Neighbors (KNN)</strong></td>
+          <td>Irregular / Local</td>
+          <td>Low (Instance-based)</td>
+          <td>Complex local shapes, feature manifolds.</td>
+        </tr>
+        <tr>
+          <td><strong>Random Forest</strong></td>
+          <td>Complex / Smooth</td>
+          <td>Low (Ensemble)</td>
+          <td>High-accuracy, non-linear tasks (reduces variance).</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="insight-box">
+    <p>🚀 <strong>The Upgrade Path:</strong> To overcome the instability and high variance of a single Classification Tree, we combine hundreds of trees into an ensemble. Models like <strong>Random Forests</strong> (voting trees) and <strong>Gradient Boosted Trees</strong> (sequential error correction) represent the state-of-the-art for tabular data!</p>
   </div>
 </section>
 
@@ -297,21 +719,23 @@ const TEST_DATA = [
 const MIN_W = 1.0, MAX_W = 10.0;
 const MIN_C = 1.0, MAX_C = 10.0;
 
-// Colors matching consistent aesthetic
+// Pebble/Sand consistent warm palette
 const COLORS={
   apple:'#2563eb', appleFill:'rgba(37,99,235,0.18)', badgeApple:'rgba(37,99,235,0.85)',
   orange:'#d97706', orangeFill:'rgba(217,119,6,0.18)', badgeOrange:'rgba(217,119,6,0.85)',
   green:'#16a34a', coral:'#dc2626', accent:'#6366f1',
-  gridLine:'rgba(0,0,0,0.06)', text:'#1f2937', textDim:'#6b7280',
+  gridLine:'rgba(0,0,0,0.06)', text:'#1f2937', textDim:'#4b5563',
   boxBorder:'rgba(0,0,0,0.15)', bg:'#f7f7f4'
 };
 
 // State variables
 let currentStage = 0;
-let treeMode = 'overfit'; 
+let treeMode = 'overfit';
 let playgroundMode = false;
 let playgroundPoints = [];
-let animProgress = 0; 
+let animProgress = 0;
+let selectedTestPoint = null;
+let currentActiveHighlightAttr = null;
 
 // 2. CANVAS INIT
 const canvas = document.getElementById('mainCanvas');
@@ -335,20 +759,55 @@ function mapX(val) { return pX + ((val - MIN_W)/(MAX_W - MIN_W)) * pW; }
 function mapY(val) { return pY + pH - ((val - MIN_C)/(MAX_C - MIN_C)) * pH; }
 
 const sections = document.querySelectorAll('.section');
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if(entry.isIntersecting && entry.intersectionRatio > 0.45) {
-      const stg = parseInt(entry.target.getAttribute('data-stage'));
-      if(currentStage !== stg) {
-        currentStage = stg;
-        animProgress = 0;
-        document.getElementById('progressBar').style.width = (stg / 11 * 100) + '%';
-        onStageEnter(stg);
-      }
+
+// Dynamic Navigation stage progress
+function populateStageDots() {
+  const container = document.getElementById('stageNavDots');
+  if(!container) return;
+  container.innerHTML = '';
+  sections.forEach(sec => {
+    const stage = Number(sec.getAttribute('data-stage'));
+    const title = sec.querySelector('h2')?.textContent || 'Intro';
+    const dot = document.createElement('div');
+    dot.className = `stage-dot ${stage === currentStage ? 'active' : ''}`;
+    dot.setAttribute('data-target-stage', stage);
+    dot.innerHTML = `<span class="stage-dot-tooltip">Stage ${stage}: ${title}</span>`;
+    dot.onclick = () => {
+      sec.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    };
+    container.appendChild(dot);
+  });
+}
+
+function updateStageOnScroll() {
+  const markerY = window.innerHeight * 0.35;
+  let activeSection = sections[0];
+  sections.forEach(sec => {
+    const rect = sec.getBoundingClientRect();
+    if(rect.top <= markerY && rect.bottom >= markerY) {
+      activeSection = sec;
     }
   });
-},{threshold: [0.45, 0.5, 0.6]});
-sections.forEach(sec => observer.observe(sec));
+
+  const stg = parseInt(activeSection.getAttribute('data-stage'));
+  if(currentStage !== stg) {
+    currentStage = stg;
+    animProgress = 0;
+
+    const maxStage = Math.max(...[...sections].map(sec => Number(sec.dataset.stage)));
+    const progressBar = document.getElementById('progressBar');
+    if(progressBar) progressBar.style.width = `${(stg / maxStage) * 100}%`;
+
+    document.querySelectorAll('.stage-dot').forEach(dot => {
+      const dStg = parseInt(dot.getAttribute('data-target-stage'));
+      if(dStg === stg) dot.classList.add('active');
+      else dot.classList.remove('active');
+    });
+
+    onStageEnter(stg);
+  }
+}
+window.addEventListener('scroll', updateStageOnScroll);
 
 // 3. TREE ALGORITHM & GINI
 function getGiniForBox(dataset) {
@@ -376,7 +835,7 @@ function getBestSplit(dataset) {
       const g0 = dataset.filter(d => d[attr] < val);
       const g1 = dataset.filter(d => d[attr] >= val);
       if(g0.length === 0 || g1.length === 0) continue;
-      
+
       const gini = calcCombinedGini(g0, g1);
       if(gini < best.score) {
         best = {score: gini, attr, val, groups: [g0, g1]};
@@ -388,19 +847,25 @@ function getBestSplit(dataset) {
 
 function buildTree(dataset, maxDepth, minSize, depth=1) {
   if(dataset.length === 0) return null;
-  
+
   let a = dataset.filter(d=>d.label==='Apple').length;
   let o = dataset.filter(d=>d.label==='Orange').length;
   let pred = a >= o ? 'Apple' : 'Orange';
   let gini = getGiniForBox(dataset);
 
-  if(new Set(dataset.map(d=>d.label)).size === 1 || depth >= maxDepth || dataset.length <= minSize) {
-    return { isLeaf: true, prediction: pred, a, o, gini };
+  if(new Set(dataset.map(d=>d.label)).size === 1) {
+    return { isLeaf: true, prediction: pred, a, o, gini, stopReason: 'Pure Node' };
+  }
+  if(depth >= maxDepth) {
+    return { isLeaf: true, prediction: pred, a, o, gini, stopReason: 'Max Depth Reached' };
+  }
+  if(dataset.length <= minSize) {
+    return { isLeaf: true, prediction: pred, a, o, gini, stopReason: 'Min Split Size Limit' };
   }
 
   const split = getBestSplit(dataset);
-  if(!split.groups || split.score >= 900) { 
-    return { isLeaf: true, prediction: pred, a, o, gini };
+  if(!split.groups || split.score >= 900) {
+    return { isLeaf: true, prediction: pred, a, o, gini, stopReason: 'No split gain' };
   }
 
   return {
@@ -418,14 +883,13 @@ let topSplit = getBestSplit(DATA);
 function getRects(node, x1, x2, y1, y2, rects=[]) {
   if(!node) return rects;
   if(node.isLeaf) {
-    rects.push({x1, x2, y1, y2, pred: node.prediction, a: node.a, o: node.o, gini: node.gini});
+    rects.push({x1, x2, y1, y2, pred: node.prediction, a: node.a, o: node.o, gini: node.gini, stopReason: node.stopReason});
     return rects;
   }
   if(node.attr === 'w') {
     getRects(node.left, x1, node.val, y1, y2, rects);
     getRects(node.right, node.val, x2, y1, y2, rects);
   } else {
-    // color intensity. y1 is bottom (lower val), y2 is top (higher val)
     getRects(node.left, x1, x2, y1, node.val, rects);
     getRects(node.right, x1, x2, node.val, y2, rects);
   }
@@ -451,10 +915,104 @@ let fullRects = getRects(fullTree, MIN_W, MAX_W, MIN_C, MAX_C);
 let prunedSplits = getSplits(pruneTree, MIN_W, MAX_W, MIN_C, MAX_C);
 let fullSplits = getSplits(fullTree, MIN_W, MAX_W, MIN_C, MAX_C);
 
+const weightMids = getCandidateThresholds('w');
+const colorMids = getCandidateThresholds('c');
+
+function getCandidateThresholds(attr) {
+  let vals = [...new Set(DATA.map(d=>d[attr]))].sort((a,b)=>a-b);
+  let mids = [];
+  for(let i=0; i<vals.length-1; i++) {
+    mids.push((vals[i] + vals[i+1])/2.0);
+  }
+  return mids;
+}
+
+function populateGiniExplanation() {
+  const appleCount = DATA.filter(d => d.label === 'Apple').length;
+  const orangeCount = DATA.filter(d => d.label === 'Orange').length;
+  const total = DATA.length;
+  const pApple = appleCount / total;
+  const pOrange = orangeCount / total;
+  const rootGini = getGiniForBox(DATA);
+
+  const el = document.getElementById('rootGiniExplanation');
+  if(!el) return;
+  el.innerHTML = `
+    <div style="font-family:'JetBrains Mono',monospace;font-size:0.85rem">
+      • Total training fruit (N): <strong>${total}</strong><br>
+      • Apples (🍎): <strong>${appleCount}</strong><br>
+      • Oranges (🍊): <strong>${orangeCount}</strong><br><br>
+      P(Apple) = ${appleCount} / ${total} = <strong>${pApple.toFixed(2)}</strong><br>
+      P(Orange) = ${orangeCount} / ${total} = <strong>${pOrange.toFixed(2)}</strong><br><br>
+      Gini = 1 - [ P(Apple)² + P(Orange)² ]<br>
+      Gini = 1 - [ (${pApple.toFixed(2)})² + (${pOrange.toFixed(2)})² ]<br>
+      Gini = 1 - [ ${(pApple*pApple).toFixed(2)} + ${(pOrange*pOrange).toFixed(2)} ] = <strong>${rootGini.toFixed(2)}</strong><br><br>
+      <span style="color:var(--text-dim);font-weight:600">💡 Meaning:</span> This root node is very mixed because it contains equal numbers of Apples and Oranges.
+    </div>
+  `;
+}
+
+function populateSplitScoreExplanation() {
+  const split = topSplit;
+  const g0 = DATA.filter(d => d[split.attr] < split.val);
+  const g1 = DATA.filter(d => d[split.attr] >= split.val);
+
+  const g0Apples = g0.filter(d => d.label==='Apple').length;
+  const g0Oranges = g0.filter(d => d.label==='Orange').length;
+  const g0Gini = getGiniForBox(g0);
+
+  const g1Apples = g1.filter(d => d.label==='Apple').length;
+  const g1Oranges = g1.filter(d => d.label==='Orange').length;
+  const g1Gini = getGiniForBox(g1);
+
+  const total = DATA.length;
+  const weightedGini = calcCombinedGini(g0, g1);
+  const rootGini = getGiniForBox(DATA);
+  const impDecrease = rootGini - weightedGini;
+
+  const splitAttrLabel = split.attr === 'w' ? 'Weight' : 'Color';
+
+  const explanationEl = document.getElementById('splitScoreExplanation');
+  if (!explanationEl) return;
+
+  explanationEl.innerHTML = `
+    <div style="font-family:'JetBrains Mono',monospace;font-size:0.85rem">
+      <div style="font-weight:700;color:var(--accent2);margin-bottom:8px">🥇 Chosen Split Question: ${splitAttrLabel} &lt; ${split.val.toFixed(2)}</div>
+
+      <div class="glass-card" style="margin:8px 0;padding:12px;background:rgba(0,0,0,0.015)">
+        <strong>Left Child (Yes):</strong><br>
+        • Total Samples: ${g0.length}<br>
+        • Apples (🍎): ${g0Apples} | Oranges (🍊): ${g0Oranges}<br>
+        • Gini_left = 1 - [(${g0Apples}/${g0.length})² + (${g0Oranges}/${g0.length})²] ≈ <strong>${g0Gini.toFixed(3)}</strong>
+      </div>
+
+      <div class="glass-card" style="margin:8px 0;padding:12px;background:rgba(0,0,0,0.015)">
+        <strong>Right Child (No):</strong><br>
+        • Total Samples: ${g1.length}<br>
+        • Apples (🍎): ${g1Apples} | Oranges (🍊): ${g1Oranges}<br>
+        • Gini_right = 1 - [(${g1Apples}/${g1.length})² + (${g1Oranges}/${g1.length})²] ≈ <strong>${g1Gini.toFixed(3)}</strong>
+      </div>
+
+      <div style="margin-top:10px">
+        <strong>⚖️ Weighted Gini Impurity:</strong><br>
+        Weighted Gini = (N_left / N) × Gini_left + (N_right / N) × Gini_right<br>
+        Weighted Gini = (${g0.length}/${total} × ${g0Gini.toFixed(3)}) + (${g1.length}/${total} × ${g1Gini.toFixed(3)}) ≈ <strong>${weightedGini.toFixed(3)}</strong>
+      </div>
+
+      <div style="margin-top:10px;color:var(--green)">
+        <strong>✨ Impurity Decrease (Gini Gain):</strong><br>
+        Gini Decrease = Root Gini - Weighted Gini = ${rootGini.toFixed(3)} - ${weightedGini.toFixed(3)} = <strong>${impDecrease.toFixed(3)}</strong>
+      </div>
+    </div>
+  `;
+}
+
 function initUI() {
+  document.getElementById('lblTrainCount').textContent = DATA.length;
+  document.getElementById('lblTestCount').textContent = TEST_DATA.length;
   document.getElementById('rootApples').textContent = DATA.filter(d=>d.label==='Apple').length;
   document.getElementById('rootOranges').textContent = DATA.filter(d=>d.label==='Orange').length;
-  
+
   let html = '<thead><tr><th>#</th><th>Weight</th><th>Color</th><th>Label</th></tr></thead><tbody>';
   DATA.slice(0, 10).forEach((d,i)=>{
     const cls = d.label==='Apple'?'tag-apple':'tag-orange';
@@ -463,69 +1021,84 @@ function initUI() {
   html += `<tr><td colspan="4" style="text-align:center;color:var(--text-muted);font-style:italic">... ${DATA.length-10} more rows</td></tr></tbody>`;
   document.getElementById('dataTable').innerHTML = html;
 
-  document.getElementById('firstSplitLabel').textContent = `Best Split: ${topSplit.attr==='w'?'Weight':'Color'} < ${topSplit.val.toFixed(1)}`;
+  document.getElementById('firstSplitLabel').textContent = `Best Split: ${topSplit.attr==='w'?'Weight':'Color'} < ${topSplit.val.toFixed(2)}`;
+
+  populateGiniExplanation();
+  populateSplitScoreExplanation();
   updateEvaluationUI();
   updateModelSnapshot();
+  populateStageDots();
+  renderValidationCurve();
 }
 
 // 4. MAIN RENDER LOOP
 function draw() {
   ctx.clearRect(0,0,W,H);
-  if(currentStage === 0) { renderHero(); return; }
+  if(currentStage === 0) { return; }
 
   drawGrid();
 
   // Draw region colors
-  if(currentStage >= 7) {
-    let rects = (treeMode==='pruned' || currentStage===9 || currentStage===10) ? prunedRects : fullRects;
-    if(currentStage === 11) {
+  if(currentStage >= 8) {
+    let rects = (treeMode==='pruned' || currentStage===11 || currentStage===12) ? prunedRects : fullRects;
+    if(currentStage === 14) {
       let d = parseInt(document.getElementById('pgDepth').value);
       rects = getRects(buildTree(DATA, d, 1), MIN_W, MAX_W, MIN_C, MAX_C);
     }
-    
+
     ctx.save();
     rects.forEach(r => {
       let px1 = mapX(r.x1), px2 = mapX(r.x2), py1 = mapY(r.y2), py2 = mapY(r.y1);
       ctx.fillStyle = r.pred==='Apple' ? COLORS.appleFill : COLORS.orangeFill;
       ctx.fillRect(px1, Math.min(py1,py2), px2-px1, Math.abs(py2-py1));
-      
+
       // Node purity badges
-      if((currentStage >= 7 && currentStage <= 8) || currentStage === 11) {
-        if(Math.abs(px2-px1) > 50 && Math.abs(py2-py1) > 40) {
-          ctx.fillStyle = 'rgba(255,255,255,0.7)';
-          ctx.beginPath(); ctx.roundRect(px1 + (px2-px1)/2 - 30, py2 - Math.abs(py2-py1)/2 - 16, 60, 32, 6); ctx.fill();
+      if((currentStage >= 8 && currentStage <= 9) || currentStage === 14) {
+        if(Math.abs(px2-px1) > 55 && Math.abs(py2-py1) > 42) {
+          ctx.fillStyle = 'rgba(255,255,255,0.72)';
+          ctx.beginPath(); ctx.roundRect(px1 + (px2-px1)/2 - 32, py2 - Math.abs(py2-py1)/2 - 18, 64, 36, 6); ctx.fill();
           ctx.fillStyle = COLORS.text; ctx.textAlign='center'; ctx.font='9px Inter';
-          ctx.fillText(`🍎${r.a} 🍊${r.o}`, px1 + (px2-px1)/2, py2 - Math.abs(py2-py1)/2 - 3);
-          ctx.fillText(`G: ${r.gini.toFixed(2)}`, px1 + (px2-px1)/2, py2 - Math.abs(py2-py1)/2 + 8);
+          ctx.fillText(`🍎${r.a} 🍊${r.o}`, px1 + (px2-px1)/2, py2 - Math.abs(py2-py1)/2 - 5);
+          ctx.fillText(`G: ${r.gini.toFixed(2)}`, px1 + (px2-px1)/2, py2 - Math.abs(py2-py1)/2 + 5);
+          ctx.font='7px Inter'; ctx.fillStyle=COLORS.textDim;
+          ctx.fillText(r.stopReason || 'Pure', px1 + (px2-px1)/2, py2 - Math.abs(py2-py1)/2 + 13);
         }
       }
     });
     ctx.restore();
   }
 
-  if(currentStage === 2 || currentStage === 3) {
+  if(currentStage === 3 || currentStage === 4) {
     ctx.strokeStyle = '#4b5563'; ctx.lineWidth = 3; ctx.setLineDash([8,8]);
     ctx.strokeRect(pX, pY, pW, pH);
     ctx.setLineDash([]);
   }
 
   // Draw splits
-  if(currentStage >= 5) {
+  if(currentStage >= 6) {
     let splitsToDraw = [];
-    if(currentStage === 5) splitsToDraw = [topSplit];
-    else if(currentStage === 6) splitsToDraw = fullSplits;
-    else if(currentStage >= 7) {
-      if(currentStage === 11) {
+    if(currentStage === 6) splitsToDraw = [topSplit];
+    else if(currentStage === 7) splitsToDraw = fullSplits;
+    else if(currentStage >= 8) {
+      if(currentStage === 14) {
         let d = parseInt(document.getElementById('pgDepth').value);
         splitsToDraw = getSplits(buildTree(DATA, d, 1), MIN_W, MAX_W, MIN_C, MAX_C);
       } else {
-        splitsToDraw = (treeMode==='pruned' || currentStage===9 || currentStage===10) ? prunedSplits : fullSplits;
+        splitsToDraw = (treeMode==='pruned' || currentStage===11 || currentStage===12) ? prunedSplits : fullSplits;
       }
     }
-    
-    ctx.strokeStyle = '#374151'; ctx.lineWidth = 2.5;
+
     splitsToDraw.forEach(s => {
       ctx.beginPath();
+      // Highlight importance attribute hover
+      if (currentActiveHighlightAttr === s.attr) {
+        ctx.strokeStyle = COLORS.accent;
+        ctx.lineWidth = 5;
+      } else {
+        ctx.strokeStyle = '#374151';
+        ctx.lineWidth = 2.5;
+      }
+
       if(s.attr === 'w') {
         ctx.moveTo(mapX(s.val), mapY(s.y2)); ctx.lineTo(mapX(s.val), mapY(s.y1));
       } else {
@@ -536,43 +1109,54 @@ function draw() {
   }
 
   // Live Sweeping Search
-  if(currentStage === 4) {
+  if(currentStage === 5) {
     animProgress = (animProgress + 0.005) % 2;
     let isWeight = animProgress < 1;
     let localProg = isWeight ? animProgress : (animProgress - 1);
-    
+
+    // Draw Candidate thresholds as ticks
+    ctx.strokeStyle = 'rgba(217, 119, 6, 0.4)'; ctx.lineWidth = 1;
+    weightMids.forEach(m => {
+      let x = mapX(m);
+      ctx.beginPath(); ctx.moveTo(x, pY+pH); ctx.lineTo(x, pY+pH-8); ctx.stroke();
+    });
+    colorMids.forEach(m => {
+      let y = mapY(m);
+      ctx.beginPath(); ctx.moveTo(pX, y); ctx.lineTo(pX+8, y); ctx.stroke();
+    });
+
     if(isWeight) {
       let sweep = MIN_W + (MAX_W - MIN_W) * localProg;
       let swX = mapX(sweep);
-      
+
       ctx.fillStyle = 'rgba(0,0,0,0.03)';
-      ctx.fillRect(pX, pY, swX - pX, pH); 
+      ctx.fillRect(pX, pY, swX - pX, pH);
 
       ctx.strokeStyle = COLORS.accent2; ctx.lineWidth = 3; ctx.setLineDash([6,4]);
       ctx.beginPath(); ctx.moveTo(swX, pY); ctx.lineTo(swX, pY+pH); ctx.stroke();
       ctx.setLineDash([]);
-      
+
       let g0 = DATA.filter(d => d.w < sweep);
       let g1 = DATA.filter(d => d.w >= sweep);
       let realGini = calcCombinedGini(g0, g1);
-      
+
       document.getElementById('liveSearchDesc').textContent = `Testing Split: Weight < ${sweep.toFixed(1)}...`;
       document.getElementById('liveSearchGini').textContent = `Combined Gini: ${realGini.toFixed(3)}`;
     } else {
       let sweep = MIN_C + (MAX_C - MIN_C) * localProg;
       let swY = mapY(sweep);
-      
+
       ctx.fillStyle = 'rgba(0,0,0,0.03)';
-      ctx.fillRect(pX, swY, pW, (pY+pH) - swY); 
+      ctx.fillRect(pX, swY, pW, (pY+pH) - swY);
 
       ctx.strokeStyle = COLORS.accent2; ctx.lineWidth = 3; ctx.setLineDash([6,4]);
       ctx.beginPath(); ctx.moveTo(pX, swY); ctx.lineTo(pX+pW, swY); ctx.stroke();
       ctx.setLineDash([]);
-      
+
       let g0 = DATA.filter(d => d.c < sweep);
       let g1 = DATA.filter(d => d.c >= sweep);
       let realGini = calcCombinedGini(g0, g1);
-      
+
       document.getElementById('liveSearchDesc').textContent = `Testing Split: Color < ${sweep.toFixed(1)}...`;
       document.getElementById('liveSearchGini').textContent = `Combined Gini: ${realGini.toFixed(3)}`;
     }
@@ -584,7 +1168,12 @@ function draw() {
   });
 
   // Draw Test Points (Diamonds)
-  if(currentStage >= 9 && currentStage <= 10) {
+  if(currentStage === 2) {
+    // Stage 2 shows test points as translucent faint targets
+    TEST_DATA.forEach(d => {
+      drawDiamond(d.w, d.c, d.label, 7, 'rgba(0,0,0,0.15)', false, true);
+    });
+  } else if(currentStage >= 11 && currentStage <= 12) {
     TEST_DATA.forEach(d => {
       let trc = classifyTrace(d, pruneTree);
       let ok = trc.prediction === d.label;
@@ -592,31 +1181,20 @@ function draw() {
     });
   }
 
-  if(currentStage === 11) {
+  // Draw trace for highlighted test point
+  if((currentStage === 11 || currentStage === 12) && selectedTestPoint) {
+    drawTestPointTrace(selectedTestPoint);
+  }
+
+  if(currentStage === 14) {
     let tObj = buildTree(DATA, parseInt(document.getElementById('pgDepth').value), 1);
     playgroundPoints.forEach(p => {
       let trc = classifyTrace(p, tObj);
-      drawDiamond(p.w, p.c, trc.prediction, 9, '#ffffff', true); 
+      drawDiamond(p.w, p.c, trc.prediction, 9, '#ffffff', true);
     });
   }
-  
-  drawAxes('Weight (x)', 'Color Intensity (y)');
-}
 
-function renderHero() {
-  ctx.fillStyle = COLORS.bg; ctx.fillRect(0,0,W,H);
-  ctx.save(); ctx.translate(W/2, H/2);
-  let t = Date.now()/1000;
-  for(let i=0; i<30; i++) {
-    let x = Math.sin(t*0.5 + i*1.3)*250;
-    let y = Math.cos(t*0.3 + i*2.1)*200;
-    ctx.beginPath(); ctx.arc(x,y, Math.min(6, i%8+2), 0, Math.PI*2);
-    ctx.fillStyle = (i%2===0)? COLORS.appleFill : COLORS.orangeFill;
-    ctx.fill();
-    ctx.strokeStyle = (i%2===0)? COLORS.apple : COLORS.orange;
-    ctx.stroke();
-  }
-  ctx.restore();
+  drawAxes('Weight (x)', 'Color Intensity (y)');
 }
 
 function drawGrid() {
@@ -633,12 +1211,12 @@ function drawAxes(lx, ly) {
   ctx.strokeStyle = '#d1d5db'; ctx.lineWidth = 2;
   ctx.beginPath(); ctx.moveTo(pX, pY+pH); ctx.lineTo(pX+pW, pY+pH); ctx.stroke();
   ctx.beginPath(); ctx.moveTo(pX, pY); ctx.lineTo(pX, pY+pH); ctx.stroke();
-  
+
   ctx.fillStyle = COLORS.text; ctx.font = '500 12px Inter'; ctx.textAlign = 'center';
   ctx.fillText(lx, pX + pW/2, pY + pH + 35);
   ctx.save(); ctx.translate(pX - 35, pY + pH/2); ctx.rotate(-Math.PI/2);
   ctx.fillText(ly, 0, 0); ctx.restore();
-  
+
   ctx.font='10px JetBrains Mono'; ctx.fillStyle=COLORS.textDim;
   for(let i=0; i<=5; i++) {
     let wV = MIN_W + i*(MAX_W-MIN_W)/5;
@@ -648,25 +1226,25 @@ function drawAxes(lx, ly) {
     ctx.fillText(cV.toFixed(1), pX-8, pY+pH - i*(pH/5) + 4);
     ctx.textAlign = 'center';
   }
-  
-  const legX = pX + pW - 150, legY = pY + 10;
-  ctx.fillStyle = 'rgba(255,255,255,0.9)'; ctx.fillRect(legX, legY, 140, 68);
-  ctx.strokeStyle = '#e5e7eb'; ctx.strokeRect(legX, legY, 140, 68);
-  
-  ctx.fillStyle = COLORS.apple; ctx.beginPath(); ctx.arc(legX+15, legY+15, 5, 0, Math.PI*2); ctx.fill();
-  ctx.fillStyle = COLORS.text; ctx.textAlign='left'; ctx.font='10px Inter'; ctx.fillText('Train Apple', legX+28, legY+18);
-  
-  ctx.fillStyle = COLORS.orange; ctx.beginPath(); ctx.arc(legX+15, legY+35, 5, 0, Math.PI*2); ctx.fill();
-  ctx.fillStyle = COLORS.text; ctx.fillText('Train Orange', legX+28, legY+38);
-  
-  ctx.fillStyle = 'rgba(0,0,0,0.1)';
-  ctx.beginPath(); ctx.moveTo(legX+15, legY+50); ctx.lineTo(legX+20, legY+55); ctx.lineTo(legX+15, legY+60); ctx.lineTo(legX+10, legY+55); ctx.fill(); 
-  ctx.strokeStyle=COLORS.green; ctx.lineWidth=1.5; ctx.stroke();
-  ctx.fillStyle = COLORS.text; ctx.fillText('Test ✅', legX+28, legY+58);
 
-  ctx.beginPath(); ctx.moveTo(legX+80, legY+50); ctx.lineTo(legX+85, legY+55); ctx.lineTo(legX+80, legY+60); ctx.lineTo(legX+75, legY+55); ctx.fill(); 
+  const legX = pX + pW - 145, legY = pY + 8;
+  ctx.fillStyle = 'rgba(255,255,255,0.95)'; ctx.fillRect(legX, legY, 135, 74);
+  ctx.strokeStyle = '#e2e8f0'; ctx.lineWidth = 1; ctx.strokeRect(legX, legY, 135, 74);
+
+  ctx.fillStyle = COLORS.apple; ctx.beginPath(); ctx.arc(legX+15, legY+14, 5, 0, Math.PI*2); ctx.fill();
+  ctx.fillStyle = COLORS.text; ctx.textAlign='left'; ctx.font='10px Inter'; ctx.fillText('Train Apple', legX+26, legY+17);
+
+  ctx.fillStyle = COLORS.orange; ctx.beginPath(); ctx.arc(legX+15, legY+32, 5, 0, Math.PI*2); ctx.fill();
+  ctx.fillStyle = COLORS.text; ctx.fillText('Train Orange', legX+26, legY+35);
+
+  ctx.fillStyle = 'rgba(0,0,0,0.1)';
+  ctx.beginPath(); ctx.moveTo(legX+15, legY+46); ctx.lineTo(legX+20, legY+51); ctx.lineTo(legX+15, legY+56); ctx.lineTo(legX+10, legY+51); ctx.fill();
+  ctx.strokeStyle=COLORS.green; ctx.lineWidth=1.5; ctx.stroke();
+  ctx.fillStyle = COLORS.text; ctx.fillText('Test ✅', legX+26, legY+54);
+
+  ctx.beginPath(); ctx.moveTo(legX+80, legY+46); ctx.lineTo(legX+85, legY+51); ctx.lineTo(legX+80, legY+56); ctx.lineTo(legX+75, legY+51); ctx.fill();
   ctx.strokeStyle=COLORS.coral; ctx.lineWidth=1.5; ctx.stroke();
-  ctx.fillStyle = COLORS.text; ctx.fillText('Test ❌', legX+93, legY+58);
+  ctx.fillStyle = COLORS.text; ctx.fillText('Test ❌', legX+91, legY+54);
 }
 
 function drawPoint(w, c, label, r=6) {
@@ -676,12 +1254,15 @@ function drawPoint(w, c, label, r=6) {
   ctx.fill();
 }
 
-function drawDiamond(w, c, label, size=8, border=null, glow=false) {
+function drawDiamond(w, c, label, size=8, border=null, glow=false, translucent=false) {
   let x = mapX(w), y = mapY(c);
   ctx.beginPath();
   ctx.moveTo(x, y-size); ctx.lineTo(x+size, y); ctx.lineTo(x, y+size); ctx.lineTo(x-size, y);
   ctx.closePath();
   ctx.fillStyle = label==='Apple' ? COLORS.apple : COLORS.orange;
+  if(translucent) {
+    ctx.fillStyle = 'rgba(100,100,100,0.15)';
+  }
   if(glow) { ctx.shadowColor=ctx.fillStyle; ctx.shadowBlur=12; }
   ctx.fill();
   ctx.shadowBlur = 0;
@@ -690,14 +1271,47 @@ function drawDiamond(w, c, label, size=8, border=null, glow=false) {
   }
 }
 
+function drawTestPointTrace(pt) {
+  let node = pruneTree;
+  let currentRect = { x1: MIN_W, x2: MAX_W, y1: MIN_C, y2: MAX_C };
+
+  while(node && !node.isLeaf) {
+    let val = node.val;
+    let attr = node.attr;
+    let isLess = pt[attr] < val;
+
+    ctx.strokeStyle = 'rgba(99, 102, 241, 0.75)';
+    ctx.lineWidth = 3.5;
+    ctx.setLineDash([4, 4]);
+    ctx.beginPath();
+    if(attr === 'w') {
+      ctx.moveTo(mapX(val), mapY(currentRect.y2)); ctx.lineTo(mapX(val), mapY(currentRect.y1));
+      if(isLess) currentRect.x2 = val; else currentRect.x1 = val;
+    } else {
+      ctx.moveTo(mapX(currentRect.x1), mapY(val)); ctx.lineTo(mapX(currentRect.x2), mapY(val));
+      if(isLess) currentRect.y2 = val; else currentRect.y1 = val;
+    }
+    ctx.stroke();
+
+    // Draw dot on path center
+    ctx.fillStyle = 'rgba(99, 102, 241, 0.3)';
+    let mx = mapX((currentRect.x1 + currentRect.x2)/2);
+    let my = mapY((currentRect.y1 + currentRect.y2)/2);
+    ctx.beginPath(); ctx.arc(mx, my, 8, 0, Math.PI*2); ctx.fill();
+
+    node = isLess ? node.left : node.right;
+  }
+  ctx.setLineDash([]);
+}
+
 function updateModelSnapshot() {
   let rCount = 0;
   let tDepth = 0;
-  if (currentStage === 11) {
+  if (currentStage === 14) {
     let d = parseInt(document.getElementById('pgDepth').value) || 3;
     tDepth = d;
     rCount = getRects(buildTree(DATA, d, 1), MIN_W, MAX_W, MIN_C, MAX_C).length;
-  } else if (currentStage >= 9 && currentStage <= 10) {
+  } else if (currentStage >= 11 && currentStage <= 12) {
     rCount = prunedRects.length;
     tDepth = 3;
   } else {
@@ -711,12 +1325,13 @@ function updateModelSnapshot() {
 }
 
 function onStageEnter(stg) {
-  if(stg <= 7) {
+  if(stg <= 8) {
     treeMode = 'overfit';
   }
-  if(stg === 8) { setTreeMode('overfit'); }
-  if(stg >= 9) { treeMode = 'pruned'; }
+  if(stg === 9) { setTreeMode('overfit'); }
+  if(stg >= 10) { treeMode = 'pruned'; }
   updateModelSnapshot();
+  populateTreeOutputGuide();
 }
 
 window.setTreeMode = function(mode) {
@@ -726,6 +1341,7 @@ window.setTreeMode = function(mode) {
   if(mode==='overfit') document.getElementById('btnOverfit').classList.add('btn-accent');
   else document.getElementById('btnPruned').classList.add('btn-accent');
   updateModelSnapshot();
+  populateTreeOutputGuide();
 }
 
 function classifyTrace(pt, node, trace=[]) {
@@ -739,10 +1355,18 @@ function classifyTrace(pt, node, trace=[]) {
   return classifyTrace(pt, isLess ? node.left : node.right, trace);
 }
 
+function safeDiv(num, den) {
+  return den === 0 ? 0 : num / den;
+}
+
+function formatPct(x) {
+  return `${(x * 100).toFixed(1)}%`;
+}
+
 function updateEvaluationUI() {
   let resultHtml = '';
   let tp=0, tn=0, fp=0, fn=0;
-  
+
   TEST_DATA.forEach((d,i) => {
     let res = classifyTrace(d, pruneTree, []);
     let pred = res.prediction;
@@ -753,41 +1377,636 @@ function updateEvaluationUI() {
     if(d.label==='Apple' && pred==='Orange') fn++;
     let cls = d.label==='Apple'?'tag-apple':'tag-orange';
     let pcls = pred==='Apple'?'tag-apple':'tag-orange';
-    
+
     let pathStr = '<div class="trace-block">';
     res.trace.forEach(t=> { pathStr += `<span class="trace-step">${t}</span>`; });
     pathStr += '</div>';
-    
-    resultHtml += `<tr><td><span class="tag ${cls}">${d.label}</span></td><td><span class="tag ${pcls}">${pred}</span></td><td>${ok?'✅':'❌'}${pathStr}</td></tr>`;
+
+    resultHtml += `<tr class="clickable-row ${selectedTestPoint === d ? 'selected': ''}" onclick="selectTestPointRow(${i})">
+      <td><span class="tag ${cls}">${d.label}</span></td>
+      <td><span class="tag ${pcls}">${pred}</span></td>
+      <td>${ok?'✅':'❌'}${pathStr}</td>
+    </tr>`;
   });
-  document.getElementById('testResultsList').innerHTML = `<table class="data-table"><thead><tr><th>Actual</th><th>Predicted</th><th>Classification Trace Path</th></tr></thead><tbody>${resultHtml}</tbody></table>
-  <p style="margin-top:12px;font-weight:600">${TEST_DATA.length - (fp+fn)}/${TEST_DATA.length} correct</p>`;
-  
+
+  document.getElementById('testResultsList').innerHTML = `
+    <table class="data-table">
+      <thead><tr><th>Actual</th><th>Predicted</th><th>Classification Trace Path (Click row to draw on map)</th></tr></thead>
+      <tbody>${resultHtml}</tbody>
+    </table>
+    <p style="margin-top:12px;font-weight:600">${TEST_DATA.length - (fp+fn)}/${TEST_DATA.length} correct</p>`;
+
   document.getElementById('confMatrix').innerHTML = `
-    <div class="cell header"></div><div class="cell header">Pred Apple</div><div class="cell header">Pred Orange</div>
-    <div class="cell header">Act Apple</div><div class="cell tp">TP = ${tp}</div><div class="cell fn">FN = ${fn}</div>
-    <div class="cell header">Act Orange</div><div class="cell fp">FP = ${fp}</div><div class="cell tn">TN = ${tn}</div>`;
-    
+    <div class="cell header">Actual / Pred</div>
+    <div class="cell header">Pred Apple</div>
+    <div class="cell header">Pred Orange</div>
+
+    <div class="cell header">Act Apple</div>
+    <div class="cell tp" onclick="selectConfMatrixCell('tp')" style="cursor:pointer">TP = ${tp} <span style="font-size:0.65rem;display:block;opacity:0.8">Inspect</span></div>
+    <div class="cell fn" onclick="selectConfMatrixCell('fn')" style="cursor:pointer">FN = ${fn} <span style="font-size:0.65rem;display:block;opacity:0.8">Inspect</span></div>
+
+    <div class="cell header">Act Orange</div>
+    <div class="cell fp" onclick="selectConfMatrixCell('fp')" style="cursor:pointer">FP = ${fp} <span style="font-size:0.65rem;display:block;opacity:0.8">Inspect</span></div>
+    <div class="cell tn" onclick="selectConfMatrixCell('tn')" style="cursor:pointer">TN = ${tn} <span style="font-size:0.65rem;display:block;opacity:0.8">Inspect</span></div>`;
+
   let acc = (tp+tn)/TEST_DATA.length;
   let prec = tp/(tp+fp) || 0;
   let rec = tp/(tp+fn) || 0;
-  document.getElementById('metricsRow').innerHTML = `
-    <div class="metric-card"><div class="val">${(acc*100).toFixed(0)}%</div><div class="lbl">Accuracy</div></div>
-    <div class="metric-card"><div class="val">${(prec*100).toFixed(0)}%</div><div class="lbl">Precision</div></div>
-    <div class="metric-card"><div class="val">${(rec*100).toFixed(0)}%</div><div class="lbl">Recall</div></div>`;
+  let f1 = 2 * (prec * rec) / (prec + rec) || 0;
+
+  const metricsRow = document.getElementById('metricsRow');
+  metricsRow.innerHTML = `
+    <div class="metric-card" onclick="selectMetricCard('Accuracy', ${tp}, ${tn}, ${fp}, ${fn})" style="cursor:pointer;">
+      <div class="val" style="color:var(--accent)">${(acc*100).toFixed(0)}%</div>
+      <div class="lbl">Accuracy</div>
+      <span style="font-size:0.65rem; color:var(--text-muted); display:block; margin-top:2px">Click to inspect</span>
+    </div>
+    <div class="metric-card" onclick="selectMetricCard('Precision', ${tp}, ${tn}, ${fp}, ${fn})" style="cursor:pointer;">
+      <div class="val" style="color:var(--green)">${(prec*100).toFixed(0)}%</div>
+      <div class="lbl">Precision</div>
+      <span style="font-size:0.65rem; color:var(--text-muted); display:block; margin-top:2px">Click to inspect</span>
+    </div>
+    <div class="metric-card" onclick="selectMetricCard('Recall', ${tp}, ${tn}, ${fp}, ${fn})" style="cursor:pointer;">
+      <div class="val" style="color:var(--orange)">${(rec*100).toFixed(0)}%</div>
+      <div class="lbl">Recall</div>
+      <span style="font-size:0.65rem; color:var(--text-muted); display:block; margin-top:2px">Click to inspect</span>
+    </div>
+    <div class="metric-card" onclick="selectMetricCard('F1 Score', ${tp}, ${tn}, ${fp}, ${fn})" style="cursor:pointer;">
+      <div class="val" style="color:var(--accent2)">${(f1*100).toFixed(0)}%</div>
+      <div class="lbl">F1 Score</div>
+      <span style="font-size:0.65rem; color:var(--text-muted); display:block; margin-top:2px">Click to inspect</span>
+    </div>
+  `;
 }
 
+window.selectTestPointRow = function(index) {
+  selectedTestPoint = TEST_DATA[index];
+  document.querySelectorAll('#testResultsList tbody tr').forEach((row, i) => {
+    if (i === index) row.classList.add('selected');
+    else row.classList.remove('selected');
+  });
+}
+
+// Interactive Confusion Matrix Cells
+const confMatrixDescriptions = {
+  'tp': '<strong>True Positive (TP):</strong> The tree predicted <strong>Apple</strong>, and the true label was indeed <strong>Apple</strong>. These are correct hits!',
+  'tn': '<strong>True Negative (TN):</strong> The tree predicted <strong>Orange</strong>, and the true label was indeed <strong>Orange</strong>. These are correct rejections!',
+  'fp': '<strong>False Positive (FP) [Type I Error]:</strong> The tree predicted <strong>Apple</strong>, but the true label was actually <strong>Orange</strong>. This is a false alarm!',
+  'fn': '<strong>False Negative (FN) [Type II Error]:</strong> The tree predicted <strong>Orange</strong>, but the true label was actually <strong>Apple</strong>. This is a missed target!'
+};
+
+window.selectConfMatrixCell = function(type) {
+  const detailEl = document.getElementById('confMatrixDetail');
+  if(!detailEl) return;
+  detailEl.style.display = 'block';
+  detailEl.innerHTML = confMatrixDescriptions[type] || '';
+
+  document.querySelectorAll('#confMatrix .cell').forEach(c => {
+    c.style.outline = 'none';
+  });
+  const activeCell = document.querySelector(`#confMatrix .${type}`);
+  if(activeCell) {
+    activeCell.style.outline = '2px solid var(--accent)';
+  }
+}
+
+// Interactive Metric Explanations built dynamically from live values
+window.selectMetricCard = function(metricName, tp, tn, fp, fn) {
+  const panel = document.getElementById('metricExplanationPanel');
+  if (!panel) return;
+
+  const total = tp + tn + fp + fn;
+  const precision = safeDiv(tp, tp + fp);
+  const recall = safeDiv(tp, tp + fn);
+  const accuracy = safeDiv(tp + tn, total);
+  const f1Score = (precision + recall) === 0 ? 0 : 2 * precision * recall / (precision + recall);
+
+  panel.style.display = 'block';
+
+  // Highlight active selected metric card
+  document.querySelectorAll('#metricsRow .metric-card').forEach(card => {
+    card.style.outline = 'none';
+    card.style.borderColor = 'var(--glass-border)';
+  });
+  const cards = document.querySelectorAll('#metricsRow .metric-card');
+  let activeCard = null;
+  if (metricName === 'Accuracy') activeCard = cards[0];
+  else if (metricName === 'Precision') activeCard = cards[1];
+  else if (metricName === 'Recall') activeCard = cards[2];
+  else if (metricName === 'F1 Score') activeCard = cards[3];
+
+  if (activeCard) {
+    activeCard.style.outline = '2px solid var(--accent)';
+    activeCard.style.borderColor = 'var(--accent)';
+  }
+
+  let html = `<div style="font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px; font-weight:600;">ℹ️ Apple is treated as the positive class.</div>`;
+
+  if (metricName === 'Accuracy') {
+    html += `
+      <h4 style="color:var(--accent2); margin-bottom:8px">Accuracy</h4>
+      <div class="math-block" style="margin:8px 0; background:rgba(0,0,0,0.03); color:var(--accent2)">
+        Formula:<br>
+        Accuracy = (TP + TN) / (TP + TN + FP + FN)<br><br>
+        Calculation:<br>
+        Accuracy = (${tp} + ${tn}) / (${tp} + ${tn} + ${fp} + ${fn})<br>
+        Accuracy = (${tp} + ${tn}) / ${total} = <strong>${formatPct(accuracy)}</strong>
+      </div>
+      <p style="font-size:0.85rem; color:var(--text-dim); margin-bottom:6px"><strong>Simple Meaning:</strong> Out of all test fruits, how many did the tree classify correctly?</p>
+      <p style="font-size:0.85rem; color:var(--text-dim); margin-bottom:6px"><strong>Fruit Example:</strong> It counts both correctly predicted Apples (TP) and correctly predicted Oranges (TN).</p>
+      <p style="font-size:0.8rem; color:var(--text-muted); margin:0"><em>⚠️ Warning: Accuracy can be highly misleading if the classes are highly imbalanced (e.g. 99% Apples and 1% Oranges).</em></p>
+    `;
+  } else if (metricName === 'Precision') {
+    html += `
+      <h4 style="color:var(--accent2); margin-bottom:8px">Precision</h4>
+      <div class="math-block" style="margin:8px 0; background:rgba(0,0,0,0.03); color:var(--accent2)">
+        Formula:<br>
+        Precision = TP / (TP + FP)<br><br>
+        Calculation:<br>
+        Precision = ${tp} / (${tp} + ${fp}) = <strong>${formatPct(precision)}</strong>
+      </div>
+      <p style="font-size:0.85rem; color:var(--text-dim); margin-bottom:6px"><strong>Simple Meaning:</strong> When the tree predicts Apple, how often is it actually Apple?</p>
+      <p style="font-size:0.85rem; color:var(--text-dim); margin-bottom:6px"><strong>Fruit Example:</strong> If the tree claims ${tp + fp} fruits are Apples, but only ${tp} are truly Apples, then the precision is ${tp}/${tp + fp}.</p>
+      <p style="font-size:0.8rem; color:var(--text-muted); margin:0"><em>⚠️ Warning: Precision focuses directly on false alarms (False Positives): predicting Apple when the fruit is actually an Orange.</em></p>
+    `;
+  } else if (metricName === 'Recall') {
+    html += `
+      <h4 style="color:var(--accent2); margin-bottom:8px">Recall</h4>
+      <div class="math-block" style="margin:8px 0; background:rgba(0,0,0,0.03); color:var(--accent2)">
+        Formula:<br>
+        Recall = TP / (TP + FN)<br><br>
+        Calculation:<br>
+        Recall = ${tp} / (${tp} + ${fn}) = <strong>${formatPct(recall)}</strong>
+      </div>
+      <p style="font-size:0.85rem; color:var(--text-dim); margin-bottom:6px"><strong>Simple Meaning:</strong> Of all the actual real Apples in the test set, how many did the tree find?</p>
+      <p style="font-size:0.85rem; color:var(--text-dim); margin-bottom:6px"><strong>Fruit Example:</strong> If there are ${tp + fn} real Apples in our hidden basket, and our tree successfully identifies ${tp} of them, the recall is ${tp}/${tp + fn}.</p>
+      <p style="font-size:0.8rem; color:var(--text-muted); margin:0"><em>⚠️ Warning: Recall focuses directly on missed Apples (False Negatives): predicting Orange when the fruit is actually an Apple.</em></p>
+    `;
+  } else if (metricName === 'F1 Score') {
+    html += `
+      <h4 style="color:var(--accent2); margin-bottom:8px">F1 Score</h4>
+      <div class="math-block" style="margin:8px 0; background:rgba(0,0,0,0.03); color:var(--accent2)">
+        Formula:<br>
+        F1 Score = 2 × Precision × Recall / (Precision + Recall)<br><br>
+        Calculation:<br>
+        F1 Score = 2 × ${precision.toFixed(2)} × ${recall.toFixed(2)} / (${precision.toFixed(2)} + ${recall.toFixed(2)}) = <strong>${f1Score.toFixed(2)} (${formatPct(f1Score)})</strong>
+      </div>
+      <p style="font-size:0.85rem; color:var(--text-dim); margin-bottom:6px"><strong>Simple Meaning:</strong> The harmonic mean that balances both Precision and Recall into a single score.</p>
+      <p style="font-size:0.85rem; color:var(--text-dim); margin-bottom:6px"><strong>Fruit Example:</strong> The F1 Score will suffer severely if the model has either many false alarms (low precision) or misses many apples (low recall).</p>
+      <p style="font-size:0.8rem; color:var(--text-muted); margin:0"><em>⚠️ Warning: F1 Score is the metric of choice for evaluating models when classes are imbalanced and both error types carry severe costs.</em></p>
+    `;
+  }
+
+  panel.innerHTML = html;
+};
+
+// 5. VAL CURVE CHART & HIGHLIGHT FEATURES
+function getAccuracy(tree, dataset) {
+  if (!tree) return 0;
+  let correct = 0;
+  dataset.forEach(d => {
+    let pred = classifyTrace(d, tree, []).prediction;
+    if (pred === d.label) correct++;
+  });
+  return correct / dataset.length;
+}
+
+function computeValidationCurve() {
+  const curveData = [];
+  for (let d = 1; d <= 10; d++) {
+    const t = buildTree(DATA, d, 1);
+    const trainAcc = getAccuracy(t, DATA);
+    const testAcc = getAccuracy(t, TEST_DATA);
+    curveData.push({ depth: d, trainAcc, testAcc });
+  }
+  return curveData;
+}
+
+function renderValidationCurve() {
+  const data = computeValidationCurve();
+  const svg = document.getElementById('validationCurveSvg');
+  if(!svg) return;
+
+  const width = 450;
+  const height = 200;
+  const paddingLeft = 40;
+  const paddingRight = 20;
+  const paddingTop = 20;
+  const paddingBottom = 40;
+
+  const mapChartX = (d) => paddingLeft + ((d - 1) / 9) * (width - paddingLeft - paddingRight);
+  const minY = 0.4, maxY = 1.0;
+  const mapChartY = (acc) => height - paddingBottom - ((acc - minY) / (maxY - minY)) * (height - paddingTop - paddingBottom);
+
+  let gridHtml = '';
+  for(let yVal = 0.4; yVal <= 1.01; yVal += 0.1) {
+    const y = mapChartY(yVal);
+    gridHtml += `<line x1="${paddingLeft}" y1="${y}" x2="${width - paddingRight}" y2="${y}" stroke="var(--glass-border)" stroke-width="1" />`;
+    gridHtml += `<text x="${paddingLeft - 8}" y="${y + 4}" fill="var(--text-muted)" font-size="9" text-anchor="end">${(yVal*100).toFixed(0)}%</text>`;
+  }
+
+  for(let d = 1; d <= 10; d++) {
+    const x = mapChartX(d);
+    gridHtml += `<line x1="${x}" y1="${paddingTop}" x2="${x}" y2="${height - paddingBottom}" stroke="var(--glass-border)" stroke-width="1" stroke-dasharray="2,2" />`;
+    gridHtml += `<text x="${x}" y="${height - paddingBottom + 16}" fill="var(--text-muted)" font-size="10" text-anchor="middle">${d}</text>`;
+  }
+
+  let trainPoints = [];
+  let testPoints = [];
+  data.forEach(item => {
+    trainPoints.push(`${mapChartX(item.depth)},${mapChartY(item.trainAcc)}`);
+    testPoints.push(`${mapChartX(item.depth)},${mapChartY(item.testAcc)}`);
+  });
+
+  const trainPath = `M ${trainPoints.join(' L ')}`;
+  const testPath = `M ${testPoints.join(' L ')}`;
+
+  let pathsHtml = `
+    <path d="${trainPath}" fill="none" stroke="var(--apple)" stroke-width="2.5" />
+    <path d="${testPath}" fill="none" stroke="var(--orange)" stroke-width="2.5" />
+  `;
+
+  let interactiveHtml = '';
+  data.forEach(item => {
+    const tx = mapChartX(item.depth);
+    const tyTrain = mapChartY(item.trainAcc);
+    const tyTest = mapChartY(item.testAcc);
+    interactiveHtml += `
+      <circle cx="${tx}" cy="${tyTrain}" r="4" fill="var(--apple)" class="chart-dot" data-depth="${item.depth}" data-type="Train" data-val="${(item.trainAcc*100).toFixed(1)}%" />
+      <circle cx="${tx}" cy="${tyTest}" r="4" fill="var(--orange)" class="chart-dot" data-depth="${item.depth}" data-type="Test" data-val="${(item.testAcc*100).toFixed(1)}%" />
+    `;
+  });
+
+  svg.innerHTML = `
+    <g>${gridHtml}</g>
+    <g>${pathsHtml}</g>
+    <g>${interactiveHtml}</g>
+    <text x="${width/2}" y="${height - 4}" fill="var(--text-dim)" font-size="11" text-anchor="middle">Tree Depth (Max Depth)</text>
+    <text x="-${height/2}" y="12" fill="var(--text-dim)" font-size="11" text-anchor="middle" transform="rotate(-90)">Accuracy</text>
+  `;
+
+  let bestDepth = 1;
+  let maxTestAcc = 0;
+  data.forEach(item => {
+    if (item.testAcc > maxTestAcc) {
+      maxTestAcc = item.testAcc;
+      bestDepth = item.depth;
+    }
+  });
+
+  const bEl = document.getElementById('bestDepthValue');
+  if(bEl) bEl.innerHTML = `Depth <strong>${bestDepth}</strong> (Training Accuracy: <strong>${Math.round(data[bestDepth-1].trainAcc * 100)}%</strong>, Test Accuracy: <strong>${Math.round(maxTestAcc * 100)}%</strong>)`;
+
+  // Svg click dot synchronization
+  svg.addEventListener('click', (e) => {
+    const dot = e.target.closest('.chart-dot');
+    if(!dot) return;
+    const d = parseInt(dot.getAttribute('data-depth'));
+    const slider = document.getElementById('pgDepth');
+    if(slider) {
+      slider.value = d;
+      slider.dispatchEvent(new Event('input'));
+    }
+  });
+}
+
+// 6. TREE OUTPUT AND EXPLAINERS
+function calculateFeatureImportance(node) {
+  let importance = { w: 0, c: 0 };
+
+  function traverse(n) {
+    if (!n || n.isLeaf) return;
+    const nParent = n.a + n.o;
+    const nLeft = n.left.a + n.left.o;
+    const nRight = n.right.a + n.right.o;
+    const impDecrease = (nParent * n.gini) - (nLeft * n.left.gini + nRight * n.right.gini);
+
+    if (n.attr === 'w') {
+      importance.w += impDecrease;
+    } else if (n.attr === 'c') {
+      importance.c += impDecrease;
+    }
+    traverse(n.left);
+    traverse(n.right);
+  }
+  traverse(node);
+
+  const total = importance.w + importance.c;
+  if (total > 0) {
+    importance.w = (importance.w / total) * 100;
+    importance.c = (importance.c / total) * 100;
+  } else {
+    importance.w = 50;
+    importance.c = 50;
+  }
+  return importance;
+}
+
+function generateTreeRules(node, path=[]) {
+  if (!node) return [];
+  if (node.isLeaf) {
+    const pStr = path.length > 0 ? path.join(' AND ') : 'True';
+    return [`IF ${pStr} THEN Predict ${node.prediction} (🍎${node.a} 🍊${node.o}, Gini = ${node.gini.toFixed(3)})`];
+  }
+
+  const attrName = node.attr === 'w' ? 'Weight' : 'Color';
+  const leftRules = generateTreeRules(node.left, [...path, `${attrName} < ${node.val.toFixed(2)}`]);
+  const rightRules = generateTreeRules(node.right, [...path, `${attrName} >= ${node.val.toFixed(2)}`]);
+  return [...leftRules, ...rightRules];
+}
+
+function populateTreeOutputGuide() {
+  const t = (treeMode === 'pruned') ? pruneTree : fullTree;
+  const imp = calculateFeatureImportance(t);
+  const rules = generateTreeRules(t);
+  let rulesHtml = rules.map((r, idx) => `<div class="rule-row"><strong>Rule ${idx+1}:</strong> ${r}</div>`).join('');
+
+  const guideEl = document.getElementById('treeOutputGuide');
+  if(!guideEl) return;
+
+  // Compute live performance metrics for summary block
+  let tp=0, tn=0, fp=0, fn=0;
+  TEST_DATA.forEach(d => {
+    let pred = classifyTrace(d, t, []).prediction;
+    if(d.label==='Apple' && pred==='Apple') tp++;
+    if(d.label==='Orange' && pred==='Orange') tn++;
+    if(d.label==='Orange' && pred==='Apple') fp++;
+    if(d.label==='Apple' && pred==='Orange') fn++;
+  });
+  let acc = (tp+tn)/TEST_DATA.length;
+  let prec = tp/(tp+fp) || 0;
+  let rec = tp/(tp+fn) || 0;
+  let f1 = 2 * (prec * rec) / (prec + rec) || 0;
+
+  guideEl.innerHTML = `
+    <div class="math-block model-report-block" style="background:var(--bg2); border:1px solid var(--glass-border); font-family:'JetBrains Mono',monospace; color:var(--text); border-radius:var(--radius-sm)">
+      <div style="font-weight:700; border-bottom:2px solid var(--glass-border); padding-bottom:8px; margin-bottom:10px; font-size:0.9rem; color:var(--accent2)">CLASSIFICATION TREE MODEL REPORT</div>
+
+      <div class="guide-item report-row" data-topic="criterion">
+        <strong>Splitting Criterion :</strong><span class="hotspot">Gini Impurity</span>
+      </div>
+
+      <div class="guide-item report-row" data-topic="rows">
+        <strong>Dataset Size        :</strong><span class="hotspot">Training Rows = ${DATA.length} | Test Rows = ${TEST_DATA.length}</span>
+      </div>
+
+      <div class="guide-item report-row" data-topic="model">
+        <strong>Active Tree Model   :</strong><span class="hotspot">${treeMode === 'pruned' ? 'Pruned Tree (Regularized)' : 'Overfit Tree (Unconstrained)'}</span>
+      </div>
+
+      <div class="guide-item report-row" data-topic="depth">
+        <strong>Max Depth Parameter :</strong><span class="hotspot">Depth Limit = ${treeMode === 'pruned' ? 3 : 10}</span>
+      </div>
+
+      <div class="guide-item report-row" data-topic="leaf-nodes">
+        <strong>Total Leaf Nodes    :</strong><span class="hotspot">${(treeMode === 'pruned' ? prunedRects : fullRects).length} leaves</span>
+      </div>
+
+      <div class="guide-item report-row" data-topic="root-split">
+        <strong>Root Split          :</strong><span class="hotspot">${topSplit.attr === 'w' ? 'Weight' : 'Color'} &lt; ${topSplit.val.toFixed(2)}</span>
+      </div>
+
+      <div class="guide-item" data-topic="rules">
+        <strong>Generated Tree Rules:</strong> <span class="hotspot">(Click to explain)</span>
+        <div class="rules-container" style="margin-top:6px;">${rulesHtml}</div>
+      </div>
+
+      <div class="guide-item" data-topic="importance">
+        <strong>Feature Importance  :</strong> <span class="hotspot">(Click to explain)</span>
+        <div class="importance-bars-container">
+          <div class="importance-bar-row" id="barWeight">
+            <div class="imp-label">Weight:</div>
+            <div class="imp-track">
+              <div class="imp-fill" style="width: ${imp.w}%; background: var(--apple)"></div>
+            </div>
+            <div class="imp-value">${imp.w.toFixed(1)}%</div>
+          </div>
+          <div class="importance-bar-row" id="barColor">
+            <div class="imp-label">Color:</div>
+            <div class="imp-track">
+              <div class="imp-fill" style="width: ${imp.c}%; background: var(--orange)"></div>
+            </div>
+            <div class="imp-value">${imp.c.toFixed(1)}%</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="guide-item" data-topic="metrics">
+        <strong>Test Dataset Metrics :</strong> <span class="hotspot">(Click to explain)</span>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:6px; font-size:0.75rem;">
+          <div style="background:var(--surface); padding:6px; border-radius:4px; border:1px solid var(--glass-border)">Accuracy : <strong>${(acc*100).toFixed(1)}%</strong></div>
+          <div style="background:var(--surface); padding:6px; border-radius:4px; border:1px solid var(--glass-border)">Precision: <strong>${(prec*100).toFixed(1)}%</strong></div>
+          <div style="background:var(--surface); padding:6px; border-radius:4px; border:1px solid var(--glass-border)">Recall   : <strong>${(rec*100).toFixed(1)}%</strong></div>
+          <div style="background:var(--surface); padding:6px; border-radius:4px; border:1px solid var(--glass-border)">F1 Score : <strong>${(f1*100).toFixed(1)}%</strong></div>
+        </div>
+      </div>
+    </div>
+  `;
+
+  setupHotspotListeners();
+}
+
+function setupHotspotListeners() {
+  const explanationTexts = {
+    'criterion': '<strong>⚖️ Gini Impurity:</strong> The criterion used to measure node cleanliness. Perfect purity is 0.0. The tree searches for splits that decrease this score the most. Calculated as <code>1 - Σ pᵢ²</code>.',
+    'rows': '<strong>📊 Dataset Size:</strong> The dataset has been partitioned into 28 Training rows (used to learn the split boundaries) and 6 Test rows (kept completely hidden during training to assess performance on unseen fruit).',
+    'model': '<strong>🌿 Active Tree Model:</strong> The overfit tree goes deep to capture every outlier, which results in zero training error but high test error. The pruned tree is restricted in depth (max=3) to focus only on general, robust patterns.',
+    'depth': '<strong>📏 Max Depth Parameter:</strong> This parameter limits how many split questions can be asked in sequence from the root to any leaf box. Keeping depth low prevents the tree from overfitting.',
+    'leaf-nodes': '<strong>🍃 Leaf Nodes:</strong> The final rectangular boxes where predictions are made. Every leaf node makes a majority class vote based on the training points inside its borders.',
+    'root-split': '<strong>🌱 Root Split:</strong> The absolute first and most important split made at the top of the tree. It was selected because it decreases impurity across the entire dataset more than any other candidate threshold.',
+    'rules': '<strong>📋 Tree Rules:</strong> Every decision path starting from the root and ending at a leaf is converted into an IF-THEN rule. This set of logical conditions defines the axis-aligned partitions on the map.',
+    'importance': '<strong>⚡ Feature Importance:</strong> Calculated by summing up all Gini impurity decreases achieved by splits on a given feature, weighted by the number of points at each split. Click/hover the bars to see their splits highlighted on the canvas.',
+    'metrics': '<strong>📈 Test Metrics:</strong> The ultimate assessment of the model on unseen data. Accuracy is overall correctness. Precision measures false alarms, Recall measures missed apples, and F1 balances both.'
+  };
+
+  const container = document.getElementById('treeOutputGuide');
+  if (!container) return;
+
+  container.querySelectorAll('.hotspot').forEach(el => {
+    el.addEventListener('click', e => {
+      e.stopPropagation();
+      const item = e.target.closest('.guide-item');
+      if(!item) return;
+      const topic = item.getAttribute('data-topic');
+      const text = explanationTexts[topic] || 'Explanation here...';
+      showPopover(e.target, text);
+    });
+  });
+
+  const wBar = document.getElementById('barWeight');
+  const cBar = document.getElementById('barColor');
+  if (wBar) {
+    wBar.addEventListener('mouseenter', () => { currentActiveHighlightAttr = 'w'; });
+    wBar.addEventListener('mouseleave', () => { currentActiveHighlightAttr = null; });
+    wBar.addEventListener('click', (e) => { e.stopPropagation(); currentActiveHighlightAttr = 'w'; });
+  }
+  if (cBar) {
+    cBar.addEventListener('mouseenter', () => { currentActiveHighlightAttr = 'c'; });
+    cBar.addEventListener('mouseleave', () => { currentActiveHighlightAttr = null; });
+    cBar.addEventListener('click', (e) => { e.stopPropagation(); currentActiveHighlightAttr = 'c'; });
+  }
+}
+
+function showPopover(targetEl, content) {
+  let pop = document.getElementById('globalPopover');
+  if (!pop) {
+    pop = document.createElement('div');
+    pop.id = 'globalPopover';
+    pop.className = 'popover';
+    document.body.appendChild(pop);
+  }
+
+  pop.innerHTML = `
+    <div class="popover-header">
+      <span>Key Concept Explanation</span>
+      <span class="popover-close">&times;</span>
+    </div>
+    <div>${content}</div>
+  `;
+
+  const rect = targetEl.getBoundingClientRect();
+  pop.style.display = 'block';
+
+  if (window.innerWidth < 600) {
+    pop.style.position = 'fixed';
+    pop.style.top = '25%';
+    pop.style.left = '5%';
+    pop.style.width = '90%';
+  } else {
+    pop.style.position = 'absolute';
+    let leftPos = rect.right + 12;
+    if (leftPos + 300 > window.innerWidth) {
+      leftPos = rect.left - 312;
+    }
+    pop.style.top = `${window.scrollY + rect.top}px`;
+    pop.style.left = `${window.scrollX + leftPos}px`;
+    pop.style.width = '280px';
+  }
+
+  pop.querySelector('.popover-close').onclick = () => { pop.style.display = 'none'; };
+}
+
+document.addEventListener('click', (e) => {
+  const pop = document.getElementById('globalPopover');
+  if(!pop) return;
+  if(e.target.closest('#globalPopover')) return;
+  if(e.target.closest('.hotspot')) return;
+  pop.style.display = 'none';
+});
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    const pop = document.getElementById('globalPopover');
+    if (pop) pop.style.display = 'none';
+  }
+});
+
+// 7. QUIZZES ENGINE
+document.querySelectorAll('.quiz-options').forEach(optionsContainer => {
+  optionsContainer.addEventListener('click', e => {
+    const btn = e.target.closest('.quiz-opt');
+    if (!btn) return;
+    const container = optionsContainer;
+    const allOpts = container.querySelectorAll('.quiz-opt');
+    const feedback = container.parentElement.querySelector('.quiz-feedback');
+
+    allOpts.forEach(o => {
+      o.disabled = true;
+      if (o.getAttribute('data-correct') === 'true') {
+        o.classList.add('correct');
+      }
+    });
+
+    if (btn.getAttribute('data-correct') === 'true') {
+      feedback.style.display = 'block';
+      feedback.style.background = 'var(--green-soft)';
+      feedback.style.color = 'var(--green)';
+      feedback.innerHTML = '✨ Correct! Outstanding work.';
+    } else {
+      btn.classList.add('incorrect');
+      feedback.style.display = 'block';
+      feedback.style.background = 'var(--coral-soft)';
+      feedback.style.color = 'var(--coral)';
+      feedback.innerHTML = '❌ Incorrect. Review the guidelines above!';
+    }
+  });
+});
+
+// HERO CANVAS DRAWINGS
+let heroCanvas = document.getElementById('heroCanvas');
+let heroCtx = heroCanvas ? heroCanvas.getContext('2d') : null;
+let heroParticles = [];
+
+function resizeHero() {
+  if(!heroCanvas) return;
+  heroCanvas.width = heroCanvas.parentElement.clientWidth;
+  heroCanvas.height = heroCanvas.parentElement.clientHeight;
+
+  heroParticles = [];
+  for(let i=0; i<35; i++) {
+    heroParticles.push({
+      x: Math.random() * heroCanvas.width,
+      y: Math.random() * heroCanvas.height,
+      r: Math.random() * 4 + 2,
+      vx: (Math.random() - 0.5) * 0.4,
+      vy: (Math.random() - 0.5) * 0.4,
+      color: Math.random() > 0.5 ? COLORS.appleFill : COLORS.orangeFill,
+      borderColor: Math.random() > 0.5 ? COLORS.apple : COLORS.orange
+    });
+  }
+}
+window.addEventListener('resize', resizeHero);
+
+function drawHeroParticles() {
+  if(!heroCtx || !heroCanvas) return;
+  heroCtx.clearRect(0, 0, heroCanvas.width, heroCanvas.height);
+
+  let grad = heroCtx.createRadialGradient(heroCanvas.width/2, heroCanvas.height/2, 10, heroCanvas.width/2, heroCanvas.height/2, heroCanvas.width);
+  grad.addColorStop(0, '#fcfcfb');
+  grad.addColorStop(1, '#f0efeb');
+  heroCtx.fillStyle = grad;
+  heroCtx.fillRect(0, 0, heroCanvas.width, heroCanvas.height);
+
+  heroCtx.strokeStyle = 'rgba(0,0,0,0.03)';
+  heroCtx.lineWidth = 1;
+  for(let i=0; i<heroParticles.length; i++) {
+    for(let j=i+1; j<heroParticles.length; j++) {
+      let dist = Math.hypot(heroParticles[i].x - heroParticles[j].x, heroParticles[i].y - heroParticles[j].y);
+      if(dist < 110) {
+        heroCtx.beginPath();
+        heroCtx.moveTo(heroParticles[i].x, heroParticles[i].y);
+        heroCtx.lineTo(heroParticles[j].x, heroParticles[j].y);
+        heroCtx.stroke();
+      }
+    }
+  }
+
+  heroParticles.forEach(p => {
+    p.x += p.vx;
+    p.y += p.vy;
+    if(p.x < 0 || p.x > heroCanvas.width) p.vx *= -1;
+    if(p.y < 0 || p.y > heroCanvas.height) p.vy *= -1;
+
+    heroCtx.beginPath();
+    heroCtx.arc(p.x, p.y, p.r, 0, Math.PI*2);
+    heroCtx.fillStyle = p.color;
+    heroCtx.fill();
+    heroCtx.strokeStyle = p.borderColor;
+    heroCtx.stroke();
+  });
+}
+
+// 8. INTERACTIVE CLICK MAPPING FOR RETINA (NO DPR MULTIPLIER MULTIPLICATION)
 canvas.addEventListener('click', (e)=>{
-  if(currentStage !== 11) return;
+  if(currentStage !== 14) return;
   const rect = canvas.getBoundingClientRect();
-  const dpr = window.devicePixelRatio || 1;
-  const cx = (e.clientX - rect.left)*dpr;
-  const cy = (e.clientY - rect.top)*dpr;
+  const cx = e.clientX - rect.left;
+  const cy = e.clientY - rect.top;
   if(cx >= pX && cx <= pX+pW && cy >= pY && cy <= pY+pH) {
     let w = MIN_W + ((cx - pX)/pW)*(MAX_W - MIN_W);
     let c = MIN_C + ((pH - (cy - pY))/pH)*(MAX_C - MIN_C);
     playgroundPoints.push({w, c});
-    
+
     let d = parseInt(document.getElementById('pgDepth').value) || 3;
     let tObj = buildTree(DATA, d, 1);
     let trc = classifyTrace({w,c}, tObj, []);
@@ -803,24 +2022,35 @@ canvas.addEventListener('click', (e)=>{
   }
 });
 
-window.resetPlayground = function() { 
-  playgroundPoints = []; 
+window.resetPlayground = function() {
+  playgroundPoints = [];
   let pgt = document.getElementById('pgTraceContainer');
   if(pgt) pgt.style.display = 'none';
 }
 document.getElementById('pgDepth').addEventListener('input', function(e) {
   document.getElementById('pgDepthVal').textContent = e.target.value;
   updateModelSnapshot();
+  populateTreeOutputGuide();
 });
 
+// MAIN ANIMATION LOOP WITH EXPLICIT RENDERING ERROR GUARDS
 function tick() {
-  draw();
+  try {
+    draw();
+    if(currentStage === 0) {
+      drawHeroParticles();
+    }
+  } catch(err) {
+    console.error('Classification Tree canvas render failed:', err);
+  }
   requestAnimationFrame(tick);
 }
 
-// Start
+// Initialize Everything
 initUI();
 resize();
+resizeHero();
+updateStageOnScroll();
 tick();
 
 })();
