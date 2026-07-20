@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>K-Nearest Neighbors — Interactive Visual Guide</title>
+<title>K-Nearest Neighbors (KNN) | StatML Academy</title>
 <meta name="description" content="A scroll-driven, interactive visual guide to K-Nearest Neighbors (KNN). Learn how KNN works from raw data to final model prediction.">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
@@ -148,8 +148,395 @@ p{font-size:0.95rem;color:var(--text-dim);margin-bottom:16px;max-width:520px}
   .stage-dots{display:none}
 }
 </style>
+
+<style id="statml-standard-theme">
+:root {
+  --statml-page: #f7f7f4;
+  --statml-page-subtle: #f0efeb;
+  --statml-surface: #ffffff;
+  --statml-border: #e7e5e4;
+  --statml-text: #1f2937;
+  --statml-text-secondary: #4b5563;
+  --statml-text-muted: #6b7280;
+  --statml-brand: #6366f1;
+  --statml-brand-strong: #4f46e5;
+  --statml-brand-soft: #eef2ff;
+  --statml-success: #16a34a;
+  --statml-warning: #d97706;
+  --statml-danger: #dc2626;
+  --statml-info: #2563eb;
+  --statml-radius-control: 8px;
+  --statml-radius-card: 12px;
+  --statml-radius-visual: 16px;
+  --statml-shadow-card: 0 2px 8px rgba(15, 23, 42, 0.045);
+  --statml-shadow-visual: 0 14px 34px rgba(15, 23, 42, 0.07);
+}
+html { scroll-behavior: smooth; scroll-padding-top: 68px; }
+body.statml-standardized {
+  margin: 0 !important;
+  background: var(--statml-page) !important;
+  color: var(--statml-text) !important;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
+  line-height: 1.65 !important;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+body.statml-standardized * { box-sizing: border-box; }
+body.statml-standardized ::selection { background: rgba(99,102,241,.18); }
+body.statml-standardized :focus-visible { outline: 3px solid rgba(99,102,241,.35) !important; outline-offset: 3px !important; }
+body.statml-standardized #progress-bar,
+body.statml-standardized .progress-bar {
+  height: 4px !important;
+  background: linear-gradient(90deg, var(--statml-brand), var(--statml-brand-strong)) !important;
+  z-index: 1200 !important;
+}
+.statml-site-nav {
+  position: fixed;
+  inset: 4px 0 auto 0;
+  height: 54px;
+  z-index: 1100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 0 24px;
+  background: rgba(247,247,244,.84);
+  border-bottom: 1px solid rgba(231,229,228,.85);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+.statml-site-nav a { color: inherit; text-decoration: none; }
+.statml-brand-link { display: inline-flex; align-items: center; gap: 10px; font-size: .84rem; font-weight: 700; letter-spacing: -.01em; }
+.statml-brand-mark { width: 24px; height: 24px; display: grid; place-items: center; border: 1px solid var(--statml-border); border-radius: 7px; background: var(--statml-surface); color: var(--statml-brand-strong); font-family: "JetBrains Mono", monospace; font-size: .72rem; box-shadow: var(--statml-shadow-card); }
+.statml-nav-topic { min-width: 0; color: var(--statml-text-secondary); font-size: .79rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.statml-nav-meta { color: var(--statml-text-muted); font-family: "JetBrains Mono", monospace; font-size: .68rem; letter-spacing: .08em; text-transform: none; white-space: nowrap; }
+.statml-hero {
+  min-height: 100svh !important;
+  padding: 7.5rem 2rem 5rem !important;
+  background-color: var(--statml-page) !important;
+  isolation: isolate;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+  position: relative !important;
+  overflow: hidden !important;
+}
+.statml-hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image:
+    radial-gradient(circle at 50% 42%, rgba(99,102,241,.10), transparent 34%),
+    radial-gradient(rgba(99,102,241,.14) .7px, transparent .7px);
+  background-size: auto, 30px 30px;
+  mask-image: linear-gradient(to bottom, rgba(0,0,0,.7), transparent 92%);
+  opacity: .62;
+}
+.statml-hero > :not(canvas):not(.hero-bg):not(#hero-bg) { position: relative; z-index: 2; }
+.statml-hero > canvas,
+.statml-hero > .hero-bg,
+.statml-hero > #hero-bg { position: absolute !important; inset: 0 !important; z-index: 0 !important; width: 100% !important; height: 100% !important; pointer-events: none !important; }
+.statml-hero > div:not(.hero-bg):not(#hero-bg) { width: min(100%, 980px); margin-inline: auto; }
+.statml-hero h1 {
+  max-width: 980px !important;
+  margin: 0 auto 1.35rem !important;
+  font-family: Inter, ui-sans-serif, system-ui, sans-serif !important;
+  font-size: clamp(2.8rem, 6.5vw, 5rem) !important;
+  font-weight: 700 !important;
+  line-height: 1.04 !important;
+  letter-spacing: -.045em !important;
+  background: linear-gradient(135deg, #111827 8%, var(--statml-brand-strong) 100%) !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  color: transparent !important;
+  -webkit-text-fill-color: transparent !important;
+}
+.statml-hero .hero-subtitle,
+.statml-hero .subtitle,
+.statml-hero > p:not(.hero-badge):not(.topic-badge),
+.statml-hero > div > p:not(.hero-badge):not(.topic-badge) {
+  max-width: 700px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  color: var(--statml-text-secondary) !important;
+  font-family: Inter, ui-sans-serif, system-ui, sans-serif !important;
+  font-size: clamp(1.05rem, 2vw, 1.28rem) !important;
+  line-height: 1.55 !important;
+}
+.statml-hero .hero-badge,
+.statml-hero .topic-badge,
+.statml-hero [data-statml-badge] {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: auto !important;
+  padding: .42rem .9rem !important;
+  margin-bottom: 1.35rem !important;
+  border: 1px solid rgba(99,102,241,.22) !important;
+  border-radius: 999px !important;
+  background: rgba(238,242,255,.82) !important;
+  color: var(--statml-brand-strong) !important;
+  font-family: "JetBrains Mono", ui-monospace, monospace !important;
+  font-size: .72rem !important;
+  font-weight: 600 !important;
+  letter-spacing: .09em !important;
+  text-transform: uppercase !important;
+  box-shadow: none !important;
+}
+.statml-overview {
+  width: min(850px, 100%);
+  margin: 2rem auto 0;
+  padding: 1rem;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: .7rem;
+  border: 1px solid rgba(231,229,228,.95);
+  border-radius: var(--statml-radius-visual);
+  background: rgba(255,255,255,.66);
+  box-shadow: var(--statml-shadow-card);
+  backdrop-filter: blur(8px);
+}
+.statml-overview-item { display: flex; align-items: flex-start; gap: .65rem; padding: .65rem .72rem; text-align: left; color: var(--statml-text-secondary); font-size: .83rem; line-height: 1.45; }
+.statml-overview-number { flex: 0 0 auto; display: grid; place-items: center; width: 22px; height: 22px; border-radius: 7px; background: var(--statml-brand-soft); color: var(--statml-brand-strong); font-family: "JetBrains Mono", monospace; font-size: .68rem; font-weight: 700; }
+.statml-hero .scroll-cue,
+.statml-hero .scroll-hint,
+.statml-hero .scroll-indicator,
+.statml-hero .hero-scroll {
+  color: var(--statml-text-muted) !important;
+  font-family: "JetBrains Mono", monospace !important;
+  font-size: .7rem !important;
+  letter-spacing: .08em !important;
+  text-transform: uppercase !important;
+}
+.statml-layout {
+  display: grid !important;
+  grid-template-columns: minmax(0,45%) minmax(0,55%) !important;
+  width: 100% !important;
+  max-width: 1400px !important;
+  margin: 0 auto !important;
+  padding: 0 !important;
+  align-items: start !important;
+}
+.statml-narrative {
+  width: auto !important;
+  min-width: 0 !important;
+  padding: 0 4rem 10vh !important;
+  background: transparent !important;
+  z-index: 2 !important;
+}
+.statml-visual {
+  width: auto !important;
+  min-width: 0 !important;
+  height: 100svh !important;
+  position: sticky !important;
+  top: 0 !important;
+  padding: 4.2rem 1.6rem 1.4rem !important;
+  display: flex !important;
+  align-items: stretch !important;
+  justify-content: center !important;
+  background: var(--statml-page) !important;
+  border-left: 1px solid rgba(231,229,228,.72) !important;
+  overflow: hidden !important;
+  z-index: 1 !important;
+}
+.statml-visual > * { max-width: 100%; }
+.statml-visual > :is(.status-strip,.control-panel,.canvas-container,.viz-stage,.canvas-wrapper) { width: 100% !important; }
+.statml-stage {
+  min-height: 92svh !important;
+  padding: 5rem 0 !important;
+  opacity: 1 !important;
+  color: var(--statml-text) !important;
+  scroll-margin-top: 62px;
+  border-bottom: 1px solid rgba(231,229,228,.72);
+}
+.statml-stage:last-child { border-bottom: none; }
+.statml-stage h2 {
+  margin: 0 0 1.25rem !important;
+  color: var(--statml-text) !important;
+  font-family: Inter, ui-sans-serif, system-ui, sans-serif !important;
+  font-size: clamp(1.75rem, 3vw, 2.15rem) !important;
+  font-weight: 700 !important;
+  line-height: 1.18 !important;
+  letter-spacing: -.028em !important;
+}
+.statml-stage h3 { color: var(--statml-text) !important; font-weight: 650 !important; letter-spacing: -.012em; }
+.statml-stage p,
+.statml-stage li { color: var(--statml-text-secondary); font-size: 1rem; line-height: 1.7; }
+.statml-stage strong { color: var(--statml-text); font-weight: 650; }
+.statml-stage .stage-label,
+.statml-stage .stage-num,
+.statml-stage .step-label {
+  position: static !important;
+  inset: auto !important;
+  margin: 0 0 .9rem !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: .6rem !important;
+  color: var(--statml-brand) !important;
+  font-family: "JetBrains Mono", ui-monospace, monospace !important;
+  font-size: .68rem !important;
+  font-weight: 700 !important;
+  letter-spacing: .11em !important;
+  text-transform: uppercase !important;
+}
+.statml-stage .stage-label::before,
+.statml-stage .stage-label::after,
+.statml-stage .stage-num::before,
+.statml-stage .stage-num::after,
+.statml-stage .step-label::before,
+.statml-stage .step-label::after { content: "" !important; width: 22px !important; height: 1px !important; background: var(--statml-brand) !important; opacity: .75 !important; flex: 0 0 auto; }
+.statml-stage .stage-label::after,
+.statml-stage .stage-num::after,
+.statml-stage .step-label::after { display: none !important; }
+.statml-stage :is(.glass-card,.card,.metric-card,.control-panel,.controls,.quiz-card,.worked-example-widget,.formula-block,.math-block,.formula,.software-output,.model-report-block,.limitation-card,.playground-summary-card,.decision-card) {
+  border-radius: var(--statml-radius-card) !important;
+  border-color: var(--statml-border) !important;
+  box-shadow: var(--statml-shadow-card) !important;
+}
+.statml-stage :is(.glass-card,.card,.metric-card,.control-panel,.controls,.quiz-card,.worked-example-widget,.software-output,.model-report-block,.limitation-card,.playground-summary-card,.decision-card) { background-color: var(--statml-surface) !important; }
+.statml-stage :is(.formula-block,.math-block,.formula) {
+  padding: 1rem 1.15rem !important;
+  background: var(--statml-page-subtle) !important;
+  color: var(--statml-text) !important;
+  border: 1px solid var(--statml-border) !important;
+  border-left: 3px solid var(--statml-brand) !important;
+  font-family: "JetBrains Mono", ui-monospace, monospace !important;
+  font-size: .9rem !important;
+  line-height: 1.65 !important;
+  overflow-x: auto !important;
+}
+.statml-stage :is(.insight-box,.takeaway,.look-here,.teaching-note,.breakdown) {
+  border: 1px solid rgba(99,102,241,.18) !important;
+  border-left: 4px solid var(--statml-brand) !important;
+  border-radius: 0 var(--statml-radius-control) var(--statml-radius-control) 0 !important;
+  background: rgba(238,242,255,.68) !important;
+  color: var(--statml-text-secondary) !important;
+  box-shadow: none !important;
+}
+.statml-stage :is(.warning-note,.is-alert) { border-color: rgba(217,119,6,.24) !important; border-left-color: var(--statml-warning) !important; background: rgba(255,251,235,.9) !important; color: #92400e !important; }
+.statml-stage table { width: 100%; border-collapse: collapse; }
+.statml-stage th { background: var(--statml-page-subtle); color: var(--statml-text-muted); font-family: Inter, sans-serif; font-size: .7rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
+.statml-stage th, .statml-stage td { border-color: var(--statml-border) !important; }
+.statml-stage td { color: var(--statml-text-secondary); }
+.statml-stage button,
+.statml-stage .btn,
+.statml-stage .interactive-btn,
+.statml-stage .control-btn,
+.statml-stage select,
+.statml-stage input[type="text"],
+.statml-stage input[type="number"] {
+  min-height: 38px;
+  border-radius: var(--statml-radius-control) !important;
+  border: 1px solid var(--statml-border) !important;
+  font-family: Inter, ui-sans-serif, system-ui, sans-serif !important;
+  transition: border-color .18s ease, background-color .18s ease, transform .18s ease, box-shadow .18s ease !important;
+}
+.statml-stage button:hover,
+.statml-stage .btn:hover,
+.statml-stage .interactive-btn:hover,
+.statml-stage .control-btn:hover { border-color: rgba(99,102,241,.55) !important; transform: translateY(-1px); }
+.statml-stage :is(button,.btn,.interactive-btn,.control-btn).active,
+.statml-stage :is(button,.btn,.interactive-btn,.control-btn).primary,
+.statml-stage .active-btn,
+.statml-stage .btn-accent { background: var(--statml-brand) !important; border-color: var(--statml-brand) !important; color: white !important; }
+.statml-stage input[type="range"] { accent-color: var(--statml-brand) !important; }
+.statml-stage input[type="checkbox"] { accent-color: var(--statml-brand) !important; }
+.statml-stage :is(.metric-value,.metric-val,.val,.value,.control-val,.slider-readout,.s-val,.k-val) { font-family: "JetBrains Mono", ui-monospace, monospace !important; font-variant-numeric: tabular-nums; }
+.statml-prereq,
+.statml-deepening,
+.statml-takeaways {
+  margin: 1.25rem 0 1.5rem;
+  padding: 1.1rem 1.2rem;
+  border: 1px solid var(--statml-border);
+  border-radius: var(--statml-radius-card);
+  background: rgba(255,255,255,.78);
+  box-shadow: var(--statml-shadow-card);
+}
+.statml-prereq { border-left: 4px solid var(--statml-info); }
+.statml-deepening { border-left: 4px solid var(--statml-warning); background: rgba(255,251,235,.66); }
+.statml-takeaways { border-left: 4px solid var(--statml-brand); background: rgba(238,242,255,.58); }
+.statml-content-kicker { display: block; margin-bottom: .4rem; color: var(--statml-text-muted); font-family: "JetBrains Mono", monospace; font-size: .67rem; font-weight: 700; letter-spacing: .09em; text-transform: uppercase; }
+.statml-prereq p,
+.statml-deepening p,
+.statml-takeaways p { margin: .45rem 0 0 !important; font-size: .92rem !important; line-height: 1.6 !important; }
+.statml-takeaways ul { margin: .65rem 0 0; padding-left: 1.15rem; }
+.statml-takeaways li { margin: .42rem 0; font-size: .92rem !important; }
+.statml-stage-rail {
+  position: fixed;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  padding: 10px 8px;
+  border: 1px solid rgba(231,229,228,.92);
+  border-radius: 999px;
+  background: rgba(255,255,255,.78);
+  box-shadow: var(--statml-shadow-card);
+  backdrop-filter: blur(10px);
+}
+.statml-stage-button { position: relative; width: 9px; height: 9px; padding: 0; border: 1px solid #cbd5e1; border-radius: 999px; background: #e5e7eb; cursor: pointer; transition: transform .18s ease, background-color .18s ease, box-shadow .18s ease; }
+.statml-stage-button:hover { transform: scale(1.28); background: #a5b4fc; }
+.statml-stage-button[aria-current="step"] { background: var(--statml-brand); border-color: var(--statml-brand); box-shadow: 0 0 0 5px rgba(99,102,241,.12); }
+.statml-stage-button span { position: absolute; right: 19px; top: 50%; transform: translateY(-50%) translateX(4px); width: max-content; max-width: 240px; padding: .4rem .55rem; border-radius: 7px; background: var(--statml-text); color: white; font-family: Inter, sans-serif; font-size: .7rem; line-height: 1.3; opacity: 0; pointer-events: none; transition: opacity .15s ease, transform .15s ease; }
+.statml-stage-button:hover span,
+.statml-stage-button:focus-visible span { opacity: 1; transform: translateY(-50%) translateX(0); }
+body.statml-standardized > :is(.stage-dots,#stage-dots,#stage-dots-container,.stage-nav-dots),
+body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
+.statml-module-footer {
+  border-top: 1px solid var(--statml-border);
+  background: var(--statml-page-subtle);
+  padding: 2.2rem 1.5rem 2.8rem;
+}
+.statml-footer-inner { width: min(1100px,100%); margin: 0 auto; display: flex; justify-content: center; gap: 1rem; align-items: center; }
+.statml-footer-link { display: flex; flex-direction: column; gap: .18rem; padding: .85rem 1rem; border: 1px solid var(--statml-border); border-radius: var(--statml-radius-card); background: var(--statml-surface); color: var(--statml-text); text-decoration: none; box-shadow: var(--statml-shadow-card); }
+.statml-footer-link:last-child { text-align: right; }
+.statml-footer-label { color: var(--statml-text-muted); font-family: "JetBrains Mono", monospace; font-size: .65rem; letter-spacing: .08em; text-transform: uppercase; }
+.statml-footer-title { font-size: .9rem; font-weight: 650; }
+.statml-footer-home { color: var(--statml-text-muted); font-family: "JetBrains Mono", monospace; font-size: .7rem; text-decoration: none; text-transform: uppercase; letter-spacing: .08em; }
+@media (max-width: 900px) {
+  .statml-site-nav { height: 50px; padding: 0 14px; }
+  .statml-brand-link { font-size: .78rem; }
+  .statml-nav-meta { display: inline; font-size: .6rem; letter-spacing: .02em; }
+  .statml-nav-topic { font-size: .72rem; }
+  .statml-hero { padding: 6.5rem 1.2rem 4rem !important; }
+  .statml-overview { grid-template-columns: 1fr; gap: .2rem; padding: .55rem; }
+  .statml-overview-item { padding: .48rem .55rem; }
+  .statml-layout { display: flex !important; flex-direction: column !important; }
+  .statml-visual { order: 1 !important; width: 100% !important; height: 50svh !important; min-height: 320px; top: 0 !important; padding: 3.6rem .8rem .7rem !important; border-left: none !important; border-bottom: 1px solid var(--statml-border) !important; z-index: 50 !important; }
+  .statml-narrative { order: 2 !important; width: 100% !important; padding: 0 1.35rem 4rem !important; }
+  .statml-stage { min-height: auto !important; padding: 3.4rem 0 !important; }
+  .statml-stage-rail { display: none; }
+  .statml-footer-inner { grid-template-columns: 1fr 1fr; }
+  .statml-footer-home { grid-column: 1 / -1; grid-row: 2; text-align: center; }
+}
+@media (max-width: 560px) {
+  .statml-brand-link span:last-child { display: none; }
+  .statml-hero h1 { font-size: clamp(2.45rem, 13vw, 3.5rem) !important; }
+  .statml-footer-inner { grid-template-columns: 1fr; }
+  .statml-footer-home { grid-column: auto; grid-row: auto; }
+  .statml-footer-link:last-child { text-align: left; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+}
+</style>
+
 </head>
 <body>
+<nav class="statml-site-nav" aria-label="StatML Academy navigation">
+  <a class="statml-brand-link" href="../index.html"><span class="statml-brand-mark">S</span><span>StatML Academy</span></a>
+  <span class="statml-nav-topic">K-Nearest Neighbors (KNN)</span>
+  <span class="statml-nav-meta">module 09/18</span>
+</nav>
+
 
 <div class="progress-bar" id="progressBar"></div>
 <div class="stage-dots" id="stageDots"></div>
@@ -2723,5 +3110,118 @@ window.addEventListener('resize',()=>{
 
 })();
 </script>
+
+<footer class="statml-module-footer">
+  <div class="statml-footer-inner">
+    <a class="statml-footer-home" href="../index.html">All modules</a>
+  </div>
+</footer>
+
+<script id="statml-standard-runtime">
+(() => {
+  const META = {"title": "K-Nearest Neighbors (KNN)", "badge": "Machine Learning · Classification", "overview": ["Scale features and compute neighbour distances", "See how K changes the decision boundary", "Tune and evaluate a local classifier"], "prereq": "KNN stores the training examples and predicts from nearby cases. Distance therefore defines what “similar” means.", "additionStage": 14, "additionTitle": "Ties, weighting, and efficient prediction", "additionHtml": "<p>Use an odd K for a two-class problem when practical to reduce ties. Distance-weighted KNN can give closer neighbours more influence than distant ones.</p><p>Prediction becomes expensive as the training set grows because neighbours must be searched at prediction time. Approximate-neighbour indexes can help, but scaling and cross-validated K still matter.</p>", "takeaways": ["Feature scaling is essential because distance is sensitive to units.", "Small K gives a flexible boundary; large K smooths it.", "Tune K on validation data and evaluate on untouched test data."], "selectors": {"hero": ".hero-section", "layout": ".layout", "narrative": ".narrative", "visual": ".viz-container"}, "stages": [{"n": 1, "title": "The Raw Data"}, {"n": 2, "title": "Choosing Good Features"}, {"n": 3, "title": "Train / Test Split"}, {"n": 4, "title": "Feature Scaling"}, {"n": 5, "title": "Measuring Distance"}, {"n": 6, "title": "Choosing K"}, {"n": 7, "title": "Finding Neighbors"}, {"n": 8, "title": "The Majority Vote"}, {"n": 9, "title": "Decision Boundary"}, {"n": 10, "title": "Classifying Test Points"}, {"n": 11, "title": "Evaluating the Model"}, {"n": 12, "title": "The Effect of K"}, {"n": 13, "title": "Strengths and Weaknesses"}, {"n": 14, "title": "Interactive Playground"}], "phases": ["Observe", "Prepare", "Prepare", "Prepare", "Build", "Understand", "Understand", "Understand", "Build", "Understand", "Understand", "Explore", "Reflect", "Explore"]};
+  document.body.classList.add('statml-standardized');
+  const $ = (s, root=document) => root.querySelector(s);
+  const $$ = (s, root=document) => [...root.querySelectorAll(s)];
+  const hero = $(META.selectors.hero);
+  const layout = $(META.selectors.layout);
+  const narrative = $(META.selectors.narrative);
+  const visual = $(META.selectors.visual);
+  hero?.classList.add('statml-hero');
+  layout?.classList.add('statml-layout');
+  narrative?.classList.add('statml-narrative');
+  visual?.classList.add('statml-visual');
+  if (visual) { visual.setAttribute('role','region'); visual.setAttribute('aria-label', `${META.title} interactive visualisation`); }
+
+  let badge = hero?.querySelector('.hero-badge,.topic-badge,[data-statml-badge]');
+  if (!badge && hero) {
+    badge = [...hero.querySelectorAll('span,p')].find(el => /learning|method|blueprint|inference|classification|regression|statistical/i.test(el.textContent));
+    if (badge) badge.setAttribute('data-statml-badge','');
+  }
+  if (badge) badge.textContent = META.badge;
+
+  const stageEls = $$('[data-stage]').filter(el => Number(el.dataset.stage) > 0).sort((a,b) => Number(a.dataset.stage)-Number(b.dataset.stage));
+  const emojiRE = /[\p{Extended_Pictographic}️]/gu;
+  stageEls.forEach((stage, index) => {
+    stage.classList.add('statml-stage');
+    const n = Number(stage.dataset.stage);
+    if (!stage.id) stage.id = `statml-stage-${n}`;
+    const heading = stage.querySelector('h2,h1');
+    if (heading) heading.textContent = heading.textContent.replace(emojiRE,'').replace(/\s{2,}/g,' ').trim();
+    stage.querySelectorAll('h3,h4').forEach(sub => { if (!sub.children.length) sub.textContent = sub.textContent.replace(emojiRE,'').replace(/\s{2,}/g,' ').trim(); });
+    const label = stage.querySelector('.stage-label,.stage-num,.step-label');
+    if (label) label.textContent = `Stage ${String(n).padStart(2,'0')} · ${META.phases[index] || 'Learn'}`;
+  });
+
+  if (hero && !hero.querySelector('.statml-overview')) {
+    const overview = document.createElement('div');
+    overview.className = 'statml-overview';
+    overview.setAttribute('aria-label','Lesson outcomes');
+    overview.innerHTML = META.overview.map((item,i)=>`<div class="statml-overview-item"><span class="statml-overview-number">${i+1}</span><span>${item}</span></div>`).join('');
+    const cue = hero.querySelector('.scroll-cue,.scroll-hint,.scroll-indicator,.hero-scroll');
+    if (cue?.parentElement) cue.parentElement.insertBefore(overview,cue); else hero.appendChild(overview);
+  }
+
+  const first = stageEls[0];
+  if (first && !first.querySelector('.statml-prereq')) {
+    const box = document.createElement('div');
+    box.className = 'statml-prereq';
+    box.innerHTML = `<span class="statml-content-kicker">Before you start</span><p>${META.prereq}</p>`;
+    const h = first.querySelector('h2,h1');
+    h?.insertAdjacentElement('afterend',box);
+  }
+  const additionTarget = stageEls.find(el => Number(el.dataset.stage) === Number(META.additionStage)) || stageEls.at(-1);
+  if (additionTarget && !additionTarget.querySelector('.statml-deepening')) {
+    const box = document.createElement('div');
+    box.className='statml-deepening';
+    box.innerHTML=`<span class="statml-content-kicker">Complete the picture</span><h3>${META.additionTitle}</h3>${META.additionHtml}`;
+    additionTarget.appendChild(box);
+  }
+  const last = stageEls.at(-1);
+  if (last && !last.querySelector('.statml-takeaways')) {
+    const box = document.createElement('div');
+    box.className='statml-takeaways';
+    box.innerHTML=`<span class="statml-content-kicker">Key takeaways</span><ul>${META.takeaways.map(x=>`<li>${x}</li>`).join('')}</ul>`;
+    last.appendChild(box);
+  }
+
+  $$('button').forEach(b => { if (!b.getAttribute('type')) b.setAttribute('type','button'); });
+  $$('input[type="range"]').forEach((input,i) => {
+    if (!input.hasAttribute('aria-label')) {
+      const parent=input.closest('.control-row,.control-group,.slider-wrap,.k-slider-wrap') || input.parentElement;
+      const label=parent?.querySelector('label,.control-label');
+      input.setAttribute('aria-label', label?.textContent.trim() || `Interactive parameter ${i+1}`);
+    }
+  });
+
+  $$('body > .stage-dots,body > #stage-dots,body > #stage-dots-container,body > .stage-nav-dots').forEach(el => el.classList.add('statml-legacy-stage-nav'));
+  const rail=document.createElement('nav');
+  rail.className='statml-stage-rail';
+  rail.setAttribute('aria-label','Lesson stages');
+  stageEls.forEach((stage,index)=>{
+    const btn=document.createElement('button');
+    btn.className='statml-stage-button';
+    btn.type='button';
+    const heading=stage.querySelector('h2,h1')?.textContent.trim() || `Stage ${index+1}`;
+    btn.setAttribute('aria-label',`Go to stage ${index+1}: ${heading}`);
+    btn.innerHTML=`<span>${String(index+1).padStart(2,'0')} · ${heading}</span>`;
+    btn.addEventListener('click',()=>stage.scrollIntoView({behavior: matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'}));
+    rail.appendChild(btn);
+  });
+  document.body.appendChild(rail);
+  const railButtons=$$('.statml-stage-button',rail);
+  const activate=(stage)=>{
+    const idx=stageEls.indexOf(stage);
+    railButtons.forEach((b,i)=> i===idx ? b.setAttribute('aria-current','step') : b.removeAttribute('aria-current'));
+  };
+  if (stageEls.length) activate(stageEls[0]);
+  const observer=new IntersectionObserver(entries=>{
+    const visible=entries.filter(e=>e.isIntersecting).sort((a,b)=>b.intersectionRatio-a.intersectionRatio)[0];
+    if (visible) activate(visible.target);
+  },{rootMargin:'-25% 0px -45% 0px',threshold:[0,.15,.35,.6]});
+  stageEls.forEach(s=>observer.observe(s));
+})();
+</script>
+
 </body>
 </html>
