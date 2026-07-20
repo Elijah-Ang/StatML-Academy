@@ -1,0 +1,2125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="A scroll-driven visual lesson on One-R: the simplest serious classification baseline." />
+  <meta name="theme-color" content="#f7f7f4" />
+  <title>One-R</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --paper: #f7f7f4;
+      --paper-2: #f0efeb;
+      --surface: #ffffff;
+      --surface-soft: #fbfbf9;
+      --ink: #1f2937;
+      --ink-2: #4b5563;
+      --muted: #6b7280;
+      --faint: #9ca3af;
+      --line: #e7e5e4;
+      --line-strong: #d6d3d1;
+      --accent: #6366f1;
+      --accent-dark: #4f46e5;
+      --accent-soft: #eef2ff;
+      --blue: #2563eb;
+      --blue-soft: #eff6ff;
+      --green: #16a34a;
+      --green-soft: #f0fdf4;
+      --amber: #d97706;
+      --amber-soft: #fffbeb;
+      --coral: #dc2626;
+      --coral-soft: #fef2f2;
+      --shadow: 0 18px 48px rgba(31, 41, 55, 0.08);
+      --radius: 22px;
+      --mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+      --sans: "Inter", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 15% 8%, rgba(99, 102, 241, 0.055), transparent 30rem),
+        var(--paper);
+      font-family: var(--sans);
+      line-height: 1.65;
+      text-rendering: optimizeLegibility;
+    }
+
+    button, select, input { font: inherit; }
+    button, select { color: inherit; }
+    a { color: inherit; }
+
+    .progress-track {
+      position: fixed;
+      inset: 0 0 auto 0;
+      height: 4px;
+      background: rgba(231, 229, 228, 0.75);
+      z-index: 100;
+      backdrop-filter: blur(8px);
+    }
+    .progress-bar {
+      width: 0%;
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent), #8b5cf6, var(--blue));
+      transition: width 100ms linear;
+    }
+
+    .hero {
+      min-height: 100svh;
+      display: grid;
+      place-items: center;
+      position: relative;
+      overflow: hidden;
+      padding: 5rem 1.5rem;
+      isolation: isolate;
+    }
+    .hero::before {
+      content: "";
+      position: absolute;
+      width: min(78vw, 940px);
+      aspect-ratio: 1;
+      border-radius: 50%;
+      background:
+        radial-gradient(circle at 50% 50%, rgba(99, 102, 241, 0.12), rgba(99, 102, 241, 0.02) 45%, transparent 68%);
+      filter: blur(1px);
+      z-index: -2;
+      animation: breathe 8s ease-in-out infinite;
+    }
+    .hero-grid {
+      position: absolute;
+      inset: 0;
+      opacity: 0.5;
+      z-index: -3;
+      background-image:
+        linear-gradient(rgba(31, 41, 55, 0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(31, 41, 55, 0.035) 1px, transparent 1px);
+      background-size: 52px 52px;
+      mask-image: radial-gradient(circle at center, black, transparent 72%);
+    }
+    .hero-orbits {
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+    }
+    .orbit-dot {
+      position: absolute;
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: var(--accent);
+      opacity: 0.28;
+      box-shadow: 0 0 0 9px rgba(99, 102, 241, 0.07);
+      animation: drift 9s ease-in-out infinite alternate;
+    }
+    .orbit-dot:nth-child(1) { left: 13%; top: 25%; animation-delay: -1s; }
+    .orbit-dot:nth-child(2) { right: 16%; top: 32%; animation-delay: -4s; }
+    .orbit-dot:nth-child(3) { left: 24%; bottom: 20%; animation-delay: -6s; }
+    .orbit-dot:nth-child(4) { right: 25%; bottom: 17%; animation-delay: -2s; }
+
+    .hero-inner {
+      width: min(900px, 100%);
+      text-align: center;
+    }
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.48rem 0.78rem;
+      border-radius: 999px;
+      border: 1px solid rgba(99, 102, 241, 0.18);
+      background: rgba(255, 255, 255, 0.78);
+      color: var(--accent-dark);
+      font-size: 0.73rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      box-shadow: 0 8px 30px rgba(31, 41, 55, 0.05);
+    }
+    .eyebrow-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 0 5px rgba(99, 102, 241, 0.11);
+    }
+    .hero h1 {
+      margin: 1.5rem auto 1rem;
+      max-width: 850px;
+      font-size: clamp(3.7rem, 9vw, 7.8rem);
+      line-height: 0.91;
+      letter-spacing: -0.065em;
+      font-weight: 800;
+      background: linear-gradient(145deg, #111827 20%, #374151 47%, var(--accent-dark) 82%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .hero h1 span { display: block; }
+    .hero-lede {
+      max-width: 680px;
+      margin: 1.35rem auto 0;
+      font-size: clamp(1.02rem, 2vw, 1.26rem);
+      color: var(--ink-2);
+      line-height: 1.75;
+    }
+    .hero-goals {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0.8rem;
+      margin: 2.3rem auto 0;
+      max-width: 830px;
+      text-align: left;
+    }
+    .goal {
+      padding: 1rem 1.05rem;
+      border: 1px solid rgba(231, 229, 228, 0.95);
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.72);
+      box-shadow: 0 12px 30px rgba(31, 41, 55, 0.045);
+      color: var(--ink-2);
+      font-size: 0.86rem;
+      line-height: 1.5;
+    }
+    .goal strong {
+      display: block;
+      color: var(--ink);
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 0.32rem;
+    }
+    .scroll-cue {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-top: 3rem;
+      color: var(--muted);
+      font-size: 0.78rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+    .scroll-line {
+      width: 46px;
+      height: 1px;
+      background: var(--line-strong);
+      position: relative;
+      overflow: hidden;
+    }
+    .scroll-line::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: var(--accent);
+      transform: translateX(-100%);
+      animation: scan 2.2s ease-in-out infinite;
+    }
+
+    .site-shell {
+      display: grid;
+      grid-template-columns: minmax(0, 45%) minmax(0, 55%);
+      align-items: start;
+      max-width: 1680px;
+      margin: 0 auto;
+    }
+    .narrative { min-width: 0; }
+    .stage {
+      min-height: 100svh;
+      display: flex;
+      align-items: center;
+      padding: 7rem clamp(2rem, 5vw, 5rem);
+      border-top: 1px solid rgba(231, 229, 228, 0.72);
+      scroll-margin-top: 1rem;
+    }
+    .stage-inner { width: min(650px, 100%); }
+    .stage-kicker {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      color: var(--accent-dark);
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      margin-bottom: 0.85rem;
+    }
+    .stage-kicker::after {
+      content: "";
+      width: 42px;
+      height: 1px;
+      background: rgba(99, 102, 241, 0.42);
+    }
+    .stage h2 {
+      margin: 0 0 1.2rem;
+      font-size: clamp(2.05rem, 4.2vw, 4.15rem);
+      line-height: 1.03;
+      letter-spacing: -0.045em;
+      max-width: 620px;
+    }
+    .stage p {
+      margin: 0 0 1rem;
+      color: var(--ink-2);
+      font-size: 0.98rem;
+      max-width: 63ch;
+    }
+    .stage p strong { color: var(--ink); }
+
+    .card, .formula, .insight, .question-card, .comparison-card {
+      margin-top: 1.35rem;
+      border-radius: 18px;
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.9);
+      box-shadow: 0 12px 34px rgba(31, 41, 55, 0.045);
+    }
+    .card { padding: 1.15rem; }
+    .card-title {
+      margin: 0 0 0.75rem;
+      font-size: 0.7rem;
+      color: var(--muted);
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+    }
+    .formula {
+      padding: 1rem 1.1rem;
+      background: linear-gradient(135deg, #f5f3ff, #eef2ff);
+      border-color: #ddd6fe;
+      font-family: var(--mono);
+      font-size: 0.84rem;
+      line-height: 1.7;
+      color: #3730a3;
+      overflow-x: auto;
+    }
+    .insight {
+      padding: 1rem 1.1rem 1rem 1.2rem;
+      border-left: 4px solid var(--accent);
+      background: var(--accent-soft);
+      box-shadow: none;
+      color: #3730a3;
+      font-size: 0.89rem;
+      line-height: 1.65;
+    }
+    .insight.warning {
+      border-left-color: var(--amber);
+      background: var(--amber-soft);
+      color: #92400e;
+    }
+    .insight.danger {
+      border-left-color: var(--coral);
+      background: var(--coral-soft);
+      color: #991b1b;
+    }
+    .insight.success {
+      border-left-color: var(--green);
+      background: var(--green-soft);
+      color: #166534;
+    }
+    .question-card {
+      padding: 1.1rem;
+      background: linear-gradient(135deg, #fff, #fafafa);
+    }
+    .question-card .q {
+      color: var(--ink);
+      font-weight: 700;
+      margin: 0 0 0.6rem;
+    }
+    .question-card .a {
+      margin: 0;
+      color: var(--green);
+      font-size: 0.9rem;
+    }
+
+    .steps {
+      display: grid;
+      gap: 0.65rem;
+      margin-top: 1.3rem;
+    }
+    .step {
+      display: grid;
+      grid-template-columns: 30px 1fr;
+      gap: 0.8rem;
+      align-items: start;
+      padding: 0.9rem 1rem;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.82);
+      color: var(--ink-2);
+      font-size: 0.9rem;
+    }
+    .step-number {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: var(--accent-soft);
+      color: var(--accent-dark);
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      font-weight: 700;
+    }
+
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0.75rem;
+      margin-top: 1.3rem;
+    }
+    .metric {
+      padding: 1rem;
+      border-radius: 16px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.88);
+      min-width: 0;
+    }
+    .metric-value {
+      display: block;
+      font-family: var(--mono);
+      font-size: clamp(1.35rem, 2.5vw, 2rem);
+      font-weight: 600;
+      line-height: 1.1;
+      color: var(--ink);
+    }
+    .metric-label {
+      display: block;
+      margin-top: 0.35rem;
+      color: var(--muted);
+      font-size: 0.65rem;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .rule-list {
+      display: grid;
+      gap: 0.55rem;
+      font-family: var(--mono);
+      font-size: 0.78rem;
+    }
+    .rule-line {
+      padding: 0.72rem 0.78rem;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      background: var(--surface-soft);
+    }
+    .rule-line .if { color: var(--accent-dark); font-weight: 700; }
+    .rule-line .yes { color: var(--green); font-weight: 700; }
+    .rule-line .no { color: var(--coral); font-weight: 700; }
+
+    .controls {
+      display: grid;
+      gap: 0.85rem;
+      margin-top: 1.25rem;
+      padding: 1rem;
+      border: 1px solid var(--line);
+      border-radius: 17px;
+      background: rgba(255,255,255,0.9);
+    }
+    .control-row {
+      display: grid;
+      grid-template-columns: minmax(120px, 0.8fr) minmax(0, 1.4fr);
+      align-items: center;
+      gap: 0.85rem;
+    }
+    .control-row label {
+      color: var(--ink-2);
+      font-size: 0.78rem;
+      font-weight: 700;
+    }
+    select, .segmented button {
+      width: 100%;
+      min-height: 42px;
+      border: 1px solid var(--line-strong);
+      border-radius: 11px;
+      background: #fff;
+      padding: 0.65rem 0.78rem;
+      outline: none;
+      transition: border-color 160ms ease, box-shadow 160ms ease, background 160ms ease;
+    }
+    select:focus, .segmented button:focus-visible {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(99,102,241,0.12);
+    }
+    .segmented {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.5rem;
+    }
+    .segmented button {
+      cursor: pointer;
+      font-size: 0.78rem;
+      font-weight: 700;
+    }
+    .segmented button.active {
+      border-color: var(--accent);
+      background: var(--accent-soft);
+      color: var(--accent-dark);
+    }
+    .action-button {
+      border: 0;
+      min-height: 44px;
+      border-radius: 12px;
+      padding: 0.7rem 1rem;
+      background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+      color: #fff;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 10px 22px rgba(79,70,229,0.18);
+      transition: transform 160ms ease, box-shadow 160ms ease;
+    }
+    .action-button:hover { transform: translateY(-1px); box-shadow: 0 14px 26px rgba(79,70,229,0.23); }
+    .action-button:active { transform: translateY(0); }
+
+    .chip-row { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.9rem; }
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.38rem 0.64rem;
+      border-radius: 999px;
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      border: 1px solid var(--line);
+      background: #fff;
+      color: var(--ink-2);
+    }
+    .chip::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--faint); }
+    .chip.yes::before { background: var(--green); }
+    .chip.no::before { background: var(--coral); }
+    .chip.accent::before { background: var(--accent); }
+    .chip.amber::before { background: var(--amber); }
+
+    .mini-table-wrap { overflow-x: auto; }
+    .mini-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.76rem;
+    }
+    .mini-table th, .mini-table td {
+      text-align: left;
+      padding: 0.65rem 0.62rem;
+      border-bottom: 1px solid var(--line);
+      white-space: nowrap;
+    }
+    .mini-table th {
+      color: var(--muted);
+      font-size: 0.64rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .mini-table td { font-family: var(--mono); color: var(--ink-2); }
+    .mini-table tr:last-child td { border-bottom: 0; }
+    .selected-row td { background: var(--accent-soft); color: #3730a3; }
+
+    .visual-column {
+      position: sticky;
+      top: 0;
+      height: 100svh;
+      padding: clamp(1rem, 2.2vw, 2.25rem);
+      display: grid;
+      place-items: center;
+      background:
+        linear-gradient(90deg, rgba(240,239,235,0.2), rgba(240,239,235,0.72)),
+        var(--paper-2);
+      border-left: 1px solid rgba(214, 211, 209, 0.75);
+    }
+    .visual-shell {
+      width: min(840px, 100%);
+      height: min(88svh, 900px);
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      border: 1px solid var(--line-strong);
+      border-radius: 26px;
+      background: rgba(255,255,255,0.92);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      backdrop-filter: blur(12px);
+    }
+    .visual-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem 1.15rem;
+      border-bottom: 1px solid var(--line);
+      background: rgba(255,255,255,0.78);
+    }
+    .visual-title-wrap { min-width: 0; }
+    .visual-label {
+      color: var(--muted);
+      font-size: 0.62rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+    .visual-title {
+      margin-top: 0.15rem;
+      font-size: 0.95rem;
+      font-weight: 800;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .stage-badge {
+      flex: 0 0 auto;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      padding: 0.42rem 0.62rem;
+      border: 1px solid #ddd6fe;
+      border-radius: 999px;
+      background: var(--accent-soft);
+      color: var(--accent-dark);
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      font-weight: 700;
+    }
+    .stage-badge::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--accent); }
+    .canvas-wrap {
+      position: relative;
+      min-height: 0;
+      background:
+        radial-gradient(circle at 50% 18%, rgba(99,102,241,0.045), transparent 43%),
+        #fcfcfb;
+    }
+    #lessonCanvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+    .canvas-live {
+      position: absolute;
+      inset: auto 0.9rem 0.9rem auto;
+      display: flex;
+      gap: 0.35rem;
+      align-items: center;
+      padding: 0.35rem 0.55rem;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.86);
+      border: 1px solid var(--line);
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 0.58rem;
+      pointer-events: none;
+    }
+    .canvas-live::before {
+      content: "";
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 0 4px rgba(22,163,74,0.08);
+    }
+    .visual-footer {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      border-top: 1px solid var(--line);
+      background: rgba(255,255,255,0.84);
+    }
+    .visual-stat {
+      padding: 0.78rem 0.9rem;
+      min-width: 0;
+      border-right: 1px solid var(--line);
+    }
+    .visual-stat:last-child { border-right: 0; }
+    .visual-stat-value {
+      display: block;
+      font-family: var(--mono);
+      font-size: 0.82rem;
+      font-weight: 700;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .visual-stat-label {
+      display: block;
+      color: var(--muted);
+      font-size: 0.55rem;
+      font-weight: 800;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+      margin-top: 0.14rem;
+    }
+
+    .stage-dots {
+      position: fixed;
+      right: 0.8rem;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 80;
+      display: grid;
+      gap: 0.4rem;
+      padding: 0.5rem;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.68);
+      border: 1px solid rgba(231,229,228,0.9);
+      backdrop-filter: blur(10px);
+    }
+    .stage-dot {
+      width: 9px;
+      height: 9px;
+      border: 0;
+      border-radius: 50%;
+      background: #d6d3d1;
+      padding: 0;
+      cursor: pointer;
+      transition: transform 160ms ease, background 160ms ease, box-shadow 160ms ease;
+    }
+    .stage-dot:hover { transform: scale(1.25); }
+    .stage-dot.active {
+      background: var(--accent);
+      box-shadow: 0 0 0 5px rgba(99,102,241,0.13);
+    }
+
+    .footer-note {
+      padding: 3rem 1.5rem 4rem;
+      text-align: center;
+      color: var(--muted);
+      border-top: 1px solid var(--line);
+      font-size: 0.82rem;
+    }
+    .footer-note strong { color: var(--ink); }
+
+    @keyframes breathe {
+      0%, 100% { transform: scale(0.96); opacity: 0.8; }
+      50% { transform: scale(1.04); opacity: 1; }
+    }
+    @keyframes drift {
+      from { transform: translate3d(-10px, -8px, 0); }
+      to { transform: translate3d(14px, 12px, 0); }
+    }
+    @keyframes scan {
+      0% { transform: translateX(-100%); }
+      55%, 100% { transform: translateX(100%); }
+    }
+
+    @media (max-width: 1100px) {
+      .stage { padding-inline: 2.2rem; }
+      .visual-column { padding: 1.1rem; }
+      .visual-shell { height: 91svh; }
+      .stage-dots { right: 0.35rem; }
+    }
+
+    @media (max-width: 900px) {
+      .hero-goals { grid-template-columns: 1fr; max-width: 560px; }
+      .site-shell { display: flex; flex-direction: column; }
+      .narrative { order: 1; width: 100%; }
+      .visual-column {
+        order: 0;
+        position: sticky;
+        top: 4px;
+        z-index: 45;
+        width: 100%;
+        height: 48svh;
+        padding: 0.65rem;
+        border-left: 0;
+        border-bottom: 1px solid var(--line-strong);
+      }
+      .visual-shell {
+        width: 100%;
+        height: 100%;
+        border-radius: 18px;
+        grid-template-rows: auto 1fr;
+      }
+      .visual-footer { display: none; }
+      .visual-header { padding: 0.7rem 0.85rem; }
+      .visual-label { display: none; }
+      .visual-title { font-size: 0.82rem; }
+      .canvas-live { display: none; }
+      .stage { min-height: 82svh; padding: 5rem 1.5rem; }
+      .stage h2 { font-size: clamp(2.1rem, 10vw, 3.5rem); }
+      .stage-dots { display: none; }
+      .metrics { grid-template-columns: 1fr 1fr; }
+      .control-row { grid-template-columns: 1fr; gap: 0.35rem; }
+    }
+
+    @media (max-width: 520px) {
+      .hero { padding-inline: 1rem; }
+      .hero h1 { font-size: clamp(3.25rem, 20vw, 5.1rem); }
+      .hero-lede { font-size: 0.96rem; }
+      .goal { font-size: 0.8rem; }
+      .stage { padding-inline: 1.1rem; }
+      .metrics { grid-template-columns: 1fr; }
+      .visual-column { height: 43svh; padding: 0.4rem; }
+      .visual-shell { border-radius: 14px; }
+      .stage-badge { font-size: 0.57rem; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+<style id="statml-standard-theme">
+:root {
+  --statml-page:#f7f7f4; --statml-page-subtle:#f0efeb; --statml-surface:#fff;
+  --statml-border:#e7e5e4; --statml-text:#1f2937; --statml-text-secondary:#4b5563;
+  --statml-text-muted:#6b7280; --statml-brand:#6366f1; --statml-brand-strong:#4f46e5;
+  --statml-brand-soft:#eef2ff; --statml-warning:#d97706; --statml-radius-control:8px;
+  --statml-radius-card:12px; --statml-radius-visual:16px;
+  --statml-shadow-card:0 2px 8px rgba(15,23,42,.045); --statml-shadow-visual:0 14px 34px rgba(15,23,42,.07);
+}
+html { scroll-behavior:smooth; scroll-padding-top:68px; }
+body.statml-standardized {
+  margin:0 !important; background:var(--statml-page) !important; color:var(--statml-text) !important;
+  font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif !important;
+  line-height:1.65 !important; text-rendering:optimizeLegibility; -webkit-font-smoothing:antialiased;
+}
+body.statml-standardized * { box-sizing:border-box; }
+body.statml-standardized :focus-visible { outline:3px solid rgba(99,102,241,.35) !important; outline-offset:3px !important; }
+.statml-site-nav {
+  position:fixed; inset:4px 0 auto; height:54px; z-index:1100; display:flex; align-items:center;
+  justify-content:space-between; gap:16px; padding:0 24px; background:rgba(247,247,244,.84);
+  border-bottom:1px solid rgba(231,229,228,.85); backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px);
+}
+.statml-site-nav a { color:inherit; text-decoration:none; }
+.statml-brand-link { display:inline-flex; align-items:center; gap:10px; font-size:.84rem; font-weight:700; letter-spacing:-.01em; }
+.statml-brand-mark { width:24px; height:24px; display:grid; place-items:center; border:1px solid var(--statml-border); border-radius:7px; background:var(--statml-surface); color:var(--statml-brand-strong); font-family:"JetBrains Mono",monospace; font-size:.72rem; box-shadow:var(--statml-shadow-card); }
+.statml-nav-topic { min-width:0; color:var(--statml-text-secondary); font-size:.79rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.statml-nav-meta { color:var(--statml-text-muted); font-family:"JetBrains Mono",monospace; font-size:.68rem; letter-spacing:.08em; white-space:nowrap; }
+.statml-hero {
+  min-height:100svh !important; padding:7.5rem 2rem 5rem !important; background-color:var(--statml-page) !important;
+  display:flex !important; flex-direction:column !important; align-items:center !important; justify-content:center !important;
+  text-align:center !important; position:relative !important; overflow:hidden !important;
+}
+.statml-hero::after {
+  content:""; position:absolute; inset:0; z-index:-1; pointer-events:none; opacity:.62;
+  background-image:radial-gradient(circle at 50% 42%,rgba(99,102,241,.10),transparent 34%),radial-gradient(rgba(99,102,241,.14) .7px,transparent .7px);
+  background-size:auto,30px 30px; mask-image:linear-gradient(to bottom,rgba(0,0,0,.7),transparent 92%);
+}
+.statml-hero > :not(canvas):not(.hero-grid):not(.hero-particles):not(.hero-orbits) { z-index:2; }
+.statml-hero h1 {
+  max-width:980px !important; margin:0 auto 1.35rem !important; font-family:Inter,ui-sans-serif,system-ui,sans-serif !important;
+  font-size:clamp(2.8rem,6.5vw,5rem) !important; font-weight:700 !important; line-height:1.04 !important;
+  letter-spacing:-.045em !important; background:linear-gradient(135deg,#111827 8%,var(--statml-brand-strong) 100%) !important;
+  -webkit-background-clip:text !important; background-clip:text !important; color:transparent !important; -webkit-text-fill-color:transparent !important;
+}
+.statml-hero :is(.hero-subtitle,.hero-lede) { max-width:700px !important; margin-left:auto !important; margin-right:auto !important; color:var(--statml-text-secondary) !important; font-size:clamp(1.05rem,2vw,1.28rem) !important; line-height:1.55 !important; }
+.statml-hero :is(.badge,.eyebrow) { display:inline-flex !important; align-items:center !important; justify-content:center !important; width:auto !important; padding:.42rem .9rem !important; margin-bottom:1.35rem !important; border:1px solid rgba(99,102,241,.22) !important; border-radius:999px !important; background:rgba(238,242,255,.82) !important; color:var(--statml-brand-strong) !important; font-family:"JetBrains Mono",monospace !important; font-size:.72rem !important; font-weight:600 !important; letter-spacing:.09em !important; text-transform:uppercase !important; box-shadow:none !important; }
+.statml-hero :is(.learning-goals,.hero-goals,.hero-objectives) { width:min(850px,100%) !important; margin:2rem auto 0 !important; padding:1rem !important; display:grid !important; grid-template-columns:repeat(3,minmax(0,1fr)) !important; gap:.7rem !important; border:1px solid rgba(231,229,228,.95) !important; border-radius:var(--statml-radius-visual) !important; background:rgba(255,255,255,.66) !important; box-shadow:var(--statml-shadow-card) !important; backdrop-filter:blur(8px); }
+.statml-hero :is(.goal,.objective) { min-height:0 !important; padding:.65rem .72rem !important; color:var(--statml-text-secondary) !important; font-size:.83rem !important; line-height:1.45 !important; text-align:left !important; }
+.statml-hero :is(.goal strong,.objective b) { display:block; margin-bottom:.22rem; color:var(--statml-brand-strong) !important; font-family:"JetBrains Mono",monospace !important; font-size:.68rem !important; letter-spacing:.06em; }
+.statml-hero :is(.hero-note,.scope-note,.scroll-cue,.scroll-hint,.scroll-indicator,.hero-scroll) { color:var(--statml-text-muted) !important; font-family:"JetBrains Mono",monospace !important; font-size:.7rem !important; letter-spacing:.08em !important; }
+.statml-layout { display:grid !important; grid-template-columns:minmax(0,45%) minmax(0,55%) !important; width:100% !important; max-width:1400px !important; margin:0 auto !important; padding:0 !important; align-items:start !important; }
+.statml-narrative { width:auto !important; min-width:0 !important; padding:0 4rem 10vh !important; background:transparent !important; z-index:2 !important; }
+.statml-visual { width:auto !important; min-width:0 !important; height:100svh !important; position:sticky !important; top:0 !important; padding:4.2rem 1.6rem 1.4rem !important; display:flex !important; align-items:stretch !important; justify-content:center !important; background:var(--statml-page) !important; border-left:1px solid rgba(231,229,228,.72) !important; overflow:hidden !important; z-index:1 !important; }
+.statml-visual > * { max-width:100%; }
+.statml-visual > .visual-sticky { position:static !important; top:auto !important; height:100% !important; width:100% !important; padding:0 !important; }
+.statml-visual :is(.visual-shell,.visual-card) { border-radius:var(--statml-radius-visual) !important; border-color:var(--statml-border) !important; box-shadow:var(--statml-shadow-visual) !important; }
+.statml-stage { min-height:92svh !important; padding:5rem 0 !important; opacity:1 !important; transform:none !important; color:var(--statml-text) !important; scroll-margin-top:62px; border-bottom:1px solid rgba(231,229,228,.72); }
+.statml-stage h2 { margin:0 0 1.25rem !important; color:var(--statml-text) !important; font-family:Inter,ui-sans-serif,system-ui,sans-serif !important; font-size:clamp(1.75rem,3vw,2.15rem) !important; font-weight:700 !important; line-height:1.18 !important; letter-spacing:-.028em !important; }
+.statml-stage h3 { color:var(--statml-text) !important; font-weight:650 !important; letter-spacing:-.012em; }
+.statml-stage p,.statml-stage li { color:var(--statml-text-secondary); font-size:1rem; line-height:1.7; }
+.statml-stage strong { color:var(--statml-text); font-weight:650; }
+.statml-stage :is(.stage-label,.stage-kicker) { position:static !important; margin:0 0 .9rem !important; display:flex !important; align-items:center !important; gap:.6rem !important; color:var(--statml-brand) !important; font-family:"JetBrains Mono",monospace !important; font-size:.68rem !important; font-weight:700 !important; letter-spacing:.11em !important; text-transform:uppercase !important; }
+.statml-stage :is(.stage-label,.stage-kicker)::before { content:""; width:22px; height:1px; background:var(--statml-brand); opacity:.75; flex:0 0 auto; }
+.statml-stage :is(.stage-label,.stage-kicker)::after { display:none !important; }
+.statml-stage :is(.card,.formula,.insight,.question-card,.comparison-card,.control-panel,.controls,.quiz-card,.quick-check,.metric-card) { border-radius:var(--statml-radius-card) !important; border-color:var(--statml-border) !important; box-shadow:var(--statml-shadow-card) !important; }
+.statml-stage :is(.card,.question-card,.comparison-card,.control-panel,.controls,.quiz-card,.quick-check,.metric-card) { background:var(--statml-surface) !important; }
+.statml-stage :is(.formula,.math-block) { padding:1rem 1.15rem !important; background:var(--statml-page-subtle) !important; color:var(--statml-text) !important; border:1px solid var(--statml-border) !important; border-left:3px solid var(--statml-brand) !important; font-family:"JetBrains Mono",monospace !important; font-size:.9rem !important; line-height:1.65 !important; overflow-x:auto !important; }
+.statml-stage :is(.insight,.takeaway,.look-here,.teaching-note,.breakdown) { border:1px solid rgba(99,102,241,.18) !important; border-left:4px solid var(--statml-brand) !important; border-radius:0 var(--statml-radius-control) var(--statml-radius-control) 0 !important; background:rgba(238,242,255,.68) !important; color:var(--statml-text-secondary) !important; box-shadow:none !important; }
+.statml-stage :is(.insight.warning,.warning-note,.is-alert) { border-color:rgba(217,119,6,.24) !important; border-left-color:var(--statml-warning) !important; background:rgba(255,251,235,.9) !important; }
+.statml-stage table { width:100%; border-collapse:collapse; }
+.statml-stage th { background:var(--statml-page-subtle); color:var(--statml-text-muted); font-family:Inter,sans-serif; font-size:.7rem; font-weight:700; letter-spacing:.06em; text-transform:uppercase; }
+.statml-stage th,.statml-stage td { border-color:var(--statml-border) !important; }
+.statml-stage td { color:var(--statml-text-secondary); }
+.statml-stage :is(button,.btn,.button,.interactive-btn,.control-btn,.toggle-btn,select,input[type="text"],input[type="number"]) { min-height:38px; border-radius:var(--statml-radius-control) !important; font-family:Inter,ui-sans-serif,system-ui,sans-serif !important; transition:border-color .18s ease,background-color .18s ease,transform .18s ease,box-shadow .18s ease !important; }
+.statml-stage :is(button,.btn,.button,.interactive-btn,.control-btn,.toggle-btn):hover { border-color:rgba(99,102,241,.55) !important; transform:translateY(-1px); }
+.statml-stage :is(button,.btn,.button,.interactive-btn,.control-btn,.toggle-btn).active,.statml-stage :is(button,.btn,.button,.interactive-btn,.control-btn,.toggle-btn).primary,.statml-stage .btn-accent { background:var(--statml-brand) !important; border-color:var(--statml-brand) !important; color:white !important; }
+.statml-stage input[type="range"],.statml-stage input[type="checkbox"] { accent-color:var(--statml-brand) !important; }
+.statml-stage :is(.metric-value,.metric-val,.val,.value,.control-val,.slider-readout,.s-val,.k-val) { font-family:"JetBrains Mono",monospace !important; font-variant-numeric:tabular-nums; }
+.statml-stage-rail { position:fixed; right:14px; top:50%; transform:translateY(-50%); z-index:1000; display:flex; flex-direction:column; gap:7px; padding:10px 8px; border:1px solid rgba(231,229,228,.92); border-radius:999px; background:rgba(255,255,255,.78); box-shadow:var(--statml-shadow-card); backdrop-filter:blur(10px); }
+.statml-stage-button { position:relative; width:9px; height:9px; padding:0; border:1px solid #cbd5e1; border-radius:999px; background:#e5e7eb; cursor:pointer; transition:transform .18s ease,background-color .18s ease,box-shadow .18s ease; }
+.statml-stage-button:hover { transform:scale(1.28); background:#a5b4fc; }
+.statml-stage-button[aria-current="step"] { background:var(--statml-brand); border-color:var(--statml-brand); box-shadow:0 0 0 5px rgba(99,102,241,.12); }
+.statml-stage-button span { position:absolute; right:19px; top:50%; transform:translateY(-50%) translateX(4px); width:max-content; max-width:240px; padding:.4rem .55rem; border-radius:7px; background:var(--statml-text); color:white; font-family:Inter,sans-serif; font-size:.7rem; line-height:1.3; opacity:0; pointer-events:none; transition:opacity .15s ease,transform .15s ease; }
+.statml-stage-button:hover span,.statml-stage-button:focus-visible span { opacity:1; transform:translateY(-50%) translateX(0); }
+body.statml-standardized > .stage-dots { display:none !important; }
+.statml-module-footer { border-top:1px solid var(--statml-border); background:var(--statml-page-subtle); padding:2.2rem 1.5rem 2.8rem; }
+.statml-footer-inner { width:min(1100px,100%); margin:0 auto; display:flex; justify-content:center; align-items:center; gap:1rem; }
+.statml-footer-home { color:var(--statml-text-muted); font-family:"JetBrains Mono",monospace; font-size:.7rem; text-decoration:none; text-transform:uppercase; letter-spacing:.08em; }
+@media (max-width:900px) {
+  .statml-site-nav { height:50px; padding:0 14px; } .statml-brand-link { font-size:.78rem; } .statml-nav-meta { font-size:.6rem; } .statml-nav-topic { font-size:.72rem; }
+  .statml-hero { padding:6.5rem 1.2rem 4rem !important; }
+  .statml-hero :is(.learning-goals,.hero-goals,.hero-objectives) { grid-template-columns:1fr !important; gap:.2rem !important; padding:.55rem !important; }
+  .statml-hero :is(.goal,.objective) { padding:.48rem .55rem !important; }
+  .statml-layout { display:flex !important; flex-direction:column !important; }
+  .statml-visual { order:1 !important; width:100% !important; height:50svh !important; min-height:320px; top:0 !important; padding:3.6rem .8rem .7rem !important; border-left:none !important; border-bottom:1px solid var(--statml-border) !important; z-index:50 !important; }
+  .statml-narrative { order:2 !important; width:100% !important; padding:0 1.35rem 4rem !important; }
+  .statml-stage { min-height:auto !important; padding:3.4rem 0 !important; } .statml-stage-rail { display:none; }
+}
+@media (max-width:560px) { .statml-brand-link span:last-child { display:none; } .statml-hero h1 { font-size:clamp(2.45rem,13vw,3.5rem) !important; } }
+@media (prefers-reduced-motion:reduce) { html { scroll-behavior:auto; } *,*::before,*::after { animation-duration:.01ms !important; animation-iteration-count:1 !important; transition-duration:.01ms !important; } }
+</style>
+</head>
+<body>
+  <div class="progress-track" aria-hidden="true"><div class="progress-bar" id="progressBar"></div></div>
+  <nav class="statml-site-nav" aria-label="StatML Academy navigation">
+    <a class="statml-brand-link" href="../index.html"><span class="statml-brand-mark">S</span><span>StatML Academy</span></a>
+    <span class="statml-nav-topic">One-R</span><span class="statml-nav-meta">classification · 12 stages</span>
+  </nav>
+
+  <nav class="stage-dots" id="stageDots" aria-label="Lesson stages"></nav>
+
+  <header class="hero" id="hero">
+    <div class="hero-grid" aria-hidden="true"></div>
+    <div class="hero-orbits" aria-hidden="true">
+      <span class="orbit-dot"></span><span class="orbit-dot"></span><span class="orbit-dot"></span><span class="orbit-dot"></span>
+    </div>
+    <div class="hero-inner">
+      <div class="eyebrow"><span class="eyebrow-dot"></span>Machine Learning · Classification Baseline</div>
+      <h1>One-R</h1>
+      <p class="hero-lede">Start from raw rows, test every feature, keep the best one, and turn it into a tiny rulebook you can inspect without summoning a committee of neural networks.</p>
+      <div class="hero-goals" aria-label="Learning goals">
+        <div class="goal"><strong>01 · Build</strong>Create one majority-class rule for every value of a categorical feature.</div>
+        <div class="goal"><strong>02 · Safeguard</strong>Handle numeric values, missing inputs, unseen categories, and ties deliberately.</div>
+        <div class="goal"><strong>03 · Evaluate</strong>Use One-R as an honest baseline and recognise when one feature is not enough.</div>
+      </div>
+      <a class="scroll-cue" href="#stage-1"><span class="scroll-line"></span>Scroll to begin</a>
+    </div>
+  </header>
+
+  <main class="site-shell">
+    <article class="narrative">
+      <section class="stage" id="stage-1" data-stage="1" data-title="Observe the rows">
+        <div class="stage-inner">
+          <div class="stage-kicker">Stage 01 · Observe</div>
+          <h2>What problem is One-R solving?</h2>
+          <p>Classification predicts a category, such as <strong>Yes</strong> or <strong>No</strong>. A feature is an input column. The target is the category we want to predict.</p>
+          <p>Our teaching sample records 14 days. Each row contains outlook, humidity, wind, temperature, and whether someone carried an umbrella.</p>
+          <div class="card">
+            <div class="card-title">The central question</div>
+            <p style="margin:0;color:var(--ink);font-weight:700;">“If I may inspect only one column, which column should I choose, and what should I predict for each of its values?”</p>
+          </div>
+          <div class="chip-row">
+            <span class="chip accent">14 rows</span>
+            <span class="chip accent">4 candidate features</span>
+            <span class="chip yes">Yes target</span>
+            <span class="chip no">No target</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="stage" id="stage-2" data-stage="2" data-title="Set the baseline">
+        <div class="stage-inner">
+          <div class="stage-kicker">Stage 02 · Baseline</div>
+          <h2>First, make the lazy prediction.</h2>
+          <p>Before building a model, count the target classes. There are 8 <strong>Yes</strong> rows and 6 <strong>No</strong> rows, so the majority classifier predicts Yes for every case.</p>
+          <div class="formula">majority accuracy = largest class count ÷ all rows<br>8 ÷ 14 = 57.1%</div>
+          <p>This baseline is intentionally dull. That is its job. A new classifier that cannot beat it has not earned its electricity.</p>
+          <div class="insight warning"><strong>Class imbalance warning.</strong> If 95% of rows are No, always predicting No scores 95% accuracy while learning nothing about Yes. Accuracy needs company.</div>
+          <div class="question-card">
+            <p class="q">If a dataset has 70 Yes rows and 30 No rows, what does the majority classifier predict?</p>
+            <p class="a">Yes for every row, producing 70% training accuracy.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="stage" id="stage-3" data-stage="3" data-title="Build one rulebook">
+        <div class="stage-inner">
+          <div class="stage-kicker">Stage 03 · Build</div>
+          <h2>Make a rule from one categorical feature.</h2>
+          <p>Choose a candidate feature, such as <strong>Outlook</strong>. Handle each distinct value separately and predict its local majority class.</p>
+          <div class="steps">
+            <div class="step"><span class="step-number">1</span><span>Collect all rows where Outlook is Sunny.</span></div>
+            <div class="step"><span class="step-number">2</span><span>Count Yes and No among those rows.</span></div>
+            <div class="step"><span class="step-number">3</span><span>Use the local majority as the prediction for Sunny.</span></div>
+            <div class="step"><span class="step-number">4</span><span>Repeat for Cloudy and Rainy.</span></div>
+          </div>
+          <div class="card">
+            <div class="card-title">Example rulebook</div>
+            <div class="rule-list">
+              <div class="rule-line"><span class="if">IF</span> Outlook = Sunny <span class="if">THEN</span> Umbrella = <span class="no">No</span></div>
+              <div class="rule-line"><span class="if">IF</span> Outlook = Cloudy <span class="if">THEN</span> Umbrella = <span class="yes">Yes</span></div>
+              <div class="rule-line"><span class="if">IF</span> Outlook = Rainy <span class="if">THEN</span> Umbrella = <span class="yes">Yes</span></div>
+            </div>
+          </div>
+          <div class="formula">error for a feature value = rows that disagree with that value’s majority class</div>
+        </div>
+      </section>
+
+      <section class="stage" id="stage-4" data-stage="4" data-title="Compare every feature">
+        <div class="stage-inner">
+          <div class="stage-kicker">Stage 04 · Compare</div>
+          <h2>Test every feature. Keep the lowest-error rule.</h2>
+          <p>One-R repeats the same construction for every candidate feature. Each feature gets a rulebook and a total error count.</p>
+          <div class="card mini-table-wrap">
+            <table class="mini-table" aria-label="Candidate feature errors">
+              <thead><tr><th>Feature</th><th>Training errors</th><th>Error rate</th><th>Result</th></tr></thead>
+              <tbody>
+                <tr class="selected-row"><td>Outlook</td><td>3 / 14</td><td>21.4%</td><td>Selected</td></tr>
+                <tr><td>Humidity</td><td>4 / 14</td><td>28.6%</td><td>Runner-up</td></tr>
+                <tr><td>Wind</td><td>5 / 14</td><td>35.7%</td><td>Rejected</td></tr>
+                <tr><td>Temperature*</td><td>5 / 14</td><td>35.7%</td><td>After buckets</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="formula">selected feature = arg min(feature training errors)</div>
+          <div class="controls" aria-label="Feature comparison control">
+            <div class="control-row">
+              <label for="featureInspect">Inspect a rulebook</label>
+              <select id="featureInspect">
+                <option value="Outlook">Outlook</option>
+                <option value="Humidity">Humidity</option>
+                <option value="Wind">Wind</option>
+              </select>
+            </div>
+          </div>
+          <div class="insight"><strong>Ties are allowed.</strong> Declare a policy in advance: prefer fewer values, use a fixed feature order, or choose the winner under cross-validation. Do not improvise after seeing the result.</div>
+          <p style="font-size:0.78rem;color:var(--muted);">*Temperature uses the fixed teaching intervals introduced next. Exact bucketing procedures vary by implementation.</p>
+        </div>
+      </section>
+
+      <section class="stage" id="stage-5" data-stage="5" data-title="Bucket numeric values">
+        <div class="stage-inner">
+          <div class="stage-kicker">Stage 05 · Prepare</div>
+          <h2>Turn numeric values into intervals.</h2>
+          <p>A rule for every exact temperature would memorise the training sample and fail on a new value such as 23.6°C. One-R therefore discretises numeric values into intervals.</p>
+          <div class="steps">
+            <div class="step"><span class="step-number">1</span><span>Sort rows by the numeric feature.</span></div>
+            <div class="step"><span class="step-number">2</span><span>Group neighbouring values into sufficiently reliable buckets.</span></div>
+            <div class="step"><span class="step-number">3</span><span>Assign each bucket its majority class.</span></div>
+            <div class="step"><span class="step-number">4</span><span>Merge or adjust unstable neighbours according to the chosen implementation.</span></div>
+          </div>
+          <div class="card">
+            <div class="card-title">One possible training-only discretisation</div>
+            <div class="rule-list">
+              <div class="rule-line">Temperature ≤ 22.5 → <span class="yes">Yes</span></div>
+              <div class="rule-line">22.5 &lt; Temperature ≤ 27.5 → <span class="yes">Yes</span></div>
+              <div class="rule-line">Temperature &gt; 27.5 → <span class="no">No</span></div>
+            </div>
+          </div>
+          <div class="segmented" style="margin-top:1rem;" aria-label="Temperature display mode">
+            <button type="button" id="tempExact">Exact values</button>
+            <button type="button" id="tempBuckets" class="active">Stable intervals</button>
+          </div>
+          <div class="insight danger"><strong>Leakage alert.</strong> Fit cut-points using training data only. Choosing intervals after inspecting test labels is answer-shopping in a lab coat.</div>
+        </div>
+      </section>
+
+      <section class="stage" id="stage-6" data-stage="6" data-title="Declare safe fallbacks">
+        <div class="stage-inner">
+          <div class="stage-kicker">Stage 06 · Safeguard</div>
+          <h2>Missing values and unseen categories are part of the model.</h2>
+          <p>Real inputs are rarely as cooperative as textbook tables. Decide what happens when the selected feature is missing, a category never appeared during training, classes tie, or a number falls outside the observed range.</p>
+          <div class="metrics">
+            <div class="metric"><span class="metric-value">?</span><span class="metric-label">Missing input</span></div>
+            <div class="metric"><span class="metric-value">New</span><span class="metric-label">Unseen category</span></div>
+            <div class="metric"><span class="metric-value">4–4</span><span class="metric-label">Local tie</span></div>
+          </div>
+          <div class="card">
+            <div class="card-title">Reasonable fallback</div>
+            <p style="margin:0;">Use the overall training-set majority class or estimated class prior. Another option is to learn “Missing” as its own category when enough training rows contain missing values.</p>
+          </div>
+          <div class="question-card">
+            <p class="q">The fitted rule uses Outlook, but a future row has Outlook = “Hazy”. What happens?</p>
+            <p class="a">Use the declared fallback. Do not invent a rule from the test row.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="stage" id="stage-7" data-stage="7" data-title="Predict a new case">
+        <div class="stage-inner">
+          <div class="stage-kicker">Stage 07 · Predict</div>
+          <h2>Prediction is deliberately cheap.</h2>
+          <p>Read the selected feature, find its stored value or interval, return the class, and use the fallback if nothing matches.</p>
+          <div class="controls" aria-label="New case controls">
+            <div class="control-row">
+              <label for="predictOutlook">Outlook</label>
+              <select id="predictOutlook">
+                <option>Sunny</option><option selected>Cloudy</option><option>Rainy</option><option>Hazy</option>
+              </select>
+            </div>
+            <div class="control-row">
+              <label for="predictHumidity">Humidity</label>
+              <select id="predictHumidity"><option selected>Low</option><option>High</option></select>
+            </div>
+            <div class="control-row">
+              <label for="predictWind">Wind</label>
+              <select id="predictWind"><option>Calm</option><option>Breezy</option><option selected>Strong</option></select>
+            </div>
+            <button type="button" class="action-button" id="predictButton">Run the one-rule prediction</button>
+          </div>
+          <div class="insight success" id="predictionText"><strong>Prediction:</strong> Outlook = Cloudy → Umbrella = Yes. Humidity and wind are ignored because Outlook won training selection.</div>
+          <p>The model is saying Outlook is the strongest <strong>standalone</strong> predictor in this sample. It is not saying the other features have no relationship with umbrella use.</p>
+        </div>
+      </section>
+
+      <section class="stage" id="stage-8" data-stage="8" data-title="See what one feature misses">
+        <div class="stage-inner">
+          <div class="stage-kicker">Stage 08 · Understand</div>
+          <h2>One feature cannot express an interaction.</h2>
+          <p>Suppose people carry umbrellas only when it is both cloudy <strong>and</strong> very humid. Neither feature alone may be strongly predictive, but their combination is.</p>
+          <div class="formula">useful pattern: Outlook = Cloudy AND Humidity = High</div>
+          <div class="metrics">
+            <div class="metric"><span class="metric-value">1</span><span class="metric-label">Feature used</span></div>
+            <div class="metric"><span class="metric-value">0</span><span class="metric-label">Interactions</span></div>
+            <div class="metric"><span class="metric-value">✓</span><span class="metric-label">Inspectability</span></div>
+          </div>
+          <div class="comparison-card" style="padding:1.1rem;display:grid;grid-template-columns:1fr 1fr;gap:0.8rem;">
+            <div><div class="card-title">One-R sees</div><p style="margin:0;">One column and one lookup table.</p></div>
+            <div><div class="card-title">One-R misses</div><p style="margin:0;">Interactions, gradual multi-feature effects, and alternative routes to the same class.</p></div>
+          </div>
+          <div class="insight warning"><strong>Interpretability is not innocence.</strong> A selected feature may be a proxy, unfair, operationally inappropriate, or merely associated rather than causal.</div>
+        </div>
+      </section>
+
+      <section class="stage" id="stage-9" data-stage="9" data-title="Validate the learning process">
+        <div class="stage-inner">
+          <div class="stage-kicker">Stage 09 · Evaluate</div>
+          <h2>Validate the whole learning process, not just the final lookup.</h2>
+          <p>Training error is optimistic because One-R searched across features and selected the best-looking one. Honest evaluation repeats every learning step inside the training portion.</p>
+          <div class="steps">
+            <div class="step"><span class="step-number">1</span><span>Split the data or create cross-validation folds.</span></div>
+            <div class="step"><span class="step-number">2</span><span>Inside each training portion, create numeric buckets and every candidate rule.</span></div>
+            <div class="step"><span class="step-number">3</span><span>Select the best feature using only that training portion.</span></div>
+            <div class="step"><span class="step-number">4</span><span>Freeze the rule, predict held-out rows, and aggregate results.</span></div>
+          </div>
+          <div class="insight"><strong>Grouped data.</strong> If several rows belong to the same person, device, or organisation, keep the whole group in one fold. Otherwise the model may recognise the group instead of learning a transferable pattern.</div>
+        </div>
+      </section>
+
+      <section class="stage" id="stage-10" data-stage="10" data-title="Read more than accuracy">
+        <div class="stage-inner">
+          <div class="stage-kicker">Stage 10 · Measure</div>
+          <h2>Accuracy is one view of the mistakes.</h2>
+          <p>A confusion matrix separates correct Yes predictions, correct No predictions, missed Yes cases, and false alarms. From it, we can calculate metrics that answer different questions.</p>
+          <div class="metrics">
+            <div class="metric"><span class="metric-value" id="metricAccuracy">78%</span><span class="metric-label">Accuracy</span></div>
+            <div class="metric"><span class="metric-value" id="metricBalanced">77%</span><span class="metric-label">Balanced accuracy</span></div>
+            <div class="metric"><span class="metric-value" id="metricPrecision">80%</span><span class="metric-label">Yes precision</span></div>
+          </div>
+          <div class="card">
+            <div class="card-title">Metric meanings</div>
+            <p><strong>Accuracy:</strong> overall fraction correct.</p>
+            <p><strong>Balanced accuracy:</strong> average recall across classes.</p>
+            <p><strong>Precision:</strong> how often predicted Yes is truly Yes.</p>
+            <p style="margin-bottom:0;"><strong>Recall:</strong> how many true Yes cases were found.</p>
+          </div>
+          <div class="segmented" style="margin-top:1rem;" aria-label="Evaluation scenario">
+            <button type="button" id="evalBalanced" class="active">Balanced sample</button>
+            <button type="button" id="evalImbalanced">Imbalanced sample</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="stage" id="stage-11" data-stage="11" data-title="Compare simple models">
+        <div class="stage-inner">
+          <div class="stage-kicker">Stage 11 · Compare & Reflect</div>
+          <h2>Use simple models as diagnostic instruments.</h2>
+          <div class="card mini-table-wrap">
+            <table class="mini-table" aria-label="Model comparison">
+              <thead><tr><th>Model</th><th>Uses</th><th>Typical purpose</th></tr></thead>
+              <tbody>
+                <tr><td>Majority</td><td>No features</td><td>Absolute minimum baseline</td></tr>
+                <tr class="selected-row"><td>One-R</td><td>One feature, many value rules</td><td>Transparent signal baseline</td></tr>
+                <tr><td>Decision stump</td><td>One tree split</td><td>Single partition baseline</td></tr>
+                <tr><td>Full tree</td><td>Sequential splits</td><td>Interactions and complexity</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p>One-R and a decision stump are related, but not identical. Categorical One-R can assign a separate class to every value of one feature; a stump is usually described as one split with leaf predictions.</p>
+          <div class="insight warning"><strong>Suspiciously strong simplicity.</strong> If One-R nearly matches a complex model, one feature may dominate the task, or the evaluation may contain leakage. Investigate both before celebrating.</div>
+          <div class="card">
+            <div class="card-title">Useful when</div>
+            <div class="chip-row" style="margin-top:0;"><span class="chip accent">interpretable benchmark</span><span class="chip accent">small data</span><span class="chip accent">cheap deployment</span><span class="chip accent">strongest standalone feature</span></div>
+          </div>
+          <div class="card">
+            <div class="card-title">Weak when</div>
+            <div class="chip-row" style="margin-top:0;"><span class="chip amber">interactions matter</span><span class="chip amber">signals must combine</span><span class="chip amber">feature drift</span><span class="chip amber">unequal error costs</span></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="stage" id="stage-12" data-stage="12" data-title="Practice the full pipeline">
+        <div class="stage-inner">
+          <div class="stage-kicker">Stage 12 · Practice</div>
+          <h2>Build the rule, then explain what it means.</h2>
+          <p>Choose a candidate feature and a new case. The visual updates the value-level rulebook, training error, and prediction. The point is not merely to obtain a label, but to explain exactly how that label appeared.</p>
+          <div class="controls" aria-label="One-R playground">
+            <div class="control-row">
+              <label for="playFeature">Candidate feature</label>
+              <select id="playFeature"><option>Outlook</option><option>Humidity</option><option>Wind</option></select>
+            </div>
+            <div class="control-row">
+              <label for="playValue">New value</label>
+              <select id="playValue"></select>
+            </div>
+            <button type="button" class="action-button" id="playButton">Apply this rulebook</button>
+          </div>
+          <div class="metrics">
+            <div class="metric"><span class="metric-value" id="playErrors">3</span><span class="metric-label">Training errors</span></div>
+            <div class="metric"><span class="metric-value" id="playRules">3</span><span class="metric-label">Value rules</span></div>
+            <div class="metric"><span class="metric-value" id="playPrediction">No</span><span class="metric-label">New prediction</span></div>
+          </div>
+          <div class="question-card">
+            <p class="q">One-R selected Outlook. Humidity also relates strongly to the target. Is “humidity is useless” the correct conclusion?</p>
+            <p class="a">No. Outlook produced the best single-feature rule under this procedure. Humidity may still add useful information in a multi-feature model.</p>
+          </div>
+          <div class="card">
+            <div class="card-title">Key takeaways</div>
+            <p>One-R creates a majority-class rule for every value or interval of each candidate feature.</p>
+            <p>It selects the lowest training error, but performance belongs on held-out data.</p>
+            <p>Numeric buckets, fallbacks, ties, and missing values are fitted-model decisions.</p>
+            <p style="margin-bottom:0;">Its value is transparent baseline reasoning, not pretending one feature explains the universe.</p>
+          </div>
+        </div>
+      </section>
+
+      <footer class="footer-note"><strong>One rule.</strong> Surprisingly useful. Keep it beside stronger models as a readable benchmark and a fast warning system for suspiciously easy prediction.</footer>
+    </article>
+
+    <aside class="visual-column" aria-label="Interactive One-R visualisation">
+      <div class="visual-shell">
+        <div class="visual-header">
+          <div class="visual-title-wrap">
+            <div class="visual-label">Persistent visual · Rule desk</div>
+            <div class="visual-title" id="visualTitle">Observe the rows</div>
+          </div>
+          <div class="stage-badge" id="stageBadge">Stage 01</div>
+        </div>
+        <div class="canvas-wrap">
+          <canvas id="lessonCanvas" aria-label="Animated visual explanation of One-R"></canvas>
+          <div class="canvas-live">stage-linked</div>
+        </div>
+        <div class="visual-footer" aria-live="polite">
+          <div class="visual-stat"><span class="visual-stat-value" id="footerFeature">All columns</span><span class="visual-stat-label">Feature view</span></div>
+          <div class="visual-stat"><span class="visual-stat-value" id="footerError">—</span><span class="visual-stat-label">Rule error</span></div>
+          <div class="visual-stat"><span class="visual-stat-value" id="footerOutcome">14 rows</span><span class="visual-stat-label">Current reading</span></div>
+        </div>
+      </div>
+    </aside>
+  </main>
+
+  <script>
+    (() => {
+      "use strict";
+
+      const DATA = [
+        { id: 1,  outlook: "Sunny",  humidity: "Low",  wind: "Calm",    temperature: 31, target: "No"  },
+        { id: 2,  outlook: "Sunny",  humidity: "High", wind: "Breezy",  temperature: 27, target: "No"  },
+        { id: 3,  outlook: "Cloudy", humidity: "High", wind: "Calm",    temperature: 25, target: "Yes" },
+        { id: 4,  outlook: "Rainy",  humidity: "High", wind: "Calm",    temperature: 21, target: "Yes" },
+        { id: 5,  outlook: "Rainy",  humidity: "High", wind: "Calm",    temperature: 22, target: "Yes" },
+        { id: 6,  outlook: "Rainy",  humidity: "Low",  wind: "Strong",  temperature: 20, target: "No"  },
+        { id: 7,  outlook: "Cloudy", humidity: "Low",  wind: "Strong",  temperature: 24, target: "Yes" },
+        { id: 8,  outlook: "Sunny",  humidity: "Low",  wind: "Calm",    temperature: 26, target: "No"  },
+        { id: 9,  outlook: "Sunny",  humidity: "Low",  wind: "Calm",    temperature: 29, target: "Yes" },
+        { id: 10, outlook: "Rainy",  humidity: "High", wind: "Breezy",  temperature: 22, target: "Yes" },
+        { id: 11, outlook: "Sunny",  humidity: "High", wind: "Strong",  temperature: 30, target: "No"  },
+        { id: 12, outlook: "Cloudy", humidity: "High", wind: "Breezy",  temperature: 26, target: "Yes" },
+        { id: 13, outlook: "Cloudy", humidity: "Low",  wind: "Breezy",  temperature: 21, target: "No"  },
+        { id: 14, outlook: "Rainy",  humidity: "High", wind: "Breezy",  temperature: 22, target: "Yes" }
+      ];
+
+      const FEATURES = {
+        Outlook: { key: "outlook", values: ["Sunny", "Cloudy", "Rainy"] },
+        Humidity: { key: "humidity", values: ["Low", "High"] },
+        Wind: { key: "wind", values: ["Calm", "Breezy", "Strong"] }
+      };
+
+      const palette = {
+        ink: "#1f2937",
+        ink2: "#4b5563",
+        muted: "#6b7280",
+        faint: "#9ca3af",
+        line: "#e7e5e4",
+        lineStrong: "#d6d3d1",
+        surface: "#ffffff",
+        surfaceSoft: "#fbfbf9",
+        accent: "#6366f1",
+        accentDark: "#4f46e5",
+        accentSoft: "#eef2ff",
+        green: "#16a34a",
+        greenSoft: "#f0fdf4",
+        coral: "#dc2626",
+        coralSoft: "#fef2f2",
+        amber: "#d97706",
+        amberSoft: "#fffbeb",
+        blue: "#2563eb",
+        blueSoft: "#eff6ff"
+      };
+
+      const stageMeta = {
+        1:  { feature: "All columns", error: "—",       outcome: "14 rows" },
+        2:  { feature: "Target only", error: "6 / 14",  outcome: "57.1% baseline" },
+        3:  { feature: "Outlook",     error: "3 / 14",  outcome: "3 value rules" },
+        4:  { feature: "All tested",  error: "3 / 14",  outcome: "Outlook wins" },
+        5:  { feature: "Temperature", error: "5 / 14",  outcome: "3 intervals" },
+        6:  { feature: "Outlook",     error: "fallback", outcome: "Unseen → Yes" },
+        7:  { feature: "Outlook",     error: "3 / 14",  outcome: "Cloudy → Yes" },
+        8:  { feature: "One only",    error: "blind spot", outcome: "No interactions" },
+        9:  { feature: "Re-selected", error: "held out", outcome: "Train → test" },
+        10: { feature: "Predictions", error: "2 / 9",   outcome: "Matrix view" },
+        11: { feature: "Model ladder", error: "varies",   outcome: "Baseline first" },
+        12: { feature: "Outlook",     error: "3 / 14",  outcome: "Sunny → No" }
+      };
+
+      const state = {
+        stage: 1,
+        inspectedFeature: "Outlook",
+        tempMode: "buckets",
+        prediction: { outlook: "Cloudy", humidity: "Low", wind: "Strong", result: "Yes" },
+        evalMode: "balanced",
+        playFeature: "Outlook",
+        playValue: "Sunny",
+        pulse: 0,
+        lastTime: 0,
+        needsAnimation: false
+      };
+
+      const canvas = document.getElementById("lessonCanvas");
+      const ctx = canvas.getContext("2d");
+      const progressBar = document.getElementById("progressBar");
+      const stageBadge = document.getElementById("stageBadge");
+      const visualTitle = document.getElementById("visualTitle");
+      const footerFeature = document.getElementById("footerFeature");
+      const footerError = document.getElementById("footerError");
+      const footerOutcome = document.getElementById("footerOutcome");
+      const sections = [...document.querySelectorAll(".stage")];
+      const dotsWrap = document.getElementById("stageDots");
+      let cssWidth = 0;
+      let cssHeight = 0;
+      let dpr = 1;
+      let animationFrame = null;
+
+      const fontSans = 'Inter, system-ui, -apple-system, "Segoe UI", sans-serif';
+      const fontMono = '"JetBrains Mono", ui-monospace, monospace';
+
+      function majority(values) {
+        const counts = new Map();
+        values.forEach(v => counts.set(v, (counts.get(v) || 0) + 1));
+        return [...counts.entries()].sort((a, b) => b[1] - a[1] || String(a[0]).localeCompare(String(b[0])))[0][0];
+      }
+
+      function buildRulebook(featureName) {
+        const feature = FEATURES[featureName];
+        const rules = [];
+        let errors = 0;
+        feature.values.forEach(value => {
+          const rows = DATA.filter(d => d[feature.key] === value);
+          const prediction = majority(rows.map(d => d.target));
+          const localErrors = rows.filter(d => d.target !== prediction).length;
+          errors += localErrors;
+          rules.push({ value, prediction, errors: localErrors, rows, yes: rows.filter(d => d.target === "Yes").length, no: rows.filter(d => d.target === "No").length });
+        });
+        return { featureName, key: feature.key, rules, errors };
+      }
+
+      const rulebooks = Object.fromEntries(Object.keys(FEATURES).map(name => [name, buildRulebook(name)]));
+
+      function roundRect(x, y, w, h, r, fill, stroke = null, lineWidth = 1) {
+        const radius = Math.min(r, w / 2, h / 2);
+        ctx.beginPath();
+        ctx.roundRect(x, y, w, h, radius);
+        if (fill) { ctx.fillStyle = fill; ctx.fill(); }
+        if (stroke) { ctx.strokeStyle = stroke; ctx.lineWidth = lineWidth; ctx.stroke(); }
+      }
+
+      function line(x1, y1, x2, y2, color = palette.lineStrong, width = 1, dash = []) {
+        ctx.save();
+        ctx.beginPath();
+        ctx.setLineDash(dash);
+        ctx.moveTo(x1, y1);
+        ctx.lineTo(x2, y2);
+        ctx.strokeStyle = color;
+        ctx.lineWidth = width;
+        ctx.stroke();
+        ctx.restore();
+      }
+
+      function text(value, x, y, options = {}) {
+        const {
+          size = 12,
+          weight = 500,
+          color = palette.ink,
+          align = "left",
+          baseline = "alphabetic",
+          mono = false,
+          maxWidth
+        } = options;
+        ctx.save();
+        ctx.font = `${weight} ${size}px ${mono ? fontMono : fontSans}`;
+        ctx.fillStyle = color;
+        ctx.textAlign = align;
+        ctx.textBaseline = baseline;
+        if (maxWidth) ctx.fillText(String(value), x, y, maxWidth);
+        else ctx.fillText(String(value), x, y);
+        ctx.restore();
+      }
+
+      function wrapText(value, x, y, maxWidth, lineHeight, options = {}) {
+        const words = String(value).split(/\s+/);
+        const lines = [];
+        let current = "";
+        ctx.save();
+        ctx.font = `${options.weight || 500} ${options.size || 12}px ${options.mono ? fontMono : fontSans}`;
+        words.forEach(word => {
+          const test = current ? `${current} ${word}` : word;
+          if (ctx.measureText(test).width > maxWidth && current) {
+            lines.push(current);
+            current = word;
+          } else current = test;
+        });
+        if (current) lines.push(current);
+        ctx.restore();
+        lines.forEach((ln, i) => text(ln, x, y + i * lineHeight, options));
+        return lines.length * lineHeight;
+      }
+
+      function circle(x, y, r, fill, stroke = null, lineWidth = 1) {
+        ctx.beginPath();
+        ctx.arc(x, y, r, 0, Math.PI * 2);
+        ctx.fillStyle = fill;
+        ctx.fill();
+        if (stroke) { ctx.strokeStyle = stroke; ctx.lineWidth = lineWidth; ctx.stroke(); }
+      }
+
+      function targetColor(target, soft = false) {
+        if (target === "Yes") return soft ? palette.greenSoft : palette.green;
+        return soft ? palette.coralSoft : palette.coral;
+      }
+
+      function drawFrameLabel(label, subtitle) {
+        const compact = cssWidth < 520;
+        text(label.toUpperCase(), 28, 35, { size: compact ? 8 : 10, weight: 800, color: palette.muted, mono: true });
+        text(subtitle, 28, 59, { size: compact ? 14 : 17, weight: 800, color: palette.ink, maxWidth: cssWidth - 56 });
+        line(28, 73, cssWidth - 28, 73, palette.line);
+      }
+
+      function drawLegend(x, y) {
+        roundRect(x, y, 148, 34, 17, "rgba(255,255,255,0.92)", palette.line);
+        circle(x + 17, y + 17, 5, palette.green);
+        text("Yes", x + 29, y + 18, { size: 10, color: palette.ink2, baseline: "middle" });
+        circle(x + 79, y + 17, 5, palette.coral);
+        text("No", x + 91, y + 18, { size: 10, color: palette.ink2, baseline: "middle" });
+      }
+
+      function drawDataGrid(highlightFeature = null, options = {}) {
+        const marginX = Math.max(22, cssWidth * 0.045);
+        const compact = cssWidth < 560 || cssHeight < 560;
+        const top = cssHeight < 420 ? 82 : 94;
+        const width = cssWidth - marginX * 2;
+        const availableH = cssHeight - top - 18;
+        const columns = compact ? ["Outlook", "Humidity", "Wind", "Target"] : ["Outlook", "Humidity", "Wind", "Temp", "Target"];
+        const colWeights = compact ? [1.2, 1, 1, 0.7] : [1.18, 1, 1, 0.78, 0.7];
+        const totalWeight = colWeights.reduce((a, b) => a + b, 0);
+        const colWidths = colWeights.map(w => width * w / totalWeight);
+        const rowH = Math.min(28, Math.max(compact ? 11.5 : 18, (availableH - 4) / (DATA.length + 1)));
+        const tableH = rowH * (DATA.length + 1);
+        const y0 = top + Math.max(0, (availableH - tableH) * 0.38);
+
+        roundRect(marginX, y0, width, tableH, 16, "rgba(255,255,255,0.95)", palette.lineStrong);
+        let x = marginX;
+        columns.forEach((col, i) => {
+          const canonical = col === "Temp" ? "Temperature" : col;
+          if (highlightFeature === canonical) roundRect(x + 2, y0 + 2, colWidths[i] - 4, tableH - 4, 12, palette.accentSoft);
+          text(col, x + 10, y0 + rowH / 2 + 1, { size: compact ? 8 : 9, weight: 800, color: highlightFeature === canonical ? palette.accentDark : palette.muted, baseline: "middle", mono: true });
+          if (i > 0) line(x, y0, x, y0 + tableH, palette.line);
+          x += colWidths[i];
+        });
+        line(marginX, y0 + rowH, marginX + width, y0 + rowH, palette.lineStrong);
+
+        DATA.forEach((row, r) => {
+          const rowY = y0 + rowH * (r + 1);
+          if (options.dimRows && !options.dimRows.includes(row.id)) ctx.globalAlpha = 0.22;
+          if (options.highlightRows && options.highlightRows.includes(row.id)) roundRect(marginX + 4, rowY + 2, width - 8, rowH - 4, 8, "rgba(99,102,241,0.09)");
+          let cx = marginX;
+          const vals = compact
+            ? [row.outlook, row.humidity, row.wind, row.target]
+            : [row.outlook, row.humidity, row.wind, `${row.temperature}°`, row.target];
+          vals.forEach((val, c) => {
+            if (columns[c] === "Target") {
+              const dotX = cx + Math.min(16, colWidths[c] * 0.26);
+              circle(dotX, rowY + rowH / 2, Math.max(3.2, rowH * 0.18), targetColor(val));
+              if (!compact || colWidths[c] > 65) text(val, dotX + 10, rowY + rowH / 2 + 0.5, { size: compact ? 8 : 9, color: palette.ink2, baseline: "middle", mono: true });
+            } else {
+              text(val, cx + 10, rowY + rowH / 2 + 0.5, { size: compact ? 7.5 : 9, color: palette.ink2, baseline: "middle", mono: true, maxWidth: colWidths[c] - 14 });
+            }
+            cx += colWidths[c];
+          });
+          ctx.globalAlpha = 1;
+          if (r < DATA.length - 1) line(marginX, rowY + rowH, marginX + width, rowY + rowH, palette.line);
+        });
+
+        if (cssHeight >= 420) drawLegend(cssWidth - marginX - 148, Math.max(20, y0 - 48));
+        return { x: marginX, y: y0, width, height: tableH, rowH, columns, colWidths };
+      }
+
+      function drawStage1() {
+        drawFrameLabel("Raw training sample", "Four inputs. One target. No rule yet.");
+        drawDataGrid();
+      }
+
+      function drawStage2() {
+        drawFrameLabel("Majority baseline", "Ignore every feature and count the target.");
+        const centerX = cssWidth * 0.5;
+        const centerY = cssHeight * 0.47;
+        const radius = Math.min(cssWidth, cssHeight) * 0.2;
+        const yesCount = 8;
+        const noCount = 6;
+        const total = yesCount + noCount;
+        const start = -Math.PI / 2;
+        ctx.save();
+        ctx.lineWidth = Math.max(18, radius * 0.22);
+        ctx.lineCap = "round";
+        ctx.strokeStyle = "#edf0ed";
+        ctx.beginPath(); ctx.arc(centerX, centerY, radius, 0, Math.PI * 2); ctx.stroke();
+        ctx.strokeStyle = palette.green;
+        ctx.beginPath(); ctx.arc(centerX, centerY, radius, start, start + Math.PI * 2 * yesCount / total); ctx.stroke();
+        ctx.strokeStyle = palette.coral;
+        ctx.beginPath(); ctx.arc(centerX, centerY, radius, start + Math.PI * 2 * yesCount / total + 0.045, start + Math.PI * 2 - 0.045); ctx.stroke();
+        ctx.restore();
+        text("8", centerX, centerY - 11, { size: Math.max(30, radius * 0.34), weight: 700, color: palette.green, align: "center", baseline: "middle", mono: true });
+        text("YES rows", centerX, centerY + 24, { size: 11, weight: 800, color: palette.muted, align: "center", baseline: "middle", mono: true });
+        const compact = cssHeight < 420;
+        const summaryTop = centerY + radius + (compact ? 22 : 46);
+        const summaryH = compact ? 58 : 78;
+        roundRect(centerX - Math.min(180, cssWidth * 0.36), summaryTop, Math.min(360, cssWidth * 0.72), summaryH, 16, palette.accentSoft, "#ddd6fe");
+        text("Predict YES for every row", centerX, summaryTop + (compact ? 20 : 27), { size: compact ? 11 : 14, weight: 800, color: palette.accentDark, align: "center", baseline: "middle" });
+        text("training accuracy  ·  8 / 14  =  57.1%", centerX, summaryTop + (compact ? 41 : 52), { size: compact ? 8 : 10, weight: 600, color: palette.ink2, align: "center", baseline: "middle", mono: true });
+        if (cssHeight >= 420) drawLegend(cssWidth - 176, 90);
+      }
+
+      function drawRulebook(featureName, options = {}) {
+        const book = rulebooks[featureName];
+        const compact = cssWidth < 560;
+        const shortCanvas = cssHeight < 420;
+        const left = Math.max(22, cssWidth * 0.055);
+        const top = shortCanvas ? 84 : 105;
+        const gap = compact ? 10 : 16;
+        const cardW = (cssWidth - left * 2 - gap * (book.rules.length - 1)) / book.rules.length;
+        const cardH = shortCanvas ? Math.max(150, cssHeight - top - 18) : Math.min(240, cssHeight * 0.45);
+        const y = shortCanvas ? top : top + Math.max(0, (cssHeight - top - 100 - cardH) * 0.28);
+        const maxCount = Math.max(...book.rules.map(r => r.rows.length));
+        book.rules.forEach((rule, i) => {
+          const x = left + i * (cardW + gap);
+          const active = !options.activeValue || options.activeValue === rule.value;
+          ctx.globalAlpha = active ? 1 : 0.3;
+          roundRect(x, y, cardW, cardH, 18, active ? palette.surface : palette.surfaceSoft, active ? (rule.prediction === "Yes" ? "#bbf7d0" : "#fecaca") : palette.line);
+          text(rule.value, x + 14, y + 27, { size: compact ? 11 : 14, weight: 800, color: palette.ink });
+          text(`${rule.rows.length} rows`, x + cardW - 14, y + 27, { size: 8, weight: 700, color: palette.muted, align: "right", mono: true });
+          const barAreaY = y + 52;
+          const barAreaH = cardH - 120;
+          const yesH = barAreaH * rule.yes / maxCount;
+          const noH = barAreaH * rule.no / maxCount;
+          const barW = Math.min(32, cardW * 0.23);
+          const center = x + cardW / 2;
+          roundRect(center - barW - 4, barAreaY + barAreaH - yesH, barW, yesH, 6, palette.green);
+          roundRect(center + 4, barAreaY + barAreaH - noH, barW, noH, 6, palette.coral);
+          text(String(rule.yes), center - barW / 2 - 4, barAreaY + barAreaH + 16, { size: 9, weight: 700, color: palette.green, align: "center", mono: true });
+          text(String(rule.no), center + barW / 2 + 4, barAreaY + barAreaH + 16, { size: 9, weight: 700, color: palette.coral, align: "center", mono: true });
+          const predColor = rule.prediction === "Yes" ? palette.green : palette.coral;
+          const predSoft = rule.prediction === "Yes" ? palette.greenSoft : palette.coralSoft;
+          roundRect(x + 12, y + cardH - 55, cardW - 24, 36, 11, predSoft);
+          text(`predict ${rule.prediction}`, x + cardW / 2, y + cardH - 37, { size: compact ? 8.5 : 10, weight: 800, color: predColor, align: "center", baseline: "middle", mono: true });
+          text(`${rule.errors} error${rule.errors === 1 ? "" : "s"}`, x + cardW / 2, y + cardH - 8, { size: 8, weight: 700, color: palette.muted, align: "center", mono: true });
+          ctx.globalAlpha = 1;
+        });
+        if (!shortCanvas) {
+          const summaryW = Math.min(410, cssWidth - left * 2);
+          const summaryX = (cssWidth - summaryW) / 2;
+          roundRect(summaryX, y + cardH + 28, summaryW, 58, 15, palette.accentSoft, "#ddd6fe");
+          text(`${featureName} rulebook`, summaryX + 16, y + cardH + 49, { size: 10, weight: 800, color: palette.accentDark, mono: true });
+          text(`${book.errors} training errors · ${(book.errors / DATA.length * 100).toFixed(1)}% error`, summaryX + 16, y + cardH + 72, { size: 11, weight: 700, color: palette.ink2, mono: true });
+        }
+        return { book, y, cardH };
+      }
+
+      function drawStage3() {
+        drawFrameLabel("Value-level majorities", "Group Outlook values and keep each local winner.");
+        drawRulebook("Outlook");
+      }
+
+      function drawStage4() {
+        drawFrameLabel("Candidate search", `Inspecting ${state.inspectedFeature}; lowest error still wins.`);
+        const features = ["Outlook", "Humidity", "Wind", "Temperature"];
+        const errors = [3, 4, 5, 5];
+        const left = Math.max(42, cssWidth * 0.12);
+        const right = Math.max(28, cssWidth * 0.08);
+        const shortCanvas = cssHeight < 420;
+        const top = shortCanvas ? 88 : 125;
+        const bottom = cssHeight - (shortCanvas ? 34 : 80);
+        const chartH = Math.max(shortCanvas ? 120 : 180, bottom - top);
+        const chartW = cssWidth - left - right;
+        const maxErr = 7;
+        for (let i = 0; i <= maxErr; i++) {
+          const y = bottom - chartH * i / maxErr;
+          line(left, y, left + chartW, y, i === 0 ? palette.lineStrong : palette.line, 1);
+          text(i, left - 12, y, { size: 8, color: palette.muted, align: "right", baseline: "middle", mono: true });
+        }
+        const slot = chartW / features.length;
+        features.forEach((feature, i) => {
+          const barW = Math.min(72, slot * 0.58);
+          const x = left + slot * i + slot / 2 - barW / 2;
+          const h = chartH * errors[i] / maxErr;
+          const selected = feature === "Outlook";
+          const inspecting = feature === state.inspectedFeature;
+          roundRect(x, bottom - h, barW, h, 10, selected ? palette.accent : (inspecting ? "#a5b4fc" : "#d6d3d1"));
+          text(`${errors[i]}/14`, x + barW / 2, bottom - h - 14, { size: 10, weight: 800, color: selected ? palette.accentDark : palette.ink2, align: "center", mono: true });
+          text(feature === "Temperature" ? "Temp*" : feature, x + barW / 2, bottom + 25, { size: cssWidth < 520 ? 8 : 10, weight: selected ? 800 : 600, color: selected ? palette.accentDark : palette.ink2, align: "center", mono: true });
+          if (selected) {
+            roundRect(x + barW / 2 - 28, bottom - h + 12, 56, 22, 11, "rgba(255,255,255,0.86)");
+            text("WINNER", x + barW / 2, bottom - h + 23, { size: 7, weight: 800, color: palette.accentDark, align: "center", baseline: "middle", mono: true });
+          }
+        });
+        text("training errors", left, top - 24, { size: 9, weight: 800, color: palette.muted, mono: true });
+      }
+
+      function drawStage5() {
+        drawFrameLabel("Numeric preparation", state.tempMode === "buckets" ? "Stable intervals replace exact-value memorisation." : "Exact values create a long, brittle lookup table.");
+        const left = Math.max(34, cssWidth * 0.08);
+        const right = cssWidth - left;
+        const axisY = cssHeight * 0.54;
+        const minT = 19;
+        const maxT = 32;
+        const xMap = t => left + (t - minT) / (maxT - minT) * (right - left);
+        line(left, axisY, right, axisY, palette.lineStrong, 2);
+        for (let t = 20; t <= 31; t++) {
+          const x = xMap(t);
+          line(x, axisY - 5, x, axisY + 5, palette.lineStrong);
+          if (t % 2 === 0) text(`${t}°`, x, axisY + 24, { size: 8, color: palette.muted, align: "center", mono: true });
+        }
+        const sorted = [...DATA].sort((a, b) => a.temperature - b.temperature || a.id - b.id);
+        const stacks = new Map();
+        sorted.forEach(row => {
+          const key = row.temperature;
+          const stack = stacks.get(key) || 0;
+          stacks.set(key, stack + 1);
+          const x = xMap(row.temperature);
+          const y = axisY - 20 - stack * 20;
+          circle(x, y, 7, targetColor(row.target), "#fff", 2);
+        });
+        if (state.tempMode === "buckets") {
+          const cuts = [22.5, 27.5];
+          cuts.forEach((cut, i) => {
+            const x = xMap(cut);
+            line(x, axisY - 150, x, axisY + 8, i === 0 ? palette.amber : palette.accent, 2, [6, 5]);
+            roundRect(x - 34, axisY - 178, 68, 24, 12, i === 0 ? palette.amberSoft : palette.accentSoft);
+            text(`${cut}°`, x, axisY - 166, { size: 9, weight: 800, color: i === 0 ? palette.amber : palette.accentDark, align: "center", baseline: "middle", mono: true });
+          });
+          const intervals = [
+            { x1: left, x2: xMap(22.5), label: "≤ 22.5", pred: "Yes" },
+            { x1: xMap(22.5), x2: xMap(27.5), label: "22.5–27.5", pred: "Yes" },
+            { x1: xMap(27.5), x2: right, label: "> 27.5", pred: "No" }
+          ];
+          intervals.forEach((it, i) => {
+            const x = it.x1 + 4;
+            const w = Math.max(30, it.x2 - it.x1 - 8);
+            const fill = it.pred === "Yes" ? palette.greenSoft : palette.coralSoft;
+            const stroke = it.pred === "Yes" ? "#bbf7d0" : "#fecaca";
+            roundRect(x, axisY + 48, w, 68, 13, fill, stroke);
+            text(it.label, x + w / 2, axisY + 72, { size: cssWidth < 520 ? 7 : 9, weight: 800, color: palette.ink2, align: "center", mono: true });
+            text(`predict ${it.pred}`, x + w / 2, axisY + 98, { size: cssWidth < 520 ? 7 : 9, weight: 800, color: it.pred === "Yes" ? palette.green : palette.coral, align: "center", mono: true });
+          });
+        } else {
+          const uniques = [...new Set(sorted.map(d => d.temperature))];
+          uniques.forEach(t => {
+            const x = xMap(t);
+            roundRect(x - 17, axisY + 48, 34, 30, 8, "#fff", palette.lineStrong);
+            text(`${t}°`, x, axisY + 63, { size: 8, weight: 700, color: palette.ink2, align: "center", baseline: "middle", mono: true });
+          });
+          wrapText("Many exact rules; a new 23.6°C value matches none.", cssWidth / 2, axisY + 118, Math.min(360, cssWidth - 60), 18, { size: 11, weight: 700, color: palette.coral, align: "center" });
+        }
+      }
+
+      function drawStage6() {
+        drawFrameLabel("Fallback routing", "Unknown values still need a pre-declared destination.");
+        const shortCanvas = cssHeight < 420;
+        const centerX = cssWidth * 0.5;
+        const top = shortCanvas ? 84 : 120;
+        const offset = Math.min(shortCanvas ? 112 : 190, cssWidth * 0.3);
+        const nodeW = shortCanvas ? 92 : 104;
+        const nodeH = shortCanvas ? 50 : 64;
+        const nodes = [
+          { label: "Sunny", pred: "No", x: centerX - offset },
+          { label: "Cloudy", pred: "Yes", x: centerX },
+          { label: "Rainy", pred: "Yes", x: centerX + offset }
+        ];
+        nodes.forEach(n => {
+          roundRect(n.x - nodeW / 2, top, nodeW, nodeH, 14, "#fff", palette.lineStrong);
+          text(n.label, n.x, top + (shortCanvas ? 17 : 22), { size: shortCanvas ? 9 : 11, weight: 800, color: palette.ink, align: "center", baseline: "middle" });
+          text(`→ ${n.pred}`, n.x, top + (shortCanvas ? 36 : 45), { size: shortCanvas ? 8 : 10, weight: 800, color: n.pred === "Yes" ? palette.green : palette.coral, align: "center", baseline: "middle", mono: true });
+        });
+        const inputY = shortCanvas ? 146 : cssHeight * 0.47;
+        const inputH = shortCanvas ? 54 : 72;
+        roundRect(centerX - (shortCanvas ? 88 : 92), inputY, shortCanvas ? 176 : 184, inputH, 16, palette.amberSoft, "#fde68a", 1.5);
+        text("OUTLOOK = HAZY", centerX, inputY + (shortCanvas ? 19 : 26), { size: shortCanvas ? 9 : 11, weight: 800, color: palette.amber, align: "center", baseline: "middle", mono: true });
+        text("not seen in training", centerX, inputY + (shortCanvas ? 38 : 50), { size: shortCanvas ? 8 : 9, color: palette.ink2, align: "center", baseline: "middle" });
+        const fallbackY = inputY + inputH + (shortCanvas ? 20 : 46);
+        line(centerX, inputY + inputH, centerX, fallbackY, palette.amber, 2, [6, 5]);
+        const fallbackH = shortCanvas ? 62 : 92;
+        roundRect(centerX - (shortCanvas ? 124 : 132), fallbackY, shortCanvas ? 248 : 264, fallbackH, 18, palette.accentSoft, "#c7d2fe", 1.5);
+        text("DECLARED FALLBACK", centerX, fallbackY + (shortCanvas ? 17 : 26), { size: shortCanvas ? 8 : 9, weight: 800, color: palette.accentDark, align: "center", baseline: "middle", mono: true });
+        text("training majority → YES", centerX, fallbackY + (shortCanvas ? 39 : 57), { size: shortCanvas ? 12 : 15, weight: 800, color: palette.green, align: "center", baseline: "middle", mono: true });
+        if (!shortCanvas) text("chosen before test evaluation", centerX, fallbackY + 78, { size: 8, color: palette.muted, align: "center", baseline: "middle" });
+      }
+
+      function drawStage7() {
+        drawFrameLabel("Single-feature prediction", `${state.prediction.outlook} enters the selected Outlook rulebook.`);
+        const compact = cssWidth < 540;
+        const caseX = cssWidth * (compact ? 0.5 : 0.2);
+        const ruleX = cssWidth * (compact ? 0.5 : 0.55);
+        const outX = cssWidth * (compact ? 0.5 : 0.84);
+        const y = compact ? 122 : cssHeight * 0.42;
+        if (compact) {
+          drawVerticalPrediction(caseX, y);
+        } else {
+          roundRect(caseX - 82, y - 86, 164, 172, 20, "#fff", palette.lineStrong);
+          text("NEW CASE", caseX, y - 59, { size: 9, weight: 800, color: palette.muted, align: "center", mono: true });
+          const rows = [["Outlook", state.prediction.outlook], ["Humidity", state.prediction.humidity], ["Wind", state.prediction.wind]];
+          rows.forEach((r, i) => {
+            const ry = y - 23 + i * 34;
+            text(r[0], caseX - 62, ry, { size: 8, color: palette.muted, mono: true });
+            text(r[1], caseX + 62, ry, { size: 9, weight: 800, color: i === 0 ? palette.accentDark : palette.faint, align: "right", mono: true });
+            if (i > 0) line(caseX - 62, ry - 19, caseX + 62, ry - 19, palette.line);
+          });
+          line(caseX + 88, y, ruleX - 90, y, palette.accent, 2);
+          circle((caseX + 88 + ruleX - 90) / 2, y, 5 + Math.sin(state.pulse) * 1.5, palette.accent);
+          roundRect(ruleX - 90, y - 68, 180, 136, 20, palette.accentSoft, "#c7d2fe", 1.5);
+          text("SELECTED FEATURE", ruleX, y - 43, { size: 8, weight: 800, color: palette.accentDark, align: "center", mono: true });
+          text("OUTLOOK", ruleX, y - 12, { size: 17, weight: 800, color: palette.ink, align: "center", mono: true });
+          text(`${state.prediction.outlook} → ${state.prediction.result}`, ruleX, y + 28, { size: 12, weight: 800, color: state.prediction.result === "Yes" ? palette.green : palette.coral, align: "center", mono: true });
+          line(ruleX + 96, y, outX - 75, y, palette.accent, 2);
+          roundRect(outX - 75, y - 55, 150, 110, 20, state.prediction.result === "Yes" ? palette.greenSoft : palette.coralSoft, state.prediction.result === "Yes" ? "#bbf7d0" : "#fecaca", 1.5);
+          text("PREDICTION", outX, y - 25, { size: 8, weight: 800, color: palette.muted, align: "center", mono: true });
+          text(state.prediction.result.toUpperCase(), outX, y + 14, { size: 24, weight: 800, color: state.prediction.result === "Yes" ? palette.green : palette.coral, align: "center", baseline: "middle", mono: true });
+          text("other inputs ignored", outX, y + 38, { size: 8, color: palette.muted, align: "center" });
+        }
+      }
+
+      function drawVerticalPrediction(centerX, top) {
+        const y = 84;
+        roundRect(centerX - 116, y, 232, 62, 16, "#fff", palette.lineStrong);
+        text("NEW CASE", centerX, y + 16, { size: 7, weight: 800, color: palette.muted, align: "center", mono: true });
+        text(`Outlook ${state.prediction.outlook} · Humidity ${state.prediction.humidity} · Wind ${state.prediction.wind}`, centerX, y + 34, { size: 7, weight: 600, color: palette.ink2, align: "center", mono: true, maxWidth: 210 });
+        text("Only Outlook is read", centerX, y + 51, { size: 8, weight: 800, color: palette.accentDark, align: "center" });
+        line(centerX, y + 62, centerX, y + 77, palette.accent, 2);
+        roundRect(centerX - 104, y + 77, 208, 52, 15, palette.accentSoft, "#c7d2fe");
+        text(`${state.prediction.outlook} → ${state.prediction.result}`, centerX, y + 103, { size: 13, weight: 800, color: state.prediction.result === "Yes" ? palette.green : palette.coral, align: "center", baseline: "middle", mono: true });
+        line(centerX, y + 129, centerX, y + 144, palette.accent, 2);
+        roundRect(centerX - 76, y + 144, 152, 58, 15, state.prediction.result === "Yes" ? palette.greenSoft : palette.coralSoft, state.prediction.result === "Yes" ? "#bbf7d0" : "#fecaca");
+        text("PREDICTION", centerX, y + 160, { size: 7, weight: 800, color: palette.muted, align: "center", mono: true });
+        text(state.prediction.result.toUpperCase(), centerX, y + 183, { size: 18, weight: 800, color: state.prediction.result === "Yes" ? palette.green : palette.coral, align: "center", baseline: "middle", mono: true });
+      }
+
+      function drawStage8() {
+        drawFrameLabel("Interaction blind spot", "The useful pattern lives at the intersection of two columns.");
+        const shortCanvas = cssHeight < 420;
+        const left = Math.max(36, cssWidth * 0.1);
+        const top = shortCanvas ? 84 : 125;
+        const gridW = cssWidth - left * 2;
+        const gridH = shortCanvas ? 108 : Math.min(cssHeight - top - 90, 360);
+        const cols = ["Sunny", "Cloudy", "Rainy"];
+        const rows = ["Low", "High"];
+        const cellW = gridW / cols.length;
+        const cellH = gridH / rows.length;
+        if (!shortCanvas) {
+          text("Outlook", left + gridW / 2, top - 28, { size: 10, weight: 800, color: palette.muted, align: "center", mono: true });
+          ctx.save();
+          ctx.translate(left - 28, top + gridH / 2);
+          ctx.rotate(-Math.PI / 2);
+          text("Humidity", 0, 0, { size: 10, weight: 800, color: palette.muted, align: "center", mono: true });
+          ctx.restore();
+        }
+        rows.forEach((row, r) => {
+          cols.forEach((col, c) => {
+            const x = left + c * cellW;
+            const y = top + r * cellH;
+            const useful = col === "Cloudy" && row === "High";
+            roundRect(x + 4, y + 4, cellW - 8, cellH - 8, shortCanvas ? 12 : 18, useful ? palette.greenSoft : "#fff", useful ? "#86efac" : palette.lineStrong, useful ? 2 : 1);
+            if (useful) {
+              text("USEFUL", x + cellW / 2, y + cellH / 2 - (shortCanvas ? 8 : 16), { size: 7, weight: 800, color: palette.green, align: "center", mono: true });
+              text("Cloudy AND High", x + cellW / 2, y + cellH / 2 + (shortCanvas ? 9 : 9), { size: shortCanvas ? 7 : (cssWidth < 520 ? 8 : 11), weight: 800, color: palette.ink, align: "center", mono: true, maxWidth: cellW - 12 });
+              if (!shortCanvas) circle(x + cellW / 2, y + cellH / 2 + 35, 5, palette.green);
+            } else {
+              text(`${col} + ${row}`, x + cellW / 2, y + cellH / 2, { size: shortCanvas ? 6 : (cssWidth < 520 ? 7 : 9), color: palette.faint, align: "center", baseline: "middle", mono: true, maxWidth: cellW - 12 });
+            }
+          });
+        });
+        if (!shortCanvas) {
+          cols.forEach((col, c) => text(col, left + c * cellW + cellW / 2, top + gridH + 24, { size: 9, weight: 700, color: palette.ink2, align: "center", mono: true }));
+          rows.forEach((row, r) => text(row, left - 10, top + r * cellH + cellH / 2, { size: 9, weight: 700, color: palette.ink2, align: "right", baseline: "middle", mono: true }));
+        }
+        const noteY = top + gridH + (shortCanvas ? 14 : 48);
+        roundRect(left, noteY, gridW, shortCanvas ? 55 : 58, 14, palette.coralSoft, "#fecaca");
+        wrapText("One-R selects one dimension, never their AND-combination.", left + gridW / 2, noteY + (shortCanvas ? 19 : 29), gridW - 24, shortCanvas ? 14 : 18, { size: shortCanvas ? 8 : (cssWidth < 520 ? 8 : 10), weight: 700, color: palette.coral, align: "center" });
+      }
+
+      function drawStage9() {
+        drawFrameLabel("Honest validation", "Every fitted choice stays inside the training fold.");
+        const shortCanvas = cssHeight < 420;
+        const margin = Math.max(26, cssWidth * 0.07);
+        const boxW = cssWidth - margin * 2;
+        const stages = shortCanvas
+          ? [
+              { label: "TRAIN", sub: "fit all choices", color: palette.accentSoft, stroke: "#c7d2fe" },
+              { label: "FREEZE", sub: "lock the rule", color: palette.amberSoft, stroke: "#fde68a" },
+              { label: "TEST", sub: "score held-out", color: palette.greenSoft, stroke: "#bbf7d0" }
+            ]
+          : [
+              { label: "TRAIN FOLD", sub: "rows available for learning", color: palette.accentSoft, stroke: "#c7d2fe" },
+              { label: "FIT INSIDE", sub: "bucket · build · select", color: palette.accentSoft, stroke: "#c7d2fe" },
+              { label: "FREEZE", sub: "no more label peeking", color: palette.amberSoft, stroke: "#fde68a" },
+              { label: "HELD OUT", sub: "predict and score", color: palette.greenSoft, stroke: "#bbf7d0" }
+            ];
+        const splitY = shortCanvas ? 84 : 130;
+        text("Repeated across folds", cssWidth / 2, splitY, { size: shortCanvas ? 8 : 10, weight: 800, color: palette.muted, align: "center", mono: true });
+        const blockW = Math.min(shortCanvas ? 28 : 42, (boxW - 30) / 8);
+        const totalW = blockW * 8 + 7 * 5;
+        const startX = cssWidth / 2 - totalW / 2;
+        for (let i = 0; i < 8; i++) {
+          roundRect(startX + i * (blockW + 5), splitY + 12, blockW, shortCanvas ? 20 : 28, 6, i === 6 ? palette.greenSoft : palette.accentSoft, i === 6 ? "#86efac" : "#c7d2fe");
+          text(i === 6 ? "T" : "R", startX + i * (blockW + 5) + blockW / 2, splitY + (shortCanvas ? 22 : 26), { size: 7, weight: 800, color: i === 6 ? palette.green : palette.accentDark, align: "center", baseline: "middle", mono: true });
+        }
+        const flowY = shortCanvas ? 174 : cssHeight * 0.5;
+        const gap = shortCanvas ? 12 : 16;
+        const nodeW = (boxW - gap * (stages.length - 1)) / stages.length;
+        const nodeH = shortCanvas ? 68 : 112;
+        stages.forEach((s, i) => {
+          const x = margin + i * (nodeW + gap);
+          const y = flowY - nodeH / 2;
+          roundRect(x, y, nodeW, nodeH, shortCanvas ? 13 : 18, s.color, s.stroke, 1.5);
+          text(s.label, x + nodeW / 2, y + (shortCanvas ? 22 : 38), { size: shortCanvas ? 7 : (cssWidth < 520 ? 8 : 10), weight: 800, color: i === stages.length - 1 ? palette.green : (i === stages.length - 2 ? palette.amber : palette.accentDark), align: "center", mono: true });
+          wrapText(s.sub, x + nodeW / 2, y + (shortCanvas ? 42 : 67), nodeW - 14, shortCanvas ? 12 : 15, { size: shortCanvas ? 6.5 : (cssWidth < 520 ? 7 : 9), weight: 600, color: palette.ink2, align: "center" });
+          if (i < stages.length - 1) {
+            const x1 = x + nodeW + 2;
+            const x2 = x + nodeW + gap - 2;
+            line(x1, flowY, x2, flowY, palette.lineStrong, 2);
+          }
+        });
+        const noteY = shortCanvas ? 226 : flowY + 100;
+        roundRect(margin, noteY, boxW, shortCanvas ? 50 : 68, 14, "#fff", palette.lineStrong);
+        wrapText("Keep every person, device, or organisation inside one fold.", cssWidth / 2, noteY + (shortCanvas ? 18 : 34), boxW - 24, shortCanvas ? 13 : 18, { size: shortCanvas ? 7.5 : (cssWidth < 520 ? 8 : 10), weight: 700, color: palette.ink2, align: "center" });
+      }
+
+      function evalScenario() {
+        if (state.evalMode === "imbalanced") return { tp: 4, fp: 1, fn: 1, tn: 14 };
+        return { tp: 4, fp: 1, fn: 1, tn: 3 };
+      }
+
+      function metricsFrom(m) {
+        const accuracy = (m.tp + m.tn) / (m.tp + m.fp + m.fn + m.tn);
+        const precision = m.tp / (m.tp + m.fp);
+        const recall = m.tp / (m.tp + m.fn);
+        const specificity = m.tn / (m.tn + m.fp);
+        const balanced = (recall + specificity) / 2;
+        return { accuracy, precision, recall, balanced };
+      }
+
+      function drawStage10() {
+        const m = evalScenario();
+        const met = metricsFrom(m);
+        drawFrameLabel("Prediction outcomes", state.evalMode === "balanced" ? "A balanced teaching sample exposes both class errors." : "Class imbalance lifts raw accuracy more than balanced accuracy.");
+        const centerX = cssWidth * 0.5;
+        const shortCanvas = cssHeight < 420;
+        const top = shortCanvas ? 84 : 126;
+        const matrixW = Math.min(cssWidth - (shortCanvas ? 86 : 90), 420);
+        const matrixH = shortCanvas ? Math.min(144, cssHeight - top - 65) : Math.min(cssHeight - 240, 330);
+        const cellW = matrixW / 2;
+        const cellH = matrixH / 2;
+        const x0 = centerX - matrixW / 2;
+        const y0 = top + (shortCanvas ? 28 : 44);
+        text("Predicted", centerX, top - 4, { size: 10, weight: 800, color: palette.muted, align: "center", mono: true });
+        ctx.save(); ctx.translate(x0 - 34, y0 + matrixH / 2); ctx.rotate(-Math.PI / 2);
+        text("Actual", 0, 0, { size: 10, weight: 800, color: palette.muted, align: "center", mono: true }); ctx.restore();
+        text("Yes", x0 + cellW / 2, y0 - 15, { size: 10, weight: 800, color: palette.green, align: "center", mono: true });
+        text("No", x0 + cellW + cellW / 2, y0 - 15, { size: 10, weight: 800, color: palette.coral, align: "center", mono: true });
+        text("Yes", x0 - 12, y0 + cellH / 2, { size: 10, weight: 800, color: palette.green, align: "right", baseline: "middle", mono: true });
+        text("No", x0 - 12, y0 + cellH + cellH / 2, { size: 10, weight: 800, color: palette.coral, align: "right", baseline: "middle", mono: true });
+        const cells = [
+          { x: x0, y: y0, value: m.tp, label: "true yes", fill: palette.greenSoft, stroke: "#bbf7d0", color: palette.green },
+          { x: x0 + cellW, y: y0, value: m.fn, label: "missed yes", fill: palette.coralSoft, stroke: "#fecaca", color: palette.coral },
+          { x: x0, y: y0 + cellH, value: m.fp, label: "false alarm", fill: palette.amberSoft, stroke: "#fde68a", color: palette.amber },
+          { x: x0 + cellW, y: y0 + cellH, value: m.tn, label: "true no", fill: palette.blueSoft, stroke: "#bfdbfe", color: palette.blue }
+        ];
+        cells.forEach(c => {
+          roundRect(c.x + 4, c.y + 4, cellW - 8, cellH - 8, 16, c.fill, c.stroke);
+          text(c.value, c.x + cellW / 2, c.y + cellH / 2 - 8, { size: Math.min(34, cellH * 0.32), weight: 700, color: c.color, align: "center", baseline: "middle", mono: true });
+          text(c.label, c.x + cellW / 2, c.y + cellH / 2 + 25, { size: cssWidth < 520 ? 7 : 9, weight: 700, color: palette.ink2, align: "center", baseline: "middle", mono: true });
+        });
+        const labelY = y0 + matrixH + (shortCanvas ? 20 : 38);
+        text(`accuracy ${(met.accuracy * 100).toFixed(0)}%  ·  balanced ${(met.balanced * 100).toFixed(0)}%  ·  precision ${(met.precision * 100).toFixed(0)}%  ·  recall ${(met.recall * 100).toFixed(0)}%`, centerX, labelY, { size: cssWidth < 560 ? 7.5 : 9.5, weight: 700, color: palette.ink2, align: "center", mono: true, maxWidth: cssWidth - 40 });
+      }
+
+      function drawStage11() {
+        drawFrameLabel("Model ladder", "Add complexity only after the simple baselines have spoken.");
+        const shortCanvas = cssHeight < 420;
+        const margin = Math.max(30, cssWidth * 0.08);
+        const top = shortCanvas ? 84 : 120;
+        const ladder = [
+          { name: "Majority", features: "0 features", complex: 0.05, color: "#a8a29e" },
+          { name: "One-R", features: "1 feature", complex: 0.22, color: palette.accent },
+          { name: "Stump", features: "1 split", complex: 0.34, color: palette.blue },
+          { name: "Full tree", features: "many splits", complex: 0.82, color: palette.amber }
+        ];
+        const rowGap = shortCanvas ? 47 : Math.min(86, (cssHeight - top - 80) / ladder.length);
+        const barLeft = margin + Math.min(shortCanvas ? 82 : 118, cssWidth * 0.22);
+        const barW = cssWidth - barLeft - margin;
+        if (!shortCanvas) text("relative complexity", barLeft, top - 20, { size: 9, weight: 800, color: palette.muted, mono: true });
+        ladder.forEach((m, i) => {
+          const y = top + i * rowGap;
+          const barH = shortCanvas ? 23 : 36;
+          text(m.name, margin, y + (shortCanvas ? 12 : 20), { size: shortCanvas ? 8 : (cssWidth < 520 ? 10 : 13), weight: m.name === "One-R" ? 800 : 700, color: m.name === "One-R" ? palette.accentDark : palette.ink, baseline: "middle" });
+          if (!shortCanvas) text(m.features, margin, y + 40, { size: 8, color: palette.muted, mono: true });
+          roundRect(barLeft, y, barW, barH, shortCanvas ? 8 : 12, "#f5f5f4");
+          roundRect(barLeft, y, Math.max(16, barW * m.complex), barH, shortCanvas ? 8 : 12, m.color);
+          if (m.name === "One-R") {
+            circle(barLeft + barW * m.complex, y + barH / 2, shortCanvas ? 5 : 8 + Math.sin(state.pulse) * 1.2, "#fff", palette.accentDark, 2);
+            if (!shortCanvas) {
+              roundRect(barLeft + barW * m.complex + 14, y + 3, Math.min(112, barW * 0.3), 30, 10, palette.accentSoft, "#c7d2fe");
+              text("strong baseline", barLeft + barW * m.complex + 24, y + 18, { size: 8, weight: 800, color: palette.accentDark, baseline: "middle", mono: true });
+            }
+          }
+        });
+        const noteY = top + ladder.length * rowGap + (shortCanvas ? -4 : 6);
+        roundRect(margin, noteY, cssWidth - margin * 2, shortCanvas ? 36 : 64, 13, palette.amberSoft, "#fde68a");
+        wrapText(shortCanvas ? "Near-complex performance? Check dominance and leakage." : "If One-R nearly matches a complex model: inspect feature dominance and leakage before celebrating.", cssWidth / 2, noteY + (shortCanvas ? 14 : 25), cssWidth - margin * 2 - 24, shortCanvas ? 12 : 18, { size: shortCanvas ? 7 : (cssWidth < 520 ? 8 : 10), weight: 700, color: palette.amber, align: "center" });
+      }
+
+      function drawStage12() {
+        drawFrameLabel("Live rulebook", `${state.playFeature} → ${state.playValue}`);
+        drawRulebook(state.playFeature, { activeValue: state.playValue });
+      }
+
+      function draw() {
+        if (!cssWidth || !cssHeight) return;
+        ctx.clearRect(0, 0, cssWidth, cssHeight);
+        ctx.fillStyle = "#fcfcfb";
+        ctx.fillRect(0, 0, cssWidth, cssHeight);
+        ctx.save();
+        const grid = Math.max(36, Math.min(54, cssWidth / 12));
+        ctx.strokeStyle = "rgba(31,41,55,0.025)";
+        ctx.lineWidth = 1;
+        for (let x = 0; x < cssWidth; x += grid) line(x, 0, x, cssHeight, "rgba(31,41,55,0.025)");
+        for (let y = 0; y < cssHeight; y += grid) line(0, y, cssWidth, y, "rgba(31,41,55,0.025)");
+        ctx.restore();
+        const drawer = [null, drawStage1, drawStage2, drawStage3, drawStage4, drawStage5, drawStage6, drawStage7, drawStage8, drawStage9, drawStage10, drawStage11, drawStage12][state.stage];
+        if (drawer) drawer();
+      }
+
+      function resizeCanvas() {
+        const rect = canvas.getBoundingClientRect();
+        cssWidth = Math.max(1, rect.width);
+        cssHeight = Math.max(1, rect.height);
+        dpr = Math.min(window.devicePixelRatio || 1, 2);
+        canvas.width = Math.round(cssWidth * dpr);
+        canvas.height = Math.round(cssHeight * dpr);
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        draw();
+      }
+
+      function updateStage(stage) {
+        if (state.stage === stage) return;
+        state.stage = stage;
+        const section = sections.find(s => Number(s.dataset.stage) === stage);
+        stageBadge.textContent = `Stage ${String(stage).padStart(2, "0")}`;
+        visualTitle.textContent = section?.dataset.title || "One-R";
+        const meta = stageMeta[stage];
+        footerFeature.textContent = meta.feature;
+        footerError.textContent = meta.error;
+        footerOutcome.textContent = meta.outcome;
+        [...dotsWrap.children].forEach((dot, i) => dot.classList.toggle("active", i + 1 === stage));
+        state.needsAnimation = [7, 11].includes(stage);
+        draw();
+        if (state.needsAnimation) startAnimation();
+        else stopAnimation();
+      }
+
+      function startAnimation() {
+        if (animationFrame) return;
+        const tick = time => {
+          const delta = state.lastTime ? Math.min(32, time - state.lastTime) : 16;
+          state.lastTime = time;
+          state.pulse += delta * 0.004;
+          draw();
+          if (state.needsAnimation) animationFrame = requestAnimationFrame(tick);
+          else animationFrame = null;
+        };
+        animationFrame = requestAnimationFrame(tick);
+      }
+
+      function stopAnimation() {
+        state.lastTime = 0;
+        if (animationFrame) cancelAnimationFrame(animationFrame);
+        animationFrame = null;
+      }
+
+      function updateProgress() {
+        const scrollTop = window.scrollY || document.documentElement.scrollTop;
+        const max = document.documentElement.scrollHeight - window.innerHeight;
+        progressBar.style.width = `${max > 0 ? Math.min(100, Math.max(0, scrollTop / max * 100)) : 0}%`;
+      }
+
+      function populateDots() {
+        sections.forEach((section, i) => {
+          const button = document.createElement("button");
+          button.className = `stage-dot${i === 0 ? " active" : ""}`;
+          button.type = "button";
+          button.setAttribute("aria-label", `Go to ${section.dataset.title}`);
+          button.title = section.dataset.title;
+          button.addEventListener("click", () => section.scrollIntoView({ behavior: "smooth", block: "center" }));
+          dotsWrap.appendChild(button);
+        });
+      }
+
+      function setupObserver() {
+        const observer = new IntersectionObserver(entries => {
+          const visible = entries
+            .filter(e => e.isIntersecting)
+            .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+          if (visible) updateStage(Number(visible.target.dataset.stage));
+        }, { threshold: [0.25, 0.42, 0.58], rootMargin: "-8% 0px -28% 0px" });
+        sections.forEach(s => observer.observe(s));
+      }
+
+      function setTempMode(mode) {
+        state.tempMode = mode;
+        document.getElementById("tempExact").classList.toggle("active", mode === "exact");
+        document.getElementById("tempBuckets").classList.toggle("active", mode === "buckets");
+        if (state.stage === 5) draw();
+      }
+
+      function makePrediction() {
+        const outlook = document.getElementById("predictOutlook").value;
+        const humidity = document.getElementById("predictHumidity").value;
+        const wind = document.getElementById("predictWind").value;
+        const rule = rulebooks.Outlook.rules.find(r => r.value === outlook);
+        const result = rule ? rule.prediction : "Yes";
+        state.prediction = { outlook, humidity, wind, result };
+        const fallback = rule ? "" : " The value was unseen, so the training-majority fallback was used.";
+        document.getElementById("predictionText").innerHTML = `<strong>Prediction:</strong> Outlook = ${outlook} → Umbrella = ${result}. Humidity and wind are ignored because Outlook won training selection.${fallback}`;
+        const meta = stageMeta[7];
+        meta.outcome = `${outlook} → ${result}`;
+        if (state.stage === 7) {
+          footerOutcome.textContent = meta.outcome;
+          state.needsAnimation = true;
+          startAnimation();
+          draw();
+        }
+      }
+
+      function setEvalMode(mode) {
+        state.evalMode = mode;
+        document.getElementById("evalBalanced").classList.toggle("active", mode === "balanced");
+        document.getElementById("evalImbalanced").classList.toggle("active", mode === "imbalanced");
+        const met = metricsFrom(evalScenario());
+        document.getElementById("metricAccuracy").textContent = `${Math.round(met.accuracy * 100)}%`;
+        document.getElementById("metricBalanced").textContent = `${Math.round(met.balanced * 100)}%`;
+        document.getElementById("metricPrecision").textContent = `${Math.round(met.precision * 100)}%`;
+        if (state.stage === 10) draw();
+      }
+
+      function populatePlayValues() {
+        const select = document.getElementById("playValue");
+        const values = FEATURES[state.playFeature].values;
+        const previous = state.playValue;
+        select.innerHTML = "";
+        values.forEach(v => {
+          const option = document.createElement("option");
+          option.value = v;
+          option.textContent = v;
+          select.appendChild(option);
+        });
+        state.playValue = values.includes(previous) ? previous : values[0];
+        select.value = state.playValue;
+        updatePlayMetrics();
+      }
+
+      function updatePlayMetrics() {
+        const book = rulebooks[state.playFeature];
+        const rule = book.rules.find(r => r.value === state.playValue) || book.rules[0];
+        document.getElementById("playErrors").textContent = String(book.errors);
+        document.getElementById("playRules").textContent = String(book.rules.length);
+        document.getElementById("playPrediction").textContent = rule.prediction;
+        stageMeta[12] = { feature: state.playFeature, error: `${book.errors} / 14`, outcome: `${state.playValue} → ${rule.prediction}` };
+        if (state.stage === 12) {
+          footerFeature.textContent = state.playFeature;
+          footerError.textContent = `${book.errors} / 14`;
+          footerOutcome.textContent = `${state.playValue} → ${rule.prediction}`;
+          draw();
+        }
+      }
+
+      document.getElementById("featureInspect").addEventListener("change", e => {
+        state.inspectedFeature = e.target.value;
+        if (state.stage === 4) draw();
+      });
+      document.getElementById("tempExact").addEventListener("click", () => setTempMode("exact"));
+      document.getElementById("tempBuckets").addEventListener("click", () => setTempMode("buckets"));
+      document.getElementById("predictButton").addEventListener("click", makePrediction);
+      document.getElementById("evalBalanced").addEventListener("click", () => setEvalMode("balanced"));
+      document.getElementById("evalImbalanced").addEventListener("click", () => setEvalMode("imbalanced"));
+      document.getElementById("playFeature").addEventListener("change", e => {
+        state.playFeature = e.target.value;
+        state.playValue = FEATURES[state.playFeature].values[0];
+        populatePlayValues();
+      });
+      document.getElementById("playValue").addEventListener("change", e => {
+        state.playValue = e.target.value;
+        updatePlayMetrics();
+      });
+      document.getElementById("playButton").addEventListener("click", updatePlayMetrics);
+      window.addEventListener("scroll", updateProgress, { passive: true });
+      window.addEventListener("resize", resizeCanvas, { passive: true });
+
+      populateDots();
+      populatePlayValues();
+      setupObserver();
+      updateProgress();
+      resizeCanvas();
+    })();
+  </script>
+<footer class="statml-module-footer"><div class="statml-footer-inner"><a class="statml-footer-home" href="../index.html">All modules</a></div></footer>
+
+<script id="statml-standard-runtime">
+(() => {
+  const META = {"title":"One-R","selectors":{"hero":".hero","layout":".site-shell","narrative":".narrative","visual":".visual-column"},"phases":["Observe","Baseline","Build","Compare","Prepare","Safeguard","Predict","Understand","Evaluate","Measure","Reflect","Practice"]};
+  document.body.classList.add('statml-standardized');
+  const $ = (s, root = document) => root.querySelector(s);
+  const $$ = (s, root = document) => Array.from(root.querySelectorAll(s));
+  const hero = $(META.selectors.hero), layout = $(META.selectors.layout), narrative = $(META.selectors.narrative), visual = $(META.selectors.visual);
+  hero && hero.classList.add('statml-hero'); layout && layout.classList.add('statml-layout'); narrative && narrative.classList.add('statml-narrative'); visual && visual.classList.add('statml-visual');
+  if (visual) { visual.setAttribute('role','region'); visual.setAttribute('aria-label',META.title + ' interactive visualisation'); }
+  const stageEls = $$('[data-stage]').filter(el => Number(el.dataset.stage) > 0).sort((a,b) => Number(a.dataset.stage) - Number(b.dataset.stage));
+  stageEls.forEach((stage,index) => {
+    stage.classList.add('statml-stage');
+    if (!stage.id) stage.id = 'statml-stage-' + stage.dataset.stage;
+    const label = stage.querySelector('.stage-label,.stage-kicker,.stage-num,.step-label');
+    if (label) label.textContent = 'Stage ' + String(stage.dataset.stage).padStart(2,'0') + ' · ' + (META.phases[index] || 'Learn');
+  });
+  $$('button').forEach(button => { if (!button.getAttribute('type')) button.setAttribute('type','button'); });
+  $$('body > .stage-dots').forEach(el => el.setAttribute('aria-hidden','true'));
+  const rail = document.createElement('nav'); rail.className = 'statml-stage-rail'; rail.setAttribute('aria-label','Lesson stages');
+  stageEls.forEach((stage,index) => {
+    const button = document.createElement('button'); button.className = 'statml-stage-button'; button.type = 'button';
+    const heading = stage.querySelector('h2,h1'), title = heading ? heading.textContent.trim() : 'Stage ' + (index + 1);
+    button.setAttribute('aria-label','Go to stage ' + (index + 1) + ': ' + title);
+    button.innerHTML = '<span>' + String(index + 1).padStart(2,'0') + ' · ' + title + '</span>';
+    button.addEventListener('click',() => stage.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',block:'start'}));
+    rail.appendChild(button);
+  });
+  document.body.appendChild(rail);
+  const railButtons = $$('.statml-stage-button',rail);
+  const activate = stage => { const index = stageEls.indexOf(stage); railButtons.forEach((button,i) => i === index ? button.setAttribute('aria-current','step') : button.removeAttribute('aria-current')); };
+  if (stageEls.length) activate(stageEls[0]);
+  if ('IntersectionObserver' in window) {
+    const observer = new IntersectionObserver(entries => { const visible = entries.filter(entry => entry.isIntersecting).sort((a,b) => b.intersectionRatio - a.intersectionRatio)[0]; if (visible) activate(visible.target); }, {rootMargin:'-25% 0px -45% 0px',threshold:[0,.15,.35,.6]});
+    stageEls.forEach(stage => observer.observe(stage));
+  }
+})();
+</script>
+</body>
+</html>
