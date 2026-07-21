@@ -1069,6 +1069,7 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
 }
 </style>
 
+    <link rel="stylesheet" href="academic-rigor.css">
 </head>
 <body>
 <nav class="statml-site-nav" aria-label="StatML Academy navigation">
@@ -1539,7 +1540,7 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
                             <strong style="color: var(--accent-dark);">The differences were large enough:</strong> We squared and scaled these discrepancies, giving us a final test statistic of <span class="pill" style="font-family: var(--font-mono); font-weight: bold; background-color: var(--accent-light); color: var(--accent-dark);">χ² = 8.33</span>.
                         </li>
                         <li>
-                            <strong style="color: var(--accent-dark);">The p-value was small, so we rejected independence:</strong> Seeing a total discrepancy of 8.33 by pure chance alone is extremely rare (p = 0.0039), so we concluded the two variables are definitely related.
+                            <strong style="color: var(--accent-dark);">The p-value was small, so we rejected independence:</strong> A discrepancy at least this large would be unusual under independence (p = 0.0039), assuming the test conditions hold. The data provide evidence against independence; Cramér’s V and residuals describe magnitude and contributing cells.
                         </li>
                         <li>
                             <strong style="color: var(--accent-dark);">The residuals showed the pattern:</strong> Looking closely at our cells, we saw the exact direction of this pattern—Art students lean apples, Sports students lean chips.
@@ -2280,5 +2281,6 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
 })();
 </script>
 
+<script src="academic-rigor.js"></script>
 </body>
 </html>

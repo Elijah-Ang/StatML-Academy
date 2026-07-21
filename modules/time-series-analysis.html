@@ -804,6 +804,7 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
 }
 </style>
 
+    <link rel="stylesheet" href="academic-rigor.css">
 </head>
 <body>
 <nav class="statml-site-nav" aria-label="StatML Academy navigation">
@@ -961,7 +962,7 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
                 </div>
 
                 <div class="insight-box">
-                    <p><strong>How to read this genuinely computed ACF:</strong> Bars extending outside the shaded region are statistically significant (p < 0.05). Notice the repeating spikes? Depending on the noise level, they often suggest a repeating seasonal structure.</p>
+                    <p><strong>How to read this genuinely computed ACF:</strong> Bars outside the approximate confidence bounds suggest autocorrelation at those lags, but interpret the pattern collectively and in the context of the fitted model. Repeating spikes may suggest seasonality; confirm with residual ACF and model diagnostics.</p>
                 </div>
             </div>
 
@@ -2099,5 +2100,6 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
 })();
 </script>
 
+<script src="academic-rigor.js"></script>
 </body>
 </html>

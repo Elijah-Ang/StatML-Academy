@@ -529,6 +529,7 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
 }
 </style>
 
+    <link rel="stylesheet" href="academic-rigor.css">
 </head>
 <body>
 <nav class="statml-site-nav" aria-label="StatML Academy navigation">
@@ -1079,7 +1080,7 @@ Training set only ➔ Try K values (1 to 15) ➔ CV accuracy ➔ Choose optimal 
   <div class="glass-card" style="border-top: 3px solid var(--coral);">
     <h3 style="color: var(--coral);">⚠️ Weaknesses & Limitations</h3>
     <ul style="font-size: 0.88rem; margin-left: 20px; color: var(--text-dim); line-height: 1.5; display: flex; flex-direction: column; gap: 6px;">
-      <li><strong>Sensitive to Scale:</strong> Requires mandatory feature scaling; otherwise, features with larger ranges dominate.</li>
+      <li><strong>Sensitive to Scale:</strong> Scaling is usually necessary when features use different units or magnitudes; otherwise larger-scale features dominate distance.</li>
       <li><strong>The Curse of Dimensionality:</strong> When there are too many features, distance often becomes less useful because many points start to seem similarly far apart. This makes it harder for KNN to find truly meaningful neighbors.</li>
       <li><strong>Slow at Scale:</strong> Must calculate distance to every single stored point for every new query. High memory and computing costs.</li>
       <li><strong>Class Imbalance:</strong> If you have 95% Apples and 5% Oranges, votes will naturally skew heavily to Apple.</li>
@@ -3223,5 +3224,6 @@ window.addEventListener('resize',()=>{
 })();
 </script>
 
+<script src="academic-rigor.js"></script>
 </body>
 </html>

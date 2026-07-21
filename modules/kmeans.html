@@ -476,6 +476,7 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
 }
 </style>
 
+    <link rel="stylesheet" href="academic-rigor.css">
 </head>
 <body>
 <nav class="statml-site-nav" aria-label="StatML Academy navigation">
@@ -581,7 +582,7 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
                 <h2>The Elbow Heuristic</h2>
                 <p>How do we choose K (the number of teams)? One common idea is to test out 1 team, then 2 teams, then 3 teams, and so on, recording the WCSS score for each.</p>
                 <p>As you add more teams, the dots naturally get closer to a star, so the score almost always drops. But we don't want a million teams! We are looking for the bend or <strong>elbow</strong> in the chart.</p>
-                <p>The elbow is the exact point where adding more clusters stops helping very much. The chart on the right is a fast demo showing the scores for our data. Can you spot the bend?</p>
+                <p>The elbow is a heuristic: it marks a possible point of diminishing returns, but it may be ambiguous or absent. Combine this chart with stability, silhouette scores, domain usefulness, and alternative clustering methods.</p>
                 <p><em>Important: the elbow method is just a helpful hint. Some datasets show a clear bend, while others do not. It helps guide us, but it is not a magical rule.</em></p>
                 <div class="takeaway">Plain-language takeaway: To find the best number of teams, we test different numbers and look for the "elbow" bend on a chart. It tells us when to stop adding more teams.</div>
             </section>
@@ -1329,5 +1330,6 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
 })();
 </script>
 
+<script src="academic-rigor.js"></script>
 </body>
 </html>

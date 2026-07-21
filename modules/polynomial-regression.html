@@ -934,6 +934,7 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
 }
 </style>
 
+    <link rel="stylesheet" href="academic-rigor.css">
 </head>
 <body>
 <nav class="statml-site-nav" aria-label="StatML Academy navigation">
@@ -1087,12 +1088,12 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
                 </div>
                 <div class="procedural-step">
                     <strong>What this means</strong> 
-                    <span>Training error can look amazing while test error gets much worse, which is the warning sign of overfitting.</span>
+                    <span>Training error can look amazing while validation error gets much worse, which is the warning sign of overfitting.</span>
                 </div>
                 <p style="margin-top: 0.5rem; font-size: 1rem; color: var(--text-dim);">We need to find the balance between too simple and too complex.</p>
                 <div class="look-here">
                     <div class="look-here-arrow">➔</div>
-                    <div class="look-here-text">Look at the Validation Curve. Training error drops, but Test error explodes. The wiggly curve completely misses the new gold dots.</div>
+                    <div class="look-here-text">Look at the validation curve. Training error drops, but validation error rises. The gold dots are validation observations used to choose degree; the final test set remains untouched.</div>
                 </div>
             </div>
 
@@ -1102,7 +1103,7 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
                 <h2>Find the Sweet Spot</h2>
                 <div class="procedural-step">
                     <strong>What we do</strong> 
-                    <span>Test different complexities to find the lowest Test Error.</span>
+                    <span>Compare candidate complexities using validation or cross-validation error.</span>
                 </div>
                 <div class="procedural-step">
                     <strong>Why we do it</strong> 
@@ -1115,7 +1116,7 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
                 <p style="margin-top: 0.5rem; font-size: 1rem; color: var(--text-dim);">Play with the controls until you find the perfect balance.</p>
                 <div class="look-here">
                     <div class="look-here-arrow">➔</div>
-                    <div class="look-here-text">Change the Dataset Shape, then use the slider to explore. Find the simplest point on the Validation Curve before Test error rises.</div>
+                    <div class="look-here-text">Change the dataset shape, then use the slider to explore. Find the simplest near-best point on the validation curve before validation error rises.</div>
                 </div>
                 
                 <div class="controls-card">
@@ -1190,7 +1191,7 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
                             <div class="metric-desc">FIT TO SEEN</div>
                         </div>
                         <div class="metric-group" id="group-test-mse">
-                            <div class="metric-label">Test MSE</div>
+                            <div class="metric-label">Validation MSE</div>
                             <div class="metric-value" id="val-test-mse">
                                 <span>-</span>
                             </div>
@@ -1217,7 +1218,7 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
 
                 <div class="legend-panel" id="canvas-legend">
                     <div class="legend-item"><div class="legend-dot" style="background:var(--train-color)"></div> Training Set (Seen)</div>
-                    <div class="legend-item"><div class="legend-dot" style="background:#fff;border:2px solid var(--test-color)"></div> Test Set (Unseen)</div>
+                    <div class="legend-item"><div class="legend-dot" style="background:#fff;border:2px solid var(--test-color)"></div> Validation Set</div>
                 </div>
                 
                 <canvas id="viz"></canvas>
@@ -1226,7 +1227,7 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
             <!-- Decision Panel -->
             <div class="decision-panel" id="decision-card">
                 <div class="decision-title">Model Deployed ✅</div>
-                <div class="decision-subtitle" id="dec-reason">Chosen because it achieves low test error without unnecessary complexity.</div>
+                <div class="decision-subtitle" id="dec-reason">Chosen because it achieves low validation error without unnecessary complexity. Final test evaluation follows once.</div>
                 
                 <div class="decision-stats">
                     <div class="d-stat">
@@ -1239,7 +1240,7 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
                     </div>
                     <div class="d-stat">
                         <span class="d-val" id="dec-test" style="color:var(--success)">-</span>
-                        <span class="d-lbl">Test MSE</span>
+                        <span class="d-lbl">Validation MSE</span>
                     </div>
                 </div>
                 
@@ -1561,7 +1562,7 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
                 document.getElementById('dec-deg').innerText = degree;
                 document.getElementById('dec-train').innerText = trainMSE.toFixed(1);
                 document.getElementById('dec-test').innerText = testMSE.toFixed(1);
-                document.getElementById('dec-reason').innerText = `Chosen because Degree ${degree} achieves near-best Test Error without adding unnecessary extra wiggles to the curve.`;
+                document.getElementById('dec-reason').innerText = `Chosen because Degree ${degree} achieves near-best validation error without unnecessary extra wiggles. Evaluate the locked model once on the final test set.`;
                 document.getElementById('dec-eq').innerHTML = formatEquation(currentCoeffs);
             }
 
@@ -2028,5 +2029,6 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
 })();
 </script>
 
+<script src="academic-rigor.js"></script>
 </body>
 </html>

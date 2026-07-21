@@ -525,6 +525,7 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
 }
 </style>
 
+    <link rel="stylesheet" href="academic-rigor.css">
 </head>
 <body>
 <nav class="statml-site-nav" aria-label="StatML Academy navigation">
@@ -578,7 +579,7 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
       <div><strong>• Child Node:</strong> The subgroups created after splitting a parent node.</div>
       <div><strong>• Leaf Node:</strong> A final terminal node that does not split further. It makes the final prediction.</div>
       <div><strong>• Impurity:</strong> A measure of how mixed or diverse the class labels are within a particular node.</div>
-      <div><strong>• Gini Impurity:</strong> A mathematical metric used to calculate impurity (0.0 means perfectly pure, 0.5 means a perfect 50/50 mix).</div>
+      <div><strong>• Gini Impurity:</strong> A mathematical metric used to calculate impurity (0.0 means perfectly pure; 0.5 is the maximum for a balanced binary node).</div>
       <div><strong>• Weighted Impurity:</strong> The combined impurity of child nodes, weighted by the proportion of samples that went into each child.</div>
       <div><strong>• Impurity Decrease:</strong> The difference between parent Gini and weighted child Gini. The tree maximizes this "gain".</div>
       <div><strong>• Decision Boundary:</strong> The geometric line(s) dividing different class zones on the coordinate map.</div>
@@ -657,7 +658,7 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
   <div class="stage-num">Stage 04</div>
   <h2>Measuring Messiness</h2>
   <p>To split effectively, the tree needs a way to measure how mixed a box is. We use a math rule called <strong>Gini Impurity</strong>.</p>
-  <p>A Gini score of <code>0.0</code> means the box is <em>perfectly pure</em> (all one fruit type). A score near <code>0.5</code> means it is completely mixed.</p>
+  <p>A Gini score of <code>0.0</code> means the box is <em>perfectly pure</em>. For this binary example, <code>0.5</code> is the maximum at a 50/50 mix; multiclass maxima differ.</p>
 
   <div class="glass-card">
     <h3>🧮 Gini Impurity Formula</h3>
@@ -876,7 +877,7 @@ Gini = 1 - [ P(Apple)² + P(Orange)² ]
   <div class="stage-num">Stage 10</div>
   <h2>Choosing Tree Depth</h2>
   <p>How do we select the perfect <code>max_depth</code> parameter? We plot a <strong>Validation Curve</strong>.</p>
-  <p>Below, we train 10 different trees with maximum depths ranging from 1 to 10. We calculate and plot their Accuracy on both the <strong>Training Set</strong> and the <strong>Test Set</strong>.</p>
+  <p>Below, we train 10 different trees with maximum depths ranging from 1 to 10. We compare <strong>Training Accuracy</strong> with <strong>Validation Accuracy</strong> to choose depth.</p>
 
   <div class="glass-card">
     <h3>📈 Tree Depth Validation Curve</h3>
@@ -885,7 +886,7 @@ Gini = 1 - [ P(Apple)² + P(Orange)² ]
     </div>
     <div style="display:flex; justify-content:center; gap:16px; font-size:0.75rem; color:var(--text-dim); margin-bottom:8px">
       <div><span style="display:inline-block; width:12px; height:3px; background:var(--apple); vertical-align:middle; margin-right:4px"></span> Training Accuracy</div>
-      <div><span style="display:inline-block; width:12px; height:3px; background:var(--orange); vertical-align:middle; margin-right:4px"></span> Test Accuracy</div>
+      <div><span style="display:inline-block; width:12px; height:3px; background:var(--orange); vertical-align:middle; margin-right:4px"></span> Validation Accuracy</div>
     </div>
     <p style="font-size:0.85rem; color:var(--text-dim)">
       🏆 <strong>Optimal Max Depth:</strong> <span id="bestDepthValue" style="font-weight:700; color:var(--accent)">Depth 3</span>
@@ -893,9 +894,9 @@ Gini = 1 - [ P(Apple)² + P(Orange)² ]
   </div>
 
   <div class="insight-box">
-    <p>💡 <strong>Key Takeaway:</strong> Notice how Training Accuracy continues to rise toward 100% as depth increases, but Test Accuracy peaks early and then degrades. This gap represents the onset of <strong>Overfitting</strong>!</p>
+    <p>💡 <strong>Key Takeaway:</strong> Training accuracy keeps rising while validation accuracy peaks and then degrades. Choose depth from validation evidence, lock the tree, and evaluate final test accuracy once.</p>
     <p style="font-size:0.85rem; color:var(--text-dim); margin-top:10px; border-top:1px dashed var(--glass-border); padding-top:10px;">
-      ⚠️ <strong>Teaching note:</strong> This demo uses test accuracy in the curve so you can see overfitting clearly. In real projects, do not tune <code>max_depth</code> on the final test set. Use a validation set or cross-validation to choose depth, then reserve the test set for final evaluation.
+      ⚠️ <strong>Teaching note:</strong> This curve uses a validation set. Do not tune <code>max_depth</code> on the final test set; reserve it for one final evaluation after pruning is locked.
     </p>
   </div>
 </section>
@@ -1102,6 +1103,16 @@ const TEST_DATA = [
   { w: 5.5, c: 5.2, label: 'Orange' },
   { w: 6.0, c: 7.5, label: 'Orange' },
   { w: 4.5, c: 5.1, label: 'Apple' }
+];
+
+// Development-only validation set for selecting depth. TEST_DATA remains untouched.
+const VALIDATION_DATA = [
+  { w: 3.1, c: 8.2, label: 'Apple' },
+  { w: 4.7, c: 6.7, label: 'Apple' },
+  { w: 7.7, c: 3.1, label: 'Orange' },
+  { w: 6.1, c: 4.8, label: 'Orange' },
+  { w: 5.6, c: 6.3, label: 'Apple' },
+  { w: 5.0, c: 4.5, label: 'Orange' }
 ];
 
 const MIN_W = 1.0, MAX_W = 10.0;
@@ -1964,7 +1975,7 @@ function computeValidationCurve() {
   for (let d = 1; d <= 10; d++) {
     const t = buildTree(DATA, d, 1);
     const trainAcc = getAccuracy(t, DATA);
-    const testAcc = getAccuracy(t, TEST_DATA);
+    const testAcc = getAccuracy(t, VALIDATION_DATA);
     curveData.push({ depth: d, trainAcc, testAcc });
   }
   return curveData;
@@ -2021,7 +2032,7 @@ function renderValidationCurve() {
     const tyTest = mapChartY(item.testAcc);
     interactiveHtml += `
       <circle cx="${tx}" cy="${tyTrain}" r="4" fill="var(--apple)" class="chart-dot" data-depth="${item.depth}" data-type="Train" data-val="${(item.trainAcc*100).toFixed(1)}%" />
-      <circle cx="${tx}" cy="${tyTest}" r="4" fill="var(--orange)" class="chart-dot" data-depth="${item.depth}" data-type="Test" data-val="${(item.testAcc*100).toFixed(1)}%" />
+      <circle cx="${tx}" cy="${tyTest}" r="4" fill="var(--orange)" class="chart-dot" data-depth="${item.depth}" data-type="Validation" data-val="${(item.testAcc*100).toFixed(1)}%" />
     `;
   });
 
@@ -2043,7 +2054,7 @@ function renderValidationCurve() {
   });
 
   const bEl = document.getElementById('bestDepthValue');
-  if(bEl) bEl.innerHTML = `Depth <strong>${bestDepth}</strong> (Training Accuracy: <strong>${Math.round(data[bestDepth-1].trainAcc * 100)}%</strong>, Test Accuracy: <strong>${Math.round(maxTestAcc * 100)}%</strong>)`;
+  if(bEl) bEl.innerHTML = `Depth <strong>${bestDepth}</strong> (Training Accuracy: <strong>${Math.round(data[bestDepth-1].trainAcc * 100)}%</strong>, Validation Accuracy: <strong>${Math.round(maxTestAcc * 100)}%</strong>)`;
 
   // Svg click dot synchronization
   svg.addEventListener('click', (e) => {
@@ -2556,5 +2567,6 @@ tick();
 })();
 </script>
 
+<script src="academic-rigor.js"></script>
 </body>
 </html>

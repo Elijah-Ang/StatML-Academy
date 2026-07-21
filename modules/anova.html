@@ -638,6 +638,7 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
 }
 </style>
 
+    <link rel="stylesheet" href="academic-rigor.css">
 </head>
 <body class="antialiased selection:bg-stone-200">
 <nav class="statml-site-nav" aria-label="StatML Academy navigation">
@@ -843,7 +844,7 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
                 <div class="step-label">Stage 09</div>
                 <h2 class="text-3xl font-bold mb-4">How Big Is The Effect?</h2>
                 <p class="mb-4 text-stone-700 leading-relaxed font-serif">
-                    A significant p-value tells us the result is likely real, but not necessarily if it's <em>meaningful</em>. A tiny signal can be highly significant if you have 10,000 students. For practical meaning, we measure the <strong>Effect Size</strong>.
+                    A small p-value indicates that the observed result would be unusual under the null hypothesis, assuming the model assumptions hold. It is not the probability that the null is true or a measure of practical importance, so report an <strong>effect size</strong> and confidence intervals too.
                 </p>
                 <div class="my-6 p-5 bg-white border border-indigo-200 rounded-xl shadow-sm text-center relative overflow-hidden">
                     <div class="absolute inset-0 bg-indigo-50 opacity-50"></div>
@@ -1970,5 +1971,6 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
 })();
 </script>
 
+<script src="academic-rigor.js"></script>
 </body>
 </html>

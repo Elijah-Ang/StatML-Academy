@@ -1002,6 +1002,7 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
 }
 </style>
 
+    <link rel="stylesheet" href="academic-rigor.css">
 </head>
 <body>
 <nav class="statml-site-nav" aria-label="StatML Academy navigation">
@@ -1047,7 +1048,7 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
                     <ol style="margin-left: 1.5rem; color: var(--text-main); display: flex; flex-direction: column; gap: 0.75rem;">
                         <li><b>Step 1:</b> You need enough examples to prove a real pattern exists.</li>
                         <li><b>Step 2:</b> Every new variable adds a whole new dimension for the model to search.</li>
-                        <li><b>Step 3:</b> If your variables ($p$) outnumber your samples ($n$), the model is completely lost. It has too many options and not enough proof.</li>
+                        <li><b>Step 3:</b> When $p&gt;n$, ordinary least squares has no unique coefficient solution unless constraints are imposed. Ridge, Lasso, or other regularisation can still support useful prediction, although instability and overfitting are serious concerns.</li>
                     </ol>
                 </div>
                 
@@ -2175,5 +2176,6 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
 })();
 </script>
 
+<script src="academic-rigor.js"></script>
 </body>
 </html>

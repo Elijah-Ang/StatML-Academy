@@ -1154,6 +1154,7 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
 }
 </style>
 
+    <link rel="stylesheet" href="academic-rigor.css">
 </head>
 <body>
 <nav class="statml-site-nav" aria-label="StatML Academy navigation">
@@ -1339,7 +1340,7 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
                 <div class="glass-card">
                     <h3 style="font-size:1.1rem; margin-bottom:0.5rem;">The "Socks and Computers" Problem</h3>
                     <p style="font-size:0.9rem; margin-bottom:0;">
-                        If you don't <strong>scale</strong> your data, a feature with big numbers (buying 10 pairs of socks) will mathematically overpower a feature with small numbers (buying 1 expensive computer). Always standardize your data first!
+                        If variables use different units or their raw scales should not control distance, <strong>scale</strong> them using training data only. When variables share meaningful units and variance differences matter, standardisation may be undesirable.
                     </p>
                 </div>
                 
@@ -2610,5 +2611,6 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
 })();
 </script>
 
+<script src="academic-rigor.js"></script>
 </body>
 </html>

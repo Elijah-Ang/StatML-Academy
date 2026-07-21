@@ -514,6 +514,7 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
 }
 </style>
 
+    <link rel="stylesheet" href="academic-rigor.css">
 </head>
 <body>
 <nav class="statml-site-nav" aria-label="StatML Academy navigation">
@@ -1149,7 +1150,7 @@ very confident but very wrong.</div>
       <li>A straight <strong>linear regression</strong> line is not suitable because it predicts impossible values (below 0 and above 1) for probabilities.</li>
       <li>Instead, logistic regression builds an intermediate score called <strong>z</strong> by adding up weighted features (clues).</li>
       <li>The mathematical <strong>sigmoid function</strong> gracefully "squishes" this score z into a valid probability between 0% and 100%.</li>
-      <li>A decision <strong>threshold</strong> (typically 0.50) is chosen by humans to translate raw probabilities into a binary "Yes" or "No" prediction.</li>
+      <li>A decision <strong>threshold</strong> translates probabilities into labels. Select it on validation data from error costs, prevalence and objectives; 0.50 is only a convention.</li>
       <li>During <strong>training</strong>, the model starts with baseline weights and iteratively adjusts them using <strong>gradient descent</strong> to minimize average <strong>log loss</strong>.</li>
       <li>A <strong>confusion matrix</strong> is used to catalog test predictions into correct classifications (TP, TN) and errors (FP, FN).</li>
       <li>Performance is summarized using descriptive metrics: <strong>Accuracy</strong> (overall correctness), <strong>Precision</strong> (purity of Yes calls), <strong>Recall</strong> (capture rate of actual positives), and <strong>F1-score</strong> (their balanced harmony).</li>
@@ -1893,5 +1894,6 @@ showCmExplain('tp'); // Default explanation card visible on start
 })();
 </script>
 
+<script src="academic-rigor.js"></script>
 </body>
 </html>
