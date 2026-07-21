@@ -31,7 +31,7 @@ async function collect(dir, prefix = '') {
   const { readdir } = await import('node:fs/promises');
   const out = [];
   for (const entry of await readdir(dir, { withFileTypes: true })) {
-    if (entry.name === 'dist' || entry.name === '.git' || entry.name.startsWith('.')) continue;
+    if (entry.name === 'dist' || entry.name === 'node_modules' || entry.name === '.git' || entry.name.startsWith('.')) continue;
     const rel = join(prefix, entry.name);
     if (entry.isDirectory()) out.push(...await collect(join(dir, entry.name), rel));
     else if (entry.name.endsWith('.html')) out.push(rel);
@@ -106,6 +106,16 @@ if (validationMetricSource.includes('TEST')) errors.push('modules/logistic-regre
 if (!/function revealFinalTestMetrics\(\)/.test(logistic) || !/confusionMatrix\(TEST,trainedWeights,lockedThreshold\)/.test(logistic)) errors.push('modules/logistic-regression.html: final TEST reveal is not isolated behind the locked threshold');
 if ((logistic.match(/confusionMatrix\(TEST/g)||[]).length!==1) errors.push('modules/logistic-regression.html: TEST confusion metrics must be calculated exactly once in the reveal function');
 if (/drawROC\(TEST/.test(logistic) || /Test Evaluation Set/i.test(logistic)) errors.push('modules/logistic-regression.html: development visuals still use or display the test set');
+if (/currentStage\s*=\s*(?:stageIds\.)?indexOf\(/.test(logistic) || /currentStage\s*=\s*idx\b/.test(logistic)) errors.push('modules/logistic-regression.html: currentStage must use the one-based data-stage value, not an array index');
+if (!/let currentStage=1/.test(logistic) || !/const stageNumber=Number\(e\.target\.dataset\.stage\)/.test(logistic) || !/currentStage=stageNumber/.test(logistic)) errors.push('modules/logistic-regression.html: currentStage must be initialised and updated from the one-based data-stage value');
+if (!/index\+1===currentStage/.test(logistic)) errors.push('modules/logistic-regression.html: stage dots must map their zero-based index to a one-based currentStage');
+if (!/const DEVELOPMENT=\[\.\.\.TRAIN,\.\.\.VALIDATION\]/.test(logistic)) errors.push('modules/logistic-regression.html: missing development-only TRAIN plus VALIDATION dataset');
+if (/drawPoints\(DATA,\s*w,\s*['"]prediction['"]/.test(logistic) || /drawPoints\(DATA,\s*w,\s*currentStage\s*>=\s*6/.test(logistic)) errors.push('modules/logistic-regression.html: development predictions must not display the full dataset');
+const revealStart=logistic.indexOf('function revealFinalTestMetrics');
+const revealEnd=logistic.indexOf('function resetFinalTestReveal',revealStart);
+const logisticOutsideReveal=logistic.slice(0,revealStart)+logistic.slice(revealEnd);
+if (/drawPoints\(TEST|drawROC\(TEST|confusionMatrix\(TEST/.test(logisticOutsideReveal)) errors.push('modules/logistic-regression.html: TEST visualisation or metrics escaped the final reveal function');
+for (const state of ['validation','validation-roc','coefficients','pipeline']) if (!logistic.includes(`canvas.dataset.visualState='${state}'`)) errors.push(`modules/logistic-regression.html: missing browser-test visual state ${state}`);
 if (!/threshSlider[\s\S]{0,500}updateValidationMetrics\(\)/.test(logistic)) errors.push('modules/logistic-regression.html: threshold slider is not connected to validation metrics');
 if (/function updateMetrics\(\)/.test(logistic)) errors.push('modules/logistic-regression.html: ambiguous legacy updateMetrics function returned');
 if (!/btnRevealTest/.test(logistic) || !/finalTestResult/.test(logistic) || !/lockedThreshold=threshold/.test(logistic)) errors.push('modules/logistic-regression.html: one-time lock and reveal workflow is incomplete');

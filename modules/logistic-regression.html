@@ -1231,6 +1231,7 @@ function stratifiedThreeWaySplit(data,validationRatio,testRatio){
 }
 const SPLIT=stratifiedThreeWaySplit(DATA,0.25,0.25);
 const TRAIN=SPLIT.train,VALIDATION=SPLIT.validation,TEST=SPLIT.test;
+const DEVELOPMENT=[...TRAIN,...VALIDATION];
 const TEMP_MEAN=TRAIN.reduce((s,d)=>s+d.temp,0)/TRAIN.length;
 const TEMP_STD=Math.sqrt(TRAIN.reduce((s,d)=>s+(d.temp-TEMP_MEAN)**2,0)/TRAIN.length);
 function stdTemp(t){return(t-TEMP_MEAN)/TEMP_STD}
@@ -1254,7 +1255,7 @@ function resizeCanvas(){
 window.addEventListener('resize',resizeCanvas);
 
 // ===== STATE =====
-let currentStage=0;
+let currentStage=1;
 let weights={b0:0,b1:1.5,b2:0.8,b3:0.5};
 let trainedWeights={b0:0,b1:1.5,b2:0.8,b3:0.5};
 let threshold=0.5,epoch=0,lossHistory=[];
@@ -1462,16 +1463,21 @@ function drawPipeline(){
 // ===== MAIN DRAW =====
 function draw(){
   const w=currentStage>=5?trainedWeights:weights;
-  if(currentStage===8){drawROC(VALIDATION,w);return}
-  if(currentStage===9){drawCoeffBars(w);return}
-  if(currentStage===10){drawPipeline();return}
+  if(currentStage===8){canvas.dataset.visualState='validation-roc';drawROC(VALIDATION,w);return}
+  if(currentStage===9){canvas.dataset.visualState='coefficients';drawCoeffBars(w);return}
+  if(currentStage===10){canvas.dataset.visualState='pipeline';drawPipeline();return}
   clearCanvas();drawAxes('Temperature (°C)','Probability / Outcome');
 
   if(currentStage===7){
+    canvas.dataset.visualState='validation';
     drawPoints(TRAIN,w,'class',0.15);
     drawPoints(VALIDATION,w,'prediction',1);
+  } else if(currentStage>=6){
+    canvas.dataset.visualState='development-predictions';
+    drawPoints(DEVELOPMENT,w,'prediction',1);
   } else if(currentStage>=1){
-    drawPoints(DATA,w,currentStage>=6?'prediction':'class',1);
+    canvas.dataset.visualState=`stage-${currentStage}`;
+    drawPoints(DEVELOPMENT,w,'class',1);
   }
 
   // FIX 11: UNIQUE STAGE BY STAGE OVERLAYS & CONTROLS ALIGNMENT
@@ -1619,8 +1625,8 @@ const sections=document.querySelectorAll('[data-stage]');
 const stageIds=[...sections].map(s=>s.dataset.stage);
 const stageDots=document.getElementById('stageDots');
 stageIds.forEach((id,i)=>{const d=document.createElement('div');d.className='stage-dot';d.addEventListener('click',()=>sections[i].scrollIntoView({behavior:'smooth'}));stageDots.appendChild(d)});
-function updateDots(){document.querySelectorAll('.stage-dot').forEach((d,i)=>d.classList.toggle('active',i===currentStage))}
-const observer=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){const idx=stageIds.indexOf(e.target.dataset.stage);if(idx>=0&&idx!==currentStage){currentStage=idx;draw();updateDots();updateValidationMetrics();updateLiveScore()}}})},{threshold:0.4});
+function updateDots(){document.querySelectorAll('.stage-dot').forEach((dot,index)=>dot.classList.toggle('active',index+1===currentStage))}
+const observer=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){const stageNumber=Number(e.target.dataset.stage);if(stageNumber>0&&stageNumber!==currentStage){currentStage=stageNumber;draw();updateDots();updateValidationMetrics();updateLiveScore()}}})},{threshold:0.12});
 sections.forEach(s=>observer.observe(s));
 window.addEventListener('scroll',()=>{const h=document.documentElement;document.getElementById('progressBar').style.width=h.scrollTop/(h.scrollHeight-h.clientHeight)*100+'%'});
 

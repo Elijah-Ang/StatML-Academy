@@ -4,6 +4,10 @@
   "type": "module",
   "scripts": {
     "build": "node scripts/build.mjs",
-    "test": "node scripts/build.mjs --validate-only"
+    "test": "node scripts/build.mjs --validate-only && node scripts/test-logistic-browser.mjs",
+    "test:browser": "node scripts/test-logistic-browser.mjs"
+  },
+  "devDependencies": {
+    "playwright": "^1.61.1"
   }
 }
