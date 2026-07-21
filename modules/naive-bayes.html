@@ -1234,15 +1234,28 @@ Ham score
         draw();
       }
 
-      const observer = new IntersectionObserver(entries => {
-        const visible = entries
-          .filter(entry => entry.isIntersecting)
-          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
-        if (visible) setActiveStage(Number(visible.target.dataset.stage));
-      }, { threshold: [0.35, 0.45, 0.6] });
-
-      sections.forEach(section => observer.observe(section));
       dotButtons[0].classList.add("active");
+
+      let stageSyncFrame = 0;
+      function syncStageFromScroll() {
+        stageSyncFrame = 0;
+        const anchor = window.innerHeight * 0.42;
+        let stage = Number(sections[0]?.dataset.stage || 1);
+        for (const section of sections) {
+          if (section.getBoundingClientRect().top <= anchor) stage = Number(section.dataset.stage);
+          else break;
+        }
+        setActiveStage(stage);
+      }
+
+      function queueStageSync() {
+        if (stageSyncFrame) return;
+        stageSyncFrame = requestAnimationFrame(syncStageFromScroll);
+      }
+
+      window.addEventListener("scroll", queueStageSync, { passive: true });
+      window.addEventListener("resize", queueStageSync, { passive: true });
+      requestAnimationFrame(syncStageFromScroll);
 
       function updateScrollProgress() {
         const max = document.documentElement.scrollHeight - window.innerHeight;
@@ -2034,9 +2047,22 @@ Ham score
   const railButtons = $$('.statml-stage-button',rail);
   const activate = stage => { const index = stageEls.indexOf(stage); railButtons.forEach((button,i) => i === index ? button.setAttribute('aria-current','step') : button.removeAttribute('aria-current')); };
   if (stageEls.length) activate(stageEls[0]);
-  if ('IntersectionObserver' in window) {
-    const observer = new IntersectionObserver(entries => { const visible = entries.filter(entry => entry.isIntersecting).sort((a,b) => b.intersectionRatio - a.intersectionRatio)[0]; if (visible) activate(visible.target); }, {rootMargin:'-25% 0px -45% 0px',threshold:[0,.15,.35,.6]});
-    stageEls.forEach(stage => observer.observe(stage));
+  if (stageEls.length) {
+    let railFrame = 0;
+    const syncRail = () => {
+      railFrame = 0;
+      const anchor = window.innerHeight * .42;
+      let current = stageEls[0];
+      for (const stage of stageEls) {
+        if (stage.getBoundingClientRect().top <= anchor) current = stage;
+        else break;
+      }
+      activate(current);
+    };
+    const queueRailSync = () => { if (!railFrame) railFrame = requestAnimationFrame(syncRail); };
+    window.addEventListener('scroll',queueRailSync,{passive:true});
+    window.addEventListener('resize',queueRailSync,{passive:true});
+    requestAnimationFrame(syncRail);
   }
 })();
 </script>
