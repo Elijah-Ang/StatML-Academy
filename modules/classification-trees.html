@@ -998,7 +998,7 @@ Gini = 1 - [ P(Apple)² + P(Orange)² ]
         <ul style="font-size:0.8rem; color:var(--text-dim); margin-left:14px; display:flex; flex-direction:column; gap:4px">
           <li><strong>Explainability:</strong> Outputs simple rules that any non-expert can read and audit.</li>
           <li><strong>No Scaling Required:</strong> Features are evaluated independently, so feature magnitude does not matter.</li>
-          <li><strong>Handles Mixed Types:</strong> Gracefully fits both numerical and categorical inputs out of the box.</li>
+          <li><strong>Handles Mixed Types Conceptually:</strong> Trees can split numerical and categorical predictors, but raw categorical support depends on the software. Some libraries require encoded categories; others implement native categorical splits.</li>
         </ul>
       </div>
       <div style="background:rgba(239,68,68,0.05); border:1px solid var(--coral); padding:12px; border-radius:var(--radius-sm)">
@@ -2209,7 +2209,7 @@ function setupHotspotListeners() {
   const explanationTexts = {
     'criterion': '<strong>⚖️ Gini Impurity:</strong> The criterion used to measure node cleanliness. Perfect purity is 0.0. The tree searches for splits that decrease this score the most. Calculated as <code>1 - Σ pᵢ²</code>.',
     'rows': '<strong>📊 Dataset Size:</strong> The dataset has been partitioned into 28 Training rows (used to learn the split boundaries) and 6 Test rows (kept completely hidden during training to assess performance on unseen fruit).',
-    'model': '<strong>🌿 Active Tree Model:</strong> The overfit tree goes deep to capture every outlier, which results in zero training error but high test error. The pruned tree is restricted in depth (max=3) to focus only on general, robust patterns.',
+    'model': '<strong>🌿 Active Tree Model:</strong> The deeper tree captures more training detail and may have a larger validation gap. Unrestricted trees do not always reach zero training error when labels conflict or implementation constraints remain. The pruned tree is restricted in depth (max=3) to focus on more stable patterns.',
     'depth': '<strong>📏 Max Depth Parameter:</strong> This parameter limits how many split questions can be asked in sequence from the root to any leaf box. Keeping depth low prevents the tree from overfitting.',
     'leaf-nodes': '<strong>🍃 Leaf Nodes:</strong> The final rectangular boxes where predictions are made. Every leaf node makes a majority class vote based on the training points inside its borders.',
     'root-split': '<strong>🌱 Root Split:</strong> The absolute first and most important split made at the top of the tree. It was selected because it decreases impurity across the entire dataset more than any other candidate threshold.',

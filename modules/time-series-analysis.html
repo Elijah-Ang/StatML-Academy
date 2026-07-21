@@ -963,12 +963,14 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
 
                 <div class="insight-box">
                     <p><strong>How to read this genuinely computed ACF:</strong> Bars outside the approximate confidence bounds suggest autocorrelation at those lags, but interpret the pattern collectively and in the context of the fitted model. Repeating spikes may suggest seasonality; confirm with residual ACF and model diagnostics.</p>
+                    <p>Use the <strong>PACF</strong> to examine the additional association at a lag after shorter lags are accounted for. After fitting, inspect the <strong>residual ACF</strong> and use a Ljung–Box test as an omnibus diagnostic. Seasonal or non-stationary series can make individual lag bars misleading.</p>
                 </div>
             </div>
 
             <div class="stage" data-stage="7">
                 <div class="stage-label">Stage 07</div>
                 <h2>Forecasting the Future</h2>
+                <div class="insight-box"><p><strong>Validation must move forward in time.</strong> Never randomly shuffle observations. Use a chronological holdout, expanding-window evaluation, or rolling-window evaluation, and state whether forecasts are one-step or multi-step. Compare against naïve, seasonal-naïve, drift and moving-average baselines before treating a complex forecast as useful.</p></div>
                 <p>Since this is an interactive environment, we project the future using a <strong>structural simulation forecast</strong> built from our known trend and seasonal generators, rather than estimating an ARIMA model from scratch.</p>
                 
                 <div class="control-panel">

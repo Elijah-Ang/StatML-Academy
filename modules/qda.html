@@ -1562,6 +1562,7 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
                 <h2>Regularization & Shape Playground</h2>
                 <p>When class distributions are close or contain few data points, the empirical covariance matrices can become unstable or singular (zero determinant), causing inverse division errors.</p>
                 <p>To solve this, we add a <strong>regularization ridge</strong> ($\lambda$) directly to the diagonals of the covariance matrices:</p>
+                <div class="insight-box"><p><strong>Regularisation depends on its target.</strong> A class covariance can shrink toward a diagonal matrix, an identity matrix, or a shared pooled covariance. Only shrinkage toward the shared covariance moves QDA directly toward LDA. Choose both target and amount through validation or cross-validation.</p></div>
                 <div style="text-align:center; font-size:1.1rem; padding:0.5rem; background:var(--bg-page); border-radius:6px; margin:0.75rem 0;">
                     $\Sigma_{\text{regularized}} = \Sigma + \lambda I$
                 </div>

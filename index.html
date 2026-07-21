@@ -743,7 +743,6 @@
       font-size: .74rem;
     }
     .footer-note { font-family: var(--mono); font-size: .61rem; letter-spacing: .1em; text-transform: uppercase; }
-    .curriculum-expansion{padding:5rem clamp(1.25rem,6vw,6rem);background:#f7f8fc;border-top:1px solid #dde2ee}.curriculum-expansion-inner{max-width:1180px;margin:auto}.curriculum-expansion .section-kicker{font-family:var(--mono);font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:#4f46e5}.curriculum-expansion h2{margin:.45rem 0 .75rem;font:600 clamp(2rem,5vw,4rem)/1.05 var(--serif);color:#172033}.curriculum-expansion>div>p{max-width:720px;color:#667085}.curriculum-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem;margin-top:2rem}.curriculum-card{display:block;padding:1.2rem;border:1px solid #dfe3ee;border-radius:16px;background:white;text-decoration:none;color:#172033;transition:transform .2s,border-color .2s,box-shadow .2s}.curriculum-card:hover{transform:translateY(-3px);border-color:#818cf8;box-shadow:0 16px 35px #27326a12}.curriculum-card span{display:block;color:#6366f1;font:700 .66rem/1.2 var(--mono);letter-spacing:.1em;text-transform:uppercase}.curriculum-card strong{display:block;margin:.35rem 0;font:600 1.25rem/1.2 var(--serif)}.curriculum-card small{color:#667085;line-height:1.45}@media(max-width:700px){.curriculum-grid{grid-template-columns:1fr}}
 
     @keyframes spin { to { transform: rotate(360deg); } }
     @keyframes orbit-drift { to { stroke-dashoffset: -110; } }
@@ -991,31 +990,12 @@
 
       <div class="mobile-universe" id="mobile-universe" aria-label="Curriculum modules grouped as vertical constellations"></div>
     </section>
-    <section class="curriculum-expansion" aria-labelledby="workflow-title">
-      <div class="curriculum-expansion-inner">
-        <span class="section-kicker">New foundations & workflow</span>
-        <h2 id="workflow-title">Build a defensible modelling process.</h2>
-        <p>Ten focused modules connect statistical foundations, leakage-safe evaluation, data preparation, experimental design, and modern ensemble methods.</p>
-        <div class="curriculum-grid">
-          <a class="curriculum-card" href="modules/evaluation-metrics.html"><span>Evaluation</span><strong>Evaluation Metrics</strong><small>Regression, classification, calibration, costs, and uncertainty.</small></a>
-          <a class="curriculum-card" href="modules/data-leakage-pipelines.html"><span>Workflow</span><strong>Data Leakage & Pipelines</strong><small>Fold-safe preprocessing and structure-aware validation.</small></a>
-          <a class="curriculum-card" href="modules/regression-diagnostics.html"><span>Regression</span><strong>Regression Diagnostics</strong><small>Residuals, influence, collinearity, and prediction intervals.</small></a>
-          <a class="curriculum-card" href="modules/probability-sampling.html"><span>Statistics</span><strong>Probability & Sampling Distributions</strong><small>Random variables, distributions, standard errors, and repeated sampling.</small></a>
-          <a class="curriculum-card" href="modules/confidence-hypothesis-testing.html"><span>Inference</span><strong>Confidence Intervals & Hypothesis Testing</strong><small>P-values, effect sizes, power, and multiplicity.</small></a>
-          <a class="curriculum-card" href="modules/random-forest.html"><span>Ensembles</span><strong>Random Forest</strong><small>Bagging, feature sampling, validation, and interpretation.</small></a>
-          <a class="curriculum-card" href="modules/gradient-boosting.html"><span>Ensembles</span><strong>Gradient Boosting</strong><small>Loss optimisation, regularisation, early stopping, and calibration.</small></a>
-          <a class="curriculum-card" href="modules/missing-data-encoding.html"><span>Data preparation</span><strong>Missing Data & Encoding</strong><small>Missingness assumptions, imputation, categories, and leakage.</small></a>
-          <a class="curriculum-card" href="modules/imbalanced-classification.html"><span>Classification</span><strong>Imbalanced Classification</strong><small>Rare events, resampling, thresholds, and prevalence.</small></a>
-          <a class="curriculum-card" href="modules/experimental-design.html"><span>Study design</span><strong>Experimental Design & Randomisation</strong><small>Estimands, allocation, dependence, power, and reporting.</small></a>
-        </div>
-      </div>
-    </section>
   </main>
 
   <footer class="site-footer">
     <div class="footer-inner">
       <a class="brand" href="#top"><span class="brand-mark" aria-hidden="true"><span class="brand-star"></span></span><span>StatML Academy</span></a>
-      <span class="footer-note">Interactive learning platform · thirty-one connected modules</span>
+      <span class="footer-note">Interactive learning platform · core curriculum and foundation modules</span>
     </div>
   </footer>
 

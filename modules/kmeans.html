@@ -525,6 +525,7 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
                 <strong>Next</strong>, it looks at all the dots in a team and finds their exact middle by averaging their x and y values.<br>
                 <strong>Then</strong>, that average middle spot becomes the first centroid (star) for the team!</p>
                 <p>Because the first teams were completely random, these starting stars are usually in weird, unhelpful spots. That is okay, the algorithm will fix them soon!</p>
+                <p><strong>Practical safeguard:</strong> use k-means++ to spread initial centroids intelligently, run multiple random restarts, and keep the solution with the lowest WCSS. Convergence reaches a local solution, so different starts can produce different clusters; empty clusters also need an explicit software rule.</p>
                 <div class="takeaway">Plain-language takeaway: The computer needs a starting guess. It puts dots into random teams, finds the exact middle of each random team, and places a star there to act as the first center.</div>
             </section>
 
@@ -604,6 +605,7 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
                 <p>If the real teams are shaped like bananas, stretched out, or very uneven, K-Means might force them into awkward slices. It is also very sensitive to <strong>outliers</strong>.</p>
                 <p>An outlier is a weird dot that sits super far away from everyone else. Because the star always moves to the <em>average</em> middle, one weird outlier can drag the star completely away from the main group.</p>
                 <p>In this demo, an outlier has been added. Watch how that one lonely dot pulls its centroid away from the main mass of points!</p>
+                <p>Check cluster stability across starts and resampled datasets, and report a silhouette score alongside domain usefulness. Compare Gaussian mixtures for probabilistic elliptical groups and density-based methods for irregular shapes or noise.</p>
                 <div class="takeaway">Plain-language takeaway: K-Means likes neat, round teams. A single weird dot that is very far away can easily trick the star and drag it in the wrong direction.</div>
             </section>
 

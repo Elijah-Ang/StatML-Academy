@@ -1191,7 +1191,8 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
                     </ul>
                 </details>
 
-                <p><b>Watch this:</b> Slide the $\lambda$ dial. Watch how Lasso completely removes the useless grey noise variables, creating a simpler, cleaner model.</p>
+                <p><b>Watch this:</b> Slide the $\lambda$ dial and observe coefficients reach zero. In real samples we do not know which variables are truly useless. With highly correlated predictors, Lasso may select one, discard another, and swap that choice after a small sample change.</p>
+                <div class="insight-box"><p><strong>Sparse does not mean causal or uniquely important.</strong> Lasso supports prediction and variable selection, but selection stability must be checked across resamples. Elastic Net combines L1 and L2 penalties and can behave more stably when predictors share signal.</p></div>
 
                 <div class="control-panel">
                     <div class="control-header">
@@ -1208,6 +1209,7 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
                 <div class="stage-label">Stage 08</div>
                 <h2>Finding the Sweet Spot</h2>
                 <p>How do we know the right amount of shrinkage? We use <b>K-Fold Cross-Validation</b> to find the optimal $\lambda$ dial setting.</p>
+                <div class="insight-box"><p><strong>Choose CV from the data structure.</strong> Use stratified folds for imbalanced classes, grouped folds for repeated subjects or organisations, time-series CV for ordered observations, repeated CV for stability, and nested CV when model selection and unbiased evaluation must both occur. Imputation, scaling, encoding, feature selection, PCA, outlier rules, oversampling and threshold tuning all belong inside the training folds.</p></div>
 
                 <p>First, we divide our training data into chunks called "folds".</p>
                 
@@ -1972,7 +1974,7 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
                 if (state.lassoLambda === 0) {
                     lassoReadout.innerHTML = "<strong>λ = 0:</strong> No penalty applied (Standard OLS).";
                 } else {
-                    lassoReadout.innerHTML = `<strong>λ = ${state.lassoLambda}:</strong> Removed <strong>${noiseRemoved} of 4</strong> likely noise variables and <strong>${sigRemoved} of 4</strong> true signals.`;
+                    lassoReadout.innerHTML = `<strong>λ = ${state.lassoLambda}:</strong> Set <strong>${noiseRemoved} of 4</strong> grey demonstration coefficients and <strong>${sigRemoved} of 4</strong> blue demonstration coefficients to zero. Real data do not reveal which are true signals.`;
                 }
             }
             

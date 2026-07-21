@@ -898,6 +898,7 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
                     <strong>Statistical Decision:</strong>
                     <p style="margin: 0.5rem 0 0 0;" id="stage8-decision-text"><em style="color: var(--text-muted);">Awaiting statistical computation...</em></p>
                 </div>
+                <div class="insight-box"><p>A small p-value means a result at least this extreme would be unusual under H₀: ρ = 0, assuming independent pairs and the test model hold. It is not the probability that H₀ is true, the probability that chance caused the result, an effect size, or evidence of causality. Pair r with a confidence interval and practical interpretation.</p></div>
             </section>
 
             <section class="stage-section" data-stage="9" id="stage-9">
@@ -923,6 +924,7 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
                         <li><span class="mono">r</span> measures linear tightness (from -1 to +1).</li>
                         <li><strong>Check the plot:</strong> <span class="mono">r</span> is blind to curves and highly sensitive to outliers.</li>
                         <li><strong>Significance vs. Size:</strong> A small p-value means the observed result would be unusual under H₀: ρ = 0, assuming the test assumptions hold. Report <span class="mono">r</span>, its confidence interval, sample size, and practical relevance.</li>
+                        <li><strong>Pearson versus Spearman:</strong> Pearson measures linear association; Spearman measures monotonic association through ranks. Spearman is not simply an outlier-proof Pearson, and neither fixes confounding, dependence, or a non-monotonic relationship.</li>
                         <li><strong>Pearson vs. Spearman:</strong> Use Pearson for continuous data. Switch to <em>Spearman</em> if your data is ranked/ordinal or has a monotonic non-linear relationship.</li>
                         <li><strong>No Causal Claims:</strong> It is only evidence of an association.</li>
                     </ul>
@@ -1364,7 +1366,7 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
                         
                         if (stage8DecisionText) {
                             if (pValTarget < 0.05) {
-                                stage8DecisionText.innerHTML = `Because our p-value (<span class="mono">${pLabel}</span>) is smaller than our alpha threshold (usually 0.05), we <strong style="color:var(--success)">reject the null hypothesis</strong>. There is sufficient evidence to conclude a linear relationship exists.`;
+                                stage8DecisionText.innerHTML = `Because our p-value (<span class="mono">${pLabel}</span>) is smaller than our alpha threshold (usually 0.05), we <strong style="color:var(--success)">reject the null hypothesis</strong>. The data provide evidence against zero population correlation under the model assumptions.`;
                             } else {
                                 stage8DecisionText.innerHTML = `Because our p-value (<span class="mono">${pLabel}</span>) is greater than our alpha threshold (usually 0.05), we <strong style="color:var(--error)">fail to reject the null hypothesis</strong>. There is not sufficient evidence to conclude a linear relationship exists.`;
                             }

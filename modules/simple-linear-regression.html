@@ -1018,6 +1018,11 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
                     <p style="font-size: 0.9rem; margin-bottom: 0;"><strong>RSE (Residual Standard Error): <span id="stat-rse" style="color:var(--accent-dark); font-family:var(--font-mono); font-weight:bold;">0.00</span></strong><br>
                     This is the typical size of our miss. When we predict a score, we are typically off by this many points.</p>
                 </div>
+                <div class="glass-card">
+                    <h3>Can we trust the line?</h3>
+                    <p>Inspect residual-versus-fitted values for curvature and changing spread, a Q–Q plot when classical inference requires residual normality, and leverage/Cook’s distance for influential observations. Independence comes from the study design.</p>
+                    <p><strong>Intervals answer different questions:</strong> a confidence interval describes uncertainty in the estimated mean response; a wider prediction interval describes uncertainty for one new observation. A high R² does not prove that the model is correct, causal, or useful on new data.</p>
+                </div>
             </section>
 
             <!-- Stage 8: Playground -->

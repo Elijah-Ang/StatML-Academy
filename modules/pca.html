@@ -1061,7 +1061,7 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
 
             <div class="story-section" data-stage="5">
                 <div class="stage-label">Stage 05</div>
-                <h2>The Golden Rule: Scaling</h2>
+                <h2>When Scaling Is Appropriate</h2>
                 <p>There is a massive trap in PCA. Because it hunts for maximum variance, it can be bullied by units.</p>
                 <p>Even in this generated dataset, Strength naturally varies much more than Speed in raw units. Without scaling, PCA leans toward the higher-variance column; after <strong>Standardization</strong>, both columns get a fair vote.</p>
                 
@@ -1075,6 +1075,9 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
 
                 <div class="insight-box">
                     <p><strong>Result:</strong> After scaling, every variable has a mean of 0 and a standard deviation of 1. Units disappear, and no single variable dominates just because it has bigger raw numbers.</p>
+                </div>
+                <div class="glass-card">
+                    <p><strong>Scaling is a modelling choice, not a universal rule.</strong> It is normally appropriate for variables in unlike units—such as height in centimetres and income in dollars—or when raw scale should not determine the components. If measurements share the same units and their variance differences are scientifically meaningful, scaling may be undesirable. Fit the scaler on training data only.</p>
                 </div>
                 <div class="metric-grid">
                     <div class="metric-card">
@@ -1135,7 +1138,7 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
                 <div class="stage-label">Stage 08</div>
                 <h2>Proportion of Variance Explained</h2>
                 <p>How do we know if our components are actually useful? We look at the <strong>Proportion of Variance Explained (PVE)</strong> using a <em>Scree Plot</em>.</p>
-                <p>Think of the total variation in the data as a pizza. PC1 always takes the biggest slice. PC2 takes the next biggest. The cumulative line shows how quickly we reach near 100% of the information.</p>
+                <p>Think of the total <strong>sample variance</strong> as a pizza. PC1 takes the biggest slice and PC2 takes the next. The cumulative line approaches 100% of sample variance—not 100% of general information, scientific importance, or predictive signal.</p>
                 <div class="metric-grid">
                     <div class="metric-card">
                         <div class="metric-value" id="pve-pc1">0%</div>
@@ -1147,6 +1150,7 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
                     </div>
                 </div>
                 <p>Look for the "Elbow" in the plot. In datasets with 100 columns, you might find that just 2 or 3 components explain 95% of the variance. That's the "Magic Shrink Ray" at work.</p>
+                <div class="insight-box"><p>PCA is unsupervised and ignores the target. A low-variance component may still contain important predictive or scientific information. Discarding low-variance components reduces noise only when noise mainly occupies those directions; this is not guaranteed.</p></div>
             </div>
 
             <div class="story-section" data-stage="9">

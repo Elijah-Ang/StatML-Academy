@@ -1072,8 +1072,11 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
                         <p class="text-xs text-stone-600 font-serif">Never rely solely on the p-value, tables, or bar charts. Plot the raw data (like our dot plot), check the boxplots, and ensure extreme outliers aren't driving the omnibus result.</p>
                     </div>
                 </div>
+                <div class="bg-blue-50 p-5 rounded-lg border border-blue-100 mb-6 text-sm text-blue-900 font-serif">
+                    <strong>Choose the ANOVA variant from the design:</strong> use standard one-way ANOVA for similar variances, Welch ANOVA for unequal variances, Kruskal–Wallis or a robust alternative for strong non-normality or ordinal outcomes, and repeated-measures or mixed models for repeated observations. After a significant omnibus test, use planned contrasts or multiplicity-corrected post-hoc comparisons. Report group intervals and a named effect size such as eta-squared or omega-squared.
+                </div>
                 <p class="text-stone-700 leading-relaxed font-serif font-medium">
-                    In one sentence: ANOVA tests if group differences are real enough to stand out above the normal noise in the data.
+                    In one sentence: ANOVA asks whether the observed between-group variation would be unusual under an equal-means null model, assuming the chosen model and design conditions hold.
                 </p>
             </article>
 

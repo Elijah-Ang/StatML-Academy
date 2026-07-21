@@ -819,6 +819,7 @@ very confident but very wrong.</div>
 
     <p style="font-size: 0.85rem; color: var(--text-dim); line-height: 1.6;">
       <strong>Gradient descent</strong> is like adjusting a recipe little by little. If the model is wrong, it changes the weights in the direction that reduces loss. The <strong>learning rate</strong> controls how big each adjustment step is.
+      Gradient descent is one teaching-friendly optimiser, not the definition of logistic regression: Newton, quasi-Newton, coordinate-descent and other solvers are also common. Feature scaling often improves numerical optimisation and is especially relevant with regularisation; fit scaling inside training folds.
     </p>
     <div class="insight-box" style="margin-top: 12px; border-left-color: var(--coral); background: rgba(220,38,38,0.03);">
       <p style="font-size: 0.82rem; color: var(--text-dim);">
@@ -896,6 +897,7 @@ very confident but very wrong.</div>
     <h3>Set Threshold</h3>
     <div class="slider-wrap"><label>Threshold</label><input type="range" min="0.05" max="0.95" step="0.01" value="0.50" id="threshSlider"><span class="s-val" id="threshVal">0.50</span></div>
   </div>
+  <div class="insight-box"><p><strong>Select this threshold on validation data, never the final test set.</strong> Use error costs, prevalence, capacity, and the real objective. Lock the threshold with all preprocessing and calibration choices, then report final test performance once. Probability calibration and classification accuracy answer different questions.</p></div>
 
   <!-- QUIZ 3 -->
   <div class="quiz-card">

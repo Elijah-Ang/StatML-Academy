@@ -753,6 +753,7 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
                         <div class="math-sub"><strong>The Baseline Noise:</strong> The inherent randomness in the real world that no model can ever predict.</div>
                     </div>
                 </div>
+                <div class="card"><p><strong>Conditions for this exact equation:</strong> the familiar decomposition applies most directly to squared-error prediction at a fixed input, across repeated training samples, with an irreducible-noise model. Bias and variance remain useful ideas in classification, but the same algebra does not automatically apply to classification loss.</p></div>
 
                 <div class="look-right-cue">
                     <span>👀</span> <span><strong>Notice on the right:</strong> The green dashed line is the sweet spot—a gentle curve that follows the main trend but ignores the random static.</span>
@@ -813,7 +814,7 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
                 <h2>1. The Validation Set</h2>
                 <div class="explain-block plain">
                     <span>Plain English</span>
-                    <p>Think of this like giving a child a few practice questions to learn from, but hiding the rest to use on the final test. If they only memorize the practice questions, they will fail the test.</p>
+                    <p>Think of this as a practice exam used to choose a study strategy. A separate final exam remains hidden until that strategy is locked.</p>
                 </div>
                 <div class="explain-block technical">
                     <span>Technical Meaning</span>
@@ -821,13 +822,13 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
                 </div>
                 <div class="explain-block why">
                     <span>Why It Matters</span>
-                    <p>It is incredibly simple, but it is risky. If you accidentally put all the hard questions in the test pile, the student gets an unlucky score. The estimate depends entirely on the luck of one random split.</p>
+                    <p>It is simple but noisy. If the validation pile happens to contain unusually hard cases, the score changes substantially. The estimate depends on one random split.</p>
                 </div>
 
-                <p><strong>The Process:</strong><br>1. Shuffle all 100 data points.<br>2. Split the data into a study pile and a test pile.<br>3. Train the model on the study pile.<br>4. Score it on the test pile.</p>
+                <p><strong>The Process:</strong><br>1. Shuffle eligible independent observations.<br>2. Split development data into training and validation piles.<br>3. Fit candidate models on training data.<br>4. Choose among them using validation data.<br>5. Keep the separate final test set untouched.</p>
                 
                 <div class="insight-box">
-                    <strong>The Trade-off:</strong> We use a 50/50 split below so it is easy to see on the grid. In real life, an 80/20 split is often better. Giving the model 80% of the data helps it learn a smarter rule. But leaving only 20% for the test means the final score might jump around even more based on luck.
+                    <strong>The Trade-off:</strong> We use a 50/50 development split below so it is easy to see. An 80/20 training/validation split is common, but the right choice depends on sample size and structure. A small validation set produces a noisy selection score; the final test set is separate.
                 </div>
                 
                 <div class="controls">
@@ -858,7 +859,7 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
                 </div>
                 <div class="explain-block technical">
                     <span>Technical Meaning</span>
-                    <p>The data is divided into <em>k</em> equal chunks (folds). We train <em>k</em> separate models, holding out a different chunk for testing each time, then average the <em>k</em> test errors.</p>
+                    <p>The data is divided into <em>k</em> equal chunks (folds). We train <em>k</em> separate models, holding out a different chunk for validation each time, then average the <em>k</em> validation errors.</p>
                 </div>
                 <div class="explain-block why">
                     <span>Why It Matters</span>
