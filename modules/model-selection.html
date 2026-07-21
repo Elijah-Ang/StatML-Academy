@@ -1008,7 +1008,7 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
 <nav class="statml-site-nav" aria-label="StatML Academy navigation">
   <a class="statml-brand-link" href="../index.html"><span class="statml-brand-mark">S</span><span>StatML Academy</span></a>
   <span class="statml-nav-topic">Model Selection &amp; Regularization</span>
-  <span class="statml-nav-meta">module 18/18</span>
+  <span class="statml-nav-meta">module 21/21</span>
 </nav>
 
 
@@ -1052,7 +1052,8 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
                     </ol>
                 </div>
                 
-                <p>At this point, standard math breaks down. The underlying matrix becomes <span class="tooltip" data-tooltip="A matrix that cannot be inverted. This means the math equations have no unique solution.">singular</span>. Without a unique solution, the model just perfectly fits the noise.</p>
+                <p>At this point, the design matrix is <span class="tooltip" data-tooltip="A rank-deficient matrix cannot identify one unique ordinary least-squares coefficient vector.">rank deficient</span>. Without additional constraints, many coefficient vectors may fit the training data equally well. This makes coefficient interpretation unstable and creates a high risk of overfitting. Useful prediction may still be possible with appropriate regularisation, feature structure and honest validation.</p>
+                <div class="insight-box"><p><strong>Keep the ideas separate:</strong> non-unique coefficients concern identifiability; interpolation means matching the observed training outcomes; overfitting is poor generalisation caused by learning sample-specific patterns; predictive performance must be measured on unseen data. Ridge, Lasso and Elastic Net impose different constraints that can produce estimable predictors, but they are not automatic cures.</p></div>
             </section>
 
             <!-- Stage 3: Subset Selection -->
@@ -2178,6 +2179,7 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
 })();
 </script>
 
+<script src="core-modules.js"></script>
 <script src="academic-rigor.js"></script>
 </body>
 </html>

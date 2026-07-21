@@ -520,7 +520,7 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
 <nav class="statml-site-nav" aria-label="StatML Academy navigation">
   <a class="statml-brand-link" href="../index.html"><span class="statml-brand-mark">S</span><span>StatML Academy</span></a>
   <span class="statml-nav-topic">Logistic Regression</span>
-  <span class="statml-nav-meta">module 08/18</span>
+  <span class="statml-nav-meta">module 09/21</span>
 </nav>
 
 
@@ -916,11 +916,11 @@ very confident but very wrong.</div>
 <!-- S7: Evaluation -->
 <section class="section" data-stage="7" id="sec-7">
   <div class="stage-num">Stage 07</div>
-  <h2>How Good Is It? 📊</h2>
-  <p>We evaluate on the <strong>test set</strong> (6 held-out samples) — data the model never saw during training.</p>
+  <h2>Select the Decision Rule on Validation Data 📊</h2>
+  <p>Use the <strong>validation set</strong> to explore threshold-dependent trade-offs. The final test set remains hidden while the threshold, metrics and model choices are still changing.</p>
 
   <div class="insight-box" style="margin-bottom: 20px;">
-    <p><strong>When we test the model, every prediction falls into one of four boxes:</strong></p>
+    <p><strong>Every validation prediction falls into one of four boxes:</strong></p>
     <p style="font-size: 0.82rem; margin-top: 6px; line-height: 1.5;">
       • <strong style="color:var(--green)">TP (True Positive):</strong> Predicted Bought, and they really bought. Correct prediction!<br>
       • <strong style="color:#3b82f6">TN (True Negative):</strong> Predicted Didn't buy, and they did not buy. Correct prediction!<br>
@@ -930,7 +930,7 @@ very confident but very wrong.</div>
   </div>
 
   <div class="glass-card">
-    <h3>Confusion Matrix</h3>
+    <h3>Validation Confusion Matrix</h3>
     <p style="font-size: 0.78rem; color: var(--text-muted); margin-bottom: 8px;">👉 Click on any grid cell below to show its plain-English explanation.</p>
     <div class="matrix-grid" id="cmGrid">
       <div class="cell header"></div><div class="cell header">Pred Yes (≥ t)</div><div class="cell header">Pred No (&lt; t)</div>
@@ -942,17 +942,17 @@ very confident but very wrong.</div>
     </div>
   </div>
 
-  <div class="glass-card" style="padding:16px;margin:8px 0 24px"><p style="margin:0;font-size:0.88rem"><span style="opacity:0.4">● Dim dots</span> = training set &nbsp;&nbsp;&nbsp; <strong>● Vivid dots</strong> = test set</p></div>
+  <div class="glass-card" style="padding:16px;margin:8px 0 24px"><p style="margin:0;font-size:0.88rem"><span style="opacity:0.4">● Dim dots</span> = training set &nbsp;&nbsp;&nbsp; <strong>● Vivid dots</strong> = validation set</p></div>
 
   <!-- DYNAMIC METRICS WARNING -->
   <div class="insight-box" style="border-left-color: var(--amber); background: var(--amber-soft); margin-bottom: 24px;">
     <p style="font-size: 0.85rem; color: var(--text-dim);">
-      ⚠️ <strong>Threshold Dependencies:</strong> Changing the decision threshold will change your TP, TN, FP, and FN counts. Because those counts change, your final accuracy, precision, recall, and F1 metrics change too!
+      ⚠️ <strong>Threshold Dependencies:</strong> Changing the decision threshold changes the validation TP, TN, FP, and FN counts. Use these development results to select and lock the rule; do not repeatedly inspect the test set.
     </p>
   </div>
 
   <div class="glass-card">
-    <h3>Evaluation Metrics</h3>
+    <h3>Validation Metrics</h3>
     <div class="metric-row" id="metricsRow" style="display: flex; flex-direction: column; gap: 12px;">
 
       <!-- Accuracy -->
@@ -1006,13 +1006,25 @@ very confident but very wrong.</div>
 
     </div>
   </div>
+
+  <div class="glass-card" id="finalTestCard" style="border-left:4px solid var(--accent);">
+    <h3>Final untouched test evaluation</h3>
+    <p id="finalTestStatus">Hidden until the model and validation-selected threshold are locked. Reveal this result once, after development is complete.</p>
+    <button class="btn btn-accent" id="btnRevealTest">Lock model and reveal final test result</button>
+    <div id="finalTestResults" hidden style="margin-top:14px;">
+      <p><strong>Locked threshold:</strong> <span id="testThreshold">—</span></p>
+      <p><strong>Confusion matrix:</strong> TP <span id="testTP">—</span> · TN <span id="testTN">—</span> · FP <span id="testFP">—</span> · FN <span id="testFN">—</span></p>
+      <p><strong>Final test metrics:</strong> accuracy <span id="testAcc">—</span> · precision <span id="testPrec">—</span> · recall <span id="testRec">—</span> · F1 <span id="testF1">—</span></p>
+      <p style="font-size:0.8rem;color:var(--text-muted);margin-bottom:0;">This snapshot does not change when validation controls move. Use Reset to begin a new demonstration.</p>
+    </div>
+  </div>
 </section>
 
 <!-- S8: ROC -->
 <section class="section" data-stage="8" id="sec-8">
   <div class="stage-num">Stage 08</div>
-  <h2>The ROC Curve 🔔</h2>
-  <p>The <strong>ROC curve</strong> shows: at every possible threshold, how does recall trade off against false-alarm rate?</p>
+  <h2>The Validation ROC Curve 🔔</h2>
+  <p>The <strong>validation ROC curve</strong> shows: at every possible threshold, how does recall trade off against false-alarm rate? It is a development visual and never reads the final test set.</p>
   <p>Think of a smoke alarm: too sensitive and it goes off when you cook toast; too lenient and it misses an actual fire.</p>
 
   <!-- ACCURACY VS ROC BOX -->
@@ -1057,7 +1069,7 @@ very confident but very wrong.</div>
       • <strong>AUC = 0.5:</strong> Random guessing. The model has no predictive strength.<br>
       <span style="display:block; margin-top: 6px; font-style: italic;">Note: AUC does not mean the model is perfect forever. It only summarizes separation performance on the data being evaluated.</span>
     </p>
-    <div class="insight-box" style="margin-top:20px"><p>📌 <strong>Note:</strong> Because we only have 6 test samples, this ROC curve looks coarse and jumpy. With a real dataset of hundreds of rows, the curve would be much smoother.</p></div>
+    <div class="insight-box" style="margin-top:20px"><p>📌 <strong>Note:</strong> Because this teaching example has a very small validation set, the ROC curve looks coarse and jumpy. With a larger validation sample, the curve would usually be smoother.</p></div>
   </div>
 </section>
 
@@ -1154,9 +1166,10 @@ very confident but very wrong.</div>
       <li>The mathematical <strong>sigmoid function</strong> gracefully "squishes" this score z into a valid probability between 0% and 100%.</li>
       <li>A decision <strong>threshold</strong> translates probabilities into labels. Select it on validation data from error costs, prevalence and objectives; 0.50 is only a convention.</li>
       <li>During <strong>training</strong>, the model starts with baseline weights and iteratively adjusts them using <strong>gradient descent</strong> to minimize average <strong>log loss</strong>.</li>
-      <li>A <strong>confusion matrix</strong> is used to catalog test predictions into correct classifications (TP, TN) and errors (FP, FN).</li>
+      <li>A <strong>validation confusion matrix</strong> is used to compare threshold choices without touching the final test set.</li>
       <li>Performance is summarized using descriptive metrics: <strong>Accuracy</strong> (overall correctness), <strong>Precision</strong> (purity of Yes calls), <strong>Recall</strong> (capture rate of actual positives), and <strong>F1-score</strong> (their balanced harmony).</li>
-      <li>The <strong>ROC curve and AUC</strong> allow us to evaluate the model's strength across all possible decision thresholds, summarizing its separation ability.</li>
+      <li>The <strong>validation ROC curve and AUC</strong> summarize ranking trade-offs across thresholds during development.</li>
+      <li>After the model and threshold are locked, the <strong>test set</strong> is revealed once for the final performance estimate.</li>
       <!-- FIX 10: REPLACED EXACTLY HOW WITH ESTIMATES HOW -->
       <li>By analyzing <strong>coefficients and odds ratios</strong>, we can interpret how the model estimates each feature is associated with higher or lower odds of a purchase.</li>
     </ol>
@@ -1203,17 +1216,21 @@ const DATA=[
   {temp:35,sunny:0,weekend:1,y:1},{temp:36,sunny:1,weekend:0,y:1},
   {temp:38,sunny:1,weekend:1,y:1},{temp:40,sunny:0,weekend:0,y:1}
 ];
-function stratifiedSplit(data,testRatio){
+function stratifiedThreeWaySplit(data,validationRatio,testRatio){
   const pos=data.filter(d=>d.y===1),neg=data.filter(d=>d.y===0);
-  // Custom seeded random generator for stable seed splits in canvas guides
+  // Stable seeded partitions keep the teaching visual reproducible.
   function seededShuffle(a,s){const r=()=>{s=(s*16807)%2147483647;return(s-1)/2147483646};for(let i=a.length-1;i>0;i--){const j=Math.floor(r()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a;}
   seededShuffle(pos,42);seededShuffle(neg,42);
-  const nTP=Math.max(1,Math.round(pos.length*testRatio));
-  const nTN=Math.max(1,Math.round(neg.length*testRatio));
-  return{train:[...pos.slice(nTP),...neg.slice(nTN)],test:[...pos.slice(0,nTP),...neg.slice(0,nTN)]};
+  function partition(group){
+    const nValidation=Math.max(1,Math.round(group.length*validationRatio));
+    const nTest=Math.max(1,Math.round(group.length*testRatio));
+    return{validation:group.slice(0,nValidation),test:group.slice(nValidation,nValidation+nTest),train:group.slice(nValidation+nTest)};
+  }
+  const p=partition(pos),n=partition(neg);
+  return{train:[...p.train,...n.train],validation:[...p.validation,...n.validation],test:[...p.test,...n.test]};
 }
-const SPLIT=stratifiedSplit(DATA,0.3);
-const TRAIN=SPLIT.train,TEST=SPLIT.test;
+const SPLIT=stratifiedThreeWaySplit(DATA,0.25,0.25);
+const TRAIN=SPLIT.train,VALIDATION=SPLIT.validation,TEST=SPLIT.test;
 const TEMP_MEAN=TRAIN.reduce((s,d)=>s+d.temp,0)/TRAIN.length;
 const TEMP_STD=Math.sqrt(TRAIN.reduce((s,d)=>s+(d.temp-TEMP_MEAN)**2,0)/TRAIN.length);
 function stdTemp(t){return(t-TEMP_MEAN)/TEMP_STD}
@@ -1241,6 +1258,7 @@ let currentStage=0;
 let weights={b0:0,b1:1.5,b2:0.8,b3:0.5};
 let trainedWeights={b0:0,b1:1.5,b2:0.8,b3:0.5};
 let threshold=0.5,epoch=0,lossHistory=[];
+let lockedThreshold=null,finalTestResult=null;
 
 // ===== MATH =====
 function sigmoid(z){return 1/(1+Math.exp(-z))}
@@ -1249,6 +1267,7 @@ function predict(d,w){return sigmoid(score(d,w))}
 function logLoss(data,w){let s=0;for(const d of data){let p=Math.max(1e-10,Math.min(1-1e-10,predict(d,w)));s+=-(d.y*Math.log(p)+(1-d.y)*Math.log(1-p))}return s/data.length}
 function trainStep(lr){const g={b0:0,b1:0,b2:0,b3:0};for(const d of TRAIN){let e=predict(d,trainedWeights)-d.y;g.b0+=e;g.b1+=e*stdTemp(d.temp);g.b2+=e*d.sunny;g.b3+=e*d.weekend}const n=TRAIN.length;trainedWeights.b0-=lr*g.b0/n;trainedWeights.b1-=lr*g.b1/n;trainedWeights.b2-=lr*g.b2/n;trainedWeights.b3-=lr*g.b3/n;epoch++}
 function confusionMatrix(data,w,t){let tp=0,tn=0,fp=0,fn=0;for(const d of data){const p=predict(d,w)>=t?1:0;if(d.y===1&&p===1)tp++;else if(d.y===0&&p===0)tn++;else if(d.y===0&&p===1)fp++;else fn++}return{tp,tn,fp,fn}}
+function metricsFromConfusion(cm){const total=cm.tp+cm.tn+cm.fp+cm.fn||1;const accuracy=(cm.tp+cm.tn)/total;const precision=cm.tp+cm.fp>0?cm.tp/(cm.tp+cm.fp):0;const recall=cm.tp+cm.fn>0?cm.tp/(cm.tp+cm.fn):0;const f1=precision+recall>0?2*precision*recall/(precision+recall):0;return{accuracy,precision,recall,f1}}
 function rocPoints(data,w){const pts=[];for(let t=0;t<=1.001;t+=0.02){const cm=confusionMatrix(data,w,t);const tpr=cm.tp+cm.fn>0?cm.tp/(cm.tp+cm.fn):0;const fpr=cm.fp+cm.tn>0?cm.fp/(cm.fp+cm.tn):0;pts.push({fpr,tpr,t})}pts.sort((a,b)=>a.fpr-b.fpr);return pts}
 function auc(pts){let a=0;for(let i=1;i<pts.length;i++){a+=(pts[i].fpr-pts[i-1].fpr)*(pts[i].tpr+pts[i-1].tpr)/2}return a}
 
@@ -1443,14 +1462,14 @@ function drawPipeline(){
 // ===== MAIN DRAW =====
 function draw(){
   const w=currentStage>=5?trainedWeights:weights;
-  if(currentStage===8){drawROC(TEST,w);return}
+  if(currentStage===8){drawROC(VALIDATION,w);return}
   if(currentStage===9){drawCoeffBars(w);return}
   if(currentStage===10){drawPipeline();return}
   clearCanvas();drawAxes('Temperature (°C)','Probability / Outcome');
 
   if(currentStage===7){
     drawPoints(TRAIN,w,'class',0.15);
-    drawPoints(TEST,w,'prediction',1);
+    drawPoints(VALIDATION,w,'prediction',1);
   } else if(currentStage>=1){
     drawPoints(DATA,w,currentStage>=6?'prediction':'class',1);
   }
@@ -1552,14 +1571,14 @@ function draw(){
     ctx.save();
     ctx.fillStyle='rgba(31, 41, 55, 0.9)';
     ctx.font='bold 11px Inter';ctx.textAlign='left';
-    ctx.fillText("Test Evaluation Set (6 days)", PAD.l+15, PAD.t+22);
+    ctx.fillText(`Validation Set (${VALIDATION.length} days)`, PAD.l+15, PAD.t+22);
     ctx.font='400 10px Inter';
     ctx.fillStyle='rgba(22, 163, 74, 1)';ctx.fillText("● Green outline = Correct prediction", PAD.l+15, PAD.t+38);
     ctx.fillStyle='rgba(220, 38, 38, 1)';ctx.fillText("● Red outline = Wrong prediction", PAD.l+15, PAD.t+52);
     ctx.fillStyle=C.label;ctx.fillText("Dashed line = Decision threshold (Yes vs No)", PAD.l+15, PAD.t+66);
 
-    // Explicitly label each test point
-    for(const d of TEST){
+    // Explicitly label each validation point used for threshold selection.
+    for(const d of VALIDATION){
       const x=plotX(d.temp),y=plotY(d.y);
       const p=predict(d,w);
       const pred=p>=threshold?1:0;
@@ -1601,7 +1620,7 @@ const stageIds=[...sections].map(s=>s.dataset.stage);
 const stageDots=document.getElementById('stageDots');
 stageIds.forEach((id,i)=>{const d=document.createElement('div');d.className='stage-dot';d.addEventListener('click',()=>sections[i].scrollIntoView({behavior:'smooth'}));stageDots.appendChild(d)});
 function updateDots(){document.querySelectorAll('.stage-dot').forEach((d,i)=>d.classList.toggle('active',i===currentStage))}
-const observer=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){const idx=stageIds.indexOf(e.target.dataset.stage);if(idx>=0&&idx!==currentStage){currentStage=idx;draw();updateDots();updateMetrics();updateLiveScore()}}})},{threshold:0.4});
+const observer=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){const idx=stageIds.indexOf(e.target.dataset.stage);if(idx>=0&&idx!==currentStage){currentStage=idx;draw();updateDots();updateValidationMetrics();updateLiveScore()}}})},{threshold:0.4});
 sections.forEach(s=>observer.observe(s));
 window.addEventListener('scroll',()=>{const h=document.documentElement;document.getElementById('progressBar').style.width=h.scrollTop/(h.scrollHeight-h.clientHeight)*100+'%'});
 
@@ -1676,6 +1695,7 @@ document.getElementById('btnReset').addEventListener('click',()=>{
   document.getElementById('trainLoss').textContent='—';
   document.getElementById('epochVal').textContent='0';
   document.getElementById('btnTrain').textContent='▶ Train';
+  resetFinalTestReveal();
   updateLiveScore();
   if(currentStage===5)draw();
 });
@@ -1688,8 +1708,9 @@ document.getElementById('threshSlider').addEventListener('input',function(){
   threshold=parseFloat(this.value);
   document.getElementById('threshVal').textContent=threshold.toFixed(2);
   if(currentStage>=6)draw();
-  updateMetrics();
+  updateValidationMetrics();
 });
+document.getElementById('btnRevealTest').addEventListener('click',revealFinalTestMetrics);
 document.getElementById('btnRestart').addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
 
 // ===== METRICS & INTERACTIVE CONFUSION MATRIX =====
@@ -1704,9 +1725,9 @@ window.showCmExplain = function(type) {
   if(textEl) textEl.innerHTML=explanations[type] || "Click on a grid cell to learn what it means.";
 }
 
-function updateMetrics(){
+function updateValidationMetrics(){
   const w=trainedWeights;
-  const cm=confusionMatrix(TEST,w,threshold);
+  const cm=confusionMatrix(VALIDATION,w,threshold);
 
   const tpEl=document.getElementById('cmTP');
   const tnEl=document.getElementById('cmTN');
@@ -1720,11 +1741,7 @@ function updateMetrics(){
     fnEl.textContent=cm.fn;
   }
 
-  const total=cm.tp+cm.tn+cm.fp+cm.fn||1;
-  const acc=(cm.tp+cm.tn)/total;
-  const prec=cm.tp+cm.fp>0?cm.tp/(cm.tp+cm.fp):0;
-  const rec=cm.tp+cm.fn>0?cm.tp/(cm.tp+cm.fn):0;
-  const f1=prec+rec>0?2*prec*rec/(prec+rec):0;
+  const {accuracy,precision,recall,f1}=metricsFromConfusion(cm);
 
   const accEl=document.getElementById('mAcc');
   const precEl=document.getElementById('mPrec');
@@ -1732,11 +1749,46 @@ function updateMetrics(){
   const f1El=document.getElementById('mF1');
 
   if (accEl) {
-    accEl.textContent=(acc*100).toFixed(0)+'%';
-    precEl.textContent=(prec*100).toFixed(0)+'%';
-    recEl.textContent=(rec*100).toFixed(0)+'%';
+    accEl.textContent=(accuracy*100).toFixed(0)+'%';
+    precEl.textContent=(precision*100).toFixed(0)+'%';
+    recEl.textContent=(recall*100).toFixed(0)+'%';
     f1El.textContent=f1.toFixed(3);
   }
+}
+
+function revealFinalTestMetrics(){
+  if(finalTestResult)return;
+  if(trainInterval){clearInterval(trainInterval);trainInterval=null;}
+  lockedThreshold=threshold;
+  const cm=confusionMatrix(TEST,trainedWeights,lockedThreshold);
+  finalTestResult={cm,...metricsFromConfusion(cm)};
+  document.getElementById('testThreshold').textContent=lockedThreshold.toFixed(2);
+  document.getElementById('testTP').textContent=cm.tp;
+  document.getElementById('testTN').textContent=cm.tn;
+  document.getElementById('testFP').textContent=cm.fp;
+  document.getElementById('testFN').textContent=cm.fn;
+  document.getElementById('testAcc').textContent=(finalTestResult.accuracy*100).toFixed(0)+'%';
+  document.getElementById('testPrec').textContent=(finalTestResult.precision*100).toFixed(0)+'%';
+  document.getElementById('testRec').textContent=(finalTestResult.recall*100).toFixed(0)+'%';
+  document.getElementById('testF1').textContent=finalTestResult.f1.toFixed(3);
+  document.getElementById('finalTestResults').hidden=false;
+  document.getElementById('finalTestStatus').textContent='Model and threshold locked. This is the one-time final test snapshot for this run.';
+  const revealButton=document.getElementById('btnRevealTest');
+  revealButton.disabled=true;revealButton.textContent='Final test result revealed';
+  document.getElementById('threshSlider').disabled=true;
+  document.getElementById('btnTrain').disabled=true;
+  document.getElementById('lrSlider').disabled=true;
+}
+
+function resetFinalTestReveal(){
+  lockedThreshold=null;finalTestResult=null;
+  document.getElementById('finalTestResults').hidden=true;
+  document.getElementById('finalTestStatus').textContent='Hidden until the model and validation-selected threshold are locked. Reveal this result once, after development is complete.';
+  const revealButton=document.getElementById('btnRevealTest');
+  revealButton.disabled=false;revealButton.textContent='Lock model and reveal final test result';
+  document.getElementById('threshSlider').disabled=false;
+  document.getElementById('btnTrain').disabled=false;
+  document.getElementById('lrSlider').disabled=false;
 }
 
 // ===== QUIZ INTERACTION =====
@@ -1782,6 +1834,7 @@ resizeCanvas();drawHeroBg();updateDots();
 updateLiveScore();
 document.getElementById('manualLoss').textContent=logLoss(TRAIN,weights).toFixed(4);
 showCmExplain('tp'); // Default explanation card visible on start
+updateValidationMetrics();
 </script>
 
 <footer class="statml-module-footer">
@@ -1896,6 +1949,7 @@ showCmExplain('tp'); // Default explanation card visible on start
 })();
 </script>
 
+<script src="core-modules.js"></script>
 <script src="academic-rigor.js"></script>
 </body>
 </html>

@@ -999,6 +999,7 @@
     </div>
   </footer>
 
+  <script src="modules/core-modules.js"></script>
   <script>
     const modulesData = [
       { id:'anova', title:'ANOVA', category:'Statistics', group:'Experimental Analyses', groupKey:'stats-exp', desc:'Compare variance to determine significant differences across multiple distinct groups.', difficulty:'Intermediate', path:'modules/anova.html', x:300, y:495, size:68, width:170, accent:'#4f46e5', icon:'anova', moon:true },
@@ -1027,6 +1028,9 @@
       { id:'biasvar', title:'Bias-Variance Trade-Off & Resampling Methods', category:'Model Evaluation & Selection', group:'Evaluation Methods', groupKey:'evaluation', desc:'Balance underfitting and overfitting while using resampling to estimate performance.', difficulty:'Intermediate', path:'modules/bias-variance.html', x:405, y:2740, size:74, width:225, accent:'#9a6b44', icon:'bias-variance', moon:true },
       { id:'modelsel', title:'Model Selection & Regularization', category:'Model Evaluation & Selection', group:'Evaluation Methods', groupKey:'evaluation', desc:'Compare competing models and constrain complexity to improve generalization.', difficulty:'Intermediate', path:'modules/model-selection.html', x:795, y:2740, size:74, width:205, accent:'#7d5a3e', icon:'model-selection', moon:true }
     ];
+
+    const moduleVisuals = new Map(modulesData.map(module => [module.path, module]));
+    modulesData.splice(0, modulesData.length, ...STATML_CORE_MODULES.map(module => ({...moduleVisuals.get(module.path), title:module.title, path:module.path})));
 
     const groupDefinitions = [
       {

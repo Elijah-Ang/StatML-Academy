@@ -986,7 +986,7 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
 <nav class="statml-site-nav" aria-label="StatML Academy navigation">
   <a class="statml-brand-link" href="../index.html"><span class="statml-brand-mark">S</span><span>StatML Academy</span></a>
   <span class="statml-nav-topic">Principal Component Analysis (PCA)</span>
-  <span class="statml-nav-meta">module 16/18</span>
+  <span class="statml-nav-meta">module 19/21</span>
 </nav>
 
 
@@ -1106,13 +1106,13 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
                 <div class="stage-label">Stage 07</div>
                 <h2>The Transformation (Scores)</h2>
                 <p>Here is where the magic happens. We don't just draw lines on the old graph. We <strong>rotate the entire coordinate system</strong>.</p>
-                <p>PC1 and PC2 become our brand new X and Y axes. The data points haven't changed their relationships to each other, but we are now viewing them from the most informative angle.</p>
+                <p>PCA finds the directions that capture the greatest sample variance. These directions are not automatically the most scientifically important or most predictive.</p>
                 <div class="formula-block" id="transform-formula">
                     Original matrix: 60 x 6<br>
                     PCA scores: 60 x 2
                 </div>
                 <div class="glass-card">
-                    <p>Same students, same information, new coordinates. A few rows from the original matrix become PC scores side by side:</p>
+                    <p>The same observations are represented in a new coordinate system. When all principal components are retained, the centred data can be reconstructed up to numerical precision. When components are discarded, some sample variance and potentially useful information are lost. A few rows from the original matrix become PC scores side by side:</p>
                     <div class="data-table-wrap">
                         <table class="mini-table" id="score-preview-table">
                             <thead>
@@ -1187,12 +1187,12 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
             <div class="story-section" data-stage="10">
                 <div class="stage-label">Synthesis</div>
                 <h2>The Best Summary</h2>
-                <p>PCA does not invent new data. It simply rotates your perspective to find the most meaningful angles.</p>
-                <p>By finding directions that maximize variance, PCA allows us to squash datasets with hundreds of columns into just a few principal components, filtering out the noise while preserving the mathematical "soul" of the data.</p>
+                <p>PCA represents centred observations along directions of greatest sample variance. Those directions need not be the most scientifically meaningful or predictive.</p>
+                <p>PCA may reduce noise when discarded directions mainly contain noise, but this is not guaranteed. Low-variance components can still contain meaningful structure or predictive signal.</p>
                 <div class="glass-card">
                     <p><strong>Remember:</strong></p>
                     <ul style="margin-left: 1.5rem; color: var(--text-dim);">
-                        <li>Scale your data first.</li>
+                        <li>Decide whether scaling is appropriate based on the variables’ units and whether raw variance differences should influence the components.</li>
                         <li>Loadings are the weights.</li>
                         <li>Scores are the new coordinates.</li>
                         <li>Stop when the "pizza slices" of variance get too small.</li>
@@ -2690,6 +2690,7 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
 })();
 </script>
 
+<script src="core-modules.js"></script>
 <script src="academic-rigor.js"></script>
 </body>
 </html>

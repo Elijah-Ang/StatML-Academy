@@ -535,7 +535,7 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
 <nav class="statml-site-nav" aria-label="StatML Academy navigation">
   <a class="statml-brand-link" href="../index.html"><span class="statml-brand-mark">S</span><span>StatML Academy</span></a>
   <span class="statml-nav-topic">K-Nearest Neighbors (KNN)</span>
-  <span class="statml-nav-meta">module 09/18</span>
+  <span class="statml-nav-meta">module 10/21</span>
 </nav>
 
 
@@ -1099,7 +1099,7 @@ Training set only ➔ Try K values (1 to 15) ➔ CV accuracy ➔ Choose optimal 
       <li><strong>Labeled Examples:</strong> Start with known data (fruits with known categories).</li>
       <li><strong>Feature Selection:</strong> Select high-quality, relevant properties (sweetness, color).</li>
       <li><strong>Train/Test Split:</strong> Set aside a final held-out test set to keep final evaluation fair.</li>
-      <li><strong>Feature Scaling:</strong> Force all scales to 0–1 so distance checks remain unbiased.</li>
+      <li><strong>Feature Scaling:</strong> Fit an appropriate scaling transformation using the training data when feature units or magnitudes would otherwise dominate the distance calculation. Standardisation, min-max scaling, robust scaling and domain-specific transformations are all possible choices; apply the fitted transformation unchanged to validation and test data.</li>
       <li><strong>Mystery Input:</strong> Introduce an unknown query point (★) on the plot.</li>
       <li><strong>Distance Measuring:</strong> Run Euclidean distance against all stored training examples.</li>
       <li><strong>Hyperparameter K:</strong> Choose K (the count of voting neighbors).</li>
@@ -3226,6 +3226,7 @@ window.addEventListener('resize',()=>{
 })();
 </script>
 
+<script src="core-modules.js"></script>
 <script src="academic-rigor.js"></script>
 </body>
 </html>
