@@ -1842,18 +1842,26 @@ body.statml-standardized > .stage-dots { display:none !important; }
           const b=document.createElement("button");b.type="button";b.className="stage-dot";b.setAttribute("aria-label",`Go to stage ${i+1}`);b.addEventListener("click",()=>s.scrollIntoView({behavior:"smooth",block:"center"}));dots.appendChild(b);
         });
         const dotEls=[...dots.children];
-        const observer=new IntersectionObserver(entries=>{
-          const visible=entries.filter(e=>e.isIntersecting).sort((a,b)=>b.intersectionRatio-a.intersectionRatio)[0];
-          if(!visible)return;
-          const stage=Number(visible.target.dataset.stage);
+        let stageSyncFrame=0;
+        const syncStageFromScroll=()=>{
+          stageSyncFrame=0;
+          const anchor=window.innerHeight*.42;
+          let stage=Number(sections[0]?.dataset.stage||1);
+          for(const section of sections){
+            if(section.getBoundingClientRect().top<=anchor)stage=Number(section.dataset.stage);
+            else break;
+          }
           if(stage===state.stage)return;
           state.stage=stage;
           sections.forEach(s=>s.classList.toggle("is-active",Number(s.dataset.stage)===stage));
           dotEls.forEach((d,i)=>d.classList.toggle("active",i===stage-1));
           updateStageUI(stage);
-        },{threshold:[.25,.42,.58],rootMargin:"-8% 0px -28% 0px"});
-        sections.forEach(s=>observer.observe(s));
+        };
+        const queueStageSync=()=>{if(!stageSyncFrame)stageSyncFrame=requestAnimationFrame(syncStageFromScroll);};
+        window.addEventListener("scroll",queueStageSync,{passive:true});
+        window.addEventListener("resize",queueStageSync,{passive:true});
         sections[0].classList.add("is-active");dotEls[0].classList.add("active");
+        requestAnimationFrame(syncStageFromScroll);
       }
 
       function updateProgress() {
@@ -1980,9 +1988,22 @@ body.statml-standardized > .stage-dots { display:none !important; }
   const railButtons = $$('.statml-stage-button',rail);
   const activate = stage => { const index = stageEls.indexOf(stage); railButtons.forEach((button,i) => i === index ? button.setAttribute('aria-current','step') : button.removeAttribute('aria-current')); };
   if (stageEls.length) activate(stageEls[0]);
-  if ('IntersectionObserver' in window) {
-    const observer = new IntersectionObserver(entries => { const visible = entries.filter(entry => entry.isIntersecting).sort((a,b) => b.intersectionRatio - a.intersectionRatio)[0]; if (visible) activate(visible.target); }, {rootMargin:'-25% 0px -45% 0px',threshold:[0,.15,.35,.6]});
-    stageEls.forEach(stage => observer.observe(stage));
+  if (stageEls.length) {
+    let railFrame = 0;
+    const syncRail = () => {
+      railFrame = 0;
+      const anchor = window.innerHeight * .42;
+      let current = stageEls[0];
+      for (const stage of stageEls) {
+        if (stage.getBoundingClientRect().top <= anchor) current = stage;
+        else break;
+      }
+      activate(current);
+    };
+    const queueRailSync = () => { if (!railFrame) railFrame = requestAnimationFrame(syncRail); };
+    window.addEventListener('scroll',queueRailSync,{passive:true});
+    window.addEventListener('resize',queueRailSync,{passive:true});
+    requestAnimationFrame(syncRail);
   }
 })();
 </script>
