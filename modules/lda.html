@@ -424,6 +424,18 @@ body.statml-standardized .progress-bar {
 }
 .statml-visual > * { max-width: 100%; }
 .statml-visual > :is(.status-strip,.control-panel,.canvas-container,.viz-stage,.canvas-wrapper) { width: 100% !important; }
+.statml-visual-card {
+  flex: 1 1 auto;
+  width: 100%;
+  min-width: 0;
+  min-height: 0;
+  position: relative;
+  overflow: hidden;
+  background: var(--statml-surface);
+  border: 1px solid var(--statml-border);
+  border-radius: var(--statml-radius-visual);
+  box-shadow: var(--statml-shadow-visual);
+}
 .statml-stage {
   min-height: 92svh !important;
   padding: 5rem 0 !important;
@@ -1119,20 +1131,22 @@ Predict class k with the highest δ_k(x)</div>
 
 <!-- VISUALIZATION -->
 <div class="viz-container">
-  <!-- Floating Dynamic Legend -->
-  <div id="vizLegend" class="viz-legend">
-    <div style="font-weight:700;margin-bottom:8px;font-size:0.75rem;letter-spacing:0.05em;text-transform:uppercase;color:var(--accent2)">Visual Legend</div>
-    <div style="display:flex;flex-direction:column;gap:6px;font-size:0.75rem">
-      <div class="legend-item" id="leg-apple"><span class="legend-color" style="background:var(--apple)"></span> Apple training point</div>
-      <div class="legend-item" id="leg-orange"><span class="legend-color" style="background:var(--orange)"></span> Orange training point</div>
-      <div class="legend-item" id="leg-mean" style="display:none"><span class="legend-color-text" style="color:var(--accent2)">★</span> Class Mean (μ)</div>
-      <div class="legend-item" id="leg-spread" style="display:none"><span class="legend-color-border" style="border:1px dashed var(--accent2)"></span> Covariance Spread</div>
-      <div class="legend-item" id="leg-proj" style="display:none"><span class="legend-color-line" style="border-top:2px dashed rgb(99,102,241)"></span> LDA Projection Direction</div>
-      <div class="legend-item" id="leg-boundary" style="display:none"><span class="legend-color-line" style="border-top:2.5px solid rgba(0,0,0,0.5)"></span> Decision Boundary</div>
-      <div class="legend-item" id="leg-test" style="display:none"><span class="legend-color-ring" style="border:2px dashed rgb(22,163,74)"></span> Test Point Classification</div>
+  <div class="statml-visual-card">
+    <!-- Floating Dynamic Legend -->
+    <div id="vizLegend" class="viz-legend">
+      <div style="font-weight:700;margin-bottom:8px;font-size:0.75rem;letter-spacing:0.05em;text-transform:uppercase;color:var(--accent2)">Visual Legend</div>
+      <div style="display:flex;flex-direction:column;gap:6px;font-size:0.75rem">
+        <div class="legend-item" id="leg-apple"><span class="legend-color" style="background:var(--apple)"></span> Apple training point</div>
+        <div class="legend-item" id="leg-orange"><span class="legend-color" style="background:var(--orange)"></span> Orange training point</div>
+        <div class="legend-item" id="leg-mean" style="display:none"><span class="legend-color-text" style="color:var(--accent2)">★</span> Class Mean (μ)</div>
+        <div class="legend-item" id="leg-spread" style="display:none"><span class="legend-color-border" style="border:1px dashed var(--accent2)"></span> Covariance Spread</div>
+        <div class="legend-item" id="leg-proj" style="display:none"><span class="legend-color-line" style="border-top:2px dashed rgb(99,102,241)"></span> LDA Projection Direction</div>
+        <div class="legend-item" id="leg-boundary" style="display:none"><span class="legend-color-line" style="border-top:2.5px solid rgba(0,0,0,0.5)"></span> Decision Boundary</div>
+        <div class="legend-item" id="leg-test" style="display:none"><span class="legend-color-ring" style="border:2px dashed rgb(22,163,74)"></span> Test Point Classification</div>
+      </div>
     </div>
+    <canvas id="mainCanvas"></canvas>
   </div>
-  <canvas id="mainCanvas"></canvas>
 </div>
 
 </div><!-- /layout -->
@@ -2764,6 +2778,7 @@ window.addEventListener('load', () => {
     if (visible) activate(visible.target);
   },{rootMargin:'-25% 0px -45% 0px',threshold:[0,.15,.35,.6]});
   stageEls.forEach(s=>observer.observe(s));
+  requestAnimationFrame(() => window.dispatchEvent(new Event('resize')));
 })();
 </script>
 

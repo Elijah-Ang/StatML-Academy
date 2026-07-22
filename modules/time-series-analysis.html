@@ -620,6 +620,12 @@ body.statml-standardized .progress-bar {
 }
 .statml-visual > * { max-width: 100%; }
 .statml-visual > :is(.status-strip,.control-panel,.canvas-container,.viz-stage,.canvas-wrapper) { width: 100% !important; }
+.statml-visual > .canvas-container {
+  flex: 1 1 auto;
+  height: 100% !important;
+  min-height: 0;
+  aspect-ratio: auto !important;
+}
 .statml-stage {
   min-height: 92svh !important;
   padding: 5rem 0 !important;
@@ -2099,6 +2105,7 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
     if (visible) activate(visible.target);
   },{rootMargin:'-25% 0px -45% 0px',threshold:[0,.15,.35,.6]});
   stageEls.forEach(s=>observer.observe(s));
+  requestAnimationFrame(() => window.dispatchEvent(new Event('resize')));
 })();
 </script>
 
