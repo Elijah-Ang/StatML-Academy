@@ -254,14 +254,14 @@
     .desktop-map {
       position: relative;
       width: 1200px;
-      height: 3060px;
+      height: 3500px;
       margin: 0 auto;
     }
     .space-svg {
       position: absolute;
       inset: 0;
       width: 1200px;
-      height: 3060px;
+      height: 3500px;
       overflow: visible;
       pointer-events: none;
     }
@@ -286,6 +286,7 @@
     .orbit.stats { stroke: rgba(79,70,229,.27); }
     .orbit.continuous { stroke: rgba(37,99,235,.27); }
     .orbit.classification { stroke: rgba(124,58,237,.28); }
+    .orbit.flexible { stroke: rgba(99,102,241,.3); }
     .orbit.unsupervised { stroke: rgba(8,145,178,.27); }
     .orbit.evaluation { stroke: rgba(154,107,68,.29); }
     .route {
@@ -362,6 +363,7 @@
       white-space: nowrap;
     }
     .group-heading.violet { color: #6d28d9; }
+    .group-heading.flexible { color: #4f46e5; }
     .group-heading.cyan { color: #0e7490; }
     .group-heading.warm { color: #7d5a3e; }
     .group-code { min-height: 21px; padding: .18rem .43rem; font-size: 8.5px; }
@@ -403,7 +405,8 @@
       text-align: center;
       animation: node-float var(--float-duration, 7s) ease-in-out infinite var(--float-delay, 0s);
     }
-    .module-node a {
+    .module-node a,
+    .module-node .module-anchor {
       display: inline-flex;
       flex-direction: column;
       align-items: center;
@@ -412,6 +415,18 @@
       color: inherit;
       text-decoration: none;
       outline: none;
+    }
+    .module-node .module-anchor { cursor: default; }
+    .module-node.is-preview .module-label::after {
+      content: "Coming soon";
+      display: block;
+      margin-top: .18rem;
+      color: #7c86a0;
+      font-family: var(--mono);
+      font-size: 8px;
+      font-weight: 600;
+      letter-spacing: .08em;
+      text-transform: uppercase;
     }
     .symbol-wrap {
       position: relative;
@@ -792,7 +807,7 @@
     }
 
     @media (max-width: 1220px) {
-      .desktop-map { transform: scale(.92); transform-origin: top center; margin-bottom: -245px; }
+      .desktop-map { transform: scale(.92); transform-origin: top center; margin-bottom: -280px; }
     }
     @media (max-width: 1100px) {
       .desktop-nav { display: none; }
@@ -856,7 +871,7 @@
       <div class="desktop-map" id="desktop-map">
         <span class="scroll-anchor" id="statistics" style="top:80px"></span>
         <span class="scroll-anchor" id="machine-learning" style="top:950px"></span>
-        <span class="scroll-anchor" id="model-evaluation" style="top:2420px"></span>
+        <span class="scroll-anchor" id="model-evaluation" style="top:2870px"></span>
 
         <div class="peripheral-sky" aria-hidden="true">
           <span class="peripheral-sun" style="left:-132px;top:-52px;--sun-size:230px"></span>
@@ -885,11 +900,12 @@
           <span class="peripheral-comet reverse" style="right:-34px;top:2050px;animation-delay:-8s"></span>
         </div>
 
-        <svg class="space-svg" viewBox="0 0 1200 3060" aria-hidden="true">
+        <svg class="space-svg" viewBox="0 0 1200 3500" aria-hidden="true">
           <defs>
             <radialGradient id="haloStats"><stop offset="0" stop-color="#6366f1" stop-opacity=".12"/><stop offset="1" stop-color="#6366f1" stop-opacity="0"/></radialGradient>
             <radialGradient id="haloContinuous"><stop offset="0" stop-color="#3b82f6" stop-opacity=".12"/><stop offset="1" stop-color="#3b82f6" stop-opacity="0"/></radialGradient>
             <radialGradient id="haloClass"><stop offset="0" stop-color="#8b5cf6" stop-opacity=".12"/><stop offset="1" stop-color="#8b5cf6" stop-opacity="0"/></radialGradient>
+            <radialGradient id="haloFlexible"><stop offset="0" stop-color="#6366f1" stop-opacity=".12"/><stop offset="1" stop-color="#6366f1" stop-opacity="0"/></radialGradient>
             <radialGradient id="haloUnsupervised"><stop offset="0" stop-color="#06b6d4" stop-opacity=".1"/><stop offset="1" stop-color="#06b6d4" stop-opacity="0"/></radialGradient>
             <radialGradient id="haloEval"><stop offset="0" stop-color="#b08968" stop-opacity=".11"/><stop offset="1" stop-color="#b08968" stop-opacity="0"/></radialGradient>
             <marker id="arrowIndigo" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 z" fill="#6366f1" opacity=".62"/></marker>
@@ -903,9 +919,10 @@
 
           <ellipse class="region-halo" cx="320" cy="1530" rx="350" ry="610" fill="url(#haloContinuous)"/>
           <ellipse class="region-halo" cx="940" cy="1520" rx="330" ry="510" fill="url(#haloClass)"/>
+          <ellipse class="region-halo" cx="600" cy="2130" rx="245" ry="185" fill="url(#haloFlexible)"/>
 
-          <ellipse class="region-halo" cx="600" cy="2720" rx="455" ry="300" fill="url(#haloEval)"/>
-          <ellipse class="region-outline evaluation" cx="600" cy="2720" rx="445" ry="288" stroke="rgba(154,107,68,.29)"/>
+          <ellipse class="region-halo" cx="600" cy="3200" rx="455" ry="300" fill="url(#haloEval)"/>
+          <ellipse class="region-outline evaluation" cx="600" cy="3200" rx="445" ry="288" stroke="rgba(154,107,68,.29)"/>
 
           <!-- statistics orbits -->
           <ellipse class="orbit stats" cx="300" cy="495" rx="135" ry="112"/>
@@ -921,23 +938,28 @@
           <ellipse class="orbit classification" cx="940" cy="1520" rx="220" ry="320"/>
           <ellipse class="orbit classification dashed" cx="940" cy="1520" rx="275" ry="390"/>
 
+          <!-- flexible predictive models -->
+          <ellipse class="orbit flexible" cx="600" cy="2130" rx="145" ry="112"/>
+          <ellipse class="orbit flexible dashed" cx="600" cy="2130" rx="190" ry="150"/>
+
           <!-- unsupervised -->
-          <ellipse class="orbit unsupervised" cx="365" cy="2180" rx="205" ry="150"/>
-          <ellipse class="orbit unsupervised dashed" cx="365" cy="2180" rx="250" ry="190"/>
-          <ellipse class="orbit unsupervised" cx="835" cy="2180" rx="145" ry="130"/>
-          <ellipse class="orbit unsupervised dashed" cx="835" cy="2180" rx="190" ry="165"/>
+          <ellipse class="orbit unsupervised" cx="365" cy="2630" rx="205" ry="150"/>
+          <ellipse class="orbit unsupervised dashed" cx="365" cy="2630" rx="250" ry="190"/>
+          <ellipse class="orbit unsupervised" cx="835" cy="2630" rx="145" ry="130"/>
+          <ellipse class="orbit unsupervised dashed" cx="835" cy="2630" rx="190" ry="165"/>
 
           <!-- evaluation -->
-          <ellipse class="orbit evaluation" cx="600" cy="2740" rx="285" ry="170"/>
-          <ellipse class="orbit evaluation dashed" cx="600" cy="2740" rx="345" ry="215"/>
+          <ellipse class="orbit evaluation" cx="600" cy="3200" rx="285" ry="170"/>
+          <ellipse class="orbit evaluation dashed" cx="600" cy="3200" rx="345" ry="215"/>
 
           <!-- vertical learning flow and branches -->
           <path class="route" d="M600 820 C600 850 600 880 600 915"/>
           <path class="route" d="M500 1085 C440 1125 385 1155 360 1180"/>
           <path class="route" d="M700 1085 C760 1125 815 1155 840 1180"/>
-          <path class="route cyan" d="M350 1720 C395 1800 470 1860 545 1910"/>
-          <path class="route cyan" d="M850 1750 C810 1820 735 1870 655 1910"/>
-          <path class="route warm" d="M600 2315 C600 2345 600 2380 600 2410"/>
+          <path class="route" d="M350 1720 C390 1810 485 1885 555 1935"/>
+          <path class="route" d="M850 1889 C805 1895 710 1910 645 1935"/>
+          <path class="route cyan" d="M600 2280 C600 2310 600 2335 600 2360"/>
+          <path class="route warm" d="M600 2825 C600 2850 600 2875 600 2900"/>
 
           <!-- decorative star connections -->
           <g>
@@ -965,25 +987,27 @@
         </div>
         <div class="group-heading" style="left:145px;top:1118px;width:320px"><span class="group-code">2A</span><span>Continuous Numerical Prediction</span></div>
         <div class="group-heading violet" style="left:795px;top:1118px;width:290px"><span class="group-code">2B</span><span>Classification</span></div>
-        <div class="group-heading cyan" style="left:440px;top:1930px;width:320px"><span class="group-code">2C</span><span>Unsupervised Learning</span></div>
-        <div class="group-heading cyan" style="left:250px;top:1995px;width:230px"><span>Clustering</span></div>
-        <div class="group-heading cyan" style="left:695px;top:1995px;width:280px"><span>Dimensionality Reduction</span></div>
+        <div class="group-heading flexible" style="left:440px;top:1960px;width:320px"><span class="group-code">2C</span><span>Flexible Predictive Models</span></div>
+        <div class="group-heading cyan" style="left:440px;top:2390px;width:320px"><span class="group-code">2D</span><span>Unsupervised Learning</span></div>
+        <div class="group-heading cyan" style="left:250px;top:2455px;width:230px"><span>Clustering</span></div>
+        <div class="group-heading cyan" style="left:695px;top:2455px;width:280px"><span>Dimensionality Reduction</span></div>
 
-        <div class="region-heading" style="left:420px;top:2420px;width:360px">
+        <div class="region-heading" style="left:420px;top:2900px;width:360px">
           <span class="chapter-pill" style="border-color:rgba(154,107,68,.34);color:#7d5a3e">Chapter 03</span>
           <h2>Model Evaluation<br>&amp; Selection</h2>
           <p>Generalization, comparison, and complexity control</p>
         </div>
-        <div class="group-heading warm" style="left:455px;top:2570px;width:290px"><span class="group-code" style="border-color:rgba(154,107,68,.34);color:#7d5a3e">3A</span><span>Evaluation Methods</span></div>
+        <div class="group-heading warm" style="left:455px;top:3050px;width:290px"><span class="group-code" style="border-color:rgba(154,107,68,.34);color:#7d5a3e">3A</span><span>Evaluation Methods</span></div>
 
         <!-- system cores -->
         <div class="system-core" style="left:300px;top:495px;--core:#a5b4fc"></div>
         <div class="system-core" style="left:815px;top:530px;--core:#818cf8"></div>
         <div class="system-core" style="left:305px;top:1435px;--core:#93c5fd"></div>
         <div class="system-core" style="left:940px;top:1520px;--core:#c4b5fd"></div>
-        <div class="system-core" style="left:365px;top:2180px;--core:#67e8f9"></div>
-        <div class="system-core" style="left:835px;top:2180px;--core:#5eead4"></div>
-        <div class="system-core" style="left:600px;top:2740px;--core:#d6b798"></div>
+        <div class="system-core" style="left:600px;top:2130px;--core:#a5b4fc"></div>
+        <div class="system-core" style="left:365px;top:2630px;--core:#67e8f9"></div>
+        <div class="system-core" style="left:835px;top:2630px;--core:#5eead4"></div>
+        <div class="system-core" style="left:600px;top:3200px;--core:#d6b798"></div>
 
         <div id="module-layer"></div>
       </div>
@@ -1002,7 +1026,7 @@
   <script src="modules/core-modules.js"></script>
   <script>
     const modulesData = [
-      { id:'anova', title:'ANOVA', category:'Statistics', group:'Experimental Analyses', groupKey:'stats-exp', desc:'Compare variance to determine significant differences across multiple distinct groups.', difficulty:'Intermediate', path:'modules/anova.html', x:300, y:495, size:68, width:170, accent:'#4f46e5', icon:'anova', moon:true },
+      { id:'anova', title:'ANOVA', category:'Statistics', group:'Experimental Analyses', groupKey:'stats-exp', desc:'Compare variance to determine significant differences across multiple distinct groups.', difficulty:'Intermediate', path:'modules/anova.html', x:420, y:495, size:68, width:170, accent:'#4f46e5', icon:'anova', moon:true },
       { id:'corr', title:'Correlation', category:'Statistics', group:'Non-Experimental Analyses', groupKey:'stats-nonexp', desc:'Measure the strength and direction of linear relationships between variables.', difficulty:'Beginner', path:'modules/correlation.html', x:680, y:425, size:64, width:160, accent:'#6366f1', icon:'correlation', moon:true },
       { id:'chisq', title:'Chi-Square Test', category:'Statistics', group:'Non-Experimental Analyses', groupKey:'stats-nonexp', desc:'Analyze dependencies and expected frequencies between categorical variables.', difficulty:'Beginner', path:'modules/chi-square.html', x:955, y:525, size:64, width:155, accent:'#7c3aed', icon:'chi-square' },
       { id:'tsa', title:'Time Series Analysis', category:'Statistics', group:'Non-Experimental Analyses', groupKey:'stats-nonexp', desc:'Decompose and analyze data points collected over continuous time intervals.', difficulty:'Advanced', path:'modules/time-series-analysis.html', x:790, y:690, size:68, width:165, accent:'#2563eb', icon:'time-series', moon:true },
@@ -1021,16 +1045,33 @@
       { id:'oner', title:'One-R', category:'Machine Learning', group:'Classification', groupKey:'ml-classification', desc:'Build a transparent one-feature classification baseline and test it honestly.', difficulty:'Beginner', path:'modules/one-r.html', x:1067, y:1308, size:68, width:150, accent:'#8b5cf6', icon:'one-r' },
       { id:'naive-bayes', title:'Naive Bayes', category:'Machine Learning', group:'Classification', groupKey:'ml-classification', desc:'Update class beliefs from priors and feature evidence with a compact probabilistic model.', difficulty:'Intermediate', path:'modules/naive-bayes.html', x:940, y:1820, size:70, width:155, accent:'#7c3aed', icon:'naive-bayes' },
 
-      { id:'kmeans', title:'K-Means Clustering', category:'Machine Learning', group:'Unsupervised Learning · Clustering', groupKey:'ml-clustering', desc:'Group unlabeled data into K distinct clusters by iteratively adjusting centroids.', difficulty:'Beginner', path:'modules/kmeans.html', x:260, y:2180, size:70, width:165, accent:'#0891b2', icon:'kmeans', moon:true },
-      { id:'hclust', title:'Hierarchical Clustering', category:'Machine Learning', group:'Unsupervised Learning · Clustering', groupKey:'ml-clustering', desc:'Build a structured dendrogram of nested descriptive clusters from the bottom up.', difficulty:'Intermediate', path:'modules/hierarchical-clustering.html', x:480, y:2180, size:70, width:180, accent:'#0e7490', icon:'hierarchical' },
-      { id:'pca', title:'Principal Component Analysis (PCA)', category:'Machine Learning', group:'Unsupervised Learning · Dimensionality Reduction', groupKey:'ml-dimensionality', desc:'Reduce high dimensionality by projecting data onto axes of maximum variance.', difficulty:'Advanced', path:'modules/pca.html', x:960, y:2180, size:72, width:195, accent:'#0f766e', icon:'pca', moon:true },
+      { id:'kmeans', title:'K-Means Clustering', category:'Machine Learning', group:'Unsupervised Learning · Clustering', groupKey:'ml-clustering', desc:'Group unlabeled data into K distinct clusters by iteratively adjusting centroids.', difficulty:'Beginner', path:'modules/kmeans.html', x:260, y:2630, size:70, width:165, accent:'#0891b2', icon:'kmeans', moon:true },
+      { id:'hclust', title:'Hierarchical Clustering', category:'Machine Learning', group:'Unsupervised Learning · Clustering', groupKey:'ml-clustering', desc:'Build a structured dendrogram of nested descriptive clusters from the bottom up.', difficulty:'Intermediate', path:'modules/hierarchical-clustering.html', x:480, y:2630, size:70, width:180, accent:'#0e7490', icon:'hierarchical' },
+      { id:'pca', title:'Principal Component Analysis (PCA)', category:'Machine Learning', group:'Unsupervised Learning · Dimensionality Reduction', groupKey:'ml-dimensionality', desc:'Reduce high dimensionality by projecting data onto axes of maximum variance.', difficulty:'Advanced', path:'modules/pca.html', x:960, y:2630, size:72, width:195, accent:'#0f766e', icon:'pca', moon:true },
 
-      { id:'biasvar', title:'Bias-Variance Trade-Off & Resampling Methods', category:'Model Evaluation & Selection', group:'Evaluation Methods', groupKey:'evaluation', desc:'Balance underfitting and overfitting while using resampling to estimate performance.', difficulty:'Intermediate', path:'modules/bias-variance.html', x:405, y:2740, size:74, width:225, accent:'#9a6b44', icon:'bias-variance', moon:true },
-      { id:'modelsel', title:'Model Selection & Regularization', category:'Model Evaluation & Selection', group:'Evaluation Methods', groupKey:'evaluation', desc:'Compare competing models and constrain complexity to improve generalization.', difficulty:'Intermediate', path:'modules/model-selection.html', x:795, y:2740, size:74, width:205, accent:'#7d5a3e', icon:'model-selection', moon:true }
+      { id:'biasvar', title:'Bias-Variance Trade-Off & Resampling Methods', category:'Model Evaluation & Selection', group:'Evaluation Methods', groupKey:'evaluation', desc:'Balance underfitting and overfitting while using resampling to estimate performance.', difficulty:'Intermediate', path:'modules/bias-variance.html', x:405, y:3200, size:74, width:225, accent:'#9a6b44', icon:'bias-variance', moon:true },
+      { id:'modelsel', title:'Model Selection & Regularization', category:'Model Evaluation & Selection', group:'Evaluation Methods', groupKey:'evaluation', desc:'Compare competing models and constrain complexity to improve generalization.', difficulty:'Intermediate', path:'modules/model-selection.html', x:795, y:3200, size:74, width:205, accent:'#7d5a3e', icon:'model-selection', moon:true }
     ];
 
     const moduleVisuals = new Map(modulesData.map(module => [module.path, module]));
     modulesData.splice(0, modulesData.length, ...STATML_CORE_MODULES.map(module => ({...moduleVisuals.get(module.path), title:module.title, path:module.path})));
+    const supplementaryModules = [{
+      id:"neural-networks",
+      title:"Neural Networks",
+      category:"Machine Learning",
+      group:"Flexible Predictive Models",
+      groupKey:"ml-flexible",
+      desc:"Learn flexible nonlinear relationships through connected layers of weighted units.",
+      difficulty:"Advanced",
+      path:null,
+      x:730,
+      y:2130,
+      size:72,
+      width:170,
+      accent:"#6366f1",
+      icon:"neural-network"
+    }];
+    const displayModules = [...modulesData, ...supplementaryModules];
 
     const groupDefinitions = [
       {
@@ -1041,10 +1082,11 @@
         ]
       },
       {
-        id:'machine-learning-mobile', chapter:'Chapter 02', title:'Machine Learning', subtitle:'Prediction, classification, clustering, and dimensionality reduction.',
+        id:'machine-learning-mobile', chapter:'Chapter 02', title:'Machine Learning', subtitle:'Prediction, classification, flexible models, clustering, and dimensionality reduction.',
         groups:[
           { key:'ml-continuous', title:'Continuous Numerical Prediction', accent:'#2563eb' },
           { key:'ml-classification', title:'Classification', accent:'#7c3aed' },
+          { key:'ml-flexible', title:'Flexible Predictive Models', accent:'#4f46e5' },
           { key:'ml-clustering', title:'Unsupervised · Clustering', accent:'#0891b2' },
           { key:'ml-dimensionality', title:'Unsupervised · Dimensionality Reduction', accent:'#0f766e' }
         ]
@@ -1076,6 +1118,7 @@
         'kmeans': `<svg class="module-symbol" viewBox="0 0 64 64" aria-hidden="true"><circle class="point" cx="18" cy="19" r="3"/><circle class="point" cx="25" cy="24" r="3"/><circle class="point" cx="17" cy="30" r="3"/><circle class="point" cx="44" cy="18" r="3"/><circle class="point" cx="49" cy="26" r="3"/><circle class="point" cx="40" cy="29" r="3"/><circle class="point" cx="31" cy="45" r="3"/><circle class="point" cx="40" cy="48" r="3"/><circle class="point" cx="26" cy="52" r="3"/><path class="stroke" d="M21 24l-4 4m28-5l4 4M34 47l-5 5"/><path class="fill" d="M19 21h4v4h-4zM43 21h4v4h-4zM32 45h4v4h-4z"/><circle class="glint" cx="49" cy="14" r="2"/></svg>`,
         'hierarchical': `<svg class="module-symbol" viewBox="0 0 64 64" aria-hidden="true"><path class="stroke" d="M10 50h44M17 50V39M30 50V30M43 50V39M54 50V21M17 39h26M30 30h24M43 39V30"/><circle class="glint" cx="54" cy="18" r="2"/></svg>`,
         'pca': `<svg class="module-symbol" viewBox="0 0 64 64" aria-hidden="true"><path class="stroke thin" d="M12 52l40-40M12 52h43M12 52V10"/><circle class="point" cx="20" cy="43" r="3"/><circle class="point" cx="28" cy="35" r="3"/><circle class="point" cx="37" cy="29" r="3"/><circle class="point" cx="45" cy="20" r="3"/><path class="stroke" d="M18 47l31-29"/><circle class="glint" cx="52" cy="11" r="2"/></svg>`,
+        'neural-network': `<svg class="module-symbol" viewBox="0 0 64 64" aria-hidden="true"><g class="stroke thin"><path d="M14 16l18 8M14 16l18 16M14 16l18 24M14 32l18-8M14 32h18M14 32l18 8M14 48l18-24M14 48l18-16M14 48l18-8M32 24l18-8M32 24l18 16M32 32l18-16M32 32l18 16M32 40l18-24M32 40l18 8"/></g><g class="stroke"><circle cx="14" cy="16" r="4"/><circle cx="14" cy="32" r="4"/><circle cx="14" cy="48" r="4"/><circle cx="32" cy="24" r="4"/><circle cx="32" cy="32" r="4"/><circle cx="32" cy="40" r="4"/><circle cx="50" cy="16" r="4"/><circle cx="50" cy="40" r="4"/><circle cx="50" cy="48" r="4"/></g><circle class="glint" cx="52" cy="13" r="2"/></svg>`,
         'bias-variance': `<svg class="module-symbol" viewBox="0 0 64 64" aria-hidden="true"><path class="stroke" d="M32 12v38M15 21h34M15 21l-8 15h16L15 21zm34 0l-8 15h16L49 21zM22 52h20"/><path class="stroke thin" d="M23 44c5-8 13-8 18 0"/><circle class="glint" cx="34" cy="10" r="2"/></svg>`,
         'model-selection': `<svg class="module-symbol" viewBox="0 0 64 64" aria-hidden="true"><path class="stroke" d="M12 18h40M12 32h40M12 46h40"/><circle class="fill" cx="24" cy="18" r="5"/><circle class="fill" cx="42" cy="32" r="5"/><circle class="fill" cx="31" cy="46" r="5"/><circle class="glint" cx="52" cy="14" r="2"/></svg>`
       };
@@ -1088,7 +1131,7 @@
     }
 
     const moduleLayer = document.getElementById('module-layer');
-    modulesData.forEach((mod, index) => {
+    displayModules.forEach((mod, index) => {
       const node = document.createElement('div');
       node.className = 'module-node';
       node.style.left = `${mod.x}px`;
@@ -1100,7 +1143,12 @@
       node.style.setProperty('--float-delay', `${-(index % 7) * .61}s`);
       node.style.setProperty('--float-x', `${3 + (index % 4)}px`);
       node.style.setProperty('--float-y', `${-4 - (index % 3)}px`);
-      node.innerHTML = `<a href="${mod.path}" aria-label="Open ${mod.title}">${symbolMarkup(mod)}<span class="module-label">${mod.title}</span></a>`;
+      if (mod.path) {
+        node.innerHTML = `<a href="${mod.path}" aria-label="Open ${mod.title}">${symbolMarkup(mod)}<span class="module-label">${mod.title}</span></a>`;
+      } else {
+        node.classList.add('is-preview');
+        node.innerHTML = `<span class="module-anchor" role="img" aria-label="${mod.title}, coming soon">${symbolMarkup(mod)}<span class="module-label">${mod.title}</span></span>`;
+      }
       moduleLayer.appendChild(node);
     });
 
@@ -1111,11 +1159,11 @@
       region.id = system.id;
       region.innerHTML = `<div class="mobile-region-head"><span class="chapter-pill">${system.chapter}</span><h2>${system.title}</h2><p>${system.subtitle}</p></div>`;
       system.groups.forEach(group => {
-        const members = modulesData.filter(mod => mod.groupKey === group.key);
+        const members = displayModules.filter(mod => mod.groupKey === group.key);
         const subgroup = document.createElement('div');
         subgroup.className = 'mobile-group';
         subgroup.style.setProperty('--group-accent', group.accent);
-        subgroup.innerHTML = `<h3>${group.title}</h3><div class="mobile-nodes">${members.map(mod => `<a class="mobile-node" href="${mod.path}" aria-label="Open ${mod.title}">${symbolMarkup(mod, true)}<span>${mod.title}</span></a>`).join('')}</div>`;
+        subgroup.innerHTML = `<h3>${group.title}</h3><div class="mobile-nodes">${members.map(mod => mod.path ? `<a class="mobile-node" href="${mod.path}" aria-label="Open ${mod.title}">${symbolMarkup(mod, true)}<span>${mod.title}</span></a>` : `<span class="mobile-node" role="img" aria-label="${mod.title}, coming soon">${symbolMarkup(mod, true)}<span>${mod.title}<small style="display:block;margin-top:.25rem;color:#7c86a0;font-family:var(--mono);font-size:.52rem;letter-spacing:.08em;text-transform:uppercase">Coming soon</small></span></span>`).join('')}</div>`;
         region.appendChild(subgroup);
       });
       mobileRoot.appendChild(region);
