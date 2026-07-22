@@ -345,6 +345,18 @@ body.statml-standardized .progress-bar {
 }
 .statml-visual > * { max-width: 100%; }
 .statml-visual > :is(.status-strip,.control-panel,.canvas-container,.viz-stage,.canvas-wrapper) { width: 100% !important; }
+.statml-visual-card {
+  flex: 1 1 auto;
+  width: 100%;
+  min-width: 0;
+  min-height: 0;
+  position: relative;
+  overflow: hidden;
+  background: var(--statml-surface);
+  border: 1px solid var(--statml-border);
+  border-radius: var(--statml-radius-visual);
+  box-shadow: var(--statml-shadow-visual);
+}
 .statml-stage {
   min-height: 92svh !important;
   padding: 5rem 0 !important;
@@ -1138,7 +1150,9 @@ Training set only ➔ Try K values (1 to 15) ➔ CV accuracy ➔ Choose optimal 
 </div><!-- /narrative -->
 
 <div class="viz-container">
-  <canvas id="mainCanvas"></canvas>
+  <div class="statml-visual-card">
+    <canvas id="mainCanvas"></canvas>
+  </div>
 </div>
 
 </div><!-- /layout -->
@@ -3223,6 +3237,7 @@ window.addEventListener('resize',()=>{
     if (visible) activate(visible.target);
   },{rootMargin:'-25% 0px -45% 0px',threshold:[0,.15,.35,.6]});
   stageEls.forEach(s=>observer.observe(s));
+  requestAnimationFrame(() => window.dispatchEvent(new Event('resize')));
 })();
 </script>
 
