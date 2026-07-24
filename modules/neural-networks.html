@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="A scroll-driven StatML Academy lesson that explains neural networks from raw data to deployment using one evolving interactive visual.">
+  <title>Neural Networks | StatML Academy</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *,*::before,*::after{box-sizing:border-box}
+    :root{
+      --statml-page:#f7f7f4;--statml-page-subtle:#f0efeb;--statml-surface:#fff;
+      --statml-border:#e7e5e4;--statml-text:#1f2937;--statml-text-secondary:#4b5563;
+      --statml-text-muted:#6b7280;--statml-brand:#6366f1;--statml-brand-strong:#4f46e5;
+      --statml-brand-soft:#eef2ff;--statml-success:#16a34a;--statml-warning:#d97706;
+      --statml-danger:#dc2626;--statml-info:#2563eb;--statml-cyan:#0891b2;
+      --statml-radius-control:8px;--statml-radius-card:12px;--statml-radius-visual:16px;
+      --statml-shadow-card:0 2px 8px rgba(15,23,42,.045);
+      --statml-shadow-visual:0 14px 34px rgba(15,23,42,.07);
+      --sans:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      --mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Consolas,monospace;
+    }
+    html{scroll-behavior:smooth;scroll-padding-top:68px;background:var(--statml-page)}
+    body{margin:0;background:var(--statml-page);color:var(--statml-text);font-family:var(--sans);line-height:1.65;overflow-x:hidden;text-rendering:optimizeLegibility;-webkit-font-smoothing:antialiased}
+    body *{box-sizing:border-box}
+    ::selection{background:rgba(99,102,241,.18)}
+    :focus-visible{outline:3px solid rgba(99,102,241,.35)!important;outline-offset:3px!important}
+    a{color:inherit}
+    button,input,select{font:inherit}
+    .skip-link{position:fixed;z-index:1400;left:1rem;top:-5rem;padding:.65rem .9rem;border:1px solid var(--statml-border);border-radius:8px;background:#fff;color:var(--statml-brand-strong);text-decoration:none;transition:top .2s}
+    .skip-link:focus{top:1rem}
+    .progress-bar{position:fixed;inset:0 auto auto 0;height:4px;width:0;z-index:1200;background:linear-gradient(90deg,var(--statml-brand),var(--statml-brand-strong));transition:width .12s linear}
+    .statml-site-nav{position:fixed;inset:4px 0 auto;height:54px;z-index:1100;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:0 24px;background:rgba(247,247,244,.84);border-bottom:1px solid rgba(231,229,228,.85);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+    .statml-site-nav a{text-decoration:none}
+    .statml-brand-link{display:inline-flex;align-items:center;gap:10px;font-size:.84rem;font-weight:700;letter-spacing:-.01em;white-space:nowrap}
+    .statml-brand-mark{width:24px;height:24px;display:grid;place-items:center;border:1px solid var(--statml-border);border-radius:7px;background:var(--statml-surface);color:var(--statml-brand-strong);font-family:var(--mono);font-size:.72rem;box-shadow:var(--statml-shadow-card)}
+    .statml-nav-topic{min-width:0;color:var(--statml-text-secondary);font-size:.79rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .statml-nav-meta{color:var(--statml-text-muted);font-family:var(--mono);font-size:.68rem;letter-spacing:.04em;white-space:nowrap}
+    .statml-hero{min-height:100svh;padding:7.5rem 2rem 5rem;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;position:relative;overflow:hidden;isolation:isolate}
+    .statml-hero::after{content:"";position:absolute;inset:0;z-index:-2;background-image:radial-gradient(circle at 50% 42%,rgba(99,102,241,.16),transparent 38%),radial-gradient(rgba(99,102,241,.20) .8px,transparent .8px);background-size:auto,30px 30px;mask-image:linear-gradient(to bottom,rgba(0,0,0,.82),transparent 94%);opacity:.82}
+    #heroCanvas{position:absolute;inset:0;width:100%;height:100%;z-index:-1;pointer-events:none;opacity:.94}
+    .hero-inner{width:min(100%,980px);position:relative;z-index:2}
+    .hero-badge{display:inline-flex;align-items:center;justify-content:center;padding:.42rem .9rem;margin-bottom:1.35rem;border:1px solid rgba(99,102,241,.22);border-radius:999px;background:rgba(238,242,255,.82);color:var(--statml-brand-strong);font-family:var(--mono);font-size:.72rem;font-weight:600;letter-spacing:.09em;text-transform:uppercase}
+    .statml-hero h1{max-width:980px;margin:0 auto 1.35rem;font-size:clamp(2.8rem,6.5vw,5rem);font-weight:700;line-height:1.04;letter-spacing:-.045em;background:linear-gradient(135deg,#111827 8%,var(--statml-brand-strong) 100%);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent}
+    .hero-subtitle{max-width:720px;margin:0 auto;color:var(--statml-text-secondary);font-size:clamp(1.05rem,2vw,1.28rem);line-height:1.55}
+    .hero-note{max-width:660px;margin:1rem auto 0;color:var(--statml-text-muted);font-size:.88rem;line-height:1.55}
+    .statml-overview{width:min(850px,100%);margin:2rem auto 0;padding:1rem;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.7rem;border:1px solid rgba(231,229,228,.95);border-radius:var(--statml-radius-visual);background:rgba(255,255,255,.66);box-shadow:var(--statml-shadow-card);backdrop-filter:blur(8px)}
+    .statml-overview-item{display:flex;align-items:flex-start;gap:.65rem;padding:.65rem .72rem;text-align:left;color:var(--statml-text-secondary);font-size:.83rem;line-height:1.45}
+    .statml-overview-number{flex:0 0 auto;display:grid;place-items:center;width:22px;height:22px;border-radius:7px;background:var(--statml-brand-soft);color:var(--statml-brand-strong);font-family:var(--mono);font-size:.68rem;font-weight:700}
+    .scroll-cue{margin-top:1.6rem;color:var(--statml-text-muted);font-family:var(--mono);font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;animation:floatCue 2s ease-in-out infinite}
+    @keyframes floatCue{50%{transform:translateY(5px);opacity:.65}}
+    .statml-layout{display:grid;grid-template-columns:minmax(0,45%) minmax(0,55%);width:100%;max-width:1400px;margin:0 auto;align-items:start}
+    .statml-narrative{min-width:0;padding:0 4rem 10vh;z-index:2}
+    .statml-stage{min-height:92svh;padding:5rem 0;scroll-margin-top:62px;border-bottom:1px solid rgba(231,229,228,.72)}
+    .statml-stage:last-child{border-bottom:none}
+    .stage-label{margin:0 0 .9rem;display:flex;align-items:center;gap:.6rem;color:var(--statml-brand);font-family:var(--mono);font-size:.68rem;font-weight:700;letter-spacing:.11em;text-transform:uppercase}
+    .stage-label::before{content:"";width:22px;height:1px;background:var(--statml-brand);opacity:.75;flex:0 0 auto}
+    .statml-stage h2{margin:0 0 1.25rem;font-size:clamp(1.75rem,3vw,2.15rem);font-weight:700;line-height:1.18;letter-spacing:-.028em}
+    .statml-stage h3{margin:0 0 .65rem;color:var(--statml-text);font-size:1.05rem;font-weight:650;letter-spacing:-.012em}
+    .statml-stage p,.statml-stage li{color:var(--statml-text-secondary);font-size:1rem;line-height:1.7}
+    .statml-stage p{margin:.6rem 0 1rem}
+    .statml-stage strong{color:var(--statml-text);font-weight:650}
+    .glass-card,.statml-prereq,.statml-deepening,.statml-takeaways,.quiz-card,.control-card,.compare-grid>div{margin:1.25rem 0;padding:1.1rem 1.2rem;border:1px solid var(--statml-border);border-radius:var(--statml-radius-card);background:var(--statml-surface);box-shadow:var(--statml-shadow-card)}
+    .glass-card p:last-child,.statml-prereq p:last-child,.statml-deepening p:last-child,.statml-takeaways p:last-child{margin-bottom:0}
+    .formula-block{padding:1rem 1.15rem;margin:1rem 0;background:var(--statml-page-subtle);color:var(--statml-text);border:1px solid var(--statml-border);border-left:3px solid var(--statml-brand);border-radius:var(--statml-radius-control);font-family:var(--mono);font-size:.88rem;line-height:1.65;overflow-x:auto;white-space:pre-wrap}
+    .insight-box,.warning-note{margin:1.1rem 0;padding:.9rem 1rem;border:1px solid rgba(99,102,241,.18);border-left:4px solid var(--statml-brand);border-radius:0 var(--statml-radius-control) var(--statml-radius-control) 0;background:rgba(238,242,255,.68);color:var(--statml-text-secondary)}
+    .warning-note{border-color:rgba(217,119,6,.24);border-left-color:var(--statml-warning);background:rgba(255,251,235,.9);color:#92400e}
+    .insight-box p,.warning-note p{margin:0;font-size:.92rem}
+    .statml-prereq{border-left:4px solid var(--statml-info)}
+    .statml-deepening{border-left:4px solid var(--statml-warning);background:rgba(255,251,235,.66)}
+    .statml-takeaways{border-left:4px solid var(--statml-brand);background:rgba(238,242,255,.58)}
+    .content-kicker{display:block;margin-bottom:.4rem;color:var(--statml-text-muted);font-family:var(--mono);font-size:.67rem;font-weight:700;letter-spacing:.09em;text-transform:uppercase}
+    .tag{display:inline-flex;align-items:center;padding:.2rem .55rem;border-radius:999px;background:var(--statml-brand-soft);color:var(--statml-brand-strong);font-family:var(--mono);font-size:.72rem;font-weight:600}
+    .tag.green{background:#ecfdf5;color:#15803d}.tag.amber{background:#fffbeb;color:#b45309}.tag.red{background:#fef2f2;color:#b91c1c}.tag.blue{background:#eff6ff;color:#1d4ed8}
+    .metric-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.7rem;margin:1rem 0}
+    .metric-card{padding:.9rem;border:1px solid var(--statml-border);border-radius:var(--statml-radius-card);background:var(--statml-page);text-align:center}
+    .metric-value{font-family:var(--mono);font-size:1.18rem;font-weight:700;color:var(--statml-text)}
+    .metric-label{margin-top:.25rem;color:var(--statml-text-muted);font-family:var(--mono);font-size:.65rem;letter-spacing:.06em;text-transform:uppercase}
+    .plain-translation{display:grid;grid-template-columns:auto 1fr;gap:.75rem;align-items:start;margin:1.1rem 0;padding:1rem;border:1px dashed #c7d2fe;border-radius:var(--statml-radius-card);background:#fafaff}
+    .plain-icon{display:grid;place-items:center;width:30px;height:30px;border-radius:9px;background:var(--statml-brand-soft);color:var(--statml-brand-strong);font-family:var(--mono);font-weight:700}
+    .plain-translation p{margin:0;font-size:.92rem}
+    .two-col,.compare-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.75rem}
+    .choice-learn-panel{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));margin:1.25rem 0;border:1px solid var(--statml-border);border-radius:var(--statml-radius-card);background:var(--statml-surface);box-shadow:var(--statml-shadow-card);overflow:hidden}
+    .choice-learn-side{padding:1.1rem 1.2rem}
+    .choice-learn-side+ .choice-learn-side{border-left:1px solid var(--statml-border);background:linear-gradient(145deg,#fafaff,var(--statml-brand-soft))}
+    .choice-learn-side ul{margin:.65rem 0 0;padding-left:1.15rem}
+    .choice-learn-side li{font-size:.9rem;line-height:1.55}
+    .case-walkthrough{display:grid;gap:.65rem;margin:1rem 0}
+    .case-walkthrough>div{padding:.85rem 1rem;border:1px solid var(--statml-border);border-radius:10px;background:#fff}
+    .case-walkthrough p{margin:0;font-size:.9rem}
+    .mini-table{width:100%;border-collapse:collapse;margin:1rem 0;font-size:.85rem}
+    .mini-table th,.mini-table td{padding:.7rem .75rem;border:1px solid var(--statml-border);text-align:left;vertical-align:top}
+    .mini-table th{background:var(--statml-page-subtle);color:var(--statml-text-muted);font-size:.68rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+    .mini-table td{color:var(--statml-text-secondary)}
+    .mini-table td.mono{font-family:var(--mono);font-size:.78rem}
+    .statml-rigor-panel{margin:1.5rem 0;padding:1rem 1.1rem;border:1px solid #c7d2fe;border-radius:14px;background:linear-gradient(145deg,#f8fafc,#eef2ff);color:#1e293b;line-height:1.55}
+    .statml-rigor-panel h3{margin:.2rem 0 1rem;font-size:1.18rem;color:#312e81}
+    .statml-rigor-kicker{margin:0!important;color:#6366f1!important;font:700 .68rem/1.2 var(--sans)!important;letter-spacing:.12em;text-transform:uppercase}
+    .statml-rigor-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.75rem}
+    .statml-rigor-grid>div{padding:.8rem;border:1px solid #e2e8f0;border-radius:10px;background:rgba(255,255,255,.8)}
+    .statml-rigor-grid h4{margin:0 0 .3rem;color:#3730a3;font-size:.82rem}.statml-rigor-grid p{margin:0;font-size:.88rem;color:#334155}
+    details.deep-dive{margin:1.1rem 0;border:1px solid var(--statml-border);border-radius:var(--statml-radius-card);background:rgba(255,255,255,.74);overflow:hidden}
+    details.deep-dive summary{padding:.9rem 1rem;cursor:pointer;color:var(--statml-text);font-weight:650;list-style:none}
+    details.deep-dive summary::-webkit-details-marker{display:none}
+    details.deep-dive summary::after{content:"+";float:right;color:var(--statml-brand);font-family:var(--mono)}
+    details.deep-dive[open] summary::after{content:"−"}
+    .deep-content{padding:0 1rem 1rem}
+    .control-card label{display:block;margin:.7rem 0 .35rem;color:var(--statml-text);font-size:.82rem;font-weight:650}
+    input[type=range]{width:100%;accent-color:var(--statml-brand)}
+    .control-readout{font-family:var(--mono);color:var(--statml-brand-strong);font-weight:700}
+    .button-row{display:flex;gap:.55rem;flex-wrap:wrap;margin-top:.7rem}
+    .btn,.quiz-option{min-height:38px;padding:.55rem .8rem;border:1px solid var(--statml-border);border-radius:var(--statml-radius-control);background:#fff;color:var(--statml-text);cursor:pointer;transition:border-color .18s,background .18s,transform .18s}
+    .btn:hover,.quiz-option:hover{border-color:rgba(99,102,241,.55);transform:translateY(-1px)}
+    .btn.active,.btn.primary{background:var(--statml-brand);border-color:var(--statml-brand);color:#fff}
+    .quiz-card{border-left:4px solid var(--statml-brand)}
+    .quiz-options{display:grid;gap:.5rem;margin-top:.8rem}
+    .quiz-option{text-align:left;width:100%}
+    .quiz-option.correct{background:#ecfdf5;border-color:var(--statml-success);color:#15803d;font-weight:650}
+    .quiz-option.incorrect{background:#fef2f2;border-color:var(--statml-danger);color:#b91c1c}
+    .quiz-feedback{display:none;margin-top:.7rem;padding:.65rem .75rem;border-radius:8px;background:var(--statml-page);font-size:.85rem;font-weight:600}
+    .statml-visual{height:100svh;position:sticky;top:0;padding:4.2rem 1.6rem 1.4rem;display:flex;align-items:stretch;background:var(--statml-page);border-left:1px solid rgba(231,229,228,.72);overflow:hidden;z-index:1}
+    .statml-visual-card{flex:1;min-width:0;min-height:0;display:grid;grid-template-rows:auto 1fr auto;overflow:hidden;background:var(--statml-surface);border:1px solid var(--statml-border);border-radius:var(--statml-radius-visual);box-shadow:var(--statml-shadow-visual)}
+    .visual-topbar{display:flex;justify-content:space-between;gap:1rem;align-items:center;padding:.85rem 1rem;border-bottom:1px solid var(--statml-border);background:rgba(255,255,255,.94)}
+    .visual-kicker{color:var(--statml-brand);font-family:var(--mono);font-size:.65rem;font-weight:700;letter-spacing:.09em;text-transform:uppercase}
+    .visual-title{margin-top:.15rem;color:var(--statml-text);font-size:.9rem;font-weight:650;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .visual-badge{padding:.25rem .5rem;border-radius:999px;background:var(--statml-brand-soft);color:var(--statml-brand-strong);font-family:var(--mono);font-size:.62rem;white-space:nowrap}
+    .canvas-wrap{position:relative;min-height:0;background:linear-gradient(180deg,#fff,#fbfbfe)}
+    #mainCanvas{display:block;width:100%;height:100%}
+    .visual-foot{display:grid;grid-template-columns:1fr auto;gap:.75rem;align-items:center;padding:.65rem .9rem;border-top:1px solid var(--statml-border);background:var(--statml-page-subtle)}
+    .visual-foot-text{min-width:0;color:var(--statml-text-secondary);font-size:.78rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .visual-foot-code{font-family:var(--mono);font-size:.66rem;color:var(--statml-text-muted)}
+    .statml-stage-rail{position:fixed;right:14px;top:50%;transform:translateY(-50%);z-index:1000;display:flex;flex-direction:column;gap:7px;padding:10px 8px;border:1px solid rgba(231,229,228,.92);border-radius:999px;background:rgba(255,255,255,.78);box-shadow:var(--statml-shadow-card);backdrop-filter:blur(10px)}
+    .statml-stage-button{position:relative;width:9px;height:9px;padding:0;border:1px solid #cbd5e1;border-radius:999px;background:#e5e7eb;cursor:pointer;transition:transform .18s,background .18s,box-shadow .18s}
+    .statml-stage-button:hover{transform:scale(1.28);background:#a5b4fc}
+    .statml-stage-button[aria-current=step]{background:var(--statml-brand);border-color:var(--statml-brand);box-shadow:0 0 0 5px rgba(99,102,241,.12)}
+    .statml-stage-button span{position:absolute;right:19px;top:50%;transform:translateY(-50%) translateX(4px);width:max-content;max-width:240px;padding:.4rem .55rem;border-radius:7px;background:var(--statml-text);color:white;font-family:var(--sans);font-size:.7rem;line-height:1.3;opacity:0;pointer-events:none;transition:opacity .15s,transform .15s}
+    .statml-stage-button:hover span,.statml-stage-button:focus-visible span{opacity:1;transform:translateY(-50%) translateX(0)}
+    @media(max-width:1100px){.statml-narrative{padding-inline:2.5rem}.metric-row{grid-template-columns:1fr}.statml-stage p,.statml-stage li{font-size:.95rem}}
+    @media(max-width:900px){
+      .statml-site-nav{height:50px;padding:0 14px}.statml-brand-link{font-size:.78rem}.statml-nav-topic{font-size:.72rem}.statml-nav-meta{font-size:.6rem;letter-spacing:.02em}
+      .statml-hero{padding:6.5rem 1.2rem 4rem}.statml-overview{grid-template-columns:1fr;gap:.2rem;padding:.55rem}.statml-overview-item{padding:.48rem .55rem}
+      .statml-layout{display:flex;flex-direction:column}.statml-visual{order:1;width:100%;height:50svh;min-height:330px;top:0;padding:3.6rem .8rem .7rem;border-left:0;border-bottom:1px solid var(--statml-border);z-index:50}
+      .statml-narrative{order:2;width:100%;padding:0 1.35rem 4rem}.statml-stage{min-height:auto;padding:3.4rem 0}.statml-stage-rail{display:none}.visual-foot{display:none}
+      .two-col,.compare-grid,.choice-learn-panel{grid-template-columns:1fr}.choice-learn-side+ .choice-learn-side{border-left:0;border-top:1px solid var(--statml-border)}
+    }
+    @media(max-width:620px){.statml-brand-link span:last-child{display:none}.statml-nav-meta{display:none}.statml-hero h1{font-size:clamp(2.45rem,13vw,3.5rem)}.statml-rigor-grid{grid-template-columns:1fr}.visual-topbar{padding:.65rem .75rem}.visual-badge{display:none}}
+    @media(max-width:360px){.statml-narrative{padding-inline:.9rem}.mini-table{table-layout:fixed;font-size:.72rem}.mini-table th,.mini-table td{padding:.45rem .28rem;overflow-wrap:anywhere}.mini-table th{font-size:.58rem;letter-spacing:.02em}.mini-table .tag{padding:.12rem .3rem;font-size:.58rem}.statml-stage p,.statml-stage li{font-size:.92rem}}
+    @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+  </style>
+</head>
+<body class="statml-standardized">
+  <a class="skip-link" href="#lesson">Skip to lesson</a>
+  <div class="progress-bar" id="progressBar" aria-hidden="true"></div>
+  <nav class="statml-site-nav" aria-label="StatML Academy navigation">
+    <a class="statml-brand-link" href="https://elijah-ang.github.io/StatML-Academy/index.html"><span class="statml-brand-mark">S</span><span>StatML Academy</span></a>
+    <span class="statml-nav-topic">Neural Networks</span>
+    <span class="statml-nav-meta">Machine Learning · visual module</span>
+  </nav>
+
+  <header class="statml-hero" id="top">
+    <canvas id="heroCanvas" aria-hidden="true"></canvas>
+    <div class="hero-inner">
+      <div class="hero-badge">Machine Learning · Neural Networks</div>
+      <h1>Neural Networks</h1>
+      <div class="statml-overview" aria-label="Lesson overview">
+        <div class="statml-overview-item"><span class="statml-overview-number">1</span><span><strong>Prepare the evidence.</strong><br>Turn messy examples into usable features and honest data splits.</span></div>
+        <div class="statml-overview-item"><span class="statml-overview-number">2</span><span><strong>Learn through error.</strong><br>See signals move forward and corrections move backward.</span></div>
+        <div class="statml-overview-item"><span class="statml-overview-number">3</span><span><strong>Prove it works.</strong><br>Validate, test, deploy, monitor, and check fairness.</span></div>
+      </div>
+      <div class="scroll-cue">↓ Scroll to begin</div>
+    </div>
+  </header>
+
+  <main id="lesson" class="statml-layout">
+    <article class="statml-narrative">
+      <section class="statml-stage" data-stage="1" id="stage-1">
+        <div class="stage-label">Stage 01</div>
+        <h2>The whole idea: learn patterns from examples</h2>
+        <p>A <strong>neural network</strong> is a model made of small calculation units called neurons. Each neuron receives numbers, gives some of them more importance than others, combines them, and passes a new number forward.</p>
+        <p>Imagine teaching a child to recognize cats. You do not write every possible cat rule. You show many examples labeled <span class="tag green">cat</span> or <span class="tag red">not cat</span>. The child gradually notices patterns. A neural network does something similar with numbers.</p>
+        <div class="plain-translation"><span class="plain-icon">→</span><p><strong>Plain-English translation:</strong> examples go in, a prediction comes out, mistakes are measured, and the internal settings are adjusted so the next prediction is less wrong.</p></div>
+        <div class="glass-card"><h3>Normal programming versus machine learning</h3><p><strong>Normal programming:</strong> a human writes the rules, the computer applies them, and an answer comes out. <strong>Machine learning:</strong> a human supplies examples and correct outcomes, then the model learns useful rules from those examples. Neural networks are valuable when the rules are too numerous or complicated to write by hand.</p></div>
+        <div class="statml-prereq"><span class="content-kicker">Before you continue</span><p>You only need basic comfort with multiplication, averages, and percentages. Every specialist word is defined before it is used.</p></div>
+      </section>
+
+      <section class="statml-stage" data-stage="2" id="stage-2">
+        <div class="stage-label">Stage 02</div>
+        <h2>Data becomes features and labels</h2>
+        <p><strong>Data</strong> is the collection of examples the model learns from. In our toy problem, each row describes one student.</p>
+        <table class="mini-table">
+          <thead><tr><th>Study hours</th><th>Sleep hours</th><th>Attendance</th><th>Passed?</th></tr></thead>
+          <tbody><tr><td class="mono">8</td><td class="mono">7</td><td class="mono">90%</td><td><span class="tag green">Yes</span></td></tr><tr><td class="mono">2</td><td class="mono">4</td><td class="mono">40%</td><td><span class="tag red">No</span></td></tr><tr><td class="mono">5</td><td class="mono">6</td><td class="mono">70%</td><td><span class="tag green">Yes</span></td></tr></tbody>
+        </table>
+        <div class="two-col">
+          <div class="glass-card"><h3>Features</h3><p>The clues the model receives: study hours, sleep hours, and attendance.</p></div>
+          <div class="glass-card"><h3>Label</h3><p>The correct answer it must learn to predict: passed or failed.</p></div>
+        </div>
+        <div class="insight-box"><p><strong>Supervised learning</strong> means the training examples already contain the correct answers. Features are the clues; the label is the answer key.</p></div>
+      </section>
+
+      <section class="statml-stage" data-stage="3" id="stage-3">
+        <div class="stage-label">Stage 03</div>
+        <h2>Clean, encode, scale, then split</h2>
+        <p>Real data is rarely ready to train on. Missing values, duplicates, impossible values, inconsistent labels, and suspicious outliers must be investigated before the model sees them.</p>
+        <div class="compare-grid">
+          <div><h3>1. Clean</h3><p>Fix or remove records that are missing, duplicated, impossible, or inconsistent.</p></div>
+          <div><h3>2. Encode</h3><p>Turn words and categories into numbers because the network performs mathematics.</p></div>
+          <div><h3>3. Scale</h3><p>Put numerical features on comparable ranges so a large unit does not look important merely because its number is bigger.</p></div>
+          <div><h3>4. Split</h3><p>Keep separate training, validation, and test sets so memorization cannot impersonate learning.</p></div>
+        </div>
+        <div class="formula-block">Training set   ≈ 70%  → teaches the model
+Validation set ≈ 15%  → tunes choices during development
+Test set       ≈ 15%  → final, untouched exam</div>
+        <div class="warning-note"><p><strong>Keep the final exam separate:</strong> the test examples must not be used to teach or tune the model. Otherwise the final score no longer shows how well the model handles genuinely unseen data.</p></div>
+        <div class="statml-rigor-panel"><p class="statml-rigor-kicker">Academic precision</p><h3>Why scaling is useful</h3><div class="statml-rigor-grid"><div><h4>What it prevents</h4><p>A feature measured in thousands can dominate numerical updates even when it is not more meaningful.</p></div><div><h4>What it does not mean</h4><p>Scaling does not automatically decide which feature matters. The network still learns weights from the data.</p></div></div></div>
+      </section>
+
+      <section class="statml-stage" data-stage="4" id="stage-4">
+        <div class="stage-label">Stage 04</div>
+        <h2>A network is layers of tiny calculators</h2>
+        <p>The <strong>input layer</strong> receives study, sleep, and attendance. Each hidden neuron receives its own weighted mixture of those inputs. Across training, different mixtures become sensitive to different combinations—perhaps high study with low sleep, or strong attendance with moderate study. These are <strong>emergent feature detectors</strong>: useful sensitivities discovered from data, not roles assigned to neurons by a person.</p>
+        <div class="formula-block">Student pass/fail architecture: 3 → 8 → 4 → 1
+3 inputs → hidden patterns → 1 pass-score neuron</div>
+        <div class="choice-learn-panel" aria-label="What humans choose versus what the model learns">
+          <div class="choice-learn-side">
+            <span class="content-kicker">What you choose</span>
+            <h3>Design decisions before training</h3>
+            <ul><li>How many hidden layers</li><li>How many neurons per layer</li><li>Hidden and output activations</li><li>Optimizer and learning rate</li></ul>
+          </div>
+          <div class="choice-learn-side">
+            <span class="content-kicker">What the model learns</span>
+            <h3>Parameters discovered from examples</h3>
+            <ul><li>Every connection weight</li><li>Every neuron bias</li><li>Useful internal sensitivities</li><li>Representations that reduce loss</li></ul>
+          </div>
+        </div>
+        <div class="plain-translation"><span class="plain-icon">?</span><p><strong>Why not something simpler?</strong> A linear model may be enough when one straight boundary captures the pattern. Hidden layers are justified only when interactions and reusable intermediate patterns improve performance on new data.</p></div>
+        <div class="insight-box"><p>The visual begins with the skeleton you designed, then animates the connection strengths that training learns. A larger network is not automatically better: more depth and width need more data, computation, and protection against overfitting.</p></div>
+      </section>
+
+      <section class="statml-stage" data-stage="5" id="stage-5">
+        <div class="stage-label">Stage 05</div>
+        <h2>One feature has a different weight into every hidden neuron</h2>
+        <p>There is not one universal “sleep weight.” Sleep connects to every neuron in the next layer, and each connection learns a separate value. One neuron may respond strongly to sleep, another weakly, and another negatively because it combines sleep with different evidence.</p>
+        <div class="control-card">
+          <span class="content-kicker">Connection explorer</span>
+          <p>Choose an input to reveal its four independently learned connections.</p>
+          <div class="button-row" role="group" aria-label="Choose a feature to inspect">
+            <button class="btn" data-feature="study" aria-pressed="false">Study</button>
+            <button class="btn active" data-feature="sleep" aria-pressed="true">Sleep</button>
+            <button class="btn" data-feature="attendance" aria-pressed="false">Attendance</button>
+          </div>
+        </div>
+        <div class="formula-block">hidden neuron j score = study × wstudy,j + sleep × wsleep,j + attendance × wattendance,j + biasj</div>
+        <div class="plain-translation"><span class="plain-icon">w</span><p><strong>What:</strong> weights control sensitivity and biases shift activation. <strong>How:</strong> training changes all of them to reduce loss. <strong>Why:</strong> separate weights let neurons specialize in different combinations. <strong>Why not assign roles?</strong> Human labels would constrain the model before the data reveals which combinations are useful.</p></div>
+        <div class="insight-box"><p><strong>Interpretability note:</strong> you can inspect every weight, but raw numbers rarely translate into one clean human rule. A neuron usually participates in a distributed pattern with many other neurons.</p></div>
+      </section>
+
+      <section class="statml-stage" data-stage="6" id="stage-6">
+        <div class="stage-label">Stage 06</div>
+        <h2>Non-linearity lets stacked layers learn bends</h2>
+        <p>First ask why an activation is needed. If every layer performs only a linear weighted sum, stacking ten layers still collapses into one linear transformation. The network gains more arithmetic, but not a more flexible decision boundary.</p>
+        <div class="formula-block">inputs → weighted sum + bias → raw score → activation function → output signal</div>
+        <div class="control-card">
+          <span class="content-kicker">Boundary experiment</span>
+          <div class="button-row" role="group" aria-label="Toggle the hidden-layer ReLU">
+            <button class="btn" data-relu="off" aria-pressed="false">Linear only</button>
+            <button class="btn active" data-relu="on" aria-pressed="true">ReLU on</button>
+          </div>
+          <p>Use the buttons to focus either path; both remain visible for a direct comparison. Hidden layers use ReLU by default here. The output activation changes with the task:</p>
+          <div class="button-row" role="group" aria-label="Choose output task">
+            <button class="btn active" data-task="binary" aria-pressed="true">Binary sigmoid</button>
+            <button class="btn" data-task="multiclass" aria-pressed="false">Multiclass softmax</button>
+            <button class="btn" data-task="regression" aria-pressed="false">Regression linear</button>
+          </div>
+        </div>
+        <div class="plain-translation"><span class="plain-icon">↳</span><p><strong>ReLU is a learned-pattern gate.</strong> A positive raw score passes as evidence that one learned pattern is present; zero means that neuron does not pass evidence for that pattern. It is misleading to say the network simply “throws away negative information”: other neurons—with different weights and biases—can represent opposing or complementary evidence.</p></div>
+        <div class="compare-grid">
+          <div><h3>Hidden layers: ReLU</h3><p><code>ReLU(2.5) = 2.5</code> passes positive evidence; <code>ReLU(-3) = 0</code> gates that detector off.</p></div>
+          <div><h3>Binary output: sigmoid</h3><p>One raw output becomes a score from 0 to 1, such as a pass score of <code>0.82</code>.</p></div>
+          <div><h3>Multiclass output: softmax</h3><p>Several class scores are converted together into probabilities that total 100%.</p></div>
+          <div><h3>Regression output: linear</h3><p>The output remains a direct number because a probability constraint would be inappropriate.</p></div>
+        </div>
+        <div class="warning-note"><p><strong>Design decision:</strong> humans choose activations before training. Training learns the weights and biases that determine which patterns produce positive or non-positive raw scores.</p></div>
+      </section>
+
+      <section class="statml-stage" data-stage="7" id="stage-7">
+        <div class="stage-label">Stage 07</div>
+        <h2>Forward propagation makes one pass-score prediction</h2>
+        <p><strong>Forward propagation</strong> means information moves from the three inputs, through every hidden layer, to the single output neuron used by this binary task.</p>
+        <div class="formula-block">study + sleep + attendance
+→ hidden-layer calculations and ReLU activations
+→ one raw output score
+→ sigmoid
+→ pass score between 0 and 1</div>
+        <p>For one student, the output neuron might produce <strong>0.82</strong>. We read that as an 82% model score for “pass.” The corresponding fail score is <code>1 − 0.82 = 0.18</code>.</p>
+        <div class="insight-box"><p>The output neuron does not yet make the final Pass/Fail decision. Stage 14 will apply a separate decision threshold, such as 0.50, to turn this continuous score into a class label.</p></div>
+      </section>
+
+      <section class="statml-stage" data-stage="8" id="stage-8">
+        <div class="stage-label">Stage 08</div>
+        <h2>Loss measures how wrong the prediction was</h2>
+        <p>A <strong>loss function</strong> converts prediction error into a number. Smaller loss is better. Larger loss tells the training process that the current weights need more correction.</p>
+        <div class="two-col">
+          <div class="glass-card"><h3>Regression</h3><p>When predicting a number, <strong>mean squared error</strong> is common. It squares mistakes, so large errors receive extra punishment.</p></div>
+          <div class="glass-card"><h3>Classification</h3><p>When predicting a class, <strong>cross-entropy loss</strong> is common. It strongly penalizes a model that is confidently wrong.</p></div>
+        </div>
+        <div class="plain-translation"><span class="plain-icon">!</span><p><strong>Loss is the teacher's marking pen.</strong> It does not merely say “wrong.” It gives the optimizer a numerical signal showing how much improvement is needed.</p></div>
+        <div class="statml-rigor-panel"><p class="statml-rigor-kicker">Do not confuse these</p><h3>Loss versus metric</h3><div class="statml-rigor-grid"><div><h4>Loss</h4><p>The quantity optimized during training. It guides weight updates.</p></div><div><h4>Metric</h4><p>A human-readable measure such as accuracy, precision, recall, MAE, or RMSE.</p></div></div></div>
+      </section>
+
+      <section class="statml-stage" data-stage="9" id="stage-9">
+        <div class="stage-label">Stage 09</div>
+        <h2>Backpropagation computes gradients—only gradients</h2>
+        <p>A <strong>gradient</strong> is a collection of slopes: for each weight, it answers “if this weight increased a tiny amount, how would the loss change?” The sign gives a direction and the magnitude describes local sensitivity.</p>
+        <div class="formula-block">forward pass → prediction
+prediction + truth → loss
+backpropagation → gradient for every weight and bias
+weights are still unchanged</div>
+        <p>Backpropagation applies the chain rule from the loss backward through the network. It calculates how local changes connect to the final error. It does <strong>not</strong> choose a learning rate and it never updates a parameter.</p>
+        <div class="warning-note"><p><strong>Plain distinction:</strong> backprop computes gradients only. The optimizer later uses those gradients to update weights.</p></div>
+      </section>
+
+      <section class="statml-stage" data-stage="10" id="stage-10">
+        <div class="stage-label">Stage 10</div>
+        <h2>The optimizer takes iterative, local steps</h2>
+        <p><strong>Gradient descent</strong> applies the update. It combines the local gradient with a <strong>learning rate</strong>: <code>next weight = current weight − learning rate × gradient</code>. Because the gradient describes only the slope near the current point, optimization must repeat rather than jump directly to the answer.</p>
+        <div class="control-card">
+          <span class="content-kicker">Watch it walk downhill</span>
+          <div class="button-row" role="group" aria-label="Choose learning-rate behavior">
+            <button class="btn" data-lr-mode="tiny" aria-pressed="false">Tiny steps</button>
+            <button class="btn active" data-lr-mode="medium" aria-pressed="true">Medium steps</button>
+            <button class="btn" data-lr-mode="large" aria-pressed="false">Too large</button>
+            <button class="btn" id="optimPause" aria-pressed="false">Pause</button>
+          </div>
+          <p id="lrHelp"><strong>Small steps</strong> need many updates. <strong>Medium steps</strong> descend efficiently. <strong>Large steps</strong> can overshoot and bounce away. Drag the current point on the curve to inspect a different local slope.</p>
+        </div>
+        <div class="plain-translation"><span class="plain-icon">∇</span><p><strong>What:</strong> a gradient is local slope. <strong>Why:</strong> it tells the optimizer which nearby direction lowers loss. <strong>How:</strong> multiply it by the learning rate and update. <strong>Why not one giant step?</strong> the landscape bends, and the local slope does not reveal the whole terrain.</p></div>
+        <details class="deep-dive"><summary>Why local does not guarantee global</summary><div class="deep-content"><p>A low point reached from the current start may be a <strong>local minimum</strong>, while a lower <strong>global minimum</strong> exists elsewhere. Initialization, optimizer behavior, noise from batches, and the shape of the loss surface all affect the path.</p></div></details>
+      </section>
+
+      <section class="statml-stage" data-stage="11" id="stage-11">
+        <div class="stage-label">Stage 11</div>
+        <h2>One update has a strict causal order</h2>
+        <p>The model usually learns from a small <strong>batch</strong>. Each update follows the same sequence; confusing these steps hides what actually causes learning.</p>
+        <div class="formula-block">1. take data
+2. forward pass makes predictions
+3. loss measures error
+4. backpropagation computes gradients
+5. optimizer applies parameter updates
+6. updated weights change the next prediction
+7. repeat</div>
+        <div class="metric-row"><div class="metric-card"><div class="metric-value">Batch</div><div class="metric-label">examples per update</div></div><div class="metric-card"><div class="metric-value">Iteration</div><div class="metric-label">one update step</div></div><div class="metric-card"><div class="metric-value">Epoch</div><div class="metric-label">one full pass through training data</div></div></div>
+        <div class="formula-block">1,000 examples ÷ batch size 100 = 10 iterations per epoch</div>
+        <div class="plain-translation"><span class="plain-icon">↻</span><p>The forward pass supplies a prediction; loss supplies an objective; backprop supplies gradients; the optimizer supplies the update. Repetition turns many local corrections into learned behavior.</p></div>
+      </section>
+
+      <section class="statml-stage" data-stage="12" id="stage-12">
+        <div class="stage-label">Stage 12</div>
+        <h2>Choose the model before validation gets worse</h2>
+        <p>Training loss can keep falling while validation loss eventually rises. That is the causal signature of overfitting: the model is improving on examples it trains on while becoming less useful on unseen data. Keep the checkpoint near the lowest validation loss, not the final training step.</p>
+        <div class="plain-translation"><span class="plain-icon">⌁</span><p><strong>Local is not global:</strong> an optimizer follows nearby slopes and may settle in one valley even if a lower valley exists elsewhere. Validation asks a different question: whichever valley training reaches, does that model generalize?</p></div>
+        <div class="plain-translation"><span class="plain-icon">!</span><p><strong>Why can dependence be bad?</strong> A neuron might learn a brittle shortcut such as “attendance decides everything.” If later neurons rely heavily on that one pathway, the network may fail when the shortcut does not hold for new students.</p></div>
+        <div class="control-card">
+          <span class="content-kicker">Regularization control</span>
+          <label for="dropoutRate">Dropout rate during training: <span class="control-readout" id="dropoutReadout">20%</span></label>
+          <input id="dropoutRate" type="range" min="0" max="100" value="20" aria-describedby="dropoutHelp">
+          <p id="dropoutHelp">Decrease the rate and more hidden neurons stay active on the right. Increase it and more paths switch off, which can reduce shortcut dependence but may underfit; at 100%, this simplified visual switches off every hidden neuron.</p>
+        </div>
+        <div class="compare-grid">
+          <div><h3>During training</h3><p>Different hidden neurons are temporarily switched off on different updates.</p></div>
+          <div><h3>Validation and real use</h3><p>Dropout is switched off, the full network is used, and the framework handles the required scaling.</p></div>
+          <div><h3>Decrease dropout</h3><p>More paths stay active, but the model may overfit by leaning on shortcuts.</p></div>
+          <div><h3>Increase dropout</h3><p>More paths switch off in the visual, spreading reliance until excessive dropout starts to underfit.</p></div>
+        </div>
+        <div class="warning-note"><p><strong>Keep this model:</strong> save the checkpoint at the validation minimum. Dropout is one possible regularizer, not an automatic requirement; its value depends on the architecture, data, and observed overfitting.</p></div>
+      </section>
+
+      <section class="statml-stage" data-stage="13" id="stage-13">
+        <div class="stage-label">Stage 13</div>
+        <h2>Humans choose the architecture and hyperparameters</h2>
+        <p><strong>Parameters</strong> are learned by the model: every weight and bias. <strong>Hyperparameters</strong> are design decisions made before or around training.</p>
+        <div class="statml-rigor-panel"><p class="statml-rigor-kicker">Design decisions</p><h3>Why each choice exists</h3><div class="statml-rigor-grid"><div><h4>Depth and width</h4><p>Control representational capacity. Too little can underfit; too much can waste data and computation or overfit.</p></div><div><h4>Activations</h4><p>Add non-linearity and match output constraints. Hidden layers remain ReLU here.</p></div><div><h4>Optimizer</h4><p>Defines how gradients are converted into parameter updates.</p></div><div><h4>Learning rate</h4><p>Sets update scale: small is slow; large can overshoot.</p></div></div></div>
+        <div class="control-card">
+          <span class="content-kicker">Output-layer explorer</span>
+          <div class="button-row" role="group" aria-label="Choose prediction task">
+            <button class="btn active" data-task="binary" aria-pressed="true">Binary class</button>
+            <button class="btn" data-task="multiclass" aria-pressed="false">Multi-class</button>
+            <button class="btn" data-task="regression" aria-pressed="false">Regression</button>
+          </div>
+        </div>
+        <div class="compare-grid"><div><h3>Binary classification</h3><p>Hidden layers: ReLU. Output: one neuron with sigmoid.</p></div><div><h3>Multi-class classification</h3><p>Hidden layers: ReLU. Output: one score per class with softmax.</p></div><div><h3>Regression</h3><p>Hidden layers: ReLU. Output: usually one linear numerical value.</p></div><div><h3>Feature engineering</h3><p>Structured problems may improve when raw fields are turned into more useful clues, such as date of birth → age.</p></div></div>
+        <div class="warning-note"><p>There is no universal “best” architecture. A design must match the task, data quantity, noise, complexity, and cost of mistakes.</p></div>
+      </section>
+
+      <section class="statml-stage" data-stage="14" id="stage-14">
+        <div class="stage-label">Stage 14</div>
+        <h2>The test set evaluates both scores and decisions</h2>
+        <p>After training and tuning are finished, the model is evaluated once on the untouched <strong>test set</strong>. For our binary task, sigmoid first produces a pass score. A separate <strong>classification decision threshold</strong> then converts that score into Pass or Fail.</p>
+        <div class="formula-block">model pass score = 0.72
+decision threshold = 0.50
+0.72 ≥ 0.50
+prediction = Pass</div>
+        <div class="warning-note"><p>This threshold is <strong>not the school’s exam passing mark</strong>. It is the model’s cutoff for turning a score between 0 and 1 into a predicted class.</p></div>
+        <div class="control-card"><span class="content-kicker">Decision control</span><label for="threshold">Classification decision threshold: <span class="control-readout" id="thresholdReadout">0.50</span></label><input id="threshold" type="range" min="20" max="80" value="50" aria-describedby="thresholdHelp"><p id="thresholdHelp">Lowering the threshold predicts Pass more easily: recall usually rises, but false positives may increase. Raising it is stricter: false positives may fall, but more actual passes can be missed.</p></div>
+        <div class="metric-row"><div class="metric-card"><div class="metric-value" id="thresholdPrecision">0.75</div><div class="metric-label">Precision</div></div><div class="metric-card"><div class="metric-value" id="thresholdRecall">0.75</div><div class="metric-label">Recall</div></div><div class="metric-card"><div class="metric-value" id="thresholdF1">0.75</div><div class="metric-label">F1-score</div></div></div>
+        <table class="mini-table"><thead><tr><th></th><th>Actually passed</th><th>Actually failed</th></tr></thead><tbody><tr><th>Predicted pass</th><td><strong>True positive:</strong> <span id="tpCount">3</span></td><td><strong>False positive:</strong> <span id="fpCount">1</span></td></tr><tr><th>Predicted fail</th><td><strong>False negative:</strong> <span id="fnCount">1</span></td><td><strong>True negative:</strong> <span id="tnCount">3</span></td></tr></tbody></table>
+        <div class="insight-box"><p><strong>Accuracy alone can mislead.</strong> Precision asks whether predicted passes were usually correct. Recall asks how many actual passes the model successfully found.</p></div>
+      </section>
+
+      <section class="statml-stage" data-stage="15" id="stage-15">
+        <div class="stage-label">Stage 15</div>
+        <h2>Error analysis starts with individual students</h2>
+        <p>Overall scores hide which people are affected. Move the threshold, inspect the highlighted false positives and false negatives, and connect each case to the metric that represents its cost.</p>
+        <div class="control-card">
+          <span class="content-kicker">Case-level threshold explorer</span>
+          <label for="errorThreshold">Classification threshold: <span class="control-readout" id="errorThresholdReadout">0.50</span></label>
+          <input id="errorThreshold" type="range" min="20" max="80" value="50">
+          <div class="button-row" role="group" aria-label="Sort student predictions">
+            <button class="btn" data-error-sort="score" aria-pressed="false">Sort by score</button>
+            <button class="btn active" data-error-sort="threshold" aria-pressed="true">Sort by distance to threshold</button>
+          </div>
+        </div>
+        <div class="case-walkthrough">
+          <div><p><strong>Noor, score 0.68, actually failed:</strong> at the starting 0.50 threshold this is a <strong>false positive</strong>. If wrongly predicting success is costly, prioritize <strong>precision</strong>.</p></div>
+          <div><p><strong>Sam, score 0.43, actually passed:</strong> at the starting 0.50 threshold this is a <strong>false negative</strong>. If missing a student who would pass is costly, prioritize <strong>recall</strong>.</p></div>
+          <div><p><strong>Ana, score 0.57, actually passed:</strong> at the starting threshold this is a borderline true positive that flips when the threshold rises past 0.57. <strong>F1</strong> is useful when both false positives and false negatives matter and one balanced summary is needed.</p></div>
+        </div>
+        <div class="statml-deepening"><span class="content-kicker">From case to action</span><p>Threshold changes only the decision rule; it does not repair weak features, biased labels, or poor calibration. Inspect concrete errors, diagnose the cause, change the appropriate part, then evaluate again by relevant groups.</p></div>
+      </section>
+
+      <section class="statml-stage" data-stage="16" id="stage-16">
+        <div class="stage-label">Stage 16</div>
+        <h2>Saving, deployment, and monitoring finish the lifecycle</h2>
+        <p>Once performance is acceptable, the final model is saved. The saved package includes the architecture, learned weights and biases, and often the preprocessing rules needed to reproduce training-time inputs.</p>
+        <div class="formula-block">new user input
+→ same preprocessing used during training
+→ saved model
+→ prediction
+→ application response</div>
+        <p><strong>Deployment</strong> puts the model into a website, mobile app, server API, edge device, or business system. A model sitting in a notebook is an experiment, not a working service.</p>
+        <div class="statml-deepening"><span class="content-kicker">After launch</span><p>Monitor accuracy, error types, input-data changes, speed, complaints, fairness, and security. When the world changes and performance falls, the model is experiencing <strong>drift</strong>.</p></div>
+      </section>
+
+      <section class="statml-stage" data-stage="17" id="stage-17">
+        <div class="stage-label">Stage 17</div>
+        <h2>Different network families organize information differently</h2>
+        <div class="compare-grid"><div><h3>Feedforward network</h3><p>Information moves from input to hidden layers to output. This is the structure used throughout this lesson.</p></div><div><h3>Convolutional network (CNN)</h3><p>Common for images. Early layers notice edges; later layers combine them into shapes and object parts.</p></div><div><h3>Recurrent network (RNN)</h3><p>Designed for sequences and previous context, such as text, audio, and time series.</p></div><div><h3>Transformer</h3><p>Uses attention to connect relevant parts of data, allowing many relationships to be considered at once.</p></div></div>
+        <p>This layered transformation is called <strong>representation learning</strong>. Raw inputs become increasingly useful internal patterns: pixels → edges → shapes → objects, or word pieces → phrases → context.</p>
+        <div class="warning-note"><p><strong>Interpretability:</strong> weights are visible, but a representation is usually distributed across many parameters. Inspecting one large weight rarely yields a faithful human rule; use case-level explanations, sensitivity analyses, and validation evidence together.</p></div>
+        <div class="insight-box"><p>Neural networks are powerful because they can learn complex representations. They are used for images, speech, text, translation, recommendations, medical scans, fraud detection, forecasting, game playing, and large language models. They are not magic: they still depend on good data, sensible design, testing, monitoring, and human judgment.</p></div>
+      </section>
+
+      <section class="statml-stage" data-stage="18" id="stage-18">
+        <div class="stage-label">Stage 18</div>
+        <h2>Try the tiny student-pass network</h2>
+        <p>Move the inputs and watch the same network update. This is an illustrative toy, not a trained admissions or education model.</p>
+        <div class="control-card">
+          <label for="studyInput">Study hours: <span class="control-readout" id="studyReadout">6</span></label><input id="studyInput" type="range" min="0" max="12" value="6">
+          <label for="sleepInput">Sleep hours: <span class="control-readout" id="sleepReadout">7</span></label><input id="sleepInput" type="range" min="3" max="10" value="7">
+          <label for="attendanceInput">Attendance: <span class="control-readout" id="attendanceReadout">75%</span></label><input id="attendanceInput" type="range" min="20" max="100" value="75">
+        </div>
+        <div class="metric-row"><div class="metric-card"><div class="metric-value" id="toyScore">0.68</div><div class="metric-label">Toy pass score</div></div><div class="metric-card"><div class="metric-value" id="toyDecision">Pass</div><div class="metric-label">At current threshold</div></div><div class="metric-card"><div class="metric-value" id="toyConfidence">Moderate</div><div class="metric-label">Distance from threshold</div></div></div>
+        <div class="warning-note"><p>A score is not a guarantee and does not explain causation. This toy only demonstrates how changed inputs can flow through a fixed set of weights.</p></div>
+      </section>
+
+      <section class="statml-stage" data-stage="19" id="stage-19">
+        <div class="stage-label">Final synthesis</div>
+        <h2>One full training cycle</h2>
+        <div class="statml-takeaways"><span class="content-kicker">The causal chain</span><ul><li><strong>You choose</strong> the architecture, activations, optimizer, and learning rate.</li><li><strong>Data</strong> enters and a forward pass produces predictions.</li><li><strong>Loss</strong> converts prediction error into an objective.</li><li><strong>Backpropagation computes gradients only.</strong></li><li><strong>The optimizer updates every weight and bias.</strong></li><li><strong>Updated parameters</strong> change the next forward pass.</li><li><strong>Validation</strong> identifies the checkpoint that generalizes best.</li><li><strong>Testing, deployment, monitoring, and error analysis</strong> keep the model accountable after training.</li></ul></div>
+        <div class="formula-block">data → forward pass → loss → backprop gradients
+→ optimizer step → updated weights → repeat</div>
+        <div class="plain-translation"><span class="plain-icon">↻</span><p><strong>What:</strong> a parameterized function. <strong>Why:</strong> to learn patterns too complex to specify cleanly. <strong>How:</strong> repeated local updates reduce loss. <strong>Why not something simpler?</strong> use a simpler model whenever it generalizes well enough and is easier to maintain or explain.</p></div>
+        <div class="quiz-card" data-answer="test"><h3>Final check</h3><p>Which dataset should stay untouched until training and tuning are complete?</p><div class="quiz-options"><button class="quiz-option" data-choice="train">Training set</button><button class="quiz-option" data-choice="validation">Validation set</button><button class="quiz-option" data-choice="test">Test set</button></div><div class="quiz-feedback">The test set is the final untouched exam. Training teaches; validation tunes.</div></div>
+      </section>
+    </article>
+
+    <aside class="statml-visual" aria-label="Interactive neural network visualization">
+      <div class="statml-visual-card">
+        <div class="visual-topbar"><div><div class="visual-kicker" id="visualKicker">Stage 01</div><div class="visual-title" id="visualTitle">Learn patterns from examples</div></div><div class="visual-badge" id="visualBadge">Neural learning lab</div></div>
+        <div class="canvas-wrap"><canvas id="mainCanvas" role="img" aria-label="A neural network diagram that changes with each lesson stage"></canvas></div>
+        <div class="visual-foot"><div class="visual-foot-text" id="visualFootText">Examples enter from the left; a prediction leaves on the right.</div><div class="visual-foot-code" id="visualFootCode">data → prediction</div></div>
+      </div>
+    </aside>
+  </main>
+
+  <nav class="statml-stage-rail" id="stageRail" aria-label="Lesson stages"></nav>
+
+
+  <script>
+  (()=>{
+    'use strict';
+    const reducedMotion=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const stages=[
+      null,
+      {title:'Learn patterns from examples',badge:'Big picture',foot:'Examples enter from the left; a prediction leaves on the right.',code:'data → prediction'},
+      {title:'Features and labels',badge:'Supervised data',foot:'Features are clues. The label is the answer the model must learn.',code:'X → y'},
+      {title:'Prepare and split data',badge:'Preprocessing',foot:'Clean, encode, scale, and preserve an untouched final test set.',code:'train · validate · test'},
+      {title:'Choose the skeleton; learn the parameters',badge:'Design vs learning',foot:'Humans choose architecture; training learns every weight and bias.',code:'skeleton → learned parameters'},
+      {title:'Connection explorer',badge:'One feature → many weights',foot:'Each feature has a separate learned weight into every next-layer neuron.',code:'feature × four sensitivities'},
+      {title:'Why non-linearity matters',badge:'Linear vs ReLU',foot:'Linear stacks collapse to a line; ReLU lets learned boundaries bend.',code:'linear + linear = linear'},
+      {title:'Forward propagation',badge:'Make a guess',foot:'Signals move from inputs to output so the network can predict.',code:'forward pass'},
+      {title:'Loss measures error',badge:'How wrong?',foot:'Prediction and truth are compared to produce one error signal.',code:'prediction ↔ truth'},
+      {title:'Backprop computes gradients',badge:'No update yet',foot:'Backpropagation calculates local slopes; it never changes a weight.',code:'loss → gradients'},
+      {title:'Optimizer applies updates',badge:'Watch it walk downhill',foot:'Learning rate scales repeated local gradient steps.',code:'w ← w − η∇L'},
+      {title:'One causal update',badge:'Strict order',foot:'Forward, loss, gradients, optimizer, updated weights, repeat.',code:'predict → learn → repeat'},
+      {title:'Generalization and checkpoints',badge:'Keep the best model',foot:'Keep the validation minimum even while training loss keeps falling.',code:'train ↓ · validate ↓ then ↑'},
+      {title:'Architecture and outputs',badge:'Match the task',foot:'The output layer changes for binary, multi-class, or numerical targets.',code:'task → output design'},
+      {title:'Test and metrics',badge:'Final exam',foot:'Thresholds change the trade-off between missed positives and false alarms.',code:'precision ↔ recall'},
+      {title:'Case-level error analysis',badge:'Threshold explorer',foot:'Concrete false positives and false negatives explain precision, recall, and F1.',code:'cases → matrix → metrics'},
+      {title:'Deploy and monitor',badge:'Real-world use',foot:'Save preprocessing with the model, serve predictions, and watch for drift.',code:'save → serve → monitor'},
+      {title:'Network families',badge:'Representation learning',foot:'Different architectures organize image, sequence, and attention patterns.',code:'raw data → representation'},
+      {title:'Toy playground',badge:'Change the inputs',foot:'A fixed toy network turns three scaled inputs into one pass score.',code:'inputs → score → decision'},
+      {title:'One full training cycle',badge:'One causal loop',foot:'Data, forward pass, loss, gradients, optimizer, updated weights, repeat.',code:'data → forward → loss → gradients → update'}
+    ];
+
+    const state={active:1,learningRate:.12,learningMode:'medium',dropout:.20,threshold:.50,task:'binary',study:6,sleep:7,attendance:75,toyScore:.68,selectedFeature:'sleep',reluEnabled:true,errorSort:'threshold',weight:.78,draggingWeight:false,optimPaused:false,optimElapsed:0,curveGeom:null};
+    const $=s=>document.querySelector(s);
+    const $$=s=>[...document.querySelectorAll(s)];
+    const canvas=$('#mainCanvas'),ctx=canvas.getContext('2d');
+    const heroCanvas=$('#heroCanvas'),heroCtx=heroCanvas.getContext('2d');
+    let cw=0,ch=0,dpr=1,animationId=0,heroId=0,startTime=performance.now();
+
+    function fitCanvas(el,context){
+      const r=el.getBoundingClientRect();
+      const ratio=Math.min(window.devicePixelRatio||1,2);
+      el.width=Math.max(1,Math.round(r.width*ratio));
+      el.height=Math.max(1,Math.round(r.height*ratio));
+      context.setTransform(ratio,0,0,ratio,0,0);
+      return {w:r.width,h:r.height,ratio};
+    }
+    function resize(){const s=fitCanvas(canvas,ctx);cw=s.w;ch=s.h;fitCanvas(heroCanvas,heroCtx);draw();drawHero(performance.now());}
+    new ResizeObserver(resize).observe(canvas.parentElement);
+    window.addEventListener('resize',resize,{passive:true});
+
+    const C={ink:'#1f2937',muted:'#6b7280',line:'#d9dde7',brand:'#6366f1',brand2:'#4f46e5',soft:'#eef2ff',green:'#16a34a',amber:'#d97706',red:'#dc2626',blue:'#2563eb',cyan:'#0891b2',paper:'#f7f7f4',surface:'#ffffff'};
+    function rr(x,y,w,h,r=12,fill=C.surface,stroke=C.line){ctx.beginPath();ctx.roundRect(x,y,w,h,r);if(fill){ctx.fillStyle=fill;ctx.fill()}if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=1;ctx.stroke()}}
+    function line(x1,y1,x2,y2,color=C.line,width=1,dash=[]){ctx.beginPath();ctx.setLineDash(dash);ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.strokeStyle=color;ctx.lineWidth=width;ctx.stroke();ctx.setLineDash([])}
+    function text(t,x,y,size=13,color=C.ink,align='left',weight=500,font='Inter'){ctx.fillStyle=color;ctx.font=`${weight} ${size}px ${font}`;ctx.textAlign=align;ctx.textBaseline='middle';ctx.fillText(t,x,y)}
+    function wrap(t,x,y,maxW,lineH=17,size=12,color=C.muted,weight=400,align='left'){
+      ctx.font=`${weight} ${size}px Inter`;ctx.fillStyle=color;ctx.textAlign=align;ctx.textBaseline='top';
+      const words=t.split(' ');let row='',yy=y;for(const word of words){const test=row?row+' '+word:word;if(ctx.measureText(test).width>maxW&&row){ctx.fillText(row,x,yy);row=word;yy+=lineH}else row=test}if(row)ctx.fillText(row,x,yy);return yy+lineH;
+    }
+    function badge(t,x,y,color=C.brand,size=10){ctx.font=`600 ${size}px "JetBrains Mono"`;const w=ctx.measureText(t).width+18,h=size+14;rr(x,y,w,h,h/2,color+'12',color+'35');text(t,x+w/2,y+h/2,size,color,'center',600,'"JetBrains Mono"');return w}
+    function labelChip(t,x,y,color=C.ink,size=10,align='right'){ctx.font=`700 ${size}px "JetBrains Mono"`;const w=ctx.measureText(t).width+14,h=size+10,left=align==='right'?x-w:align==='center'?x-w/2:x;rr(left,y-h/2,w,h,5,'#fff',color+'35');text(t,align==='right'?x-7:align==='center'?x:left+7,y,size,color,align,700,'"JetBrains Mono"');return w}
+    function arrow(x1,y1,x2,y2,color=C.brand,width=2,alpha=1){ctx.save();ctx.globalAlpha=alpha;line(x1,y1,x2,y2,color,width);const a=Math.atan2(y2-y1,x2-x1);ctx.beginPath();ctx.moveTo(x2,y2);ctx.lineTo(x2-8*Math.cos(a-.45),y2-8*Math.sin(a-.45));ctx.lineTo(x2-8*Math.cos(a+.45),y2-8*Math.sin(a+.45));ctx.closePath();ctx.fillStyle=color;ctx.fill();ctx.restore()}
+    function node(x,y,r,label,fill=C.surface,stroke=C.brand,muted=false){ctx.save();ctx.globalAlpha=muted?.28:1;ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.fillStyle=fill;ctx.fill();ctx.strokeStyle=stroke;ctx.lineWidth=muted?1:2;ctx.stroke();if(label!==undefined)text(String(label),x,y,Math.max(9,r*.6),stroke,'center',700,'"JetBrains Mono"');ctx.restore()}
+    function panelTitle(title,x,y,w,code){text(title,x+14,y+18,cw<500?11:13,C.ink,'left',700);if(code)text(code,x+w-22,y+18,cw<500?8:10,C.muted,'right',600,'"JetBrains Mono"')}
+    function networkLayout(task='binary'){
+      const pad=Math.max(34,cw*.06),top=Math.max(52,ch*.09),bottom=Math.max(58,ch*.12);
+      const y0=top,y1=ch-bottom;
+      const xs=[pad+32,cw*.36,cw*.60,cw-pad-32];
+      const counts=[3,task==='regression'?5:5,task==='regression'?3:4,task==='multiclass'?3:1];
+      return counts.map((count,i)=>Array.from({length:count},(_,j)=>({x:xs[i],y:y0+(j+1)*(y1-y0)/(count+1),layer:i,index:j})));
+    }
+    function drawConnections(layers,{back=false,fade=.42,pulses=false,time=0}={}){
+      for(let i=0;i<layers.length-1;i++)for(const a of layers[i])for(const b of layers[i+1]){
+        const off=((a.index*7+b.index*11+i*5)%9)-4;
+        const color=back?C.red:(off>0?C.brand:C.blue);
+        line(a.x+16,a.y,b.x-16,b.y,color,Math.abs(off)>2?1.2:.7,[]);ctx.globalAlpha=1;
+        if(pulses){const raw=((time*.00035)+(a.index*.13+b.index*.09+i*.17));const phase=((raw%1)+1)%1;const px=(a.x+16)+(b.x-a.x-32)*phase,py=a.y+(b.y-a.y)*phase;ctx.beginPath();ctx.arc(px,py,3,0,Math.PI*2);ctx.fillStyle=color;ctx.fill()}
+      }
+    }
+    function drawNetwork({focusLayer=-1,back=false,pulses=false,time=0,dropout=false,task='binary'}={}){
+      const layers=networkLayout(task);ctx.save();ctx.globalAlpha=.32;drawConnections(layers,{back,pulses,time});ctx.restore();
+      const labels=['Inputs','Hidden 1','Hidden 2','Output'];
+      layers.forEach((layer,i)=>{text(labels[i],layer[0].x,28,cw<500?9:11,i===focusLayer?C.brand:C.muted,'center',700,'"JetBrains Mono"');layer.forEach((n,j)=>{const off=dropout&&i>0&&i<3&&((j+i*2)%5)/5<state.dropout;node(n.x,n.y,15,i===0?['x₁','x₂','x₃'][j]:(i===3?(task==='multiclass'?['A','B','C'][j]:(task==='regression'?'ŷ':'p')):''),off?'#f3f4f6':(i===focusLayer?C.soft:C.surface),off?'#cbd5e1':(i===focusLayer?C.brand:C.blue),off)});});return layers;
+    }
+    function clear(){ctx.clearRect(0,0,cw,ch);ctx.fillStyle='#fbfbfe';ctx.fillRect(0,0,cw,ch);ctx.strokeStyle='rgba(99,102,241,.055)';ctx.lineWidth=1;for(let x=28;x<cw;x+=36)line(x,0,x,ch,'rgba(99,102,241,.05)');for(let y=28;y<ch;y+=36)line(0,y,cw,y,'rgba(99,102,241,.05)')}
+    function smallDataCard(x,y,w,label,value,color){rr(x,y,w,44,10,'#fff',C.line);text(label,x+12,y+14,9,C.muted,'left',600,'"JetBrains Mono"');text(value,x+12,y+30,14,color,'left',700,'"JetBrains Mono"')}
+    function drawStage1(t){
+      if(cw<500){
+        const left=18,mid=cw*.50,right=cw-18;[['student 01','pass',C.green],['student 02','fail',C.red],['student 03','pass',C.green]].forEach((r,i)=>smallDataCard(left,42+i*60,92,r[0],r[1],r[2]));
+        arrow(left+100,ch*.48,mid-54,ch*.48,C.brand,1.7);rr(mid-48,74,96,118,18,C.soft,'rgba(99,102,241,.35)');text('LEARN',mid,108,15,C.brand2,'center',800,'"JetBrains Mono"');wrap('adjust weights from examples',mid,130,76,14,10,C.muted,500,'center');arrow(mid+54,ch*.48,right-76,ch*.48,C.brand,1.7);rr(right-70,92,62,80,14,'#fff',C.line);text('0.82',right-39,120,18,C.brand2,'center',800,'"JetBrains Mono"');text('score',right-39,146,9,C.muted,'center',600,'"JetBrains Mono"');return;
+      }
+      const left=36,mid=cw*.46,right=cw-36;
+      for(let i=0;i<5;i++){const y=80+i*58;smallDataCard(left,y,130,['student 01','student 02','student 03','student 04','student 05'][i],["pass","fail","pass","fail","pass"][i],i%2?C.red:C.green)}
+      arrow(left+142,ch*.5,mid-80,ch*.5,C.brand,2);rr(mid-70,ch*.5-70,140,140,22,C.soft,'rgba(99,102,241,.35)');text('LEARN',mid,ch*.5-10,18,C.brand2,'center',800,'"JetBrains Mono"');wrap('adjust internal weights from examples',mid,ch*.5+18,110,15,11,C.muted,500,'center');arrow(mid+80,ch*.5,right-120,ch*.5,C.brand,2);rr(right-110,ch*.5-48,95,96,16,'#fff',C.line);text('0.82',right-62,ch*.5-7,24,C.brand2,'center',800,'"JetBrains Mono"');text('pass score',right-62,ch*.5+22,10,C.muted,'center',600,'"JetBrains Mono"')
+    }
+    function drawStage2(){
+      const rows=cw<500?[['8','7','90%','PASS'],['2','4','40%','FAIL'],['5','6','70%','PASS']]:[['8','7','90%','PASS'],['2','4','40%','FAIL'],['5','6','70%','PASS'],['1','3','30%','FAIL']];const x=cw<500?18:30,y=cw<500?34:55,w=cw-(cw<500?36:60),rowH=cw<500?38:42;rr(x,y,w,rowH*(rows.length+1),14,'#fff',C.line);const cols=[.08,.31,.54,.77];['STUDY','SLEEP','ATTEND','LABEL'].forEach((h,i)=>text(h,x+w*cols[i],y+rowH/2,cw<500?8:9,C.muted,'center',700,'"JetBrains Mono"'));line(x,y+rowH,x+w,y+rowH,C.line);rows.forEach((r,ri)=>{r.forEach((v,i)=>text(v,x+w*cols[i],y+rowH*(ri+1)+rowH/2,cw<500?10:12,i===3?(v==='PASS'?C.green:C.red):C.ink,'center',i===3?700:500,'"JetBrains Mono"'));if(ri<rows.length-1)line(x,y+rowH*(ri+2),x+w,y+rowH*(ri+2),C.line)});if(cw>=500){badge('FEATURES',x+12,y+rowH*(rows.length+1)+18,C.blue);badge('LABEL',x+102,y+rowH*(rows.length+1)+18,C.green)}
+    }
+    function drawStage3(){
+      const steps=[['CLEAN','fix missing / duplicate'],['ENCODE','words → numbers'],['SCALE','comparable ranges'],['SPLIT','70 / 15 / 15']];
+      if(cw<500){const gap=10,w=(cw-46)/2,h=72;steps.forEach((s,i)=>{const c=i%2,r=Math.floor(i/2),x=18+c*(w+10),y=24+r*(h+gap);rr(x,y,w,h,12,i===3?C.soft:'#fff',i===3?'rgba(99,102,241,.35)':C.line);text(String(i+1).padStart(2,'0'),x+10,y+13,8,C.brand,'left',700,'"JetBrains Mono"');text(s[0],x+w/2,y+32,10,C.ink,'center',750,'"JetBrains Mono"');text(s[1],x+w/2,y+52,8,C.muted,'center',500)});const by=198;[['TRAIN',.7,C.brand2],['VAL',.15,C.blue],['TEST',.15,C.green]].reduce((acc,v)=>{const x=18+(cw-36)*acc,ww=(cw-36)*v[1];rr(x,by,ww-2,44,7,v[2]+'12',C.line);text(v[0],x+(ww-2)/2,by+22,8,v[2],'center',700,'"JetBrains Mono"');return acc+v[1]},0);return}
+      const gap=12,w=(cw-60-gap*3)/4,y=ch*.34;steps.forEach((s,i)=>{const x=30+i*(w+gap);rr(x,y,w,112,14,i===3?C.soft:'#fff',i===3?'rgba(99,102,241,.35)':C.line);text(String(i+1).padStart(2,'0'),x+14,y+18,9,C.brand,'left',700,'"JetBrains Mono"');text(s[0],x+w/2,y+48,12,C.ink,'center',750,'"JetBrains Mono"');wrap(s[1],x+w/2,y+67,w-20,14,10,C.muted,400,'center');if(i<3)arrow(x+w+2,y+56,x+w+gap-2,y+56,C.brand,1.4)});const by=y+145;['TRAIN 70%','VALIDATE 15%','TEST 15%'].forEach((s,i)=>{const widths=[.7,.15,.15],before=widths.slice(0,i).reduce((a,b)=>a+b,0),x=30+(cw-60)*before,ww=(cw-60)*widths[i];rr(x,by,ww-2,54,8,i===0?'#eef2ff':i===1?'#eff6ff':'#ecfdf5',C.line);text(s,x+(ww-2)/2,by+27,10,i===0?C.brand2:i===1?C.blue:C.green,'center',700,'"JetBrains Mono"')})
+    }
+    function drawStage4(t){
+      const narrow=cw<500,pad=narrow?24:42,top=narrow?48:62,bottom=narrow?86:104,xs=[pad,cw*.36,cw*.62,cw-pad],counts=[3,5,4,1],y0=top,y1=ch-bottom;
+      const layers=counts.map((count,i)=>Array.from({length:count},(_,j)=>({x:xs[i],y:y0+(j+1)*(y1-y0)/(count+1),i,j})));
+      const cycle=reducedMotion?1:((t-startTime)%6500)/6500,learn=reducedMotion?1:Math.max(0,Math.min(1,(cycle-.18)/.48));
+      ['INPUTS','HIDDEN 1','HIDDEN 2','OUTPUT'].forEach((v,i)=>text(v,xs[i],24,narrow?8:10,i===0?C.blue:i===3?C.green:C.muted,'center',700,'"JetBrains Mono"'));
+      for(let i=0;i<layers.length-1;i++)for(const a of layers[i])for(const b of layers[i+1]){
+        const strength=.25+Math.abs(Math.sin((a.j+1)*1.7+(b.j+1)*2.3+i))*.75;
+        const col=i===layers.length-2?C.green:(strength>.62?C.brand:C.blue);
+        ctx.save();ctx.globalAlpha=.18+.62*learn;line(a.x+13,a.y,b.x-13,b.y,learn>.05?col:C.line,.65+learn*strength*2);ctx.restore();
+      }
+      layers.forEach((layer,i)=>layer.forEach((n,j)=>node(n.x,n.y,narrow?8:12,i===0?['x₁','x₂','x₃'][j]:(i===3?'p':''),i>0&&i<3&&learn>.55?C.soft:'#fff',i===3?C.green:(i===0?C.blue:C.brand))));
+      const y=ch-(narrow?70:84),gap=narrow?8:12,w=(cw-pad*2-gap)/2;rr(pad,y,w,narrow?50:58,11,'#fff',C.line);rr(pad+w+gap,y,w,narrow?50:58,11,C.soft,'rgba(99,102,241,.32)');
+      text('YOU CHOOSE',pad+12,y+16,narrow?8:10,C.blue,'left',750,'"JetBrains Mono"');text('layers · neurons · activations',pad+12,y+(narrow?34:39),narrow?8:11,C.muted,'left',550,'"JetBrains Mono"');
+      text('MODEL LEARNS',pad+w+gap+12,y+16,narrow?8:10,C.brand2,'left',750,'"JetBrains Mono"');text(learn<.08?'skeleton first':'weights + biases updating',pad+w+gap+12,y+(narrow?34:39),narrow?8:11,C.brand2,'left',650,'"JetBrains Mono"');
+    }
+    function drawStage5(t){
+      const narrow=cw<500,left=narrow?58:92,right=narrow?cw*.58:cw*.58,top=narrow?48:70,bottom=ch-(narrow?42:58),featureNames=['study','sleep','attendance'],selected=Math.max(0,featureNames.indexOf(state.selectedFeature));
+      const inputs=featureNames.map((name,i)=>({x:left,y:top+(i+1)*(bottom-top)/4,name})),hidden=Array.from({length:4},(_,i)=>({x:right,y:top+(i+1)*(bottom-top)/5,i}));
+      const weights=[[.72,-.18,.31,.84],[.22,.91,-.46,.37],[.86,.14,.68,-.52]],learn=reducedMotion?1:Math.min(1,(t-startTime)/2300);
+      text('CLICK A FEATURE',left,24,narrow?8:10,C.muted,'center',700,'"JetBrains Mono"');text('LEARNED HIDDEN SENSITIVITIES',right,24,narrow?8:10,C.brand2,'center',700,'"JetBrains Mono"');
+      inputs.forEach((a,i)=>hidden.forEach((b,j)=>{const active=i===selected,w=weights[i][j],col=w<0?C.amber:C.brand;ctx.save();ctx.globalAlpha=active?.92:.14;line(a.x+14,a.y,b.x-16,b.y,active?col:C.line,active?(1+Math.abs(w)*3*learn):.7);ctx.restore();if(active&&learn>.35){const px=a.x+(b.x-a.x)*.53,py=a.y+(b.y-a.y)*.53;badge(`${w>0?'+':''}${(w*learn).toFixed(2)}`,px-24,py-20,col,narrow?7:9)}}));
+      inputs.forEach((a,i)=>{node(a.x,a.y,narrow?11:15,i===selected?'✓':'',i===selected?C.soft:'#fff',i===selected?C.brand:C.blue);text(a.name.toUpperCase(),a.x-(narrow?18:24),a.y,narrow?8:10,i===selected?C.brand2:C.muted,'right',700,'"JetBrains Mono"')});
+      const sensitivity=weights[selected].map(w=>w<-.35?'negative sensitivity':w>.75?'strong sensitivity':w>.35?'medium sensitivity':'weak sensitivity');hidden.forEach((n,j)=>{const intensity=.4+.6*Math.abs(weights[selected][j])*learn;ctx.save();ctx.globalAlpha=.45+.55*learn;node(n.x,n.y,narrow?11:16,'',C.soft,weights[selected][j]<0?C.amber:C.brand);ctx.restore();if(!narrow){line(n.x+22,n.y,n.x+22+62*intensity,n.y,weights[selected][j]<0?C.amber:C.brand,5);text(sensitivity[j],n.x+92,n.y,10,C.muted,'left',600,'"JetBrains Mono"')}});
+      text(`${state.selectedFeature}: four learned sensitivities · no roles assigned`,cw/2,ch-25,narrow?8:11,C.brand2,'center',750,'"JetBrains Mono"');
+    }
+    function chartAxes(x,y,w,h,xLabel='',yLabel=''){
+      line(x,y+h,x+w,y+h,C.line);line(x,y,x,y+h,C.line);
+      if(xLabel)text(xLabel,x+w/2,y+h+15,9,C.muted,'center',600,'"JetBrains Mono"');
+      if(yLabel){ctx.save();ctx.translate(x-15,y+h/2);ctx.rotate(-Math.PI/2);text(yLabel,0,0,9,C.muted,'center',600,'"JetBrains Mono"');ctx.restore()}
+    }
+    function drawStage6(){
+      const narrow=cw<500,pad=narrow?7:18,top=narrow?4:12,gap=narrow?4:10,footerH=narrow?36:82,available=ch-top-footerH-gap-5,rowH=available/2,topY=top,bottomY=top+rowH+gap;
+      const focusTop=!state.reluEnabled,focusBottom=state.reluEnabled;
+      const drawBoundary=(x,y,w,h,bent,color)=>{
+        rr(x,y,w,h,7,'#fbfbfd',C.line);const gx=x+9,gy=y+6,gw=w-18,gh=h-12;line(gx,gy+gh,gx+gw,gy+gh,C.line);line(gx,gy,gx,gy+gh,C.line);
+        const pts=bent?[[.07,.78],[.34,.48],[.58,.62],[.91,.20]]:[[.07,.79],[.91,.21]];ctx.beginPath();pts.forEach((p,i)=>{const px=gx+gw*p[0],py=gy+gh*p[1];if(!i)ctx.moveTo(px,py);else ctx.lineTo(px,py)});ctx.strokeStyle=color;ctx.lineWidth=narrow?2.2:3;ctx.stroke();
+        if(bent)pts.slice(1,-1).forEach(p=>{ctx.beginPath();ctx.arc(gx+gw*p[0],gy+gh*p[1],narrow?2:3,0,Math.PI*2);ctx.fillStyle=color;ctx.fill()});
+      };
+      const drawNeuron=(x,y,label,value,color,active=true)=>{
+        const r=narrow?8:17;node(x,y,r,label,active?C.soft:'#fff',color);text(value,x,y+r+(narrow?7:13),narrow?5:9,color,'center',750,'"JetBrains Mono"');
+      };
+      const drawGate=(x,y,value,color)=>{
+        const w=narrow?25:52,h=narrow?14:30;rr(x-w/2,y-h/2,w,h,narrow?5:9,color+'10',color+'55');text('ReLU',x,y-(narrow?2:6),narrow?5:8,color,'center',800,'"JetBrains Mono"');text(value,x,y+(narrow?4:7),narrow?4.5:8,color,'center',700,'"JetBrains Mono"');
+      };
+      const cardW=cw-pad*2;
+      rr(pad,topY,cardW,rowH,narrow?9:13,focusTop?C.soft:'#fff',focusTop?'rgba(99,102,241,.55)':C.line);
+      rr(pad,bottomY,cardW,rowH,narrow?9:13,focusBottom?C.soft:'#fff',focusBottom?'rgba(99,102,241,.55)':C.line);
+      text('LINEAR-ONLY NETWORK',pad+(narrow?9:14),topY+(narrow?10:18),narrow?6:11,focusTop?C.brand2:C.ink,'left',800,'"JetBrains Mono"');
+      text(narrow?'weighted sums only':'three weighted-sum neurons · no activation gates',pad+(narrow?112:158),topY+(narrow?10:18),narrow?5:9,C.muted,'left',650,'"JetBrains Mono"');
+      text('RELU-GATED NETWORK',pad+(narrow?9:14),bottomY+(narrow?10:18),narrow?6:11,focusBottom?C.brand2:C.ink,'left',800,'"JetBrains Mono"');
+      text(narrow?'same sums + gates':'same weighted sums · a ReLU gate after every hidden neuron',pad+(narrow?112:158),bottomY+(narrow?10:18),narrow?5:9,C.muted,'left',650,'"JetBrains Mono"');
+      if(narrow){
+        const topCy=topY+36,topXs=[pad+18,pad+73,pad+128,pad+183],graphX=pad+218,graphW=cardW-226;
+        topXs.slice(0,-1).forEach((x,i)=>arrow(x+9,topCy,topXs[i+1]-10,topCy,C.muted,.8));
+        drawNeuron(topXs[0],topCy,'x','−1',C.blue);drawNeuron(topXs[1],topCy,'Σ1','−1',C.muted);drawNeuron(topXs[2],topCy,'Σ2','+1.1',C.muted);drawNeuron(topXs[3],topCy,'Σ3','+1.23',C.muted);
+        arrow(topXs[3]+9,topCy,graphX-3,topCy,C.muted,.8);drawBoundary(graphX,topCy-14,graphW,28,false,C.muted);
+        text('3 LINEAR LAYERS = ax + b',pad+104,topY+rowH-8,5.5,C.muted,'center',800,'"JetBrains Mono"');text('STILL LINEAR',graphX+graphW/2,topY+rowH-8,5.5,C.muted,'center',800,'"JetBrains Mono"');
+        const botCy=bottomY+37,xs=[pad+16,pad+56,pad+94,pad+132,pad+170,pad+208,pad+246],botGraphX=pad+273,botGraphW=cardW-281;
+        for(let i=0;i<xs.length-1;i++)arrow(xs[i]+(i%2?9:8),botCy,xs[i+1]-(i%2?12:9),botCy,C.brand,.8);
+        drawNeuron(xs[0],botCy,'x','−1',C.blue);drawNeuron(xs[1],botCy,'Σ1','−1',C.brand);drawGate(xs[2],botCy,'−1→0',C.amber);drawNeuron(xs[3],botCy,'Σ2','+.4',C.brand);drawGate(xs[4],botCy,'.4→.4',C.green);drawNeuron(xs[5],botCy,'Σ3','+.9',C.brand);drawGate(xs[6],botCy,'.9→.9',C.green);
+        arrow(xs[6]+13,botCy,botGraphX-3,botCy,C.brand,.8);drawBoundary(botGraphX,botCy-14,botGraphW,28,true,C.brand);
+        text('CLIP',xs[2],bottomY+rowH-8,5,C.amber,'center',800,'"JetBrains Mono"');text('PASS',xs[4],bottomY+rowH-8,5,C.green,'center',800,'"JetBrains Mono"');text('BENDS',botGraphX+botGraphW/2,bottomY+rowH-8,5.5,C.brand2,'center',800,'"JetBrains Mono"');
+      }else{
+        const titleBand=46,cyTop=topY+rowH*.56,topXs=[pad+46,pad+170,pad+294,pad+418],graphX=pad+486,graphW=cardW-500;
+        text('INPUT',topXs[0],topY+titleBand,8,C.muted,'center',750,'"JetBrains Mono"');['WEIGHTED SUM 1','WEIGHTED SUM 2','WEIGHTED SUM 3'].forEach((s,i)=>text(s,topXs[i+1],topY+titleBand,8,C.muted,'center',750,'"JetBrains Mono"'));
+        topXs.slice(0,-1).forEach((x,i)=>{arrow(x+19,cyTop,topXs[i+1]-20,cyTop,C.muted,1.35);text('w·a + b',(x+topXs[i+1])/2,cyTop-12,8,C.muted,'center',650,'"JetBrains Mono"')});
+        drawNeuron(topXs[0],cyTop,'x','−1.0',C.blue);drawNeuron(topXs[1],cyTop,'Σ1','z₁ −1.0',C.muted);drawNeuron(topXs[2],cyTop,'Σ2','z₂ +1.1',C.muted);drawNeuron(topXs[3],cyTop,'Σ3','z₃ +1.23',C.muted);
+        arrow(topXs[3]+20,cyTop,graphX-5,cyTop,C.muted,1.35);drawBoundary(graphX,cyTop-34,graphW,68,false,C.muted);
+        line(topXs[1]-22,topY+rowH-27,topXs[3]+22,topY+rowH-27,C.line);line(topXs[1]-22,topY+rowH-33,topXs[1]-22,topY+rowH-22,C.line);line(topXs[3]+22,topY+rowH-33,topXs[3]+22,topY+rowH-22,C.line);
+        text('L₃ ∘ L₂ ∘ L₁ = ax + b',topXs[2],topY+rowH-13,9,C.muted,'center',800,'"JetBrains Mono"');text('STILL LINEAR',graphX+graphW/2,topY+rowH-13,9,C.muted,'center',800,'"JetBrains Mono"');
+        const cyBottom=bottomY+rowH*.56,xs=[pad+35,pad+105,pad+176,pad+246,pad+317,pad+387,pad+458],botGraphX=pad+500,botGraphW=cardW-514;
+        text('INPUT',xs[0],bottomY+titleBand,8,C.muted,'center',750,'"JetBrains Mono"');[xs[1],xs[3],xs[5]].forEach((x,i)=>text(`WEIGHTED SUM ${i+1}`,x,bottomY+titleBand,8,C.muted,'center',750,'"JetBrains Mono"'));[xs[2],xs[4],xs[6]].forEach(x=>text('GATE',x,bottomY+titleBand,8,C.brand2,'center',750,'"JetBrains Mono"'));
+        for(let i=0;i<xs.length-1;i++)arrow(xs[i]+(i%2?28:19),cyBottom,xs[i+1]-(i%2?19:29),cyBottom,C.brand,1.25);
+        drawNeuron(xs[0],cyBottom,'x','−1.0',C.blue);drawNeuron(xs[1],cyBottom,'Σ1','z₁ −1.0',C.brand);drawGate(xs[2],cyBottom,'−1.0 → 0',C.amber);drawNeuron(xs[3],cyBottom,'Σ2','z₂ +0.4',C.brand);drawGate(xs[4],cyBottom,'+0.4 → +0.4',C.green);drawNeuron(xs[5],cyBottom,'Σ3','z₃ +0.9',C.brand);drawGate(xs[6],cyBottom,'+0.9 → +0.9',C.green);
+        arrow(xs[6]+29,cyBottom,botGraphX-5,cyBottom,C.brand,1.25);drawBoundary(botGraphX,cyBottom-34,botGraphW,68,true,C.brand);
+        text('CLIP',xs[2],bottomY+rowH-13,8,C.amber,'center',800,'"JetBrains Mono"');text('PASS',xs[4],bottomY+rowH-13,8,C.green,'center',800,'"JetBrains Mono"');text('PASS',xs[6],bottomY+rowH-13,8,C.green,'center',800,'"JetBrains Mono"');text('PIECEWISE BENDS',botGraphX+botGraphW/2,bottomY+rowH-13,9,C.brand2,'center',800,'"JetBrains Mono"');
+      }
+      const activation=state.task==='binary'?['BINARY','SIGMOID',C.brand]:state.task==='multiclass'?['MULTICLASS','SOFTMAX',C.blue]:['REGRESSION','LINEAR OUTPUT',C.green],outputY=bottomY+rowH+5;
+      if(!narrow){rr(pad,outputY,cw-pad*2,22,7,'#fff',C.line);text('OUTPUT HEAD',pad+10,outputY+11,8,C.muted,'left',750,'"JetBrains Mono"');text(`${activation[0]} → ${activation[1]}`,cw-pad-10,outputY+11,9,activation[2],'right',800,'"JetBrains Mono"')}
+      text(narrow?'LINEAR STACK → ONE LINE':'MORE LINEAR LAYERS STILL PRODUCE ONE LINEAR RESULT',cw/2,outputY+(narrow?8:39),narrow?6:10,C.muted,'center',800,'"JetBrains Mono"');
+      text(narrow?'RELU GATES → PIECEWISE BENDS':'RELU BETWEEN LAYERS ALLOWS BENDS + PIECEWISE RULES',cw/2,outputY+(narrow?22:57),narrow?6:10,C.brand2,'center',800,'"JetBrains Mono"');
+    }
+    function drawStage7(t){
+      const layers=drawNetwork({pulses:true,time:t,task:'binary'}),out=layers[3][0],boxW=Math.min(248,Math.max(198,cw*.46)),boxH=116;
+      const boxX=Math.min(Math.max(18,out.x-boxW/2),cw-boxW-18),boxY=Math.min(Math.max(out.y+120,22),ch-boxH-18),center=boxX+boxW/2;
+      rr(boxX,boxY,boxW,boxH,16,C.soft,'rgba(99,102,241,.3)');
+      text('SIGMOID OUTPUT',center,boxY+24,10,C.muted,'center',700,'"JetBrains Mono"');
+      text('pass = 0.82',center,boxY+55,18,C.brand2,'center',800,'"JetBrains Mono"');
+      text('fail = 1 − 0.82 = 0.18',center,boxY+84,11,C.muted,'center',600,'"JetBrains Mono"');
+    }
+    function drawStage8(){if(cw<500){drawCompactNetwork(40,ch*.57);const x=18,y=ch-78,w=cw-36,h=56;rr(x,y,w,h,12,'#fff',C.line);text('PREDICTION',x+14,y+18,8,C.muted,'left',700,'"JetBrains Mono"');text('0.82',x+14,y+38,12,C.brand2,'left',700,'"JetBrains Mono"');text('TRUTH',x+w*.52,y+18,8,C.muted,'left',700,'"JetBrains Mono"');text('1.00',x+w*.52,y+38,12,C.green,'left',700,'"JetBrains Mono"');badge('SMALL ERROR',x+w-98,y+16,C.green);return}drawNetwork();const x=cw-178,y=ch*.62,w=150,h=100;rr(x,y,w,h,14,'#fff',C.line);panelTitle('COMPARE',x,y,w,'loss');text('prediction',x+15,y+50,10,C.muted);text('0.82',x+w-15,y+50,12,C.brand2,'right',700,'"JetBrains Mono"');text('truth',x+15,y+73,10,C.muted);text('1.00',x+w-15,y+73,12,C.green,'right',700,'"JetBrains Mono"');line(x+14,y+86,x+w-14,y+86,C.line);badge('SMALL ERROR',x+20,y+h+10,C.green)}
+    function drawStage9(t){
+      const phase=reducedMotion?1:((t-startTime)%4200)/4200,layers=networkLayout('binary');
+      ctx.save();ctx.globalAlpha=.18;drawConnections(layers);ctx.restore();
+      layers.forEach((layer,i)=>layer.forEach((n,j)=>node(n.x,n.y,12,i===3?'p':'','#fff',i===3?C.green:C.blue)));
+      const reverse=1-Math.min(1,Math.max(0,(phase-.18)/.58));
+      for(let i=layers.length-1;i>0;i--){const from=layers[i][0],to=layers[i-1][0],alpha=Math.max(.12,1-Math.abs(reverse-(3-i)/3)*2.4);arrow(from.x-15,from.y,to.x+15,to.y,C.red,1.5,alpha)}
+      const y=ch-86;rr(28,y,cw-56,58,12,C.soft,'rgba(99,102,241,.35)');text('BACKPROP OUTPUT',42,y+18,10,C.brand2,'left',750,'"JetBrains Mono"');text('gradient for every weight and bias',42,y+39,13,C.ink,'left',650);badge('NO WEIGHTS CHANGED',cw-184,y+17,C.red,10)
+    }
+    function drawCompactNetwork(y0,y1,{dropout=false}={}){
+      const counts=[2,3,2,1],xs=[cw*.12,cw*.38,cw*.64,cw*.88],layers=counts.map((n,i)=>Array.from({length:n},(_,j)=>({x:xs[i],y:y0+(j+1)*(y1-y0)/(n+1),i,j}))),rad=cw<500?7:10;
+      for(let i=0;i<layers.length-1;i++)for(const a of layers[i])for(const b of layers[i+1]){ctx.save();ctx.globalAlpha=.34;line(a.x+rad,a.y,b.x-rad,b.y,C.brand,1);ctx.restore()}
+      layers.forEach((layer,i)=>layer.forEach((n,j)=>{const off=dropout&&i>0&&i<3&&((j+i)%4)/4<state.dropout;node(n.x,n.y,rad,'',off?'#f3f4f6':'#fff',off?'#cbd5e1':(i===3?C.green:C.blue),off)}));
+      ['INPUT','HIDDEN','HIDDEN','OUTPUT'].forEach((v,i)=>text(v,xs[i],y0-10,9,i===3?C.green:C.muted,'center',700,'"JetBrains Mono"'));
+    }
+    function drawStage10(t){
+      const narrow=cw<500,pad=narrow?16:26,elapsed=state.optimPaused?state.optimElapsed:t-startTime,steps=[['1','LOSS','evaluate L(wₜ)'],['2','GRADIENT','find local slope'],['3','UPDATE','wₜ₊₁ = wₜ − η∇L'],['4','REPEAT','use the new weight']],activeStep=Math.floor(Math.max(0,elapsed)/720)%4,gap=narrow?5:8,stepW=(cw-pad*2-gap*3)/4,stepY=narrow?14:22,stepH=narrow?46:54;
+      steps.forEach((s,i)=>{const x=pad+i*(stepW+gap),on=i===activeStep;rr(x,stepY,stepW,stepH,9,on?C.soft:'#fff',on?C.brand:C.line);text(s[0],x+8,stepY+11,narrow?7:9,on?C.brand2:C.muted,'left',750,'"JetBrains Mono"');text(s[1],x+stepW/2,stepY+stepH*.45,narrow?7:9,on?C.brand2:C.ink,'center',800,'"JetBrains Mono"');text(s[2],x+stepW/2,stepY+stepH*.72,narrow?6:8,C.muted,'center',550,'"JetBrains Mono"');if(i<3)arrow(x+stepW+1,stepY+stepH/2,x+stepW+gap-1,stepY+stepH/2,C.brand,1)});
+      const x=pad,y=stepY+stepH+(narrow?9:12),w=cw-pad*2,h=ch-y-(narrow?12:18);rr(x,y,w,h,14,'#fff',C.line);panelTitle('GRADIENT DESCENT ON ONE WEIGHT',x,y,w,`${state.learningMode} · η ${state.learningRate.toFixed(2)}`);
+      const ax=x+(narrow?38:52),ay=y+(narrow?70:76),aw=w-(narrow?54:74),ah=h-(narrow?120:136),plotMin=-.30,plotMax=1.30,yMax=1.45;chartAxes(ax,ay,aw,ah,'Weight w','Loss L(w)');
+      const lossAt=v=>.10+2*Math.pow(v-.50,2),gradientAt=v=>4*(v-.50),toPoint=v=>({x:ax+aw*(v-plotMin)/(plotMax-plotMin),y:ay+ah-Math.min(yMax,lossAt(v))*ah/yMax});
+      ctx.beginPath();for(let q=0;q<=180;q++){const v=plotMin+(plotMax-plotMin)*q/180,p=toPoint(v);if(!q)ctx.moveTo(p.x,p.y);else ctx.lineTo(p.x,p.y)}ctx.strokeStyle=C.brand;ctx.lineWidth=2.6;ctx.stroke();
+      const current=Math.max(0,Math.min(1,state.weight)),gradient=gradientAt(current),nextRaw=current-state.learningRate*gradient,a=toPoint(current),b=toPoint(Math.max(plotMin,Math.min(plotMax,nextRaw)));
+      const statGap=narrow?4:6,statX=x+10,statY=y+34,statW=(w-20-statGap*2)/3,statH=narrow?26:30,stats=[['CURRENT',`wₜ ${current.toFixed(2)}`,C.amber],['LOCAL GRADIENT',`${gradient>=0?'+':''}${gradient.toFixed(2)}`,C.brand],['NEXT',`wₜ₊₁ ${nextRaw.toFixed(2)}`,state.learningMode==='large'?C.red:C.green]];stats.forEach((s,i)=>{const sx=statX+i*(statW+statGap);rr(sx,statY,statW,statH,7,s[2]+'0A',s[2]+'35');text(s[0],sx+8,statY+9,narrow?6:8,C.muted,'left',700,'"JetBrains Mono"');text(s[1],sx+statW-8,statY+statH-9,narrow?8:10,s[2],'right',800,'"JetBrains Mono"')});
+      const minimum=toPoint(.50);node(minimum.x,minimum.y,narrow?4:5,'',C.green,C.green);text('minimum',minimum.x,minimum.y+18,narrow?7:9,C.green,'center',700,'"JetBrains Mono"');
+      const tangentSpan=narrow?.16:.20,x1=Math.max(plotMin,current-tangentSpan),x2=Math.min(plotMax,current+tangentSpan),t1=toPoint(x1),t2=toPoint(x2),ty1=ay+ah-Math.min(yMax,Math.max(0,lossAt(current)+gradient*(x1-current)))*ah/yMax,ty2=ay+ah-Math.min(yMax,Math.max(0,lossAt(current)+gradient*(x2-current)))*ah/yMax;line(t1.x,ty1,t2.x,ty2,C.amber,2,[5,4]);
+      node(a.x,a.y,narrow?6:8,'',C.amber,C.amber);text('wₜ',a.x+10,a.y+13,narrow?7:9,C.amber,'left',750,'"JetBrains Mono"');
+      arrow(a.x,a.y,b.x,b.y,C.green,2.2,.78);node(b.x,b.y,narrow?5:7,'',C.surface,state.learningMode==='large'?C.red:C.green);text('−η∇L',Math.min(cw-72,Math.max(72,(a.x+b.x)/2)),Math.min(a.y,b.y)-10,narrow?7:9,C.green,'center',750,'"JetBrains Mono"');text('wₜ₊₁',b.x-10,b.y+15,narrow?7:9,state.learningMode==='large'?C.red:C.green,'right',750,'"JetBrains Mono"');
+      const trajectory=[current],updates=state.learningMode==='large'?4:8;for(let i=0;i<updates;i++){const prev=trajectory[trajectory.length-1],next=prev-state.learningRate*gradientAt(prev);trajectory.push(next)}
+      const visible=Math.min(trajectory.length,1+Math.floor(Math.max(0,elapsed)/520));for(let i=0;i<visible;i++){const value=trajectory[i];if(value<plotMin||value>plotMax)break;const p=toPoint(value),prev=i?toPoint(trajectory[i-1]):null;if(prev)arrow(prev.x,prev.y,p.x,p.y,state.learningMode==='large'?C.red:C.green,1.25,.70);node(p.x,p.y,i===visible-1?(narrow?4:6):(narrow?2.5:4),'',i===0?C.amber:(state.learningMode==='large'?C.red:C.green),i===0?C.amber:(state.learningMode==='large'?C.red:C.green))}
+      const modeText=state.learningMode==='tiny'?'tiny η: steady but many iterations':state.learningMode==='large'?'large η: crosses the minimum and bounces':'medium η: repeated steps converge efficiently';text(modeText,x+w/2,y+h-17,narrow?7:10,state.learningMode==='large'?C.red:C.green,'center',750,'"JetBrains Mono"');
+      state.curveGeom={ax,aw,min:plotMin,max:plotMax};
+    }
+    function drawStage11(t){
+      drawNetwork({pulses:true,time:t});const steps=['BATCH','PREDICT','LOSS','BACKPROP','UPDATE'];const y=ch-66,g=7,w=(cw-56-g*4)/5;steps.forEach((s,i)=>{const x=28+i*(w+g),active=Math.floor((t*.001)%5)===i;rr(x,y,w,38,8,active?C.soft:'#fff',active?C.brand:C.line);text(s,x+w/2,y+19,cw<500?8:10,active?C.brand2:C.muted,'center',700,'"JetBrains Mono"')})
+    }
+    function drawStage12(){
+      const narrow=cw<500,pad=narrow?16:28,gap=narrow?8:12,topY=narrow?16:26,topH=narrow?112:138,leftW=(cw-pad*2-gap)/2,rightX=pad+leftW+gap;
+      rr(pad,topY,leftW,topH,12,'#fff',C.line);panelTitle('LOSS LANDSCAPE',pad,topY,leftW,narrow?'':'local ≠ global');
+      const ax=pad+20,ay=topY+42,aw=leftW-40,ah=topH-58;ctx.beginPath();for(let q=0;q<=100;q++){const p=q/100,v=.2+.38*Math.pow(Math.sin(p*Math.PI*2.1),2)+.18*p,xx=ax+aw*p,yy=ay+ah*v;if(!q)ctx.moveTo(xx,yy);else ctx.lineTo(xx,yy)}ctx.strokeStyle=C.brand;ctx.lineWidth=2;ctx.stroke();node(ax+aw*.28,ay+ah*.31,5,'',C.amber,C.amber);node(ax+aw*.72,ay+ah*.22,5,'',C.green,C.green);text('local',ax+aw*.28,ay+ah*.31-13,narrow?7:8,C.amber,'center',700,'"JetBrains Mono"');text('global',ax+aw*.72,ay+ah*.22-13,narrow?7:8,C.green,'center',700,'"JetBrains Mono"');
+      rr(rightX,topY,leftW,topH,12,C.soft,'rgba(99,102,241,.3)');panelTitle('DROPOUT',rightX,topY,leftW,`${Math.round(state.dropout*100)}% off`);
+      const pts=[[.18,.52],[.50,.31],[.50,.54],[.50,.77],[.82,.44],[.82,.68]];pts.forEach((p,i)=>{const off=i>0&&i<4&&((i*29)%100)<state.dropout*100;node(rightX+leftW*p[0],topY+topH*p[1],narrow?5:7,'',off?'#f3f4f6':C.surface,off?'#cbd5e1':(i>3?C.green:C.blue),off)});text('regularize reliance',rightX+leftW/2,topY+topH-13,narrow?7:9,C.brand2,'center',650,'"JetBrains Mono"');
+      const x=pad,y=topY+topH+gap,w=cw-pad*2,h=ch-y-(narrow?14:22);rr(x,y,w,h,14,'#fff',C.line);panelTitle('TRAINING VS VALIDATION LOSS',x,y,w,'keep lowest validation loss');const cx=x+(narrow?40:54),cy=y+42,caw=w-(narrow?56:78),cah=h-(narrow?74:88);chartAxes(cx,cy,caw,cah,'Training epoch','Loss');
+      const curve=(color,validation)=>{ctx.beginPath();for(let q=0;q<=100;q++){const p=q/100,loss=validation?.80*Math.exp(-p*4.2)+.15+Math.max(0,p-.54)*.95:.92*Math.exp(-p*3.1)+.05,xx=cx+caw*p,yy=cy+cah-Math.min(1,loss)*cah;if(!q)ctx.moveTo(xx,yy);else ctx.lineTo(xx,yy)}ctx.strokeStyle=color;ctx.lineWidth=2.4;ctx.stroke()};curve(C.brand,false);curve(C.amber,true);
+      const keepP=.54,keepX=cx+caw*keepP,keepLoss=.80*Math.exp(-keepP*4.2)+.15,keepY=cy+cah-Math.min(1,keepLoss)*cah;line(keepX,cy,keepX,cy+cah,C.green,1.5,[4,4]);node(keepX,keepY,6,'',C.green,C.green);const keepLabel='KEEP THIS MODEL';ctx.font=`600 ${narrow?8:10}px "JetBrains Mono"`;const keepBadgeW=ctx.measureText(keepLabel).width+18;badge(keepLabel,Math.max(x+8,keepX-keepBadgeW-10),cy+6,C.green,narrow?8:10);const overX=cx+caw*.73;line(overX,cy,overX,cy+cah,C.red,1,[4,4]);text('validation rising',overX+6,cy+18,narrow?8:10,C.red,'left',700,'"JetBrains Mono"');const trainEnd=.92*Math.exp(-3.1)+.05,valEnd=.80*Math.exp(-4.2)+.15+.46*.95;labelChip('training loss',cx+caw-6,cy+cah-Math.min(1,trainEnd)*cah-22,C.brand,narrow?8:10,'right');labelChip('validation loss',cx+caw-6,cy+cah-Math.min(1,valEnd)*cah-22,C.amber,narrow?8:10,'right')
+    }
+    function drawStage13(){drawNetwork({focusLayer:3,task:state.task});const outputs=state.task==='binary'?['1 output','sigmoid']:state.task==='multiclass'?['3 outputs','softmax']:['1 number','linear output'];rr(28,ch-82,cw-56,54,12,C.paper,C.line);text(outputs[0],42,ch-55,cw<500?11:13,C.ink,'left',700,'"JetBrains Mono"');text(outputs[1],cw-62,ch-55,cw<500?11:13,C.brand2,'right',700,'"JetBrains Mono"')}
+    function thresholdResults(){
+      const students=[{id:'A',name:'Mia',score:.92,actual:1},{id:'B',name:'Leo',score:.81,actual:1},{id:'C',name:'Noor',score:.68,actual:0},{id:'D',name:'Ana',score:.57,actual:1},{id:'E',name:'Jay',score:.48,actual:0},{id:'F',name:'Sam',score:.43,actual:1},{id:'G',name:'Rui',score:.31,actual:0},{id:'H',name:'Eva',score:.19,actual:0}];
+      let tp=0,fp=0,fn=0,tn=0;students.forEach(s=>{s.pred=s.score>=state.threshold?1:0;if(s.pred&&s.actual)tp++;else if(s.pred&&!s.actual)fp++;else if(!s.pred&&s.actual)fn++;else tn++});
+      const precision=tp+fp?tp/(tp+fp):0,recall=tp+fn?tp/(tp+fn):0,f1=precision+recall?2*precision*recall/(precision+recall):0;
+      return {students,tp,fp,fn,tn,precision,recall,f1};
+    }
+    function updateThresholdReadout(){
+      const r=thresholdResults();$('#tpCount').textContent=r.tp;$('#fpCount').textContent=r.fp;$('#fnCount').textContent=r.fn;$('#tnCount').textContent=r.tn;$('#thresholdPrecision').textContent=r.precision.toFixed(2);$('#thresholdRecall').textContent=r.recall.toFixed(2);$('#thresholdF1').textContent=r.f1.toFixed(2);if($('#errorThreshold'))$('#errorThreshold').value=Math.round(state.threshold*100);if($('#errorThresholdReadout'))$('#errorThresholdReadout').textContent=state.threshold.toFixed(2);$('#threshold').value=Math.round(state.threshold*100);$('#thresholdReadout').textContent=state.threshold.toFixed(2);
+    }
+    function drawStage14(){
+      const r=thresholdResults(),narrow=cw<500,pad=narrow?18:30,x=pad,y=narrow?22:38,w=cw-pad*2,scaleH=narrow?126:155;rr(x,y,w,scaleH,14,'#fff',C.line);panelTitle('SIGMOID PASS SCORES',x,y,w,`threshold ${state.threshold.toFixed(2)}`);
+      const sx=x+28,ex=x+w-28,axisY=y+(narrow?67:78);line(sx,axisY,ex,axisY,C.line,2);for(let i=0;i<=4;i++){const p=i/4,xx=sx+(ex-sx)*p;line(xx,axisY-4,xx,axisY+4,C.line);text(p.toFixed(2),xx,axisY+15,narrow?7:9,C.muted,'center',600,'"JetBrains Mono"')}
+      const tx=sx+(ex-sx)*state.threshold;line(tx,y+36,tx,y+scaleH-22,C.brand,2,[4,4]);text(narrow?'cutoff':'decision threshold',tx,narrow?axisY+30:y+27,narrow?7:9,C.brand2,'center',700,'"JetBrains Mono"');
+      r.students.forEach((s,i)=>{const xx=sx+(ex-sx)*s.score,above=i%2===0,yy=axisY+(above?-17:17),col=s.pred?C.green:C.red;node(xx,yy,narrow?4:5,'',col,col);text(`${s.id} ${s.score.toFixed(2)}`,xx,yy+(above?-11:11),narrow?7:9,col,'center',700,'"JetBrains Mono"')});
+      text('Predicted Fail',sx, y+scaleH-12,narrow?9:11,C.red,'left',700,'"JetBrains Mono"');text('Predicted Pass',ex,y+scaleH-12,narrow?9:11,C.green,'right',700,'"JetBrains Mono"');
+      const gy=y+scaleH+(narrow?10:16),gh=ch-gy-(narrow?18:28),gap=narrow?8:14,gridW=(w-gap)/2;rr(x,gy,gridW,gh,12,'#fff',C.line);panelTitle('OUTCOME MATRIX',x,gy,gridW,narrow?'':'full names below');const vals=[['True positive',r.tp,C.green],['False positive',r.fp,C.amber],['False negative',r.fn,C.red],['True negative',r.tn,C.blue]],cellGap=5,cellW=(gridW-24-cellGap)/2,cellH=(gh-46-cellGap)/2;vals.forEach((v,i)=>{const cx=x+10+(i%2)*(cellW+cellGap),cy=gy+34+Math.floor(i/2)*(cellH+cellGap);rr(cx,cy,cellW,cellH,7,v[2]+'10',v[2]+'45');wrap(v[0],cx+cellW/2,cy+7,cellW-8,10,narrow?8:10,v[2],650,'center');text(String(v[1]),cx+cellW/2,cy+cellH-20,narrow?20:34,v[2],'center',800,'"JetBrains Mono"')});
+      const mx=x+gridW+gap,mw=w-gridW-gap;rr(mx,gy,mw,gh,12,C.soft,'rgba(99,102,241,.3)');panelTitle('LIVE METRICS',mx,gy,mw,'8 students');[['Precision',r.precision],['Recall',r.recall],['F1',r.f1]].forEach((v,i)=>{const yy=gy+48+i*(gh-58)/3;text(v[0],mx+12,yy,narrow?10:13,C.muted,'left',700,'"JetBrains Mono"');text(v[1].toFixed(2),mx+mw-18,yy,narrow?16:22,C.brand2,'right',800,'"JetBrains Mono"')});
+    }
+    function drawStage15(){
+      const r=thresholdResults(),narrow=cw<500,pad=narrow?14:24,x=pad,y=narrow?14:24,w=cw-pad*2,tableH=Math.min(ch*(narrow?.58:.57),narrow?198:286),rowH=(tableH-34)/8,students=[...r.students].sort(state.errorSort==='threshold'?(a,b)=>Math.abs(a.score-state.threshold)-Math.abs(b.score-state.threshold):(a,b)=>b.score-a.score);
+      rr(x,y,w,tableH,12,'#fff',C.line);panelTitle('STUDENT PREDICTIONS',x,y,w,`threshold ${state.threshold.toFixed(2)} · sort ${state.errorSort}`);
+      const cols=[.04,.20,.36,.51,.68];['STUDENT','SCORE','ACTUAL','PREDICTED','OUTCOME'].forEach((v,i)=>text(v,x+w*cols[i],y+30,narrow?7:9,C.muted,'left',700,'"JetBrains Mono"'));
+      students.forEach((s,i)=>{const yy=y+34+i*rowH,pred=s.pred?'Pass':'Fail',actual=s.actual?'Pass':'Fail',outcome=s.pred&&s.actual?'True positive':s.pred&&!s.actual?'False positive':!s.pred&&s.actual?'False negative':'True negative',col=outcome==='False positive'?C.amber:outcome==='False negative'?C.red:outcome==='True positive'?C.green:C.blue,fill=outcome.startsWith('False')?col+'12':i%2?'#fbfbfd':'#fff';ctx.fillStyle=fill;ctx.fillRect(x+1,yy,w-2,rowH);line(x,yy+rowH,x+w,yy+rowH,C.line,.6);text(s.name,x+w*cols[0],yy+rowH/2,narrow?8:10,C.ink,'left',700);text(s.score.toFixed(2),x+w*cols[1],yy+rowH/2,narrow?8:10,C.brand2,'left',700,'"JetBrains Mono"');text(actual,x+w*cols[2],yy+rowH/2,narrow?8:10,C.muted,'left',600);text(pred,x+w*cols[3],yy+rowH/2,narrow?8:10,C.ink,'left',650);text(outcome,x+w*cols[4],yy+rowH/2,narrow?7:9,col,'left',750,'"JetBrains Mono"')});
+      const gy=y+tableH+(narrow?7:10),gh=ch-gy-(narrow?12:18),gap=narrow?7:10,matrixW=w*(narrow?.62:.58);rr(x,gy,matrixW,gh,12,'#fff',C.line);panelTitle('FULLY LABELED CONFUSION MATRIX',x,gy,matrixW,'');
+      const vals=[['True positive',r.tp,C.green],['False positive',r.fp,C.amber],['False negative',r.fn,C.red],['True negative',r.tn,C.blue]],cellGap=5,cellW=(matrixW-24-cellGap)/2,cellH=(gh-42-cellGap)/2;vals.forEach((v,i)=>{const cx=x+10+(i%2)*(cellW+cellGap),cy=gy+32+Math.floor(i/2)*(cellH+cellGap);rr(cx,cy,cellW,cellH,7,v[2]+'0D',v[2]+'40');wrap(v[0],cx+cellW/2,cy+6,cellW-8,narrow?7:10,narrow?6:9,v[2],700,'center');text(String(v[1]),cx+cellW/2,cy+cellH-18,narrow?18:28,v[2],'center',800,'"JetBrains Mono"')});
+      const mx=x+matrixW+gap,mw=w-matrixW-gap;rr(mx,gy,mw,gh,12,C.soft,'rgba(99,102,241,.3)');panelTitle('METRICS',mx,gy,mw,'');[['Precision',r.precision],['Recall',r.recall],['F1 score',r.f1]].forEach((v,i)=>{const yy=gy+42+i*(gh-48)/3;text(v[0],mx+10,yy,narrow?9:11,C.muted,'left',700,'"JetBrains Mono"');text(v[1].toFixed(2),mx+mw-(narrow?18:24),yy,narrow?14:18,C.brand2,'right',800,'"JetBrains Mono"')});
+    }
+    function drawStage16(){
+      const narrow=cw<500,y=narrow?64:ch*.43,items=narrow?[['DATA',C.blue],['PREP',C.cyan],['MODEL',C.brand],['APP',C.green],['WATCH',C.amber]]:[['NEW DATA',C.blue],['PREPROCESS',C.cyan],['SAVED MODEL',C.brand],['APP / API',C.green],['MONITOR',C.amber]],g=narrow?5:10,w=(cw-(narrow?36:56)-g*4)/5,start=narrow?18:28;items.forEach((it,i)=>{const x=start+i*(w+g);rr(x,y-(narrow?28:45),w,narrow?56:90,12,i===2?C.soft:'#fff',i===2?'rgba(99,102,241,.35)':C.line);text(it[0],x+w/2,y,narrow?9:10,it[1],'center',750,'"JetBrains Mono"');if(i<4)arrow(x+w+1,y,x+w+g-1,y,C.brand,1)});const px=narrow?18:32,py=narrow?128:ch*.68,pw=cw-(narrow?36:64),ph=ch-py-(narrow?18:ch*.10);rr(px,py,pw,ph,12,'#fff',C.line);panelTitle(narrow?'PERFORMANCE':'PERFORMANCE OVER TIME',px,py,pw,narrow?'':'watch for drift');const ax=px+26,ay=py+36,aw=pw-48,ah=ph-50;chartAxes(ax,ay,aw,ah);ctx.beginPath();for(let q=0;q<=60;q++){const p=q/60,v=.84-.08*p-.18*Math.max(0,p-.58)+Math.sin(p*10)*.012,xx=ax+aw*p,yy=ay+ah*(1-v);if(!q)ctx.moveTo(xx,yy);else ctx.lineTo(xx,yy)}ctx.strokeStyle=C.amber;ctx.lineWidth=2;ctx.stroke();
+    }
+    function drawStage17(){
+      if(cw<500){drawCompactNetwork(62,ch-60);badge('CNN',18,14,C.blue);badge('RNN',72,14,C.cyan);badge('TRANSFORMER',126,14,C.brand);const labs=[['RAW','clues'],['PATTERN','edges'],['CONTEXT','meaning'],['OUTPUT','answer']],gap=6,w=(cw-36-gap*3)/4,y=ch-50;labs.forEach((v,i)=>{const x=18+i*(w+gap);rr(x,y,w,36,8,i===3?C.soft:'#fff',C.line);text(v[0],x+w/2,y+13,8,i===3?C.brand2:C.ink,'center',700,'"JetBrains Mono"');text(v[1],x+w/2,y+26,7,C.muted,'center',500,'"JetBrains Mono"')});return}const layers=drawNetwork();const names=[['raw clues','hours · words · pixels'],['simple patterns','edges · phrases'],['combined patterns','shapes · context'],['task output','class · number']];layers.forEach((l,i)=>{const x=l[0].x-58,y=ch-72;rr(x,y,116,48,10,i===3?C.soft:'#fff',C.line);text(names[i][0],x+58,y+16,11,i===3?C.brand2:C.ink,'center',700,'"JetBrains Mono"');text(names[i][1],x+58,y+33,9,C.muted,'center',500,'"JetBrains Mono"')});badge('CNN',28,44,C.blue);badge('RNN',85,44,C.cyan);badge('TRANSFORMER',141,44,C.brand)
+    }
+    function toyCalc(){
+      const x1=state.study/12,x2=(state.sleep-3)/7,x3=(state.attendance-20)/80;
+      const z=x1*.72+x2*.22+x3*.86-.68;state.toyScore=1/(1+Math.exp(-z*3));
+      $('#toyScore').textContent=state.toyScore.toFixed(2);const pass=state.toyScore>=state.threshold;$('#toyDecision').textContent=pass?'Pass':'Fail';const d=Math.abs(state.toyScore-state.threshold);$('#toyConfidence').textContent=d>.25?'High':d>.1?'Moderate':'Low';
+    }
+    function drawStage18(){
+      const layers=drawNetwork({focusLayer:3});const vals=[state.study/12,(state.sleep-3)/7,(state.attendance-20)/80];layers[0].forEach((n,i)=>{text(vals[i].toFixed(2),n.x,n.y+29,10,C.muted,'center',600,'"JetBrains Mono"')});const out=layers[3][0];ctx.beginPath();ctx.arc(out.x,out.y,25,0,Math.PI*2);ctx.strokeStyle=state.toyScore>=state.threshold?C.green:C.red;ctx.lineWidth=5;ctx.stroke();rr(cw-160,ch-88,132,60,12,state.toyScore>=state.threshold?'#ecfdf5':'#fef2f2',state.toyScore>=state.threshold?C.green:C.red);text(state.toyScore.toFixed(2),cw-94,ch-64,21,state.toyScore>=state.threshold?C.green:C.red,'center',800,'"JetBrains Mono"');text(state.toyScore>=state.threshold?'PASS':'FAIL',cw-94,ch-43,10,C.muted,'center',700,'"JetBrains Mono"')
+    }
+    function drawStage19(t){
+      const narrow=cw<500,steps=[['DATA','batch'],['FORWARD','prediction'],['LOSS','objective'],['BACKPROP','gradients only'],['OPTIMIZER','apply step'],['UPDATED','new weights'],['REPEAT','next batch']],active=Math.floor(((t-startTime)/900)%steps.length),cx=cw/2,cy=ch*.50,rx=cw*(narrow?.28:.29),ry=ch*(narrow?.30:.32),positions=steps.map((_,i)=>{const a=-Math.PI/2+i*Math.PI*2/steps.length;return{x:cx+Math.cos(a)*rx,y:cy+Math.sin(a)*ry,a}});
+      text('ONE FULL TRAINING CYCLE',cx,24,narrow?10:13,C.muted,'center',750,'"JetBrains Mono"');
+      positions.forEach((p,i)=>{const next=positions[(i+1)%positions.length],on=i===active;arrow(p.x+Math.cos(p.a)*-2,p.y+Math.sin(p.a)*-2,next.x,next.y,on?C.brand:C.line,on?2.4:1,.82);node(p.x,p.y,on?(narrow?15:20):(narrow?11:15),String(i+1).padStart(2,'0'),on?C.soft:'#fff',on?C.brand2:C.blue);const ox=Math.cos(p.a)*(narrow?23:32),oy=Math.sin(p.a)*(narrow?26:42),align=Math.cos(p.a)>.25?'left':Math.cos(p.a)<-.25?'right':'center';text(steps[i][0],p.x+ox,p.y+oy,narrow?8:11,on?C.brand2:C.ink,align,800,'"JetBrains Mono"');if(!narrow)text(steps[i][1],p.x+ox,p.y+oy+14,10,C.muted,align,550)});
+      rr(cx-(narrow?74:105),cy-(narrow?35:45),narrow?148:210,narrow?70:90,15,C.soft,'rgba(99,102,241,.3)');text(steps[active][0],cx,cy-12,narrow?13:18,C.brand2,'center',800,'"JetBrains Mono"');text(steps[active][1],cx,cy+13,narrow?9:12,C.muted,'center',650,'"JetBrains Mono"');text('updated weights change the next prediction',cx,ch-24,narrow?8:11,C.green,'center',700,'"JetBrains Mono"');
+    }
+    function draw(time=performance.now()){if(!cw||!ch)return;clear();switch(state.active){case 1:drawStage1(time);break;case 2:drawStage2();break;case 3:drawStage3();break;case 4:drawStage4(time);break;case 5:drawStage5(time);break;case 6:drawStage6();break;case 7:drawStage7(time);break;case 8:drawStage8();break;case 9:drawStage9(time);break;case 10:drawStage10(time);break;case 11:drawStage11(time);break;case 12:drawStage12();break;case 13:drawStage13();break;case 14:drawStage14();break;case 15:drawStage15();break;case 16:drawStage16();break;case 17:drawStage17();break;case 18:drawStage18();break;case 19:drawStage19(time);break;default:drawStage1(time)}}
+    function needsAnimation(){return [4,5,7,9,10,11,19].includes(state.active)&&!reducedMotion}
+    function loop(t){draw(t);animationId=needsAnimation()?requestAnimationFrame(loop):0}
+    function restartAnimation(){if(animationId)cancelAnimationFrame(animationId);animationId=0;startTime=performance.now();if(state.active===10){state.optimElapsed=0;state.optimPaused=false;const pause=$('#optimPause');if(pause){pause.textContent='Pause';pause.setAttribute('aria-pressed','false')}}if(needsAnimation())animationId=requestAnimationFrame(loop);else draw()}
+
+    function drawHero(t){
+      const r=heroCanvas.getBoundingClientRect(),w=r.width,h=r.height;if(!w||!h)return;
+      heroCtx.clearRect(0,0,w,h);
+      const count=w<620?20:30,range=Math.min(205,Math.max(142,w*.14));
+      const points=Array.from({length:count},(_,i)=>{
+        const baseX=w*(.06+((i*37)%89)/100),baseY=h*(.12+((i*53)%76)/100);
+        const drift=reducedMotion?0:1;
+        return{x:baseX+Math.cos(t*.00034+i*1.7)*9*drift,y:baseY+Math.sin(t*.00048+i)*11*drift,r:2.8+(i%3)*.9};
+      });
+      for(let i=0;i<points.length;i++)for(let j=i+1;j<points.length;j++){
+        const a=points[i],b=points[j],d=Math.hypot(a.x-b.x,a.y-b.y);
+        if(d<range){
+          const strength=1-d/range;
+          heroCtx.beginPath();heroCtx.moveTo(a.x,a.y);heroCtx.lineTo(b.x,b.y);
+          heroCtx.strokeStyle=`rgba(99,102,241,${.13+strength*.28})`;heroCtx.lineWidth=.8+strength*.9;heroCtx.stroke();
+          if(!reducedMotion&&(i*7+j)%19===0){
+            const travel=(t*.00016+(i+j)*.11)%1,sx=a.x+(b.x-a.x)*travel,sy=a.y+(b.y-a.y)*travel;
+            heroCtx.beginPath();heroCtx.arc(sx,sy,1.8+strength,0,Math.PI*2);heroCtx.fillStyle='rgba(79,70,229,.72)';heroCtx.fill();
+          }
+        }
+      }
+      points.forEach((p,i)=>{
+        const pulse=reducedMotion?0:(Math.sin(t*.002+i)*.5+.5);
+        heroCtx.beginPath();heroCtx.arc(p.x,p.y,p.r+5+pulse*4,0,Math.PI*2);heroCtx.fillStyle=`rgba(99,102,241,${.035+pulse*.035})`;heroCtx.fill();
+        heroCtx.beginPath();heroCtx.arc(p.x,p.y,p.r,0,Math.PI*2);heroCtx.fillStyle=i%4===0?'rgba(79,70,229,.82)':'rgba(99,102,241,.62)';heroCtx.fill();
+      });
+      if(!reducedMotion&&window.scrollY<h*.9)heroId=requestAnimationFrame(drawHero)
+    }
+
+    const stageEls=$$('.statml-stage');const rail=$('#stageRail');
+    stageEls.forEach((sec,i)=>{const button=document.createElement('button');button.className='statml-stage-button';button.type='button';button.setAttribute('aria-label',`Go to ${sec.querySelector('h2').textContent}`);button.innerHTML=`<span>${sec.querySelector('h2').textContent}</span>`;button.addEventListener('click',()=>sec.scrollIntoView({behavior:reducedMotion?'auto':'smooth',block:'start'}));rail.appendChild(button)});
+    const railButtons=[...rail.children];
+    function activate(n){if(!stages[n]||state.active===n)return;state.active=n;const s=stages[n];$('#visualKicker').textContent=n===19?'Final synthesis':`Stage ${String(n).padStart(2,'0')}`;$('#visualTitle').textContent=s.title;$('#visualBadge').textContent=s.badge;$('#visualFootText').textContent=s.foot;$('#visualFootCode').textContent=s.code;canvas.setAttribute('aria-label',`${s.title}. ${s.foot}`);railButtons.forEach((b,i)=>b.setAttribute('aria-current',i===n-1?'step':'false'));restartAnimation()}
+    let stageTick=0;
+    function activateFromScroll(){stageTick=0;const readingLine=innerWidth<=900?innerHeight*.62:innerHeight*.48;let chosen=stageEls[0];for(const sec of stageEls){if(sec.getBoundingClientRect().top<=readingLine)chosen=sec;else break}activate(Number(chosen.dataset.stage))}
+    addEventListener('scroll',()=>{if(!stageTick)stageTick=requestAnimationFrame(activateFromScroll)},{passive:true});activateFromScroll();
+    function updateProgress(){const doc=document.documentElement,span=doc.scrollHeight-innerHeight,p=span>0?scrollY/span:0;$('#progressBar').style.width=`${Math.min(100,Math.max(0,p*100))}%`}
+    addEventListener('scroll',updateProgress,{passive:true});updateProgress();
+
+    $('#dropoutRate').addEventListener('input',e=>{state.dropout=Number(e.target.value)/100;$('#dropoutReadout').textContent=`${e.target.value}%`;draw()});
+    $('#threshold').addEventListener('input',e=>{state.threshold=Number(e.target.value)/100;$('#thresholdReadout').textContent=state.threshold.toFixed(2);updateThresholdReadout();toyCalc();draw()});
+    $('#errorThreshold').addEventListener('input',e=>{state.threshold=Number(e.target.value)/100;updateThresholdReadout();toyCalc();draw()});
+    $$('[data-task]').forEach(btn=>btn.addEventListener('click',()=>{$$('[data-task]').forEach(b=>{const selected=b.dataset.task===btn.dataset.task;b.classList.toggle('active',selected);b.setAttribute('aria-pressed',String(selected))});state.task=btn.dataset.task;draw()}));
+    $$('[data-feature]').forEach(btn=>btn.addEventListener('click',()=>{$$('[data-feature]').forEach(b=>{b.classList.remove('active');b.setAttribute('aria-pressed','false')});btn.classList.add('active');btn.setAttribute('aria-pressed','true');state.selectedFeature=btn.dataset.feature;startTime=performance.now();draw()}));
+    $$('[data-relu]').forEach(btn=>btn.addEventListener('click',()=>{$$('[data-relu]').forEach(b=>{b.classList.remove('active');b.setAttribute('aria-pressed','false')});btn.classList.add('active');btn.setAttribute('aria-pressed','true');state.reluEnabled=btn.dataset.relu==='on';draw()}));
+    $$('[data-error-sort]').forEach(btn=>btn.addEventListener('click',()=>{$$('[data-error-sort]').forEach(b=>{const selected=b===btn;b.classList.toggle('active',selected);b.setAttribute('aria-pressed',String(selected))});state.errorSort=btn.dataset.errorSort;draw()}));
+    $$('[data-lr-mode]').forEach(btn=>btn.addEventListener('click',()=>{$$('[data-lr-mode]').forEach(b=>{const selected=b===btn;b.classList.toggle('active',selected);b.setAttribute('aria-pressed',String(selected))});state.learningMode=btn.dataset.lrMode;state.learningRate=state.learningMode==='tiny'?.02:state.learningMode==='large'?.56:.12;state.weight=.78;state.optimPaused=false;state.optimElapsed=0;startTime=performance.now();$('#optimPause').textContent='Pause';$('#optimPause').setAttribute('aria-pressed','false');draw()}));
+    $('#optimPause').addEventListener('click',e=>{state.optimPaused=!state.optimPaused;if(state.optimPaused)state.optimElapsed=performance.now()-startTime;else startTime=performance.now()-state.optimElapsed;e.currentTarget.textContent=state.optimPaused?'Resume':'Pause';e.currentTarget.setAttribute('aria-pressed',String(state.optimPaused));draw()});
+    canvas.addEventListener('pointerdown',e=>{if(state.active!==10||!state.curveGeom)return;state.draggingWeight=true;state.optimPaused=true;state.optimElapsed=0;$('#optimPause').textContent='Resume';$('#optimPause').setAttribute('aria-pressed','true');canvas.setPointerCapture?.(e.pointerId);const rect=canvas.getBoundingClientRect(),x=e.clientX-rect.left,g=state.curveGeom,raw=g.min+(x-g.ax)/g.aw*(g.max-g.min);state.weight=Math.max(0,Math.min(1,raw));draw()});
+    canvas.addEventListener('pointermove',e=>{if(!state.draggingWeight||!state.curveGeom)return;const rect=canvas.getBoundingClientRect(),x=e.clientX-rect.left,g=state.curveGeom,raw=g.min+(x-g.ax)/g.aw*(g.max-g.min);state.weight=Math.max(0,Math.min(1,raw));draw()});
+    canvas.addEventListener('pointerup',e=>{if(!state.draggingWeight)return;state.draggingWeight=false;canvas.releasePointerCapture?.(e.pointerId);draw()});
+    canvas.addEventListener('pointercancel',()=>{state.draggingWeight=false});
+    [['studyInput','study','studyReadout',''],['sleepInput','sleep','sleepReadout',''],['attendanceInput','attendance','attendanceReadout','%']].forEach(([id,key,out,suffix])=>{$('#'+id).addEventListener('input',e=>{state[key]=Number(e.target.value);$('#'+out).textContent=e.target.value+suffix;toyCalc();draw()})});
+    $$('.quiz-card').forEach(card=>{const answer=card.dataset.answer;card.querySelectorAll('.quiz-option').forEach(btn=>btn.addEventListener('click',()=>{card.querySelectorAll('.quiz-option').forEach(b=>{b.disabled=true;b.classList.toggle('correct',b.dataset.choice===answer);if(b===btn&&b.dataset.choice!==answer)b.classList.add('incorrect')});const fb=card.querySelector('.quiz-feedback');fb.style.display='block';fb.style.color=btn.dataset.choice===answer?C.green:C.red}))});
+
+    const requested=new URLSearchParams(location.search).get('stage');if(requested){const n=Math.max(1,Math.min(19,Number(requested)||1));setTimeout(()=>document.getElementById(`stage-${n}`).scrollIntoView({block:'start'}),80)}
+    updateThresholdReadout();toyCalc();resize();activate(1);if(!reducedMotion)heroId=requestAnimationFrame(drawHero);
+  })();
+  </script>
+</body>
+</html>
