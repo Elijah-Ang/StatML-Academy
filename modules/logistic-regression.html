@@ -617,17 +617,22 @@ Can give 1.5 or −0.3 … not a probability!</div>
 <!-- S3: Sigmoid -->
 <section class="section" data-stage="3" id="sec-3">
   <div class="stage-num">Stage 03</div>
-  <h2>The Sigmoid Function ✨</h2>
-  <p>The <strong>sigmoid function</strong> takes any score and maps it to a probability between 0 and 1.</p>
+  <h2>From a Raw Score to a Probability ✨</h2>
+  <p><strong>First, logistic regression starts the same way linear regression does.</strong> For each data point, one linear equation combines that point's features with the model's learned weights and produces one raw number, called <strong>z</strong>.</p>
+  <div class="math-block">z = b₀ + b₁x₁ + b₂x₂ + ···
+
+one data point → one raw score z</div>
+  <p><strong>z is not a z-score or a standard score.</strong> It is not learned separately for each point. It is simply the model's raw opinion before that opinion becomes a probability. z can be any number from negative infinity to positive infinity. If <strong>z = 0</strong>, the model is exactly at 50/50.</p>
+  <p><strong>Only after that</strong> do we apply the <strong>sigmoid function</strong> to turn z into a probability between 0 and 1.</p>
   <div class="math-block">p = 1 / (1 + e⁻ᶻ)
 
 Large positive z → probability near 1
 Large negative z → probability near 0
 z = 0 → probability exactly 0.5</div>
   <div class="glass-card">
-    <h3>Try It</h3>
+    <h3>See the Sigmoid Respond</h3>
     <div class="slider-wrap">
-      <label>z =</label>
+      <label>Raw score z =</label>
       <input type="range" min="-6" max="6" step="0.1" value="0" id="zSlider">
       <span class="s-val" id="zVal">0.0</span>
     </div>
@@ -638,23 +643,23 @@ z = 0 → probability exactly 0.5</div>
 
   <!-- CLARIFYING Z -->
   <div class="glass-card">
-    <h3>Do I choose z? 🤔</h3>
-    <p>For this interactive slider: <strong>yes</strong>, you are choosing $z$ manually just to explore how the sigmoid mathematical curve squishes values.</p>
-    <p>In a real machine learning model: <strong>no</strong>, you do not choose $z$ manually. The model calculates $z$ automatically from the data features and learned weights.</p>
+    <h3>Where Does z Come From? 🤔</h3>
+    <p>For this interactive slider: <strong>yes</strong>, you are choosing the raw score z manually so you can see how the sigmoid responds.</p>
+    <p>In a real machine learning model: <strong>no</strong>, you do not choose z manually. The model runs its linear equation on each data point's features and learned weights.</p>
     <div style="text-align: center; margin: 16px 0; font-family: 'JetBrains Mono', monospace; font-size: 0.82rem; line-height: 1.6; color: var(--accent2); background: rgba(99,102,241,0.03); padding: 10px; border-radius: var(--radius-sm);">
-      Features + Weights &rarr; z-score <br>
-      z-score &rarr; Sigmoid &rarr; Probability
+      Features + Weights &rarr; raw score z <br>
+      raw score z &rarr; Sigmoid &rarr; Probability
     </div>
-    <p style="margin:0; font-size: 0.85rem; color: var(--text-dim);"><em>“The z slider is only a teaching demo. In real logistic regression, z is calculated automatically for each row of data.”</em></p>
+    <p style="margin:0; font-size: 0.85rem; color: var(--text-dim);"><em>“The z slider is only a teaching demo. In real logistic regression, the model calculates a separate raw score z for each row, then the sigmoid turns it into a probability.”</em></p>
   </div>
 
   <!-- QUIZ 1 -->
   <div class="quiz-card">
     <h3 style="font-size: 1rem; margin-bottom: 8px; color: var(--accent);">🧠 Concept Check Quiz 1</h3>
-    <p style="font-size: 0.88rem; margin-bottom: 12px; color: var(--text-dim);">In real logistic regression, do we manually choose $z$?</p>
-    <button class="quiz-option" data-correct="false" onclick="handleQuizClick(this, false)">A. Yes, the user chooses z for every row.</button>
-    <button class="quiz-option" data-correct="true" onclick="handleQuizClick(this, true)">B. No, the model calculates z from features and learned weights.</button>
-    <button class="quiz-option" data-correct="false" onclick="handleQuizClick(this, false)">C. z is always 0.</button>
+    <p style="font-size: 0.88rem; margin-bottom: 12px; color: var(--text-dim);">In real logistic regression, where does the raw score z come from?</p>
+    <button class="quiz-option" data-correct="true" onclick="handleQuizClick(this, true)">A. The model's linear equation combines each row's features with learned weights.</button>
+    <button class="quiz-option" data-correct="false" onclick="handleQuizClick(this, false)">B. The user chooses a new z for every row.</button>
+    <button class="quiz-option" data-correct="false" onclick="handleQuizClick(this, false)">C. The sigmoid chooses z after calculating the probability.</button>
     <button class="quiz-option" data-correct="false" onclick="handleQuizClick(this, false)">D. z is the same as the decision threshold.</button>
     <div class="quiz-feedback"></div>
   </div>
@@ -669,7 +674,7 @@ z = 0 → probability exactly 0.5</div>
   <p>How do we construct the score <strong>z</strong>? Think of our features (Temperature, Sunny, Weekend) as clues. The model assigns a <strong>weight</strong> to each clue depending on its relative importance:</p>
   <p>• A <strong>positive weight</strong> pushes the score toward "Buy" (y = 1).<br>
   • A <strong>negative weight</strong> pushes the score toward "Don't Buy" (y = 0).<br>
-  • The <strong>final score z</strong> is the total combined push from all clues. The Sigmoid then turns this z-score into a clean final probability.</p>
+  • The <strong>final raw score z</strong> is the total combined push from all clues. The Sigmoid then turns this raw score into a clean final probability.</p>
 
   <p style="margin-top: 14px;"><strong>These sliders are a sandbox.</strong> You are manually changing the weights only to see how the mathematical curve reacts. In real training, the model learns these weights automatically by reducing log loss.</p>
 
@@ -736,7 +741,7 @@ z = 0 → probability exactly 0.5</div>
           <td style="padding: 6px 4px;">How strongly each clue pushes the prediction</td>
         </tr>
         <tr style="border-bottom: 1px solid var(--glass-border);">
-          <td style="padding: 6px 4px; font-weight: bold;">z score</td>
+          <td style="padding: 6px 4px; font-weight: bold;">Raw score z</td>
           <td style="padding: 6px 4px;">Model calculates it</td>
           <td style="padding: 6px 4px;">Total push from all weighted clues combined</td>
         </tr>
@@ -1825,7 +1830,7 @@ window.handleQuizClick = function(button, correct) {
   });
 
   const feedbacks = {
-    "sec-3": "<strong>Correct!</strong> The z slider above is only a teaching demo. In real-world logistic regression, z-scores are calculated programmatically for each data row from your clues and learned parameters.",
+    "sec-3": "<strong>Correct!</strong> The z slider above is only a teaching demo. In real-world logistic regression, the model's linear equation calculates a raw score z for each data row from its features and learned parameters. The sigmoid then turns that score into a probability.",
     "sec-5": "<strong>Correct!</strong> Training iteratively adapts weights to discover the direction of minimum prediction penalty (log loss). Decision rules (thresholds) are set by analysts afterwards.",
     "sec-6": "<strong>Correct!</strong> The model only issues probability scores. Picking the threshold cut-off point is a human decision tailored strictly to practical needs (such as catching more buyers vs. avoiding false alarms)."
   };
@@ -1865,7 +1870,7 @@ updateValidationMetrics();
 
 <script id="statml-standard-runtime">
 (() => {
-  const META = {"title": "Logistic Regression", "badge": "Machine Learning · Classification", "overview": ["Convert a linear score into a probability", "Understand coefficients, loss, and decision thresholds", "Evaluate classification beyond accuracy"], "prereq": "Logistic regression predicts the probability of a class. The final class label is produced only after applying a decision threshold to that probability.", "additionStage": 10, "additionTitle": "Thresholds, imbalance, and calibration", "additionHtml": "<p>The default threshold of 0.50 is a convention, not a law. Choose a threshold based on the relative cost of false positives and false negatives.</p><p>With imbalanced classes, accuracy may look impressive while the model misses the minority class. Inspect precision, recall, ROC or precision–recall curves, and whether predicted probabilities are well calibrated.</p>", "takeaways": ["The sigmoid maps a linear score to a probability between 0 and 1.", "Coefficients act on log-odds; exponentiated coefficients are odds ratios.", "Evaluation and threshold choice should reflect the real cost of classification errors."], "selectors": {"hero": ".hero-section", "layout": ".layout", "narrative": ".narrative", "visual": ".viz-container"}, "stages": [{"n": 1, "title": "It Starts with Data 🍦"}, {"n": 2, "title": "Why Lines Break 📏"}, {"n": 3, "title": "The Sigmoid Function ✨"}, {"n": 4, "title": "Weighted Clues 🧠"}, {"n": 5, "title": "Learning from Mistakes ⚙️"}, {"n": 6, "title": "Drawing the Line 🚦"}, {"n": 7, "title": "How Good Is It? 📊"}, {"n": 8, "title": "The ROC Curve 🔔"}, {"n": 9, "title": "What the Numbers Mean 📎"}, {"n": 10, "title": "The Full Picture 🌟"}], "phases": ["Understand", "Understand", "Build", "Understand", "Build", "Understand", "Understand", "Understand", "Reflect", "Reflect"]};
+  const META = {"title": "Logistic Regression", "badge": "Machine Learning · Classification", "overview": ["Convert a linear score into a probability", "Understand coefficients, loss, and decision thresholds", "Evaluate classification beyond accuracy"], "prereq": "Logistic regression predicts the probability of a class. The final class label is produced only after applying a decision threshold to that probability.", "additionStage": 10, "additionTitle": "Thresholds, imbalance, and calibration", "additionHtml": "<p>The default threshold of 0.50 is a convention, not a law. Choose a threshold based on the relative cost of false positives and false negatives.</p><p>With imbalanced classes, accuracy may look impressive while the model misses the minority class. Inspect precision, recall, ROC or precision–recall curves, and whether predicted probabilities are well calibrated.</p>", "takeaways": ["The sigmoid maps a linear score to a probability between 0 and 1.", "Coefficients act on log-odds; exponentiated coefficients are odds ratios.", "Evaluation and threshold choice should reflect the real cost of classification errors."], "selectors": {"hero": ".hero-section", "layout": ".layout", "narrative": ".narrative", "visual": ".viz-container"}, "stages": [{"n": 1, "title": "It Starts with Data 🍦"}, {"n": 2, "title": "Why Lines Break 📏"}, {"n": 3, "title": "From a Raw Score to a Probability ✨"}, {"n": 4, "title": "Weighted Clues 🧠"}, {"n": 5, "title": "Learning from Mistakes ⚙️"}, {"n": 6, "title": "Drawing the Line 🚦"}, {"n": 7, "title": "How Good Is It? 📊"}, {"n": 8, "title": "The ROC Curve 🔔"}, {"n": 9, "title": "What the Numbers Mean 📎"}, {"n": 10, "title": "The Full Picture 🌟"}], "phases": ["Understand", "Understand", "Build", "Understand", "Build", "Understand", "Understand", "Understand", "Reflect", "Reflect"]};
   document.body.classList.add('statml-standardized');
   const $ = (s, root=document) => root.querySelector(s);
   const $$ = (s, root=document) => [...root.querySelectorAll(s)];
