@@ -1328,10 +1328,14 @@ function drawValidationLabels(data,w){
   ctx.font='bold 10px JetBrains Mono';
   const placed={0:[],1:[]};
   const rightEdge=W-PAD.r-4;
+  let keptTPLabel=false;
   const labels=data.map(d=>{
     const xPoint=plotX(d.temp),p=predict(d,w),pred=p>=threshold?1:0;
     let label='',color='';
-    if(d.y===1&&pred===1){label='TP (Correct Yes)';color='#16a34a'}
+    if(d.y===1&&pred===1){
+      if(keptTPLabel)return null;
+      keptTPLabel=true;label='TP (Correct Yes)';color='#16a34a'
+    }
     else if(d.y===0&&pred===0){label='TN (Correct No)';color='#3b82f6'}
     else if(d.y===0&&pred===1){label='FP (False Alarm)';color='#d97706'}
     else if(d.y===1&&pred===0){label='FN (Missed Yes)';color='#dc2626'}
@@ -1339,7 +1343,7 @@ function drawValidationLabels(data,w){
     const align=xPoint+10+width<=rightEdge?'left':'right';
     const x=align==='left'?xPoint+10:Math.max(PAD.l+4+width,xPoint-10);
     return{label,color,group:d.y,x,left:align==='left'?x:x-width,right:align==='left'?x+width:x,align};
-  }).sort((a,b)=>a.left-b.left);
+  }).filter(Boolean).sort((a,b)=>a.left-b.left);
 
   for(const item of labels){
     let lane=0;
