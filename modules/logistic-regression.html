@@ -1325,6 +1325,37 @@ function drawPoints(data,w,mode,alpha){
   }
   ctx.restore();
 }
+function drawValidationLabels(data,w){
+  ctx.save();
+  ctx.font='bold 10px JetBrains Mono';
+  const placed={0:[],1:[]};
+  const rightEdge=W-PAD.r-4;
+  const labels=data.map(d=>{
+    const xPoint=plotX(d.temp),p=predict(d,w),pred=p>=threshold?1:0;
+    let label='',color='';
+    if(d.y===1&&pred===1){label='TP (Correct Yes)';color='#16a34a'}
+    else if(d.y===0&&pred===0){label='TN (Correct No)';color='#3b82f6'}
+    else if(d.y===0&&pred===1){label='FP (False Alarm)';color='#d97706'}
+    else if(d.y===1&&pred===0){label='FN (Missed Yes)';color='#dc2626'}
+    const width=ctx.measureText(label).width;
+    const align=xPoint+10+width<=rightEdge?'left':'right';
+    const x=align==='left'?xPoint+10:Math.max(PAD.l+4+width,xPoint-10);
+    return{label,color,group:d.y,x,left:align==='left'?x:x-width,right:align==='left'?x+width:x,align};
+  }).sort((a,b)=>a.left-b.left);
+
+  for(const item of labels){
+    let lane=0;
+    while((placed[item.group][lane]||[]).some(other=>item.left<other.right+10&&item.right>other.left-10))lane++;
+    item.y=item.group===1?Math.max(14,PAD.t-8-lane*14):Math.min(H-8,H-PAD.b-8+lane*14);
+    if(!placed[item.group][lane])placed[item.group][lane]=[];
+    placed[item.group][lane].push(item);
+  }
+
+  for(const item of labels){
+    ctx.fillStyle=item.color;ctx.textAlign=item.align;ctx.fillText(item.label,item.x,item.y);
+  }
+  ctx.restore();
+}
 // FIX 2: STRENGTHEN THE LINEAR EXPLANATION ZONE ON CANVAS
 function drawLinearLine(){
   ctx.strokeStyle='rgba(220,38,38,0.5)';ctx.lineWidth=2;ctx.setLineDash([8,6]);ctx.beginPath();
@@ -1358,7 +1389,8 @@ function drawZDot(zVal){
 function drawThresholdLine(t){
   const y=plotY(t);ctx.strokeStyle=C.amber;ctx.lineWidth=1.5;ctx.setLineDash([6,4]);
   ctx.beginPath();ctx.moveTo(PAD.l,y);ctx.lineTo(W-PAD.r,y);ctx.stroke();ctx.setLineDash([]);
-  ctx.fillStyle=C.amberText;ctx.font='bold 11px JetBrains Mono';ctx.textAlign='left';ctx.fillText('threshold = '+t.toFixed(2),PAD.l+5,y-8);
+  ctx.fillStyle=C.amberText;ctx.font='bold 11px JetBrains Mono';ctx.textAlign='right';
+  ctx.fillText('threshold = '+t.toFixed(2),W-PAD.r-5,Math.min(H-PAD.b-4,Math.max(PAD.t+14,y+16)));
 }
 function drawLossChart(){
   if(lossHistory.length<2)return;
@@ -1586,9 +1618,9 @@ function draw(){
     // Threshold boundary label text overlays on the canvas
     ctx.fillStyle='rgba(22, 163, 74, 0.75)';
     ctx.font='bold 11px Inter';ctx.textAlign='left';
-    ctx.fillText("Above threshold = Predict Yes", PAD.l+15, Math.max(PAD.t+15, plotY(threshold) - 15));
+    ctx.fillText("Above threshold = Predict Yes", PAD.l+15, Math.max(PAD.t+28, plotY(threshold) - 24));
     ctx.fillStyle='rgba(220, 38, 38, 0.75)';
-    ctx.fillText("Below threshold = Predict No", PAD.l+15, Math.min(H-PAD.b-15, plotY(threshold) + 20));
+    ctx.fillText("Below threshold = Predict No", PAD.l+15, Math.min(H-PAD.b-22, plotY(threshold) + 32));
     ctx.restore();
   }
 
@@ -1602,20 +1634,8 @@ function draw(){
     ctx.fillStyle='rgba(220, 38, 38, 1)';ctx.fillText("● Red outline = Wrong prediction", PAD.l+15, PAD.t+52);
     ctx.fillStyle=C.label;ctx.fillText("Dashed line = Decision threshold (Yes vs No)", PAD.l+15, PAD.t+66);
 
-    // Explicitly label each validation point used for threshold selection.
-    for(const d of VALIDATION){
-      const x=plotX(d.temp),y=plotY(d.y);
-      const p=predict(d,w);
-      const pred=p>=threshold?1:0;
-      let label="",color="";
-      if(d.y===1&&pred===1){label="TP (Correct Yes)";color="#16a34a"}
-      else if(d.y===0&&pred===0){label="TN (Correct No)";color="#3b82f6"}
-      else if(d.y===0&&pred===1){label="FP (False Alarm)";color="#d97706"}
-      else if(d.y===1&&pred===0){label="FN (Missed Yes)";color="#dc2626"}
-      ctx.fillStyle=color;ctx.font='bold 10px JetBrains Mono';
-      ctx.fillText(label,x+10,y-8);
-    }
     ctx.restore();
+    drawValidationLabels(VALIDATION,w);
   }
 
   if(currentStage>=6&&currentStage<=7)drawThresholdLine(threshold);
