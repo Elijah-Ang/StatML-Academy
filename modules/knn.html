@@ -1003,49 +1003,55 @@ d = √0.0125<br>
   <h2>The Effect of K</h2>
   <p>K is one of the most important tuning knobs. Watch how the decision boundary changes as K increases.</p>
 
-  <!-- LOOCV cross-validation -->
+  <!-- Practical default and small-data exception -->
+  <div class="glass-card" style="border-left: 4px solid var(--accent); background: rgba(99,102,241,0.04);">
+    <h3>Start with Five-Fold Cross-Validation</h3>
+    <p style="font-size: 0.88rem;"><strong>Five-fold cross-validation is the usual practical starting point.</strong> Ten-fold cross-validation is also common. In either case, the training data is divided into folds, and each candidate K is scored several times using different train/validation folds.</p>
+    <div class="insight-box" style="border-left-color: var(--amber); background: rgba(217,119,6,0.06); margin: 12px 0 0;">
+      <p style="font-size: 0.85rem; color: var(--text); margin: 0;">⚠️ <strong>This toy dataset is very small, so this lesson demonstrates leave-one-out cross-validation (LOOCV) instead.</strong> That is a small-data teaching choice, not the usual default. With a larger dataset, five-fold or ten-fold CV would typically be more practical.</p>
+    </div>
+  </div>
+
+  <!-- Comparing candidate K values -->
   <div class="glass-card">
-    <h3>What is Leave-One-Out Cross-Validation (LOOCV)?</h3>
-    <p style="font-size: 0.88rem;">To choose the optimal value of K honestly, we cannot test different values on our final held-out test set (as that would leak information). Instead, we perform cross-validation inside our <strong>training set only</strong>.</p>
+    <h3>Cross-Validation Compares K; It Does Not Choose K for You</h3>
+    <p style="font-size: 0.88rem;">Cross-validation is a loop: try several candidate values of K, calculate an average validation score for each one, then choose the K with the strongest average score. The procedure produces the comparison; the modelling workflow makes the selection.</p>
+    <p style="font-size: 0.82rem; color: var(--text-muted); margin: 10px 0 6px;"><strong>Illustrative five-fold example:</strong></p>
+    <table class="data-table" style="font-size: 0.8rem; margin-bottom: 10px;">
+      <thead>
+        <tr><th>Candidate K</th><th>Average CV accuracy</th><th>What we do</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>K = 1</td><td>75%</td><td>Compare</td></tr>
+        <tr><td>K = 3</td><td>88%</td><td>Compare</td></tr>
+        <tr><td><strong>K = 5</strong></td><td><strong>92%</strong></td><td><strong>Best average score</strong></td></tr>
+        <tr><td>K = 7</td><td>90%</td><td>Compare</td></tr>
+      </tbody>
+    </table>
+    <p style="font-size: 0.82rem; color: var(--text-dim); margin: 0;">In this example, we carry K = 5 forward because it has the highest average CV score. The live chart below uses LOOCV because this toy training set is tiny.</p>
+  </div>
 
-    <p style="font-size: 0.88rem; margin-top: 8px;"><strong>The Leave-One-Out Recipe:</strong></p>
-    <ol style="font-size: 0.85rem; margin-left: 20px; color: var(--text-dim); line-height: 1.5; margin-bottom: 12px;">
-      <li>Select one point from the training set and "hide" it.</li>
-      <li>Treat the remaining training points as the model's memory.</li>
-      <li>Use KNN with a specific K to predict the label of the hidden point.</li>
-      <li>Record whether the prediction was correct.</li>
-      <li>Repeat this sequence until every single training point has had a turn being hidden.</li>
-      <li>Calculate the average accuracy across all attempts.</li>
+  <!-- Correct workflow order -->
+  <div class="glass-card">
+    <h3>Recommended Workflow Order</h3>
+    <ol style="font-size: 0.85rem; margin-left: 20px; color: var(--text-dim); line-height: 1.55; margin-bottom: 0;">
+      <li><strong>Split once:</strong> Separate the full dataset into training and test sets. Keep the test set hidden.</li>
+      <li><strong>Cross-validate on training only:</strong> Run five-fold CV for several candidate Ks. In this demonstration, use LOOCV because the training set is very small.</li>
+      <li><strong>Choose K:</strong> Compare the average CV scores and select the best-performing candidate.</li>
+      <li><strong>Retrain:</strong> Fit KNN on all of the training data using the selected K.</li>
+      <li><strong>Test once:</strong> Evaluate that locked model once on the untouched test set.</li>
     </ol>
-
-    <div class="math-block" style="text-align: center; font-size: 0.8rem; margin: 10px 0;">
-Training set only ➔ Try K values (1 to 15) ➔ CV accuracy ➔ Choose optimal K ➔ Final test set used ONCE
-    </div>
-
-    <div class="insight-box" style="border-left-color: var(--coral); background: rgba(220,38,38,0.03);">
-      <p style="font-size: 0.85rem; color: var(--text);">⚠️ <strong>Rule of thumb:</strong> Do NOT select your hyperparameters using the final test set. If you test multiple K values on the test set and pick the one with highest accuracy, your test set is no longer an independent evaluator!</p>
-    </div>
   </div>
 
   <!-- Elbow/Knee Method Explanation -->
   <div class="glass-card">
-    <h3>The Elbow / Knee Method for Choosing K</h3>
-    <p style="font-size: 0.88rem; margin-bottom: 10px;">For KNN, we usually choose K using validation or cross-validation performance. We can plot K against validation accuracy or validation error. Sometimes we look for an elbow or knee point: a place where increasing K no longer improves performance much. This is an elbow-style validation curve, not the K-means inertia elbow method. Here, the y-axis is cross-validation accuracy, not clustering inertia.</p>
+    <h3>Elbow / Knee: A Secondary Heuristic</h3>
+    <p style="font-size: 0.88rem; margin-bottom: 10px;">An elbow or knee is where the CV curve begins to flatten as K increases. It can help you read the curve, but it is a <strong>heuristic, not a rule</strong>. In most cases, start with the K that has the best average cross-validation score. Use the elbow only as a secondary aid when nearby K values perform similarly, then document the tie-breaker you used.</p>
 
     <div class="insight-box" style="border-left-color: var(--accent); background: rgba(99,102,241,0.03); margin: 12px 0;">
-      <p style="font-size: 0.85rem; color: var(--text);">
-        <strong>Simple Hypothetical Example of Knee Selection:</strong><br>
-        • K = 1: 75% accuracy, noisy and overfit.<br>
-        • K = 3: 88% accuracy, big improvement.<br>
-        • K = 5: 92% accuracy, smaller improvement.<br>
-        • K = 7: 92% accuracy, no real improvement.<br>
-        ➔ Clear interpretation: <strong>K = 5 is the clearest knee</strong> because accuracy improves up to K = 5, then barely improves after that. K = 3 may still be acceptable if you want a smaller-neighbor model, but K = 5 is the cleaner elbow-style choice in this example.<br><br>
-        <em>In the actual chart below, look for the marked ‘Possible knee’ point. That marker comes from the current training data and cross-validation results.</em>
-      </p>
+      <p style="font-size: 0.85rem; color: var(--text); margin: 0;"><strong>Example:</strong> If K = 5 has the highest average CV score and the curve also starts flattening after K = 5, the knee supports the choice. It does not replace the score comparison or select K automatically.</p>
     </div>
-    <p style="font-size: 0.82rem; color: var(--text-muted); line-height: 1.5;">
-      ⚠️ <strong>Warning:</strong> The best K is not always the absolute peak accuracy on one tiny split. Prefer cross-validation and choose a K that performs robustly without being paranoiacally small or generic.
-    </p>
+    <p style="font-size: 0.82rem; color: var(--text-muted); line-height: 1.5; margin: 0;">⚠️ Do not choose K from a single split, from the curve's shape alone, or by repeatedly checking the final test set.</p>
   </div>
 
   <div class="glass-card">
@@ -1060,19 +1066,22 @@ Training set only ➔ Try K values (1 to 15) ➔ CV accuracy ➔ Choose optimal 
   <div class="glass-card">
     <h3>K vs Cross-Validation Accuracy</h3>
     <p style="font-size: 0.88rem; margin-bottom: 12px;">
-      The chart below is the elbow/knee visual. We are looking for the point where the curve starts to flatten.
+      Each point shows the average cross-validation accuracy for one candidate K. Use the highest average score as the primary selection signal; the knee marker is only a secondary visual aid.
     </p>
-    <p style="font-size:0.82rem;color:var(--text-muted);margin:0 0 12px 0">This chart uses leave-one-out cross-validation on the training set only, not the held-out test set.</p>
+    <p style="font-size:0.82rem;color:var(--text-muted);margin:0 0 12px 0"><strong>Demo note:</strong> This chart uses leave-one-out cross-validation on the training set only because the toy training set is very small. In practice, start with five-fold or ten-fold CV.</p>
     <!-- Wider & Clearer scroll wrap -->
     <div class="chart-scroll-wrap">
       <canvas id="kAccChart"></canvas>
     </div>
     <!-- Caption -->
     <p style="font-size:0.8rem;color:var(--accent2);margin-top:10px;font-style:italic;line-height:1.4;">
-      💡 <strong>K vs Cross-Validation Accuracy = the validation curve used to choose K.</strong> The elbow/knee is the point where increasing K stops improving cross-validation accuracy much.
+      💡 <strong>Try several Ks → compare average CV scores → pick the best.</strong> The elbow/knee can support the decision, but it is not an automatic rule.
     </p>
   </div>
-  <div class="insight-box"><p>💡 K=1 overfits — it memorizes noise. Very large K underfits — it becomes too generic. The sweet spot is found through <strong>cross-validation</strong>.</p></div>
+  <div class="glass-card" style="border-left: 4px solid var(--green); background: rgba(22,163,74,0.04);">
+    <h3>Big Picture</h3>
+    <p style="font-size: 0.9rem; line-height: 1.55; margin: 0;"><strong>Try several Ks → cross-validation on train only → pick the best average score → retrain on all train → test once.</strong></p>
+  </div>
 </section>
 
 <!-- S13: Strengths and Weaknesses -->
@@ -2020,7 +2029,7 @@ function drawMiniValidationCurve() {
   ctx.fillStyle = COLORS.accent2;
   ctx.font = 'bold 9px Inter, sans-serif';
   ctx.textAlign = 'left';
-  ctx.fillText('K vs CV Accuracy (Knee)', cardX + 10, cardY + 18);
+  ctx.fillText('K vs CV Accuracy (knee cue)', cardX + 10, cardY + 18);
 
   const ks = [1, 3, 5, 7, 9, 11, 13, 15];
   const accs = ks.map(k => {
@@ -2083,7 +2092,7 @@ function drawMiniValidationCurve() {
     // Miniature annotation
     ctx.fillStyle = '#6b7280';
     ctx.font = '500 7px Inter, sans-serif';
-    ctx.fillText(`K=${kneeK} (knee)`, kneeX - 16, kneeY - 8);
+    ctx.fillText(`K=${kneeK} (cue)`, kneeX - 16, kneeY - 8);
   }
 
   // Label current interactive K value
@@ -2563,7 +2572,7 @@ function drawKAccChart(highlightK){
   c.fillStyle = '#1f2937';
   c.font = 'bold 12px Inter, sans-serif';
   c.textAlign = 'center';
-  c.fillText('Validation Curve for Choosing K (LOOCV)', width / 2, 22);
+  c.fillText('CV Curve: Compare K Values (LOOCV demo)', width / 2, 22);
   c.restore();
 
   const kneeK = findKneePoint(ks, accs);
@@ -2588,7 +2597,7 @@ function drawKAccChart(highlightK){
   c.fillStyle = '#16a34a';
   c.font = '600 9px Inter, sans-serif';
   c.textAlign = 'center';
-  c.fillText('Stable Knee Region', (xK3 + xK7)/2, pad.t + 18);
+  c.fillText('Similar CV Scores', (xK3 + xK7)/2, pad.t + 18);
   c.restore();
 
   // Highlight Knee point K=5
@@ -2617,12 +2626,12 @@ function drawKAccChart(highlightK){
     c.fillStyle = '#4f46e5';
     c.font = 'bold 10px Inter, sans-serif';
     c.textAlign = 'center';
-    c.fillText(`Possible knee (K=${kneeK})`, xKnee, pad.t - 8);
+    c.fillText(`Knee cue (K=${kneeK})`, xKnee, pad.t - 8);
 
     c.fillStyle = '#6b7280';
     c.font = '500 9px Inter, sans-serif';
     c.textAlign = 'left';
-    c.fillText('➔ After this, gains flatten', xKnee + 8, pad.t + 32);
+    c.fillText('➔ Gains flatten here', xKnee + 8, pad.t + 32);
     c.restore();
   }
 
