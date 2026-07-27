@@ -1513,15 +1513,20 @@ body.statml-standardized > .stage-dots { display:none !important; }
           text(rule.value, x + 14, y + 27, { size: compact ? 11 : 14, weight: 800, color: palette.ink });
           text(`${rule.rows.length} rows`, x + cardW - 14, y + 27, { size: 8, weight: 700, color: palette.muted, align: "right", mono: true });
           const barAreaY = y + 52;
-          const barAreaH = cardH - 120;
+          // Keep the count labels clearly above the prediction panel. The old
+          // layout put their baselines only a few pixels above the panel edge,
+          // so the panel background visually swallowed the reported counts.
+          const countY = y + cardH - 78;
+          const barAreaBottom = countY - 16;
+          const barAreaH = Math.max(10, barAreaBottom - barAreaY);
           const yesH = barAreaH * rule.yes / maxCount;
           const noH = barAreaH * rule.no / maxCount;
           const barW = Math.min(32, cardW * 0.23);
           const center = x + cardW / 2;
           roundRect(center - barW - 4, barAreaY + barAreaH - yesH, barW, yesH, 6, palette.green);
           roundRect(center + 4, barAreaY + barAreaH - noH, barW, noH, 6, palette.coral);
-          text(String(rule.yes), center - barW / 2 - 4, barAreaY + barAreaH + 16, { size: 9, weight: 700, color: palette.green, align: "center", mono: true });
-          text(String(rule.no), center + barW / 2 + 4, barAreaY + barAreaH + 16, { size: 9, weight: 700, color: palette.coral, align: "center", mono: true });
+          text(String(rule.yes), center - barW / 2 - 4, countY, { size: 9, weight: 700, color: palette.green, align: "center", mono: true });
+          text(String(rule.no), center + barW / 2 + 4, countY, { size: 9, weight: 700, color: palette.coral, align: "center", mono: true });
           const predColor = rule.prediction === "Yes" ? palette.green : palette.coral;
           const predSoft = rule.prediction === "Yes" ? palette.greenSoft : palette.coralSoft;
           roundRect(x + 12, y + cardH - 55, cardW - 24, 36, 11, predSoft);
