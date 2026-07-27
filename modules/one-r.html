@@ -366,6 +366,114 @@
       font-size: 0.72rem;
       font-weight: 700;
     }
+    .step small {
+      display: inline-block;
+      margin-top: 0.25rem;
+      color: var(--ink-2);
+      font-size: 0.88rem;
+      line-height: 1.45;
+    }
+    .cv-section-heading {
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+      margin: 1.45rem 0 0.45rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--line);
+      color: var(--accent-dark);
+      font-family: var(--mono);
+      font-size: 0.75rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+    .cv-section-heading > span {
+      display: grid;
+      place-items: center;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #4f46e5, #6366f1);
+      color: #fff;
+      font-size: 0.78rem;
+    }
+    .cv-metric-choice-row {
+      display: block;
+    }
+    .statml-stage .cv-metric-choice-row > p {
+      max-width: none;
+      margin: 0 0 0.8rem;
+      font-size: 0.88rem;
+      line-height: 1.55;
+    }
+    .cv-metric-toggle {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0.4rem;
+      margin: 0 0 0.75rem;
+      padding: 0.3rem;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: var(--surface-soft);
+    }
+    .statml-stage .cv-metric-toggle button {
+      min-height: 34px;
+      padding: 0.42rem 0.65rem;
+      border: 1px solid transparent;
+      border-radius: 9px;
+      background: transparent;
+      color: var(--ink-2);
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+    .statml-stage .cv-metric-toggle button.active {
+      border-color: var(--accent);
+      background: var(--accent);
+      color: #fff;
+      box-shadow: 0 6px 16px rgba(99,102,241,0.18);
+    }
+    .cv-metric-choice-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.65rem; }
+    .cv-metric-choice {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+      min-height: 205px;
+      padding: 0.82rem;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: rgba(255,255,255,0.82);
+      font-size: 0.72rem;
+      line-height: 1.45;
+    }
+    .cv-metric-choice h3 { margin: 0 0 0.5rem; color: var(--accent-dark); font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.02em; }
+    .cv-metric-choice:nth-child(2) { border-color: #b7e6ce; }
+    .cv-metric-choice:nth-child(2) h3 { color: var(--green); }
+    .cv-metric-choice:nth-child(3) { border-color: #f5d8aa; }
+    .cv-metric-choice:nth-child(3) h3 { color: var(--amber); }
+    .statml-stage .cv-metric-choice p { margin: 0 0 0.65rem; font-size: 0.78rem; line-height: 1.5; }
+    .statml-stage .cv-metric-choice .best-for { margin: auto 0 0; color: var(--ink-2); font-size: 0.72rem; line-height: 1.45; }
+    .cv-stability-layout { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.65rem; align-items: stretch; }
+    .statml-stage .cv-stability-layout .card { display: flex; flex-direction: column; min-width: 0; margin-top: 0; padding: 0.9rem; }
+    .cv-stability-layout .card-title { margin-bottom: 0.4rem; font-size: 0.72rem; line-height: 1.45; }
+    .statml-stage .cv-stability-layout p { max-width: none; font-size: 0.8rem; line-height: 1.5; }
+    .cv-code { max-width: 100%; margin: 0.55rem 0 0; padding: 0.7rem; border-radius: 10px; background: #20252b; color: #f8fafc; font-family: var(--mono); font-size: 0.66rem; line-height: 1.55; white-space: pre-wrap; overflow-wrap: anywhere; overflow-x: hidden; }
+    .statml-stage .cv-formula-note { margin: auto 0 0; padding-top: 0.75rem; color: var(--ink-2); font-size: 0.74rem; line-height: 1.45; }
+    .cv-report-list { display: grid; gap: 0.35rem; margin: 0.55rem 0 0; padding: 0; list-style: none; font-size: 0.76rem; }
+    .statml-stage .cv-report-list li { font-size: 0.78rem; line-height: 1.5; }
+    .cv-report-list li::before { content: ""; display: inline-block; width: 9px; height: 9px; margin-right: 0.45rem; border-radius: 50%; background: var(--accent); }
+    .cv-report-list li:nth-child(2)::before { background: var(--green); }
+    .cv-report-list li:nth-child(3)::before { background: var(--amber); }
+    .cv-stability-table { margin-top: 0.65rem; }
+    .cv-stability-table table { width: 100%; border-collapse: collapse; font-size: 0.72rem; }
+    .cv-stability-table th, .cv-stability-table td { padding: 0.42rem 0.55rem; border: 1px solid var(--line); text-align: left; }
+    .cv-stability-table th { color: var(--ink-2); font-family: var(--mono); font-size: 0.64rem; text-transform: uppercase; }
+    .cv-stability-table td:first-child { color: var(--accent-dark); font-family: var(--mono); font-weight: 700; }
+    .cv-stability-table tr:nth-child(2) td:nth-child(2) { color: var(--green); font-weight: 700; }
+    .cv-stability-table tr:nth-child(3) td:nth-child(2) { color: var(--accent-dark); font-weight: 700; }
+    .cv-stability-table tr:nth-child(4) td:nth-child(2) { color: var(--amber); font-weight: 700; }
+    .cv-stability-table tr:nth-child(5) td:nth-child(2), .cv-stability-table tr:nth-child(6) td:nth-child(2) { color: var(--coral); font-weight: 700; }
+    .cv-why-note { margin-top: 0.65rem; padding: 0.75rem 0.9rem; border: 1px dashed #a5b4fc; border-radius: 12px; background: #f5f3ff; color: var(--accent-dark); font-size: 0.78rem; line-height: 1.5; }
 
     .metrics {
       display: grid;
@@ -595,29 +703,6 @@
       height: 100%;
       display: block;
     }
-    .canvas-live {
-      position: absolute;
-      inset: auto 0.9rem 0.9rem auto;
-      display: flex;
-      gap: 0.35rem;
-      align-items: center;
-      padding: 0.35rem 0.55rem;
-      border-radius: 999px;
-      background: rgba(255,255,255,0.86);
-      border: 1px solid var(--line);
-      color: var(--muted);
-      font-family: var(--mono);
-      font-size: 0.58rem;
-      pointer-events: none;
-    }
-    .canvas-live::before {
-      content: "";
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: var(--green);
-      box-shadow: 0 0 0 4px rgba(22,163,74,0.08);
-    }
     .visual-footer {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -733,7 +818,6 @@
       .visual-header { padding: 0.7rem 0.85rem; }
       .visual-label { display: none; }
       .visual-title { font-size: 0.82rem; }
-      .canvas-live { display: none; }
       .stage { min-height: 82svh; padding: 5rem 1.5rem; }
       .stage h2 { font-size: clamp(2.1rem, 10vw, 3.5rem); }
       .stage-dots { display: none; }
@@ -751,6 +835,9 @@
       .visual-column { height: 43svh; padding: 0.4rem; }
       .visual-shell { border-radius: 14px; }
       .stage-badge { font-size: 0.57rem; }
+      .cv-metric-choice-row, .cv-stability-layout { grid-template-columns: 1fr; }
+      .cv-metric-choice-grid { grid-template-columns: 1fr; }
+      .cv-metric-choice { min-height: 0; }
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -883,11 +970,6 @@ body.statml-standardized > .stage-dots { display:none !important; }
       <div class="eyebrow"><span class="eyebrow-dot"></span>Machine Learning · Classification Baseline</div>
       <h1>One-R</h1>
       <p class="hero-lede">Start from raw rows, test every feature, keep the best one, and turn it into a tiny rulebook you can inspect without summoning a committee of neural networks.</p>
-      <div class="hero-goals" aria-label="Learning goals">
-        <div class="goal"><strong>01 · Build</strong>Create one majority-class rule for every value of a categorical feature.</div>
-        <div class="goal"><strong>02 · Safeguard</strong>Handle numeric values, missing inputs, unseen categories, and ties deliberately.</div>
-        <div class="goal"><strong>03 · Evaluate</strong>Use One-R as an honest baseline and recognise when one feature is not enough.</div>
-      </div>
       <a class="scroll-cue" href="#stage-1"><span class="scroll-line"></span>Scroll to begin</a>
     </div>
   </header>
@@ -1077,42 +1159,94 @@ body.statml-standardized > .stage-dots { display:none !important; }
         </div>
       </section>
 
-      <section class="stage" id="stage-9" data-stage="9" data-title="Validate the learning process">
+      <section class="stage" id="stage-9" data-stage="9" data-title="Validate the whole learning process">
         <div class="stage-inner">
           <div class="stage-kicker">Stage 09 · Evaluate</div>
-          <h2>Validate the whole learning process, not just the final lookup.</h2>
-          <p>Training error is optimistic because One-R searched across features and selected the best-looking one. Honest evaluation repeats every learning step inside the training portion.</p>
+          <h2>Validate the whole learning process</h2>
+          <p>Don’t judge the model only on the final prediction. Any choice the model makes—like selecting the best feature or building rules—must be done inside the training fold, then checked on data it has not seen.</p>
           <div class="steps">
-            <div class="step"><span class="step-number">1</span><span>Split the data or create cross-validation folds.</span></div>
-            <div class="step"><span class="step-number">2</span><span>Inside each training portion, create numeric buckets and every candidate rule.</span></div>
-            <div class="step"><span class="step-number">3</span><span>Select the best feature using only that training portion.</span></div>
-            <div class="step"><span class="step-number">4</span><span>Freeze the rule, predict held-out rows, and aggregate results.</span></div>
+            <div class="step"><span class="step-number">1</span><span><strong>Split the data into folds</strong></span></div>
+            <div class="step"><span class="step-number">2</span><span><strong>Use the training fold to learn</strong><br><small>Build buckets, test candidate rules, and choose the best option here.</small></span></div>
+            <div class="step"><span class="step-number">3</span><span><strong>Freeze the rule</strong><br><small>Stop changing it. No more label peeking.</small></span></div>
+            <div class="step"><span class="step-number">4</span><span><strong>Test on the held-out fold</strong><br><small>Predict unseen rows and record the error.</small></span></div>
+            <div class="step"><span class="step-number">5</span><span><strong>Repeat and average</strong><br><small>Run this across all folds, then average the results.</small></span></div>
           </div>
-          <div class="insight"><strong>Grouped data.</strong> If several rows belong to the same person, device, or organisation, keep the whole group in one fold. Otherwise the model may recognise the group instead of learning a transferable pattern.</div>
+          <div class="insight"><strong>Grouped data:</strong> If several rows belong to the same person, device, or organisation, keep the whole group in one fold. Otherwise the model may recognise the group instead of learning a pattern that generalizes.</div>
         </div>
       </section>
 
-      <section class="stage" id="stage-10" data-stage="10" data-title="Read more than accuracy">
+      <section class="stage" id="stage-10" data-stage="10" data-title="Evaluate each fold and decide what to do next">
         <div class="stage-inner">
           <div class="stage-kicker">Stage 10 · Measure</div>
-          <h2>Accuracy is one view of the mistakes.</h2>
-          <p>A confusion matrix separates correct Yes predictions, correct No predictions, missed Yes cases, and false alarms. From it, we can calculate metrics that answer different questions.</p>
-          <div class="metrics">
-            <div class="metric"><span class="metric-value" id="metricAccuracy">78%</span><span class="metric-label">Accuracy</span></div>
-            <div class="metric"><span class="metric-value" id="metricBalanced">77%</span><span class="metric-label">Balanced accuracy</span></div>
-            <div class="metric"><span class="metric-value" id="metricPrecision">80%</span><span class="metric-label">Yes precision</span></div>
+          <h2>Evaluate each fold. Decide what to do next.</h2>
+          <p>Cross-validation gives multiple views of performance. Use the right metric for your goal, check stability across folds, and decide whether to proceed, tune, or collect more data.</p>
+
+          <div class="cv-section-heading"><span>1</span><strong>Choose the right metric</strong></div>
+          <div class="cv-metric-choice-row">
+            <p>Pick the metric that matches the problem and the cost of mistakes.</p>
+            <div class="cv-metric-toggle" role="group" aria-label="Metric used for the cross-validation stability summary">
+              <button type="button" data-cv-metric="accuracy" aria-pressed="false">Overall</button>
+              <button type="button" data-cv-metric="precision" aria-pressed="false">Precision</button>
+              <button type="button" data-cv-metric="recall" class="active" aria-pressed="true">Recall</button>
+            </div>
+            <div class="cv-metric-choice-grid">
+              <div class="cv-metric-choice">
+                <h3>Overall accuracy</h3>
+                <p>Focus when classes are balanced and both types of errors matter similarly.</p>
+                <p class="best-for"><strong>Best for:</strong> General performance check, balanced datasets.</p>
+              </div>
+              <div class="cv-metric-choice">
+                <h3>Precision</h3>
+                <p>Focus when false positives are costly (predicting Yes when it’s actually No).</p>
+                <p class="best-for"><strong>Best for:</strong> Spam detection, fraud alerts, medical testing.</p>
+              </div>
+              <div class="cv-metric-choice">
+                <h3>Recall</h3>
+                <p>Focus when false negatives are costly (missing actual Yes cases).</p>
+                <p class="best-for"><strong>Best for:</strong> Disease screening, churn prevention, safety monitoring.</p>
+              </div>
+            </div>
           </div>
-          <div class="card">
-            <div class="card-title">Metric meanings</div>
-            <p><strong>Accuracy:</strong> overall fraction correct.</p>
-            <p><strong>Balanced accuracy:</strong> average recall across classes.</p>
-            <p><strong>Precision:</strong> how often predicted Yes is truly Yes.</p>
-            <p style="margin-bottom:0;"><strong>Recall:</strong> how many true Yes cases were found.</p>
+
+          <div class="cv-section-heading"><span>2</span><strong>Measure stability across folds</strong></div>
+          <p>Compute the chosen metric for each fold. Then summarize the stability.</p>
+          <div class="cv-stability-layout">
+            <div class="card">
+              <div class="card-title">CV stability % (coefficient of variation)</div>
+              <p>Measures how much the metric varies across folds relative to its average.</p>
+              <pre class="cv-code"><code>cv_stability_percent =
+    scores.std()
+    / scores.mean()
+    * 100</code></pre>
+              <p class="cv-formula-note">Lower percentages mean more consistent performance from fold to fold.</p>
+            </div>
+            <div class="card">
+              <div class="card-title">Report all three (recommended)</div>
+              <p>Always look at these together for the full picture.</p>
+              <ul class="cv-report-list">
+                <li><strong>Mean (μ):</strong> average performance across folds</li>
+                <li><strong>Standard deviation (σ):</strong> spread of performance</li>
+                <li><strong>CV stability %:</strong> relative variation (lower is better)</li>
+              </ul>
+              <p style="margin:0.65rem 0 0;">Also check the <strong>min–max range</strong> across folds.</p>
+            </div>
           </div>
-          <div class="segmented" style="margin-top:1rem;" aria-label="Evaluation scenario">
-            <button type="button" id="evalBalanced" class="active">Balanced sample</button>
-            <button type="button" id="evalImbalanced">Imbalanced sample</button>
+
+          <div class="cv-section-heading"><span>3</span><strong>Interpret stability (rule of thumb)</strong></div>
+          <p>Use these as rough guides, not strict rules. Consider dataset size, domain, and the impact of errors.</p>
+          <div class="cv-stability-table">
+            <table aria-label="Cross-validation stability interpretation">
+              <thead><tr><th>CV stability %</th><th>Interpretation</th><th>What it means</th></tr></thead>
+              <tbody>
+                <tr><td>&lt;10%</td><td>Very stable</td><td>Very consistent across folds. Safe to proceed.</td></tr>
+                <tr><td>10–20%</td><td>Good</td><td>Generally consistent. Proceed with confidence.</td></tr>
+                <tr><td>20–30%</td><td>Acceptable</td><td>Moderate variation. Still acceptable, but monitor.</td></tr>
+                <tr><td>30–40%</td><td>Investigate</td><td>High variation. Investigate causes before proceeding.</td></tr>
+                <tr><td>&gt;40%</td><td>Potentially unstable</td><td>Unstable across folds. Do not proceed yet.</td></tr>
+              </tbody>
+            </table>
           </div>
+          <div class="cv-why-note"><strong>Why this works:</strong> CV Stability % = (SD / Mean) × 100. Lower % means the metric changes little across folds relative to its average.</div>
         </div>
       </section>
 
@@ -1193,7 +1327,6 @@ body.statml-standardized > .stage-dots { display:none !important; }
         </div>
         <div class="canvas-wrap">
           <canvas id="lessonCanvas" aria-label="Animated visual explanation of One-R"></canvas>
-          <div class="canvas-live">stage-linked</div>
         </div>
         <div class="visual-footer" aria-live="polite">
           <div class="visual-stat"><span class="visual-stat-value" id="footerFeature">All columns</span><span class="visual-stat-label">Feature view</span></div>
@@ -1253,6 +1386,32 @@ body.statml-standardized > .stage-dots { display:none !important; }
         blueSoft: "#eff6ff"
       };
 
+      const CV_FOLD_SCORES = [
+        { fold: "Fold 1", recall: 0.78, precision: 0.83, accuracy: 0.81 },
+        { fold: "Fold 2", recall: 0.81, precision: 0.81, accuracy: 0.79 },
+        { fold: "Fold 3", recall: 0.79, precision: 0.84, accuracy: 0.80 },
+        { fold: "Fold 4", recall: 0.80, precision: 0.82, accuracy: 0.82 },
+        { fold: "Fold 5", recall: 0.77, precision: 0.83, accuracy: 0.80 }
+      ];
+
+      const CV_METRICS = {
+        accuracy: {
+          label: "Overall accuracy", shortLabel: "Overall", mean: 0.804, sd: 0.011,
+          stability: 1.37, min: 0.79, max: 0.82, range: 0.03,
+          explanation: "Overall correctness is very consistent across folds."
+        },
+        precision: {
+          label: "Precision", shortLabel: "Precision", mean: 0.826, sd: 0.011,
+          stability: 1.33, min: 0.81, max: 0.84, range: 0.03,
+          explanation: "The reliability of Yes predictions is consistent across folds."
+        },
+        recall: {
+          label: "Recall", shortLabel: "Recall", mean: 0.790, sd: 0.015,
+          stability: 1.90, min: 0.77, max: 0.81, range: 0.04,
+          explanation: "The capture rate for actual Yes cases is consistent across folds."
+        }
+      };
+
       const stageMeta = {
         1:  { feature: "All columns", error: "—",       outcome: "14 rows" },
         2:  { feature: "Target only", error: "6 / 14",  outcome: "57.1% baseline" },
@@ -1263,7 +1422,7 @@ body.statml-standardized > .stage-dots { display:none !important; }
         7:  { feature: "Outlook",     error: "3 / 14",  outcome: "Cloudy → Yes" },
         8:  { feature: "One only",    error: "blind spot", outcome: "No interactions" },
         9:  { feature: "Re-selected", error: "held out", outcome: "Train → test" },
-        10: { feature: "Predictions", error: "2 / 9",   outcome: "Matrix view" },
+        10: { feature: "Recall",     error: "1.90%",   outcome: "Proceed" },
         11: { feature: "Model ladder", error: "varies",   outcome: "Baseline first" },
         12: { feature: "Outlook",     error: "3 / 14",  outcome: "Sunny → No" }
       };
@@ -1273,10 +1432,12 @@ body.statml-standardized > .stage-dots { display:none !important; }
         inspectedFeature: "Outlook",
         tempMode: "buckets",
         prediction: { outlook: "Cloudy", humidity: "Low", wind: "Strong", result: "Yes" },
-        evalMode: "balanced",
+        cvMetric: "recall",
         playFeature: "Outlook",
         playValue: "Sunny",
         pulse: 0,
+        foldIndex: 0,
+        foldElapsed: 0,
         lastTime: 0,
         needsAnimation: false
       };
@@ -1765,99 +1926,218 @@ body.statml-standardized > .stage-dots { display:none !important; }
       }
 
       function drawStage9() {
-        drawFrameLabel("Honest validation", "Every fitted choice stays inside the training fold.");
-        const shortCanvas = cssHeight < 420;
-        const margin = Math.max(26, cssWidth * 0.07);
-        const boxW = cssWidth - margin * 2;
-        const stages = shortCanvas
-          ? [
-              { label: "TRAIN", sub: "fit all choices", color: palette.accentSoft, stroke: "#c7d2fe" },
-              { label: "FREEZE", sub: "lock the rule", color: palette.amberSoft, stroke: "#fde68a" },
-              { label: "TEST", sub: "score held-out", color: palette.greenSoft, stroke: "#bbf7d0" }
-            ]
-          : [
-              { label: "TRAIN FOLD", sub: "rows available for learning", color: palette.accentSoft, stroke: "#c7d2fe" },
-              { label: "FIT INSIDE", sub: "bucket · build · select", color: palette.accentSoft, stroke: "#c7d2fe" },
-              { label: "FREEZE", sub: "no more label peeking", color: palette.amberSoft, stroke: "#fde68a" },
-              { label: "HELD OUT", sub: "predict and score", color: palette.greenSoft, stroke: "#bbf7d0" }
-            ];
-        const splitY = shortCanvas ? 84 : 130;
-        text("Repeated across folds", cssWidth / 2, splitY, { size: shortCanvas ? 8 : 10, weight: 800, color: palette.muted, align: "center", mono: true });
-        const blockW = Math.min(shortCanvas ? 28 : 42, (boxW - 30) / 8);
-        const totalW = blockW * 8 + 7 * 5;
-        const startX = cssWidth / 2 - totalW / 2;
-        for (let i = 0; i < 8; i++) {
-          roundRect(startX + i * (blockW + 5), splitY + 12, blockW, shortCanvas ? 20 : 28, 6, i === 6 ? palette.greenSoft : palette.accentSoft, i === 6 ? "#86efac" : "#c7d2fe");
-          text(i === 6 ? "T" : "R", startX + i * (blockW + 5) + blockW / 2, splitY + (shortCanvas ? 22 : 26), { size: 7, weight: 800, color: i === 6 ? palette.green : palette.accentDark, align: "center", baseline: "middle", mono: true });
-        }
-        const flowY = shortCanvas ? 174 : cssHeight * 0.5;
-        const gap = shortCanvas ? 12 : 16;
-        const nodeW = (boxW - gap * (stages.length - 1)) / stages.length;
-        const nodeH = shortCanvas ? 68 : 112;
-        stages.forEach((s, i) => {
-          const x = margin + i * (nodeW + gap);
-          const y = flowY - nodeH / 2;
-          roundRect(x, y, nodeW, nodeH, shortCanvas ? 13 : 18, s.color, s.stroke, 1.5);
-          text(s.label, x + nodeW / 2, y + (shortCanvas ? 22 : 38), { size: shortCanvas ? 7 : (cssWidth < 520 ? 8 : 10), weight: 800, color: i === stages.length - 1 ? palette.green : (i === stages.length - 2 ? palette.amber : palette.accentDark), align: "center", mono: true });
-          wrapText(s.sub, x + nodeW / 2, y + (shortCanvas ? 42 : 67), nodeW - 14, shortCanvas ? 12 : 15, { size: shortCanvas ? 6.5 : (cssWidth < 520 ? 7 : 9), weight: 600, color: palette.ink2, align: "center" });
-          if (i < stages.length - 1) {
-            const x1 = x + nodeW + 2;
-            const x2 = x + nodeW + gap - 2;
-            line(x1, flowY, x2, flowY, palette.lineStrong, 2);
+        const compact = cssWidth < 600 || cssHeight < 560;
+        const tiny = cssWidth < 460 || cssHeight < 360;
+        const margin = compact ? 18 : 44;
+        const contentW = cssWidth - margin * 2;
+        const titleY = compact ? 27 : 48;
+        const subtitleY = titleY + (compact ? 23 : 33);
+        const subtitleSize = compact ? 8.5 : 12;
+        const subtitleLine = compact ? 12 : 19;
+
+        text("What happens in each fold?", margin, titleY, { size: compact ? 16 : 24, weight: 800, color: palette.ink });
+        wrapText("All learning decisions stay inside the training fold. The held-out fold is used only for checking performance.", margin, subtitleY, contentW, subtitleLine, { size: subtitleSize, color: palette.ink2 });
+
+        const foldBoxY = subtitleY + (compact ? 31 : 50);
+        const foldBoxH = compact ? 78 : 122;
+        roundRect(margin, foldBoxY, contentW, foldBoxH, compact ? 14 : 18, "rgba(255,255,255,0.72)", palette.line);
+        const foldGap = compact ? 6 : 16;
+        const foldW = (contentW - foldGap * 4 - (compact ? 16 : 28)) / 5;
+        const foldX0 = margin + (compact ? 8 : 14);
+        const foldY = foldBoxY + (compact ? 9 : 16);
+        const foldH = foldBoxH - (compact ? 18 : 32);
+        const foldIndex = state.foldIndex;
+
+        function drawFoldStatus(x, y, heldOut) {
+          const color = heldOut ? palette.green : palette.blue;
+          ctx.save();
+          ctx.strokeStyle = color;
+          ctx.fillStyle = color;
+          ctx.lineWidth = compact ? 1.2 : 1.5;
+          if (heldOut) {
+            ctx.beginPath();
+            ctx.arc(x, y - 2, compact ? 4 : 6, Math.PI, 0);
+            ctx.stroke();
+            roundRect(x - (compact ? 5 : 7), y - 2, compact ? 10 : 14, compact ? 9 : 12, 2, color);
+            ctx.fillStyle = "#fff";
+            ctx.beginPath(); ctx.arc(x, y + 2, compact ? 1 : 1.5, 0, Math.PI * 2); ctx.fill();
+            line(x, y + 3, x, y + (compact ? 6 : 7), "#fff", compact ? 1 : 1.5);
+          } else {
+            ctx.beginPath(); ctx.arc(x, y, compact ? 7 : 9, 0, Math.PI * 2); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(x - (compact ? 3 : 4), y); ctx.lineTo(x - (compact ? 1 : 1.5), y + (compact ? 2 : 3)); ctx.lineTo(x + (compact ? 4 : 5), y - (compact ? 3 : 4)); ctx.stroke();
           }
+          ctx.restore();
+        }
+
+        for (let i = 0; i < 5; i++) {
+          const heldOut = i === foldIndex;
+          const x = foldX0 + i * (foldW + foldGap);
+          roundRect(x, foldY, foldW, foldH, compact ? 9 : 12, heldOut ? palette.greenSoft : palette.blueSoft, heldOut ? "#86efac" : "#a8c7ff", 1);
+          text(`Fold ${i + 1}`, x + foldW / 2, foldY + (compact ? 19 : 30), { size: compact ? 8 : 13, weight: 800, color: heldOut ? "#166534" : "#172554", align: "center", baseline: "middle" });
+          drawFoldStatus(x + foldW / 2 - (compact ? 22 : 35), foldY + (compact ? 45 : 65), heldOut);
+          text(heldOut ? "Held out" : "Train", x + foldW / 2 + (compact ? 5 : 10), foldY + (compact ? 45 : 65), { size: compact ? 7 : 11, weight: 700, color: heldOut ? "#15803d" : "#2563eb", align: "center", baseline: "middle" });
+        }
+
+        const summaryH = compact ? 32 : 74;
+        const flowTop = foldBoxY + foldBoxH + (compact ? 35 : 78);
+        const flowBottom = compact ? Math.min(cssHeight - summaryH - 15, flowTop + 88) : flowTop + 210;
+        const nodeH = compact ? Math.min(88, Math.max(40, flowBottom - flowTop)) : Math.max(164, flowBottom - flowTop);
+        const nodeGap = compact ? 7 : 28;
+        const nodeW = (contentW - nodeGap * 4) / 5;
+        const nodes = [
+          { label: "TRAIN FOLD", sub: ["rows available", "for learning"], fill: palette.blueSoft, stroke: "#8ebcff", color: "#172b75", icon: "data" },
+          { label: "LEARN INSIDE", sub: ["build · compare · select"], fill: "#f2f2ff", stroke: "#a7b0ff", color: "#3730a3", icon: "learn" },
+          { label: "FREEZE", sub: ["lock the", "final rule"], fill: palette.amberSoft, stroke: "#f6c95d", color: "#b45309", icon: "freeze" },
+          { label: "HELD-OUT FOLD", sub: ["predict", "unseen rows"], fill: palette.greenSoft, stroke: "#91ddb2", color: "#15803d", icon: "held" },
+          { label: "SCORE", sub: ["record error /", "accuracy"], fill: "#f7f0ff", stroke: "#c7a7ff", color: "#5b21b6", icon: "score" }
+        ];
+
+        function drawNodeIcon(type, x, y, size, color) {
+          ctx.save();
+          ctx.strokeStyle = color;
+          ctx.fillStyle = color;
+          ctx.lineWidth = Math.max(1.5, size * 0.08);
+          if (type === "data") {
+            for (let i = 0; i < 3; i++) {
+              const yy = y - size * 0.24 + i * size * 0.2;
+              ctx.beginPath(); ctx.ellipse(x, yy, size * 0.27, size * 0.1, 0, 0, Math.PI * 2); ctx.fill();
+              ctx.fillRect(x - size * 0.27, yy, size * 0.54, size * 0.16);
+            }
+          } else if (type === "learn") {
+            circle(x, y, size * 0.28, "transparent", color, Math.max(1.5, size * 0.07));
+            text("✦", x, y + size * 0.07, { size: size * 0.45, weight: 800, color, align: "center", baseline: "middle" });
+          } else if (type === "freeze") {
+            roundRect(x - size * 0.25, y - size * 0.02, size * 0.5, size * 0.34, size * 0.06, color);
+            ctx.beginPath(); ctx.arc(x, y - size * 0.02, size * 0.2, Math.PI, 0); ctx.stroke();
+            circle(x, y + size * 0.12, size * 0.045, "#fff");
+          } else if (type === "held") {
+            ctx.beginPath(); ctx.moveTo(x - size * 0.36, y); ctx.quadraticCurveTo(x, y - size * 0.35, x + size * 0.36, y); ctx.quadraticCurveTo(x, y + size * 0.35, x - size * 0.36, y); ctx.stroke();
+            circle(x, y, size * 0.1, color);
+          } else {
+            const barW = size * 0.12;
+            [0.28, 0.5, 0.72].forEach((height, i) => roundRect(x - size * 0.28 + i * size * 0.25, y + size * 0.25 - size * height, barW, size * height, 2, color));
+          }
+          ctx.restore();
+        }
+
+        function drawArrow(x1, x2, y) {
+          line(x1, y, x2 - 8, y, palette.lineStrong, compact ? 1.5 : 2.5);
+          ctx.save(); ctx.fillStyle = palette.ink2; ctx.beginPath(); ctx.moveTo(x2 - 8, y - 6); ctx.lineTo(x2, y); ctx.lineTo(x2 - 8, y + 6); ctx.closePath(); ctx.fill(); ctx.restore();
+        }
+
+        nodes.forEach((node, i) => {
+          const x = margin + i * (nodeW + nodeGap);
+          const y = flowTop;
+          roundRect(x, y, nodeW, nodeH, compact ? 12 : 20, node.fill, node.stroke, 1.2);
+          const iconSize = compact ? 25 : 62;
+          const iconY = y + (compact ? 23 : 67);
+          drawNodeIcon(node.icon, x + nodeW / 2, iconY, iconSize, node.color);
+          text(node.label, x + nodeW / 2, y + (compact ? 48 : 130), { size: compact ? (tiny ? 5.5 : 6.5) : 11, weight: 800, color: node.color, align: "center", baseline: "middle", mono: true, maxWidth: nodeW - 8 });
+          const subY = y + (compact ? 67 : 164);
+          node.sub.forEach((lineText, lineIndex) => text(lineText, x + nodeW / 2, subY + lineIndex * (compact ? 9 : 22), { size: compact ? (tiny ? 5.5 : 6.5) : 10, weight: 600, color: palette.ink2, align: "center", baseline: "middle", maxWidth: nodeW - 12 }));
+          if (i < nodes.length - 1) drawArrow(x + nodeW + 3, x + nodeW + nodeGap - 3, y + nodeH / 2);
         });
-        const noteY = shortCanvas ? 226 : flowY + 100;
-        roundRect(margin, noteY, boxW, shortCanvas ? 50 : 68, 14, "#fff", palette.lineStrong);
-        wrapText("Keep every person, device, or organisation inside one fold.", cssWidth / 2, noteY + (shortCanvas ? 18 : 34), boxW - 24, shortCanvas ? 13 : 18, { size: shortCanvas ? 7.5 : (cssWidth < 520 ? 8 : 10), weight: 700, color: palette.ink2, align: "center" });
-      }
 
-      function evalScenario() {
-        if (state.evalMode === "imbalanced") return { tp: 4, fp: 1, fn: 1, tn: 14 };
-        return { tp: 4, fp: 1, fn: 1, tn: 3 };
-      }
-
-      function metricsFrom(m) {
-        const accuracy = (m.tp + m.tn) / (m.tp + m.fp + m.fn + m.tn);
-        const precision = m.tp / (m.tp + m.fp);
-        const recall = m.tp / (m.tp + m.fn);
-        const specificity = m.tn / (m.tn + m.fp);
-        const balanced = (recall + specificity) / 2;
-        return { accuracy, precision, recall, balanced };
+        const summaryY = compact ? Math.max(cssHeight - summaryH - 9, flowTop + nodeH + 6) : flowTop + nodeH + 24;
+        roundRect(margin, summaryY, contentW, summaryH, compact ? 12 : 22, "#f5f3ff", "#c7d2fe");
+        text("↻", margin + (compact ? 24 : 76), summaryY + summaryH / 2 + 2, { size: compact ? 20 : 42, weight: 700, color: palette.accent, align: "center", baseline: "middle" });
+        text("Repeat for every fold  →  average the scores  →  final validation result", margin + (compact ? 42 : 112), summaryY + summaryH / 2 + 2, { size: compact ? 6.5 : 13, weight: 700, color: palette.ink, align: "left", baseline: "middle", maxWidth: contentW - (compact ? 54 : 140) });
       }
 
       function drawStage10() {
-        const m = evalScenario();
-        const met = metricsFrom(m);
-        drawFrameLabel("Prediction outcomes", state.evalMode === "balanced" ? "A balanced teaching sample exposes both class errors." : "Class imbalance lifts raw accuracy more than balanced accuracy.");
-        const centerX = cssWidth * 0.5;
-        const shortCanvas = cssHeight < 420;
-        const top = shortCanvas ? 84 : 126;
-        const matrixW = Math.min(cssWidth - (shortCanvas ? 86 : 90), 420);
-        const matrixH = shortCanvas ? Math.min(144, cssHeight - top - 65) : Math.min(cssHeight - 240, 330);
-        const cellW = matrixW / 2;
-        const cellH = matrixH / 2;
-        const x0 = centerX - matrixW / 2;
-        const y0 = top + (shortCanvas ? 28 : 44);
-        text("Predicted", centerX, top - 4, { size: 10, weight: 800, color: palette.muted, align: "center", mono: true });
-        ctx.save(); ctx.translate(x0 - 34, y0 + matrixH / 2); ctx.rotate(-Math.PI / 2);
-        text("Actual", 0, 0, { size: 10, weight: 800, color: palette.muted, align: "center", mono: true }); ctx.restore();
-        text("Yes", x0 + cellW / 2, y0 - 15, { size: 10, weight: 800, color: palette.green, align: "center", mono: true });
-        text("No", x0 + cellW + cellW / 2, y0 - 15, { size: 10, weight: 800, color: palette.coral, align: "center", mono: true });
-        text("Yes", x0 - 12, y0 + cellH / 2, { size: 10, weight: 800, color: palette.green, align: "right", baseline: "middle", mono: true });
-        text("No", x0 - 12, y0 + cellH + cellH / 2, { size: 10, weight: 800, color: palette.coral, align: "right", baseline: "middle", mono: true });
-        const cells = [
-          { x: x0, y: y0, value: m.tp, label: "true yes", fill: palette.greenSoft, stroke: "#bbf7d0", color: palette.green },
-          { x: x0 + cellW, y: y0, value: m.fn, label: "missed yes", fill: palette.coralSoft, stroke: "#fecaca", color: palette.coral },
-          { x: x0, y: y0 + cellH, value: m.fp, label: "false alarm", fill: palette.amberSoft, stroke: "#fde68a", color: palette.amber },
-          { x: x0 + cellW, y: y0 + cellH, value: m.tn, label: "true no", fill: palette.blueSoft, stroke: "#bfdbfe", color: palette.blue }
-        ];
-        cells.forEach(c => {
-          roundRect(c.x + 4, c.y + 4, cellW - 8, cellH - 8, 16, c.fill, c.stroke);
-          text(c.value, c.x + cellW / 2, c.y + cellH / 2 - 8, { size: Math.min(34, cellH * 0.32), weight: 700, color: c.color, align: "center", baseline: "middle", mono: true });
-          text(c.label, c.x + cellW / 2, c.y + cellH / 2 + 25, { size: cssWidth < 520 ? 7 : 9, weight: 700, color: palette.ink2, align: "center", baseline: "middle", mono: true });
+        const compact = cssWidth < 600 || cssHeight < 600;
+        const tiny = cssHeight < 420;
+        const margin = compact ? 18 : 32;
+        const contentW = cssWidth - margin * 2;
+        const metricKey = state.cvMetric;
+        const metric = CV_METRICS[metricKey];
+        const assessment = metric.stability < 10
+          ? { label: "Very stable", threshold: "<10%", decision: "PROCEED", color: palette.green }
+          : metric.stability < 20
+            ? { label: "Good", threshold: "10–20%", decision: "PROCEED", color: palette.blue }
+            : metric.stability < 30
+              ? { label: "Acceptable", threshold: "20–30%", decision: "MONITOR", color: palette.amber }
+              : metric.stability < 40
+                ? { label: "Investigate", threshold: "30–40%", decision: "INVESTIGATE", color: palette.amber }
+                : { label: "Potentially unstable", threshold: ">40%", decision: "PAUSE", color: palette.coral };
+        const titleSize = compact ? 7 : 11;
+        text(`EXAMPLE: 5-FOLD CROSS-VALIDATION RESULTS (USING ${metric.label.toUpperCase()})`, margin, compact ? 23 : 30, { size: titleSize, weight: 800, color: palette.accentDark, mono: true });
+
+        const tableY = compact ? 38 : 50;
+        const tableH = tiny ? 72 : compact ? 96 : 154;
+        const headerH = tiny ? 14 : compact ? 17 : 25;
+        const rowH = (tableH - headerH) / 5;
+        const colRatios = [0.30, 0.24, 0.23, 0.23];
+        const colX = [margin];
+        colRatios.forEach((ratio, i) => colX.push(colX[i] + contentW * ratio));
+        const selectedColumn = { recall: 1, precision: 2, accuracy: 3 }[metricKey];
+        roundRect(margin, tableY, contentW, tableH, compact ? 8 : 12, "rgba(255,255,255,0.8)", palette.line);
+        ctx.fillStyle = "rgba(99,102,241,0.055)";
+        ctx.fillRect(colX[selectedColumn], tableY + 1, contentW * colRatios[selectedColumn], tableH - 2);
+        ctx.fillStyle = "#f5f5fb"; ctx.fillRect(margin + 1, tableY + 1, contentW - 2, headerH);
+        ctx.fillStyle = "rgba(99,102,241,0.11)";
+        ctx.fillRect(colX[selectedColumn], tableY + 1, contentW * colRatios[selectedColumn], headerH);
+        ["Fold", "Recall (R)", "Precision (P)", "Accuracy (A)"].forEach((label, i) => text(label, colX[i] + (i === 0 ? 8 : contentW * colRatios[i] / 2), tableY + headerH / 2 + 1, { size: compact ? 6 : 9, weight: 800, color: i === selectedColumn ? palette.accentDark : palette.ink2, align: i === 0 ? "left" : "center", baseline: "middle", mono: true }));
+        for (let i = 1; i < 4; i++) line(colX[i], tableY, colX[i], tableY + tableH, palette.line);
+        line(margin, tableY + headerH, margin + contentW, tableY + headerH, palette.lineStrong);
+        CV_FOLD_SCORES.forEach((row, r) => {
+          const y = tableY + headerH + r * rowH;
+          if (r > 0) line(margin, y, margin + contentW, y, palette.line);
+          text(row.fold, margin + 8, y + rowH / 2 + 1, { size: compact ? 6 : 9, weight: 800, color: palette.ink2, baseline: "middle", mono: true });
+          ["recall", "precision", "accuracy"].forEach((key, i) => text(row[key].toFixed(2), colX[i + 1] + contentW * colRatios[i + 1] / 2, y + rowH / 2 + 1, { size: compact ? 6 : 9, weight: i + 1 === selectedColumn ? 800 : 700, color: i + 1 === selectedColumn ? palette.accentDark : palette.ink2, align: "center", baseline: "middle", mono: true }));
         });
-        const labelY = y0 + matrixH + (shortCanvas ? 20 : 38);
-        text(`accuracy ${(met.accuracy * 100).toFixed(0)}%  ·  balanced ${(met.balanced * 100).toFixed(0)}%  ·  precision ${(met.precision * 100).toFixed(0)}%  ·  recall ${(met.recall * 100).toFixed(0)}%`, centerX, labelY, { size: cssWidth < 560 ? 7.5 : 9.5, weight: 700, color: palette.ink2, align: "center", mono: true, maxWidth: cssWidth - 40 });
+        text(`Selected metric: ${metric.label}. The summary and stability decision update with this choice.`, margin, tableY + tableH + (compact ? 13 : 21), { size: compact ? 6 : 9, color: palette.ink2 });
+
+        const summaryY = tableY + tableH + (tiny ? 22 : compact ? 28 : 39);
+        const summaryH = tiny ? 82 : compact ? 118 : 200;
+        roundRect(margin, summaryY, contentW, summaryH, compact ? 10 : 13, "rgba(255,255,255,0.78)", "#ddd6fe");
+        const splitX = margin + contentW * 0.58;
+        line(splitX, summaryY + 12, splitX, summaryY + summaryH - 12, palette.line);
+        text(`SUMMARY STATISTICS FOR ${metric.label.toUpperCase()}`, margin + 10, summaryY + (compact ? 16 : 24), { size: compact ? 6 : 11, weight: 800, color: palette.accentDark, mono: true });
+        text("STABILITY INTERPRETATION", splitX + 10, summaryY + (compact ? 16 : 24), { size: compact ? 6 : 10, weight: 800, color: palette.accentDark, mono: true });
+        const statRows = [
+          { symbol: "μ", label: "Mean (μ)", value: metric.mean.toFixed(3), detail: "", color: palette.accentDark },
+          { symbol: "σ", label: "Standard Deviation (σ)", value: metric.sd.toFixed(3), detail: "", color: palette.green },
+          { symbol: "CV", label: "CV Stability %", value: `${metric.stability.toFixed(2)}%`, detail: `(${metric.sd.toFixed(3)} / ${metric.mean.toFixed(3)} × 100)`, color: palette.amber },
+          { symbol: "—", label: "Min – Max Range", value: `${metric.min.toFixed(2)} – ${metric.max.toFixed(2)}`, detail: `(Range = ${metric.range.toFixed(2)})`, color: "#7c3aed" }
+        ];
+        const statStart = summaryY + (tiny ? 28 : compact ? 34 : 53);
+        const statRowH = tiny ? 12 : compact ? 20 : 36;
+        statRows.forEach((row, i) => {
+          const y = statStart + i * statRowH;
+          if (i > 0) line(margin + 10, y - statRowH / 2, splitX - 10, y - statRowH / 2, palette.line);
+          circle(margin + (compact ? 20 : 23), y, compact ? 7 : 13, row.color);
+          text(row.symbol, margin + (compact ? 20 : 23), y + 1, { size: compact ? 5 : 9, weight: 800, color: "#fff", align: "center", baseline: "middle", mono: true });
+          text(row.label, margin + (compact ? 38 : 45), y + 1, { size: compact ? 6 : 11, weight: 600, color: row.label === "CV Stability %" ? palette.amber : palette.ink2, baseline: "middle" });
+          text(row.value, splitX - 14, y + (row.detail && !compact ? -5 : 1), { size: compact ? 6 : 12, weight: 800, color: row.color, align: "right", baseline: "middle", mono: true });
+          if (row.detail && !compact) text(row.detail, splitX - 14, y + 11, { size: 8, weight: 600, color: palette.muted, align: "right", baseline: "middle", mono: true });
+        });
+        const stableX = splitX + 16;
+        const stableY = summaryY + (tiny ? 39 : compact ? 49 : 75);
+        circle(stableX + (compact ? 17 : 28), stableY, compact ? 16 : 28, "#fff", assessment.color, compact ? 1.5 : 2.5);
+        text(assessment.decision === "PROCEED" ? "✓" : "!", stableX + (compact ? 17 : 28), stableY + 1, { size: compact ? 15 : 27, weight: 800, color: assessment.color, align: "center", baseline: "middle" });
+        text(assessment.label, stableX + (compact ? 42 : 66), stableY - (compact ? 6 : 17), { size: compact ? 7 : 12, weight: 800, color: assessment.color, baseline: "middle" });
+        text(`${metric.label}: ${metric.stability.toFixed(2)}% (${assessment.threshold})`, stableX + (compact ? 42 : 66), stableY + (compact ? 9 : 4), { size: compact ? 6 : 9, color: palette.ink2, baseline: "middle" });
+        wrapText(metric.explanation, stableX + (compact ? 42 : 66), stableY + (compact ? 22 : 21), contentW * 0.38 - (compact ? 52 : 76), compact ? 10 : 14, { size: compact ? 5.5 : 8.5, color: palette.ink2 });
+        const decisionY = summaryY + summaryH - (compact ? 27 : 42);
+        roundRect(splitX + 10, decisionY, contentW * 0.4 - 20, compact ? 20 : 31, 8, "#f0fdf4", "#a7e4bd");
+        text(`Decision: ${assessment.decision}`, splitX + 20, decisionY + (compact ? 10 : 16), { size: compact ? 6 : 10, weight: 800, color: assessment.color, baseline: "middle", mono: true });
+
+        const nextY = summaryY + summaryH + (tiny ? 10 : compact ? 14 : 24);
+        const nextH = tiny ? 50 : compact ? 88 : 210;
+        text("WHAT TO DO NEXT IF STABILITY IS NOT GOOD", margin, nextY, { size: compact ? 6.5 : 12, weight: 800, color: palette.accentDark, mono: true });
+        const cardY = nextY + (compact ? 10 : 20);
+        const cardGap = compact ? 7 : 12;
+        const cardW = (contentW - cardGap) / 2;
+        roundRect(margin, cardY, cardW, nextH, compact ? 9 : 12, "#fffbeb", "#f6c95d");
+        roundRect(margin + cardW + cardGap, cardY, cardW, nextH, compact ? 9 : 12, "#fff7f7", "#f3aaaa");
+        text("IF INVESTIGATE (20–40%)", margin + 13, cardY + (compact ? 13 : 27), { size: compact ? 5.8 : 11, weight: 800, color: palette.amber, mono: true });
+        text("IF POTENTIALLY UNSTABLE (>40%)", margin + cardW + cardGap + 13, cardY + (compact ? 13 : 27), { size: compact ? 5.8 : 11, weight: 800, color: palette.coral, mono: true });
+        const investigate = ["Check class imbalance in each fold.", "Try different features / feature engineering.", "Look for outliers or data issues.", "Adjust threshold or re-run CV."];
+        const unstable = ["High sensitivity to data splits.", "Collect more data, especially minority class.", "Simplify the model.", "Use repeated stratified k-fold CV."];
+        const drawBulletList = (items, x, y, width, color) => items.forEach((item, i) => wrapText(`• ${item}`, x, y + i * (compact ? 12 : 32), width, compact ? 10 : 21, { size: compact ? 6 : 11.5, weight: 600, color }));
+        drawBulletList(investigate, margin + 13, cardY + (compact ? 29 : 54), cardW - 26, palette.amber);
+        drawBulletList(unstable, margin + cardW + cardGap + 13, cardY + (compact ? 29 : 54), cardW - 26, palette.coral);
       }
 
       function drawStage11() {
@@ -1938,7 +2218,11 @@ body.statml-standardized > .stage-dots { display:none !important; }
         footerError.textContent = meta.error;
         footerOutcome.textContent = meta.outcome;
         [...dotsWrap.children].forEach((dot, i) => dot.classList.toggle("active", i + 1 === stage));
-        state.needsAnimation = [7, 11].includes(stage);
+        state.needsAnimation = [7, 9, 11].includes(stage);
+        if (stage === 9) {
+          state.foldIndex = 0;
+          state.foldElapsed = 0;
+        }
         draw();
         if (state.needsAnimation) startAnimation();
         else stopAnimation();
@@ -1950,6 +2234,10 @@ body.statml-standardized > .stage-dots { display:none !important; }
           const delta = state.lastTime ? Math.min(32, time - state.lastTime) : 16;
           state.lastTime = time;
           state.pulse += delta * 0.004;
+          if (state.stage === 9) {
+            state.foldElapsed = (state.foldElapsed + delta) % 3750;
+            state.foldIndex = Math.floor(state.foldElapsed / 750);
+          }
           draw();
           if (state.needsAnimation) animationFrame = requestAnimationFrame(tick);
           else animationFrame = null;
@@ -1998,6 +2286,38 @@ body.statml-standardized > .stage-dots { display:none !important; }
         if (state.stage === 5) draw();
       }
 
+      function setCvMetric(metricKey) {
+        if (!CV_METRICS[metricKey]) return;
+        state.cvMetric = metricKey;
+        const metric = CV_METRICS[metricKey];
+        const outcome = metric.stability < 20
+          ? "Proceed"
+          : metric.stability < 30
+            ? "Monitor"
+            : metric.stability < 40
+              ? "Investigate"
+              : "Pause";
+
+        document.querySelectorAll("[data-cv-metric]").forEach(button => {
+          const active = button.dataset.cvMetric === metricKey;
+          button.classList.toggle("active", active);
+          button.setAttribute("aria-pressed", String(active));
+        });
+
+        stageMeta[10] = {
+          feature: metric.shortLabel,
+          error: `${metric.stability.toFixed(2)}%`,
+          outcome
+        };
+
+        if (state.stage === 10) {
+          footerFeature.textContent = metric.shortLabel;
+          footerError.textContent = `${metric.stability.toFixed(2)}%`;
+          footerOutcome.textContent = outcome;
+          draw();
+        }
+      }
+
       function makePrediction() {
         const outlook = document.getElementById("predictOutlook").value;
         const humidity = document.getElementById("predictHumidity").value;
@@ -2015,17 +2335,6 @@ body.statml-standardized > .stage-dots { display:none !important; }
           startAnimation();
           draw();
         }
-      }
-
-      function setEvalMode(mode) {
-        state.evalMode = mode;
-        document.getElementById("evalBalanced").classList.toggle("active", mode === "balanced");
-        document.getElementById("evalImbalanced").classList.toggle("active", mode === "imbalanced");
-        const met = metricsFrom(evalScenario());
-        document.getElementById("metricAccuracy").textContent = `${Math.round(met.accuracy * 100)}%`;
-        document.getElementById("metricBalanced").textContent = `${Math.round(met.balanced * 100)}%`;
-        document.getElementById("metricPrecision").textContent = `${Math.round(met.precision * 100)}%`;
-        if (state.stage === 10) draw();
       }
 
       function populatePlayValues() {
@@ -2065,9 +2374,10 @@ body.statml-standardized > .stage-dots { display:none !important; }
       });
       document.getElementById("tempExact").addEventListener("click", () => setTempMode("exact"));
       document.getElementById("tempBuckets").addEventListener("click", () => setTempMode("buckets"));
+      document.querySelectorAll("[data-cv-metric]").forEach(button => {
+        button.addEventListener("click", () => setCvMetric(button.dataset.cvMetric));
+      });
       document.getElementById("predictButton").addEventListener("click", makePrediction);
-      document.getElementById("evalBalanced").addEventListener("click", () => setEvalMode("balanced"));
-      document.getElementById("evalImbalanced").addEventListener("click", () => setEvalMode("imbalanced"));
       document.getElementById("playFeature").addEventListener("change", e => {
         state.playFeature = e.target.value;
         state.playValue = FEATURES[state.playFeature].values[0];
@@ -2083,6 +2393,7 @@ body.statml-standardized > .stage-dots { display:none !important; }
 
       populateDots();
       populatePlayValues();
+      setCvMetric(state.cvMetric);
       setupObserver();
       updateProgress();
       resizeCanvas();
