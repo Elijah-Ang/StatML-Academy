@@ -1043,7 +1043,7 @@
       { id:'ctree', title:'Classification Trees', category:'Machine Learning', group:'Classification', groupKey:'ml-classification', desc:'Split data hierarchically using node rules to classify categorical outcomes.', difficulty:'Intermediate', path:'modules/classification-trees.html', x:760, y:1520, size:68, width:170, accent:'#8b5cf6', icon:'classification-tree' },
       { id:'svm', title:'Support Vector Machines', category:'Machine Learning', group:'Classification', groupKey:'ml-classification', desc:'Separate classes with maximum-margin boundaries, support vectors, slack, and kernels.', difficulty:'Advanced', path:'modules/support-vector-machine.html', x:813, y:1308, size:70, width:190, accent:'#6d28d9', icon:'svm' },
       { id:'oner', title:'One-R', category:'Machine Learning', group:'Classification', groupKey:'ml-classification', desc:'Build a transparent one-feature classification baseline and test it honestly.', difficulty:'Beginner', path:'modules/one-r.html', x:1067, y:1308, size:68, width:150, accent:'#8b5cf6', icon:'one-r' },
-      { id:'naive-bayes', title:'Naive Bayes', category:'Machine Learning', group:'Classification', groupKey:'ml-classification', desc:'Update class beliefs from priors and feature evidence with a compact probabilistic model.', difficulty:'Intermediate', path:'modules/naive-bayes.html?v=20260728', x:940, y:1820, size:70, width:155, accent:'#7c3aed', icon:'naive-bayes' },
+      { id:'naive-bayes', title:'Naive Bayes', category:'Machine Learning', group:'Classification', groupKey:'ml-classification', desc:'Update class beliefs from priors and feature evidence with a compact probabilistic model.', difficulty:'Intermediate', path:'modules/naive-bayes.html', href:'modules/naive-bayes.html?v=20260728', x:940, y:1820, size:70, width:155, accent:'#7c3aed', icon:'naive-bayes' },
 
       { id:'kmeans', title:'K-Means Clustering', category:'Machine Learning', group:'Unsupervised Learning · Clustering', groupKey:'ml-clustering', desc:'Group unlabeled data into K distinct clusters by iteratively adjusting centroids.', difficulty:'Beginner', path:'modules/kmeans.html', x:260, y:2630, size:70, width:165, accent:'#0891b2', icon:'kmeans', moon:true },
       { id:'hclust', title:'Hierarchical Clustering', category:'Machine Learning', group:'Unsupervised Learning · Clustering', groupKey:'ml-clustering', desc:'Build a structured dendrogram of nested descriptive clusters from the bottom up.', difficulty:'Intermediate', path:'modules/hierarchical-clustering.html', x:480, y:2630, size:70, width:180, accent:'#0e7490', icon:'hierarchical' },
@@ -1144,7 +1144,7 @@
       node.style.setProperty('--float-x', `${3 + (index % 4)}px`);
       node.style.setProperty('--float-y', `${-4 - (index % 3)}px`);
       if (mod.path) {
-        node.innerHTML = `<a href="${mod.path}" aria-label="Open ${mod.title}">${symbolMarkup(mod)}<span class="module-label">${mod.title}</span></a>`;
+        node.innerHTML = `<a href="${mod.href || mod.path}" aria-label="Open ${mod.title}">${symbolMarkup(mod)}<span class="module-label">${mod.title}</span></a>`;
       } else {
         node.classList.add('is-preview');
         node.innerHTML = `<span class="module-anchor" role="img" aria-label="${mod.title}, coming soon">${symbolMarkup(mod)}<span class="module-label">${mod.title}</span></span>`;
@@ -1163,7 +1163,7 @@
         const subgroup = document.createElement('div');
         subgroup.className = 'mobile-group';
         subgroup.style.setProperty('--group-accent', group.accent);
-        subgroup.innerHTML = `<h3>${group.title}</h3><div class="mobile-nodes">${members.map(mod => mod.path ? `<a class="mobile-node" href="${mod.path}" aria-label="Open ${mod.title}">${symbolMarkup(mod, true)}<span>${mod.title}</span></a>` : `<span class="mobile-node" role="img" aria-label="${mod.title}, coming soon">${symbolMarkup(mod, true)}<span>${mod.title}<small style="display:block;margin-top:.25rem;color:#7c86a0;font-family:var(--mono);font-size:.52rem;letter-spacing:.08em;text-transform:uppercase">Coming soon</small></span></span>`).join('')}</div>`;
+        subgroup.innerHTML = `<h3>${group.title}</h3><div class="mobile-nodes">${members.map(mod => mod.path ? `<a class="mobile-node" href="${mod.href || mod.path}" aria-label="Open ${mod.title}">${symbolMarkup(mod, true)}<span>${mod.title}</span></a>` : `<span class="mobile-node" role="img" aria-label="${mod.title}, coming soon">${symbolMarkup(mod, true)}<span>${mod.title}<small style="display:block;margin-top:.25rem;color:#7c86a0;font-family:var(--mono);font-size:.52rem;letter-spacing:.08em;text-transform:uppercase">Coming soon</small></span></span>`).join('')}</div>`;
         region.appendChild(subgroup);
       });
       mobileRoot.appendChild(region);
