@@ -6,9 +6,14 @@
   <meta name="description" content="An intuitive, interactive guide to the deep learning process in simple English.">
   <title>Deep Learning</title>
   <script>
-    const academyReferrer = document.referrer;
-    if (!academyReferrer || !new URL(academyReferrer).pathname.startsWith("/StatML-Academy/")) {
+    const moduleParams = new URLSearchParams(location.search);
+    const enteredFromAcademy = moduleParams.get("academy") === "1";
+    const validModuleSession = sessionStorage.getItem("statml-academy-deep-learning-entry") === "academy";
+    if (!enteredFromAcademy && !validModuleSession) {
       location.replace("../index.html#deep-learning");
+    } else {
+      sessionStorage.setItem("statml-academy-deep-learning-entry", "academy");
+      if (enteredFromAcademy) history.replaceState(null, "", "deep-learning.html");
     }
   </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
