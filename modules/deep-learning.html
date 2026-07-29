@@ -6,7 +6,8 @@
   <meta name="description" content="An intuitive, interactive guide to the deep learning process in simple English.">
   <title>Deep Learning</title>
   <script>
-    if (!sessionStorage.getItem("statml-academy-deep-learning-entry")) {
+    const academyReferrer = document.referrer;
+    if (!academyReferrer || !new URL(academyReferrer).pathname.startsWith("/StatML-Academy/")) {
       location.replace("../index.html#deep-learning");
     }
   </script>

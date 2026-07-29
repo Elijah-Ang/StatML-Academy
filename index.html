@@ -1172,11 +1172,6 @@
       moduleLayer.appendChild(node);
     });
 
-    document.addEventListener('click', event => {
-      const link = event.target.closest('a[href*="modules/deep-learning.html"]');
-      if (link) sessionStorage.setItem('statml-academy-deep-learning-entry', 'academy');
-    }, { capture:true });
-
     const mobileRoot = document.getElementById('mobile-universe');
     groupDefinitions.forEach(system => {
       const region = document.createElement('section');
