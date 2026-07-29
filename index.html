@@ -1080,7 +1080,7 @@
         groupKey:"ml-flexible",
         desc:"Follow the complete deep-learning lifecycle from data preparation through deployment and monitoring.",
         difficulty:"Advanced",
-        path:"modules/deep-learning.html",
+        path:"modules/deep-learning.html?v=20260729-2",
         x:470,
         y:2130,
         size:72,
@@ -1153,6 +1153,7 @@
     displayModules.forEach((mod, index) => {
       const node = document.createElement('div');
       node.className = 'module-node';
+      node.id = mod.id;
       node.style.left = `${mod.x}px`;
       node.style.top = `${mod.y}px`;
       node.style.setProperty('--symbol-size', `${mod.size}px`);
@@ -1170,6 +1171,11 @@
       }
       moduleLayer.appendChild(node);
     });
+
+    document.addEventListener('click', event => {
+      const link = event.target.closest('a[href*="modules/deep-learning.html"]');
+      if (link) sessionStorage.setItem('statml-academy-deep-learning-entry', 'academy');
+    }, { capture:true });
 
     const mobileRoot = document.getElementById('mobile-universe');
     groupDefinitions.forEach(system => {
