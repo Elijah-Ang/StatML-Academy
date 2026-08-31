@@ -938,3 +938,333 @@ body.naive-bayes-evidence :focus-visible {
 @media (max-width: 380px) {
   body.naive-bayes-evidence .visual-stage { height: 300px; min-height: 300px; }
 }
+
+/* -------------------------------------------------------------------------
+   Authored ink layer
+   The first pass used irregular CSS boxes; this pass gives every teaching
+   object a genuine two-stroke outline and gives charts marker-like fills. */
+
+body.naive-bayes-evidence .nb-frame-relative { position: relative !important; }
+
+body.naive-bayes-evidence .nb-sketched-surface {
+  border-color: transparent !important;
+  border-image: none !important;
+}
+
+body.naive-bayes-evidence .nb-scribble-frame {
+  position: absolute;
+  z-index: 32;
+  inset: -3px;
+  width: calc(100% + 6px);
+  height: calc(100% + 6px);
+  overflow: visible;
+  color: rgba(42, 48, 47, .76);
+  pointer-events: none;
+  filter: none !important;
+}
+
+body.naive-bayes-evidence .nb-scribble-frame path {
+  fill: none;
+  stroke: currentColor;
+  filter: none !important;
+  vector-effect: non-scaling-stroke;
+}
+
+body.naive-bayes-evidence :is(.score-readout,.model-specimen,.height-readout,.synthesis-verdict) > .nb-scribble-frame {
+  color: rgba(40, 105, 173, .72);
+}
+
+body.naive-bayes-evidence :is(.winner-stamp,.split-seal,.zero-result) > .nb-scribble-frame {
+  color: rgba(198, 75, 75, .78);
+}
+
+body.naive-bayes-evidence .nb-rough-illustration :is(path,line,circle,ellipse,polyline,polygon) {
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+}
+
+body.naive-bayes-evidence svg.nb-rough-illustration { filter: none !important; }
+body.naive-bayes-evidence svg.nb-rough-illustration text { filter: none !important; }
+
+body.naive-bayes-evidence .stage-rail { overflow: visible; }
+body.naive-bayes-evidence .rail-kicker { flex: 0 0 auto; white-space: nowrap; }
+body.naive-bayes-evidence .rail-name { flex: 0 0 auto; white-space: nowrap; }
+
+/* Marker fills are uneven and visibly layered, never glossy progress UI. */
+body.naive-bayes-evidence :is(.feature-meter,.score-track,.likelihood-row > i,.rail-line) {
+  overflow: visible;
+  border: 0;
+  background:
+    repeating-linear-gradient(171deg, rgba(45, 68, 79, .12) 0 1px, transparent 1px 4px),
+    rgba(255, 250, 240, .7);
+}
+
+body.naive-bayes-evidence :is(.feature-meter i,.score-track i,.likelihood-row > i > b,.rail-line i) {
+  border-radius: 0;
+  clip-path: polygon(0 20%, 15% 7%, 35% 18%, 56% 4%, 76% 15%, 100% 2%, 99% 80%, 80% 91%, 59% 78%, 37% 95%, 17% 83%, 0 96%);
+  background-image: repeating-linear-gradient(169deg, rgba(255,255,255,.18) 0 2px, transparent 2px 5px);
+  box-shadow: none;
+}
+
+body.naive-bayes-evidence .feature-meter i,
+body.naive-bayes-evidence .likelihood-row > i > b,
+body.naive-bayes-evidence .score-track i,
+body.naive-bayes-evidence .rail-line i { min-height: 8px; }
+
+body.naive-bayes-evidence .safe-bar b,
+body.naive-bayes-evidence .safe-track i { background-color: var(--blue); }
+body.naive-bayes-evidence .likelihood-row > i:not(.safe-bar) > b { background-color: var(--red) !important; }
+body.naive-bayes-evidence .likelihood-row > i.safe-bar > b { background-color: var(--blue) !important; }
+
+body.naive-bayes-evidence .jar-fill {
+  position: absolute;
+  left: 2px;
+  right: 2px;
+  bottom: 2px;
+  width: auto;
+  clip-path: polygon(0 11%, 14% 4%, 31% 12%, 49% 3%, 69% 10%, 84% 2%, 100% 9%, 100% 100%, 0 100%);
+  background-image: repeating-linear-gradient(168deg, rgba(255,255,255,.18) 0 2px, transparent 2px 5px);
+}
+
+body.naive-bayes-evidence .learn-scene {
+  grid-template-columns: minmax(0, .82fr) 16px minmax(0, 1.18fr);
+  gap: 9px;
+}
+
+body.naive-bayes-evidence .learn-divider { grid-column: 2; }
+body.naive-bayes-evidence .likelihood-column { grid-column: 3; }
+
+body.naive-bayes-evidence .branch-strips i {
+  border-radius: 1px 4px 2px 3px;
+  clip-path: polygon(0 16%, 100% 0, 96% 86%, 3% 100%);
+  transform: rotate(-1.5deg);
+}
+body.naive-bayes-evidence .branch-strips i:nth-child(even) { transform: rotate(1.5deg); }
+
+body.naive-bayes-evidence .paper-lines {
+  background: repeating-linear-gradient(to bottom, transparent 0 7px, rgba(40, 105, 173, .22) 7px 8px);
+  transform: rotate(-.5deg);
+}
+
+/* Cards are loose paper scraps with varied angles, not a component grid. */
+body.naive-bayes-evidence .model-choice:nth-child(1),
+body.naive-bayes-evidence .fold-block:nth-child(2),
+body.naive-bayes-evidence .matrix-cell:nth-child(odd),
+body.naive-bayes-evidence .ribbon-node:nth-of-type(1) { transform: rotate(-1.05deg); }
+
+body.naive-bayes-evidence .model-choice:nth-child(2),
+body.naive-bayes-evidence .fold-block:nth-child(3),
+body.naive-bayes-evidence .matrix-cell:nth-child(even),
+body.naive-bayes-evidence .ribbon-node:nth-of-type(3) { transform: rotate(.8deg); }
+
+body.naive-bayes-evidence .model-choice:nth-child(3),
+body.naive-bayes-evidence .fold-block:nth-child(4),
+body.naive-bayes-evidence .ribbon-node:nth-of-type(5) { transform: rotate(-.55deg); }
+
+body.naive-bayes-evidence .model-choice:nth-child(4),
+body.naive-bayes-evidence .fold-block:nth-child(5),
+body.naive-bayes-evidence .ribbon-node:nth-of-type(7) { transform: rotate(.95deg); }
+
+body.naive-bayes-evidence .ribbon-node:nth-of-type(9) { transform: rotate(-.7deg); }
+
+body.naive-bayes-evidence :is(.model-choice,.fold-block,.matrix-cell,.ribbon-node,.likelihood-row,[data-ledger-row],[data-split-part]) {
+  transition: transform .16s ease, background-color .16s ease, color .16s ease;
+}
+
+/* Discoverable, keyboard-accessible inspection states for the formerly
+   static scenes. The highlight resembles a fresh marker pass. */
+body.naive-bayes-evidence :is([data-ledger-row],[data-split-part],[data-likelihood],[data-pipeline-note]) {
+  cursor: pointer;
+}
+
+body.naive-bayes-evidence :is([data-ledger-row],[data-split-part],[data-likelihood],[data-pipeline-note]):focus-visible {
+  outline: 2px dashed var(--blue) !important;
+  outline-offset: 3px !important;
+}
+
+body.naive-bayes-evidence [data-ledger-row]:hover,
+body.naive-bayes-evidence [data-ledger-row].is-inspected {
+  background: linear-gradient(176deg, transparent 7%, rgba(244, 198, 74, .42) 7% 88%, transparent 88%);
+  transform: translateX(4px) rotate(-.25deg);
+}
+
+body.naive-bayes-evidence [data-ledger-row].is-inspected span:first-child {
+  color: var(--red);
+  font-weight: 700;
+}
+
+body.naive-bayes-evidence [data-split-part]:hover,
+body.naive-bayes-evidence [data-split-part].is-inspected {
+  background-color: rgba(244, 198, 74, .28);
+  transform: translateX(5px) rotate(-.65deg);
+}
+
+body.naive-bayes-evidence [data-split-part='test'].is-inspected {
+  background-color: rgba(213, 229, 244, .62);
+  transform: translateX(5px) rotate(.65deg);
+}
+
+body.naive-bayes-evidence [data-likelihood] {
+  margin-inline: -5px;
+  padding-inline: 5px;
+}
+
+body.naive-bayes-evidence [data-likelihood]:hover,
+body.naive-bayes-evidence [data-likelihood].is-inspected {
+  background: linear-gradient(178deg, transparent 4%, rgba(244, 198, 74, .34) 4% 91%, transparent 91%);
+  transform: translateX(4px) rotate(-.25deg);
+}
+
+body.naive-bayes-evidence [data-pipeline-note]:hover,
+body.naive-bayes-evidence [data-pipeline-note].is-inspected {
+  color: var(--deep-indigo);
+  background-color: rgba(244, 198, 74, .34);
+  transform: translateY(-6px) rotate(-1deg);
+}
+
+body.naive-bayes-evidence [data-pipeline-note].is-inspected small { color: var(--ink); }
+
+body.naive-bayes-evidence :is(#ledgerDetail,#splitDetail,#likelihoodDetail,#pipelineDetail) {
+  max-width: 220px;
+  color: var(--ink);
+  background: linear-gradient(transparent 62%, rgba(244, 198, 74, .36) 62% 90%, transparent 90%);
+}
+
+/* The principal drawings have a second, imperfect pencil registration. */
+body.naive-bayes-evidence .hero-threads path,
+body.naive-bayes-evidence .frame-connector path,
+body.naive-bayes-evidence .naive-map path,
+body.naive-bayes-evidence .bell-chart path {
+  filter: url(#nb-sketch-wobble);
+}
+
+body.naive-bayes-evidence .bell-chart path[stroke='#dc2626'],
+body.naive-bayes-evidence .bell-chart path[stroke='#2563eb'] {
+  stroke-width: 3.2;
+}
+
+body.naive-bayes-evidence .bell-chart path[fill^='url'] {
+  fill-opacity: .16;
+}
+
+body.naive-bayes-evidence .naive-node,
+body.naive-bayes-evidence .class-target,
+body.naive-bayes-evidence .class-target-inner {
+  filter: url(#nb-sketch-wobble);
+}
+
+body.naive-bayes-evidence :is(.count-stamp,.feature-bit,.model-glyph,.toggle-box,.lock-shape) {
+  filter: url(#nb-sketch-wobble);
+}
+
+body.naive-bayes-evidence .count-stamp { transform: rotate(-1.5deg); }
+body.naive-bayes-evidence .count-stamp:nth-child(2) { transform: rotate(1.3deg); }
+
+@media (max-width: 620px) {
+  body.naive-bayes-evidence .nb-scribble-frame { inset: -2px; width: calc(100% + 4px); height: calc(100% + 4px); }
+  body.naive-bayes-evidence :is(#ledgerDetail,#splitDetail,#likelihoodDetail,#pipelineDetail) { background: none; }
+}
+
+body.naive-bayes-evidence .scale-note {
+  position: relative;
+  max-width: 470px;
+  padding: 10px 13px 8px;
+  background: rgba(244, 198, 74, .18);
+  border-left: 3px solid rgba(197, 139, 42, .72);
+  font-size: 15px;
+  line-height: 1.35;
+  transform: rotate(-.35deg);
+}
+
+body.naive-bayes-evidence .feature-row { grid-template-columns: 1fr 30px; }
+body.naive-bayes-evidence .feature-meter { display: none; }
+
+body.naive-bayes-evidence .score-likelihood-key,
+body.naive-bayes-evidence .score-axis-note {
+  color: var(--muted);
+  font-size: 10px;
+  line-height: 1.2;
+  transform: rotate(-.45deg);
+}
+
+body.naive-bayes-evidence .score-likelihood-key {
+  margin-top: 17px;
+  padding-bottom: 6px;
+  border-bottom: 1px dashed rgba(45, 68, 79, .28);
+}
+
+body.naive-bayes-evidence .score-feature-list { margin-top: 12px; }
+body.naive-bayes-evidence .score-axis-note { margin-bottom: 2px; text-align: right; }
+
+body.naive-bayes-evidence .matrix-cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+body.naive-bayes-evidence .matrix-cell strong { font-size: 11px; }
+body.naive-bayes-evidence .matrix-count {
+  color: currentColor;
+  font-size: 27px;
+  line-height: .9;
+  transform: rotate(-2deg);
+}
+
+body.naive-bayes-evidence .matrix-cell:nth-child(even) .matrix-count { transform: rotate(2deg); }
+
+body.naive-bayes-evidence .height-readout {
+  left: 25%;
+  right: 5%;
+  display: grid;
+  grid-template-columns: auto auto;
+  align-items: baseline;
+  justify-content: start;
+  gap: 2px 10px;
+}
+
+body.naive-bayes-evidence .height-readout .mono { grid-column: 1; }
+body.naive-bayes-evidence .height-readout strong { grid-column: 2; white-space: nowrap; }
+body.naive-bayes-evidence .height-readout > span:last-child {
+  grid-column: 1 / -1;
+  max-width: none;
+  line-height: 1.2;
+}
+
+body.naive-bayes-evidence .axis-labels text {
+  fill: var(--ink);
+  font-size: 11px;
+  text-anchor: middle;
+}
+
+body.naive-bayes-evidence .metric-readout em {
+  display: block;
+  margin-top: 7px;
+  color: var(--deep-indigo);
+  font-size: 9px;
+  font-style: normal;
+  line-height: 1.2;
+}
+
+@media (max-width: 620px) {
+  body.naive-bayes-evidence .scale-note { font-size: 12px; }
+  body.naive-bayes-evidence .score-likelihood-key,
+  body.naive-bayes-evidence .score-axis-note { font-size: 7px; }
+  body.naive-bayes-evidence .matrix-count { font-size: 19px; }
+  body.naive-bayes-evidence .metric-readout em { font-size: 9px; }
+  body.naive-bayes-evidence .learn-scene {
+    grid-template-columns: minmax(0, .78fr) 8px minmax(0, 1.22fr);
+    gap: 5px;
+  }
+  body.naive-bayes-evidence .synthesis-ribbon {
+    top: 0;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 5px;
+  }
+  body.naive-bayes-evidence .synthesis-ribbon > i { display: none; }
+  body.naive-bayes-evidence .ribbon-node { min-height: 46px; padding: 5px; }
+  body.naive-bayes-evidence .four-ideas { display: none; }
+  body.naive-bayes-evidence .synthesis-verdict { bottom: 1%; }
+}

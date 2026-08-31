@@ -7,6 +7,165 @@
   const notebookStyles = document.querySelector('link[href*="naive-bayes-handwritten.css"]');
   if (notebookStyles?.parentNode) notebookStyles.parentNode.appendChild(notebookStyles);
 
+  const SVG_NS = 'http://www.w3.org/2000/svg';
+
+  document.querySelectorAll('.scene[aria-label]').forEach((scene) => {
+    if (!scene.hasAttribute('role')) scene.setAttribute('role', 'group');
+  });
+
+  function sketchHash(value) {
+    let hash = 2166136261 >>> 0;
+    for (const character of String(value)) {
+      hash ^= character.charCodeAt(0);
+      hash = Math.imul(hash, 16777619) >>> 0;
+    }
+    return hash >>> 0;
+  }
+
+  function sketchRandom(seed) {
+    let state = sketchHash(seed) || 1;
+    return () => {
+      state = (Math.imul(state, 1664525) + 1013904223) >>> 0;
+      return state / 4294967296;
+    };
+  }
+
+  function makeNotebookFilter() {
+    if (document.getElementById('nb-sketch-filter-bank')) return;
+    const bank = document.createElementNS(SVG_NS, 'svg');
+    bank.id = 'nb-sketch-filter-bank';
+    bank.setAttribute('aria-hidden', 'true');
+    bank.style.cssText = 'position:fixed;width:0;height:0;overflow:hidden;pointer-events:none';
+    const defs = document.createElementNS(SVG_NS, 'defs');
+    const filter = document.createElementNS(SVG_NS, 'filter');
+    filter.id = 'nb-sketch-wobble';
+    filter.setAttribute('x', '-12%');
+    filter.setAttribute('y', '-12%');
+    filter.setAttribute('width', '124%');
+    filter.setAttribute('height', '124%');
+    filter.setAttribute('color-interpolation-filters', 'sRGB');
+    const noise = document.createElementNS(SVG_NS, 'feTurbulence');
+    noise.setAttribute('type', 'fractalNoise');
+    noise.setAttribute('baseFrequency', '.018 .065');
+    noise.setAttribute('numOctaves', '2');
+    noise.setAttribute('seed', '29');
+    noise.setAttribute('result', 'inkNoise');
+    const displacement = document.createElementNS(SVG_NS, 'feDisplacementMap');
+    displacement.setAttribute('in', 'SourceGraphic');
+    displacement.setAttribute('in2', 'inkNoise');
+    displacement.setAttribute('scale', '2.25');
+    displacement.setAttribute('xChannelSelector', 'R');
+    displacement.setAttribute('yChannelSelector', 'G');
+    filter.append(noise, displacement);
+    defs.append(filter);
+    bank.append(defs);
+    document.body.prepend(bank);
+  }
+
+  function roughFramePath(seed, pass, width, height) {
+    const random = sketchRandom(`${seed}:${pass}`);
+    const pxX = (pixels) => pixels * 100 / Math.max(width, 48);
+    const pxY = (pixels) => pixels * 100 / Math.max(height, 32);
+    const jx = (pixels) => (random() - .5) * 2 * pxX(pixels);
+    const jy = (pixels) => (random() - .5) * 2 * pxY(pixels);
+    const insetX = pxX(1.8 + pass * .55);
+    const insetY = pxY(1.8 + pass * .55);
+    const x0 = insetX + jx(.8), x1 = 100 - insetX + jx(.8);
+    const y0 = insetY + jy(.8), y1 = 100 - insetY + jy(.8);
+    return [
+      `M ${x0.toFixed(2)} ${y0.toFixed(2)}`,
+      `Q ${(24 + jx(5)).toFixed(2)} ${(y0 + jy(3)).toFixed(2)} ${(50 + jx(4)).toFixed(2)} ${(y0 + jy(2.2)).toFixed(2)}`,
+      `Q ${(76 + jx(5)).toFixed(2)} ${(y0 + jy(3)).toFixed(2)} ${x1.toFixed(2)} ${(y0 + jy(1.3)).toFixed(2)}`,
+      `Q ${(x1 + jx(2.8)).toFixed(2)} ${(28 + jy(5)).toFixed(2)} ${(x1 + jx(2.1)).toFixed(2)} ${(52 + jy(4)).toFixed(2)}`,
+      `Q ${(x1 + jx(2.8)).toFixed(2)} ${(77 + jy(5)).toFixed(2)} ${x1.toFixed(2)} ${y1.toFixed(2)}`,
+      `Q ${(74 + jx(5)).toFixed(2)} ${(y1 + jy(3)).toFixed(2)} ${(49 + jx(4)).toFixed(2)} ${(y1 + jy(2.2)).toFixed(2)}`,
+      `Q ${(24 + jx(5)).toFixed(2)} ${(y1 + jy(3)).toFixed(2)} ${x0.toFixed(2)} ${(y1 + jy(1.3)).toFixed(2)}`,
+      `Q ${(x0 + jx(2.8)).toFixed(2)} ${(72 + jy(5)).toFixed(2)} ${(x0 + jx(2.1)).toFixed(2)} ${(49 + jy(4)).toFixed(2)}`,
+      `Q ${(x0 + jx(2.8)).toFixed(2)} ${(25 + jy(5)).toFixed(2)} ${x0.toFixed(2)} ${y0.toFixed(2)}`
+    ].join(' ');
+  }
+
+  const notebookFrameObserver = 'ResizeObserver' in window ? new ResizeObserver((entries) => {
+    entries.forEach((entry) => {
+      const element = entry.target;
+      const frame = element.querySelector(':scope > .nb-scribble-frame');
+      if (!frame) return;
+      const rect = element.getBoundingClientRect();
+      frame.querySelectorAll('path').forEach((path, pass) => {
+        path.setAttribute('d', roughFramePath(element.dataset.nbSketchSeed, pass, rect.width, rect.height));
+      });
+    });
+  }) : null;
+
+  function sketchSurface(element, index) {
+    if (!(element instanceof HTMLElement) || element.dataset.nbSketchFrame === '1') return;
+    const computed = getComputedStyle(element);
+    if (computed.position === 'static') element.classList.add('nb-frame-relative');
+    element.classList.add('nb-sketched-surface');
+    element.dataset.nbSketchFrame = '1';
+    element.dataset.nbSketchSeed = `${element.className}:${element.textContent?.slice(0, 28)}:${index}`;
+    element.style.setProperty('border-color', 'transparent', 'important');
+    element.style.setProperty('border-image', 'none', 'important');
+    const svg = document.createElementNS(SVG_NS, 'svg');
+    svg.classList.add('nb-scribble-frame');
+    svg.setAttribute('viewBox', '0 0 100 100');
+    svg.setAttribute('preserveAspectRatio', 'none');
+    svg.setAttribute('aria-hidden', 'true');
+    const rect = element.getBoundingClientRect();
+    for (let pass = 0; pass < 2; pass += 1) {
+      const path = document.createElementNS(SVG_NS, 'path');
+      path.setAttribute('d', roughFramePath(element.dataset.nbSketchSeed, pass, rect.width, rect.height));
+      path.setAttribute('stroke-width', pass ? '.82' : '1.22');
+      path.setAttribute('opacity', pass ? '.40' : '.84');
+      svg.append(path);
+    }
+    element.append(svg);
+    notebookFrameObserver?.observe(element);
+  }
+
+  function roughenIllustrationStrokes() {
+    const illustrations = document.querySelectorAll('svg:not(.nb-scribble-frame):not(.hw-rough-frame):not(.hw-ink-filter-bank):not(#nb-sketch-filter-bank)');
+    illustrations.forEach((svg) => {
+      svg.classList.add('nb-rough-illustration');
+      svg.querySelectorAll('path,line,circle,ellipse,polyline,polygon').forEach((shape) => {
+        shape.setAttribute('filter', 'url(#nb-sketch-wobble)');
+        if (shape.id || shape.dataset.nbGhost === '1') return;
+        const style = getComputedStyle(shape);
+        if (!style.stroke || style.stroke === 'none' || style.stroke === 'rgba(0, 0, 0, 0)') return;
+        const echo = shape.cloneNode(false);
+        echo.removeAttribute('id');
+        echo.dataset.nbGhost = '1';
+        echo.setAttribute('fill', 'none');
+        echo.setAttribute('stroke', style.stroke);
+        echo.setAttribute('stroke-width', String(Math.max(1, Number.parseFloat(style.strokeWidth || '1') * .82)));
+        echo.setAttribute('opacity', '.22');
+        echo.setAttribute('transform', `${shape.getAttribute('transform') || ''} translate(.75 -.45)`.trim());
+        echo.setAttribute('pointer-events', 'none');
+        shape.parentNode.insertBefore(echo, shape);
+      });
+    });
+  }
+
+  function decorateNotebookVisuals() {
+    makeNotebookFilter();
+    const surfaceSelector = [
+      '.visual-stage', '.stage-nav', '.email-hero-card', '.class-lens',
+      '.ledger-wrap', '.email-note-card', '.feature-rack', '.target-lock',
+      '.paper-stack', '.split-branch', '.split-seal', '.model-choice',
+      '.model-specimen', '.prior-column', '.likelihood-column', '.learn-equation',
+      '.score-email', '.score-compare', '.winner-stamp', '.height-readout',
+      '.zero-card', '.zero-result', '.smoothing-band', '.log-chain', '.log-result',
+      '.fold-block', '.final-train-path', '.matrix-cell', '.metric-readout',
+      '.ribbon-node', '.four-ideas > div', '.synthesis-verdict', '.type-summary',
+      '.score-readout', '.continuous-note span', '.insight-note', '.formula-strip',
+      '.stability-switch', '.fold-buttons', '.metric-switch'
+    ].join(',');
+    document.querySelectorAll(surfaceSelector).forEach(sketchSurface);
+    roughenIllustrationStrokes();
+  }
+
+  window.requestAnimationFrame(decorateNotebookVisuals);
+
   const root = document.documentElement;
   const stages = [...document.querySelectorAll('[data-stage]')].filter((el) => el.classList.contains('stage-section'));
   const scenes = [...document.querySelectorAll('[data-scene]')];
@@ -42,6 +201,7 @@
       const visible = stage > 0 && Number(scene.dataset.scene) === stage;
       scene.classList.toggle('is-visible', visible);
       scene.setAttribute('aria-hidden', String(!visible));
+      scene.inert = !visible;
     });
   }
 
@@ -137,6 +297,82 @@
     });
   });
 
+  function activateOnClickOrKey(element, handler) {
+    element.addEventListener('click', handler);
+    element.addEventListener('keydown', (event) => {
+      if (event.key !== 'Enter' && event.key !== ' ') return;
+      event.preventDefault();
+      handler();
+    });
+  }
+
+  // The first static scenes now reward inspection instead of behaving like posters.
+  const ledgerRows = [...document.querySelectorAll('[data-ledger-row]')];
+  const ledgerDetail = document.getElementById('ledgerDetail');
+  ledgerRows.forEach((row) => {
+    row.setAttribute('aria-selected', 'false');
+    activateOnClickOrKey(row, () => {
+      ledgerRows.forEach((candidate) => {
+        const selected = candidate === row;
+        candidate.classList.toggle('is-inspected', selected);
+        candidate.setAttribute('aria-selected', String(selected));
+      });
+      ledgerDetail.textContent = row.dataset.ledgerRow;
+    });
+  });
+
+  const splitParts = [...document.querySelectorAll('[data-split-part]')];
+  const splitDetail = document.getElementById('splitDetail');
+  const splitCopy = {
+    train: 'training may be revisited: it teaches probabilities and supports validation',
+    test: 'test stays sealed: it is used once for the final, honest estimate'
+  };
+  splitParts.forEach((part) => {
+    activateOnClickOrKey(part, () => {
+      splitParts.forEach((candidate) => {
+        const selected = candidate === part;
+        candidate.classList.toggle('is-inspected', selected);
+        candidate.setAttribute('aria-pressed', String(selected));
+      });
+      splitDetail.textContent = splitCopy[part.dataset.splitPart];
+    });
+  });
+
+  const likelihoodRows = [...document.querySelectorAll('[data-likelihood]')];
+  const likelihoodDetail = document.getElementById('likelihoodDetail');
+  const learnEquation = document.getElementById('learnEquation');
+  likelihoodRows.forEach((row) => {
+    row.setAttribute('aria-pressed', 'false');
+    activateOnClickOrKey(row, () => {
+      likelihoodRows.forEach((candidate) => {
+        const selected = candidate === row;
+        candidate.classList.toggle('is-inspected', selected);
+        candidate.setAttribute('aria-pressed', String(selected));
+      });
+      const clue = row.dataset.likelihood;
+      const spam = row.dataset.spam;
+      const safe = row.dataset.safe;
+      likelihoodDetail.textContent = `“${clue}” supports ${Number(spam) > Number(safe) ? 'spam' : 'not spam'} more strongly`;
+      learnEquation.innerHTML = `<span class="mono">P(${clue} | Spam) = ${spam}</span><b>vs</b><span class="mono">P(${clue} | Not Spam) = ${safe}</span>`;
+    });
+  });
+
+  const pipelineNodes = [...document.querySelectorAll('[data-pipeline-note]')];
+  const pipelineDetail = document.getElementById('pipelineDetail');
+  const synthesisVerdict = document.getElementById('synthesisVerdict');
+  pipelineNodes.forEach((node) => {
+    node.setAttribute('aria-pressed', 'false');
+    activateOnClickOrKey(node, () => {
+      pipelineNodes.forEach((candidate) => {
+        const selected = candidate === node;
+        candidate.classList.toggle('is-inspected', selected);
+        candidate.setAttribute('aria-pressed', String(selected));
+      });
+      pipelineDetail.textContent = node.dataset.pipelineNote;
+      synthesisVerdict.querySelector('strong').textContent = `${node.querySelector('b').textContent} step`;
+    });
+  });
+
   // The naive assumption toggle changes the evidence map, not just the label.
   const assumptionToggle = document.getElementById('assumptionToggle');
   const naiveScene = document.querySelector('.scene-naive');
@@ -217,18 +453,44 @@
   function gaussian(x, mean, spread) {
     return Math.exp(-((x - mean) ** 2) / (2 * spread ** 2));
   }
+  const heightX = (value) => 46 + ((value - 160) / 27) * 553;
+  function gaussianCurvePath(mean, spread, seed) {
+    const random = sketchRandom(`gaussian:${seed}`);
+    const points = [];
+    for (let value = 160; value <= 187.001; value += 0.45) {
+      const x = heightX(value);
+      const support = gaussian(value, mean, spread);
+      const edgeFade = Math.min(1, (value - 160) / 1.3, (187 - value) / 1.3);
+      const jitter = (random() - .5) * 2.2 * Math.max(0, edgeFade);
+      const y = 260 - support * 137 + jitter;
+      points.push([x, y]);
+    }
+    return points.map(([x, y], index) => `${index ? 'L' : 'M'}${x.toFixed(1)} ${y.toFixed(1)}`).join(' ');
+  }
+  const curveAPath = gaussianCurvePath(168, 5, 'a');
+  const curveBPath = gaussianCurvePath(181, 5, 'b');
+  document.getElementById('curveAStrokePath').setAttribute('d', curveAPath);
+  document.getElementById('curveAFillPath').setAttribute('d', `${curveAPath} L599 260 L46 260 Z`);
+  document.getElementById('curveBStrokePath').setAttribute('d', curveBPath);
+  document.getElementById('curveBFillPath').setAttribute('d', `${curveBPath} L599 260 L46 260 Z`);
+  const meanAX = heightX(168);
+  const meanBX = heightX(181);
+  for (const [line, x] of [[document.getElementById('meanALine'), meanAX], [document.getElementById('meanBLine'), meanBX]]) {
+    line.setAttribute('x1', String(x));
+    line.setAttribute('x2', String(x));
+  }
   function updateHeight() {
     const value = Number(heightSlider.value);
-    const ratio = (value - 160) / 27;
-    const x = 46 + ratio * 553;
+    const x = heightX(value);
     const supportA = gaussian(value, 168, 5);
     const supportB = gaussian(value, 181, 5);
-    const closer = supportA >= supportB ? 'Class A' : 'Class B';
+    const nearlyEqual = Math.abs(supportA - supportB) < .13;
+    const closer = nearlyEqual ? 'about equally supported' : `closer to ${supportA > supportB ? 'Class A' : 'Class B'}`;
     const stronger = Math.max(supportA, supportB);
     const weaker = Math.min(supportA, supportB);
-    const y = 260 - 30 - Math.max(supportA, supportB) * 100;
+    const y = 260 - Math.max(supportA, supportB) * 137;
     heightValue.textContent = String(value);
-    heightInterpretation.textContent = `closer to ${closer} · support ${stronger.toFixed(2)} / ${weaker.toFixed(2)}`;
+    heightInterpretation.textContent = `${closer} · support ${stronger.toFixed(2)} / ${weaker.toFixed(2)}`;
     heightGuide.setAttribute('x1', String(x));
     heightGuide.setAttribute('x2', String(x));
     heightPoint.setAttribute('cx', String(x));
