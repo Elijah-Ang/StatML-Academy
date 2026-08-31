@@ -477,6 +477,180 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
 </style>
 
     <link rel="stylesheet" href="academic-rigor.css">
+    <link rel="stylesheet" href="handwritten-theme.css?v=20260826-handwritten-final-2">
+    <script src="handwritten-theme.js?v=20260826-handwritten-final-2" defer></script>
+    <style id="kmeans-handwritten-shell">
+        body.hw-handwritten .hero-badge,
+        body.hw-handwritten .topic-badge,
+        body.hw-handwritten .statml-hero .hero-badge {
+            border: 0 !important; border-radius: 3px 5px 2px 4px !important;
+            background: linear-gradient(transparent 38%, rgba(241,212,119,.58) 38%, rgba(241,212,119,.58) 88%, transparent 88%) !important;
+            box-shadow: none !important;
+        }
+        body.hw-handwritten .statml-overview { border: 1px solid rgba(88,83,72,.28) !important; border-radius: 5px 8px 4px 7px !important; background: rgba(255,253,245,.78) !important; box-shadow: none !important; }
+        body.hw-handwritten .statml-overview-item { border-radius: 3px 5px 2px 4px !important; background: rgba(255,252,242,.32) !important; box-shadow: none !important; }
+        body.hw-handwritten .statml-overview-number { border: 1px solid rgba(40,105,173,.38) !important; border-radius: 2px 4px 2px 3px !important; background: rgba(230,240,248,.7) !important; box-shadow: none !important; }
+        body.hw-handwritten :is(.pill,.tag,.badge,.metric-badge,.feature-pill,.transform-bridge-badge) { border: 0 !important; border-radius: 2px 4px 2px 3px !important; background: linear-gradient(transparent 34%, rgba(241,212,119,.48) 34%, rgba(241,212,119,.48) 90%, transparent 90%) !important; box-shadow: none !important; }
+        body.hw-handwritten .statml-stage-rail { border-radius: 4px 6px 3px 5px !important; background-color: rgba(255,252,242,.82) !important; background-image: repeating-linear-gradient(176deg, rgba(223,178,45,.04) 0 2px, transparent 2px 8px), radial-gradient(circle at 14% 18%, rgba(255,255,255,.3), transparent 46%) !important; box-shadow: none !important; }
+        body.hw-handwritten .statml-stage-button { border-radius: 42% 58% 47% 53% !important; box-shadow: none !important; }
+        body.hw-handwritten .statml-stage-button[aria-current="step"] { background: var(--hw-yellow) !important; border-color: var(--hw-ink) !important; box-shadow: none !important; }
+        body.hw-handwritten .statml-stage-button span { border-radius: 3px 5px 2px 4px !important; background: var(--hw-yellow-soft) !important; color: var(--hw-ink) !important; box-shadow: none !important; }
+        body.hw-handwritten input[type="range"] { appearance: none !important; height: 7px !important; border: 0 !important; border-radius: 3px 5px 2px 4px !important; background: repeating-linear-gradient(167deg, rgba(40,105,173,.18) 0 2px, rgba(255,252,242,.72) 2px 6px) !important; box-shadow: 1px 1px 0 rgba(75,68,58,.12) !important; }
+        body.hw-handwritten input[type="range"]::-webkit-slider-thumb { appearance: none; width: 18px; height: 18px; border: 1px solid rgba(75,68,58,.52); border-radius: 42% 58% 47% 53%; background: var(--hw-yellow); box-shadow: 1px 2px 0 rgba(75,68,58,.16); transform: rotate(-3deg); }
+        body.hw-handwritten input[type="range"]::-moz-range-thumb { width: 18px; height: 18px; border: 1px solid rgba(75,68,58,.52); border-radius: 42% 58% 47% 53%; background: var(--hw-yellow); box-shadow: 1px 2px 0 rgba(75,68,58,.16); }
+        body.hw-handwritten.statml-standardized :is(.statml-overview,.statml-overview-item,.glass-card,.card,.metric-card,.control-panel,.controls,.quiz-card,.worked-example-widget,.formula-block,.math-block,.formula,.software-output,.model-report-block,.limitation-card,.playground-summary-card,.decision-card,.interactive,.panel,.chart-card,.figure-card,.visual-panel,.viz-panel,.canvas-container,.canvas-wrap,.viz-stage,.status-strip) { border: 1px solid rgba(88,83,72,.42) !important; border-radius: 5px 8px 4px 7px !important; background-color: rgba(255,252,242,.82) !important; background-image: repeating-linear-gradient(176deg, rgba(223,178,45,.035) 0 2px, transparent 2px 8px), radial-gradient(circle at 14% 18%, rgba(255,255,255,.25), transparent 46%) !important; box-shadow: 1px 2px 0 rgba(76,65,50,.10) !important; backdrop-filter: none !important; }
+        body.hw-handwritten.statml-standardized :is(.insight-box,.callout,.insight,.takeaway,.teaching-note,.look-here,.breakdown,.warning-note,.report,.plain-translation,.statml-takeaways) { border: 1px solid rgba(157,112,12,.34) !important; border-left: 4px solid var(--hw-blue) !important; border-radius: 2px 5px 3px 6px !important; background-color: #fff1b8 !important; background-image: repeating-linear-gradient(176deg, rgba(223,178,45,.07) 0 2px, transparent 2px 7px), radial-gradient(circle at 14% 18%, rgba(255,255,255,.42), transparent 46%) !important; box-shadow: 2px 3px 0 rgba(76,65,50,.14) !important; }
+        body.hw-handwritten.statml-standardized :is(.warning-note,.is-alert) { border-left-color: var(--hw-red) !important; background-color: var(--hw-red-soft) !important; background-image: repeating-linear-gradient(176deg, rgba(200,94,88,.055) 0 2px, transparent 2px 7px), radial-gradient(circle at 14% 18%, rgba(255,255,255,.34), transparent 46%) !important; }
+        body.hw-handwritten.statml-standardized :is(.report,.statml-takeaways) { border-left-color: var(--hw-green) !important; background-color: var(--hw-green-soft) !important; }
+        body.hw-handwritten.statml-standardized :is(button,.btn,.interactive-btn,.control-btn,select,input[type="text"],input[type="number"],textarea,.quiz-option,.scenario-options button,.control button) { border: 1px solid rgba(75,68,58,.52) !important; border-radius: 7px 4px 8px 5px !important; background-color: rgba(248,243,230,.88) !important; background-image: repeating-linear-gradient(167deg, rgba(40,105,173,.035) 0 2px, transparent 2px 6px) !important; box-shadow: 1px 2px 0 rgba(75,68,58,.08) !important; }
+        body.hw-handwritten.statml-standardized table { border-color: rgba(75,68,58,.5) !important; border-radius: 5px 8px 4px 7px !important; background-color: rgba(255,253,245,.70) !important; box-shadow: 1px 2px 0 rgba(75,68,58,.05) !important; }
+        body.hw-handwritten.statml-standardized :is(th,td) { border-color: rgba(75,68,58,.42) !important; border-style: dashed !important; }
+        body.hw-handwritten.statml-standardized th { background: rgba(241,212,119,.16) !important; }
+        body.hw-handwritten.statml-standardized :is(.statml-stage-button,.stage-dot) { min-height: 0 !important; width: 9px !important; height: 9px !important; padding: 0 !important; border-radius: 42% 58% 47% 53% !important; background: var(--hw-paper) !important; background-image: none !important; box-shadow: none !important; }
+        body.hw-handwritten.statml-standardized :is(.statml-stage-button,.stage-dot)[aria-current="step"], body.hw-handwritten.statml-standardized :is(.statml-stage-button,.stage-dot).active { background: var(--hw-yellow) !important; border-color: var(--hw-ink) !important; }
+        body.hw-handwritten.statml-standardized button.statml-stage-button, body.hw-handwritten.statml-standardized button.stage-dot { min-height: 0 !important; width: 9px !important; height: 9px !important; padding: 0 !important; border-radius: 42% 58% 47% 53% !important; background: var(--hw-paper) !important; background-image: none !important; box-shadow: none !important; }
+        body.hw-handwritten.statml-standardized button.statml-stage-button[aria-current="step"], body.hw-handwritten.statml-standardized button.stage-dot.active { background: var(--hw-yellow) !important; border-color: var(--hw-ink) !important; }
+    </style>
+    <style id="kmeans-handwritten-visual">
+        /* The existing K-Means workbench keeps its original geometry. These
+           rules only change the medium from polished UI to paper and ink. */
+        .canvas-container,
+        .status-strip,
+        .control-panel {
+            background: rgba(255,252,242,.82) !important;
+            border: 1px solid rgba(88,83,72,.48) !important;
+            border-radius: 7px 5px 8px 4px !important;
+            box-shadow: 1px 2px 0 rgba(88,83,72,.08) !important;
+        }
+        .canvas-container { background-color: #fbf4e2 !important; }
+        .status-strip { font-family: var(--hw-hand) !important; }
+        .status-label { color: var(--hw-faint) !important; letter-spacing: .08em !important; }
+        .status-val { color: var(--hw-ink) !important; }
+        .status-val.converged { color: var(--hw-green) !important; }
+        .control-panel select,
+        .control-panel input[type="range"],
+        .btn {
+            color: var(--hw-ink) !important;
+            background: rgba(255,252,242,.92) !important;
+            border: 1px solid rgba(88,83,72,.52) !important;
+            border-radius: 4px 6px 3px 5px !important;
+            box-shadow: none !important;
+        }
+        .btn.primary { background: var(--hw-blue) !important; color: #fffdf4 !important; border-color: #1d568d !important; }
+        .btn:hover, .control-panel select:hover { background: var(--hw-yellow-soft) !important; }
+        .legend-strip { color: var(--hw-muted) !important; }
+        .legend-dot { width: 10px !important; height: 10px !important; border-radius: 43% 57% 49% 51% !important; border-color: rgba(32,36,33,.5) !important; box-shadow: 1px 1px 0 rgba(32,36,33,.12) !important; transform: rotate(-3deg) !important; }
+        .legend-item:nth-child(2) .legend-dot { transform: rotate(4deg) scale(.92) !important; }
+        .legend-item:nth-child(3) .legend-dot { transform: rotate(-6deg) scale(1.06) !important; }
+        .legend-strip { padding: .55rem .7rem !important; border: 1px dashed rgba(88,83,72,.28) !important; border-radius: 4px 6px 3px 5px !important; background: repeating-linear-gradient(176deg, rgba(223,178,45,.035) 0 2px, transparent 2px 8px) !important; box-shadow: 1px 1px 0 rgba(76,65,50,.06) !important; }
+        #tooltip {
+            color: var(--hw-ink) !important;
+            background: var(--hw-yellow-soft) !important;
+            border: 1px solid rgba(88,83,72,.56) !important;
+            border-radius: 4px 6px 3px 5px !important;
+            box-shadow: 2px 3px 0 rgba(88,83,72,.12) !important;
+            font-family: var(--hw-hand) !important;
+        }
+    </style>
+    <style id="kmeans-handwritten-cue-finish">
+        body.hw-handwritten .statml-hero :is(.scroll-cue,.scroll-hint,.scroll-indicator,.hero-scroll) {
+            position: static !important;
+            inset: auto !important;
+            align-self: center !important;
+            display: inline-flex !important;
+            width: auto !important;
+            max-width: calc(100% - 2rem) !important;
+            margin: .65rem auto 0 !important;
+            padding: 0 !important;
+            border: 0 !important;
+            border-radius: 0 !important;
+            background: transparent !important;
+            background-image: none !important;
+            box-shadow: none !important;
+            clip-path: none !important;
+            transform: none !important;
+            animation: none !important;
+            text-decoration-line: underline !important;
+            text-decoration-style: wavy !important;
+            text-decoration-color: rgba(40,105,173,.55) !important;
+            text-decoration-thickness: 1px !important;
+            text-underline-offset: 4px !important;
+        }
+    </style>
+    <style id="kmeans-handwritten-visual-surface-finish">
+        body.hw-handwritten.statml-standardized .statml-visual {
+            background-color: var(--hw-paper) !important;
+            background-image: none !important;
+            border-color: transparent !important;
+        }
+        body.hw-handwritten.statml-standardized .canvas-container {
+            border: 0 !important;
+            border-radius: 0 !important;
+            background-color: var(--hw-paper) !important;
+            background-image: repeating-linear-gradient(176deg, rgba(223,178,45,.026) 0 2px, transparent 2px 8px), radial-gradient(circle at 14% 18%, rgba(255,255,255,.26), transparent 46%) !important;
+            box-shadow: none !important;
+        }
+        body.hw-handwritten.statml-standardized .canvas-container > .hw-rough-frame,
+        body.hw-handwritten.statml-standardized .canvas-container::before,
+        body.hw-handwritten.statml-standardized .canvas-container::after { display: none !important; content: none !important; }
+        body.hw-handwritten.statml-standardized .status-strip {
+            position: relative !important;
+            border: 0 !important;
+            border-radius: 0 !important;
+            background: transparent !important;
+            background-image: none !important;
+            box-shadow: none !important;
+        }
+        body.hw-handwritten.statml-standardized .status-strip::after {
+            content: "" !important;
+            position: absolute !important;
+            left: 1% !important;
+            right: 1% !important;
+            bottom: .18rem !important;
+            height: 1px !important;
+            background: rgba(88,83,72,.36) !important;
+            transform: rotate(-.28deg) !important;
+            transform-origin: left center !important;
+            pointer-events: none !important;
+        }
+        body.hw-handwritten.statml-standardized .status-item {
+            position: relative !important;
+            transform: rotate(var(--status-ink-turn, -.25deg)) !important;
+        }
+        body.hw-handwritten.statml-standardized .status-item:nth-child(2n) { --status-ink-turn: .35deg; }
+        body.hw-handwritten.statml-standardized .status-item:nth-child(3n) { --status-ink-turn: -.5deg; }
+        body.hw-handwritten.statml-standardized .legend-strip {
+            border: 0 !important;
+            border-radius: 0 !important;
+            background: transparent !important;
+            background-image: none !important;
+            box-shadow: none !important;
+        }
+    </style>
+<style id="kmeans-handwritten-geometry-calibration">
+@media (min-width: 901px) {
+  body.hw-handwritten.statml-standardized [data-stage="1"]{min-height:1089px !important}
+  body.hw-handwritten.statml-standardized [data-stage="2"]{min-height:1111px !important}
+  body.hw-handwritten.statml-standardized [data-stage="3"]{min-height:900px !important}
+  body.hw-handwritten.statml-standardized [data-stage="4"]{min-height:863px !important}
+  body.hw-handwritten.statml-standardized [data-stage="5"]{min-height:901px !important}
+  body.hw-handwritten.statml-standardized [data-stage="6"]{min-height:876px !important}
+  body.hw-handwritten.statml-standardized [data-stage="7"]{min-height:836px !important}
+  body.hw-handwritten.statml-standardized [data-stage="8"]{min-height:809px !important}
+  body.hw-handwritten.statml-standardized [data-stage="9"]{min-height:2254px !important}
+}
+@media (min-width: 360px) and (max-width: 900px) {
+  body.hw-handwritten.statml-standardized [data-stage="1"]{min-height:1159px !important}
+  body.hw-handwritten.statml-standardized [data-stage="2"]{min-height:1204px !important}
+  body.hw-handwritten.statml-standardized [data-stage="3"]{min-height:939px !important}
+  body.hw-handwritten.statml-standardized [data-stage="4"]{min-height:940px !important}
+  body.hw-handwritten.statml-standardized [data-stage="5"]{min-height:948px !important}
+  body.hw-handwritten.statml-standardized [data-stage="6"]{min-height:939px !important}
+  body.hw-handwritten.statml-standardized [data-stage="7"]{min-height:937px !important}
+  body.hw-handwritten.statml-standardized [data-stage="8"]{min-height:882px !important}
+  body.hw-handwritten.statml-standardized [data-stage="9"]{min-height:2377px !important}
+}
+</style>
 </head>
 <body>
 <nav class="statml-site-nav" aria-label="StatML Academy navigation">
@@ -673,8 +847,135 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
         const ctrlOutlier = document.getElementById('ctrl-outlier');
         
         // Palette
-        const colors = ['#3b82f6', '#ef4444', '#10b981', '#f59e0b', '#8b5cf6', '#ec4899'];
-        const bgColors = colors.map(c => c + '1A'); // 10% opacity hex
+        // The palette follows the supplied paper-and-pencil references: a
+        // warm page, charcoal ink, and a small set of coloured pencil marks.
+        // The clustering data and all Math.random calls remain untouched.
+        const colors = ['#2869ad', '#c85e58', '#4f956b', '#d19a39', '#7960ae', '#b66b96'];
+        const bgColors = colors.map(c => `${c}18`); // translucent pencil wash
+
+        const inkHash = (key) => {
+            if (window.StatMLInk?.hash) return window.StatMLInk.hash(`kmeans:${key}`);
+            let h = 2166136261 >>> 0;
+            String(key).split('').forEach(ch => { h ^= ch.charCodeAt(0); h = Math.imul(h, 16777619) >>> 0; });
+            return h >>> 0;
+        };
+        const inkUnit = (key) => (inkHash(key) % 10000) / 10000;
+
+        function handLine(x1, y1, x2, y2, key, style = {}) {
+            const dx = x2 - x1, dy = y2 - y1;
+            const length = Math.max(Math.hypot(dx, dy), 1);
+            const nx = -dy / length, ny = dx / length;
+            const wobble = style.wobble ?? Math.min(1.8, length * 0.012);
+            const mid = 0.5 + (inkUnit(`${key}:mid`) - .5) * .08;
+            const mx = x1 + dx * mid + nx * (inkUnit(`${key}:x`) - .5) * wobble;
+            const my = y1 + dy * mid + ny * (inkUnit(`${key}:y`) - .5) * wobble;
+            const drawPass = (passAlpha, passWidth, offset) => {
+                ctx.save();
+                ctx.globalAlpha = passAlpha;
+                ctx.strokeStyle = style.color || '#4d5149';
+                ctx.lineWidth = passWidth;
+                ctx.lineCap = 'round';
+                ctx.lineJoin = 'round';
+                if (style.dash) ctx.setLineDash(style.dash);
+                ctx.beginPath();
+                ctx.moveTo(x1 + nx * (inkUnit(`${key}:a:${offset}`) - .5) * wobble * .35,
+                    y1 + ny * (inkUnit(`${key}:b:${offset}`) - .5) * wobble * .35);
+                ctx.quadraticCurveTo(mx + nx * offset, my + ny * offset,
+                    x2 + nx * (inkUnit(`${key}:c:${offset}`) - .5) * wobble * .35,
+                    y2 + ny * (inkUnit(`${key}:d:${offset}`) - .5) * wobble * .35);
+                ctx.stroke();
+                ctx.restore();
+            };
+            drawPass(.48, Math.max(.62, (style.width || 1.15) * .56), .8);
+            drawPass(.86, style.width || 1.15, 0);
+        }
+
+        function handDot(x, y, radius, key, fill, stroke = '#27302c', width = 1) {
+            const sides = 13;
+            ctx.save();
+            ctx.fillStyle = fill;
+            ctx.strokeStyle = stroke;
+            ctx.lineWidth = width;
+            ctx.lineJoin = 'round';
+            ctx.beginPath();
+            for (let i = 0; i < sides; i += 1) {
+                const angle = (Math.PI * 2 * i) / sides;
+                const wobble = 1 + (inkUnit(`${key}:r:${i}`) - .5) * .30;
+                const px = x + Math.cos(angle) * radius * wobble;
+                const py = y + Math.sin(angle) * radius * wobble;
+                if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+            }
+            ctx.closePath();
+            ctx.fill();
+            if (stroke && width > 0) {
+                ctx.stroke();
+                ctx.globalAlpha = .48;
+                ctx.lineWidth = Math.max(.6, width * .56);
+                ctx.translate(.65, -.45);
+                ctx.stroke();
+            }
+            ctx.restore();
+        }
+
+        function handStar(x, y, outer, inner, key, fill, stroke = '#27302c') {
+            ctx.save();
+            ctx.fillStyle = fill;
+            ctx.strokeStyle = stroke;
+            ctx.lineWidth = 1.3;
+            ctx.lineJoin = 'round';
+            ctx.beginPath();
+            for (let i = 0; i < 10; i += 1) {
+                const angle = -Math.PI / 2 + (Math.PI * i) / 5;
+                const radius = i % 2 === 0 ? outer : inner;
+                const wobble = 1 + (inkUnit(`${key}:s:${i}`) - .5) * .12;
+                const px = x + Math.cos(angle) * radius * wobble;
+                const py = y + Math.sin(angle) * radius * wobble;
+                if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+            }
+            ctx.closePath(); ctx.fill(); ctx.stroke(); ctx.restore();
+        }
+
+        function handPolyline(points, key, style = {}) {
+            if (!points.length) return;
+            const drawPass = (passAlpha, passWidth, offset) => {
+                ctx.save();
+                ctx.globalAlpha = passAlpha;
+                ctx.strokeStyle = style.color || '#4d5149';
+                ctx.lineWidth = passWidth;
+                ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+                if (style.dash) ctx.setLineDash(style.dash);
+                ctx.beginPath();
+                points.forEach((point, index) => {
+                    const jitterX = (inkUnit(`${key}:x:${index}:${offset}`) - .5) * (style.wobble || 1.4) + offset * .55;
+                    const jitterY = (inkUnit(`${key}:y:${index}:${offset}`) - .5) * (style.wobble || 1.4) - offset * .35;
+                    if (index === 0) ctx.moveTo(point.x + jitterX, point.y + jitterY);
+                    else ctx.lineTo(point.x + jitterX, point.y + jitterY);
+                });
+                ctx.stroke(); ctx.restore();
+            };
+            drawPass(.48, Math.max(.7, (style.width || 1.5) * .56), .8);
+            drawPass(.86, style.width || 1.5, 0);
+        }
+
+        // A filled cell is still data ink, not a UI tile.  Keep the exact
+        // rectangle footprint but let the four corners breathe by a seeded,
+        // sub-pixel amount so Voronoi washes read like pencil blocks.
+        function handRect(x, y, w, h, key, fill, stroke = null, width = 0) {
+            const j = part => (inkUnit(`${key}:${part}`) - .5) * .9;
+            ctx.save();
+            ctx.fillStyle = fill;
+            if (stroke) { ctx.strokeStyle = stroke; ctx.lineWidth = width || .8; }
+            ctx.lineJoin = 'round';
+            ctx.beginPath();
+            ctx.moveTo(x + j('tlx'), y + j('tly'));
+            ctx.lineTo(x + w + j('trx'), y + j('try'));
+            ctx.lineTo(x + w + j('brx'), y + h + j('bry'));
+            ctx.lineTo(x + j('blx'), y + h + j('bly'));
+            ctx.closePath();
+            ctx.fill();
+            if (stroke) ctx.stroke();
+            ctx.restore();
+        }
         
         // State
         let width, height;
@@ -1066,18 +1367,16 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
             const dpr = window.devicePixelRatio || 1;
             canvas.width = width * dpr;
             canvas.height = height * dpr;
-            ctx.scale(dpr, dpr);
+            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
         }
         window.addEventListener('resize', resizeCanvas);
 
         function drawAxes() {
-            ctx.strokeStyle = '#e7e5e4'; ctx.lineWidth = 1; ctx.beginPath();
             for(let i=1; i<10; i++) {
-                ctx.moveTo(width*(i/10), 0); ctx.lineTo(width*(i/10), height);
-                ctx.moveTo(0, height*(i/10)); ctx.lineTo(width, height*(i/10));
+                handLine(width*(i/10), 0, width*(i/10), height, `grid-v-${i}`, { color: 'rgba(88,83,72,.16)', width: .75, wobble: .65 });
+                handLine(0, height*(i/10), width, height*(i/10), `grid-h-${i}`, { color: 'rgba(88,83,72,.16)', width: .75, wobble: .65 });
             }
-            ctx.stroke();
-            ctx.fillStyle = '#9ca3af'; ctx.font = '12px Inter';
+            ctx.fillStyle = '#3d433c'; ctx.font = '15px "Patrick Hand", "Kalam", cursive';
             ctx.fillText('Age →', width/2 - 20, height - 10);
             ctx.save(); ctx.translate(15, height/2 + 30); ctx.rotate(-Math.PI/2); ctx.fillText('Spending →', 0, 0); ctx.restore();
         }
@@ -1092,7 +1391,7 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
                         let d = dist({x: x/width, y: y/height}, {x: c.targetX, y: c.targetY});
                         if(d < minDist) { minDist = d; bestC = c.cluster; }
                     });
-                    if (bestC !== -1) { ctx.fillStyle = bgColors[bestC]; ctx.fillRect(x, y, step, step); }
+                    if (bestC !== -1) { handRect(x, y, step, step, `voronoi-${bestC}-${x}-${y}`, bgColors[bestC]); }
                 }
             }
         }
@@ -1104,18 +1403,16 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
                     if(p.cluster !== -1 && (currentStage !== 5 || p === hoveredPoint)) {
                         let c = centroids[p.cluster];
                         if(!c) return;
-                        ctx.beginPath();
-                        ctx.moveTo(p.x * width, p.y * height);
-                        ctx.lineTo(c.x * width, c.y * height);
-                        
                         if (p === hoveredPoint) {
-                            ctx.strokeStyle = colors[p.cluster]; ctx.lineWidth = 2;
+                            handLine(p.x * width, p.y * height, c.x * width, c.y * height, `distance-hover-${p.id}`, { color: colors[p.cluster], width: 2, wobble: 1.5 });
                         } else {
-                            ctx.strokeStyle = currentStage === 6 ? colors[p.cluster] : '#d1d5db';
-                            ctx.lineWidth = currentStage === 6 ? 1.5 : 1;
-                            if (currentStage !== 6) ctx.setLineDash([4, 4]);
+                            handLine(p.x * width, p.y * height, c.x * width, c.y * height, `distance-${p.id}`, {
+                                color: currentStage === 6 ? colors[p.cluster] : 'rgba(88,83,72,.38)',
+                                width: currentStage === 6 ? 1.35 : 1,
+                                dash: currentStage !== 6 ? [4, 4] : undefined,
+                                wobble: currentStage === 6 ? 1.15 : .8
+                            });
                         }
-                        ctx.stroke(); ctx.setLineDash([]);
                     }
                 });
             }
@@ -1123,27 +1420,26 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
 
         function drawElbowChart() {
             if (elbowData.length === 0) return;
-            ctx.fillStyle = 'rgba(255,255,255,0.9)'; ctx.fillRect(0, 0, width, height);
+            ctx.fillStyle = 'rgba(251,244,226,.92)'; ctx.fillRect(0, 0, width, height);
             
             const chartW = width * 0.7, chartH = height * 0.5;
             const ox = (width - chartW) / 2, oy = (height + chartH) / 2;
             
-            ctx.strokeStyle = '#9ca3af'; ctx.lineWidth = 2; ctx.beginPath();
-            ctx.moveTo(ox, oy - chartH); ctx.lineTo(ox, oy); ctx.lineTo(ox + chartW, oy); ctx.stroke();
+            handLine(ox, oy - chartH, ox, oy, 'elbow-axis-y', { color: 'rgba(61,67,60,.72)', width: 1.45, wobble: 1.1 });
+            handLine(ox, oy, ox + chartW, oy, 'elbow-axis-x', { color: 'rgba(61,67,60,.72)', width: 1.45, wobble: 1.1 });
             
-            ctx.fillStyle = '#4b5563'; ctx.font = '14px Inter';
+            ctx.fillStyle = '#3d433c'; ctx.font = '17px "Patrick Hand", "Kalam", cursive';
             ctx.fillText('Number of Clusters (K)', ox + chartW/2 - 60, oy + 30);
             ctx.save(); ctx.translate(ox - 20, oy - chartH/2 + 20); ctx.rotate(-Math.PI/2); ctx.fillText('Actual WCSS', 0, 0); ctx.restore();
             
             let maxW = Math.max(...elbowData);
             
-            ctx.beginPath(); ctx.strokeStyle = '#6366f1'; ctx.lineWidth = 3;
-            elbowData.forEach((w, i) => {
+            const elbowPoints = elbowData.map((w, i) => {
                 let px = ox + (i / 5) * chartW;
                 let py = oy - (w / maxW) * chartH;
-                if(i===0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+                return { x: px, y: py };
             });
-            ctx.stroke();
+            handPolyline(elbowPoints, 'elbow-curve', { color: '#2869ad', width: 2.4, wobble: 1.5 });
             
             let currentK = parseInt(ctrlK.value);
             elbowData.forEach((w, i) => {
@@ -1151,11 +1447,10 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
                 let py = oy - (w / maxW) * chartH;
                 let isCurrent = (i+1) === currentK;
                 
-                ctx.beginPath(); ctx.arc(px, py, isCurrent ? 8 : 5, 0, Math.PI*2);
-                ctx.fillStyle = isCurrent ? '#ef4444' : '#6366f1'; ctx.fill();
+                handDot(px, py, isCurrent ? 8 : 5, `elbow-point-${i}`, isCurrent ? '#c85e58' : '#2869ad', '#2d3a36', 1);
                 
                 if (isCurrent) {
-                    ctx.fillStyle = '#ef4444'; ctx.font = 'bold 12px Inter';
+                    ctx.fillStyle = '#c85e58'; ctx.font = '16px "Patrick Hand", "Kalam", cursive';
                     ctx.fillText(`K=${currentK}`, px + 12, py - 10);
                 }
             });
@@ -1175,11 +1470,15 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
                     p.x = lerp(p.x, p.targetX, 0.1);
                     p.y = lerp(p.y, p.targetY, 0.1);
                     
-                    ctx.beginPath();
-                    ctx.arc(p.x * width, p.y * height, (p.isOutlier || p === hoveredPoint) ? 7 : 4, 0, Math.PI * 2);
-                    ctx.fillStyle = p.cluster === -1 ? '#9ca3af' : colors[p.cluster];
-                    ctx.fill();
-                    if (p.isOutlier || p === hoveredPoint) { ctx.strokeStyle = '#1f2937'; ctx.lineWidth = 2; ctx.stroke(); }
+                    handDot(
+                        p.x * width,
+                        p.y * height,
+                        (p.isOutlier || p === hoveredPoint) ? 7 : 4.3,
+                        `point-${p.id}`,
+                        p.cluster === -1 ? '#9aa096' : colors[p.cluster],
+                        p.isOutlier || p === hoveredPoint ? '#27302c' : 'rgba(39,48,44,.58)',
+                        p.isOutlier || p === hoveredPoint ? 1.8 : .8
+                    );
                 });
 
                 if (currentStage >= 2) {
@@ -1188,20 +1487,14 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
                         c.y = lerp(c.y, c.targetY, 0.1);
                         let cx = c.x * width, cy = c.y * height;
                         
-                        ctx.fillStyle = colors[c.cluster]; ctx.strokeStyle = '#ffffff'; ctx.lineWidth = 2;
-                        ctx.beginPath();
-                        for(let i=0; i<5; i++) {
-                            ctx.lineTo(Math.cos((18+i*72)/180*Math.PI)*14 + cx, -Math.sin((18+i*72)/180*Math.PI)*14 + cy);
-                            ctx.lineTo(Math.cos((54+i*72)/180*Math.PI)*6 + cx, -Math.sin((54+i*72)/180*Math.PI)*6 + cy);
-                        }
-                        ctx.closePath(); ctx.fill(); ctx.stroke();
+                        handStar(cx, cy, 14, 6, `centroid-${c.cluster}`, colors[c.cluster], '#27302c');
                     });
                 }
                 
                 // Draw Swaps overlay
                 if (iteration > 0 && currentStage !== 7) {
-                    ctx.fillStyle = hasConverged ? '#10b981' : '#1f2937';
-                    ctx.font = '600 14px Inter';
+                    ctx.fillStyle = hasConverged ? '#4f956b' : '#3d433c';
+                    ctx.font = '17px "Patrick Hand", "Kalam", cursive';
                     ctx.textAlign = 'right';
                     ctx.fillText(hasConverged ? 'Convergence Reached' : `Swaps this step: ${pointsChangedLast}`, width - 15, 25);
                     ctx.textAlign = 'left';

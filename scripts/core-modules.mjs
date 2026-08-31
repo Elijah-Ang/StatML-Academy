@@ -25,12 +25,21 @@ export const CORE_MODULES = [
   ['model-selection','Model Selection & Regularization']
 ].map(([slug,title])=>({slug,title,path:`modules/${slug}.html`}));
 
+/* Naive Bayes intentionally shipped with a descriptive navigation label in
+   the preserved module layout. Keep that authored exception in the canonical
+   generator so importing this file can never rewrite it to a numbered label. */
+export const CORE_NAV_LABEL_OVERRIDES = Object.freeze({
+  'naive-bayes': 'concept module'
+});
+export const coreNavLabel = (module,index,total=CORE_MODULES.length) =>
+  CORE_NAV_LABEL_OVERRIDES[module.slug] ?? `module ${String(index+1).padStart(2,'0')}/${total}`;
+
 const root=resolve(import.meta.dirname,'..');
 const total=CORE_MODULES.length;
 for(const [index,module] of CORE_MODULES.entries()){
   const file=join(root,module.path);
   const html=await readFile(file,'utf8');
-  const label=`module ${String(index+1).padStart(2,'0')}/${total}`;
+  const label=coreNavLabel(module,index,total);
   let updated=html.replace(/(<span class="statml-nav-meta">)[^<]*(<\/span>)/,`$1${label}$2`);
   if(!updated.includes('core-modules.js'))updated=updated.replace('<script src="academic-rigor.js"></script>','<script src="core-modules.js"></script>\n<script src="academic-rigor.js"></script>');
   if(updated===html && !html.includes(label))throw new Error(`${module.path}: cannot generate module navigation metadata`);

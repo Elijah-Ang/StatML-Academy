@@ -621,8 +621,151 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
 </style>
 
     <link rel="stylesheet" href="academic-rigor.css">
+  <link rel="stylesheet" href="handwritten-theme.css?v=20260826-handwritten-final-2">
+  <script src="handwritten-theme.js?v=20260826-handwritten-final-2" defer></script>
+  <style id="lda-handwritten-visual">
+    #viz-canvas, #hero-bg { background: #fbf4e2 !important; }
+    #viz-panel, .viz-panel, .canvas-wrap, .glass-card, .quiz-card, .insight-box {
+      border-color: rgba(88,83,72,.44) !important;
+      border-radius: 7px 5px 8px 4px !important;
+      box-shadow: 1px 2px 0 rgba(88,83,72,.08) !important;
+    }
+    .control-btn, .btn, .quiz-option, input[type="range"] {
+      border-color: rgba(88,83,72,.5) !important;
+      border-radius: 4px 6px 3px 5px !important;
+      box-shadow: none !important;
+    }
+  </style>
+  <style id="lda-material-pass">
+    body:is(.hw-handwritten,.statml-standardized){background:#f5f0e5!important;color:#292524!important}
+    body:is(.hw-handwritten,.statml-standardized) :is(.hero,.statml-hero,.hero-section,#hero)::before,
+    body:is(.hw-handwritten,.statml-standardized) :is(.hero,.statml-hero,.hero-section,#hero)::after{background:none!important;background-image:none!important;opacity:0!important}
+    body:is(.hw-handwritten,.statml-standardized) :is(.hero-grid,.hero-orbit,.hero-orbits,.hero-particles,.hero-dots,.hero-lines,.hero-signal){background:none!important;background-image:none!important;box-shadow:none!important}
+    body:is(.hw-handwritten,.statml-standardized) :is(.hero,.statml-hero,.hero-section,#hero){background:none!important;background-image:none!important}
+    body:is(.hw-handwritten,.statml-standardized) :is(.hero h1,.statml-hero h1,#hero h1){background:none!important;color:#292524!important;-webkit-text-fill-color:#292524!important;text-shadow:.6px .8px 0 rgba(88,83,72,.12)!important}
+    body:is(.hw-handwritten,.statml-standardized) :is(.glass-card,.card,.metric-card,.control-panel,.controls,.quiz-card,.formula,.formula-block,.math-block,.insight,.insight-box,.takeaway,.plain-translation,.question-card,.comparison-card,.visual-stage,.canvas-wrap,.statml-visual-card,.statml-overview,.hero-objectives,.learning-goals,.hero-goals,.fold-box,.legend-card,.table-card,.stage-card,.info-card,.metric,.pipeline,.mini-check,details,pre,table,#viz-panel,.viz-panel){background-image:none!important;background-color:rgba(255,252,242,.8)!important;border-color:rgba(88,83,72,.42)!important;border-radius:5px 8px 4px 7px!important;box-shadow:1px 2px 0 rgba(88,83,72,.09)!important;backdrop-filter:none!important}
+    body:is(.hw-handwritten,.statml-standardized) :is(button,.btn,.control-btn,.interactive-btn,.action-button,select,input[type=text],input[type=number],.quiz-option,.toggle,.choice,.segmented button){background-image:none!important;background-color:rgba(248,243,230,.9)!important;border-color:rgba(88,83,72,.48)!important;border-radius:4px 6px 3px 5px!important;box-shadow:none!important}
+    body:is(.hw-handwritten,.statml-standardized) :is(.tag,.pill,.chip,.badge,.topic-badge,.hero-badge,.stage-badge,.metric-badge,.stage-dot,.orbit-dot,.legend-color,.legend-color-ring,.swatch,.eyebrow-dot){border-radius:3px 6px 4px 5px!important;box-shadow:none!important}
+    body:is(.hw-handwritten,.statml-standardized) :is(.progress-bar,.module-progress span){background:#356fae!important;background-image:none!important;box-shadow:none!important}
+    body:is(.hw-handwritten,.statml-standardized) :is(.statml-stage-rail,.stage-dots,#stage-dots,#stage-dots-container){background:rgba(255,252,242,.8)!important;background-image:none!important;border-color:rgba(88,83,72,.32)!important;border-radius:5px 7px 4px 6px!important;box-shadow:none!important}
+    body:is(.hw-handwritten,.statml-standardized) hr{border-top:1px solid transparent!important}
+    body:is(.hw-handwritten,.statml-standardized) :is(.section,.story-section,.stage,.stage-section,.chapter,.statml-stage){background-color:transparent!important;background-image:none!important}
+    body:is(.hw-handwritten,.statml-standardized) canvas{background:#fbf6e9!important;background-image:none!important}
+    body:is(.hw-handwritten,.statml-standardized) :is(.viz-legend,.legend-card,.point-info-card,.tooltip){background:rgba(255,252,242,.9)!important;background-image:none!important;border-color:rgba(88,83,72,.42)!important;border-radius:5px 8px 4px 7px!important;box-shadow:1px 2px 0 rgba(88,83,72,.1)!important;backdrop-filter:none!important}
+    body:is(.hw-handwritten,.statml-standardized) :is(.data-table,.matrix-grid,.matrix-grid .cell){background-image:none!important;border-color:rgba(88,83,72,.34)!important}
+    body:is(.hw-handwritten,.statml-standardized) :is(.data-table th,.data-table td,.matrix-grid .cell){border-bottom:1px solid transparent!important}
+    body:is(.hw-handwritten,.statml-standardized) .matrix-grid .cell{border-style:solid!important;border-color:transparent!important;border-radius:3px 5px 4px 6px!important;background-color:rgba(255,252,242,.62)!important}
+</style>
+<style id="lda-ink-finishing">
+html body.hw-handwritten.hw-handwritten :is(.scroll-cue,.scroll-hint,.scroll-indicator,.hero-scroll){background:transparent!important;background-image:none!important;clip-path:none!important;box-shadow:none!important;filter:none!important;text-decoration-line:underline!important;text-decoration-style:wavy!important;text-decoration-color:rgba(40,105,173,.55)!important;text-decoration-thickness:1px!important;text-underline-offset:4px!important}
+html body.hw-handwritten.hw-handwritten :is(.scroll-cue span,.scroll-cue::before,.scroll-cue::after){background-image:none!important;background-color:transparent!important;box-shadow:none!important}
+html body.hw-handwritten.hw-handwritten :is([style*="linear-gradient"],[style*="radial-gradient"]){background-image:none!important}
+html body.hw-handwritten.hw-handwritten button:is(.active,.selected),html body.hw-handwritten.hw-handwritten button[aria-pressed="true"],html body.hw-handwritten.hw-handwritten .btn.active{background:#e6f0f8!important;background-image:none!important;color:#174f89!important;border-color:rgba(40,105,173,.64)!important;box-shadow:none!important}
+body:is(.hw-handwritten,.statml-standardized) :is(.scroll-cue,.scroll-hint,.scroll-indicator,.hero-scroll){background:transparent!important;background-image:none!important;clip-path:none!important;box-shadow:none!important;filter:none!important;text-decoration-line:underline!important;text-decoration-style:wavy!important;text-decoration-color:rgba(40,105,173,.55)!important;text-decoration-thickness:1px!important;text-underline-offset:4px!important}
+body:is(.hw-handwritten,.statml-standardized) :is(.scroll-cue span,.scroll-cue::before,.scroll-cue::after){background-image:none!important;background-color:transparent!important;box-shadow:none!important}
+body:is(.hw-handwritten,.statml-standardized) :is([style*="linear-gradient"],[style*="radial-gradient"]){background-image:none!important}
+body:is(.hw-handwritten,.statml-standardized) :is(.legend,.legend-card,.viz-legend,.viz-overlay,.tooltip,.panel,.visual-shell,.visual-stage,.visual-card,.canvas-wrap,.control-panel,.controls,#viz-panel,.viz-panel){background-image:none!important;backdrop-filter:none!important;border-color:rgba(88,83,72,.42)!important;border-radius:5px 8px 4px 7px!important;box-shadow:1px 2px 0 rgba(88,83,72,.09)!important}
+</style>
+<style id="lda-material-override">
+  body:is(.hw-handwritten,.statml-standardized) :is(.statml-rigor-panel,.statml-rigor-panel *, .statml-rigor-grid>div) { font-family:"Patrick Hand","Kalam","Marker Felt","Chalkboard SE",cursive !important; }
+  body:is(.hw-handwritten,.statml-standardized) :is(.statml-rigor-panel,.statml-rigor-grid>div) { background-image:none!important; background-color:rgba(255,252,242,.78)!important; border-color:rgba(88,83,72,.42)!important; border-radius:5px 8px 4px 7px!important; box-shadow:1px 2px 0 rgba(88,83,72,.09)!important; }
+</style>
+<style id="lda-no-dashed">
+  body:is(.hw-handwritten,.statml-standardized) :is(table,table *,[style*="dashed"]){border-style:solid!important;border-color:transparent!important}
+</style>
+<style id="lda-geometry-preservation">
+  /* Patrick Hand changes line wrapping; retain the baseline hero rhythm on
+     desktop by reserving the original subtitle row. */
+  @media (min-width:901px){
+    html body.hw-handwritten .statml-hero .subtitle{min-height:95.25px!important}
+  }
+</style>
+<style id="lda-doodle-style">
+  .hw-doodle{display:inline-block;width:1.12em;height:1.12em;vertical-align:-.18em;margin-inline-end:.22em;overflow:visible;color:currentColor;transform:rotate(-2deg);pointer-events:none}
+  .hw-doodle use{fill:none;stroke:currentColor;stroke-width:1.65;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke}
+  .hw-doodle:nth-of-type(2n){transform:rotate(2deg)}
+  .hw-doodle-sprite{position:absolute!important;width:0!important;height:0!important;overflow:hidden!important;pointer-events:none!important}
+</style>
+<style id="lda-legend-ink">
+  /* Keep the legend at its authored anchor, but let its marks sit directly on the paper. */
+  body:is(.hw-handwritten,.statml-standardized) #vizLegend,
+  body:is(.hw-handwritten,.statml-standardized) #vizLegend .legend-item{
+    background:transparent!important;
+    background-image:none!important;
+    border:0!important;
+    border-color:transparent!important;
+    box-shadow:none!important;
+    border-radius:0!important;
+  }
+  body:is(.hw-handwritten,.statml-standardized) #vizLegend .legend-item{
+    text-decoration-line:underline!important;
+    text-decoration-style:wavy!important;
+    text-decoration-color:rgba(53,111,174,.38)!important;
+    text-underline-offset:3px!important;
+  }
+  body:is(.hw-handwritten,.statml-standardized) #vizLegend .legend-color,
+  body:is(.hw-handwritten,.statml-standardized) #vizLegend .legend-color-border,
+  body:is(.hw-handwritten,.statml-standardized) #vizLegend .legend-color-line,
+  body:is(.hw-handwritten,.statml-standardized) #vizLegend .legend-color-ring{
+    border-radius:4px 2px 5px 3px!important;
+    box-shadow:1px 1px 0 rgba(88,83,72,.22)!important;
+    transform:rotate(-3deg)!important;
+  }
+  body:is(.hw-handwritten,.statml-standardized) #vizLegend .legend-color-line{border-top-color:rgba(53,111,174,.72)!important;border-bottom:1px solid rgba(53,111,174,.32)!important}
+</style>
+<style id="lda-desktop-rhythm">
+  /* Preserve the original desktop scroll rhythm after the handwritten font
+     substitution; mobile section sizing continues to follow its own rules. */
+  @media (min-width:901px){
+    body.hw-handwritten section[data-stage="1"]{min-height:2963.75px!important}
+    body.hw-handwritten section[data-stage="2"]{min-height:953.13px!important}
+    body.hw-handwritten section[data-stage="3"]{min-height:1034.5px!important}
+    body.hw-handwritten section[data-stage="4"]{min-height:836.03px!important}
+    body.hw-handwritten section[data-stage="5"]{min-height:1502.03px!important}
+    body.hw-handwritten section[data-stage="6"]{min-height:1784.42px!important}
+    body.hw-handwritten section[data-stage="7"]{min-height:1722.7px!important}
+    body.hw-handwritten section[data-stage="8"]{min-height:1171.42px!important}
+    body.hw-handwritten section[data-stage="9"]{min-height:1170.59px!important}
+    body.hw-handwritten section[data-stage="10"]{min-height:1998.53px!important}
+    body.hw-handwritten section[data-stage="11"]{min-height:1407.81px!important}
+    body.hw-handwritten section[data-stage="12"]{min-height:2000.02px!important}
+    body.hw-handwritten section[data-stage="13"]{min-height:2124.89px!important}
+    body.hw-handwritten section[data-stage="14"]{min-height:1844.56px!important}
+    body.hw-handwritten section[data-stage="15"]{min-height:893.38px!important}
+  }
+  @media (min-width:376px) and (max-width:900px){
+    body.hw-handwritten section[data-stage="0"]{min-height:926.02px!important}
+    body.hw-handwritten section[data-stage="2"]{min-height:1003.09px!important}
+    body.hw-handwritten section[data-stage="3"]{min-height:1107.69px!important}
+    body.hw-handwritten section[data-stage="4"]{min-height:827.55px!important}
+    body.hw-handwritten section[data-stage="5"]{min-height:1570.69px!important}
+    body.hw-handwritten section[data-stage="6"]{min-height:1917.08px!important}
+    body.hw-handwritten section[data-stage="7"]{min-height:1892.19px!important}
+    body.hw-handwritten section[data-stage="8"]{min-height:1258.81px!important}
+    body.hw-handwritten section[data-stage="9"]{min-height:1280.06px!important}
+    body.hw-handwritten section[data-stage="10"]{min-height:2184.50px!important}
+    body.hw-handwritten section[data-stage="11"]{min-height:1376.22px!important}
+    body.hw-handwritten section[data-stage="12"]{min-height:2149.27px!important}
+    body.hw-handwritten section[data-stage="13"]{min-height:2276.39px!important}
+    body.hw-handwritten section[data-stage="14"]{min-height:2102.19px!important}
+    body.hw-handwritten section[data-stage="15"]{min-height:915.81px!important}
+  }
+</style>
 </head>
 <body>
+<svg class="hw-doodle-sprite" aria-hidden="true" focusable="false"><defs>
+  <symbol id="lda-bulb" viewBox="0 0 24 24"><path d="M8.2 10.5c0-2.3 1.7-4.4 4-4.5 2.2-.1 3.9 1.8 3.9 4.2 0 1.5-.7 2.5-1.7 3.4-.5.5-.8 1.1-.8 2H10c0-.8-.3-1.5-.8-1.9-1-.9-1-1.7-1-3.2Z"/><path d="M10.2 18h3.7M10.8 20h2.5M11 16h2"/></symbol>
+  <symbol id="lda-warning" viewBox="0 0 24 24"><path d="m12.1 3.2 9 16.9H3.1Z"/><path d="M12 9v5.1M12 17.3v.2"/></symbol>
+  <symbol id="lda-arrow" viewBox="0 0 24 24"><path d="M4 12.5h14M14 7.5l5 5-5 5"/></symbol>
+  <symbol id="lda-stop" viewBox="0 0 24 24"><path d="M7 3h10l4 4v10l-4 4H7l-4-4V7Z"/><path d="M8 12h8"/></symbol>
+  <symbol id="lda-star" viewBox="0 0 24 24"><path d="m12 3.2 2 5.9 6.2.4-4.8 3.7 1.5 6.1-5-3.2-5 3.2 1.5-6.1-4.8-3.7 6.2-.4Z"/></symbol>
+  <symbol id="lda-dot" viewBox="0 0 24 24"><path d="M12.3 5.2c3.9.2 6.6 3.2 6.2 6.8-.4 3.9-3.6 6.5-7.1 6.1-3.7-.4-6-3.4-5.5-6.9.5-3.5 2.7-6.2 6.4-6Z"/></symbol>
+  <symbol id="lda-target" viewBox="0 0 24 24"><path d="M17.8 7.1a7.2 7.2 0 1 1-2-2M12 8.2c2.1-.1 3.8 1.5 3.8 3.6s-1.6 3.8-3.7 3.8-3.8-1.5-3.8-3.6 1.6-3.7 3.7-3.8Z"/><path d="m12 12 3.9-4"/></symbol>
+  <symbol id="lda-chart" viewBox="0 0 24 24"><path d="M4 18.5V5.4M4 18.5h16M7 15.3l3-3.8 2.6 2 5.2-6"/><path d="m15.4 7.5 2.4-.2-.2 2.3"/></symbol>
+  <symbol id="lda-tree" viewBox="0 0 24 24"><path d="M12 20V7M12 10 7 6M12 12l5-5M7 6H4M17 7h3M12 7V4"/></symbol>
+  <symbol id="lda-check" viewBox="0 0 24 24"><path d="m4.5 12.5 4.1 4.1L19.5 6"/></symbol>
+  <symbol id="lda-cross" viewBox="0 0 24 24"><path d="M6 6.2c3.8 3.3 7.3 7.6 12 11.7M18 6c-3.6 3.5-7.7 7.4-12 12"/></symbol>
+</defs></svg>
 <nav class="statml-site-nav" aria-label="StatML Academy navigation">
   <a class="statml-brand-link" href="../index.html"><span class="statml-brand-mark">S</span><span>StatML Academy</span></a>
   <span class="statml-nav-topic">Linear Discriminant Analysis (LDA)</span>
@@ -672,7 +815,7 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
       <span style="color:var(--green)">Boundary</span> &rarr;
       <span style="color:var(--text)">Prediction</span>
     </div>
-    <p style="font-style:italic;font-size:0.85rem;color:var(--text-muted);margin:0;border-top:1px dashed var(--glass-border);padding-top:8px">
+    <p style="font-style:italic;font-size:0.85rem;color:var(--text-muted);margin:0;border-top:1px solid transparent;padding-top:8px">
       "LDA is like looking at a messy 2D cloud of points from the best angle so the two groups look as separated as possible."
     </p>
   </div>
@@ -696,7 +839,7 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
     <h3>Training Dataset</h3>
     <table class="data-table" id="dataTable"></table>
   </div>
-  <div class="insight-box"><p>💡 LDA needs labeled examples to learn the pattern that separates classes. Without labels, it cannot learn.</p></div>
+  <div class="insight-box"><p><svg class="hw-doodle" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><use href="#lda-bulb"></use></svg> LDA needs labeled examples to learn the pattern that separates classes. Without labels, it cannot learn.</p></div>
 </section>
 
 <!-- S2: Feature Selection -->
@@ -714,7 +857,7 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
     <p style="margin-bottom:0;color:var(--text-muted)">&bull; <strong>Day of Entry:</strong> No predictive power.</p>
   </div>
   <div class="insight-box" style="border-left-color:var(--coral);background:var(--coral-soft)">
-    <p>⚠️ <strong>Warning:</strong> Bad or irrelevant features can seriously confuse LDA because they add noise to the calculated means, covariances, and final decision boundary.</p>
+    <p><svg class="hw-doodle" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><use href="#lda-warning"></use></svg> <strong>Warning:</strong> Bad or irrelevant features can seriously confuse LDA because they add noise to the calculated means, covariances, and final decision boundary.</p>
   </div>
 </section>
 
@@ -734,12 +877,12 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
 
   <div style="margin:16px 0;padding:14px;background:var(--bg);border:1px solid var(--glass-border);border-radius:var(--radius-sm);font-size:0.88rem">
     <p style="margin-bottom:8px"><strong>How the sets are used:</strong></p>
-    <div style="margin-bottom:6px">👉 <strong>Training Set:</strong> Used to learn means, covariance, priors, and the decision rule.</div>
-    <div>👉 <strong>Test Set:</strong> Used exactly once at the very end to check whether the learned rule works on unseen, new data.</div>
+    <div style="margin-bottom:6px"><svg class="hw-doodle" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><use href="#lda-arrow"></use></svg> <strong>Training Set:</strong> Used to learn means, covariance, priors, and the decision rule.</div>
+    <div><svg class="hw-doodle" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><use href="#lda-arrow"></use></svg> <strong>Test Set:</strong> Used exactly once at the very end to check whether the learned rule works on unseen, new data.</div>
   </div>
 
   <div class="insight-box" style="border-left-color:var(--orange);background:var(--orange-soft)">
-    <p>🛑 <strong>Data Leakage Warning:</strong> The test set must stay absolutely hidden until final evaluation. Do not use the test set to choose features, tune settings, or adjust the model. If the test set influences training decisions, the final evaluation score becomes dishonest!</p>
+    <p><svg class="hw-doodle" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><use href="#lda-stop"></use></svg> <strong>Data Leakage Warning:</strong> The test set must stay absolutely hidden until final evaluation. Do not use the test set to choose features, tune settings, or adjust the model. If the test set influences training decisions, the final evaluation score becomes dishonest!</p>
   </div>
 </section>
 
@@ -775,7 +918,7 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
     </div>
   </div>
 
-  <div class="insight-box"><p>💡 The ★ markers on the plot show each class center. The gap between them is what LDA will try to exploit.</p></div>
+  <div class="insight-box"><p><svg class="hw-doodle" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><use href="#lda-bulb"></use></svg> The <svg class="hw-doodle" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><use href="#lda-star"></use></svg> markers on the plot show each class center. The gap between them is what LDA will try to exploit.</p></div>
 
   <div class="quiz-card glass-card" data-hint="Recall that 'mean' means 'average position'." data-explanation="The class mean is calculated by taking the average values of sweetness and color scores for all apples and oranges separately, indicating the center of gravity of each group.">
     <h3>Concept Check: Class Mean</h3>
@@ -850,7 +993,7 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
   </div>
 
   <div class="insight-box" style="border-left-color:var(--orange);background:var(--orange-soft)">
-    <p>⚠️ <strong>Warning:</strong> If the class clouds actually have very different shapes, LDA's shared covariance assumption is violated. LDA may struggle, and QDA (Quadratic Discriminant Analysis) might fit the data much better.</p>
+    <p><svg class="hw-doodle" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><use href="#lda-warning"></use></svg> <strong>Warning:</strong> If the class clouds actually have very different shapes, LDA's shared covariance assumption is violated. LDA may struggle, and QDA (Quadratic Discriminant Analysis) might fit the data much better.</p>
   </div>
 
   <div class="quiz-card glass-card" data-hint="Think about what 'shared' and 'covariance' mean together." data-explanation="The shared covariance assumption states that all classes have the same spread shape and orientation, even though they can have completely different mean centers.">
@@ -935,7 +1078,7 @@ It also tilts to avoid the direction of maximum within-class spread.</div>
       <span style="font-size:0.75rem;color:var(--text-muted);display:block;margin-bottom:6px"><em>(Simple illustrative example, not a live value from the current dataset)</em></span>
       &bull; Apple Score (δ_apple) = <strong>2.31</strong><br>
       &bull; Orange Score (δ_orange) = <strong>-1.44</strong><br>
-      👉 Since 2.31 is higher than -1.44, LDA predicts <strong>Apple</strong>!
+      <svg class="hw-doodle" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><use href="#lda-arrow"></use></svg> Since 2.31 is higher than -1.44, LDA predicts <strong>Apple</strong>!
     </div>
   </div>
 
@@ -980,11 +1123,11 @@ Predict class k with the highest δ_k(x)</div>
     <strong>Test Classification Legend:</strong>
     <div style="display:flex;gap:16px;margin-top:8px">
       <div style="display:flex;align-items:center;gap:6px">
-        <span style="display:inline-block;width:12px;height:12px;border-radius:50%;border:2px dashed rgb(22,163,74);background:var(--apple)"></span>
+        <span style="display:inline-block;width:12px;height:12px;border-radius:50%;border:2px solid transparent;background:var(--apple)"></span>
         <span>Green ring = correct prediction</span>
       </div>
       <div style="display:flex;align-items:center;gap:6px">
-        <span style="display:inline-block;width:12px;height:12px;border-radius:50%;border:2px dashed rgb(220,38,38);background:var(--orange)"></span>
+        <span style="display:inline-block;width:12px;height:12px;border-radius:50%;border:2px solid transparent;background:var(--orange)"></span>
         <span>Red ring = wrong prediction</span>
       </div>
     </div>
@@ -1001,18 +1144,18 @@ Predict class k with the highest δ_k(x)</div>
     <h3>The Four Outcomes (Apple = Positive Class)</h3>
     <p style="margin-bottom:12px;font-size:0.88rem">When we test the model, every prediction falls into one of four distinct boxes:</p>
     <div style="display:flex;flex-direction:column;gap:8px;font-size:0.85rem">
-      <div>🟢 <strong>True Positive (TP):</strong> Predicted Apple, and it was actually an Apple.</div>
-      <div>🔵 <strong>True Negative (TN):</strong> Predicted Orange, and it was actually an Orange.</div>
-      <div>🟠 <strong>False Positive (FP):</strong> Predicted Apple, but it was actually an Orange (Type I Error).</div>
-      <div>🔴 <strong>False Negative (FN):</strong> Predicted Orange, but it was actually an Apple (Type II Error).</div>
+      <div><svg class="hw-doodle" style="color:var(--green)" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><use href="#lda-dot"></use></svg> <strong>True Positive (TP):</strong> Predicted Apple, and it was actually an Apple.</div>
+      <div><svg class="hw-doodle" style="color:var(--blue)" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><use href="#lda-dot"></use></svg> <strong>True Negative (TN):</strong> Predicted Orange, and it was actually an Orange.</div>
+      <div><svg class="hw-doodle" style="color:var(--orange)" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><use href="#lda-dot"></use></svg> <strong>False Positive (FP):</strong> Predicted Apple, but it was actually an Orange (Type I Error).</div>
+      <div><svg class="hw-doodle" style="color:var(--coral)" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><use href="#lda-dot"></use></svg> <strong>False Negative (FN):</strong> Predicted Orange, but it was actually an Apple (Type II Error).</div>
     </div>
   </div>
 
   <div class="glass-card">
     <h3>Confusion Matrix (Click cells for explanations)</h3>
     <div class="matrix-grid" id="confMatrix" style="cursor:pointer"></div>
-    <div id="matrixExplanation" style="margin-top:12px;padding:12px;background:var(--accent-glow);border-radius:var(--radius-sm);font-size:0.85rem;border:1px dashed var(--accent);min-height:48px;display:flex;align-items:center">
-      👈 Click any colored box in the matrix above to understand what that count means!
+    <div id="matrixExplanation" style="margin-top:12px;padding:12px;background:var(--accent-glow);border-radius:var(--radius-sm);font-size:0.85rem;border:1px solid transparent;min-height:48px;display:flex;align-items:center">
+      <svg class="hw-doodle" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><use href="#lda-arrow"></use></svg> Click any colored box in the matrix above to understand what that count means!
     </div>
   </div>
 
@@ -1046,7 +1189,7 @@ Predict class k with the highest δ_k(x)</div>
 
   <!-- Dynamic full-width layout for reading outputs (FIX 1) -->
   <p class="output-click-instruction">
-    💡 Click any highlighted output section to learn how to read it.
+    <svg class="hw-doodle" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><use href="#lda-bulb"></use></svg> Click any highlighted output section to learn how to read it.
   </p>
 
   <div class="glass-card" id="ldaOutputGuide"></div>
@@ -1061,7 +1204,7 @@ Predict class k with the highest δ_k(x)</div>
       <li>What mistake to avoid.</li>
     </ol>
     <div style="margin-top:16px;padding:12px;background:var(--coral-soft);border-left:3px solid var(--coral);border-radius:0 var(--radius-sm) var(--radius-sm) 0;font-size:0.85rem;color:var(--text)">
-      ⚠️ <strong>A Word of Caution:</strong> This toy dataset is very clean. A perfect score here does not mean LDA is always perfect. It only means these toy apples and oranges are easy to separate. Real datasets usually have overlap, noise, and outliers.
+      <svg class="hw-doodle" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><use href="#lda-warning"></use></svg> <strong>A Word of Caution:</strong> This toy dataset is very clean. A perfect score here does not mean LDA is always perfect. It only means these toy apples and oranges are easy to separate. Real datasets usually have overlap, noise, and outliers.
     </div>
   </div>
 
@@ -1102,9 +1245,9 @@ Predict class k with the highest δ_k(x)</div>
     <h3>Alternative Methods</h3>
     <p style="font-size:0.88rem;margin-bottom:10px">If LDA doesn't fit, consider these standard alternatives:</p>
     <div style="font-size:0.85rem;display:flex;flex-direction:column;gap:8px">
-      <div>🎯 <strong>QDA (Quadratic Discriminant Analysis):</strong> Excellent if class spreads are highly unequal.</div>
-      <div>📈 <strong>Logistic Regression:</strong> Better if you need direct probabilities and fewer statistical assumptions.</div>
-      <div>🌲 <strong>KNN or Decision Trees:</strong> Great for highly complex, non-linear boundaries.</div>
+      <div><svg class="hw-doodle" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><use href="#lda-target"></use></svg> <strong>QDA (Quadratic Discriminant Analysis):</strong> Excellent if class spreads are highly unequal.</div>
+      <div><svg class="hw-doodle" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><use href="#lda-chart"></use></svg> <strong>Logistic Regression:</strong> Better if you need direct probabilities and fewer statistical assumptions.</div>
+      <div><svg class="hw-doodle" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><use href="#lda-tree"></use></svg> <strong>KNN or Decision Trees:</strong> Great for highly complex, non-linear boundaries.</div>
     </div>
   </div>
 </section>
@@ -1138,11 +1281,11 @@ Predict class k with the highest δ_k(x)</div>
       <div style="display:flex;flex-direction:column;gap:6px;font-size:0.75rem">
         <div class="legend-item" id="leg-apple"><span class="legend-color" style="background:var(--apple)"></span> Apple training point</div>
         <div class="legend-item" id="leg-orange"><span class="legend-color" style="background:var(--orange)"></span> Orange training point</div>
-        <div class="legend-item" id="leg-mean" style="display:none"><span class="legend-color-text" style="color:var(--accent2)">★</span> Class Mean (μ)</div>
-        <div class="legend-item" id="leg-spread" style="display:none"><span class="legend-color-border" style="border:1px dashed var(--accent2)"></span> Covariance Spread</div>
-        <div class="legend-item" id="leg-proj" style="display:none"><span class="legend-color-line" style="border-top:2px dashed rgb(99,102,241)"></span> LDA Projection Direction</div>
+        <div class="legend-item" id="leg-mean" style="display:none"><svg class="hw-doodle" style="color:var(--accent2)" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><use href="#lda-star"></use></svg> Class Mean (μ)</div>
+        <div class="legend-item" id="leg-spread" style="display:none"><span class="legend-color-border" style="border:1px solid transparent"></span> Covariance Spread</div>
+        <div class="legend-item" id="leg-proj" style="display:none"><span class="legend-color-line" style="border-top:2px solid transparent"></span> LDA Projection Direction</div>
         <div class="legend-item" id="leg-boundary" style="display:none"><span class="legend-color-line" style="border-top:2.5px solid rgba(0,0,0,0.5)"></span> Decision Boundary</div>
-        <div class="legend-item" id="leg-test" style="display:none"><span class="legend-color-ring" style="border:2px dashed rgb(22,163,74)"></span> Test Point Classification</div>
+        <div class="legend-item" id="leg-test" style="display:none"><span class="legend-color-ring" style="border:2px solid transparent"></span> Test Point Classification</div>
       </div>
     </div>
     <canvas id="mainCanvas"></canvas>
@@ -1173,7 +1316,8 @@ let FULL_DATA = BASE_DATA.map(d=>({...d}));
 let trainData=[], testData=[], userPoints=[], currentStage=0;
 let ldaModel=null, needsRedraw=true, ticking=false;
 
-const APPLE_COLOR='rgb(37,99,235)', ORANGE_COLOR='rgb(202,138,4)';
+const APPLE_COLOR='#356fae', ORANGE_COLOR='#c38b32';
+const ldaDoodle=name=>`<svg class="hw-doodle" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><use href="#lda-${name}"></use></svg>`;
 
 // ===== CANVAS & REGIONS =====
 const canvas=document.getElementById('mainCanvas');
@@ -1522,7 +1666,7 @@ function populateTestResults(){
       <div class="metric-card"><div class="val" style="color:var(--coral)">${m.testResults.length-correct}</div><div class="lbl">Wrong</div></div>
     </div>
     <div style="margin-top:12px">
-    ${m.testResults.map((r,i)=>`<div style="font-family:JetBrains Mono;font-size:0.78rem;padding:4px 0;color:${r.correct?'var(--green)':'var(--coral)'}">${r.correct?'✓':'✗'} Test ${i+1}: actual=${r.actual}, predicted=${r.pred} (δ₁=${r.score1.toFixed(2)}, δ₂=${r.score2.toFixed(2)})</div>`).join('')}
+    ${m.testResults.map((r,i)=>`<div style="font-family:Patrick Hand;font-size:0.78rem;padding:4px 0;color:${r.correct?'var(--green)':'var(--coral)'}">${r.correct?ldaDoodle('check'):ldaDoodle('cross')} Test ${i+1}: actual=${r.actual}, predicted=${r.pred} (δ₁=${r.score1.toFixed(2)}, δ₂=${r.score2.toFixed(2)})</div>`).join('')}
     </div>`;
 }
 
@@ -1546,7 +1690,7 @@ function populateTestPointBreakdown() {
       • Decision: ${r.score1 > r.score2 ? 'δ_apple is higher' : 'δ_orange is higher'}<br>
       • Prediction: <strong>${r.pred.toUpperCase()}</strong><br>
       • Actual Label: <strong>${r.actual.toUpperCase()}</strong><br>
-      👉 Result: <strong>${r.correct ? 'CORRECT' : 'WRONG'}</strong>
+      ${ldaDoodle('arrow')} Result: <strong>${r.correct ? 'CORRECT' : 'WRONG'}</strong>
     </div>
   `;
 }
@@ -1619,7 +1763,7 @@ function populateLDAOutputGuide(){
 
   const predictionRows = m.testResults.map((r, i) => {
     const testPoint = testData[i] || {};
-    const status = r.correct ? '✅ Correct' : '❌ Wrong';
+    const status = r.correct ? `${ldaDoodle('check')} Correct` : `${ldaDoodle('cross')} Wrong`;
     return `Test ${i + 1}: (${fmt(testPoint.s)}, ${fmt(testPoint.c)}) actual=${labelName(r.actual)}, predicted=${labelName(r.pred)} ${status}`;
   }).join('\n');
 
@@ -1750,19 +1894,14 @@ function drawHeroBg(w,h){
   for(let i=0;i<40;i++){
     const x=cx1+(Math.sin(i*2.3)*60+Math.cos(i*1.7)*40);
     const y=cy1+(Math.cos(i*1.9)*50+Math.sin(i*2.1)*35);
-    heroCtx.fillStyle='rgba(37,99,235,0.04)';
-    heroCtx.beginPath();heroCtx.arc(x,y,8+Math.sin(i)*4,0,Math.PI*2);heroCtx.fill();
+    heroInkDot(x,y,8+Math.sin(i)*4,`apple-${i}`,'rgba(53,111,174,0.055)');
   }
   for(let i=0;i<40;i++){
     const x=cx2+(Math.sin(i*2.1)*55+Math.cos(i*1.5)*45);
     const y=cy2+(Math.cos(i*1.7)*45+Math.sin(i*2.3)*30);
-    heroCtx.fillStyle='rgba(217,119,6,0.04)';
-    heroCtx.beginPath();heroCtx.arc(x,y,8+Math.cos(i)*4,0,Math.PI*2);heroCtx.fill();
+    heroInkDot(x,y,8+Math.cos(i)*4,`orange-${i}`,'rgba(195,139,50,0.055)');
   }
-  heroCtx.strokeStyle='rgba(99,102,241,0.07)';heroCtx.lineWidth=2;
-  heroCtx.setLineDash([12,8]);
-  heroCtx.beginPath();heroCtx.moveTo(w*0.15,h*0.85);heroCtx.lineTo(w*0.85,h*0.15);heroCtx.stroke();
-  heroCtx.setLineDash([]);
+  heroInkLine(w*0.15,h*0.85,w*0.85,h*0.15,'lda-hero-axis',{color:'rgba(53,111,174,0.1)',width:1.8,dash:[12,8],wobble:5.5});
 }
 
 // Coordinate transforms
@@ -1771,24 +1910,101 @@ function toCanvasY(v){return (H-PLOT_PAD)-(v-DATA_MIN_Y)/(DATA_MAX_Y-DATA_MIN_Y)
 function toDataX(cx){return DATA_MIN_X+(cx-PLOT_PAD)/(W-2*PLOT_PAD)*(DATA_MAX_X-DATA_MIN_X)}
 function toDataY(cy){return DATA_MIN_Y+((H-PLOT_PAD)-cy)/(H-2*PLOT_PAD)*(DATA_MAX_Y-DATA_MIN_Y)}
 
+// Deterministic cosmetic ink. It is deliberately separate from the module's
+// data generation so the examples, splits, and test results never change.
+const inkHash = key => window.StatMLInk?.hash ? window.StatMLInk.hash(`lda:${key}`) : [...String(key)].reduce((h,ch)=>Math.imul(h^ch.charCodeAt(0),16777619)>>>0,2166136261);
+const inkUnit = key => (inkHash(key)%10000)/10000;
+function inkLine(x1,y1,x2,y2,key,options={}){
+  const dx=x2-x1,dy=y2-y1,len=Math.max(Math.hypot(dx,dy),1),nx=-dy/len,ny=dx/len,w=options.wobble??Math.max(1.7,Math.min(5.2,len*.024)),steps=Math.max(3,Math.min(12,Math.ceil(len/110)));
+  ctx.save();ctx.globalAlpha*=options.alpha??1;ctx.strokeStyle=options.color||'rgba(61,67,60,.72)';ctx.lineWidth=options.width||1.25;ctx.lineCap='round';ctx.lineJoin='round';if(options.dash)ctx.setLineDash(options.dash);
+  for(let pass=0;pass<2;pass++){ctx.beginPath();for(let i=0;i<=steps;i++){const t=i/steps,edge=i===0||i===steps,normal=(inkUnit(`${key}:n:${pass}:${i}`)-.5)*w*(edge?.35:1.15),along=(inkUnit(`${key}:a:${pass}:${i}`)-.5)*w*.3,px=x1+dx*t+nx*normal+(dx/len)*along,py=y1+dy*t+ny*normal+(dy/len)*along;i?ctx.lineTo(px,py):ctx.moveTo(px,py)}ctx.stroke();}ctx.restore();
+}
+function inkPath(points,key,options={}){
+  if(!points||points.length<2)return;
+  const wobble=options.wobble??1.1;
+  ctx.save();ctx.globalAlpha*=options.alpha??1;ctx.strokeStyle=options.color||'rgba(61,67,60,.72)';ctx.lineWidth=options.width||1.2;ctx.lineCap='round';ctx.lineJoin='round';if(options.dash)ctx.setLineDash(options.dash);
+  for(let pass=0;pass<2;pass++){
+    ctx.beginPath();
+    points.forEach((p,i)=>{const ox=(inkUnit(`${key}:ox:${pass}:${i}`)-.5)*wobble,oy=(inkUnit(`${key}:oy:${pass}:${i}`)-.5)*wobble;i?ctx.lineTo(p.x+ox,p.y+oy):ctx.moveTo(p.x+ox,p.y+oy);});
+    if(options.close)ctx.closePath();ctx.stroke();
+  }
+  ctx.restore();
+}
+function inkFillPath(points,key,fill,options={}){
+  if(!points||points.length<2)return;
+  const wobble=options.wobble??.85;
+  ctx.save();ctx.globalAlpha*=options.alpha??1;ctx.fillStyle=fill;ctx.beginPath();
+  points.forEach((p,i)=>{const ox=(inkUnit(`${key}:fill:x:${i}`)-.5)*wobble,oy=(inkUnit(`${key}:fill:y:${i}`)-.5)*wobble;i?ctx.lineTo(p.x+ox,p.y+oy):ctx.moveTo(p.x+ox,p.y+oy);});
+  if(options.close)ctx.closePath();ctx.fill();ctx.restore();
+}
+function inkFillRect(x,y,w,h,fill,key='fill-rect',alpha=1){
+  ctx.save();ctx.globalAlpha*=alpha;ctx.fillStyle=fill;const amp=Math.min(2.4,Math.max(.34,Math.min(Math.abs(w),Math.abs(h))*.17)),j=n=>(inkUnit(`${key}:${n}`)-.5)*amp;ctx.beginPath();ctx.moveTo(x+j(1),y+j(2));ctx.lineTo(x+w*.5+j(3),y+j(4));ctx.lineTo(x+w+j(5),y+h*.5+j(6));ctx.lineTo(x+w*.5+j(7),y+h+j(8));ctx.lineTo(x+j(9),y+h+j(10));ctx.lineTo(x+j(11),y+h*.5+j(12));ctx.closePath();ctx.fill();ctx.restore();
+}
+function inkDot(x,y,r,key,fill,stroke='rgba(32,36,33,.64)',width=1){
+  ctx.save();ctx.fillStyle=fill;ctx.strokeStyle=stroke;ctx.lineWidth=width;ctx.lineJoin='round';const sides=r<3?7:8;for(let pass=0;pass<2;pass++){const ox=(inkUnit(`${key}:ox:${pass}`)-.5)*Math.max(.9,r*.22),oy=(inkUnit(`${key}:oy:${pass}`)-.5)*Math.max(.9,r*.22);ctx.beginPath();for(let i=0;i<sides;i++){const a=Math.PI*2*i/sides,rr=r*(1+(inkUnit(`${key}:r:${pass}:${i}`)-.5)*.42),px=x+ox+Math.cos(a)*rr,py=y+oy+Math.sin(a)*rr;i?ctx.lineTo(px,py):ctx.moveTo(px,py)}ctx.closePath();ctx.fill();if(stroke&&width)ctx.stroke();}ctx.restore();
+}
+function inkCircle(x,y,r,key,color,width=1.4){const pts=Array.from({length:14},(_,i)=>{const a=Math.PI*2*i/14,rr=r*(1+(inkUnit(`${key}:${i}`)-.5)*.3);return{x:x+Math.cos(a)*rr,y:y+Math.sin(a)*rr};});pts.push(pts[0]);ctx.save();ctx.strokeStyle=color;ctx.lineWidth=width;ctx.lineCap='round';ctx.lineJoin='round';for(let pass=0;pass<2;pass++){ctx.beginPath();pts.forEach((p,i)=>{const ox=(inkUnit(`${key}:ox:${pass}:${i}`)-.5)*.9,oy=(inkUnit(`${key}:oy:${pass}:${i}`)-.5)*.9;i?ctx.lineTo(p.x+ox,p.y+oy):ctx.moveTo(p.x+ox,p.y+oy)});ctx.stroke();}ctx.restore();}
+function inkRect(x,y,w,h,key,fill,stroke='rgba(61,67,60,.45)',lineWidth=1){const j=p=>(inkUnit(`${key}:${p}`)-.5)*1.3;ctx.save();ctx.fillStyle=fill;ctx.strokeStyle=stroke;ctx.lineWidth=lineWidth;ctx.beginPath();ctx.moveTo(x+j('tl'),y+j('t'));ctx.lineTo(x+w+j('tr'),y+j('t2'));ctx.lineTo(x+w+j('br'),y+h+j('b'));ctx.lineTo(x+j('bl'),y+h+j('b2'));ctx.closePath();ctx.fill();if(stroke&&lineWidth)ctx.stroke();ctx.restore();}
+function heroInkDot(x,y,r,key,fill){
+  if(!heroCtx)return;
+  heroCtx.save();heroCtx.fillStyle=fill;heroCtx.lineJoin='round';
+  for(let pass=0;pass<2;pass++){
+    heroCtx.beginPath();
+    for(let i=0;i<10;i++){
+      const a=Math.PI*2*i/10;
+      const rr=r*(1+(inkUnit(`hero:${key}:r:${pass}:${i}`)-.5)*.18);
+      const px=x+(inkUnit(`hero:${key}:x:${pass}`)-.5)*.7+Math.cos(a)*rr;
+      const py=y+(inkUnit(`hero:${key}:y:${pass}`)-.5)*.7+Math.sin(a)*rr;
+      i?heroCtx.lineTo(px,py):heroCtx.moveTo(px,py);
+    }
+    heroCtx.closePath();heroCtx.fill();
+  }
+  heroCtx.restore();
+}
+function heroInkLine(x1,y1,x2,y2,key,options={}){
+  if(!heroCtx)return;
+  heroCtx.save();heroCtx.strokeStyle=options.color||'rgba(61,67,60,.6)';heroCtx.lineWidth=options.width||1.4;heroCtx.lineCap='round';heroCtx.lineJoin='round';
+  if(options.dash)heroCtx.setLineDash(options.dash);
+  const wobble=options.wobble??1.8,len=Math.max(1,Math.hypot(x2-x1,y2-y1)),steps=Math.max(3,Math.min(12,Math.ceil(len/110))),dx=x2-x1,dy=y2-y1,nx=-dy/len,ny=dx/len;
+  for(let pass=0;pass<2;pass++){
+    heroCtx.beginPath();
+    for(let i=0;i<=steps;i++){
+      const t=i/steps,edge=i===0||i===steps;
+      const normal=(inkUnit(`hero:${key}:n:${pass}:${i}`)-.5)*wobble*(edge?.35:1.25),along=(inkUnit(`hero:${key}:a:${pass}:${i}`)-.5)*wobble*.35;
+      const px=x1+dx*t+nx*normal+(dx/len)*along,py=y1+dy*t+ny*normal+(dy/len)*along;
+      i?heroCtx.lineTo(px,py):heroCtx.moveTo(px,py);
+    }
+    heroCtx.stroke();
+  }
+  heroCtx.restore();
+}
+
+function sketchGuide(x1,y1,x2,y2,key,options={}){
+  const dx=x2-x1,dy=y2-y1,len=Math.max(1,Math.hypot(dx,dy)),nx=-dy/len,ny=dx/len;
+  [[.05,.28],[.36,.59],[.68,.94]].forEach(([start,end],i)=>{
+    const point=t=>({x:x1+dx*t+nx*(inkUnit(`${key}:n:${i}`)-.5)*4.8,y:y1+dy*t+ny*(inkUnit(`${key}:n:${i}`)-.5)*4.8});
+    const mid=(start+end)/2;
+    inkPath([point(start),point(mid),point(end)],`${key}:${i}`,{color:options.color||'rgba(88,83,72,.24)',width:options.width||.86,alpha:(options.alpha??.7)*.68,dash:[],wobble:1.45});
+  });
+}
+
 function drawAxes(alpha){
   ctx.save();ctx.globalAlpha=alpha;
-  ctx.strokeStyle='rgba(0,0,0,0.05)';ctx.lineWidth=1;
-  for(let i=1;i<=9;i++){
-    const x=toCanvasX(i);
-    ctx.beginPath();ctx.moveTo(x,PLOT_PAD);ctx.lineTo(x,H-PLOT_PAD);ctx.stroke();
-    const y=toCanvasY(i);
-    ctx.beginPath();ctx.moveTo(PLOT_PAD,y);ctx.lineTo(W-PLOT_PAD,y);ctx.stroke();
+  for(let i=1;i<=7;i++){
+    const guideValue=[1.2,2.5,3.8,5.1,6.35,7.55,8.7][i-1];
+    const x=toCanvasX(guideValue);
+    sketchGuide(x+inkUnit(`grid-v-offset:${i}`)*2-1,PLOT_PAD,x+inkUnit(`grid-v-drift:${i}`)*4-2,H-PLOT_PAD,`grid-v-${i}`,{color:'rgba(88,83,72,.26)',width:.84,alpha:.72,dash:[3,11]});
+    const y=toCanvasY(guideValue);
+    sketchGuide(PLOT_PAD,y+inkUnit(`grid-h-offset:${i}`)*2-1,W-PLOT_PAD,y+inkUnit(`grid-h-drift:${i}`)*4-2,`grid-h-${i}`,{color:'rgba(88,83,72,.26)',width:.84,alpha:.72,dash:[3,11]});
   }
-  ctx.strokeStyle='rgba(0,0,0,0.15)';ctx.lineWidth=1.5;
-  ctx.beginPath();ctx.moveTo(PLOT_PAD,H-PLOT_PAD);ctx.lineTo(W-PLOT_PAD,H-PLOT_PAD);ctx.stroke();
-  ctx.beginPath();ctx.moveTo(PLOT_PAD,H-PLOT_PAD);ctx.lineTo(PLOT_PAD,PLOT_PAD);ctx.stroke();
-  ctx.fillStyle='rgba(0,0,0,0.45)';ctx.font='500 11px Inter';ctx.textAlign='center';
+  inkPath([{x:PLOT_PAD,y:H-PLOT_PAD},{x:W-PLOT_PAD,y:H-PLOT_PAD}],'axis-x',{color:'rgba(61,67,60,.72)',width:1.55,wobble:2.1});
+  inkPath([{x:PLOT_PAD,y:H-PLOT_PAD},{x:PLOT_PAD,y:PLOT_PAD}],'axis-y',{color:'rgba(61,67,60,.72)',width:1.55,wobble:2.1});
+  ctx.fillStyle='rgba(61,67,60,.78)';ctx.font='400 16px "Patrick Hand", "Kalam", cursive';ctx.textAlign='center';
   for(let i=1;i<=9;i++){
     ctx.fillText(i,toCanvasX(i),H-PLOT_PAD+20);
     ctx.save();ctx.textAlign='right';ctx.fillText(i,PLOT_PAD-10,toCanvasY(i)+4);ctx.restore();
   }
-  ctx.font='600 12px Inter';ctx.fillStyle='rgba(0,0,0,0.55)';
+  ctx.font='400 18px "Patrick Hand", "Kalam", cursive';ctx.fillStyle='rgba(61,67,60,.82)';
   ctx.fillText('Sweetness',W/2,H-PLOT_PAD+42);
   ctx.save();ctx.translate(22,(H)/2);ctx.rotate(-Math.PI/2);ctx.textAlign='center';
   ctx.fillText('Color Score',0,0);ctx.restore();
@@ -1799,15 +2015,9 @@ function drawPoint(x,y,color,radius,alpha,outlined,ringColor){
   const cx=toCanvasX(x), cy=toCanvasY(y);
   ctx.save();ctx.globalAlpha=alpha;
   if(outlined){
-    ctx.beginPath();ctx.arc(cx,cy,radius+3,0,Math.PI*2);
-    ctx.strokeStyle=ringColor||'rgba(0,0,0,0.3)';ctx.lineWidth=2;
-    ctx.setLineDash([4,3]);ctx.stroke();ctx.setLineDash([]);
+    inkCircle(cx,cy,radius+3,`point-ring-${x}-${y}`,ringColor||'rgba(61,67,60,.5)',1.5);
   }
-  const g=ctx.createRadialGradient(cx,cy,0,cx,cy,radius*2.5);
-  g.addColorStop(0,color.replace(')',',0.12)').replace('rgb','rgba'));
-  g.addColorStop(1,'transparent');
-  ctx.fillStyle=g;ctx.beginPath();ctx.arc(cx,cy,radius*2.5,0,Math.PI*2);ctx.fill();
-  ctx.fillStyle=color;ctx.beginPath();ctx.arc(cx,cy,radius,0,Math.PI*2);ctx.fill();
+  inkDot(cx,cy,radius,`point-${x}-${y}`,color,'rgba(32,36,33,.58)',.8);
   ctx.restore();
 }
 
@@ -1822,27 +2032,28 @@ function drawHull(points,color,alpha){
   for(const p of sorted.reverse()){while(upper.length>=2&&cross(upper[upper.length-2],upper[upper.length-1],p)<=0)upper.pop();upper.push(p)}
   const hull=[...lower.slice(0,-1),...upper.slice(0,-1)];
   ctx.save();ctx.globalAlpha=alpha*0.06;
-  ctx.fillStyle=color;ctx.beginPath();
-  hull.forEach((p,i)=>i===0?ctx.moveTo(p.x,p.y):ctx.lineTo(p.x,p.y));
-  ctx.closePath();ctx.fill();
-  ctx.strokeStyle=color;ctx.globalAlpha=alpha*0.25;ctx.lineWidth=1.5;ctx.stroke();
+  inkFillPath(hull,`hull-fill:${color}`,color,{close:true,wobble:1.2});
+  // Match the original independent fill/stroke opacities: inkPath multiplies
+  // the inherited canvas alpha, so reset it before the outline pass.
+  ctx.globalAlpha=alpha*0.25;
+  inkPath(hull,`hull:${color}`,{color,width:1.2,close:true,wobble:1.2});
   ctx.restore();
 }
 
 function drawStar(x,y,color,size,alpha){
   const cx=toCanvasX(x), cy=toCanvasY(y);
-  ctx.save();ctx.globalAlpha=alpha;ctx.fillStyle=color;ctx.strokeStyle='white';ctx.lineWidth=1.5;
-  ctx.beginPath();
+  ctx.save();ctx.globalAlpha=alpha;ctx.fillStyle=color;ctx.strokeStyle='rgba(32,36,33,.68)';ctx.lineWidth=1.25;
+  const starPoints=[];
   for(let i=0;i<5;i++){
     const a=Math.PI*2*i/5-Math.PI/2;
     const ox=cx+Math.cos(a)*size, oy=cy+Math.sin(a)*size;
     const ia=a+Math.PI/5;
     const ix=cx+Math.cos(ia)*size*0.4, iy=cy+Math.sin(ia)*size*0.4;
-    i===0?ctx.moveTo(ox,oy):ctx.lineTo(ox,oy);
-    ctx.lineTo(ix,iy);
+    starPoints.push({x:ox,y:oy},{x:ix,y:iy});
   }
-  ctx.closePath();ctx.fill();ctx.stroke();
-  ctx.font='600 11px Inter';ctx.fillStyle=color;ctx.textAlign='center';
+  inkFillPath(starPoints,`star-fill:${x}:${y}`,color,{close:true,wobble:.75});
+  inkPath(starPoints,`star:${x}:${y}`,{color:'rgba(32,36,33,.68)',width:1.25,close:true,wobble:.75});
+  ctx.font='400 18px "Patrick Hand", "Kalam", cursive';ctx.fillStyle=color;ctx.textAlign='center';
   ctx.fillText('μ',cx,cy-size-8);
   ctx.restore();
 }
@@ -1860,25 +2071,21 @@ function drawEllipse(mu,covMat,color,alpha,scale){
   const sy=Math.abs(toCanvasY(mu[1]+1)-toCanvasY(mu[1]));
   ctx.save();ctx.globalAlpha=alpha;
   ctx.translate(cx,cy);ctx.rotate(-angle);
-  ctx.beginPath();ctx.ellipse(0,0,Math.sqrt(Math.max(0.1,l1))*sx*scale,Math.sqrt(Math.max(0.1,l2))*sy*scale,0,0,Math.PI*2);
-  ctx.strokeStyle=color;ctx.lineWidth=2;ctx.setLineDash([6,4]);ctx.stroke();
-  ctx.fillStyle=color.replace(')',',0.04)').replace('rgb','rgba');
-  ctx.fill();ctx.setLineDash([]);
+  const rx=Math.sqrt(Math.max(0.1,l1))*sx*scale, ry=Math.sqrt(Math.max(0.1,l2))*sy*scale;
+  const ellipsePts=Array.from({length:28},(_,i)=>{const a=Math.PI*2*i/28,rr=1+(inkUnit(`ellipse:${cx}:${cy}:${i}`)-.5)*.16;return{x:Math.cos(a)*rx*rr,y:Math.sin(a)*ry*rr};});
+  inkPath(ellipsePts,`ellipse-stroke:${cx}:${cy}`,{color,width:1.8,dash:[4,7],close:true,wobble:1.35});
+  ctx.fillStyle=color.replace(')',',0.04)').replace('rgb','rgba');inkFillPath(ellipsePts,`ellipse-fill:${cx}:${cy}`,ctx.fillStyle,{close:true,wobble:.15});
+  ctx.setLineDash([]);
   ctx.restore();
 }
 
 function drawProjectionLine(w,alpha){
   ctx.save();ctx.globalAlpha=alpha;
-  ctx.strokeStyle='rgba(99,102,241,0.5)';ctx.lineWidth=2;
-  ctx.setLineDash([8,4]);
   const sx=(toCanvasX(1)-toCanvasX(0)), sy=(toCanvasY(0)-toCanvasY(1));
   const midX=toCanvasX((ldaModel.mu1[0]+ldaModel.mu2[0])/2);
   const midY=toCanvasY((ldaModel.mu1[1]+ldaModel.mu2[1])/2);
-  ctx.beginPath();
-  ctx.moveTo(midX-w[0]*sx*8, midY+w[1]*sy*8);
-  ctx.lineTo(midX+w[0]*sx*8, midY-w[1]*sy*8);
-  ctx.stroke();ctx.setLineDash([]);
-  ctx.fillStyle='rgba(99,102,241,0.7)';ctx.font='600 12px Inter';ctx.textAlign='center';
+  inkLine(midX-w[0]*sx*8,midY+w[1]*sy*8,midX+w[0]*sx*8,midY-w[1]*sy*8,'projection-axis',{color:'rgba(40,105,173,.62)',width:1.8,dash:[8,4],wobble:1.4});
+  ctx.fillStyle='rgba(40,105,173,.82)';ctx.font='400 17px "Patrick Hand", "Kalam", cursive';ctx.textAlign='center';
   ctx.fillText('w →',midX+w[0]*sx*6+15, midY-w[1]*sy*6);
   ctx.restore();
 }
@@ -1890,22 +2097,21 @@ function drawProjectionStrip(alpha){
   const stripY = H - PLOT_PAD - stripH - 12; // Safely positioned inside bottom plot layout
 
   ctx.save();ctx.globalAlpha=alpha;
-  ctx.fillStyle='rgba(255,255,255,0.92)';
-  ctx.fillRect(PLOT_PAD + 2, stripY, W - 2 * PLOT_PAD - 4, stripH);
-  ctx.strokeStyle='rgba(99,102,241,0.25)';ctx.lineWidth=1.5;
-  ctx.strokeRect(PLOT_PAD + 2, stripY, W - 2 * PLOT_PAD - 4, stripH);
+  inkRect(PLOT_PAD+2,stripY,W-2*PLOT_PAD-4,stripH,'projection-strip','rgba(255,252,242,.88)','rgba(40,105,173,.35)',1);
+  inkLine(PLOT_PAD+2,stripY,W-PLOT_PAD-2,stripY,'projection-box-top',{color:'rgba(40,105,173,.35)',width:1});
+  inkLine(W-PLOT_PAD-2,stripY,W-PLOT_PAD-2,stripY+stripH,'projection-box-right',{color:'rgba(40,105,173,.35)',width:1});
+  inkLine(W-PLOT_PAD-2,stripY+stripH,PLOT_PAD+2,stripY+stripH,'projection-box-bottom',{color:'rgba(40,105,173,.35)',width:1});
+  inkLine(PLOT_PAD+2,stripY+stripH,PLOT_PAD+2,stripY,'projection-box-left',{color:'rgba(40,105,173,.35)',width:1});
 
   const allProj=[...m.proj1.map(v=>({v,c:APPLE_COLOR})),...m.proj2.map(v=>({v,c:ORANGE_COLOR}))];
   const minP=Math.min(...allProj.map(p=>p.v)), maxP=Math.max(...allProj.map(p=>p.v));
   const range=maxP-minP||1;
   allProj.forEach(p=>{
     const px=PLOT_PAD + 15 + (p.v-minP)/range*(W-2*PLOT_PAD - 30);
-    ctx.fillStyle=p.c;ctx.globalAlpha=alpha*0.8;
-    ctx.beginPath();ctx.arc(px,stripY+stripH/2 - 6,6,0,Math.PI*2);ctx.fill();
-    ctx.strokeStyle='white';ctx.lineWidth=1;ctx.stroke();
+    ctx.globalAlpha=alpha*0.8;inkDot(px,stripY+stripH/2-6,6,`projection-dot-${px}`,p.c,'rgba(32,36,33,.55)',.8);
   });
 
-  ctx.globalAlpha=alpha;ctx.font='600 10px Inter';ctx.fillStyle='rgba(99,102,241,0.85)';ctx.textAlign='center';
+  ctx.globalAlpha=alpha;ctx.font='400 16px "Patrick Hand", "Kalam", cursive';ctx.fillStyle='rgba(40,105,173,.85)';ctx.textAlign='center';
   ctx.fillText('← 1D PROJECTED SCORES ON LDA AXIS →',(PLOT_PAD+W-PLOT_PAD)/2,stripY+stripH-10);
   ctx.restore();
 }
@@ -1918,19 +2124,18 @@ function drawDecisionBoundary(alpha){
     for(let py=PLOT_PAD;py<=H-PLOT_PAD;py+=4){
       const dx=toDataX(px), dy=toDataY(py);
       const r=m.classify(dx,dy);
-      ctx.fillStyle=r.pred==='apple'?'rgba(37,99,235,0.03)':'rgba(202,138,4,0.03)';
-      ctx.fillRect(px,py,4,4);
+      inkFillRect(px,py,4,4,r.pred==='apple'?'rgba(37,99,235,0.03)':'rgba(202,138,4,0.03)',`boundary-fill-${px}-${py}`);
     }
   }
   if(Math.abs(m.coeffs[1])>1e-10){
-    ctx.beginPath();ctx.strokeStyle='rgba(0,0,0,0.4)';ctx.lineWidth=2.5;
+    const boundary=[];
     for(let px=PLOT_PAD;px<=W-PLOT_PAD;px++){
       const dataX=toDataX(px);
       const dataY=(m.threshold - m.coeffs[0]*dataX)/m.coeffs[1];
       const py=toCanvasY(dataY);
-      if(px===PLOT_PAD) ctx.moveTo(px,py); else ctx.lineTo(px,py);
+      boundary.push({x:px,y:py});
     }
-    ctx.stroke();
+    inkPath(boundary,'lda-boundary',{color:'rgba(45,41,38,.68)',width:2.1,wobble:1.2});
   }
   ctx.restore();
 }
@@ -1950,15 +2155,15 @@ function drawUserPoints(){
     const color=p.pred==='apple'?APPLE_COLOR:ORANGE_COLOR;
     drawPoint(p.s,p.c,color,7,0.9,false);
     const cx=toCanvasX(p.s), cy=toCanvasY(p.c);
-    ctx.save();ctx.globalAlpha=0.8;ctx.font='500 9px Inter';ctx.fillStyle=color;
-    ctx.textAlign='center';ctx.fillText(p.pred==='apple'?'🍎':'🍊',cx,cy-12);ctx.restore();
+    ctx.save();ctx.globalAlpha=0.8;ctx.font='12px "Patrick Hand", "Kalam", cursive';ctx.fillStyle=color;
+    ctx.textAlign='center';ctx.fillText(p.pred==='apple'?'A':'O',cx,cy-12);ctx.restore();
   });
 }
 
 // ===== RENDER =====
 function render(){
   ctx.clearRect(0,0,W,H);
-  ctx.fillStyle='#f7f7f4';ctx.fillRect(0,0,W,H);
+  inkFillRect(0,0,W,H,'#fbf7ec','canvas-paper');
 
   if(currentStage===0){
     return;
@@ -1997,20 +2202,18 @@ function render(){
 
     // Faint overlay banner with clean call-to-action
     ctx.fillStyle = '#4f46e5';
-    ctx.font = 'bold 11px Inter';
+    ctx.font = '14px "Patrick Hand", "Kalam", cursive';
     ctx.textAlign = 'center';
-    ctx.fillText('👉 Click output sections on the left to decode them.', W/2, PLOT_PAD - 20);
+    const clickY=PLOT_PAD-20;
+    inkLine(W/2-152,clickY-4,W/2-138,clickY-4,'canvas-click-arrow',{color:'#356fae',width:1.35,wobble:1.1});
+    inkLine(W/2-138,clickY-4,W/2-143,clickY-8,'canvas-click-arrow-top',{color:'#356fae',width:1.35,wobble:1.1});
+    inkLine(W/2-138,clickY-4,W/2-143,clickY,'canvas-click-arrow-bottom',{color:'#356fae',width:1.35,wobble:1.1});
+    ctx.fillText('Click output sections on the left to decode them.', W/2-128, clickY);
 
     // Left Box: Confusion Matrix Infographic
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
-    ctx.strokeStyle = '#e7e5e4';
-    ctx.lineWidth = 1.5;
-    ctx.beginPath();
-    ctx.roundRect(leftX, topY, cardW, boxH, 12);
-    ctx.fill();
-    ctx.stroke();
+    inkRect(leftX,topY,cardW,boxH,'lda-confusion-card','rgba(255,252,241,.9)','rgba(72,65,57,.46)',1.2);
 
-    ctx.font = 'bold 11px Inter';
+    ctx.font = '14px "Patrick Hand", "Kalam", cursive';
     ctx.fillStyle = '#1f2937';
     ctx.textAlign = 'center';
     ctx.fillText('CONFUSION MATRIX', leftX + cardW/2, topY + 20);
@@ -2020,17 +2223,14 @@ function render(){
     const gridStartX = leftX + 18;
     const gridStartY = topY + 42;
 
-    ctx.font = '9px Inter';
+    ctx.font = '12px "Patrick Hand", "Kalam", cursive';
     ctx.fillStyle = '#6b7280';
     ctx.fillText('Actual vs Predicted', leftX + cardW/2, topY + 36);
 
     const drawInfographicCell = (x, y, text, title, bg) => {
-      ctx.fillStyle = bg;
-      ctx.fillRect(x, y, cellW, cellH);
-      ctx.strokeStyle = 'rgba(0,0,0,0.06)';
-      ctx.strokeRect(x, y, cellW, cellH);
+      inkRect(x,y,cellW,cellH,`lda-cell-${title}`,bg,'rgba(72,65,57,.34)',.8);
       ctx.fillStyle = '#1f2937';
-      ctx.font = 'bold 10px JetBrains Mono';
+      ctx.font = '13px "Patrick Hand", "Kalam", cursive';
       ctx.fillText(`${title}: ${text}`, x + cellW/2, y + cellH/2 + 3);
     };
 
@@ -2040,27 +2240,22 @@ function render(){
     drawInfographicCell(gridStartX + cellW, gridStartY + cellH, m.tn, 'TN', 'rgba(59,130,246,0.08)');
 
     ctx.fillStyle = '#4f46e5';
-    ctx.font = '500 10px Inter';
+    ctx.font = '12px "Patrick Hand", "Kalam", cursive';
     ctx.fillText('Confusion matrix checks mistakes', leftX + cardW/2, topY + boxH - 12);
 
     // Right Box: Dynamic Summary Metrics
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
-    ctx.strokeStyle = '#e7e5e4';
-    ctx.beginPath();
-    ctx.roundRect(rightX, topY, cardW, boxH, 12);
-    ctx.fill();
-    ctx.stroke();
+    inkRect(rightX,topY,cardW,boxH,'lda-summary-card','rgba(255,252,241,.9)','rgba(72,65,57,.46)',1.2);
 
-    ctx.font = 'bold 11px Inter';
+    ctx.font = '14px "Patrick Hand", "Kalam", cursive';
     ctx.fillStyle = '#1f2937';
     ctx.fillText('SUMMARY METRICS', rightX + cardW/2, topY + 20);
 
     const drawMetricLineItem = (y, label, value, hexColor) => {
-      ctx.font = '500 10px Inter';
+      ctx.font = '12px "Patrick Hand", "Kalam", cursive';
       ctx.fillStyle = '#4b5563';
       ctx.textAlign = 'left';
       ctx.fillText(label, rightX + 20, y);
-      ctx.font = 'bold 11px JetBrains Mono';
+      ctx.font = '13px "Patrick Hand", "Kalam", cursive';
       ctx.fillStyle = hexColor;
       ctx.textAlign = 'right';
       ctx.fillText(`${(value * 100).toFixed(0)}%`, rightX + cardW - 20, y);
@@ -2073,7 +2268,7 @@ function render(){
 
     ctx.textAlign = 'center';
     ctx.fillStyle = '#4f46e5';
-    ctx.font = '500 10px Inter';
+    ctx.font = '12px "Patrick Hand", "Kalam", cursive';
     ctx.fillText('Metrics summarize performance', rightX + cardW/2, topY + boxH - 12);
 
     // Bottom Box: Workflow arrows
@@ -2081,12 +2276,7 @@ function render(){
     const flowW = W - 2 * PLOT_PAD - 40;
     const flowStartX = PLOT_PAD + 20;
 
-    ctx.fillStyle = 'rgba(255,255,255,0.95)';
-    ctx.strokeStyle = 'rgba(99,102,241,0.2)';
-    ctx.beginPath();
-    ctx.roundRect(flowStartX, flowY, flowW, 70, 12);
-    ctx.fill();
-    ctx.stroke();
+    inkRect(flowStartX,flowY,flowW,70,'lda-flow-card','rgba(255,252,241,.95)','rgba(72,65,57,.42)',1.1);
 
     const items = ['Data Inputs', 'δ Scores', 'Prediction', 'Evaluation'];
     const numItems = items.length;
@@ -2095,11 +2285,11 @@ function render(){
     items.forEach((item, i) => {
       const itemCenterX = flowStartX + i * itemW + itemW/2;
       ctx.fillStyle = '#1f2937';
-      ctx.font = 'bold 11px Inter';
+      ctx.font = '14px "Patrick Hand", "Kalam", cursive';
       ctx.textAlign = 'center';
       ctx.fillText(item, itemCenterX, flowY + 32);
 
-      ctx.font = '9px Inter';
+      ctx.font = '11px "Patrick Hand", "Kalam", cursive';
       ctx.fillStyle = '#6b7280';
       if (i === 0) ctx.fillText('Priors+Means+Cov', itemCenterX, flowY + 46);
       if (i === 1) ctx.fillText('Highest δ score wins', itemCenterX, flowY + 46);
@@ -2108,20 +2298,14 @@ function render(){
 
       if (i < numItems - 1) {
         const arrowX = flowStartX + (i + 1) * itemW;
-        ctx.strokeStyle = '#6366f1';
-        ctx.lineWidth = 1.5;
-        ctx.beginPath();
-        ctx.moveTo(arrowX - 8, flowY + 32);
-        ctx.lineTo(arrowX + 8, flowY + 32);
-        ctx.lineTo(arrowX + 4, flowY + 28);
-        ctx.moveTo(arrowX + 8, flowY + 32);
-        ctx.lineTo(arrowX + 4, flowY + 36);
-        ctx.stroke();
+        inkLine(arrowX-8,flowY+32,arrowX+8,flowY+32,`flow-arrow-${i}`,{color:'#356fae',width:1.3});
+        inkLine(arrowX+8,flowY+32,arrowX+4,flowY+28,`flow-arrow-top-${i}`,{color:'#356fae',width:1.3});
+        inkLine(arrowX+8,flowY+32,arrowX+4,flowY+36,`flow-arrow-bottom-${i}`,{color:'#356fae',width:1.3});
       }
     });
 
     ctx.fillStyle = '#4f46e5';
-    ctx.font = '600 10px Inter';
+    ctx.font = '13px "Patrick Hand", "Kalam", cursive';
     ctx.textAlign = 'center';
     ctx.fillText('LDA DECISION FLOW', flowStartX + flowW/2, flowY + 16);
 
@@ -2147,7 +2331,7 @@ function render(){
   // Stage 02: specific axis highlights and descriptive labels on canvas
   if (s === 2) {
     ctx.save();
-    ctx.font = '600 11px Inter';
+    ctx.font = '13px "Patrick Hand", "Kalam", cursive';
     ctx.fillStyle = APPLE_COLOR;
     ctx.fillText('Apple Cluster (Sweetness > 6, Color > 7)', toCanvasX(6.3), toCanvasY(9.5));
     ctx.fillStyle = ORANGE_COLOR;
@@ -2164,7 +2348,7 @@ function render(){
 
     if (s === 4) {
       ctx.save();
-      ctx.font = '600 11px Inter';
+      ctx.font = '13px "Patrick Hand", "Kalam", cursive';
       ctx.fillStyle = APPLE_COLOR;
       ctx.fillText('Apple training cloud (convex hull)', toCanvasX(7.5), toCanvasY(9.5));
       ctx.fillStyle = ORANGE_COLOR;
@@ -2180,9 +2364,11 @@ function render(){
 
     if (s === 5) {
       ctx.save();
-      ctx.font = '500 11px Inter';
+      ctx.font = '13px "Patrick Hand", "Kalam", cursive';
       ctx.fillStyle = 'rgba(0,0,0,0.6)';
-      ctx.fillText('★ = class mean / center of gravity', toCanvasX(5.0), toCanvasY(10.2));
+      const starX=toCanvasX(5.0),starY=toCanvasY(10.2);
+      drawStar(5.0,10.2,'rgba(0,0,0,0.6)',5.5,.72);
+      ctx.fillText('= class mean / center of gravity', starX+10, starY+4);
       ctx.restore();
     }
   }
@@ -2193,7 +2379,7 @@ function render(){
     drawEllipse(ldaModel.mu2,ldaModel.cov2,ORANGE_COLOR,0.8);
 
     ctx.save();
-    ctx.font = '600 11px Inter';
+    ctx.font = '13px "Patrick Hand", "Kalam", cursive';
     ctx.fillStyle = APPLE_COLOR;
     ctx.fillText('Apple spread (individual covariance)', toCanvasX(6.0), toCanvasY(6.5));
     ctx.fillStyle = ORANGE_COLOR;
@@ -2208,7 +2394,7 @@ function render(){
 
     if (s === 7) {
       ctx.save();
-      ctx.font = '600 11px Inter';
+      ctx.font = '13px "Patrick Hand", "Kalam", cursive';
       ctx.fillStyle = 'rgb(99,102,241)';
       ctx.fillText('Shared spread assumption (pooled covariance)', toCanvasX(2.5), toCanvasY(10.2));
       ctx.restore();
@@ -2219,12 +2405,11 @@ function render(){
   if(s>=8 && s!==14){
     const x1=toCanvasX(ldaModel.mu1[0]),y1=toCanvasY(ldaModel.mu1[1]);
     const x2=toCanvasX(ldaModel.mu2[0]),y2=toCanvasY(ldaModel.mu2[1]);
-    ctx.save();ctx.globalAlpha=0.7;ctx.strokeStyle='rgba(0,0,0,0.45)';ctx.lineWidth=2;
-    ctx.setLineDash([6,4]);ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();
-    ctx.setLineDash([]);
+    ctx.save();
+    inkLine(x1,y1,x2,y2,'center-gap',{color:'rgba(45,41,38,.56)',width:1.7,dash:[6,4],alpha:.7});
 
     if (s === 8) {
-      ctx.font = '600 11px Inter';
+      ctx.font = '13px "Patrick Hand", "Kalam", cursive';
       ctx.fillStyle = 'rgba(0,0,0,0.7)';
       ctx.fillText('Gap between centers (Between-Class Scatter)', (x1+x2)/2 - 120, (y1+y2)/2 - 10);
     }
@@ -2239,28 +2424,17 @@ function render(){
     const m=ldaModel;
     const midX=(m.mu1[0]+m.mu2[0])/2;
     const midY=(m.mu1[1]+m.mu2[1])/2;
-    ctx.save();
-    ctx.strokeStyle='rgba(99,102,241,0.22)';
-    ctx.lineWidth=1;
-    ctx.setLineDash([3,3]);
-
     trainData.filter(d=>d.label==='apple').slice(0,4).forEach(p=>{
       const t=(p.s-midX)*m.w[0] + (p.c-midY)*m.w[1];
       const px=midX + t*m.w[0];
       const py=midY + t*m.w[1];
-      ctx.beginPath();
-      ctx.moveTo(toCanvasX(p.s), toCanvasY(p.c));
-      ctx.lineTo(toCanvasX(px), toCanvasY(py));
-      ctx.stroke();
+      inkLine(toCanvasX(p.s),toCanvasY(p.c),toCanvasX(px),toCanvasY(py),`projection-drop-a-${p.s}-${p.c}`,{color:'rgba(53,111,174,.34)',width:1,dash:[3,3]});
     });
     trainData.filter(d=>d.label==='orange').slice(0,4).forEach(p=>{
       const t=(p.s-midX)*m.w[0] + (p.c-midY)*m.w[1];
       const px=midX + t*m.w[0];
       const py=midY + t*m.w[1];
-      ctx.beginPath();
-      ctx.moveTo(toCanvasX(p.s), toCanvasY(p.c));
-      ctx.lineTo(toCanvasX(px), toCanvasY(py));
-      ctx.stroke();
+      inkLine(toCanvasX(p.s),toCanvasY(p.c),toCanvasX(px),toCanvasY(py),`projection-drop-o-${p.s}-${p.c}`,{color:'rgba(195,139,50,.38)',width:1,dash:[3,3]});
     });
     ctx.restore();
   } else if (s === 10) {
@@ -2277,13 +2451,13 @@ function render(){
 
     if (s === 10) {
       ctx.save();
-      ctx.font = '600 11px Inter';
+      ctx.font = '13px "Patrick Hand", "Kalam", cursive';
       ctx.fillStyle = 'rgba(37,99,235,0.75)';
       ctx.fillText('Apple score higher (δ_apple > δ_orange)', toCanvasX(7.2), toCanvasY(8.0));
       ctx.fillStyle = 'rgba(202,138,4,0.75)';
       ctx.fillText('Orange score higher (δ_orange > δ_apple)', toCanvasX(1.8), toCanvasY(3.5));
       ctx.fillStyle = 'rgba(0,0,0,0.85)';
-      ctx.font = 'bold 10px Inter';
+      ctx.font = '13px "Patrick Hand", "Kalam", cursive';
       ctx.fillText('δ_apple = δ_orange boundary', toCanvasX(3.5), toCanvasY(6.4));
       ctx.restore();
     }
@@ -2295,7 +2469,7 @@ function render(){
 
     if (s === 11) {
       ctx.save();
-      ctx.font = '600 11px Inter';
+      ctx.font = '13px "Patrick Hand", "Kalam", cursive';
       ctx.fillStyle = 'rgb(22,163,74)';
       ctx.fillText('Correctly predicted test point (green outer ring)', toCanvasX(5.0), toCanvasY(10.2));
       ctx.restore();
@@ -2305,7 +2479,7 @@ function render(){
   // Stage 14: Assumptions and Limitations showing boundary, shared covariance shape and clouds
   if (s === 14) {
     ctx.save();
-    ctx.font = '600 11px Inter';
+    ctx.font = '13px "Patrick Hand", "Kalam", cursive';
     ctx.fillStyle = 'rgba(0,0,0,0.7)';
     ctx.fillText('LDA assumes roughly oval clouds + similar spread shape', toCanvasX(2.0), toCanvasY(10.2));
     ctx.restore();
@@ -2531,8 +2705,8 @@ function selectQuizOption(button) {
     feedback.style.background = isCorrect ? 'var(--green-soft)' : 'var(--coral-soft)';
     feedback.style.color = isCorrect ? 'var(--green)' : 'var(--coral)';
     feedback.innerHTML = isCorrect
-      ? '✅ Correct. ' + (card.dataset.explanation || '')
-      : '❌ Not quite. ' + (card.dataset.hint || card.dataset.explanation || '');
+      ? ldaDoodle('check') + ' Correct. ' + (card.dataset.explanation || '')
+      : ldaDoodle('cross') + ' Not quite. ' + (card.dataset.hint || card.dataset.explanation || '');
   }
 }
 

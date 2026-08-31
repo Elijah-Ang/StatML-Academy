@@ -751,6 +751,121 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
 </style>
 
     <link rel="stylesheet" href="academic-rigor.css">
+  <link rel="stylesheet" href="handwritten-theme.css?v=20260826-handwritten-final-2">
+  <script src="handwritten-theme.js?v=20260826-handwritten-final-2" defer></script>
+  <style id="simple-linear-regression-handwritten-shell">
+    body.hw-handwritten .hero-badge,
+    body.hw-handwritten .topic-badge,
+    body.hw-handwritten .statml-hero .hero-badge {
+      border: 0 !important; border-radius: 3px 5px 2px 4px !important;
+      background: linear-gradient(transparent 38%, rgba(241,212,119,.58) 38%, rgba(241,212,119,.58) 88%, transparent 88%) !important;
+      box-shadow: none !important;
+    }
+    body.hw-handwritten .statml-overview { border: 1px solid rgba(88,83,72,.28) !important; border-radius: 5px 8px 4px 7px !important; background: rgba(255,253,245,.78) !important; box-shadow: none !important; }
+    body.hw-handwritten .statml-overview-item { border-radius: 3px 5px 2px 4px !important; background: rgba(255,252,242,.32) !important; box-shadow: none !important; }
+    body.hw-handwritten .statml-overview-number { border: 1px solid rgba(40,105,173,.38) !important; border-radius: 2px 4px 2px 3px !important; background: rgba(230,240,248,.7) !important; box-shadow: none !important; }
+    body.hw-handwritten :is(.pill,.tag,.badge,.metric-badge,.feature-pill,.transform-bridge-badge) { border: 0 !important; border-radius: 2px 4px 2px 3px !important; background: linear-gradient(transparent 34%, rgba(241,212,119,.48) 34%, rgba(241,212,119,.48) 90%, transparent 90%) !important; box-shadow: none !important; }
+    body.hw-handwritten .statml-stage-rail { border-radius: 4px 6px 3px 5px !important; background-color: rgba(255,252,242,.82) !important; background-image: repeating-linear-gradient(176deg, rgba(223,178,45,.04) 0 2px, transparent 2px 8px), radial-gradient(circle at 14% 18%, rgba(255,255,255,.3), transparent 46%) !important; box-shadow: none !important; }
+    body.hw-handwritten .statml-stage-button { border-radius: 42% 58% 47% 53% !important; box-shadow: none !important; }
+    body.hw-handwritten .statml-stage-button[aria-current="step"] { background: var(--hw-yellow) !important; border-color: var(--hw-ink) !important; box-shadow: none !important; }
+    body.hw-handwritten .statml-stage-button span { border-radius: 3px 5px 2px 4px !important; background: var(--hw-yellow-soft) !important; color: var(--hw-ink) !important; box-shadow: none !important; }
+    body.hw-handwritten input[type="range"] { appearance: none !important; height: 7px !important; border: 0 !important; border-radius: 3px 5px 2px 4px !important; background: repeating-linear-gradient(167deg, rgba(40,105,173,.18) 0 2px, rgba(255,252,242,.72) 2px 6px) !important; box-shadow: 1px 1px 0 rgba(75,68,58,.12) !important; }
+    body.hw-handwritten input[type="range"]::-webkit-slider-thumb { appearance: none; width: 18px; height: 18px; border: 1px solid rgba(75,68,58,.52); border-radius: 42% 58% 47% 53%; background: var(--hw-yellow); box-shadow: 1px 2px 0 rgba(75,68,58,.16); transform: rotate(-3deg); }
+    body.hw-handwritten input[type="range"]::-moz-range-thumb { width: 18px; height: 18px; border: 1px solid rgba(75,68,58,.52); border-radius: 42% 58% 47% 53%; background: var(--hw-yellow); box-shadow: 1px 2px 0 rgba(75,68,58,.16); }
+    body.hw-handwritten.statml-standardized :is(.statml-overview,.statml-overview-item,.glass-card,.card,.metric-card,.control-panel,.controls,.quiz-card,.worked-example-widget,.formula-block,.math-block,.formula,.software-output,.model-report-block,.limitation-card,.playground-summary-card,.decision-card,.interactive,.panel,.chart-card,.figure-card,.visual-panel,.viz-panel,.canvas-container,.canvas-wrap,.viz-stage,.status-strip) { border: 1px solid rgba(88,83,72,.42) !important; border-radius: 5px 8px 4px 7px !important; background-color: rgba(255,252,242,.82) !important; background-image: repeating-linear-gradient(176deg, rgba(223,178,45,.035) 0 2px, transparent 2px 8px), radial-gradient(circle at 14% 18%, rgba(255,255,255,.25), transparent 46%) !important; box-shadow: 1px 2px 0 rgba(76,65,50,.10) !important; backdrop-filter: none !important; }
+    body.hw-handwritten.statml-standardized :is(.insight-box,.callout,.insight,.takeaway,.teaching-note,.look-here,.breakdown,.warning-note,.report,.plain-translation,.statml-takeaways) { border: 1px solid rgba(157,112,12,.34) !important; border-left: 4px solid var(--hw-blue) !important; border-radius: 2px 5px 3px 6px !important; background-color: #fff1b8 !important; background-image: repeating-linear-gradient(176deg, rgba(223,178,45,.07) 0 2px, transparent 2px 7px), radial-gradient(circle at 14% 18%, rgba(255,255,255,.42), transparent 46%) !important; box-shadow: 2px 3px 0 rgba(76,65,50,.14) !important; }
+    body.hw-handwritten.statml-standardized :is(.warning-note,.is-alert) { border-left-color: var(--hw-red) !important; background-color: var(--hw-red-soft) !important; background-image: repeating-linear-gradient(176deg, rgba(200,94,88,.055) 0 2px, transparent 2px 7px), radial-gradient(circle at 14% 18%, rgba(255,255,255,.34), transparent 46%) !important; }
+    body.hw-handwritten.statml-standardized :is(.report,.statml-takeaways) { border-left-color: var(--hw-green) !important; background-color: var(--hw-green-soft) !important; }
+    body.hw-handwritten.statml-standardized :is(button,.btn,.interactive-btn,.control-btn,select,input[type="text"],input[type="number"],textarea,.quiz-option,.scenario-options button,.control button) { border: 1px solid rgba(75,68,58,.52) !important; border-radius: 7px 4px 8px 5px !important; background-color: rgba(248,243,230,.88) !important; background-image: repeating-linear-gradient(167deg, rgba(40,105,173,.035) 0 2px, transparent 2px 6px) !important; box-shadow: 1px 2px 0 rgba(75,68,58,.08) !important; }
+    body.hw-handwritten.statml-standardized table { border-color: rgba(75,68,58,.5) !important; border-radius: 5px 8px 4px 7px !important; background-color: rgba(255,253,245,.70) !important; box-shadow: 1px 2px 0 rgba(75,68,58,.05) !important; }
+    body.hw-handwritten.statml-standardized :is(th,td) { border-color: rgba(75,68,58,.42) !important; border-style: dashed !important; }
+  body.hw-handwritten.statml-standardized th { background: rgba(241,212,119,.16) !important; }
+  body.hw-handwritten.statml-standardized .mini-plot {
+    border-radius: 5px 8px 4px 7px !important;
+    box-shadow: 1px 2px 0 rgba(76,65,50,.08) !important;
+  }
+    body.hw-handwritten.statml-standardized :is(.statml-stage-button,.stage-dot) { min-height: 0 !important; width: 9px !important; height: 9px !important; padding: 0 !important; border-radius: 42% 58% 47% 53% !important; background: var(--hw-paper) !important; background-image: none !important; box-shadow: none !important; }
+    body.hw-handwritten.statml-standardized :is(.statml-stage-button,.stage-dot)[aria-current="step"], body.hw-handwritten.statml-standardized :is(.statml-stage-button,.stage-dot).active { background: var(--hw-yellow) !important; border-color: var(--hw-ink) !important; }
+    body.hw-handwritten.statml-standardized button.statml-stage-button, body.hw-handwritten.statml-standardized button.stage-dot { min-height: 0 !important; width: 9px !important; height: 9px !important; padding: 0 !important; border-radius: 42% 58% 47% 53% !important; background: var(--hw-paper) !important; background-image: none !important; box-shadow: none !important; }
+    body.hw-handwritten.statml-standardized button.statml-stage-button[aria-current="step"], body.hw-handwritten.statml-standardized button.stage-dot.active { background: var(--hw-yellow) !important; border-color: var(--hw-ink) !important; }
+  </style>
+  <style id="simple-linear-regression-handwritten-cue-finish">
+    body.hw-handwritten .statml-hero :is(.scroll-cue,.scroll-hint,.scroll-indicator,.hero-scroll) {
+      position: static !important;
+      inset: auto !important;
+      align-self: center !important;
+      display: inline-flex !important;
+      width: auto !important;
+      max-width: calc(100% - 2rem) !important;
+      margin: .65rem auto 0 !important;
+      padding: 0 !important;
+      border: 0 !important;
+      border-radius: 0 !important;
+      background: transparent !important;
+      background-image: none !important;
+      box-shadow: none !important;
+      clip-path: none !important;
+      transform: none !important;
+      animation: none !important;
+      text-decoration-line: underline !important;
+      text-decoration-style: wavy !important;
+      text-decoration-color: rgba(40,105,173,.55) !important;
+      text-decoration-thickness: 1px !important;
+      text-underline-offset: 4px !important;
+    }
+  </style>
+  <style id="simple-linear-regression-handwritten-visual-surface-finish">
+    body.hw-handwritten.statml-standardized .statml-visual {
+      background-color: var(--hw-paper) !important;
+      background-image: none !important;
+      border-color: transparent !important;
+    }
+    body.hw-handwritten.statml-standardized .canvas-container {
+      background-color: var(--hw-paper) !important;
+      background-image: repeating-linear-gradient(176deg, rgba(223,178,45,.045) 0 2px, transparent 2px 8px) !important;
+      border: 0 !important;
+      border-radius: 0 !important;
+      box-shadow: none !important;
+      position: relative !important;
+    }
+    body.hw-handwritten.statml-standardized .canvas-container::before,
+    body.hw-handwritten.statml-standardized .canvas-container::after {
+      content: ""; position: absolute; inset: 2px 3px 3px 2px; z-index: 3;
+      pointer-events: none; border: 1px solid rgba(88,83,72,.54);
+      border-radius: 3px 6px 4px 5px; transform: rotate(-.14deg);
+    }
+    body.hw-handwritten.statml-standardized .canvas-container::after {
+      inset: 4px 1px 1px 4px; opacity: .3; border-color: rgba(88,83,72,.72);
+      border-radius: 5px 3px 6px 4px; transform: rotate(.17deg);
+    }
+  </style>
+  <style id="simple-linear-regression-handwritten-open-canvas">
+    body.hw-handwritten.statml-standardized .canvas-container::before,
+    body.hw-handwritten.statml-standardized .canvas-container::after { content: none !important; display: none !important; }
+  </style>
+<style id="simple-linear-regression-handwritten-geometry-calibration">
+@media (min-width: 901px) {
+  body.hw-handwritten.statml-standardized [data-stage="1"]{min-height:1112px !important}
+  body.hw-handwritten.statml-standardized [data-stage="2"]{min-height:945px !important}
+  body.hw-handwritten.statml-standardized [data-stage="3"]{min-height:1547px !important}
+  body.hw-handwritten.statml-standardized [data-stage="4"]{min-height:731px !important}
+  body.hw-handwritten.statml-standardized [data-stage="5"]{min-height:711px !important}
+  body.hw-handwritten.statml-standardized [data-stage="6"]{min-height:1516px !important}
+  body.hw-handwritten.statml-standardized [data-stage="7"]{min-height:2512px !important}
+  body.hw-handwritten.statml-standardized [data-stage="8"]{min-height:2301px !important}
+  body.hw-handwritten.statml-standardized [data-stage="1"]{padding-bottom:75px !important}
+}
+@media (min-width: 360px) and (max-width: 900px) {
+  body.hw-handwritten.statml-standardized [data-stage="1"]{min-height:1136px !important}
+  body.hw-handwritten.statml-standardized [data-stage="2"]{min-height:913px !important}
+  body.hw-handwritten.statml-standardized [data-stage="3"]{min-height:1567px !important}
+  body.hw-handwritten.statml-standardized [data-stage="4"]{min-height:769px !important}
+  body.hw-handwritten.statml-standardized [data-stage="5"]{min-height:729px !important}
+  body.hw-handwritten.statml-standardized [data-stage="6"]{min-height:1740px !important}
+  body.hw-handwritten.statml-standardized [data-stage="7"]{min-height:2774px !important}
+  body.hw-handwritten.statml-standardized [data-stage="8"]{min-height:2498px !important}
+}
+</style>
 </head>
 <body>
 <nav class="statml-site-nav" aria-label="StatML Academy navigation">
@@ -1085,7 +1200,7 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
         
         <div class="vis-col">
             <div class="canvas-container">
-                <canvas id="regCanvas"></canvas>
+                <canvas id="regCanvas" aria-label="Simple linear regression interactive scatterplot with fitted lines, residuals, and predictions"></canvas>
             </div>
         </div>
     </div>
@@ -1472,6 +1587,36 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
             return { m: badM, b: badB, sse };
         }
 
+        const sketchRandom = (seed) => {
+            if (window.StatMLInk?.inkRandom) return window.StatMLInk.inkRandom(seed);
+            let state = 2166136261 >>> 0;
+            for (const ch of String(seed)) {
+                state ^= ch.charCodeAt(0);
+                state = Math.imul(state, 16777619) >>> 0;
+            }
+            return () => {
+                state = (Math.imul(state, 1664525) + 1013904223) >>> 0;
+                return state / 4294967296;
+            };
+        };
+
+        const sketchColor = color => ({
+            '#4f46e5': '#2869ad',
+            /* Keep the authored amber line legible on warm paper; the lighter
+               digital orange was losing the teaching signal at 1× scale. */
+            '#f59e0b': '#c4621c',
+            '#dc2626': '#c84b43',
+            '#1f2937': '#202421',
+            '#ffffff': '#fbf4e2',
+            '#fcfcfd': '#fbf4e2',
+            '#e7e5e4': 'rgba(88, 83, 72, .44)',
+            '#f1f5f9': 'rgba(88, 83, 72, .16)',
+            '#cbd5e1': 'rgba(88, 83, 72, .58)',
+            '#64748b': '#59645c',
+            '#475569': '#3e4b43',
+            '#6b7280': '#59645c'
+        }[color] || color);
+
         function renderMiniChart(svgId, options = {}) {
             const svg = document.getElementById(svgId);
             if (!svg) return;
@@ -1481,102 +1626,116 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
             const pad = { top: 22, right: 18, bottom: 40, left: 42 };
             const chartW = w - pad.left - pad.right;
             const chartH = h - pad.top - pad.bottom;
-            const clipId = `${svgId}-clip`;
+            const clipId = svgId + '-clip';
             const bounds = plotBounds;
+            const cosmetic = sketchRandom('mini:' + svgId);
 
             const sx = val => pad.left + ((val - bounds.minX) / (bounds.maxX - bounds.minX || 1)) * chartW;
             const sy = val => h - pad.bottom - ((val - bounds.minY) / (bounds.maxY - bounds.minY || 1)) * chartH;
+            const inkWidth = width => (width * (.96 + cosmetic() * .08)).toFixed(2);
+            /* One authored path per semantic line. Endpoints stay on the data
+               coordinates; only the interior control point receives seeded
+               cosmetic wobble. */
+            const inkLine = (x1, y1, x2, y2, color, width = 1.2, dash = '') => {
+                const wobble = Math.min(2, Math.max(.42, width * .55));
+                const mx = (x1 + x2) / 2 + (cosmetic() - .5) * wobble;
+                const my = (y1 + y2) / 2 + (cosmetic() - .5) * wobble;
+                return '<path d="M ' + x1 + ' ' + y1 + ' L ' + mx.toFixed(2) + ' ' + my.toFixed(2) + ' L ' + x2 + ' ' + y2 +
+                    '" fill="none" stroke="' + sketchColor(color) + '" stroke-width="' + inkWidth(width) +
+                    '" stroke-linecap="round" stroke-linejoin="round"' + (dash ? ' stroke-dasharray="' + dash + '"' : '') + '></path>';
+            };
+            /* One irregular closed path per semantic marker. The anchor remains
+               the exact supplied centre so scale/labels and mark count stay
+               unchanged while the outline reads as authored ink. */
+            const inkCircle = (cx, cy, r, fill, stroke, width = 1.5) => {
+                const points = [];
+                const sides = 16;
+                for (let i = 0; i < sides; i += 1) {
+                    const angle = i / sides * Math.PI * 2;
+                    const radialWobble = (cosmetic() - .5) * Math.min(.85, r * .16);
+                    const radius = r + radialWobble;
+                    points.push([cx + Math.cos(angle) * radius, cy + Math.sin(angle) * radius]);
+                }
+                const d = points.map((point, index) => (index ? 'L ' : 'M ') + point[0].toFixed(2) + ' ' + point[1].toFixed(2)).join(' ') + ' Z';
+                return '<path d="' + d + '" fill="' + sketchColor(fill) +
+                    '" stroke="' + sketchColor(stroke || '#202421') + '" stroke-width="' + inkWidth(width) +
+                    '" stroke-linecap="round" stroke-linejoin="round"></path>';
+            };
+            const inkText = (x, y, anchor, size, color, value, extra = '') =>
+                '<text x="' + x + '" y="' + y + '" text-anchor="' + anchor + '" font-size="' + size +
+                '" fill="' + sketchColor(color) + '" font-family="Patrick Hand, Kalam, Comic Sans MS, cursive"' +
+                (extra ? ' ' + extra : '') + '>' + value + '</text>';
+            const chartPath = 'M ' + (pad.left + 1) + ' ' + (pad.top + 1) +
+                ' L ' + (pad.left + chartW - 1) + ' ' + (pad.top - .2) +
+                ' L ' + (pad.left + chartW + .4) + ' ' + (pad.top + chartH - 1) +
+                ' L ' + (pad.left - .5) + ' ' + (pad.top + chartH + .6) + ' Z';
 
-            let markup = `
-                <defs>
-                    <clipPath id="${clipId}">
-                        <rect x="${pad.left}" y="${pad.top}" width="${chartW}" height="${chartH}" rx="10"></rect>
-                    </clipPath>
-                </defs>
-                <rect x="0" y="0" width="${w}" height="${h}" fill="#fcfcfd"></rect>
-                <rect x="${pad.left}" y="${pad.top}" width="${chartW}" height="${chartH}" rx="10" fill="#ffffff" stroke="#e7e5e4"></rect>
-            `;
+            let markup = '<defs><clipPath id="' + clipId + '"><rect x="' + pad.left + '" y="' + pad.top +
+                '" width="' + chartW + '" height="' + chartH + '" rx="10"></rect></clipPath></defs>' +
+                '<rect x="0" y="0" width="' + w + '" height="' + h + '" fill="#fbf4e2"></rect>' +
+                '<path d="' + chartPath + '" fill="rgba(255,253,245,.70)" stroke="rgba(88,83,72,.44)" stroke-width="' + inkWidth(1) +
+                '" stroke-linecap="round" stroke-linejoin="round"></path>';
 
             getTickValues(bounds.minX, bounds.maxX, bounds.xStep).forEach(x => {
-                markup += `
-                    <line x1="${sx(x)}" y1="${pad.top}" x2="${sx(x)}" y2="${h - pad.bottom}" stroke="#f1f5f9" stroke-width="1"></line>
-                    <text x="${sx(x)}" y="${h - pad.bottom + 18}" text-anchor="middle" font-size="10" fill="#6b7280" font-family="JetBrains Mono, monospace">${formatAxisValue(x, bounds.xStep)}</text>
-                `;
+                markup += inkLine(sx(x), pad.top, sx(x), h - pad.bottom, '#f1f5f9', 1) +
+                    inkText(sx(x), h - pad.bottom + 18, 'middle', 10, '#6b7280', formatAxisValue(x, bounds.xStep));
             });
 
             getTickValues(bounds.minY, bounds.maxY, bounds.yStep).forEach(y => {
-                markup += `
-                    <line x1="${pad.left}" y1="${sy(y)}" x2="${w - pad.right}" y2="${sy(y)}" stroke="#f1f5f9" stroke-width="1"></line>
-                    <text x="${pad.left - 8}" y="${sy(y) + 3}" text-anchor="end" font-size="10" fill="#6b7280" font-family="JetBrains Mono, monospace">${formatAxisValue(y, bounds.yStep)}</text>
-                `;
+                markup += inkLine(pad.left, sy(y), w - pad.right, sy(y), '#f1f5f9', 1) +
+                    inkText(pad.left - 8, sy(y) + 3, 'end', 10, '#6b7280', formatAxisValue(y, bounds.yStep));
             });
 
-            markup += `
-                <line x1="${pad.left}" y1="${h - pad.bottom}" x2="${w - pad.right}" y2="${h - pad.bottom}" stroke="#cbd5e1" stroke-width="1.5"></line>
-                <line x1="${pad.left}" y1="${pad.top}" x2="${pad.left}" y2="${h - pad.bottom}" stroke="#cbd5e1" stroke-width="1.5"></line>
-                <text x="${w / 2}" y="${h - 8}" text-anchor="middle" font-size="11" fill="#64748b" font-family="Inter, sans-serif">Hours</text>
-                <text x="16" y="${h / 2}" text-anchor="middle" font-size="11" fill="#64748b" font-family="Inter, sans-serif" transform="rotate(-90 16 ${h / 2})">Score</text>
-                <g clip-path="url(#${clipId})">
-            `;
+            markup += inkLine(pad.left, h - pad.bottom, w - pad.right, h - pad.bottom, '#cbd5e1', 1.5) +
+                inkLine(pad.left, pad.top, pad.left, h - pad.bottom, '#cbd5e1', 1.5) +
+                inkText(w / 2, h - 8, 'middle', 11, '#64748b', 'Hours') +
+                inkText(16, h / 2, 'middle', 11, '#64748b', 'Score', 'transform="rotate(-90 16 ' + h / 2 + ')"');
+
+            markup += '<g clip-path="url(#' + clipId + ')">';
 
             (options.lines || []).forEach(line => {
-                const strokeDash = line.dash ? `stroke-dasharray="${line.dash}"` : '';
-                markup += `
-                    <line
-                        x1="${sx(bounds.minX)}"
-                        y1="${sy(line.m * bounds.minX + line.b)}"
-                        x2="${sx(bounds.maxX)}"
-                        y2="${sy(line.m * bounds.maxX + line.b)}"
-                        stroke="${line.color}"
-                        stroke-width="${line.width || 3}"
-                        ${strokeDash}
-                    ></line>
-                `;
+                markup += inkLine(
+                    sx(bounds.minX),
+                    sy(line.m * bounds.minX + line.b),
+                    sx(bounds.maxX),
+                    sy(line.m * bounds.maxX + line.b),
+                    line.color,
+                    line.width || 3,
+                    line.dash || ''
+                );
             });
 
             if (options.showResiduals && options.residualLine) {
                 points.forEach(p => {
                     const predY = options.residualLine.m * p.x + options.residualLine.b;
-                    markup += `
-                        <line
-                            x1="${sx(p.x)}"
-                            y1="${sy(p.y)}"
-                            x2="${sx(p.x)}"
-                            y2="${sy(predY)}"
-                            stroke="#dc2626"
-                            stroke-width="2"
-                            stroke-dasharray="5 4"
-                        ></line>
-                        <circle cx="${sx(p.x)}" cy="${sy(predY)}" r="4.5" fill="#ffffff" stroke="#dc2626" stroke-width="2"></circle>
-                    `;
+                    markup += inkLine(sx(p.x), sy(p.y), sx(p.x), sy(predY), '#dc2626', 2, '5 4');
+                    markup += inkCircle(sx(p.x), sy(predY), 4.5, '#ffffff', '#dc2626', 2);
                 });
             }
 
             points.forEach(p => {
-                markup += `<circle cx="${sx(p.x)}" cy="${sy(p.y)}" r="5" fill="#1f2937" stroke="#ffffff" stroke-width="1.5"></circle>`;
+                markup += inkCircle(sx(p.x), sy(p.y), 5, '#1f2937', '#ffffff', 1.5);
             });
 
-            markup += `</g>`;
+            markup += '</g>';
 
             if (options.legend && options.legend.length) {
                 const legendStep = chartW / options.legend.length;
                 options.legend.forEach((item, index) => {
                     const lx = pad.left + (legendStep * index);
                     const ly = 14;
-
                     if (item.type === 'line') {
-                        const dashAttr = item.dash ? `stroke-dasharray="${item.dash}"` : '';
-                        markup += `<line x1="${lx}" y1="${ly}" x2="${lx + 18}" y2="${ly}" stroke="${item.color}" stroke-width="3" ${dashAttr}></line>`;
+                        markup += inkLine(lx, ly, lx + 18, ly, item.color, 3, item.dash || '');
                     } else {
-                        markup += `<circle cx="${lx + 9}" cy="${ly}" r="5" fill="${item.fill}" stroke="${item.stroke || '#ffffff'}" stroke-width="${item.strokeWidth || 1.5}"></circle>`;
+                        markup += inkCircle(lx + 9, ly, 5, item.fill, item.stroke || '#ffffff', item.strokeWidth || 1.5);
                     }
-
-                    markup += `<text x="${lx + 24}" y="${ly + 4}" font-size="10.5" fill="#475569" font-family="Inter, sans-serif">${item.label}</text>`;
+                    markup += inkText(lx + 24, ly + 4, 'start', 10.5, '#475569', item.label);
                 });
             }
 
             svg.innerHTML = markup;
         }
+
 
         function updateLearningPanels() {
             const observedRange = getObservedRange();
@@ -1651,6 +1810,112 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
         // --- Canvas Engine ---
         const canvas = document.getElementById('regCanvas');
         const ctx = canvas.getContext('2d');
+        const inkStrokeSegments = (segments, { color = '#202421', width = 1.35, alpha = 1, dash = [], seed = 'reg-line', rough = true } = {}) => {
+            const random = sketchRandom(seed);
+            const drawPass = (paths, passAlpha, passWidth, offset = 0) => {
+                ctx.save();
+                ctx.globalAlpha = passAlpha;
+                ctx.strokeStyle = sketchColor(color);
+                ctx.lineWidth = passWidth * (.96 + random() * .08);
+                ctx.lineCap = 'round';
+                ctx.lineJoin = 'round';
+                ctx.setLineDash(dash);
+                ctx.beginPath();
+                paths.forEach(points => {
+                    if (!points || points.length < 2) return;
+                    const path = points.map((point, index) => {
+                        if (!rough || index === 0 || index === points.length - 1) return point;
+                        return [point[0] + (random() - .5) * (1.8 + offset), point[1] + (random() - .5) * (1.8 + offset)];
+                    });
+                    if (rough && points.length === 2) {
+                        const [start, end] = points;
+                        const distance = Math.hypot(end[0] - start[0], end[1] - start[1]);
+                        const interiorCount = distance > 80 ? 3 : 1;
+                        /* The authored endpoints stay fixed, but a long pen
+                           stroke needs broad low-frequency bends to remain
+                           visibly handmade at 1× capture scale. */
+                        const wobble = distance > 80 ? Math.min(8.5 + offset, 5 + width * 1.1 + offset) : Math.min(1.5 + offset, distance * .14);
+                        for (let i = interiorCount; i >= 1; i -= 1) {
+                            const t = i / (interiorCount + 1);
+                            path.splice(1, 0, [
+                                start[0] + (end[0] - start[0]) * t + (random() - .5) * wobble,
+                                start[1] + (end[1] - start[1]) * t + (random() - .5) * wobble
+                            ]);
+                        }
+                    }
+                    path.forEach((point, index) => index ? ctx.lineTo(point[0], point[1]) : ctx.moveTo(point[0], point[1]));
+                });
+                ctx.stroke();
+                ctx.restore();
+            };
+            drawPass(segments, alpha * .52, Math.max(.65, width * .56), 1.15);
+            drawPass(segments, alpha * .86, width, 0);
+        };
+        const inkPath = (points, options = {}) => inkStrokeSegments([points], options);
+        const inkCircle = (x, y, radius, { fill = '#202421', stroke = '#fbf4e2', width = 1.5, alpha = 1, seed = 'reg-dot' } = {}) => {
+            const random = sketchRandom(seed);
+            const points = [];
+            for (let i = 0; i < 13; i += 1) {
+                const angle = i / 13 * Math.PI * 2;
+                const r = radius + (random() - .5) * Math.min(3.2, radius * .42);
+                points.push([x + Math.cos(angle) * r, y + Math.sin(angle) * r]);
+            }
+            ctx.save();
+            ctx.globalAlpha = alpha;
+            ctx.fillStyle = sketchColor(fill);
+            ctx.strokeStyle = sketchColor(stroke);
+            ctx.lineWidth = width;
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+            ctx.beginPath();
+            points.forEach((point, index) => index ? ctx.lineTo(point[0], point[1]) : ctx.moveTo(point[0], point[1]));
+            ctx.closePath();
+            ctx.fill();
+            if (stroke && width > 0) ctx.stroke();
+            if (stroke && width > 0) {
+                const second = points.map(point => [point[0] + (random() - .5) * 2.6, point[1] + (random() - .5) * 2.6]);
+                ctx.globalAlpha = alpha * .68;
+                ctx.lineWidth = Math.max(.65, width * .58);
+                ctx.beginPath();
+                second.forEach((point, index) => index ? ctx.lineTo(point[0], point[1]) : ctx.moveTo(point[0], point[1]));
+                ctx.closePath();
+                ctx.stroke();
+            }
+            ctx.restore();
+        };
+        const inkSquare = (x, y, size, { fill = 'rgba(200, 75, 67, .15)', stroke = 'rgba(200, 75, 67, .5)', width = 1, alpha = 1, seed = 'reg-square' } = {}) => {
+            const random = sketchRandom(seed);
+            const wobble = () => (random() - .5) * 1.2;
+            const points = [[x + wobble(), y + wobble()], [x + size + wobble(), y + wobble()], [x + size + wobble(), y + size + wobble()], [x + wobble(), y + size + wobble()]];
+            ctx.save();
+            ctx.globalAlpha = alpha;
+            ctx.fillStyle = fill;
+            ctx.strokeStyle = stroke;
+            ctx.lineWidth = width;
+            ctx.lineJoin = 'round';
+            ctx.beginPath();
+            points.forEach((point, index) => index ? ctx.lineTo(point[0], point[1]) : ctx.moveTo(point[0], point[1]));
+            ctx.closePath();
+            ctx.fill();
+            ctx.stroke();
+            ctx.restore();
+        };
+        const inkText = (value, x, y, { color = '#202421', size = 12, weight = '400', align = 'left', baseline = 'alphabetic', alpha = 1, rotate = 0 } = {}) => {
+            ctx.save();
+            ctx.globalAlpha = alpha;
+            ctx.fillStyle = sketchColor(color);
+            ctx.font = weight + ' ' + size + 'px "Patrick Hand", "Kalam", "Comic Sans MS", cursive';
+            ctx.textAlign = align;
+            ctx.textBaseline = baseline;
+            if (rotate) {
+                ctx.translate(x, y);
+                ctx.rotate(rotate);
+                ctx.fillText(value, 0, 0);
+            } else {
+                ctx.fillText(value, x, y);
+            }
+            ctx.restore();
+        };
         let width, height, padding = 40;
         let lastRect = { w: 0, h: 0 };
 
@@ -1679,228 +1944,172 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
         function mapY(val) { return height - padding - ((val - plotBounds.minY) / (plotBounds.maxY - plotBounds.minY || 1)) * (height - 2 * padding); }
 
         function drawAxes() {
-            ctx.beginPath();
-            ctx.strokeStyle = '#e7e5e4';
-            ctx.lineWidth = 2;
-            
-            // Y Axis
-            ctx.moveTo(mapX(plotBounds.minX), mapY(plotBounds.minY)); ctx.lineTo(mapX(plotBounds.minX), mapY(plotBounds.maxY));
-            // X Axis
-            ctx.moveTo(mapX(plotBounds.minX), mapY(plotBounds.minY)); ctx.lineTo(mapX(plotBounds.maxX), mapY(plotBounds.minY));
-            ctx.stroke();
+            inkStrokeSegments([
+                [[mapX(plotBounds.minX), mapY(plotBounds.minY)], [mapX(plotBounds.minX), mapY(plotBounds.maxY)]],
+                [[mapX(plotBounds.minX), mapY(plotBounds.minY)], [mapX(plotBounds.maxX), mapY(plotBounds.minY)]]
+            ], { color: '#59645c', width: 1.5, seed: 'reg:axes', rough: true });
 
-            ctx.fillStyle = '#6b7280';
-            ctx.font = '12px "JetBrains Mono"';
-            ctx.textAlign = 'center'; ctx.textBaseline = 'top';
-            
-            // X ticks
             getTickValues(plotBounds.minX, plotBounds.maxX, plotBounds.xStep).forEach(i => {
-                ctx.fillText(formatAxisValue(i, plotBounds.xStep), mapX(i), mapY(plotBounds.minY) + 8);
-                ctx.beginPath(); ctx.moveTo(mapX(i), mapY(plotBounds.minY)); ctx.lineTo(mapX(i), mapY(plotBounds.minY) + 4); ctx.stroke();
+                inkText(formatAxisValue(i, plotBounds.xStep), mapX(i), mapY(plotBounds.minY) + 8, { color: '#59645c', size: 12, align: 'center', baseline: 'top' });
+                inkPath([[mapX(i), mapY(plotBounds.minY)], [mapX(i), mapY(plotBounds.minY) + 4]], { color: '#59645c', width: 1, seed: 'reg:x-tick:' + i, rough: true });
             });
-            ctx.fillText("Hours Studied (x)", width / 2, mapY(plotBounds.minY) + 25);
+            inkText('Hours Studied (x)', width / 2, mapY(plotBounds.minY) + 25, { color: '#59645c', size: 12, align: 'center', baseline: 'top' });
 
-            // Y ticks
-            ctx.textAlign = 'right'; ctx.textBaseline = 'middle';
             getTickValues(plotBounds.minY, plotBounds.maxY, plotBounds.yStep).forEach(i => {
-                ctx.fillText(formatAxisValue(i, plotBounds.yStep), mapX(plotBounds.minX) - 8, mapY(i));
-                ctx.beginPath(); ctx.moveTo(mapX(plotBounds.minX), mapY(i)); ctx.lineTo(mapX(plotBounds.minX) - 4, mapY(i)); ctx.stroke();
+                inkText(formatAxisValue(i, plotBounds.yStep), mapX(plotBounds.minX) - 8, mapY(i), { color: '#59645c', size: 12, align: 'right', baseline: 'middle' });
+                inkPath([[mapX(plotBounds.minX), mapY(i)], [mapX(plotBounds.minX) - 4, mapY(i)]], { color: '#59645c', width: 1, seed: 'reg:y-tick:' + i, rough: true });
             });
-            
-            ctx.save();
-            ctx.translate(mapX(plotBounds.minX) - 35, height / 2);
-            ctx.rotate(-Math.PI / 2);
-            ctx.textAlign = 'center';
-            ctx.fillText("Test Score (y)", 0, 0);
-            ctx.restore();
+
+            inkText('Test Score (y)', mapX(plotBounds.minX) - 35, height / 2, { color: '#59645c', size: 12, align: 'center', baseline: 'middle', rotate: -Math.PI / 2 });
         }
+
 
         function drawPoints(alpha) {
             if (alpha <= 0) return;
             points.forEach(p => {
-                ctx.beginPath();
-                ctx.arc(mapX(p.x), mapY(p.y), 6, 0, Math.PI * 2);
-                ctx.fillStyle = `rgba(31, 41, 55, ${alpha})`;
-                ctx.fill();
-                ctx.strokeStyle = `rgba(255, 255, 255, ${alpha})`;
-                ctx.lineWidth = 2; ctx.stroke();
+                inkCircle(mapX(p.x), mapY(p.y), 6, {
+                    fill: '#202421',
+                    stroke: '#fbf4e2',
+                    width: 2,
+                    alpha,
+                    seed: 'reg:point:' + p.id
+                });
             });
         }
+
 
         function drawLine(m, b, color, label, alpha) {
             if (alpha <= 0) return;
             const startY = m * plotBounds.minX + b;
             const endY = m * plotBounds.maxX + b;
 
-            ctx.beginPath();
-            ctx.moveTo(mapX(plotBounds.minX), mapY(startY));
-            ctx.lineTo(mapX(plotBounds.maxX), mapY(endY));
-            
-            ctx.strokeStyle = color.replace(')', `, ${alpha})`).replace('rgb', 'rgba');
-            if(color.startsWith('#')) {
-                // simple hack for hex to rgba since our colors are mostly defined
-                ctx.globalAlpha = alpha;
-                ctx.strokeStyle = color;
-            }
-            ctx.lineWidth = 3;
-            ctx.stroke();
-            ctx.globalAlpha = 1.0;
-            
+            inkPath([
+                [mapX(plotBounds.minX), mapY(startY)],
+                [mapX(plotBounds.maxX), mapY(endY)]
+            ], { color, width: 3, alpha, seed: 'reg:model:' + label });
+
             if (alpha > 0.5 && label) {
-                ctx.fillStyle = color;
-                ctx.font = 'bold 12px "JetBrains Mono"';
-                ctx.textAlign = 'left';
-                ctx.textBaseline = 'bottom';
-                // Find a good spot to label
                 const lx = plotBounds.minX + ((plotBounds.maxX - plotBounds.minX) * 0.7);
                 const ly = m * lx + b;
-                if(ly >= plotBounds.minY && ly <= plotBounds.maxY) {
-                    ctx.fillText(label, mapX(lx), mapY(ly) - 10);
+                if (ly >= plotBounds.minY && ly <= plotBounds.maxY) {
+                    inkText(label, mapX(lx), mapY(ly) - 10, { color, size: 12, weight: '700', baseline: 'bottom' });
                 }
             }
         }
+
 
         function drawResidualsAndSquares(m, b, resAlpha, sqAlpha) {
             points.forEach(p => {
                 const predictedY = m * p.x + b;
                 const error = p.y - predictedY;
-                
+
                 if (resAlpha > 0) {
-                    ctx.beginPath();
-                    ctx.moveTo(mapX(p.x), mapY(p.y));
-                    ctx.lineTo(mapX(p.x), mapY(predictedY));
-                    ctx.strokeStyle = `rgba(220, 38, 38, ${resAlpha})`; 
-                    ctx.lineWidth = 2; ctx.setLineDash([4, 4]); ctx.stroke(); ctx.setLineDash([]);
+                    inkPath([
+                        [mapX(p.x), mapY(p.y)],
+                        [mapX(p.x), mapY(predictedY)]
+                    ], { color: '#c84b43', width: 2, alpha: resAlpha, dash: [4, 4], seed: 'reg:residual:' + p.id });
                 }
-                
+
                 if (sqAlpha > 0) {
                     const pixelYActual = mapY(p.y);
                     const pixelYPred = mapY(predictedY);
                     const pixelDiff = Math.abs(pixelYActual - pixelYPred);
-                    
-                    ctx.fillStyle = `rgba(220, 38, 38, ${sqAlpha * 0.15})`;
-                    ctx.strokeStyle = `rgba(220, 38, 38, ${sqAlpha * 0.5})`;
-                    ctx.lineWidth = 1;
-                    
                     const topY = Math.min(pixelYActual, pixelYPred);
-                    ctx.fillRect(mapX(p.x), topY, pixelDiff, pixelDiff);
-                    ctx.strokeRect(mapX(p.x), topY, pixelDiff, pixelDiff);
+                    inkSquare(mapX(p.x), topY, pixelDiff, {
+                        fill: 'rgba(200, 75, 67, ' + (sqAlpha * .15) + ')',
+                        stroke: 'rgba(200, 75, 67, ' + (sqAlpha * .5) + ')',
+                        width: 1,
+                        seed: 'reg:residual-square:' + p.id
+                    });
                 }
             });
         }
 
+
         function drawSST(alpha) {
             if (alpha <= 0) return;
             const meanY = stats.yBar;
-            
-            ctx.save();
-            ctx.globalAlpha = alpha;
-            
-            // Draw deviations and squares for SST
+
             points.forEach(p => {
                 const pixelYActual = mapY(p.y);
                 const pixelYMean = mapY(meanY);
                 const pixelDiff = Math.abs(pixelYActual - pixelYMean);
-                
-                // Squares (using accent color)
-                ctx.fillStyle = `rgba(99, 102, 241, 0.15)`; 
-                ctx.strokeStyle = `rgba(99, 102, 241, 0.4)`;
-                ctx.lineWidth = 1;
-                
                 const topY = Math.min(pixelYActual, pixelYMean);
-                ctx.fillRect(mapX(p.x), topY, pixelDiff, pixelDiff);
-                ctx.strokeRect(mapX(p.x), topY, pixelDiff, pixelDiff);
 
-                // Vertical deviation line to mean
-                ctx.beginPath();
-                ctx.moveTo(mapX(p.x), pixelYActual);
-                ctx.lineTo(mapX(p.x), pixelYMean);
-                ctx.strokeStyle = `#6366f1`;
-                ctx.lineWidth = 2; 
-                ctx.setLineDash([4, 4]);
-                ctx.stroke(); 
-                ctx.setLineDash([]);
+                inkSquare(mapX(p.x), topY, pixelDiff, {
+                    fill: 'rgba(128, 87, 189, .15)',
+                    stroke: 'rgba(128, 87, 189, .4)',
+                    width: 1,
+                    alpha,
+                    seed: 'reg:sst-square:' + p.id
+                });
+                inkPath([
+                    [mapX(p.x), pixelYActual],
+                    [mapX(p.x), pixelYMean]
+                ], { color: '#8057bd', width: 2, alpha, dash: [4, 4], seed: 'reg:sst-deviation:' + p.id });
             });
 
-            // Draw horizontal mean line on top of squares
-            ctx.beginPath();
-            ctx.moveTo(mapX(plotBounds.minX), mapY(meanY));
-            ctx.lineTo(mapX(plotBounds.maxX), mapY(meanY));
-            ctx.strokeStyle = `#6366f1`; // var(--accent)
-            ctx.lineWidth = 3;
-            ctx.stroke();
-            
-            // Label mean line
-            ctx.fillStyle = `#4f46e5`; // var(--accent-dark)
-            ctx.font = 'bold 13px "JetBrains Mono"';
-            ctx.textAlign = 'left';
-            ctx.textBaseline = 'bottom';
-            ctx.fillText("y = ȳ (Mean)", mapX(plotBounds.minX) + 12, mapY(meanY) - 8);
-
-            ctx.restore();
+            inkPath([
+                [mapX(plotBounds.minX), mapY(meanY)],
+                [mapX(plotBounds.maxX), mapY(meanY)]
+            ], { color: '#8057bd', width: 3, alpha, seed: 'reg:sst-mean' });
+            inkText('y = ȳ (Mean)', mapX(plotBounds.minX) + 12, mapY(meanY) - 8, {
+                color: '#8057bd',
+                size: 13,
+                weight: '700',
+                baseline: 'bottom',
+                alpha
+            });
         }
+
 
         function drawMeanPoint(alpha) {
             if (alpha <= 0) return;
             const px = mapX(stats.xBar);
             const py = mapY(stats.yBar);
-            
-            // Dashed crosshairs
-            ctx.beginPath();
-            ctx.moveTo(px, mapY(plotBounds.minY)); ctx.lineTo(px, mapY(plotBounds.maxY));
-            ctx.moveTo(mapX(plotBounds.minX), py); ctx.lineTo(mapX(plotBounds.maxX), py);
-            ctx.strokeStyle = `rgba(22, 163, 74, ${alpha * 0.3})`;
-            ctx.setLineDash([3, 3]); ctx.stroke(); ctx.setLineDash([]);
 
-            // Dot
-            ctx.beginPath();
-            ctx.arc(px, py, 7, 0, Math.PI * 2);
-            ctx.fillStyle = `rgba(22, 163, 74, ${alpha})`;
-            ctx.fill();
-            ctx.strokeStyle = '#fff'; ctx.lineWidth = 2; ctx.stroke();
-            
-            ctx.fillStyle = `rgba(22, 163, 74, ${alpha})`;
-            ctx.font = 'bold 12px "Inter"';
-            ctx.textAlign = 'right';
-            ctx.fillText("(x̄, ȳ)", px - 10, py - 10);
+            inkStrokeSegments([
+                [[px, mapY(plotBounds.minY)], [px, mapY(plotBounds.maxY)]],
+                [[mapX(plotBounds.minX), py], [mapX(plotBounds.maxX), py]]
+            ], { color: '#3f9a63', width: 1, alpha: alpha * .3, dash: [3, 3], seed: 'reg:mean-crosshair' });
+            inkCircle(px, py, 7, { fill: '#3f9a63', stroke: '#fbf4e2', width: 2, alpha, seed: 'reg:mean-point' });
+            inkText('(x̄, ȳ)', px - 10, py - 10, { color: '#3f9a63', size: 12, weight: '700', align: 'right', alpha });
         }
+
 
         function drawPlayground(alpha) {
             if (alpha <= 0) return;
             const pX = state.playX;
-            
-            // Draw points for both lines
+
             [
-                { m: state.userM, b: state.userB, color: '#f59e0b' },
-                { m: stats.optM, b: stats.optB, color: '#4f46e5' }
+                { m: state.userM, b: state.userB, color: '#f59e0b', key: 'user' },
+                { m: stats.optM, b: stats.optB, color: '#4f46e5', key: 'optimal' }
             ].forEach(line => {
                 const pY = line.m * pX + line.b;
-                
-                // Vertical Drop Line
-                ctx.beginPath();
-                ctx.moveTo(mapX(pX), mapY(plotBounds.minY)); ctx.lineTo(mapX(pX), mapY(pY));
-                ctx.strokeStyle = line.color; ctx.globalAlpha = alpha * 0.4;
-                ctx.setLineDash([4, 4]); ctx.stroke(); ctx.setLineDash([]); ctx.globalAlpha = 1;
-
-                // Point
-                ctx.beginPath();
-                ctx.arc(mapX(pX), mapY(pY), 8, 0, Math.PI * 2);
-                ctx.fillStyle = line.color; ctx.fill();
-                ctx.strokeStyle = '#fff'; ctx.lineWidth = 2; ctx.stroke();
-                
-                // Label
-                ctx.fillStyle = line.color;
-                ctx.font = 'bold 14px "JetBrains Mono"';
-                ctx.textAlign = 'left';
-                ctx.fillText(pY.toFixed(1), mapX(pX) + 12, mapY(pY) - 8);
+                inkPath([
+                    [mapX(pX), mapY(plotBounds.minY)],
+                    [mapX(pX), mapY(pY)]
+                ], { color: line.color, width: 1.35, alpha: alpha * .4, dash: [4, 4], seed: 'reg:playground-drop:' + line.key });
+                inkCircle(mapX(pX), mapY(pY), 8, { fill: line.color, stroke: '#fbf4e2', width: 2, seed: 'reg:playground-point:' + line.key });
+                inkText(pY.toFixed(1), mapX(pX) + 12, mapY(pY) - 8, { color: line.color, size: 14, weight: '700', baseline: 'bottom' });
             });
         }
+
 
         // --- Render Loop ---
         function lerp(start, end, amt) { return (1 - amt) * start + amt * end; }
 
         function render() {
             ctx.clearRect(0, 0, width, height);
+            ctx.save();
+            ctx.fillStyle = '#faf5e8';
+            ctx.fillRect(0, 0, width, height);
+            ctx.restore();
+            for (let y = 18; y < height; y += 28) {
+                inkStrokeSegments([[[10, y], [width - 10, y + (sketchRandom('paper-rule:' + y)() - .5) * .9]]], {
+                    color: 'rgba(120,105,76,.42)', width: .45, alpha: .18, seed: 'paper-rule:' + y, rough: true
+                });
+            }
             
             // Stage configuration mapping
             const stages = {
@@ -2012,7 +2221,9 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
   if (badge) badge.textContent = META.badge;
 
   const stageEls = $$('[data-stage]').filter(el => Number(el.dataset.stage) > 0).sort((a,b) => Number(a.dataset.stage)-Number(b.dataset.stage));
-  const emojiRE = /[\p{Extended_Pictographic}️]/gu;
+  // Inline tokens are converted to local ink doodles after the runtime has
+  // built the stage rail; do not delete their semantic positions here.
+  const emojiRE = /$^/gu;
   stageEls.forEach((stage, index) => {
     stage.classList.add('statml-stage');
     const n = Number(stage.dataset.stage);
@@ -2096,5 +2307,37 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
 
 <script src="core-modules.js"></script>
 <script src="academic-rigor.js"></script>
+<style id="inline-ink-doodle-style">
+.hw-inline-doodle{display:inline-block;width:1.08em;height:1.08em;margin-inline:.045em;vertical-align:-.17em;line-height:1;position:relative;transform:rotate(var(--hw-tilt,0deg));color:currentColor}
+.hw-inline-doodle svg{display:block;width:100%;height:100%;overflow:visible}
+.hw-inline-doodle path,.hw-inline-doodle circle,.hw-inline-doodle ellipse,.hw-inline-doodle line,.hw-inline-doodle polyline,.hw-inline-doodle rect{fill:none;stroke:currentColor;stroke-width:1.15;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke}
+.hw-inline-doodle .ink-fill{fill:currentColor;fill-opacity:.16}
+.hw-inline-doodle .ink-warm{stroke:#b55a52}.hw-inline-doodle .ink-orange{stroke:#d97706}.hw-inline-doodle .ink-green{stroke:#2d7a4b}.hw-inline-doodle .ink-red{stroke:#b84b47}
+</style>
+<script id="inline-ink-doodle-runtime">
+(()=>{const re=/(\p{Extended_Pictographic}(?:\uFE0F)?)/gu,kind=Object.create(null);
+[['👀','eyes'],['▶','play'],['⏸','pause'],['⚠️','warn'],['⚠','warn'],['❌','cross'],['📖','book'],['💡','bulb'],['🍎','apple'],['🍊','orange'],['★','star'],['✅','check'],['🧠','brain'],['💪','muscle'],['🍦','ice'],['🤔','think'],['📌','pin'],['📏','ruler'],['🚧','barrier'],['✨','spark'],['📐','angle'],['🛠️','tools'],['🛠','tools'],['📋','clipbd'],['⚙️','gear'],['⚙','gear'],['🚦','traffic'],['🔍','magnify'],['📊','chart'],['👉','point'],['🔔','bell'],['📎','clip'],['🎲','dice'],['🌟','sun'],['🍬','candy'],['🔬','scope'],['🎉','party'],['🟢','green'],['🔵','blue'],['🟠','orangeDot'],['🔴','red'],['🔢','numbers'],['🔥','fire']].forEach(a=>kind[a[0].replace(/\uFE0F/g,'')]=a[1]);
+const shape={
+eyes:'<path d="M1 6Q3 2 5.8 6Q3 10 1 6"/><path d="M6.2 6Q9 2 11 6Q9 10 6.2 6"/><ellipse cx="3.5" cy="6" rx=".7" ry="1.1"/><ellipse cx="8.5" cy="6" rx=".7" ry="1.1"/>',
+play:'<path class="ink-fill" d="M2 1.5L10 5.8L2.1 10Q1.4 10 1.5 9Z"/>',pause:'<path d="M3 2L3.1 10"/><path d="M8.6 2.1L8.5 9.8"/>',
+warn:'<path class="ink-fill" d="M6 1L11 10L1 10Z"/><path d="M6 3.6L6.2 7.2"/><circle cx="6.15" cy="8.6" r=".45"/>',
+cross:'<path d="M2 2L10 10"/><path d="M10 2L2 10"/>',book:'<path d="M1.3 2Q3.6 1.3 5.9 3V10Q3.5 8.5 1.3 9Z"/><path d="M10.7 2Q8.4 1.3 6.1 3V10Q8.5 8.5 10.7 9Z"/><path d="M2.3 4Q4 3.8 5.5 4.8M9.7 4Q8 3.8 6.5 4.8"/>',
+bulb:'<path class="ink-fill" d="M3 6Q2.8 3 6 1.7Q9.2 3 8.8 6Q8 7.5 7 7.8H4.8Q3.8 7.2 3 6Z"/><path d="M4.7 8.4L7.3 8.3M5.1 9.5L6.9 9.4"/>',
+apple:'<path class="ink-fill ink-warm" d="M2.1 4.4Q3.5 2.9 5.6 3.8Q7.7 2.9 9.5 4.5Q10 7.6 7.3 10Q6 10.8 5.5 9.8Q4.6 10.8 3.3 10Q1.1 7.7 2.1 4.4Z"/><path d="M5.7 3.6Q5.5 1.7 7.2 .9Q8.5 .7 8.9 1.2Q7.9 2.7 5.7 3.6Z"/>',
+orange:'<path class="ink-fill ink-orange" d="M6 1.9Q9.8 1.8 10 6Q9.7 9.8 6 10Q2.2 9.8 2 6Q2.2 2.1 6 1.9Z"/><path d="M5.8 1.9Q6.1 1.1 7.4 1.2M4.1 4.4Q5.6 3.8 7.5 4.2"/>',
+star:'<path class="ink-fill" d="M6 1.1L7.1 4.2L10.3 4.2L7.8 6.1L8.8 9.6L6 7.5L3.1 9.6L4.1 6.2L1.6 4.2L4.9 4.1Z"/>',
+check:'<path d="M1.6 6.2L4.5 9.1L10.4 2.8"/>',brain:'<path class="ink-fill" d="M4 10Q1.8 9 2.4 7.2Q.9 5.4 2.4 4.2Q1.7 2.3 3.6 1.8Q5 .4 6 1.7Q7.3 .4 8.6 1.9Q10.4 2.5 9.5 4.1Q11 5.7 9.5 7.2Q10 9.2 7.9 9.8Z"/><path d="M5.8 1.9Q4.8 3 5.9 4Q4.7 5.2 5.9 6Q4.9 7.1 5.8 8.8M3 4.2Q4 4.1 4.4 5M7 3Q8.2 3.2 8.1 4.4M7 7Q8.2 6.9 8.8 7.7"/>',
+muscle:'<path class="ink-fill ink-green" d="M1.7 9Q1.9 6.5 3.5 5.2Q4.8 5.4 5.1 3.6Q5.8 1.7 7.5 2.1Q8.8 2.9 7.9 5Q9.8 4.8 10.2 6.4Q10.2 8.8 7.6 9.8Z"/><path d="M4.6 5.2Q5.8 6.1 7.2 5.1"/>',
+generic:'<path d="M1.5 6Q3 2.4 6 3.2Q8.8 1.7 10.5 5.5Q9 8.8 6.2 8Q3.3 10 1.5 6Z"/><path d="M3 6.4Q6 4.4 9 6.3"/>'
+};
+const aliases={ice:'bulb',think:'generic',pin:'generic',ruler:'ruler',barrier:'generic',spark:'star',angle:'angle',tools:'generic',clipbd:'clip',gear:'generic',traffic:'generic',magnify:'generic',chart:'generic',point:'generic',bell:'generic',clip:'generic',dice:'generic',sun:'star',candy:'generic',scope:'generic',party:'star',green:'generic',blue:'generic',orangeDot:'orange',red:'generic',numbers:'generic',fire:'spark'};
+const labels={'👀':'look here','▶':'play','⏸':'pause','⚠':'warning','❌':'not correct','📖':'book','💡':'idea','🍎':'apple','🍊':'orange','★':'query point','✅':'correct','🧠':'concept','💪':'strength','🍦':'ice cream','🤔':'thinking','📌':'note','📏':'ruler','🚧':'boundary','✨':'sparkle','📐':'angle','🛠':'tools','📋':'clipboard','⚙':'settings','🚦':'decision threshold','🔍':'inspect','📊':'chart','👉':'pointer','🔔':'bell','📎':'paper clip','🎲':'random','🌟':'highlight','🍬':'sigmoid','🔬':'experiment','🎉':'celebration','🟢':'correct','🔵':'training','🟠':'test','🔴':'incorrect','🔢':'numbers','🔥':'important'};
+let serial=0;
+function doodle(t){const n=t.replace(/\uFE0F/g,''),s=document.createElement('span'),k=kind[n]||'generic';s.className='hw-inline-doodle';s.dataset.hwSymbol=t;s.dataset.hwKind=k;s.setAttribute('role','img');s.setAttribute('aria-label',labels[n]||'hand-drawn symbol');s.style.setProperty('--hw-tilt',(((serial++%5)-2)*.65)+'deg');s.innerHTML='<svg viewBox="0 0 12 12" aria-hidden="true" focusable="false">'+(shape[aliases[k]||k]||shape.generic)+'</svg>';return s}
+function scan(root){const w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT),nodes=[];let n;while(n=w.nextNode()){if(!n.nodeValue||n.parentElement.closest('script,style,.hw-inline-doodle'))continue;re.lastIndex=0;if(re.test(n.nodeValue))nodes.push(n)}nodes.forEach(node=>{const v=node.nodeValue;re.lastIndex=0;let at=0,m,frag=document.createDocumentFragment();while((m=re.exec(v))){if(m.index>at)frag.appendChild(document.createTextNode(v.slice(at,m.index)));frag.appendChild(doodle(m[1]));at=m.index+m[1].length}if(at<v.length)frag.appendChild(document.createTextNode(v.slice(at)));node.parentNode.replaceChild(frag,node)})}
+function cleanDoodleLabels(){document.querySelectorAll('.statml-stage-button[aria-label]').forEach(btn=>{const v=btn.getAttribute('aria-label')||'';btn.setAttribute('aria-label',v.replace(re,m=>labels[m.replace(/\uFE0F/g,'')]||'hand-drawn symbol'))})}
+scan(document.body);cleanDoodleLabels();let queued=false;new MutationObserver(()=>{if(queued)return;queued=true;queueMicrotask(()=>{queued=false;scan(document.body);cleanDoodleLabels()})}).observe(document.body,{subtree:true,childList:true});
+})();
+</script>
 </body>
 </html>

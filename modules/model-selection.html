@@ -1001,8 +1001,132 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
 }
 </style>
+<style id="model-selection-layout-polish">
+  /* Keep the generated lesson-outcomes card and the legacy scroll cue in
+     normal flow so the cue cannot cover the middle outcome. */
+  html body:is(.hw-handwritten,.statml-standardized) .statml-hero > .statml-overview + .scroll-cue {
+    position: relative !important;
+    inset: auto !important;
+    margin: .9rem auto 0 !important;
+    transform: none !important;
+  }
+</style>
 
     <link rel="stylesheet" href="academic-rigor.css">
+    <link rel="stylesheet" href="handwritten-theme.css?v=20260826-handwritten-final-2">
+    <script src="handwritten-theme.js?v=20260826-handwritten-final-2" defer></script>
+    <style id="model-selection-handwritten-visual">
+      /* Module-local ink treatment: the original story layout and canvas remain intact. */
+      :root { --paper-ink:#292524; --paper-blue:#356fae; --paper-red:#b85c58; --paper-green:#4f8f69; --paper-gold:#c38b32; }
+      body { background: #f5f0e5; color: var(--paper-ink); }
+      .hero, .layout-wrapper, .statml-stage, .stage { background: transparent !important; }
+      .hero h1, .hero h2, .stage h2, .stage h3, .stage-label, .stage-kicker { font-family:"Patrick Hand","Kalam","Comic Sans MS",cursive !important; letter-spacing:.01em; }
+      .hero p, .stage p, .card, .insight-box, .metric-card, .formula-block, .control-panel, .mini-check, .fold-box, details, button, input { font-family:"Patrick Hand","Kalam","Comic Sans MS",cursive !important; }
+      .card, .insight-box, .metric-card, .formula-block, .control-panel, .mini-check, .fold-box, details { background:rgba(255,252,241,.68) !important; border-color:rgba(72,65,57,.42) !important; box-shadow:1px 2px 0 rgba(82,69,52,.08) !important; }
+      #sim-canvas { display:block; background:#fbf7ec; border:1px solid rgba(72,65,57,.42); border-radius:8px; box-shadow:2px 3px 0 rgba(82,69,52,.08); }
+      .statml-visual { background:rgba(245,240,229,.72) !important; }
+      .statml-stage-rail { background:rgba(255,252,241,.76) !important; border-color:rgba(72,65,57,.32) !important; }
+</style>
+<style id="model-selection-canvas-ink">
+  /* Preserve the original canvas box, but paint its edge as two loose ink
+     passes. The annotation is an open-paper highlighter note, not a UI pill. */
+  html body.hw-handwritten .canvas-container {
+    background:transparent!important; background-image:none!important;
+    border:1px solid transparent!important; border-radius:0!important;
+    box-shadow:none!important; overflow:hidden!important;
+  }
+  html body.hw-handwritten #sim-canvas {
+    background:#fbf7ec!important; background-image:none!important;
+    border:1px solid transparent!important; border-radius:0!important;
+    box-shadow:none!important;
+  }
+  html body.hw-handwritten #canvas-annotation {
+    background:rgba(246,211,72,.24)!important; background-image:none!important;
+    border:0!important; border-bottom:2px solid rgba(194,139,34,.62)!important;
+    border-radius:0!important; box-shadow:none!important;
+    clip-path:polygon(1% 10%,98% 0,100% 86%,3% 100%)!important;
+    transform:rotate(1.1deg)!important; padding:.5rem .95rem!important;
+    color:#285f91!important; opacity:1!important; font-weight:700!important;
+  }
+</style>
+<style id="model-selection-material-pass">
+      body:is(.hw-handwritten,.statml-standardized){background:#f5f0e5!important;color:#292524!important}
+      body:is(.hw-handwritten,.statml-standardized) :is(.hero,.statml-hero,.hero-section,#hero)::before,
+      body:is(.hw-handwritten,.statml-standardized) :is(.hero,.statml-hero,.hero-section,#hero)::after{background:none!important;background-image:none!important;opacity:0!important}
+      body:is(.hw-handwritten,.statml-standardized) :is(.hero-grid,.hero-orbit,.hero-orbits,.hero-particles,.hero-dots,.hero-lines,.hero-signal){background:none!important;background-image:none!important;box-shadow:none!important}
+      body:is(.hw-handwritten,.statml-standardized) :is(.hero,.statml-hero,.hero-section,#hero){background:none!important;background-image:none!important}
+      body:is(.hw-handwritten,.statml-standardized) :is(.hero h1,.statml-hero h1,#hero h1){background:none!important;color:#292524!important;-webkit-text-fill-color:#292524!important;text-shadow:.6px .8px 0 rgba(88,83,72,.12)!important}
+      body:is(.hw-handwritten,.statml-standardized) :is(.glass-card,.card,.metric-card,.control-panel,.controls,.quiz-card,.formula,.formula-block,.math-block,.insight,.insight-box,.takeaway,.plain-translation,.question-card,.comparison-card,.visual-stage,.canvas-wrap,.statml-visual-card,.statml-overview,.hero-objectives,.learning-goals,.hero-goals,.fold-box,.legend-card,.table-card,.stage-card,.info-card,.metric,.pipeline,.mini-check,details,pre,table,.statml-visual){background-image:none!important;background-color:rgba(255,252,242,.8)!important;border-color:rgba(88,83,72,.42)!important;border-radius:5px 8px 4px 7px!important;box-shadow:1px 2px 0 rgba(88,83,72,.09)!important;backdrop-filter:none!important}
+      body:is(.hw-handwritten,.statml-standardized) :is(button,.btn,.control-btn,.interactive-btn,.action-button,select,input[type=text],input[type=number],.quiz-option,.toggle,.choice,.segmented button){background-image:none!important;background-color:rgba(248,243,230,.9)!important;border-color:rgba(88,83,72,.48)!important;border-radius:4px 6px 3px 5px!important;box-shadow:none!important}
+      body:is(.hw-handwritten,.statml-standardized) :is(.tag,.pill,.chip,.badge,.topic-badge,.hero-badge,.stage-badge,.metric-badge,.stage-dot,.orbit-dot,.legend-color,.legend-color-ring,.swatch,.eyebrow-dot){border-radius:3px 6px 4px 5px!important;box-shadow:none!important}
+      body:is(.hw-handwritten,.statml-standardized) :is(.progress-bar,.module-progress span){background:#356fae!important;background-image:none!important;box-shadow:none!important}
+      body:is(.hw-handwritten,.statml-standardized) :is(.statml-stage-rail,.stage-dots,#stage-dots,#stage-dots-container){background:rgba(255,252,242,.8)!important;background-image:none!important;border-color:rgba(88,83,72,.32)!important;border-radius:5px 7px 4px 6px!important;box-shadow:none!important}
+      body:is(.hw-handwritten,.statml-standardized) hr{border-top:1px solid transparent!important}
+      body:is(.hw-handwritten,.statml-standardized) :is(.section,.story-section,.stage,.stage-section,.chapter,.statml-stage){background-color:transparent!important;background-image:none!important}
+      body:is(.hw-handwritten,.statml-standardized) canvas{background:#fbf6e9!important;background-image:none!important}
+</style>
+<style id="model-selection-ink-finishing">
+html body.hw-handwritten.hw-handwritten :is(.scroll-cue,.scroll-hint,.scroll-indicator,.hero-scroll){background:transparent!important;background-image:none!important;clip-path:none!important;box-shadow:none!important;filter:none!important;text-decoration-line:underline!important;text-decoration-style:wavy!important;text-decoration-color:rgba(40,105,173,.55)!important;text-decoration-thickness:1px!important;text-underline-offset:4px!important}
+html body.hw-handwritten.hw-handwritten :is(.scroll-cue span,.scroll-cue::before,.scroll-cue::after){background-image:none!important;background-color:transparent!important;box-shadow:none!important}
+html body.hw-handwritten.hw-handwritten :is([style*="linear-gradient"],[style*="radial-gradient"]){background-image:none!important}
+html body.hw-handwritten.hw-handwritten button:is(.active,.selected),html body.hw-handwritten.hw-handwritten button[aria-pressed="true"],html body.hw-handwritten.hw-handwritten .btn.active{background:#e6f0f8!important;background-image:none!important;color:#174f89!important;border-color:rgba(40,105,173,.64)!important;box-shadow:none!important}
+body:is(.hw-handwritten,.statml-standardized) :is(.scroll-cue,.scroll-hint,.scroll-indicator,.hero-scroll){background:transparent!important;background-image:none!important;clip-path:none!important;box-shadow:none!important;filter:none!important;text-decoration-line:underline!important;text-decoration-style:wavy!important;text-decoration-color:rgba(40,105,173,.55)!important;text-decoration-thickness:1px!important;text-underline-offset:4px!important}
+body:is(.hw-handwritten,.statml-standardized) :is(.scroll-cue span,.scroll-cue::before,.scroll-cue::after){background-image:none!important;background-color:transparent!important;box-shadow:none!important}
+body:is(.hw-handwritten,.statml-standardized) :is([style*="linear-gradient"],[style*="radial-gradient"]){background-image:none!important}
+body:is(.hw-handwritten,.statml-standardized) :is(.legend,.legend-card,.viz-legend,.viz-overlay,.tooltip,.panel,.visual-shell,.visual-stage,.visual-card,.canvas-wrap,.control-panel,.controls,.chart-card,#sim-card){background-image:none!important;backdrop-filter:none!important;border-color:rgba(88,83,72,.42)!important;border-radius:5px 8px 4px 7px!important;box-shadow:1px 2px 0 rgba(88,83,72,.09)!important}
+</style>
+<style id="model-selection-material-override">
+  body:is(.hw-handwritten,.statml-standardized) :is(.statml-rigor-panel,.statml-rigor-panel *, .statml-rigor-grid>div) { font-family:"Patrick Hand","Kalam","Marker Felt","Chalkboard SE",cursive !important; }
+  body:is(.hw-handwritten,.statml-standardized) :is(.statml-rigor-panel,.statml-rigor-grid>div) { background-image:none!important; background-color:rgba(255,252,242,.78)!important; border-color:rgba(88,83,72,.42)!important; border-radius:5px 8px 4px 7px!important; box-shadow:1px 2px 0 rgba(88,83,72,.09)!important; }
+</style>
+<style id="model-selection-status-ink">
+  /* The recommendation is a marker note, not a software status pill. */
+  body.hw-handwritten .recommended-badge {
+    background:#f1d477!important;
+    color:#174f89!important;
+    border:0!important;
+    border-radius:3px 7px 4px 6px!important;
+    clip-path:polygon(1% 13%,97% 1%,100% 83%,4% 100%)!important;
+    box-shadow:none!important;
+    transform:rotate(-1.2deg)!important;
+  }
+</style>
+<style id="model-selection-no-dashed">
+  body:is(.hw-handwritten,.statml-standardized) :is(table,table *,[style*="dashed"]){border-style:solid!important;border-color:transparent!important}
+  body:is(.hw-handwritten,.statml-standardized) .tooltip{border-bottom:2px solid transparent!important;text-decoration-line:underline!important;text-decoration-style:wavy!important;text-underline-offset:3px!important}
+</style>
+<style id="model-selection-desktop-rhythm">
+  /* Keep the baseline desktop stage cadence; mobile keeps the existing auto
+     height so its responsive reading order is unchanged. */
+  @media (min-width:901px){
+    body.hw-handwritten .stage[data-stage="1"]{min-height:859.67px!important}
+    body.hw-handwritten .stage[data-stage="2"]{min-height:1341.55px!important}
+    body.hw-handwritten .stage[data-stage="3"]{min-height:1155.92px!important}
+    body.hw-handwritten .stage[data-stage="4"]{min-height:1019.8px!important}
+    body.hw-handwritten .stage[data-stage="5"]{min-height:1102.5px!important}
+    body.hw-handwritten .stage[data-stage="6"]{min-height:805.59px!important}
+    body.hw-handwritten .stage[data-stage="7"]{min-height:1165.58px!important}
+    body.hw-handwritten .stage[data-stage="8"]{min-height:1335.39px!important}
+    body.hw-handwritten .stage[data-stage="9"]{min-height:894.94px!important}
+    body.hw-handwritten .stage[data-stage="10"]{min-height:1029.31px!important}
+    body.hw-handwritten .stage[data-stage="11"]{min-height:1267.06px!important}
+    body.hw-handwritten .stage[data-stage="12"]{min-height:1792.83px!important}
+  }
+  @media (min-width:376px) and (max-width:900px){
+    body.hw-handwritten .stage[data-stage="1"]{min-height:960.38px!important}
+    body.hw-handwritten .stage[data-stage="2"]{min-height:1500.27px!important}
+    body.hw-handwritten .stage[data-stage="3"]{min-height:1197.70px!important}
+    body.hw-handwritten .stage[data-stage="4"]{min-height:1041.00px!important}
+    body.hw-handwritten .stage[data-stage="5"]{min-height:1217.66px!important}
+    body.hw-handwritten .stage[data-stage="6"]{min-height:823.61px!important}
+    body.hw-handwritten .stage[data-stage="7"]{min-height:1265.16px!important}
+    body.hw-handwritten .stage[data-stage="8"]{min-height:1494.11px!important}
+    body.hw-handwritten .stage[data-stage="9"]{min-height:986.34px!important}
+    body.hw-handwritten .stage[data-stage="10"]{min-height:1148.92px!important}
+    body.hw-handwritten .stage[data-stage="11"]{min-height:1422.19px!important}
+    body.hw-handwritten .stage[data-stage="12"]{min-height:1988.00px!important}
+  }
+</style>
 </head>
 <body>
 <nav class="statml-site-nav" aria-label="StatML Academy navigation">
@@ -1465,23 +1589,109 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
         const ctx = canvas.getContext('2d');
         const annotationBox = document.getElementById('canvas-annotation');
 
-        // Font settings safely defined without CSS vars for Canvas API
-        const fontProse = "system-ui, -apple-system, sans-serif";
-        const fontMono = "ui-monospace, monospace";
+        // Canvas lettering and marks use the same dry-ink language as the reference sheets.
+        const fontProse = "'Patrick Hand', 'Kalam', 'Comic Sans MS', cursive";
+        const fontMono = "'Patrick Hand', 'Kalam', 'Comic Sans MS', cursive";
+
+        // Cosmetic-only PRNG. It never participates in the model/data path or state updates.
+        function inkHash(key) {
+            const source = String(key);
+            let h = 2166136261;
+            for (let i = 0; i < source.length; i++) { h ^= source.charCodeAt(i); h = Math.imul(h, 16777619); }
+            return h >>> 0;
+        }
+        function inkUnit(key, index = 0) {
+            let h = inkHash(`${key}:${index}`);
+            h = Math.imul(h ^ (h >>> 16), 2246822507) >>> 0;
+            return (h % 10000) / 10000;
+        }
+        function inkLine(x1, y1, x2, y2, style = {}, key = 'line') {
+            const dx = x2 - x1, dy = y2 - y1, length = Math.max(Math.hypot(dx, dy), 1);
+            const nx = -dy / length, ny = dx / length;
+            const wobble = style.wobble ?? Math.max(1.2, Math.min(4.5, length * .018));
+            const steps = Math.max(3, Math.min(14, Math.ceil(length / 110)));
+            ctx.save();
+            ctx.strokeStyle = style.color || '#4b4540';
+            ctx.lineWidth = style.width || 1.4;
+            ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+            ctx.globalAlpha = style.alpha ?? 1;
+            ctx.setLineDash(style.dash || []);
+            for (let pass = 0; pass < 2; pass++) {
+                ctx.beginPath();
+                for (let i = 0; i <= steps; i++) {
+                    const t = i / steps;
+                    const edge = i === 0 || i === steps;
+                    const normal = (inkUnit(`${key}:normal:${pass}:${i}`) - .5) * wobble * (edge ? .42 : 1.2);
+                    const along = (inkUnit(`${key}:along:${pass}:${i}`) - .5) * wobble * .32;
+                    const px = x1 + dx * t + nx * normal + (dx / length) * along;
+                    const py = y1 + dy * t + ny * normal + (dy / length) * along;
+                    i ? ctx.lineTo(px, py) : ctx.moveTo(px, py);
+                }
+                ctx.stroke();
+            }
+            ctx.restore();
+        }
+        function inkPath(points, style = {}, key = 'path') {
+            if (!points || points.length < 2) return;
+            ctx.save(); ctx.strokeStyle = style.color || '#4b4540'; ctx.lineWidth = style.width || 1.5; ctx.lineCap = 'round'; ctx.lineJoin = 'round'; ctx.globalAlpha = style.alpha ?? 1; ctx.setLineDash(style.dash || []);
+            const wobble = style.wobble ?? 2.8;
+            for (let pass = 0; pass < 2; pass++) { ctx.beginPath(); points.forEach((p, i) => { const ox=(inkUnit(`${key}:x:${pass}:${i}`)-.5)*wobble, oy=(inkUnit(`${key}:y:${pass}:${i}`)-.5)*wobble; i ? ctx.lineTo(p.x+ox,p.y+oy) : ctx.moveTo(p.x+ox,p.y+oy); }); ctx.stroke(); }
+            ctx.restore();
+        }
+        function inkDot(x, y, radius, fill, key = 'dot', stroke = null) {
+            ctx.save(); ctx.globalAlpha = 1; ctx.fillStyle = fill; ctx.strokeStyle = stroke || fill;
+            ctx.lineWidth = stroke ? 1 : 0; ctx.lineJoin = 'round';
+            const sides = radius < 3 ? 7 : 9;
+            for (let pass = 0; pass < 2; pass++) {
+                const ox = (inkUnit(`${key}:ox:${pass}`) - .5) * Math.max(.7, radius * .16);
+                const oy = (inkUnit(`${key}:oy:${pass}`) - .5) * Math.max(.7, radius * .16);
+                ctx.beginPath();
+                for (let i = 0; i < sides; i++) {
+                    const angle = Math.PI * 2 * i / sides;
+                    const rr = radius * (1 + (inkUnit(`${key}:radius:${pass}:${i}`) - .5) * .30);
+                    const px = x + ox + Math.cos(angle) * rr, py = y + oy + Math.sin(angle) * rr;
+                    i ? ctx.lineTo(px, py) : ctx.moveTo(px, py);
+                }
+                ctx.closePath(); ctx.fill();
+                if (stroke) ctx.stroke();
+            }
+            ctx.restore();
+        }
+        function inkRect(x, y, w, h, fill, stroke = null, key = 'rect', radius = 4) {
+            ctx.save(); ctx.fillStyle = fill; if (fill) fillRoundRect(ctx, x, y, w, h, [radius, radius, radius, radius], `${key}:fill`);
+            if (fill && w > 22 && h > 18) {
+                ctx.save(); roughRectPath(ctx,x+.6,y+.5,w-1.2,h-1,[radius,radius,radius,radius],`${key}:hatch-clip`); ctx.clip();
+                ctx.globalAlpha=.12; ctx.strokeStyle=stroke||'#4b4540'; ctx.lineWidth=.72;
+                for(let q=-h;q<w+h;q+=10){ctx.beginPath();ctx.moveTo(x+q,y+h);ctx.lineTo(x+q+h,y);ctx.stroke();}
+                ctx.restore();
+            }
+            if (stroke) {
+                ctx.strokeStyle = stroke; ctx.lineWidth = 1.1; ctx.lineCap = 'round';
+                for (let pass = 0; pass < 2; pass++) {
+                    roughRectPath(ctx, x, y, w, h, [radius, radius, radius, radius], `${key}:stroke:${pass}`); ctx.stroke();
+                }
+            }
+            ctx.restore();
+        }
 
         // Fallback for rounded rectangles
-        function fillRoundRect(ctx, x, y, w, h, radii) {
+        function roughRectPath(ctx, x, y, w, h, radii, key = 'rect') {
             const tl = radii[0], tr = radii[1], br = radii[2], bl = radii[3];
+            const j = Math.max(.55, Math.min(3.2, Math.min(Math.abs(w), Math.abs(h)) * .045));
+            const jitter = (part, axis = 0) => (inkUnit(`${key}:${part}:${axis}`) - .5) * j;
             ctx.beginPath();
-            ctx.moveTo(x + tl, y);
-            ctx.lineTo(x + w - tr, y);
-            ctx.quadraticCurveTo(x + w, y, x + w, y + tr);
-            ctx.lineTo(x + w, y + h - br);
-            ctx.quadraticCurveTo(x + w, y + h, x + w - br, y + h);
-            ctx.lineTo(x + bl, y + h);
-            ctx.quadraticCurveTo(x, y + h, x, y + h - bl);
-            ctx.lineTo(x, y + tl);
-            ctx.quadraticCurveTo(x, y, x + tl, y);
+            ctx.moveTo(x + tl + jitter('tl', 0), y + jitter('top', 0));
+            ctx.lineTo(x + w - tr + jitter('tr', 0), y + jitter('top', 1));
+            ctx.lineTo(x + w + jitter('right', 0), y + tr + jitter('tr', 1));
+            ctx.lineTo(x + w + jitter('right', 1), y + h - br + jitter('br', 0));
+            ctx.lineTo(x + w - br + jitter('br', 1), y + h + jitter('bottom', 0));
+            ctx.lineTo(x + bl + jitter('bl', 0), y + h + jitter('bottom', 1));
+            ctx.lineTo(x + jitter('left', 1), y + h - bl + jitter('bl', 1));
+            ctx.lineTo(x + jitter('left', 0), y + tl + jitter('tl', 1));
+            ctx.closePath();
+        }
+        function fillRoundRect(ctx, x, y, w, h, radii, key = 'rect') {
+            roughRectPath(ctx, x, y, w, h, radii, key);
             ctx.fill();
         }
 
@@ -1536,6 +1746,11 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
 
             ctx.clearRect(0, 0, w, h);
 
+            // The CSS frame is transparent to preserve its exact box size;
+            // this visibly doubled, gently irregular rule is the canvas edge.
+            inkRect(1.5, 1.5, Math.max(1, w - 3), Math.max(1, h - 3), null,
+                'rgba(120,106,92,.48)', 'canvas-frame', 0);
+
             state.complexity = lerp(state.complexity, state.targetComplexity, 0.05);
             
             if (state.bottomMode === 'paths-ridge') {
@@ -1556,12 +1771,7 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
 
             drawCoefficients(w, splitY);
             
-            ctx.beginPath();
-            ctx.moveTo(40, splitY);
-            ctx.lineTo(w - 40, splitY);
-            ctx.strokeStyle = '#e7e5e4';
-            ctx.lineWidth = 2;
-            ctx.stroke();
+            inkLine(40, splitY, w - 40, splitY, {color:'#8d8173', width:1.15, alpha:.62, wobble:1.1}, 'model-split');
 
             const bottomH = h - splitY;
             if (state.bottomMode === 'bias-variance' || state.bottomMode === 'pca') {
@@ -1583,12 +1793,7 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
             const chartH = hMax - margin.top - margin.bottom;
             
             const zeroY = margin.top + chartH / 2;
-            ctx.beginPath();
-            ctx.moveTo(margin.left, zeroY);
-            ctx.lineTo(w - margin.right, zeroY);
-            ctx.strokeStyle = '#9ca3af';
-            ctx.lineWidth = 1;
-            ctx.stroke();
+            inkLine(margin.left, zeroY, w - margin.right, zeroY, {color:'#81776d', width:1.1, alpha:.75}, 'coef-zero');
 
             ctx.fillStyle = '#6b7280';
             ctx.font = `600 0.8rem ${fontProse}`;
@@ -1607,20 +1812,18 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
                 const barH = (val / 100) * (chartH / 2); 
 
                 if (state.isPca) {
-                    ctx.fillStyle = i === 0 ? '#4f46e5' : '#8b5cf6';
+                    ctx.fillStyle = i === 0 ? '#356fae' : '#7960ae';
                 } else if (isZero) {
                     ctx.fillStyle = '#e5e7eb'; 
                 } else if (i < 4) { 
-                    ctx.fillStyle = val > 0 ? '#6366f1' : '#f43f5e';
+                    ctx.fillStyle = val > 0 ? '#356fae' : '#b85c58';
                 } else { 
-                    ctx.fillStyle = '#9ca3af';
+                    ctx.fillStyle = '#9b9287';
                 }
 
-                if (barH < 0) {
-                    fillRoundRect(ctx, x, zeroY, barW, -barH, [0,0,4,4]);
-                } else {
-                    fillRoundRect(ctx, x, zeroY - barH, barW, barH, [4,4,0,0]);
-                }
+                const barY = barH < 0 ? zeroY : zeroY - barH;
+                const barHeight = Math.abs(barH);
+                inkRect(x, barY, barW, barHeight, ctx.fillStyle, '#6f665e', `coef-bar-${i}`, 3);
 
                 let currentFeatures = state.isPca ? ['PC 1', 'PC 2', '', '', '', '', '', ''] : state.features;
                 ctx.fillStyle = isZero ? '#9ca3af' : '#4b5563';
@@ -1632,8 +1835,7 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
             }
 
             if (state.stage === 4) {
-                ctx.fillStyle = 'rgba(217, 119, 6, 0.08)';
-                ctx.fillRect(margin.left, 35, chartW, chartH);
+                inkRect(margin.left, 35, chartW, chartH, 'rgba(195, 139, 50, 0.08)', null, 'complexity-penalty', 0);
                 ctx.fillStyle = '#d97706';
                 ctx.font = `600 0.85rem ${fontProse}`;
                 ctx.textAlign = 'right';
@@ -1652,13 +1854,8 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
             ctx.textAlign = 'left';
             ctx.fillText('BIAS-VARIANCE TRADEOFF', margin.left, y0 - 15);
 
-            ctx.beginPath();
-            ctx.moveTo(margin.left, y0);
-            ctx.lineTo(margin.left, y0 + chartH);
-            ctx.lineTo(w - margin.right, y0 + chartH);
-            ctx.strokeStyle = '#e7e5e4';
-            ctx.lineWidth = 2;
-            ctx.stroke();
+            inkLine(margin.left, y0, margin.left, y0 + chartH, {color:'#938778', width:1.15, alpha:.72}, 'bias-y');
+            inkLine(margin.left, y0 + chartH, w - margin.right, y0 + chartH, {color:'#938778', width:1.15, alpha:.72}, 'bias-x');
 
             ctx.fillStyle = '#9ca3af';
             ctx.font = `400 0.75rem ${fontProse}`;
@@ -1673,49 +1870,37 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
 
             const steps = 50;
             
-            ctx.beginPath();
+            const trainPoints=[];
             for(let i=0; i<=steps; i++) {
                 let c = i / steps;
                 let err = getTrainError(c);
                 let px = margin.left + c * chartW;
                 let py = y0 + chartH - (err / 100) * chartH;
-                if(i===0) ctx.moveTo(px, py);
-                else ctx.lineTo(px, py);
+                trainPoints.push({x:px,y:py});
             }
-            ctx.strokeStyle = '#6366f1';
-            ctx.lineWidth = 3;
-            ctx.stroke();
+            inkPath(trainPoints,{color:'#356fae',width:2.3},'bias-train-curve');
 
-            ctx.beginPath();
+            const testPoints=[];
             for(let i=0; i<=steps; i++) {
                 let c = i / steps;
                 let err = getTestError(c);
                 let px = margin.left + c * chartW;
                 let py = y0 + chartH - (err / 100) * chartH;
-                if(i===0) ctx.moveTo(px, py);
-                else ctx.lineTo(px, py);
+                testPoints.push({x:px,y:py});
             }
-            ctx.strokeStyle = '#ef4444';
-            ctx.lineWidth = 3;
-            ctx.stroke();
+            inkPath(testPoints,{color:'#b85c58',width:2.3},'bias-test-curve');
 
             let currC = state.complexity;
             let px = margin.left + currC * chartW;
             
-            ctx.beginPath();
-            ctx.setLineDash([5, 5]);
-            ctx.moveTo(px, y0);
-            ctx.lineTo(px, y0 + chartH);
-            ctx.strokeStyle = '#9ca3af';
-            ctx.lineWidth = 1;
-            ctx.stroke();
+            inkLine(px, y0, px, y0 + chartH, {color:'#887d73', width:1, dash:[5,5], alpha:.74}, 'bias-current');
             ctx.setLineDash([]);
 
             let trainPy = y0 + chartH - (getTrainError(currC) / 100) * chartH;
             let testPy = y0 + chartH - (getTestError(currC) / 100) * chartH;
 
-            ctx.beginPath(); ctx.arc(px, trainPy, 6, 0, Math.PI*2); ctx.fillStyle = '#6366f1'; ctx.fill();
-            ctx.beginPath(); ctx.arc(px, testPy, 6, 0, Math.PI*2); ctx.fillStyle = '#ef4444'; ctx.fill();
+            inkDot(px, trainPy, 5.3, '#356fae', 'bias-train');
+            inkDot(px, testPy, 5.3, '#b85c58', 'bias-test');
 
             ctx.font = `500 0.75rem ${fontProse}`;
             ctx.textAlign = 'right';
@@ -1738,14 +1923,8 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
             const title = type === 'ridge' ? 'RIDGE PATHS (L2 PENALTY)' : 'LASSO PATHS (L1 PENALTY)';
             ctx.fillText(title, margin.left, y0 - 15);
 
-            ctx.beginPath();
-            ctx.moveTo(margin.left, y0);
-            ctx.lineTo(margin.left, y0 + chartH);
-            ctx.moveTo(margin.left, zeroY);
-            ctx.lineTo(w - margin.right, zeroY);
-            ctx.strokeStyle = '#e7e5e4';
-            ctx.lineWidth = 2;
-            ctx.stroke();
+            inkLine(margin.left, y0, margin.left, y0 + chartH, {color:'#938778', width:1.15, alpha:.72}, 'paths-y');
+            inkLine(margin.left, zeroY, w - margin.right, zeroY, {color:'#938778', width:1.15, alpha:.72}, 'paths-zero');
 
             ctx.fillStyle = '#9ca3af';
             ctx.font = `400 0.75rem ${fontProse}`;
@@ -1754,46 +1933,34 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
 
             const steps = 100;
             for(let i=0; i<8; i++) {
-                ctx.beginPath();
                 const base = state.baseCoeffs[i];
+                const pathPoints=[];
                 for(let j=0; j<=steps; j++) {
                     let lam = (j / steps) * 100;
                     let val = type === 'ridge' ? getRidgeCoeff(base, lam) : getLassoCoeff(base, lam);
                     let px = margin.left + (lam / 100) * chartW;
                     let py = zeroY - (val / 100) * (chartH / 2);
                     
-                    if(j===0) ctx.moveTo(px, py);
-                    else ctx.lineTo(px, py);
+                    pathPoints.push({x:px,y:py});
                 }
                 
                 if (i < 4) { 
-                    ctx.strokeStyle = base > 0 ? 'rgba(99, 102, 241, 0.4)' : 'rgba(244, 63, 94, 0.4)';
+                    ctx.strokeStyle = base > 0 ? 'rgba(53, 111, 174, 0.62)' : 'rgba(184, 92, 88, 0.62)';
                 } else { 
-                    ctx.strokeStyle = 'rgba(156, 163, 175, 0.4)';
+                    ctx.strokeStyle = 'rgba(141, 129, 115, 0.48)';
                 }
-                ctx.lineWidth = 2;
-                ctx.stroke();
+                inkPath(pathPoints,{color:ctx.strokeStyle,width:1.8},`coef-path-${i}`);
             }
 
             let px = margin.left + (currentLambda / 100) * chartW;
-            ctx.beginPath();
-            ctx.setLineDash([4, 4]);
-            ctx.moveTo(px, y0);
-            ctx.lineTo(px, y0 + chartH);
-            ctx.strokeStyle = '#4f46e5';
-            ctx.lineWidth = 2;
-            ctx.stroke();
-            ctx.setLineDash([]);
+            inkLine(px, y0, px, y0 + chartH, {color:'#356fae', width:1.15, dash:[4,4], alpha:.85}, 'path-current');
             
             for(let i=0; i<8; i++) {
                 const base = state.baseCoeffs[i];
                 let val = type === 'ridge' ? getRidgeCoeff(base, currentLambda) : getLassoCoeff(base, currentLambda);
                 let py = zeroY - (val / 100) * (chartH / 2);
                 
-                ctx.beginPath();
-                ctx.arc(px, py, 4, 0, Math.PI*2);
-                ctx.fillStyle = (i < 4) ? (base > 0 ? '#6366f1' : '#f43f5e') : '#9ca3af';
-                ctx.fill();
+                inkDot(px, py, 3.7, (i < 4) ? (base > 0 ? '#356fae' : '#b85c58') : '#8d8173', `path-dot-${i}`);
             }
         }
 
@@ -1808,13 +1975,8 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
             ctx.textAlign = 'left';
             ctx.fillText('VALIDATION ERROR VS λ', margin.left, y0 - 15);
 
-            ctx.beginPath();
-            ctx.moveTo(margin.left, y0);
-            ctx.lineTo(margin.left, y0 + chartH);
-            ctx.lineTo(w - margin.right, y0 + chartH);
-            ctx.strokeStyle = '#e7e5e4';
-            ctx.lineWidth = 2;
-            ctx.stroke();
+            inkLine(margin.left, y0, margin.left, y0 + chartH, {color:'#938778', width:1.15, alpha:.72}, 'cv-y');
+            inkLine(margin.left, y0 + chartH, w - margin.right, y0 + chartH, {color:'#938778', width:1.15, alpha:.72}, 'cv-x');
 
             ctx.fillStyle = '#9ca3af';
             ctx.font = `400 0.75rem ${fontProse}`;
@@ -1827,34 +1989,21 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
             ctx.restore();
 
             const steps = 100;
-            ctx.beginPath();
+            const cvPoints=[];
             for(let j=0; j<=steps; j++) {
                 let lam = (j / steps) * 100;
                 let err = getCVError(lam);
                 let px = margin.left + (lam / 100) * chartW;
                 let py = y0 + chartH - (err / 100) * chartH;
-                if(j===0) ctx.moveTo(px, py);
-                else ctx.lineTo(px, py);
+                cvPoints.push({x:px,y:py});
             }
-            ctx.strokeStyle = '#ef4444';
-            ctx.lineWidth = 3;
-            ctx.stroke();
+            inkPath(cvPoints,{color:'#b85c58',width:2.3},'cv-error-curve');
 
             let px = margin.left + (currentLambda / 100) * chartW;
-            ctx.beginPath();
-            ctx.setLineDash([5, 5]);
-            ctx.moveTo(px, y0);
-            ctx.lineTo(px, y0 + chartH);
-            ctx.strokeStyle = '#4f46e5';
-            ctx.lineWidth = 2;
-            ctx.stroke();
-            ctx.setLineDash([]);
+            inkLine(px, y0, px, y0 + chartH, {color:'#356fae', width:1.15, dash:[5,5], alpha:.88}, 'cv-current');
 
             let py = y0 + chartH - (getCVError(currentLambda) / 100) * chartH;
-            ctx.beginPath(); 
-            ctx.arc(px, py, 6, 0, Math.PI*2); 
-            ctx.fillStyle = '#ef4444'; 
-            ctx.fill();
+            inkDot(px, py, 5.3, '#b85c58', 'cv-dot');
             
             if (Math.abs(currentLambda - 35) < 5) {
                 ctx.fillStyle = '#10b981';

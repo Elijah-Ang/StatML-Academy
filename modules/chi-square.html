@@ -300,12 +300,29 @@
             color: var(--text-dim);
         }
         .check-list li::before {
-            content: "✓";
+            content: "";
             position: absolute;
             left: 0;
-            top: 0;
-            color: var(--success);
-            font-weight: bold;
+            top: .18em;
+            width: .72em;
+            height: .42em;
+            border-left: 1.7px solid var(--success);
+            border-bottom: 1.7px solid var(--success);
+            transform: rotate(-45deg) skew(-5deg,-4deg);
+            opacity: .9;
+        }
+        .check-list li::after {
+            content: "";
+            position: absolute;
+            left: .1em;
+            top: .27em;
+            width: .58em;
+            height: .30em;
+            border-left: 1px solid var(--success);
+            border-bottom: 1px solid var(--success);
+            transform: rotate(-42deg) skew(-6deg,-3deg);
+            opacity: .42;
+            pointer-events: none;
         }
 
         /* Software Output Matrix */
@@ -1070,6 +1087,201 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
 </style>
 
     <link rel="stylesheet" href="academic-rigor.css">
+    <link rel="stylesheet" href="handwritten-theme.css?v=20260826-handwritten-final-2">
+    <script src="handwritten-theme.js?v=20260826-handwritten-final-2" defer></script>
+    <style id="chi-square-handwritten-shell">
+        body.hw-handwritten .hero-badge,
+        body.hw-handwritten .topic-badge,
+        body.hw-handwritten .statml-hero .hero-badge {
+            border: 0 !important; border-radius: 3px 5px 2px 4px !important;
+            background: linear-gradient(transparent 38%, rgba(241,212,119,.58) 38%, rgba(241,212,119,.58) 88%, transparent 88%) !important;
+            box-shadow: none !important;
+        }
+        body.hw-handwritten .statml-overview { border: 1px solid rgba(88,83,72,.28) !important; border-radius: 5px 8px 4px 7px !important; background: rgba(255,253,245,.78) !important; box-shadow: none !important; }
+        body.hw-handwritten .statml-overview-item { border-radius: 3px 5px 2px 4px !important; background: rgba(255,252,242,.32) !important; box-shadow: none !important; }
+        body.hw-handwritten .statml-overview-number { border: 1px solid rgba(40,105,173,.38) !important; border-radius: 2px 4px 2px 3px !important; background: rgba(230,240,248,.7) !important; box-shadow: none !important; }
+        body.hw-handwritten :is(.pill,.tag,.badge,.metric-badge,.feature-pill,.transform-bridge-badge) { border: 0 !important; border-radius: 2px 4px 2px 3px !important; background: linear-gradient(transparent 34%, rgba(241,212,119,.48) 34%, rgba(241,212,119,.48) 90%, transparent 90%) !important; box-shadow: none !important; }
+        body.hw-handwritten .statml-stage-rail { border-radius: 4px 6px 3px 5px !important; background-color: rgba(255,252,242,.82) !important; background-image: repeating-linear-gradient(176deg, rgba(223,178,45,.04) 0 2px, transparent 2px 8px), radial-gradient(circle at 14% 18%, rgba(255,255,255,.3), transparent 46%) !important; box-shadow: none !important; }
+        body.hw-handwritten .statml-stage-button { border-radius: 42% 58% 47% 53% !important; box-shadow: none !important; }
+        body.hw-handwritten .statml-stage-button[aria-current="step"] { background: var(--hw-yellow) !important; border-color: var(--hw-ink) !important; box-shadow: none !important; }
+        body.hw-handwritten .statml-stage-button span { border-radius: 3px 5px 2px 4px !important; background: var(--hw-yellow-soft) !important; color: var(--hw-ink) !important; box-shadow: none !important; }
+        body.hw-handwritten input[type="range"] { appearance: none !important; height: 7px !important; border: 0 !important; border-radius: 3px 5px 2px 4px !important; background: repeating-linear-gradient(167deg, rgba(40,105,173,.18) 0 2px, rgba(255,252,242,.72) 2px 6px) !important; box-shadow: 1px 1px 0 rgba(75,68,58,.12) !important; }
+        body.hw-handwritten input[type="range"]::-webkit-slider-thumb { appearance: none; width: 18px; height: 18px; border: 1px solid rgba(75,68,58,.52); border-radius: 42% 58% 47% 53%; background: var(--hw-yellow); box-shadow: 1px 2px 0 rgba(75,68,58,.16); transform: rotate(-3deg); }
+        body.hw-handwritten input[type="range"]::-moz-range-thumb { width: 18px; height: 18px; border: 1px solid rgba(75,68,58,.52); border-radius: 42% 58% 47% 53%; background: var(--hw-yellow); box-shadow: 1px 2px 0 rgba(75,68,58,.16); }
+        body.hw-handwritten.statml-standardized :is(.statml-overview,.statml-overview-item,.glass-card,.card,.metric-card,.control-panel,.controls,.quiz-card,.worked-example-widget,.formula-block,.math-block,.formula,.software-output,.model-report-block,.limitation-card,.playground-summary-card,.decision-card,.interactive,.panel,.chart-card,.figure-card,.visual-panel,.viz-panel,.canvas-container,.canvas-wrap,.viz-stage,.status-strip) { border: 1px solid rgba(88,83,72,.42) !important; border-radius: 5px 8px 4px 7px !important; background-color: rgba(255,252,242,.82) !important; background-image: repeating-linear-gradient(176deg, rgba(223,178,45,.035) 0 2px, transparent 2px 8px), radial-gradient(circle at 14% 18%, rgba(255,255,255,.25), transparent 46%) !important; box-shadow: 1px 2px 0 rgba(76,65,50,.10) !important; backdrop-filter: none !important; }
+        body.hw-handwritten.statml-standardized :is(.insight-box,.callout,.insight,.takeaway,.teaching-note,.look-here,.breakdown,.warning-note,.report,.plain-translation,.statml-takeaways) { border: 1px solid rgba(157,112,12,.34) !important; border-left: 4px solid var(--hw-blue) !important; border-radius: 2px 5px 3px 6px !important; background-color: #fff1b8 !important; background-image: repeating-linear-gradient(176deg, rgba(223,178,45,.07) 0 2px, transparent 2px 7px), radial-gradient(circle at 14% 18%, rgba(255,255,255,.42), transparent 46%) !important; box-shadow: 2px 3px 0 rgba(76,65,50,.14) !important; }
+        body.hw-handwritten.statml-standardized :is(.warning-note,.is-alert) { border-left-color: var(--hw-red) !important; background-color: var(--hw-red-soft) !important; background-image: repeating-linear-gradient(176deg, rgba(200,94,88,.055) 0 2px, transparent 2px 7px), radial-gradient(circle at 14% 18%, rgba(255,255,255,.34), transparent 46%) !important; }
+        body.hw-handwritten.statml-standardized :is(.report,.statml-takeaways) { border-left-color: var(--hw-green) !important; background-color: var(--hw-green-soft) !important; }
+        body.hw-handwritten.statml-standardized :is(button,.btn,.interactive-btn,.control-btn,select,input[type="text"],input[type="number"],textarea,.quiz-option,.scenario-options button,.control button) { border: 1px solid rgba(75,68,58,.52) !important; border-radius: 7px 4px 8px 5px !important; background-color: rgba(248,243,230,.88) !important; background-image: repeating-linear-gradient(167deg, rgba(40,105,173,.035) 0 2px, transparent 2px 6px) !important; box-shadow: 1px 2px 0 rgba(75,68,58,.08) !important; }
+        body.hw-handwritten.statml-standardized table { border-color: rgba(75,68,58,.5) !important; border-radius: 5px 8px 4px 7px !important; background-color: rgba(255,253,245,.70) !important; box-shadow: 1px 2px 0 rgba(75,68,58,.05) !important; }
+        body.hw-handwritten.statml-standardized :is(th,td) { border-color: rgba(75,68,58,.42) !important; border-style: dashed !important; }
+        body.hw-handwritten.statml-standardized th { background: rgba(241,212,119,.16) !important; }
+        body.hw-handwritten.statml-standardized :is(.statml-stage-button,.stage-dot) { min-height: 0 !important; width: 9px !important; height: 9px !important; padding: 0 !important; border-radius: 42% 58% 47% 53% !important; background: var(--hw-paper) !important; background-image: none !important; box-shadow: none !important; }
+        body.hw-handwritten.statml-standardized :is(.statml-stage-button,.stage-dot)[aria-current="step"], body.hw-handwritten.statml-standardized :is(.statml-stage-button,.stage-dot).active { background: var(--hw-yellow) !important; border-color: var(--hw-ink) !important; }
+        body.hw-handwritten.statml-standardized button.statml-stage-button, body.hw-handwritten.statml-standardized button.stage-dot { min-height: 0 !important; width: 9px !important; height: 9px !important; padding: 0 !important; border-radius: 42% 58% 47% 53% !important; background: var(--hw-paper) !important; background-image: none !important; box-shadow: none !important; }
+        body.hw-handwritten.statml-standardized button.statml-stage-button[aria-current="step"], body.hw-handwritten.statml-standardized button.stage-dot.active { background: var(--hw-yellow) !important; border-color: var(--hw-ink) !important; }
+        /* The matrix predates the standardized card classes; keep its grid
+           geometry and state classes, but render each observation as a
+           pencilled paper tile rather than a dashboard card. */
+        body.hw-handwritten.statml-standardized :is(.matrix-container,.dist-container) {
+            border: 1px solid rgba(88,83,72,.42) !important;
+            border-radius: 4px 8px 5px 7px !important;
+            background-color: rgba(255,252,242,.82) !important;
+            background-image: repeating-linear-gradient(176deg, rgba(223,178,45,.035) 0 2px, transparent 2px 8px), radial-gradient(circle at 14% 18%, rgba(255,255,255,.25), transparent 46%) !important;
+            box-shadow: 1px 2px 0 rgba(76,65,50,.10) !important;
+        }
+        body.hw-handwritten.statml-standardized .matrix-container {
+            border: 1px solid transparent !important;
+            border-radius: 0 !important;
+            background-color: var(--hw-paper) !important;
+            background-image: repeating-linear-gradient(176deg, rgba(223,178,45,.026) 0 2px, transparent 2px 8px), radial-gradient(circle at 14% 18%, rgba(255,255,255,.26), transparent 46%) !important;
+            box-shadow: none !important;
+        }
+        body.hw-handwritten.statml-standardized .m-cell {
+            position: relative !important;
+            border: 0 !important;
+            border-radius: 0 !important;
+            background: transparent !important;
+            box-shadow: none !important;
+            clip-path: none !important;
+            overflow: visible !important;
+        }
+        body.hw-handwritten.statml-standardized .m-cell::before {
+            content: "" !important;
+            position: absolute !important;
+            inset: 0 !important;
+            z-index: 0 !important;
+            background-color: rgba(255,252,242,.76) !important;
+            background-image: repeating-linear-gradient(176deg, rgba(223,178,45,.06) 0 2px, transparent 2px 7px), radial-gradient(circle at 14% 18%, rgba(255,255,255,.24), transparent 46%) !important;
+            clip-path: polygon(2% 1%, 10% 2%, 20% .2%, 31% 1.2%, 42% .3%, 53% 1.8%, 64% .8%, 75% 1.5%, 87% .2%, 98% 1.4%, 99.5% 12%, 98.4% 24%, 100% 36%, 98.2% 49%, 99.3% 62%, 98% 74%, 99.1% 87%, 97.4% 98%, 86% 97.6%, 74% 99.2%, 62% 98%, 50% 99.6%, 38% 98.1%, 25% 99.2%, 13% 97.5%, 1% 99%, .4% 87%, 1.7% 75%, .2% 63%, 1.6% 50%, .3% 37%, 1.5% 24%, .5% 12%) !important;
+            transform: rotate(-.38deg) translate(-.25px, .35px) !important;
+        }
+        body.hw-handwritten.statml-standardized .m-cell::after {
+            content: "" !important;
+            position: absolute !important;
+            inset: 1px .5px .6px .7px !important;
+            z-index: 0 !important;
+            border: 0 !important;
+            border-radius: 0 !important;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'%3E%3Cpath d='M2 3 C10 1 18 3 27 2 S43 1 51 3 S68 1 78 2 S91 1 98 3 C97 13 99 22 97 31 S99 47 98 53 S99 70 97 80 S99 92 96 98 C87 97 77 99 67 97 S49 99 40 97 S22 99 3 97 C4 88 1 77 3 67 S1 50 2 41 S1 20 2 3 Z' fill='none' stroke='%23585348' stroke-width='1.35' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M3 2 C12 4 21 1 31 3 S47 2 57 1 S74 3 84 1 S94 3 97 2 C95 13 98 25 96 36 S98 55 96 66 S98 83 96 96 C85 95 74 97 62 95 S45 98 34 96 S17 98 3 95 C2 84 4 73 2 61 S4 42 2 30 S4 12 3 2 Z' fill='none' stroke='%23585348' stroke-opacity='.48' stroke-width='1.05' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") !important;
+            background-size: 100% 100% !important;
+            background-repeat: no-repeat !important;
+            transform: rotate(.42deg) translate(.65px, -.35px) !important;
+            pointer-events: none !important;
+            opacity: .82 !important;
+        }
+        body.hw-handwritten.statml-standardized .m-cell.cell-pos::before { background-color: rgba(231,241,226,.78) !important; }
+        body.hw-handwritten.statml-standardized .m-cell.cell-neg::before { background-color: rgba(253,233,222,.78) !important; }
+        body.hw-handwritten.statml-standardized .m-cell > * { position: relative; z-index: 1; }
+        /* Keep the matrix's authored overlay stack out of normal flow.  The
+           handwritten layer puts direct children above each paper tile so the
+           ink wash stays behind the values; restoring the original absolute
+           positioning prevents the hidden observed/expected/residual labels
+           from inflating every grid row. */
+        body.hw-handwritten.statml-standardized .m-cell > :is(.m-val,.val-label,.cell-tooltip) {
+            position: absolute !important;
+        }
+        /* Match the original table's breathing room around the column/row
+           labels at both breakpoints.  The hand face is intentionally more
+           compact than the old UI face, so leaving these tracks automatic
+           makes the whole table shrink vertically and drift off its baseline
+           centre. */
+        body.hw-handwritten.statml-standardized .matrix {
+            grid-template-rows: 46.1875px 100px 100px 46.1875px !important;
+        }
+        @media (max-width: 900px) {
+            body.hw-handwritten.statml-standardized .matrix {
+                grid-template-rows: 46.1875px 70px 70px 46.1875px !important;
+            }
+        }
+        body.hw-handwritten.statml-standardized .m-cell.selected-cell::after { border: 2px dashed rgba(88,83,72,.66) !important; opacity: .9 !important; }
+        body.hw-handwritten.statml-standardized .m-margin {
+            border: 1px solid transparent !important;
+            border-radius: 0 !important;
+            background: linear-gradient(176deg, transparent 0 40%, rgba(255,241,184,.72) 40% 92%, transparent 92%) !important;
+            box-shadow: none !important;
+            transform: rotate(-.25deg) !important;
+        }
+        body.hw-handwritten.statml-standardized .m-margin {
+            border: 1px solid transparent !important;
+            border-radius: 0 !important;
+            background-color: transparent !important;
+            background-image: repeating-linear-gradient(176deg, transparent 0 16%, rgba(255,241,184,.08) 16% 22%, rgba(241,212,119,.78) 22% 82%, rgba(255,241,184,.08) 82% 88%, transparent 88% 100%) !important;
+            box-shadow: none !important;
+            clip-path: polygon(1% 15%, 16% 6%, 30% 16%, 45% 7%, 60% 14%, 76% 5%, 99% 14%, 92% 29%, 100% 45%, 91% 61%, 98% 77%, 91% 94%, 77% 87%, 62% 96%, 47% 88%, 31% 95%, 16% 87%, 1% 96%, 8% 80%, 0% 64%, 8% 47%, 1% 31%) !important;
+            transform: rotate(-.65deg) !important;
+        }
+        body.hw-handwritten.statml-standardized .cell-tooltip {
+            border: 1px solid rgba(75,68,58,.44) !important;
+            border-radius: 3px 6px 4px 5px !important;
+            background: #fff1b8 !important;
+            color: var(--hw-ink) !important;
+            background-image: repeating-linear-gradient(176deg, rgba(223,178,45,.06) 0 2px, transparent 2px 7px) !important;
+            box-shadow: 2px 3px 0 rgba(76,65,50,.13) !important;
+        }
+        body.hw-handwritten.statml-standardized .cell-tooltip::after { border-color: #fff1b8 transparent transparent transparent !important; }
+    </style>
+    <style id="chi-square-handwritten-cue-finish">
+        body.hw-handwritten .statml-hero :is(.scroll-cue,.scroll-hint,.scroll-indicator,.hero-scroll) {
+            position: static !important;
+            inset: auto !important;
+            align-self: center !important;
+            display: inline-flex !important;
+            width: auto !important;
+            max-width: calc(100% - 2rem) !important;
+            margin: .65rem auto 0 !important;
+            padding: 0 !important;
+            border: 0 !important;
+            border-radius: 0 !important;
+            background: transparent !important;
+            background-image: none !important;
+            box-shadow: none !important;
+            clip-path: none !important;
+            transform: none !important;
+            animation: none !important;
+            text-decoration-line: underline !important;
+            text-decoration-style: wavy !important;
+            text-decoration-color: rgba(40,105,173,.55) !important;
+            text-decoration-thickness: 1px !important;
+            text-underline-offset: 4px !important;
+        }
+    </style>
+    <style id="chi-square-handwritten-visual-surface-finish">
+        body.hw-handwritten.statml-standardized .statml-visual {
+            background-color: var(--hw-paper) !important;
+            background-image: none !important;
+            border-color: transparent !important;
+        }
+        body.hw-handwritten.statml-standardized .statml-prereq {
+            border: 0 !important;
+            border-left: 0 !important;
+            border-radius: 0 !important;
+            background: linear-gradient(176deg, transparent 0 44%, rgba(255,241,184,.9) 44% 94%, transparent 94%) !important;
+            box-shadow: none !important;
+            clip-path: polygon(.7% 3%, 99.1% 0, 99.5% 97%, .2% 100%) !important;
+            transform: rotate(-.28deg) !important;
+        }
+    </style>
+<style id="chi-square-handwritten-geometry-calibration">
+@media (min-width: 901px) {
+  body.hw-handwritten.statml-standardized [data-stage="1"]{min-height:850px !important}
+  body.hw-handwritten.statml-standardized [data-stage="2"]{min-height:703px !important}
+  body.hw-handwritten.statml-standardized [data-stage="3"]{min-height:3264px !important}
+  body.hw-handwritten.statml-standardized [data-stage="4"]{min-height:1639px !important}
+  body.hw-handwritten.statml-standardized [data-stage="5"]{min-height:662.4px !important}
+  body.hw-handwritten.statml-standardized [data-stage="6"]{min-height:2729px !important}
+  body.hw-handwritten.statml-standardized [data-stage="7"]{min-height:4521px !important}
+}
+@media (min-width: 360px) and (max-width: 900px) {
+  body.hw-handwritten.statml-standardized [data-stage="1"]{min-height:840px !important}
+  body.hw-handwritten.statml-standardized [data-stage="2"]{min-height:724px !important}
+  body.hw-handwritten.statml-standardized [data-stage="3"]{min-height:3690px !important}
+  body.hw-handwritten.statml-standardized [data-stage="4"]{min-height:1866px !important}
+  body.hw-handwritten.statml-standardized [data-stage="5"]{min-height:532px !important}
+  body.hw-handwritten.statml-standardized [data-stage="6"]{min-height:3222px !important}
+  body.hw-handwritten.statml-standardized [data-stage="7"]{min-height:5484px !important}
+}
+</style>
 </head>
 <body>
 <nav class="statml-site-nav" aria-label="StatML Academy navigation">
@@ -1326,7 +1538,7 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
                             <span class="so-val">0.41 (Moderate)</span>
                         </div>
                         <div class="so-check">
-                            <span>✓ Expected counts check</span>
+                            <span><span class="hw-inline-doodle" aria-hidden="true"><svg viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M1.6 6.2L4.5 9.1L10.4 2.8"></path><path d="M1.9 6.5L4.5 9.5L10.1 3.2"></path></svg></span><span hidden>&#10003;</span> Expected counts check</span>
                             <span>All expected counts ≥ 5</span>
                         </div>
                     </div>
@@ -1431,7 +1643,7 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
                                     <strong style="color: var(--error);">❌ Bad:</strong> using average happiness ratings or continuous test scores.
                                 </div>
                                 <div style="background-color: rgba(22, 163, 74, 0.05); border-left: 3px solid var(--success); padding: 0.5rem; border-radius: 0 4px 4px 0; color: var(--text-dim);">
-                                    <strong style="color: var(--success);">✓ Good:</strong> counting how many students chose apples or chips.
+                                    <strong style="color: var(--success);"><span class="hw-inline-doodle" aria-hidden="true"><svg viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M1.6 6.2L4.5 9.1L10.4 2.8"></path><path d="M1.9 6.5L4.5 9.5L10.1 3.2"></path></svg></span><span hidden>&#10003;</span> Good:</strong> counting how many students chose apples or chips.
                                 </div>
                             </div>
                         </div>
@@ -1450,7 +1662,7 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
                                     <strong style="color: var(--error);">❌ Bad:</strong> the same student is counted under both Art and Sports.
                                 </div>
                                 <div style="background-color: rgba(22, 163, 74, 0.05); border-left: 3px solid var(--success); padding: 0.5rem; border-radius: 0 4px 4px 0; color: var(--text-dim);">
-                                    <strong style="color: var(--success);">✓ Good:</strong> each student belongs to one club category and one snack category.
+                                    <strong style="color: var(--success);"><span class="hw-inline-doodle" aria-hidden="true"><svg viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M1.6 6.2L4.5 9.1L10.4 2.8"></path><path d="M1.9 6.5L4.5 9.5L10.1 3.2"></path></svg></span><span hidden>&#10003;</span> Good:</strong> each student belongs to one club category and one snack category.
                                 </div>
                             </div>
                         </div>
@@ -1469,7 +1681,7 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
                                     <strong style="color: var(--error);">❌ Bad:</strong> many expected cells are 1 or 2 (which invalidates our p-value).
                                 </div>
                                 <div style="background-color: rgba(22, 163, 74, 0.05); border-left: 3px solid var(--success); padding: 0.5rem; border-radius: 0 4px 4px 0; color: var(--text-dim);">
-                                    <strong style="color: var(--success);">✓ Good:</strong> all expected counts in this example are at least 5 (our cells are 15, 15, 10, and 10).
+                                    <strong style="color: var(--success);"><span class="hw-inline-doodle" aria-hidden="true"><svg viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M1.6 6.2L4.5 9.1L10.4 2.8"></path><path d="M1.9 6.5L4.5 9.5L10.1 3.2"></path></svg></span><span hidden>&#10003;</span> Good:</strong> all expected counts in this example are at least 5 (our cells are 15, 15, 10, and 10).
                                 </div>
                             </div>
                         </div>
@@ -1714,6 +1926,29 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
         let animationProgress = 0;
         let animationReq;
 
+        // Hand-drawn canvas primitives. They perturb only the stroke geometry;
+        // the chi-square curve, critical value, p-value tail, and animation
+        // endpoints remain the original values.
+        const chiInk = { paper: '#fbf4e2', line: '#596259', text: '#252822', blue: '#2869ad', orange: '#d89439', red: '#c85e58', neutral: '#cdbf9f' };
+        function chiRandom(seed) {
+            if (window.StatMLInk?.inkRandom) return window.StatMLInk.inkRandom(seed);
+            let s = 2166136261 >>> 0; for (const ch of String(seed)) { s ^= ch.charCodeAt(0); s = Math.imul(s, 16777619) >>> 0; }
+            return () => { s = (Math.imul(s, 1664525) + 1013904223) >>> 0; return s / 4294967296; };
+        }
+        function chiLine(points, { color = chiInk.line, width = 1.2, dash = [], alpha = 1, seed = 'chi-line' } = {}) {
+            const r = chiRandom(seed), rough = points.map((p, i) => i === 0 || i === points.length - 1 ? p : [p[0] + (r() - .5) * 3.1, p[1] + (r() - .5) * 3.1]);
+            const pts = points.length === 2 ? [rough[0], [(points[0][0] + points[1][0]) / 2 + (r() - .5) * 4, (points[0][1] + points[1][1]) / 2 + (r() - .5) * 4], rough[1]] : rough;
+            const r2 = chiRandom(`${seed}:second`), second = pts.map((p, i) => i === 0 || i === pts.length - 1 ? p : [p[0] + (r2() - .5) * 3, p[1] + (r2() - .5) * 3]);
+            const draw = (line, passAlpha, passWidth) => { ctx.save(); ctx.globalAlpha = passAlpha; ctx.strokeStyle = color; ctx.lineWidth = passWidth; ctx.lineCap = 'round'; ctx.lineJoin = 'round'; ctx.setLineDash(dash); ctx.beginPath(); line.forEach((p, i) => i ? ctx.lineTo(p[0], p[1]) : ctx.moveTo(p[0], p[1])); ctx.stroke(); ctx.restore(); };
+            draw(second, alpha * .5, Math.max(.65, width * .56)); draw(pts, alpha * .86, width);
+        }
+        function chiPoly(points, { fill = null, stroke = null, width = 1, alpha = 1, seed = 'chi-poly' } = {}) {
+            const r = chiRandom(seed), pts = points.map((p, i) => i === 0 || i === points.length - 1 ? p : [p[0] + (r() - .5) * 1.5, p[1] + (r() - .5) * 1.5]);
+            ctx.save(); ctx.globalAlpha = alpha; ctx.beginPath(); pts.forEach((p, i) => i ? ctx.lineTo(p[0], p[1]) : ctx.moveTo(p[0], p[1])); ctx.closePath(); if (fill) { ctx.fillStyle = fill; ctx.fill(); } if (stroke) { ctx.strokeStyle = stroke; ctx.lineWidth = width; ctx.lineJoin = 'round'; ctx.stroke(); } ctx.restore();
+        }
+        function chiText(s, x, y, color = chiInk.text, size = 12, align = 'left', alpha = 1, weight = 400) { ctx.save(); ctx.globalAlpha = alpha; ctx.fillStyle = color; ctx.font = `${weight} ${size}px "Patrick Hand", "Kalam", "Chalkboard SE", cursive`; ctx.textAlign = align; ctx.textBaseline = 'alphabetic'; ctx.fillText(s, x, y); ctx.restore(); }
+        function chiDot(x, y, radius, color, alpha = 1, seed = 'chi-dot') { const r = chiRandom(seed), pts = [], n = 13; for (let i = 0; i < n; i++) { const a = i / n * Math.PI * 2, rr = radius + (r() - .5) * Math.min(2.8, radius * .4); pts.push([x + Math.cos(a) * rr, y + Math.sin(a) * rr]); } const r2 = chiRandom(`${seed}:second`), second = pts.map(p => [p[0] + (r2() - .5) * 2.5, p[1] + (r2() - .5) * 2.5]); ctx.save(); ctx.globalAlpha = alpha; ctx.fillStyle = color; ctx.strokeStyle = color; ctx.lineWidth = .75; ctx.beginPath(); pts.forEach((p, i) => i ? ctx.lineTo(p[0], p[1]) : ctx.moveTo(p[0], p[1])); ctx.closePath(); ctx.fill(); ctx.globalAlpha = alpha * .68; ctx.lineWidth = 1; ctx.beginPath(); second.forEach((p, i) => i ? ctx.lineTo(p[0], p[1]) : ctx.moveTo(p[0], p[1])); ctx.closePath(); ctx.stroke(); ctx.restore(); }
+
         // Interactive Features Logic
 
         // 1. Click-to-explain matrix cells
@@ -1950,7 +2185,7 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
                 feedback.style.backgroundColor = 'rgba(217, 119, 6, 0.08)';
                 feedback.style.color = 'var(--warning)';
                 feedback.style.border = '1px solid var(--warning)';
-                feedback.innerHTML = "⚠️ <strong>Almost there!</strong> Double-check your dropdown selections and try again. Focus on which snack matches the positive residuals.";
+                    feedback.innerHTML = "⚠️ <strong>Almost there!</strong> Double-check your dropdown selections and try again. Focus on which snack matches the positive residuals.";
             }
         }
 
@@ -1973,7 +2208,7 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
             return (1 / Math.sqrt(2 * Math.PI)) * Math.pow(x, -0.5) * Math.exp(-x / 2);
         }
 
-        function drawDistribution(progress = 0) {
+        function drawDistributionLegacy(progress = 0) {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
             const w = canvas.width;
@@ -2055,7 +2290,7 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
                 // Annotate the tail when animation finishes
                 if (progress >= 1) {
                     ctx.fillStyle = '#f43f5e';
-                    ctx.font = "bold 11px 'Inter'";
+                    ctx.font = "700 11px 'Patrick Hand', 'Kalam', 'Chalkboard SE', cursive";
                     ctx.fillText("p-value area", padding + targetX * scaleX + 8, padding + 50);
                 }
             }
@@ -2081,19 +2316,57 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
 
             // Labels
             ctx.fillStyle = '#6b7280';
-            ctx.font = "12px 'JetBrains Mono'";
+            ctx.font = "12px 'Patrick Hand', 'Kalam', 'Chalkboard SE', cursive";
             ctx.fillText("0", padding - 5, h - padding + 15);
             ctx.fillText("3.84", padding + critX * scaleX - 15, h - padding + 15);
 
             ctx.fillStyle = '#d97706';
-            ctx.font = "bold 11px 'Inter'";
+            ctx.font = "700 11px 'Patrick Hand', 'Kalam', 'Chalkboard SE', cursive";
             ctx.fillText("Critical Region", padding + critX * scaleX + 8, padding + 25);
 
             if (progress >= 1) {
                 ctx.fillStyle = '#f43f5e';
-                ctx.font = "12px 'JetBrains Mono'";
+                ctx.font = "12px 'Patrick Hand', 'Kalam', 'Chalkboard SE', cursive";
                 ctx.fillText("8.33", padding + 8.33 * scaleX - 15, h - padding + 15);
             }
+        }
+
+        function drawDistribution(progress = 0) {
+            ctx.save();
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = chiInk.paper;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.restore();
+
+            const w = canvas.width, h = canvas.height, padding = 20, xMax = 12, yMax = .8;
+            const scaleX = (w - 2 * padding) / xMax, scaleY = (h - 2 * padding) / yMax, base = h - padding;
+            chiLine([[padding, padding], [padding, base], [w - padding, base]], { color: chiInk.line, width: 1.3, seed: 'chi:axes' });
+            for (let x = 0; x <= xMax; x += 2) { const px = padding + x * scaleX; chiLine([[px, base - 3], [px, base + 3]], { color: chiInk.line, width: .8, seed: `chi:xtick:${x}` }); }
+
+            const curvePoints = (from, to) => { const pts = []; for (let x = from; x <= to; x += .1) { const y = Math.min(chiSquarePDF(x), yMax); pts.push([padding + x * scaleX, base - y * scaleY]); } return pts; };
+            const fillTail = (from, color, alpha, seed) => {
+                const pts = curvePoints(from, xMax);
+                chiPoly([[pts[0][0], base], ...pts, [pts[pts.length - 1][0], base]], { fill: color, alpha, seed: `${seed}:fill` });
+                chiLine(pts, { color, width: .7, alpha: alpha * .9, seed });
+            };
+            fillTail(3.84, chiInk.orange, .18, 'chi:critical-tail');
+
+            if (progress > 0) {
+                const critX = 3.84, targetX = 8.33, currentX = critX + (targetX - critX) * Math.min(1, progress);
+                fillTail(currentX, chiInk.red, .28, 'chi:p-tail');
+                const px = padding + currentX * scaleX;
+                chiLine([[px, base], [px, padding + 35]], { color: chiInk.red, width: 1.4, dash: [5, 5], seed: 'chi:p-marker' });
+                chiDot(px, base - Math.min(chiSquarePDF(currentX), yMax) * scaleY, 4, chiInk.red, 1, 'chi:p-dot');
+                if (progress >= 1) chiText('p-value area', padding + targetX * scaleX + 8, padding + 50, chiInk.red, 12, 'left', 1, 700);
+            }
+
+            chiLine(curvePoints(.1, xMax), { color: chiInk.line, width: 2.1, seed: 'chi:curve' });
+            const critX = 3.84;
+            chiText('0', padding - 5, base + 15, chiInk.muted || chiInk.line, 12, 'left');
+            chiText('3.84', padding + critX * scaleX - 15, base + 15, chiInk.orange, 12);
+            chiText('Critical Region', padding + critX * scaleX + 8, padding + 25, chiInk.orange, 12, 'left', 1, 700);
+            if (progress >= 1) chiText('8.33', padding + 8.33 * scaleX - 15, base + 15, chiInk.red, 12);
+            chiText('χ² statistic', padding + 7, padding + 14, chiInk.text, 12, 'left', 1, 700);
         }
 
         function animateDistribution() {
@@ -2199,7 +2472,9 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
   if (badge) badge.textContent = META.badge;
 
   const stageEls = $$('[data-stage]').filter(el => Number(el.dataset.stage) > 0).sort((a,b) => Number(a.dataset.stage)-Number(b.dataset.stage));
-  const emojiRE = /[\p{Extended_Pictographic}️]/gu;
+  // Inline tokens are converted to local ink doodles after the runtime has
+  // built the stage rail; do not delete their semantic positions here.
+  const emojiRE = /$^/gu;
   stageEls.forEach((stage, index) => {
     stage.classList.add('statml-stage');
     const n = Number(stage.dataset.stage);
@@ -2283,5 +2558,37 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
 
 <script src="core-modules.js"></script>
 <script src="academic-rigor.js"></script>
+<style id="inline-ink-doodle-style">
+.hw-inline-doodle{display:inline-block;width:1.08em;height:1.08em;margin-inline:.045em;vertical-align:-.17em;line-height:1;position:relative;transform:rotate(var(--hw-tilt,0deg));color:currentColor}
+.hw-inline-doodle svg{display:block;width:100%;height:100%;overflow:visible}
+.hw-inline-doodle path,.hw-inline-doodle circle,.hw-inline-doodle ellipse,.hw-inline-doodle line,.hw-inline-doodle polyline,.hw-inline-doodle rect{fill:none;stroke:currentColor;stroke-width:1.15;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke}
+.hw-inline-doodle .ink-fill{fill:currentColor;fill-opacity:.16}
+.hw-inline-doodle .ink-warm{stroke:#b55a52}.hw-inline-doodle .ink-orange{stroke:#d97706}.hw-inline-doodle .ink-green{stroke:#2d7a4b}.hw-inline-doodle .ink-red{stroke:#b84b47}
+</style>
+<script id="inline-ink-doodle-runtime">
+(()=>{const re=/(\p{Extended_Pictographic}(?:\uFE0F)?)/gu,kind=Object.create(null);
+[['👀','eyes'],['▶','play'],['⏸','pause'],['⚠️','warn'],['⚠','warn'],['❌','cross'],['📖','book'],['💡','bulb'],['🍎','apple'],['🍊','orange'],['★','star'],['✅','check'],['🧠','brain'],['💪','muscle'],['🍦','ice'],['🤔','think'],['📌','pin'],['📏','ruler'],['🚧','barrier'],['✨','spark'],['📐','angle'],['🛠️','tools'],['🛠','tools'],['📋','clipbd'],['⚙️','gear'],['⚙','gear'],['🚦','traffic'],['🔍','magnify'],['📊','chart'],['👉','point'],['🔔','bell'],['📎','clip'],['🎲','dice'],['🌟','sun'],['🍬','candy'],['🔬','scope'],['🎉','party'],['🟢','green'],['🔵','blue'],['🟠','orangeDot'],['🔴','red'],['🔢','numbers'],['🔥','fire']].forEach(a=>kind[a[0].replace(/\uFE0F/g,'')]=a[1]);
+const shape={
+eyes:'<path d="M1 6Q3 2 5.8 6Q3 10 1 6"/><path d="M6.2 6Q9 2 11 6Q9 10 6.2 6"/><ellipse cx="3.5" cy="6" rx=".7" ry="1.1"/><ellipse cx="8.5" cy="6" rx=".7" ry="1.1"/>',
+play:'<path class="ink-fill" d="M2 1.5L10 5.8L2.1 10Q1.4 10 1.5 9Z"/>',pause:'<path d="M3 2L3.1 10"/><path d="M8.6 2.1L8.5 9.8"/>',
+warn:'<path class="ink-fill" d="M6 1L11 10L1 10Z"/><path d="M6 3.6L6.2 7.2"/><circle cx="6.15" cy="8.6" r=".45"/>',
+cross:'<path d="M2 2L10 10"/><path d="M10 2L2 10"/>',book:'<path d="M1.3 2Q3.6 1.3 5.9 3V10Q3.5 8.5 1.3 9Z"/><path d="M10.7 2Q8.4 1.3 6.1 3V10Q8.5 8.5 10.7 9Z"/><path d="M2.3 4Q4 3.8 5.5 4.8M9.7 4Q8 3.8 6.5 4.8"/>',
+bulb:'<path class="ink-fill" d="M3 6Q2.8 3 6 1.7Q9.2 3 8.8 6Q8 7.5 7 7.8H4.8Q3.8 7.2 3 6Z"/><path d="M4.7 8.4L7.3 8.3M5.1 9.5L6.9 9.4"/>',
+apple:'<path class="ink-fill ink-warm" d="M2.1 4.4Q3.5 2.9 5.6 3.8Q7.7 2.9 9.5 4.5Q10 7.6 7.3 10Q6 10.8 5.5 9.8Q4.6 10.8 3.3 10Q1.1 7.7 2.1 4.4Z"/><path d="M5.7 3.6Q5.5 1.7 7.2 .9Q8.5 .7 8.9 1.2Q7.9 2.7 5.7 3.6Z"/>',
+orange:'<path class="ink-fill ink-orange" d="M6 1.9Q9.8 1.8 10 6Q9.7 9.8 6 10Q2.2 9.8 2 6Q2.2 2.1 6 1.9Z"/><path d="M5.8 1.9Q6.1 1.1 7.4 1.2M4.1 4.4Q5.6 3.8 7.5 4.2"/>',
+star:'<path class="ink-fill" d="M6 1.1L7.1 4.2L10.3 4.2L7.8 6.1L8.8 9.6L6 7.5L3.1 9.6L4.1 6.2L1.6 4.2L4.9 4.1Z"/>',
+check:'<path d="M1.6 6.2L4.5 9.1L10.4 2.8"/>',brain:'<path class="ink-fill" d="M4 10Q1.8 9 2.4 7.2Q.9 5.4 2.4 4.2Q1.7 2.3 3.6 1.8Q5 .4 6 1.7Q7.3 .4 8.6 1.9Q10.4 2.5 9.5 4.1Q11 5.7 9.5 7.2Q10 9.2 7.9 9.8Z"/><path d="M5.8 1.9Q4.8 3 5.9 4Q4.7 5.2 5.9 6Q4.9 7.1 5.8 8.8M3 4.2Q4 4.1 4.4 5M7 3Q8.2 3.2 8.1 4.4M7 7Q8.2 6.9 8.8 7.7"/>',
+muscle:'<path class="ink-fill ink-green" d="M1.7 9Q1.9 6.5 3.5 5.2Q4.8 5.4 5.1 3.6Q5.8 1.7 7.5 2.1Q8.8 2.9 7.9 5Q9.8 4.8 10.2 6.4Q10.2 8.8 7.6 9.8Z"/><path d="M4.6 5.2Q5.8 6.1 7.2 5.1"/>',
+generic:'<path d="M1.5 6Q3 2.4 6 3.2Q8.8 1.7 10.5 5.5Q9 8.8 6.2 8Q3.3 10 1.5 6Z"/><path d="M3 6.4Q6 4.4 9 6.3"/>'
+};
+const aliases={ice:'bulb',think:'generic',pin:'generic',ruler:'ruler',barrier:'generic',spark:'star',angle:'angle',tools:'generic',clipbd:'clip',gear:'generic',traffic:'generic',magnify:'generic',chart:'generic',point:'generic',bell:'generic',clip:'generic',dice:'generic',sun:'star',candy:'generic',scope:'generic',party:'star',green:'generic',blue:'generic',orangeDot:'orange',red:'generic',numbers:'generic',fire:'spark'};
+const labels={'👀':'look here','▶':'play','⏸':'pause','⚠':'warning','❌':'not correct','📖':'book','💡':'idea','🍎':'apple','🍊':'orange','★':'query point','✅':'correct','🧠':'concept','💪':'strength','🍦':'ice cream','🤔':'thinking','📌':'note','📏':'ruler','🚧':'boundary','✨':'sparkle','📐':'angle','🛠':'tools','📋':'clipboard','⚙':'settings','🚦':'decision threshold','🔍':'inspect','📊':'chart','👉':'pointer','🔔':'bell','📎':'paper clip','🎲':'random','🌟':'highlight','🍬':'sigmoid','🔬':'experiment','🎉':'celebration','🟢':'correct','🔵':'training','🟠':'test','🔴':'incorrect','🔢':'numbers','🔥':'important'};
+let serial=0;
+function doodle(t){const n=t.replace(/\uFE0F/g,''),s=document.createElement('span'),k=kind[n]||'generic';s.className='hw-inline-doodle';s.dataset.hwSymbol=t;s.dataset.hwKind=k;s.setAttribute('role','img');s.setAttribute('aria-label',labels[n]||'hand-drawn symbol');s.style.setProperty('--hw-tilt',(((serial++%5)-2)*.65)+'deg');s.innerHTML='<svg viewBox="0 0 12 12" aria-hidden="true" focusable="false">'+(shape[aliases[k]||k]||shape.generic)+'</svg>';return s}
+function scan(root){const w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT),nodes=[];let n;while(n=w.nextNode()){if(!n.nodeValue||n.parentElement.closest('script,style,.hw-inline-doodle'))continue;re.lastIndex=0;if(re.test(n.nodeValue))nodes.push(n)}nodes.forEach(node=>{const v=node.nodeValue;re.lastIndex=0;let at=0,m,frag=document.createDocumentFragment();while((m=re.exec(v))){if(m.index>at)frag.appendChild(document.createTextNode(v.slice(at,m.index)));frag.appendChild(doodle(m[1]));at=m.index+m[1].length}if(at<v.length)frag.appendChild(document.createTextNode(v.slice(at)));node.parentNode.replaceChild(frag,node)})}
+function cleanDoodleLabels(){document.querySelectorAll('.statml-stage-button[aria-label]').forEach(btn=>{const v=btn.getAttribute('aria-label')||'';btn.setAttribute('aria-label',v.replace(re,m=>labels[m.replace(/\uFE0F/g,'')]||'hand-drawn symbol'))})}
+scan(document.body);cleanDoodleLabels();let queued=false;new MutationObserver(()=>{if(queued)return;queued=true;queueMicrotask(()=>{queued=false;scan(document.body);cleanDoodleLabels()})}).observe(document.body,{subtree:true,childList:true});
+})();
+</script>
 </body>
 </html>

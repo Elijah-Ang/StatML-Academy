@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Logistic Regression | StatML Academy</title>
 <meta name="description" content="A scroll-driven, interactive visual guide to Logistic Regression. Learn how logistic regression works from raw data to final model prediction.">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Patrick+Hand:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 :root{
@@ -527,6 +527,143 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
 </style>
 
     <link rel="stylesheet" href="academic-rigor.css">
+  <link rel="stylesheet" href="handwritten-theme.css?v=20260826-handwritten-final-2">
+  <script src="handwritten-theme.js?v=20260826-handwritten-final-2" defer></script>
+  <style id="logistic-regression-handwritten-shell">
+    body.hw-handwritten .hero-badge,
+    body.hw-handwritten .topic-badge,
+    body.hw-handwritten .statml-hero .hero-badge {
+      border: 0 !important; border-radius: 3px 5px 2px 4px !important;
+      background: linear-gradient(transparent 38%, rgba(241,212,119,.58) 38%, rgba(241,212,119,.58) 88%, transparent 88%) !important;
+      box-shadow: none !important;
+    }
+    body.hw-handwritten .statml-overview { border: 1px solid rgba(88,83,72,.28) !important; border-radius: 5px 8px 4px 7px !important; background: rgba(255,253,245,.78) !important; box-shadow: none !important; }
+    body.hw-handwritten .statml-overview-item { border-radius: 3px 5px 2px 4px !important; background: rgba(255,252,242,.32) !important; box-shadow: none !important; }
+    body.hw-handwritten .statml-overview-number { border: 1px solid rgba(40,105,173,.38) !important; border-radius: 2px 4px 2px 3px !important; background: rgba(230,240,248,.7) !important; box-shadow: none !important; }
+    body.hw-handwritten :is(.pill,.tag,.badge,.metric-badge,.feature-pill,.transform-bridge-badge) { border: 0 !important; border-radius: 2px 4px 2px 3px !important; background: linear-gradient(transparent 34%, rgba(241,212,119,.48) 34%, rgba(241,212,119,.48) 90%, transparent 90%) !important; box-shadow: none !important; }
+    body.hw-handwritten .statml-stage-rail { border-radius: 4px 6px 3px 5px !important; background-color: rgba(255,252,242,.82) !important; background-image: repeating-linear-gradient(176deg, rgba(223,178,45,.04) 0 2px, transparent 2px 8px), radial-gradient(circle at 14% 18%, rgba(255,255,255,.3), transparent 46%) !important; box-shadow: none !important; }
+    body.hw-handwritten .statml-stage-button { border-radius: 42% 58% 47% 53% !important; box-shadow: none !important; }
+    body.hw-handwritten .statml-stage-button[aria-current="step"] { background: var(--hw-yellow) !important; border-color: var(--hw-ink) !important; box-shadow: none !important; }
+  body.hw-handwritten .statml-stage-button span { border-radius: 3px 5px 2px 4px !important; background: var(--hw-yellow-soft) !important; color: var(--hw-ink) !important; box-shadow: none !important; }
+  body.hw-handwritten input[type="range"] { appearance: none !important; height: 7px !important; border: 0 !important; border-radius: 3px 5px 2px 4px !important; background: repeating-linear-gradient(167deg, rgba(40,105,173,.18) 0 2px, rgba(255,252,242,.72) 2px 6px) !important; box-shadow: 1px 1px 0 rgba(75,68,58,.12) !important; }
+  body.hw-handwritten input[type="range"]::-webkit-slider-thumb { appearance: none; width: 18px; height: 18px; border: 1px solid rgba(75,68,58,.52); border-radius: 42% 58% 47% 53%; background: var(--hw-yellow); box-shadow: 1px 2px 0 rgba(75,68,58,.16); transform: rotate(-3deg); }
+  body.hw-handwritten input[type="range"]::-moz-range-thumb { width: 18px; height: 18px; border: 1px solid rgba(75,68,58,.52); border-radius: 42% 58% 47% 53%; background: var(--hw-yellow); box-shadow: 1px 2px 0 rgba(75,68,58,.16); }
+  body.hw-handwritten.statml-standardized :is(.statml-overview,.statml-overview-item,.glass-card,.card,.metric-card,.control-panel,.controls,.quiz-card,.worked-example-widget,.formula-block,.math-block,.formula,.software-output,.model-report-block,.limitation-card,.playground-summary-card,.decision-card,.interactive,.panel,.chart-card,.figure-card,.visual-panel,.viz-panel,.canvas-container,.canvas-wrap,.viz-stage,.status-strip) { border: 1px solid rgba(88,83,72,.42) !important; border-radius: 5px 8px 4px 7px !important; background-color: rgba(255,252,242,.82) !important; background-image: repeating-linear-gradient(176deg, rgba(223,178,45,.035) 0 2px, transparent 2px 8px), radial-gradient(circle at 14% 18%, rgba(255,255,255,.25), transparent 46%) !important; box-shadow: 1px 2px 0 rgba(76,65,50,.10) !important; backdrop-filter: none !important; }
+  body.hw-handwritten.statml-standardized :is(.insight-box,.callout,.insight,.takeaway,.teaching-note,.look-here,.breakdown,.warning-note,.report,.plain-translation,.statml-takeaways) { border: 1px solid rgba(157,112,12,.34) !important; border-left: 4px solid var(--hw-blue) !important; border-radius: 2px 5px 3px 6px !important; background-color: #fff1b8 !important; background-image: repeating-linear-gradient(176deg, rgba(223,178,45,.07) 0 2px, transparent 2px 7px), radial-gradient(circle at 14% 18%, rgba(255,255,255,.42), transparent 46%) !important; box-shadow: 2px 3px 0 rgba(76,65,50,.14) !important; }
+  body.hw-handwritten.statml-standardized :is(.warning-note,.is-alert) { border-left-color: var(--hw-red) !important; background-color: var(--hw-red-soft) !important; background-image: repeating-linear-gradient(176deg, rgba(200,94,88,.055) 0 2px, transparent 2px 7px), radial-gradient(circle at 14% 18%, rgba(255,255,255,.34), transparent 46%) !important; }
+  body.hw-handwritten.statml-standardized :is(.report,.statml-takeaways) { border-left-color: var(--hw-green) !important; background-color: var(--hw-green-soft) !important; }
+  body.hw-handwritten.statml-standardized :is(button,.btn,.interactive-btn,.control-btn,select,input[type="text"],input[type="number"],textarea,.quiz-option,.scenario-options button,.control button) { border: 1px solid rgba(75,68,58,.52) !important; border-radius: 7px 4px 8px 5px !important; background-color: rgba(248,243,230,.88) !important; background-image: repeating-linear-gradient(167deg, rgba(40,105,173,.035) 0 2px, transparent 2px 6px) !important; box-shadow: 1px 2px 0 rgba(75,68,58,.08) !important; }
+  body.hw-handwritten.statml-standardized table { border-color: rgba(75,68,58,.5) !important; border-radius: 5px 8px 4px 7px !important; background-color: rgba(255,253,245,.70) !important; box-shadow: 1px 2px 0 rgba(75,68,58,.05) !important; }
+  body.hw-handwritten.statml-standardized :is(th,td) { border-color: rgba(75,68,58,.42) !important; border-style: dashed !important; }
+  body.hw-handwritten.statml-standardized th { background: rgba(241,212,119,.16) !important; }
+  body.hw-handwritten.statml-standardized :is(.statml-stage-button,.stage-dot) { min-height: 0 !important; width: 9px !important; height: 9px !important; padding: 0 !important; border-radius: 42% 58% 47% 53% !important; background: var(--hw-paper) !important; background-image: none !important; box-shadow: none !important; }
+  body.hw-handwritten.statml-standardized :is(.statml-stage-button,.stage-dot)[aria-current="step"], body.hw-handwritten.statml-standardized :is(.statml-stage-button,.stage-dot).active { background: var(--hw-yellow) !important; border-color: var(--hw-ink) !important; }
+  body.hw-handwritten.statml-standardized button.statml-stage-button, body.hw-handwritten.statml-standardized button.stage-dot { min-height: 0 !important; width: 9px !important; height: 9px !important; padding: 0 !important; border-radius: 42% 58% 47% 53% !important; background: var(--hw-paper) !important; background-image: none !important; box-shadow: none !important; }
+  body.hw-handwritten.statml-standardized button.statml-stage-button[aria-current="step"], body.hw-handwritten.statml-standardized button.stage-dot.active { background: var(--hw-yellow) !important; border-color: var(--hw-ink) !important; }
+  body.hw-handwritten.statml-standardized :is(.viz-container,.statml-visual-card) {
+    border-color: rgba(88,83,72,.42) !important;
+    border-radius: 4px 8px 5px 7px !important;
+    background-color: rgba(255,252,242,.82) !important;
+    background-image: repeating-linear-gradient(176deg, rgba(223,178,45,.035) 0 2px, transparent 2px 8px), radial-gradient(circle at 14% 18%, rgba(255,255,255,.25), transparent 46%) !important;
+    box-shadow: 1px 2px 0 rgba(76,65,50,.10) !important;
+  }
+  body.hw-handwritten.statml-standardized .matrix-grid .cell {
+    border-color: rgba(75,68,58,.42) !important;
+    border-style: dashed !important;
+    border-radius: 2px 4px 3px 2px !important;
+    background-color: rgba(255,252,242,.72) !important;
+    background-image: repeating-linear-gradient(176deg, rgba(223,178,45,.045) 0 2px, transparent 2px 7px) !important;
+  }
+  body.hw-handwritten.statml-standardized .odds-item {
+    border: 1px solid rgba(88,83,72,.42) !important;
+    border-radius: 4px 7px 3px 6px !important;
+    background-color: rgba(255,252,242,.82) !important;
+    background-image: repeating-linear-gradient(176deg, rgba(223,178,45,.045) 0 2px, transparent 2px 7px), radial-gradient(circle at 14% 18%, rgba(255,255,255,.26), transparent 46%) !important;
+    box-shadow: 1px 2px 0 rgba(76,65,50,.09) !important;
+  }
+  </style>
+  <style id="logistic-regression-handwritten-cue-finish">
+    body.hw-handwritten .statml-hero :is(.scroll-cue,.scroll-hint,.scroll-indicator,.hero-scroll) {
+      position: static !important;
+      inset: auto !important;
+      align-self: center !important;
+      display: inline-flex !important;
+      width: auto !important;
+      max-width: calc(100% - 2rem) !important;
+      margin: .65rem auto 0 !important;
+      padding: 0 !important;
+      border: 0 !important;
+      border-radius: 0 !important;
+      background: transparent !important;
+      background-image: none !important;
+      box-shadow: none !important;
+      clip-path: none !important;
+      transform: none !important;
+      animation: none !important;
+      text-decoration-line: underline !important;
+      text-decoration-style: wavy !important;
+      text-decoration-color: rgba(40,105,173,.55) !important;
+      text-decoration-thickness: 1px !important;
+      text-underline-offset: 4px !important;
+    }
+  </style>
+  <style id="logistic-regression-handwritten-visual-surface-finish">
+    body.hw-handwritten.statml-standardized .statml-visual {
+      background-color: var(--hw-paper) !important;
+      background-image: none !important;
+      border-color: transparent !important;
+    }
+    body.hw-handwritten.statml-standardized .statml-visual-card {
+      background-color: var(--hw-paper) !important;
+      background-image: repeating-linear-gradient(176deg, rgba(223,178,45,.045) 0 2px, transparent 2px 8px) !important;
+      border: 0 !important;
+      border-radius: 0 !important;
+      box-shadow: none !important;
+      position: relative !important;
+    }
+    body.hw-handwritten.statml-standardized .statml-visual-card.hw-rough-surface[data-hw-rough-frame] {
+      box-shadow: none !important;
+    }
+    body.hw-handwritten.statml-standardized .statml-visual-card > .hw-rough-frame {
+      display: none !important;
+    }
+    body.hw-handwritten.statml-standardized .statml-visual-card::before,
+    body.hw-handwritten.statml-standardized .statml-visual-card::after {
+      display: none !important;
+      content: none !important;
+    }
+    body.hw-handwritten.statml-standardized .statml-visual-card::after {
+      inset: 4px 1px 1px 4px; opacity: .3; border-color: rgba(88,83,72,.72);
+      border-radius: 5px 3px 6px 4px; transform: rotate(.17deg);
+    }
+  </style>
+<style id="logistic-regression-handwritten-geometry-calibration">
+@media (min-width: 901px) {
+  body.hw-handwritten.statml-standardized [data-stage="1"]{min-height:1463px !important}
+  body.hw-handwritten.statml-standardized [data-stage="2"]{min-height:910px !important}
+  body.hw-handwritten.statml-standardized [data-stage="3"]{min-height:2422px !important}
+  body.hw-handwritten.statml-standardized [data-stage="4"]{min-height:2733px !important}
+  body.hw-handwritten.statml-standardized [data-stage="5"]{min-height:2528px !important}
+  body.hw-handwritten.statml-standardized [data-stage="6"]{min-height:2149px !important}
+  body.hw-handwritten.statml-standardized [data-stage="7"]{min-height:2514px !important}
+  body.hw-handwritten.statml-standardized [data-stage="8"]{min-height:1808px !important}
+  body.hw-handwritten.statml-standardized [data-stage="9"]{min-height:1634px !important}
+  body.hw-handwritten.statml-standardized [data-stage="10"]{min-height:3455px !important}
+  body.hw-handwritten.statml-standardized .statml-stage-button span{max-width:none !important; width:max-content !important; white-space:nowrap !important}
+}
+@media (min-width: 360px) and (max-width: 900px) {
+  body.hw-handwritten.statml-standardized [data-stage="1"]{min-height:1584px !important}
+  body.hw-handwritten.statml-standardized [data-stage="2"]{min-height:1033px !important}
+  body.hw-handwritten.statml-standardized [data-stage="3"]{min-height:2716px !important}
+  body.hw-handwritten.statml-standardized [data-stage="4"]{min-height:3121px !important}
+  body.hw-handwritten.statml-standardized [data-stage="5"]{min-height:2819px !important}
+  body.hw-handwritten.statml-standardized [data-stage="6"]{min-height:2280px !important}
+  body.hw-handwritten.statml-standardized [data-stage="7"]{min-height:2744px !important}
+  body.hw-handwritten.statml-standardized [data-stage="8"]{min-height:1980px !important}
+  body.hw-handwritten.statml-standardized [data-stage="9"]{min-height:1956px !important}
+  body.hw-handwritten.statml-standardized [data-stage="10"]{min-height:4211px !important}
+}
+</style>
 </head>
 <body>
 <nav class="statml-site-nav" aria-label="StatML Academy navigation">
@@ -1193,15 +1330,15 @@ very confident but very wrong.</div>
   <div class="glass-card">
     <h3>Concept Checklist</h3>
     <p style="margin:0;font-size:0.88rem;line-height:2">
-      ✓ Collected and plotted <strong>raw data</strong><br>
-      ✓ Saw why linear regression <strong>can't</strong> predict probabilities<br>
-      ✓ Met the <strong>sigmoid</strong> that squishes scores into 0–1<br>
-      ✓ Built the <strong>score z</strong> from weighted features<br>
-      ✓ Trained with <strong>gradient descent</strong> to minimize log loss<br>
-      ✓ Chose a <strong>threshold</strong> to turn probabilities into decisions<br>
-      ✓ Evaluated with <strong>confusion matrix</strong> and metrics<br>
-      ✓ Explored the <strong>ROC curve</strong> for threshold trade-offs<br>
-      ✓ Interpreted <strong>coefficients</strong> and <strong>odds ratios</strong>
+      <span class="hw-inline-doodle" aria-hidden="true"><svg viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M1.6 6.2L4.5 9.1L10.4 2.8"></path><path d="M1.9 6.5L4.5 9.5L10.1 3.2"></path></svg></span><span hidden>&#10003;</span> Collected and plotted <strong>raw data</strong><br>
+      <span class="hw-inline-doodle" aria-hidden="true"><svg viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M1.6 6.2L4.5 9.1L10.4 2.8"></path><path d="M1.9 6.5L4.5 9.5L10.1 3.2"></path></svg></span><span hidden>&#10003;</span> Saw why linear regression <strong>can't</strong> predict probabilities<br>
+      <span class="hw-inline-doodle" aria-hidden="true"><svg viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M1.6 6.2L4.5 9.1L10.4 2.8"></path><path d="M1.9 6.5L4.5 9.5L10.1 3.2"></path></svg></span><span hidden>&#10003;</span> Met the <strong>sigmoid</strong> that squishes scores into 0–1<br>
+      <span class="hw-inline-doodle" aria-hidden="true"><svg viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M1.6 6.2L4.5 9.1L10.4 2.8"></path><path d="M1.9 6.5L4.5 9.5L10.1 3.2"></path></svg></span><span hidden>&#10003;</span> Built the <strong>score z</strong> from weighted features<br>
+      <span class="hw-inline-doodle" aria-hidden="true"><svg viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M1.6 6.2L4.5 9.1L10.4 2.8"></path><path d="M1.9 6.5L4.5 9.5L10.1 3.2"></path></svg></span><span hidden>&#10003;</span> Trained with <strong>gradient descent</strong> to minimize log loss<br>
+      <span class="hw-inline-doodle" aria-hidden="true"><svg viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M1.6 6.2L4.5 9.1L10.4 2.8"></path><path d="M1.9 6.5L4.5 9.5L10.1 3.2"></path></svg></span><span hidden>&#10003;</span> Chose a <strong>threshold</strong> to turn probabilities into decisions<br>
+      <span class="hw-inline-doodle" aria-hidden="true"><svg viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M1.6 6.2L4.5 9.1L10.4 2.8"></path><path d="M1.9 6.5L4.5 9.5L10.1 3.2"></path></svg></span><span hidden>&#10003;</span> Evaluated with <strong>confusion matrix</strong> and metrics<br>
+      <span class="hw-inline-doodle" aria-hidden="true"><svg viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M1.6 6.2L4.5 9.1L10.4 2.8"></path><path d="M1.9 6.5L4.5 9.5L10.1 3.2"></path></svg></span><span hidden>&#10003;</span> Explored the <strong>ROC curve</strong> for threshold trade-offs<br>
+      <span class="hw-inline-doodle" aria-hidden="true"><svg viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M1.6 6.2L4.5 9.1L10.4 2.8"></path><path d="M1.9 6.5L4.5 9.5L10.1 3.2"></path></svg></span><span hidden>&#10003;</span> Interpreted <strong>coefficients</strong> and <strong>odds ratios</strong>
     </p>
   </div>
   <div class="btn-row"><button class="btn" id="btnRestart">↑ Back to top</button></div>
@@ -1258,6 +1395,82 @@ const TEMP_MIN=12,TEMP_MAX=42;
 const canvas=document.getElementById('mainCanvas');
 const ctx=canvas.getContext('2d');
 let W,H;const PAD={t:50,r:40,b:60,l:65};
+
+// The logistic lesson keeps its original canvas geometry and stage logic, but
+// uses one deterministic rough-ink vocabulary for every mark.  The jitter is
+// stateless, so animation and slider changes never alter the underlying data.
+const INK_FONT='Patrick Hand, Kalam, "Comic Sans MS", cursive';
+function inkHash(...values){let h=2166136261;values.forEach(v=>{const s=String(v);for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619)}});return(h>>>0)/4294967296}
+function inkNoise(seed,index=0){return inkHash(seed,index)*2-1}
+function inkPoints(points,seed,amount=0.8){if(points.length<2)return points.map(p=>({x:p.x,y:p.y}));const out=[{x:points[0].x,y:points[0].y}];for(let i=1;i<points.length;i++){const a=points[i-1],b=points[i];out.push({x:(a.x+b.x)/2+inkNoise(seed,i*4+1)*amount,y:(a.y+b.y)/2+inkNoise(seed,i*4+2)*amount},{x:b.x,y:b.y})}return out}
+function inkStroke(points,color,width=1,options={}){const {dash=[],alpha=1,seed=0,jitter=Math.min(1.1,Math.max(0.35,width*0.28))}=options;const p=inkPoints(points,seed,jitter);const second=p.map((q,i)=>i===0||i===p.length-1?q:{x:q.x+inkNoise(`${seed}:second`,i*3+1)*Math.max(1.15,jitter*1.8),y:q.y+inkNoise(`${seed}:second`,i*3+2)*Math.max(1.15,jitter*1.8)});const draw=(line,passAlpha,passWidth)=>{ctx.save();ctx.globalAlpha=passAlpha;ctx.strokeStyle=color;ctx.lineWidth=passWidth;ctx.lineCap='round';ctx.lineJoin='round';ctx.setLineDash(dash);ctx.beginPath();line.forEach((q,i)=>i?ctx.lineTo(q.x,q.y):ctx.moveTo(q.x,q.y));ctx.stroke();ctx.restore()};draw(second,alpha*.48,Math.max(.65,width*.56));draw(p,alpha*.86,width)}
+// A ruler is never a single mathematically perfect segment in the paper
+// notes.  Build a few low-frequency, deterministic bends while keeping the
+// endpoints (and therefore the lesson's geometry/data) exact.  This is used
+// for the axes and the teaching line where a tiny midpoint jitter is otherwise
+// lost at normal screenshot scale.
+function inkRuledStroke(points,color,width=1,options={}){
+  const {dash=[],alpha=1,seed='ruled',roughness=2.2,steps=8}=options;
+  const make=(salt,amount)=>{
+    const out=[];
+    for(let s=0;s<points.length-1;s++){
+      const a=points[s],b=points[s+1],dx=b.x-a.x,dy=b.y-a.y,len=Math.max(1,Math.hypot(dx,dy)),nx=-dy/len,ny=dx/len;
+      for(let i=0;i<=steps;i++){
+        if(s>0&&i===0)continue;
+        const t=i/steps,edge=(i===0||i===steps)?0:1;
+        const bend=inkNoise(`${seed}:${salt}:${s}`,i*7+1)*amount*edge;
+        const along=inkNoise(`${seed}:${salt}:${s}`,i*7+2)*amount*.16*edge;
+        out.push({x:a.x+dx*t+nx*bend+dx/len*along,y:a.y+dy*t+ny*bend+dy/len*along});
+      }
+    }
+    return out;
+  };
+  const primary=make('primary',roughness),second=make('second',roughness*1.18);
+  const vary=(salt,factor)=>dash.length?dash.map((v,i)=>Math.max(1.5,v*(1+inkNoise(`${seed}:${salt}:dash`,i)*factor))):[];
+  const draw=(line,passAlpha,passWidth,pattern)=>{ctx.save();ctx.globalAlpha=passAlpha;ctx.strokeStyle=color;ctx.lineWidth=passWidth;ctx.lineCap='round';ctx.lineJoin='round';ctx.setLineDash(pattern);ctx.beginPath();line.forEach((q,i)=>i?ctx.lineTo(q.x,q.y):ctx.moveTo(q.x,q.y));ctx.stroke();ctx.restore()};
+  draw(second,alpha*.42,Math.max(.65,width*.58),vary('second',.28));
+  draw(primary,alpha*.88,width,vary('primary',.16));
+}
+function inkFillPolygon(points,fill,stroke=null,width=1,seed=0,alpha=1){const p=inkPoints(points,seed,Math.min(1.3,Math.max(0.45,width*0.35)));ctx.save();ctx.globalAlpha=alpha;ctx.fillStyle=fill;ctx.beginPath();p.forEach((q,i)=>i?ctx.lineTo(q.x,q.y):ctx.moveTo(q.x,q.y));ctx.closePath();ctx.fill();if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=width;ctx.lineCap='round';ctx.lineJoin='round';ctx.stroke();const second=p.map((q,i)=>i===0||i===p.length-1?q:{x:q.x+inkNoise(`${seed}:edge`,i*2+1)*1.8,y:q.y+inkNoise(`${seed}:edge`,i*2+2)*1.8});ctx.globalAlpha=alpha*.62;ctx.lineWidth=Math.max(.6,width*.58);ctx.beginPath();second.forEach((q,i)=>i?ctx.lineTo(q.x,q.y):ctx.moveTo(q.x,q.y));ctx.closePath();ctx.stroke()}ctx.restore()}
+function inkCircle(x,y,r,fill,stroke=null,width=1,seed=0,alpha=1){const p=[];for(let i=0;i<13;i++){const a=i/13*Math.PI*2,rr=r*(1+inkNoise(seed,i)*0.3);p.push({x:x+Math.cos(a)*rr,y:y+Math.sin(a)*rr})}inkFillPolygon(p,fill,stroke,width,seed,alpha)}
+function inkRect(x,y,w,h,fill,stroke=null,width=1,seed=0,alpha=1){const edge=1.2;inkFillPolygon([{x:x+inkNoise(seed,4)*edge,y:y+inkNoise(seed,5)*edge},{x:x+w+inkNoise(seed,1)*edge,y:y+inkNoise(seed,2)*edge},{x:x+w+inkNoise(seed,6)*edge,y:y+h+inkNoise(seed,7)*edge},{x:x+inkNoise(seed,3)*edge,y:y+h+inkNoise(seed,8)*edge}],fill,stroke,width,seed,alpha)}
+function inkFont(font){return String(font||'400 12px sans-serif').replace(/Inter|JetBrains Mono|sans-serif|monospace/g,INK_FONT)}
+function inkText(text,x,y,font,fill,align='left'){ctx.save();ctx.font=inkFont(font);ctx.fillStyle=fill;ctx.textAlign=align;ctx.fillText(text,x,y);ctx.restore()}
+function inkSymbol(symbol,x,y,size=16,color='#292524',seed='symbol'){
+  const key=String(symbol).replace(/\uFE0F/g,''),s=size/12, ox=x-6*s, oy=y-8*s, P=(a,b)=>({x:ox+a*s,y:oy+b*s});
+  if(key==='📋'){
+    inkRect(2*s+ox,1*s+oy,8*s,10*s,'rgba(255,241,184,.42)',color,.9,`${seed}:clip`);
+    inkStroke([P(4,4),P(8,4),P(4,6),P(8,6),P(4,8),P(7,8)],color,.8,{seed:`${seed}:lines`,jitter:.3}); return;
+  }
+  if(key==='📏'){
+    inkFillPolygon([P(1.5,3),P(10.3,2),P(10.5,8.5),P(1.8,9.4)],'rgba(230,240,248,.44)',color,.9,`${seed}:ruler`);
+    [3.3,5,6.7,8.4].forEach((a,i)=>inkStroke([P(a,3),P(a+.2,i%2?4.9:5.4)],color,.65,{seed:`${seed}:tick:${i}`,jitter:.25})); return;
+  }
+  if(key==='🍬'){
+    inkCircle(P(6,6).x,P(6,6).y,3.5*s,'rgba(99,102,241,.16)',color,.9,`${seed}:candy`);
+    inkStroke([P(3.2,3.8),P(1.2,2.5),P(2.1,5.1),P(1.2,7.4),P(3.2,6.3)],color,.8,{seed:`${seed}:wrap`,jitter:.3}); return;
+  }
+  if(key==='🧠'){
+    inkFillPolygon([P(3.4,9.7),P(2.1,7),P(2.7,4.3),P(3.6,2),P(5.7,2),P(7,1.7),P(9.2,3.4),P(9.5,6.2),P(8.1,9.5)],'rgba(230,240,248,.42)',color,.9,`${seed}:brain`);
+    inkStroke([P(5.8,2.1),P(4.8,4),P(6,5.5),P(4.9,7),P(6,9)],color,.7,{seed:`${seed}:folds`,jitter:.25}); return;
+  }
+  if(key==='⚙'){
+    const pts=[];for(let i=0;i<12;i++){const a=i*Math.PI/6,r=i%2?4.3:5.7;pts.push(P(6+Math.cos(a)*r,6+Math.sin(a)*r))}inkFillPolygon(pts,'rgba(241,212,119,.34)',color,.9,`${seed}:gear`);inkCircle(P(6,6).x,P(6,6).y,1.4*s,'rgba(255,252,242,.5)',color,.7,`${seed}:hole`);return;
+  }
+  if(key==='🚦'){
+    inkRect(3*s+ox,1*s+oy,6*s,10*s,'rgba(253,233,222,.4)',color,.9,`${seed}:traffic`);
+    [3.3,5.8,8].forEach((a,i)=>inkCircle(P(6,a).x,P(6,a).y,1*s,i===0?'rgba(200,94,88,.7)':i===1?'rgba(217,119,6,.58)':'rgba(45,122,75,.58)',color,.55,`${seed}:light:${i}`)); return;
+  }
+  if(key==='📊'){
+    inkStroke([P(2,10),P(2,2),P(2,10),P(10,10)],color,.9,{seed:`${seed}:axes`,jitter:.3});
+    [[3,7,1.2,3],[5,5,1.2,5],[7,3.2,1.2,6.8]].forEach((a,i)=>inkFillPolygon([P(a[0],10),P(a[0],a[1]),P(a[0]+a[2],a[1]),P(a[0]+a[2],10)],'rgba(99,102,241,.2)',color,.55,`${seed}:bar:${i}`)); return;
+  }
+  if(key==='🔔'){
+    inkFillPolygon([P(2.1,8),P(3.2,6.9),P(3.2,4),P(6,1.5),P(8.8,4),P(8.8,6.9),P(9.9,8)],'rgba(255,241,184,.48)',color,.9,`${seed}:bell`);
+    inkStroke([P(1.8,8),P(10.2,8),P(6.9,9.8)],color,.8,{seed:`${seed}:clapper`,jitter:.3}); return;
+  }
+  const pts=[];for(let i=0;i<8;i++){const a=i*Math.PI/4,r=i%2?3.4:5.2;pts.push(P(6+Math.cos(a)*r,6+Math.sin(a)*r))}inkFillPolygon(pts,'rgba(255,241,184,.32)',color,.8,`${seed}:generic`);
+}
 function plotX(t){return PAD.l+(t-TEMP_MIN)/(TEMP_MAX-TEMP_MIN)*(W-PAD.l-PAD.r)}
 function plotY(v){return PAD.t+(1-v)*(H-PAD.t-PAD.b)}
 function resizeCanvas(){
@@ -1299,33 +1512,36 @@ const C={
 };
 
 // ===== DRAWING =====
-function clearCanvas(){ctx.fillStyle=C.bg;ctx.fillRect(0,0,W,H)}
+function clearCanvas(){
+  ctx.save();
+  ctx.globalAlpha=1;
+  ctx.fillStyle='#fbf4e2';
+  ctx.fillRect(0,0,W,H);
+  ctx.globalAlpha=.16;
+  for(let y=18;y<H;y+=28) inkStroke([{x:10,y},{x:W-10,y:y+inkNoise(`paper-rule-${y}`,1)*.7}], 'rgba(120,105,76,.42)', .45, {seed:`paper-rule-${y}`,jitter:.55});
+  ctx.restore();
+}
 function drawAxes(xL,yL){
-  ctx.strokeStyle=C.axis;ctx.lineWidth=1.5;
-  ctx.beginPath();ctx.moveTo(PAD.l,PAD.t);ctx.lineTo(PAD.l,H-PAD.b);ctx.lineTo(W-PAD.r,H-PAD.b);ctx.stroke();
-  ctx.strokeStyle=C.grid;ctx.lineWidth=1;
-  for(let i=0;i<=4;i++){const y=PAD.t+i*(H-PAD.t-PAD.b)/4;ctx.beginPath();ctx.moveTo(PAD.l,y);ctx.lineTo(W-PAD.r,y);ctx.stroke()}
-  for(let t=15;t<=40;t+=5){const x=plotX(t);ctx.beginPath();ctx.moveTo(x,PAD.t);ctx.lineTo(x,H-PAD.b);ctx.stroke()}
-  ctx.fillStyle=C.label;ctx.font='500 11px Inter';ctx.textAlign='center';
-  for(let t=15;t<=40;t+=5)ctx.fillText(t+'°',plotX(t),H-PAD.b+20);
-  ctx.textAlign='right';for(let i=0;i<=4;i++)ctx.fillText((i/4).toFixed(1),PAD.l-10,plotY(i/4)+4);
-  ctx.save();ctx.translate(18,H/2);ctx.rotate(-Math.PI/2);ctx.textAlign='center';ctx.font='600 12px Inter';ctx.fillText(yL||'',0,0);ctx.restore();
-  ctx.textAlign='center';ctx.font='600 12px Inter';ctx.fillText(xL||'',W/2,H-PAD.b+42);
+  inkRuledStroke([{x:PAD.l,y:PAD.t},{x:PAD.l,y:H-PAD.b},{x:W-PAD.r,y:H-PAD.b}], '#57534e',1.35,{seed:'axis',roughness:3.8,steps:10});
+  for(let i=0;i<=4;i++){const y=PAD.t+i*(H-PAD.t-PAD.b)/4;inkStroke([{x:PAD.l,y},{x:W-PAD.r,y:y+inkNoise(i,2)*0.5}],C.grid,0.75,{seed:`grid-y-${i}`,jitter:0.5})}
+  for(let t=15;t<=40;t+=5){const x=plotX(t);inkStroke([{x,y:PAD.t},{x:x+inkNoise(t,3)*0.5,y:H-PAD.b}],C.grid,0.75,{seed:`grid-x-${t}`,jitter:0.5})}
+  for(let t=15;t<=40;t+=5){const x=plotX(t);inkRuledStroke([{x,y:H-PAD.b},{x:x+inkNoise(`tick-x-${t}`,3)*.35,y:H-PAD.b+5+inkNoise(`tick-x-${t}`,4)*.7}], '#78716c',0.82,{seed:`tick-x-${t}`,roughness:.65,steps:3});inkText(t+'°',x,H-PAD.b+20,'500 11px Inter',C.label,'center')}
+  for(let i=0;i<=4;i++){const y=plotY(i/4);inkRuledStroke([{x:PAD.l-5+inkNoise(`tick-y-${i}`,1)*.35,y},{x:PAD.l,y:y+inkNoise(`tick-y-${i}`,2)*.35}], '#78716c',0.82,{seed:`tick-y-${i}`,roughness:.65,steps:3});inkText((i/4).toFixed(1),PAD.l-10,y+4,'400 10px JetBrains Mono',C.label,'right')}
+  ctx.save();ctx.translate(18,H/2);ctx.rotate(-Math.PI/2);inkText(yL||'',0,0,'600 12px Inter','#292524','center');ctx.restore();
+  inkText(xL||'',W/2,H-PAD.b+42,'600 12px Inter','#292524','center');
 }
 function drawPoints(data,w,mode,alpha){
   ctx.save();ctx.globalAlpha=alpha||1;
   for(const d of data){
     const x=plotX(d.temp),y=plotY(d.y);
-    ctx.beginPath();ctx.arc(x,y,6,0,Math.PI*2);
-    if(mode==='prediction'){const p=predict(d,w);const pred=p>=threshold?1:0;const ok=pred===d.y;ctx.fillStyle=ok?C.greenA:C.coralA;ctx.strokeStyle=ok?C.greenDim:C.coralDim;ctx.lineWidth=3;ctx.stroke()}
-    else{ctx.fillStyle=d.y===1?C.greenA:C.coralA}
-    ctx.fill();
+    let fill=d.y===1?C.greenA:C.coralA,stroke='rgba(41,37,36,0.60)',width=0.8;
+    if(mode==='prediction'){const p=predict(d,w),pred=p>=threshold?1:0,ok=pred===d.y;stroke=ok?C.green:C.coral;width=2.3}
+    inkCircle(x,y,6,fill,stroke,width,`point-${d.temp}-${d.y}-${mode}`);
   }
   ctx.restore();
 }
 function drawValidationLabels(data,w){
   ctx.save();
-  ctx.font='bold 10px JetBrains Mono';
   const placed={0:[],1:[]};
   const rightEdge=W-PAD.r-4;
   let keptTPLabel=false;
@@ -1354,69 +1570,54 @@ function drawValidationLabels(data,w){
   }
 
   for(const item of labels){
-    ctx.fillStyle=item.color;ctx.textAlign=item.align;ctx.fillText(item.label,item.x,item.y);
+    inkText(item.label,item.x,item.y,'bold 10px JetBrains Mono',item.color,item.align);
   }
   ctx.restore();
 }
 // FIX 2: STRENGTHEN THE LINEAR EXPLANATION ZONE ON CANVAS
 function drawLinearLine(){
-  ctx.strokeStyle='rgba(220,38,38,0.5)';ctx.lineWidth=2;ctx.setLineDash([8,6]);ctx.beginPath();
   let sx=0,sy=0,sxx=0,sxy=0,n=DATA.length;
   for(const d of DATA){sx+=d.temp;sy+=d.y;sxx+=d.temp*d.temp;sxy+=d.temp*d.y}
   const b1l=(n*sxy-sx*sy)/(n*sxx-sx*sx),b0l=(sy-b1l*sx)/n;
-  ctx.moveTo(plotX(TEMP_MIN),plotY(b0l+b1l*TEMP_MIN));ctx.lineTo(plotX(TEMP_MAX),plotY(b0l+b1l*TEMP_MAX));
-  ctx.stroke();ctx.setLineDash([]);
-  ctx.fillStyle='rgba(220,38,38,0.75)';ctx.font='bold 11px Inter';ctx.textAlign='left';
-  if(b0l+b1l*TEMP_MAX>1.05)ctx.fillText('> 1 (Impossible Probability!) ✗',plotX(TEMP_MAX)+5,plotY(b0l+b1l*TEMP_MAX));
-  if(b0l+b1l*TEMP_MIN<-0.05)ctx.fillText('< 0 (Impossible Probability!) ✗',plotX(TEMP_MIN)-55,plotY(b0l+b1l*TEMP_MIN)-15);
+  inkRuledStroke([{x:plotX(TEMP_MIN),y:plotY(b0l+b1l*TEMP_MIN)},{x:plotX(TEMP_MAX),y:plotY(b0l+b1l*TEMP_MAX)}],'rgba(220,38,38,0.65)',1.9,{dash:[6,8,3,5],seed:'linear-line',roughness:10.5,steps:11});
+  if(b0l+b1l*TEMP_MAX>1.05)inkText('> 1 (Impossible Probability!) ✗',plotX(TEMP_MAX)+5,plotY(b0l+b1l*TEMP_MAX),'bold 11px Inter','rgba(220,38,38,0.8)','left');
+  if(b0l+b1l*TEMP_MIN<-0.05)inkText('< 0 (Impossible Probability!) ✗',plotX(TEMP_MIN)-55,plotY(b0l+b1l*TEMP_MIN)-15,'bold 11px Inter','rgba(220,38,38,0.8)','left');
 }
 function drawSigmoidCurve(w){
-  ctx.strokeStyle=C.accent;ctx.lineWidth=3;ctx.beginPath();let first=true;
-  for(let t=TEMP_MIN;t<=TEMP_MAX;t+=0.3){const z=w.b0+w.b1*stdTemp(t)+w.b2*0.5+w.b3*0.5;const p=sigmoid(z);const x=plotX(t),y=plotY(p);first?ctx.moveTo(x,y):ctx.lineTo(x,y);first=false}
-  ctx.stroke();
-  ctx.strokeStyle=C.accentDim;ctx.lineWidth=10;ctx.beginPath();first=true;
-  for(let t=TEMP_MIN;t<=TEMP_MAX;t+=0.3){const z=w.b0+w.b1*stdTemp(t)+w.b2*0.5+w.b3*0.5;const p=sigmoid(z);const x=plotX(t),y=plotY(p);first?ctx.moveTo(x,y):ctx.lineTo(x,y);first=false}
-  ctx.stroke();
+  const pts=[];for(let t=TEMP_MIN;t<=TEMP_MAX;t+=0.3){const z=w.b0+w.b1*stdTemp(t)+w.b2*0.5+w.b3*0.5,p=sigmoid(z);pts.push({x:plotX(t),y:plotY(p)})}
+  inkStroke(pts,C.accentDim,7,{seed:'sigmoid-wash',jitter:1.05,alpha:0.55});
+  inkStroke(pts,C.accent,2.4,{seed:'sigmoid-curve',jitter:0.8});
 }
 function drawZDot(zVal){
   const p=sigmoid(zVal);const w=currentStage>=5?trainedWeights:weights;
   const tRaw=(zVal-w.b0-w.b2*0.5-w.b3*0.5)/w.b1*TEMP_STD+TEMP_MEAN;
   const cx=plotX(Math.max(TEMP_MIN,Math.min(TEMP_MAX,tRaw))),cy=plotY(p);
-  ctx.setLineDash([3,3]);ctx.strokeStyle='rgba(99,102,241,0.3)';ctx.lineWidth=1;
-  ctx.beginPath();ctx.moveTo(cx,H-PAD.b);ctx.lineTo(cx,cy);ctx.stroke();
-  ctx.beginPath();ctx.moveTo(PAD.l,cy);ctx.lineTo(cx,cy);ctx.stroke();ctx.setLineDash([]);
-  ctx.beginPath();ctx.arc(cx,cy,7,0,Math.PI*2);ctx.fillStyle='rgba(99,102,241,0.9)';ctx.fill();ctx.strokeStyle='#fff';ctx.lineWidth=2;ctx.stroke();
-  ctx.fillStyle='rgba(99,102,241,0.9)';ctx.font='bold 11px JetBrains Mono';ctx.textAlign='left';ctx.fillText('p='+p.toFixed(3),cx+12,cy-6);
+  inkStroke([{x:cx,y:H-PAD.b},{x:cx,y:cy}],'rgba(99,102,241,0.38)',1,{dash:[3,3],seed:'z-guide-v',jitter:0.55});
+  inkStroke([{x:PAD.l,y:cy},{x:cx,y:cy}],'rgba(99,102,241,0.38)',1,{dash:[3,3],seed:'z-guide-h',jitter:0.55});
+  inkCircle(cx,cy,7,'rgba(99,102,241,0.9)','#fff',1.6,'z-dot');
+  inkText('p='+p.toFixed(3),cx+12,cy-6,'bold 11px JetBrains Mono','rgba(79,70,229,0.95)','left');
 }
 function drawThresholdLine(t){
-  const y=plotY(t);ctx.strokeStyle=C.amber;ctx.lineWidth=1.5;ctx.setLineDash([6,4]);
-  ctx.beginPath();ctx.moveTo(PAD.l,y);ctx.lineTo(W-PAD.r,y);ctx.stroke();ctx.setLineDash([]);
-  ctx.fillStyle=C.amberText;ctx.font='bold 11px JetBrains Mono';ctx.textAlign='right';
-  ctx.fillText('threshold = '+t.toFixed(2),W-PAD.r-5,Math.min(H-PAD.b-4,Math.max(PAD.t+14,y+16)));
+  const y=plotY(t);inkStroke([{x:PAD.l,y},{x:W-PAD.r,y:y+inkNoise(t,2)*0.6}],C.amber,1.25,{dash:[6,4],seed:`threshold-${t}`,jitter:0.65});
+  inkText('threshold = '+t.toFixed(2),W-PAD.r-5,Math.min(H-PAD.b-4,Math.max(PAD.t+14,y+16)),'bold 11px JetBrains Mono',C.amberText,'right');
 }
 function drawLossChart(){
   if(lossHistory.length<2)return;
   const cW=180,cH=110,ox=W-PAD.r-cW-16,oy=H-PAD.b-cH-16;
-  ctx.fillStyle='rgba(255,255,255,0.92)';ctx.fillRect(ox,oy,cW,cH);
-  ctx.strokeStyle='rgba(0,0,0,0.08)';ctx.lineWidth=1;ctx.strokeRect(ox,oy,cW,cH);
+  inkRect(ox,oy,cW,cH,'rgba(255,250,238,0.82)','rgba(68,64,60,0.45)',0.8,'loss-card',0.96);
   const maxL=Math.max(...lossHistory,0.8);
-  ctx.strokeStyle='rgba(99,102,241,0.7)';ctx.lineWidth=2;ctx.beginPath();
-  for(let i=0;i<lossHistory.length;i++){const x=ox+i/(lossHistory.length-1)*cW;const y=oy+cH-10-(lossHistory[i]/maxL)*(cH-28);i===0?ctx.moveTo(x,y):ctx.lineTo(x,y)}
-  ctx.stroke();ctx.fillStyle=C.label;ctx.font='500 10px JetBrains Mono';ctx.textAlign='left';
-  ctx.fillText('Loss',ox+10,oy+16);ctx.textAlign='right';ctx.fillText('Epoch '+lossHistory.length,ox+cW-10,oy+16);
+  const pts=lossHistory.map((v,i)=>({x:ox+i/(lossHistory.length-1)*cW,y:oy+cH-10-(v/maxL)*(cH-28)}));
+  inkStroke(pts,'rgba(79,70,229,0.78)',1.7,{seed:'loss-curve',jitter:0.7});
+  inkText('Loss',ox+10,oy+16,'500 10px JetBrains Mono',C.label,'left');inkText('Epoch '+lossHistory.length,ox+cW-10,oy+16,'500 10px JetBrains Mono',C.label,'right');
 }
 function drawROC(data,w){
-  clearCanvas();ctx.strokeStyle=C.axis;ctx.lineWidth=1.5;
-  ctx.beginPath();ctx.moveTo(PAD.l,PAD.t);ctx.lineTo(PAD.l,H-PAD.b);ctx.lineTo(W-PAD.r,H-PAD.b);ctx.stroke();
-  ctx.strokeStyle='rgba(0,0,0,0.15)';ctx.setLineDash([4,4]);ctx.beginPath();ctx.moveTo(PAD.l,H-PAD.b);ctx.lineTo(W-PAD.r,PAD.t);ctx.stroke();ctx.setLineDash([]);
+  clearCanvas();inkStroke([{x:PAD.l,y:PAD.t},{x:PAD.l,y:H-PAD.b},{x:W-PAD.r,y:H-PAD.b}], '#57534e',1.25,{seed:'roc-axis',jitter:0.65});
+  inkStroke([{x:PAD.l,y:H-PAD.b},{x:W-PAD.r,y:PAD.t}],'rgba(68,64,60,0.30)',1,{dash:[4,4],seed:'roc-random',jitter:0.65});
 
   const rp=rocPoints(data,w),cW=W-PAD.l-PAD.r,cH=H-PAD.t-PAD.b;
-  ctx.fillStyle=C.accentDim;ctx.beginPath();ctx.moveTo(PAD.l,H-PAD.b);
-  for(const p of rp)ctx.lineTo(PAD.l+p.fpr*cW,H-PAD.b-p.tpr*cH);
-  ctx.lineTo(PAD.l+cW,H-PAD.b);ctx.closePath();ctx.fill();
-
-  ctx.strokeStyle=C.accent;ctx.lineWidth=3;ctx.beginPath();let f=true;
-  for(const p of rp){const x=PAD.l+p.fpr*cW,y=H-PAD.b-p.tpr*cH;f?ctx.moveTo(x,y):ctx.lineTo(x,y);f=false}ctx.stroke();
+  const rocPts=rp.map(p=>({x:PAD.l+p.fpr*cW,y:H-PAD.b-p.tpr*cH}));
+  inkFillPolygon([{x:PAD.l,y:H-PAD.b},...rocPts,{x:PAD.l+cW,y:H-PAD.b}],C.accentDim,null,1,'roc-wash',0.55);
+  inkStroke(rocPts,C.accent,2.4,{seed:'roc-curve',jitter:0.85});
 
   // Plot dynamic current threshold dot on ROC curve
   const currentCM = confusionMatrix(data, w, threshold);
@@ -1425,59 +1626,49 @@ function drawROC(data,w){
   const dotX = PAD.l + currentFPR * cW;
   const dotY = H - PAD.b - currentTPR * cH;
 
-  ctx.beginPath();ctx.arc(dotX,dotY,7,0,Math.PI*2);
-  ctx.fillStyle='#d97706';ctx.fill();ctx.strokeStyle='#fff';ctx.lineWidth=2;ctx.stroke();
-  ctx.fillStyle='#d97706';ctx.font='bold 11px JetBrains Mono';ctx.textAlign='left';
-  ctx.fillText(`Current Threshold (${threshold.toFixed(2)})`, dotX+12, dotY-4);
+  inkCircle(dotX,dotY,7,'#d97706','#fff',1.6,'roc-current');
+  inkText(`Current Threshold (${threshold.toFixed(2)})`,dotX+12,dotY-4,'bold 11px JetBrains Mono','#d97706','left');
 
-  ctx.fillStyle=C.label;ctx.font='600 11px Inter';ctx.textAlign='center';
-  ctx.fillText('False Positive Rate (False Alarm Rate)',W/2,H-PAD.b+42);
-  ctx.save();ctx.translate(18,H/2);ctx.rotate(-Math.PI/2);ctx.fillText('True Positive Rate (Recall / Sensitivity)',0,0);ctx.restore();
+  inkText('False Positive Rate (False Alarm Rate)',W/2,H-PAD.b+42,'600 11px Inter',C.label,'center');
+  ctx.save();ctx.translate(18,H/2);ctx.rotate(-Math.PI/2);inkText('True Positive Rate (Recall / Sensitivity)',0,0,'600 11px Inter',C.label,'center');ctx.restore();
 
   // Curve bending visual guidance
-  ctx.fillStyle='rgba(99,102,241,0.85)';ctx.font='italic 11px Inter';ctx.textAlign='left';
-  ctx.fillText('← Better curves bend toward top-left', PAD.l+15, PAD.t+25);
+  inkText('← Better curves bend toward top-left',PAD.l+15,PAD.t+25,'italic 11px Inter','rgba(79,70,229,0.90)','left');
 
   ctx.save();
   ctx.translate(PAD.l + cW*0.5, H - PAD.b - cH*0.5);
   ctx.rotate(-Math.atan2(cH, cW));
-  ctx.fillStyle='rgba(0,0,0,0.3)';ctx.font='italic 10px Inter';ctx.textAlign='center';
-  ctx.fillText('Random Guessing (AUC = 0.5)', 0, -8);
+  inkText('Random Guessing (AUC = 0.5)',0,-8,'italic 10px Inter','rgba(68,64,60,0.55)','center');
   ctx.restore();
 
-  ctx.textAlign='center';for(let i=0;i<=4;i++)ctx.fillText((i/4).toFixed(1),PAD.l+i/4*cW,H-PAD.b+20);
-  ctx.textAlign='right';for(let i=0;i<=4;i++)ctx.fillText((i/4).toFixed(1),PAD.l-10,H-PAD.b-i/4*cH+4);
+  for(let i=0;i<=4;i++){inkText((i/4).toFixed(1),PAD.l+i/4*cW,H-PAD.b+20,'400 10px JetBrains Mono',C.label,'center');inkText((i/4).toFixed(1),PAD.l-10,H-PAD.b-i/4*cH+4,'400 10px JetBrains Mono',C.label,'right')}
   document.getElementById('aucVal').textContent=auc(rp).toFixed(3);
 }
 function drawCoeffBars(w){
   clearCanvas();const names=['b₀ bias','b₁ temp','b₂ sunny','b₃ weekend'],vals=[w.b0,w.b1,w.b2,w.b3];
   const maxAbs=Math.max(...vals.map(Math.abs),1),midY=H/2;
   const barH=40,gap=20,startY=PAD.t+50,midX=W/2;
-  ctx.fillStyle=C.label;ctx.font='bold 14px Inter';ctx.textAlign='center';ctx.fillText('Learned Coefficients & Impact',W/2,PAD.t+20);
-  ctx.strokeStyle=C.grid;ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(midX,startY);ctx.lineTo(midX,startY+names.length*(barH+gap));ctx.stroke();
+  inkText('Learned Coefficients & Impact',W/2,PAD.t+20,'bold 14px Inter',C.label,'center');
+  inkStroke([{x:midX,y:startY},{x:midX,y:startY+names.length*(barH+gap)}],C.grid,0.8,{seed:'coefficient-midline',jitter:0.45});
   for(let i=0;i<vals.length;i++){
     const y=startY+i*(barH+gap),barW=vals[i]/maxAbs*(W/2-PAD.r-50),isPos=vals[i]>=0;
-    const grad=ctx.createLinearGradient(midX,0,midX+barW,0);
-    if(isPos){grad.addColorStop(0,'rgba(22,163,74,0.15)');grad.addColorStop(1,'rgba(22,163,74,0.45)')}
-    else{grad.addColorStop(0,'rgba(220,38,38,0.45)');grad.addColorStop(1,'rgba(220,38,38,0.15)')}
-    ctx.fillStyle=grad;ctx.beginPath();roundRect(ctx,isPos?midX:midX+barW,y,Math.abs(barW),barH,8);ctx.fill();
-    ctx.fillStyle='rgba(0,0,0,0.5)';ctx.font='500 12px Inter';ctx.textAlign='right';ctx.fillText(names[i],midX-14,y+barH/2+4);
-    ctx.textAlign='left';ctx.fillStyle='rgba(0,0,0,0.7)';ctx.font='600 12px JetBrains Mono';ctx.fillText(vals[i].toFixed(3),midX+barW+(isPos?8:-50),y+barH/2+4);
-    if(i>0){const or=Math.exp(vals[i]);ctx.fillStyle='rgba(99,102,241,0.6)';ctx.font='400 10px JetBrains Mono';ctx.fillText('OR: '+or.toFixed(2),midX+barW+(isPos?8:-50),y+barH/2+18)}
+    const barX=isPos?midX:midX+barW;
+    inkRect(barX,y,Math.abs(barW),barH,isPos?'rgba(22,163,74,0.30)':'rgba(220,38,38,0.30)','rgba(68,64,60,0.50)',0.85,`coef-bar-${i}`,0.95);
+    for(let hatch=12; hatch<Math.abs(barW)-4; hatch+=18) {
+      inkStroke([{x:barX+hatch,y:y+6},{x:barX+hatch+5,y:y+barH-6}],isPos?'rgba(22,96,51,0.14)':'rgba(153,27,27,0.12)',0.55,{seed:`coef-hatch-${i}-${hatch}`,jitter:0.5});
+    }
+    inkText(names[i],midX-14,y+barH/2+4,'500 12px Inter','rgba(68,64,60,0.78)','right');
+    inkText(vals[i].toFixed(3),midX+barW+(isPos?8:-50),y+barH/2+4,'600 12px JetBrains Mono','rgba(41,37,36,0.82)','left');
+    if(i>0){const or=Math.exp(vals[i]);inkText('OR: '+or.toFixed(2),midX+barW+(isPos?8:-50),y+barH/2+18,'400 10px JetBrains Mono','rgba(79,70,229,0.72)','left')}
   }
 
-  ctx.fillStyle='rgba(75, 85, 99, 0.85)';ctx.font='500 11px Inter';ctx.textAlign='center';
-  ctx.fillText('Positive weight pushes probability UP (OR > 1)  |  Negative weight pushes probability DOWN (OR < 1)', W/2, H - 40);
-  ctx.font='italic 10px Inter';ctx.fillStyle='rgba(107, 114, 128, 0.8)';
-  ctx.fillText('Odds Ratio (OR) tells you how many times the Odds are multiplied per unit increase.', W/2, H - 22);
+  inkText('Positive weight pushes probability UP (OR > 1)  |  Negative weight pushes probability DOWN (OR < 1)',W/2,H-40,'500 11px Inter','rgba(75,85,99,0.85)','center');
+  inkText('Odds Ratio (OR) tells you how many times the Odds are multiplied per unit increase.',W/2,H-22,'italic 10px Inter','rgba(107,114,128,0.8)','center');
 
   // Odds Ratio Contextual Labels on canvas
   ctx.save();
-  ctx.fillStyle='rgba(31, 41, 55, 0.8)';
-  ctx.font='bold 10px Inter';ctx.textAlign='left';
-  ctx.fillText("Positive Coefficient → pushes probability UP (OR > 1)", PAD.l, startY - 15);
-  ctx.textAlign='right';
-  ctx.fillText("Negative Coefficient → pushes probability DOWN (OR < 1)", W-PAD.r, startY - 15);
+  inkText("Positive Coefficient → pushes probability UP (OR > 1)",PAD.l,startY-15,'bold 10px Inter','rgba(31,41,55,0.8)','left');
+  inkText("Negative Coefficient → pushes probability DOWN (OR < 1)",W-PAD.r,startY-15,'bold 10px Inter','rgba(31,41,55,0.8)','right');
   ctx.restore();
 
   // Update odds ratio content block dynamically
@@ -1489,7 +1680,7 @@ function drawCoeffBars(w){
       if(or>1.05)desc=`associated with multiplying the odds of buying by <strong>${or.toFixed(3)}</strong> per unit, holding other features constant`;
       else if(or<0.95)desc=`associated with reducing the odds to <strong>${or.toFixed(3)}×</strong> per unit (a ${((1-or)*100).toFixed(1)}% decrease), holding other features constant`;
       else desc='has <strong>little to no measurable association</strong> with the odds';
-      return`<div style="background:var(--bg); border:1px solid var(--glass-border); padding:10px 14px; border-radius:var(--radius-sm);">
+      return`<div class="odds-item" style="background:var(--bg); border:1px solid var(--glass-border); padding:10px 14px; border-radius:var(--radius-sm);">
         <strong>${nm}:</strong> e<sup>${v.toFixed(3)}</sup> = <strong>${or.toFixed(3)}</strong> Odds Ratio<br>
         <span style="font-size:0.82rem; color:var(--text-dim);">${desc}.</span>
       </div>`;
@@ -1502,15 +1693,12 @@ function drawPipeline(){
   const n=steps.length,startX=PAD.l+10,endX=W-PAD.r-10,midY=H/2,stepW=(endX-startX)/n;
   for(let i=0;i<n;i++){
     const x=startX+i*stepW+stepW/2;
-    const grad=ctx.createRadialGradient(x,midY,0,x,midY,28);
-    grad.addColorStop(0,'rgba(99,102,241,0.12)');grad.addColorStop(1,'rgba(99,102,241,0.02)');
-    ctx.fillStyle=grad;ctx.beginPath();ctx.arc(x,midY,26,0,Math.PI*2);ctx.fill();
-    ctx.strokeStyle='rgba(99,102,241,0.2)';ctx.lineWidth=1.5;ctx.stroke();
-    ctx.fillStyle='#333';ctx.font='16px sans-serif';ctx.textAlign='center';ctx.fillText(steps[i].split(' ')[0],x,midY+5);
-    ctx.fillStyle=C.label;ctx.font='500 9px Inter';ctx.fillText(steps[i].split(' ').slice(1).join(' '),x,midY+42);
-    if(i<n-1){ctx.strokeStyle='rgba(99,102,241,0.15)';ctx.lineWidth=1.5;ctx.beginPath();ctx.moveTo(x+28,midY);ctx.lineTo(x+stepW-28,midY);ctx.stroke();ctx.beginPath();ctx.moveTo(x+stepW-33,midY-4);ctx.lineTo(x+stepW-28,midY);ctx.lineTo(x+stepW-33,midY+4);ctx.stroke()}
+    inkCircle(x,midY,26,'rgba(99,102,241,0.08)','rgba(79,70,229,0.28)',1.1,`pipeline-node-${i}`);
+    inkSymbol(steps[i].split(' ')[0],x,midY+5,16,'#292524',`pipeline-symbol-${i}`);
+    inkText(steps[i].split(' ').slice(1).join(' '),x,midY+42,'500 9px Inter',C.label,'center');
+    if(i<n-1){inkStroke([{x:x+28,y:midY},{x:x+stepW-28,y:midY}], 'rgba(79,70,229,0.28)',1.1,{seed:`pipeline-link-${i}`,jitter:0.7});inkStroke([{x:x+stepW-33,y:midY-4},{x:x+stepW-28,y:midY},{x:x+stepW-33,y:midY+4}], 'rgba(79,70,229,0.38)',1.1,{seed:`pipeline-arrow-${i}`,jitter:0.5})}
   }
-  ctx.fillStyle=C.label;ctx.font='600 13px Inter';ctx.textAlign='center';ctx.fillText('The Logistic Regression Pipeline',W/2,PAD.t+20);
+  inkText('The Logistic Regression Pipeline',W/2,PAD.t+20,'600 13px Inter',C.label,'center');
 }
 
 // ===== MAIN DRAW =====
@@ -1535,23 +1723,14 @@ function draw(){
 
   // FIX 11: UNIQUE STAGE BY STAGE OVERLAYS & CONTROLS ALIGNMENT
   if(currentStage===1){
-    ctx.save();
-    ctx.fillStyle='rgba(31, 41, 55, 0.7)';
-    ctx.font='500 11px Inter';ctx.textAlign='left';
-    ctx.fillText("Each dot = one day", PAD.l+15, PAD.t+25);
-    ctx.restore();
+    inkText("Each dot = one day",PAD.l+15,PAD.t+25,'500 11px Inter','rgba(31,41,55,0.7)','left');
   }
 
   if(currentStage===2){
     drawLinearLine();
-    ctx.save();
-    ctx.fillStyle='rgba(220, 38, 38, 0.85)';
-    ctx.font='600 11px Inter';ctx.textAlign='left';
-    ctx.fillText("Linear regression line goes above 1 and below 0", PAD.l+15, PAD.t+25);
-    ctx.font='500 10px Inter';ctx.fillStyle='rgba(75, 85, 99, 0.85)';
-    ctx.fillText("Above 1 = More than certain (impossible probability!)", PAD.l+15, PAD.t+42);
-    ctx.fillText("Below 0 = Less than impossible (impossible probability!)", PAD.l+15, PAD.t+56);
-    ctx.restore();
+    inkText("Linear regression line goes above 1 and below 0",PAD.l+15,PAD.t+25,'600 11px Inter','rgba(220,38,38,0.85)','left');
+    inkText("Above 1 = More than certain (impossible probability!)",PAD.l+15,PAD.t+42,'500 10px Inter','rgba(75,85,99,0.85)','left');
+    inkText("Below 0 = Less than impossible (impossible probability!)",PAD.l+15,PAD.t+56,'500 10px Inter','rgba(75,85,99,0.85)','left');
   }
 
   if(currentStage>=3)drawSigmoidCurve(w);
@@ -1559,30 +1738,15 @@ function draw(){
 
   // Custom overlay explanations on Canvas
   if(currentStage===3){
-    ctx.save();
-    // FIX 3: ADD STAGE 3 CANVAS OVERLAY SPECIFIED LABEL
-    ctx.fillStyle='rgba(99, 102, 241, 0.95)';
-    ctx.font='600 11px Inter';ctx.textAlign='left';
-    ctx.fillText("Demo only: choose z → sigmoid → probability", PAD.l+15, PAD.t+25);
-    ctx.font='500 10px Inter';ctx.fillStyle='rgba(75, 85, 99, 0.85)';
-    ctx.fillText("Output: probability values on y-axis (between 0 and 1)", PAD.l+15, PAD.t+40);
-    ctx.restore();
+    inkText("Demo only: choose z → sigmoid → probability",PAD.l+15,PAD.t+25,'600 11px Inter','rgba(79,70,229,0.95)','left');
+    inkText("Output: probability values on y-axis (between 0 and 1)",PAD.l+15,PAD.t+40,'500 10px Inter','rgba(75,85,99,0.85)','left');
   }
 
   if(currentStage===4){
-    ctx.save();
-    ctx.fillStyle='rgba(31, 41, 55, 0.85)';
-    ctx.font='600 12px Inter';ctx.textAlign='left';
-    ctx.fillText("Score z = sum of (feature × weight)", PAD.l+15, PAD.t+25);
-    ctx.font='400 11px Inter';ctx.fillStyle='rgba(75, 85, 99, 0.9)';
-    ctx.fillText("Then sigmoid function squishes z into a probability (0 to 1)", PAD.l+15, PAD.t+42);
-
-    // FIX 5: ADD STAGE 4 CANVAS OVERLAY sandbox note
-    ctx.fillStyle='rgba(99, 102, 241, 0.95)';
-    ctx.font='bold 11px Inter';
-    ctx.fillText("Manual sandbox: weights → z → probability", PAD.l+15, PAD.t+65);
-    ctx.font='500 10px Inter';ctx.fillStyle='rgba(75, 85, 99, 0.85)';
-    ctx.fillText("Changing manual sliders changes the shape of the decision curve.", PAD.l+15, PAD.t+80);
+    inkText("Score z = sum of (feature × weight)",PAD.l+15,PAD.t+25,'600 12px Inter','rgba(31,41,55,0.85)','left');
+    inkText("Then sigmoid function squishes z into a probability (0 to 1)",PAD.l+15,PAD.t+42,'400 11px Inter','rgba(75,85,99,0.9)','left');
+    inkText("Manual sandbox: weights → z → probability",PAD.l+15,PAD.t+65,'bold 11px Inter','rgba(79,70,229,0.95)','left');
+    inkText("Changing manual sliders changes the shape of the decision curve.",PAD.l+15,PAD.t+80,'500 10px Inter','rgba(75,85,99,0.85)','left');
 
     // Highlight 30°C Example Day directly on curve
     const tVal=30;
@@ -1591,52 +1755,35 @@ function draw(){
     const pDay=sigmoid(zDay);
     const cx=plotX(tVal);
     const cy=plotY(pDay);
-    ctx.beginPath();ctx.arc(cx,cy,8,0,Math.PI*2);ctx.fillStyle='rgba(99,102,241,0.95)';ctx.fill();
-    ctx.strokeStyle='#fff';ctx.lineWidth=2.5;ctx.stroke();
-    ctx.fillStyle='rgba(31, 41, 55, 0.9)';ctx.font='bold 10px JetBrains Mono';
-    ctx.fillText(`30°C Example Day (p = ${(pDay*100).toFixed(0)}%)`, cx+12, cy-4);
-    ctx.restore();
+    inkCircle(cx,cy,8,'rgba(79,70,229,0.95)','#fff',2.2,'example-day');
+    inkText(`30°C Example Day (p = ${(pDay*100).toFixed(0)}%)`,cx+12,cy-4,'bold 10px JetBrains Mono','rgba(31,41,55,0.9)','left');
   }
 
   if(currentStage===5){
     drawLossChart();
-    ctx.save();
-    ctx.fillStyle='rgba(22, 163, 74, 0.9)';
-    ctx.font='bold 11px Inter';ctx.textAlign='right';
-    ctx.fillText("Loss going down = model is learning ✓", W-PAD.r-10, H-PAD.b-135);
-    ctx.restore();
+    inkText("Loss going down = model is learning",W-PAD.r-24,H-PAD.b-135,'bold 11px Inter','rgba(22,163,74,0.9)','right');
+    const checkX=W-PAD.r-12,checkY=H-PAD.b-139;
+    inkStroke([{x:checkX-6,y:checkY+1},{x:checkX-2,y:checkY+5},{x:checkX+6,y:checkY-5}], 'rgba(22,163,74,0.9)',1.35,{seed:'learning-check',jitter:.48});
+    inkStroke([{x:checkX-5,y:checkY+2},{x:checkX-2,y:checkY+6},{x:checkX+7,y:checkY-4}], 'rgba(22,163,74,0.9)',.72,{seed:'learning-check-second',jitter:.42});
   }
 
   // FIX 7: IMPROVED VISUAL THRESHOLD REGIONS & labels IN STAGE 6 and 7
   if(currentStage===6 || currentStage===7){
-    ctx.save();
     // Above Threshold Shade (Elegantly semi-transparent green)
-    ctx.fillStyle='rgba(22, 163, 74, 0.02)';
-    ctx.fillRect(PAD.l, PAD.t, W - PAD.l - PAD.r, plotY(threshold) - PAD.t);
+    inkRect(PAD.l,PAD.t,W-PAD.l-PAD.r,plotY(threshold)-PAD.t,'rgba(22,163,74,0.025)',null,0,'above-threshold',0.95);
     // Below Threshold Shade (Elegantly semi-transparent red)
-    ctx.fillStyle='rgba(220, 38, 38, 0.015)';
-    ctx.fillRect(PAD.l, plotY(threshold), W - PAD.l - PAD.r, H - PAD.b - plotY(threshold));
+    inkRect(PAD.l,plotY(threshold),W-PAD.l-PAD.r,H-PAD.b-plotY(threshold),'rgba(220,38,38,0.02)',null,0,'below-threshold',0.95);
 
     // Threshold boundary label text overlays on the canvas
-    ctx.fillStyle='rgba(22, 163, 74, 0.75)';
-    ctx.font='bold 11px Inter';ctx.textAlign='left';
-    ctx.fillText("Above threshold = Predict Yes", PAD.l+15, Math.max(PAD.t+28, plotY(threshold) - 24));
-    ctx.fillStyle='rgba(220, 38, 38, 0.75)';
-    ctx.fillText("Below threshold = Predict No", PAD.l+15, Math.min(H-PAD.b-22, plotY(threshold) + 32));
-    ctx.restore();
+    inkText("Above threshold = Predict Yes",PAD.l+15,Math.max(PAD.t+28,plotY(threshold)-24),'bold 11px Inter','rgba(22,163,74,0.75)','left');
+    inkText("Below threshold = Predict No",PAD.l+15,Math.min(H-PAD.b-22,plotY(threshold)+32),'bold 11px Inter','rgba(220,38,38,0.75)','left');
   }
 
   if(currentStage===7){
-    ctx.save();
-    ctx.fillStyle='rgba(31, 41, 55, 0.9)';
-    ctx.font='bold 11px Inter';ctx.textAlign='left';
-    ctx.fillText(`Validation Set (${VALIDATION.length} days)`, PAD.l+15, PAD.t+22);
-    ctx.font='400 10px Inter';
-    ctx.fillStyle='rgba(22, 163, 74, 1)';ctx.fillText("● Green outline = Correct prediction", PAD.l+15, PAD.t+38);
-    ctx.fillStyle='rgba(220, 38, 38, 1)';ctx.fillText("● Red outline = Wrong prediction", PAD.l+15, PAD.t+52);
-    ctx.fillStyle=C.label;ctx.fillText("Dashed line = Decision threshold (Yes vs No)", PAD.l+15, PAD.t+66);
-
-    ctx.restore();
+    inkText(`Validation Set (${VALIDATION.length} days)`,PAD.l+15,PAD.t+22,'bold 11px Inter','rgba(31,41,55,0.9)','left');
+    inkText("● Green outline = Correct prediction",PAD.l+15,PAD.t+38,'400 10px Inter','rgba(22,163,74,1)','left');
+    inkText("● Red outline = Wrong prediction",PAD.l+15,PAD.t+52,'400 10px Inter','rgba(220,38,38,1)','left');
+    inkText("Dashed line = Decision threshold (Yes vs No)",PAD.l+15,PAD.t+66,'400 10px Inter',C.label,'left');
     drawValidationLabels(VALIDATION,w);
   }
 
@@ -1653,11 +1800,12 @@ function drawHeroBg(){
   heroCanvas.width=hr.width*dpr;heroCanvas.height=hr.height*dpr;
   heroCtx.setTransform(dpr,0,0,dpr,0,0);
   const w=hr.width,h=hr.height;heroCtx.clearRect(0,0,w,h);
-  for(let i=0;i<30;i++){heroCtx.fillStyle='rgba(22,163,74,0.03)';heroCtx.beginPath();heroCtx.arc(w*0.6+Math.sin(i*2.3)*80,h*0.35+Math.cos(i*1.9)*60,8+Math.sin(i)*4,0,Math.PI*2);heroCtx.fill()}
-  for(let i=0;i<30;i++){heroCtx.fillStyle='rgba(220,38,38,0.03)';heroCtx.beginPath();heroCtx.arc(w*0.4+Math.sin(i*2.1)*70,h*0.65+Math.cos(i*1.7)*55,8+Math.cos(i)*4,0,Math.PI*2);heroCtx.fill()}
-  heroCtx.strokeStyle='rgba(99,102,241,0.06)';heroCtx.lineWidth=2;heroCtx.setLineDash([12,8]);
+  function heroInkCircle(x,y,r,fill,stroke){const p=[];for(let i=0;i<10;i++){const a=i/10*Math.PI*2,rr=r*(1+Math.sin(i*1.8+x)*0.08);p.push({x:x+Math.cos(a)*rr,y:y+Math.sin(a)*rr})}heroCtx.save();heroCtx.fillStyle=fill;heroCtx.strokeStyle=stroke;heroCtx.lineWidth=0.8;heroCtx.lineCap='round';heroCtx.beginPath();p.forEach((q,i)=>i?heroCtx.lineTo(q.x,q.y):heroCtx.moveTo(q.x,q.y));heroCtx.closePath();heroCtx.fill();heroCtx.stroke();heroCtx.restore()}
+  for(let i=0;i<30;i++)heroInkCircle(w*0.6+Math.sin(i*2.3)*80,h*0.35+Math.cos(i*1.9)*60,8+Math.sin(i)*4,'rgba(22,163,74,0.035)','rgba(22,101,52,0.10)');
+  for(let i=0;i<30;i++)heroInkCircle(w*0.4+Math.sin(i*2.1)*70,h*0.65+Math.cos(i*1.7)*55,8+Math.cos(i)*4,'rgba(220,38,38,0.035)','rgba(153,27,27,0.10)');
+  heroCtx.strokeStyle='rgba(79,70,229,0.12)';heroCtx.lineWidth=1.8;heroCtx.lineCap='round';heroCtx.setLineDash([12,8]);
   heroCtx.beginPath();heroCtx.moveTo(w*0.1,h*0.8);
-  for(let x=0;x<=1;x+=0.01){const px=w*(0.1+x*0.8);heroCtx.lineTo(px,h*(0.8-0.6/(1+Math.exp(-10*(x-0.5)))))}
+  for(let x=0;x<=1;x+=0.01){const px=w*(0.1+x*0.8);heroCtx.lineTo(px+Math.sin(x*18)*0.6,h*(0.8-0.6/(1+Math.exp(-10*(x-0.5))))+Math.cos(x*20)*0.6)}
   heroCtx.stroke();heroCtx.setLineDash([]);
 }
 
@@ -1892,7 +2040,7 @@ updateValidationMetrics();
 
 <script id="statml-standard-runtime">
 (() => {
-  const META = {"title": "Logistic Regression", "badge": "Machine Learning · Classification", "overview": ["Convert a linear score into a probability", "Understand coefficients, loss, and decision thresholds", "Evaluate classification beyond accuracy"], "prereq": "Logistic regression predicts the probability of a class. The final class label is produced only after applying a decision threshold to that probability.", "additionStage": 10, "additionTitle": "Thresholds, imbalance, and calibration", "additionHtml": "<p>The default threshold of 0.50 is a convention, not a law. Choose a threshold based on the relative cost of false positives and false negatives.</p><p>With imbalanced classes, accuracy may look impressive while the model misses the minority class. Inspect precision, recall, ROC or precision–recall curves, and whether predicted probabilities are well calibrated.</p>", "takeaways": ["The sigmoid maps a linear score to a probability between 0 and 1.", "Coefficients act on log-odds; exponentiated coefficients are odds ratios.", "Evaluation and threshold choice should reflect the real cost of classification errors."], "selectors": {"hero": ".hero-section", "layout": ".layout", "narrative": ".narrative", "visual": ".viz-container"}, "stages": [{"n": 1, "title": "It Starts with Data 🍦"}, {"n": 2, "title": "Why Lines Break 📏"}, {"n": 3, "title": "From a Raw Score to a Probability ✨"}, {"n": 4, "title": "Weighted Clues 🧠"}, {"n": 5, "title": "Learning from Mistakes ⚙️"}, {"n": 6, "title": "Drawing the Line 🚦"}, {"n": 7, "title": "How Good Is It? 📊"}, {"n": 8, "title": "The ROC Curve 🔔"}, {"n": 9, "title": "What the Numbers Mean 📎"}, {"n": 10, "title": "The Full Picture 🌟"}], "phases": ["Understand", "Understand", "Build", "Understand", "Build", "Understand", "Understand", "Understand", "Reflect", "Reflect"]};
+const META = {"title": "Logistic Regression", "badge": "Machine Learning · Classification", "overview": ["Convert a linear score into a probability", "Understand coefficients, loss, and decision thresholds", "Evaluate classification beyond accuracy"], "prereq": "Logistic regression predicts the probability of a class. The final class label is produced only after applying a decision threshold to that probability.", "additionStage": 10, "additionTitle": "Thresholds, imbalance, and calibration", "additionHtml": "<p>The default threshold of 0.50 is a convention, not a law. Choose a threshold based on the relative cost of false positives and false negatives.</p><p>With imbalanced classes, accuracy may look impressive while the model misses the minority class. Inspect precision, recall, ROC or precision–recall curves, and whether predicted probabilities are well calibrated.</p>", "takeaways": ["The sigmoid maps a linear score to a probability between 0 and 1.", "Coefficients act on log-odds; exponentiated coefficients are odds ratios.", "Evaluation and threshold choice should reflect the real cost of classification errors."], "selectors": {"hero": ".hero-section", "layout": ".layout", "narrative": ".narrative", "visual": ".viz-container"}, "stages": [{"n": 1, "title": "It Starts with Data 🍦"}, {"n": 2, "title": "Why Lines Break 📏"}, {"n": 3, "title": "From a Raw Score to a Probability ✨"}, {"n": 4, "title": "Weighted Clues 🧠"}, {"n": 5, "title": "Learning from Mistakes ⚙️"}, {"n": 6, "title": "Drawing the Line 🚦"}, {"n": 7, "title": "How Good Is It? 📊"}, {"n": 8, "title": "The ROC Curve 🔔"}, {"n": 9, "title": "What the Numbers Mean 📎"}, {"n": 10, "title": "The Full Picture 🌟"}], "phases": ["Understand", "Understand", "Build", "Understand", "Build", "Understand", "Understand", "Understand", "Reflect", "Reflect"]};
   document.body.classList.add('statml-standardized');
   const $ = (s, root=document) => root.querySelector(s);
   const $$ = (s, root=document) => [...root.querySelectorAll(s)];
@@ -1914,7 +2062,9 @@ updateValidationMetrics();
   if (badge) badge.textContent = META.badge;
 
   const stageEls = $$('[data-stage]').filter(el => Number(el.dataset.stage) > 0).sort((a,b) => Number(a.dataset.stage)-Number(b.dataset.stage));
-  const emojiRE = /[\p{Extended_Pictographic}️]/gu;
+  // Inline tokens are converted to local ink doodles after the runtime has
+  // built the stage rail; do not delete their semantic positions here.
+  const emojiRE = /$^/gu;
   stageEls.forEach((stage, index) => {
     stage.classList.add('statml-stage');
     const n = Number(stage.dataset.stage);
@@ -1999,5 +2149,37 @@ updateValidationMetrics();
 
 <script src="core-modules.js"></script>
 <script src="academic-rigor.js"></script>
+<style id="inline-ink-doodle-style">
+.hw-inline-doodle{display:inline-block;width:1.08em;height:1.08em;margin-inline:.045em;vertical-align:-.17em;line-height:1;position:relative;transform:rotate(var(--hw-tilt,0deg));color:currentColor}
+.hw-inline-doodle svg{display:block;width:100%;height:100%;overflow:visible}
+.hw-inline-doodle path,.hw-inline-doodle circle,.hw-inline-doodle ellipse,.hw-inline-doodle line,.hw-inline-doodle polyline,.hw-inline-doodle rect{fill:none;stroke:currentColor;stroke-width:1.15;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke}
+.hw-inline-doodle .ink-fill{fill:currentColor;fill-opacity:.16}
+.hw-inline-doodle .ink-warm{stroke:#b55a52}.hw-inline-doodle .ink-orange{stroke:#d97706}.hw-inline-doodle .ink-green{stroke:#2d7a4b}.hw-inline-doodle .ink-red{stroke:#b84b47}
+</style>
+<script id="inline-ink-doodle-runtime">
+(()=>{const re=/(\p{Extended_Pictographic}(?:\uFE0F)?)/gu,kind=Object.create(null);
+[['👀','eyes'],['▶','play'],['⏸','pause'],['⚠️','warn'],['⚠','warn'],['❌','cross'],['📖','book'],['💡','bulb'],['🍎','apple'],['🍊','orange'],['★','star'],['✅','check'],['🧠','brain'],['💪','muscle'],['🍦','ice'],['🤔','think'],['📌','pin'],['📏','ruler'],['🚧','barrier'],['✨','spark'],['📐','angle'],['🛠️','tools'],['🛠','tools'],['📋','clipbd'],['⚙️','gear'],['⚙','gear'],['🚦','traffic'],['🔍','magnify'],['📊','chart'],['👉','point'],['🔔','bell'],['📎','clip'],['🎲','dice'],['🌟','sun'],['🍬','candy'],['🔬','scope'],['🎉','party'],['🟢','green'],['🔵','blue'],['🟠','orangeDot'],['🔴','red'],['🔢','numbers'],['🔥','fire']].forEach(a=>kind[a[0].replace(/\uFE0F/g,'')]=a[1]);
+const shape={
+eyes:'<path d="M1 6Q3 2 5.8 6Q3 10 1 6"/><path d="M6.2 6Q9 2 11 6Q9 10 6.2 6"/><ellipse cx="3.5" cy="6" rx=".7" ry="1.1"/><ellipse cx="8.5" cy="6" rx=".7" ry="1.1"/>',
+play:'<path class="ink-fill" d="M2 1.5L10 5.8L2.1 10Q1.4 10 1.5 9Z"/>',pause:'<path d="M3 2L3.1 10"/><path d="M8.6 2.1L8.5 9.8"/>',
+warn:'<path class="ink-fill" d="M6 1L11 10L1 10Z"/><path d="M6 3.6L6.2 7.2"/><circle cx="6.15" cy="8.6" r=".45"/>',
+cross:'<path d="M2 2L10 10"/><path d="M10 2L2 10"/>',book:'<path d="M1.3 2Q3.6 1.3 5.9 3V10Q3.5 8.5 1.3 9Z"/><path d="M10.7 2Q8.4 1.3 6.1 3V10Q8.5 8.5 10.7 9Z"/><path d="M2.3 4Q4 3.8 5.5 4.8M9.7 4Q8 3.8 6.5 4.8"/>',
+bulb:'<path class="ink-fill" d="M3 6Q2.8 3 6 1.7Q9.2 3 8.8 6Q8 7.5 7 7.8H4.8Q3.8 7.2 3 6Z"/><path d="M4.7 8.4L7.3 8.3M5.1 9.5L6.9 9.4"/>',
+apple:'<path class="ink-fill ink-warm" d="M2.1 4.4Q3.5 2.9 5.6 3.8Q7.7 2.9 9.5 4.5Q10 7.6 7.3 10Q6 10.8 5.5 9.8Q4.6 10.8 3.3 10Q1.1 7.7 2.1 4.4Z"/><path d="M5.7 3.6Q5.5 1.7 7.2 .9Q8.5 .7 8.9 1.2Q7.9 2.7 5.7 3.6Z"/>',
+orange:'<path class="ink-fill ink-orange" d="M6 1.9Q9.8 1.8 10 6Q9.7 9.8 6 10Q2.2 9.8 2 6Q2.2 2.1 6 1.9Z"/><path d="M5.8 1.9Q6.1 1.1 7.4 1.2M4.1 4.4Q5.6 3.8 7.5 4.2"/>',
+star:'<path class="ink-fill" d="M6 1.1L7.1 4.2L10.3 4.2L7.8 6.1L8.8 9.6L6 7.5L3.1 9.6L4.1 6.2L1.6 4.2L4.9 4.1Z"/>',
+check:'<path d="M1.6 6.2L4.5 9.1L10.4 2.8"/>',brain:'<path class="ink-fill" d="M4 10Q1.8 9 2.4 7.2Q.9 5.4 2.4 4.2Q1.7 2.3 3.6 1.8Q5 .4 6 1.7Q7.3 .4 8.6 1.9Q10.4 2.5 9.5 4.1Q11 5.7 9.5 7.2Q10 9.2 7.9 9.8Z"/><path d="M5.8 1.9Q4.8 3 5.9 4Q4.7 5.2 5.9 6Q4.9 7.1 5.8 8.8M3 4.2Q4 4.1 4.4 5M7 3Q8.2 3.2 8.1 4.4M7 7Q8.2 6.9 8.8 7.7"/>',
+muscle:'<path class="ink-fill ink-green" d="M1.7 9Q1.9 6.5 3.5 5.2Q4.8 5.4 5.1 3.6Q5.8 1.7 7.5 2.1Q8.8 2.9 7.9 5Q9.8 4.8 10.2 6.4Q10.2 8.8 7.6 9.8Z"/><path d="M4.6 5.2Q5.8 6.1 7.2 5.1"/>',
+generic:'<path d="M1.5 6Q3 2.4 6 3.2Q8.8 1.7 10.5 5.5Q9 8.8 6.2 8Q3.3 10 1.5 6Z"/><path d="M3 6.4Q6 4.4 9 6.3"/>'
+};
+const aliases={ice:'bulb',think:'generic',pin:'generic',ruler:'ruler',barrier:'generic',spark:'star',angle:'angle',tools:'generic',clipbd:'clip',gear:'generic',traffic:'generic',magnify:'generic',chart:'generic',point:'generic',bell:'generic',clip:'generic',dice:'generic',sun:'star',candy:'generic',scope:'generic',party:'star',green:'generic',blue:'generic',orangeDot:'orange',red:'generic',numbers:'generic',fire:'spark'};
+const labels={'👀':'look here','▶':'play','⏸':'pause','⚠':'warning','❌':'not correct','📖':'book','💡':'idea','🍎':'apple','🍊':'orange','★':'query point','✅':'correct','🧠':'concept','💪':'strength','🍦':'ice cream','🤔':'thinking','📌':'note','📏':'ruler','🚧':'boundary','✨':'sparkle','📐':'angle','🛠':'tools','📋':'clipboard','⚙':'settings','🚦':'decision threshold','🔍':'inspect','📊':'chart','👉':'pointer','🔔':'bell','📎':'paper clip','🎲':'random','🌟':'highlight','🍬':'sigmoid','🔬':'experiment','🎉':'celebration','🟢':'correct','🔵':'training','🟠':'test','🔴':'incorrect','🔢':'numbers','🔥':'important'};
+let serial=0;
+function doodle(t){const n=t.replace(/\uFE0F/g,''),s=document.createElement('span'),k=kind[n]||'generic';s.className='hw-inline-doodle';s.dataset.hwSymbol=t;s.dataset.hwKind=k;s.setAttribute('role','img');s.setAttribute('aria-label',labels[n]||'hand-drawn symbol');s.style.setProperty('--hw-tilt',(((serial++%5)-2)*.65)+'deg');s.innerHTML='<svg viewBox="0 0 12 12" aria-hidden="true" focusable="false">'+(shape[aliases[k]||k]||shape.generic)+'</svg>';return s}
+function scan(root){const w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT),nodes=[];let n;while(n=w.nextNode()){if(!n.nodeValue||n.parentElement.closest('script,style,.hw-inline-doodle'))continue;re.lastIndex=0;if(re.test(n.nodeValue))nodes.push(n)}nodes.forEach(node=>{const v=node.nodeValue;re.lastIndex=0;let at=0,m,frag=document.createDocumentFragment();while((m=re.exec(v))){if(m.index>at)frag.appendChild(document.createTextNode(v.slice(at,m.index)));frag.appendChild(doodle(m[1]));at=m.index+m[1].length}if(at<v.length)frag.appendChild(document.createTextNode(v.slice(at)));node.parentNode.replaceChild(frag,node)})}
+function cleanDoodleLabels(){document.querySelectorAll('.statml-stage-button[aria-label]').forEach(btn=>{const v=btn.getAttribute('aria-label')||'';btn.setAttribute('aria-label',v.replace(re,m=>labels[m.replace(/\uFE0F/g,'')]||'hand-drawn symbol'))})}
+scan(document.body);cleanDoodleLabels();let queued=false;new MutationObserver(()=>{if(queued)return;queued=true;queueMicrotask(()=>{queued=false;scan(document.body);cleanDoodleLabels()})}).observe(document.body,{subtree:true,childList:true});
+})();
+</script>
 </body>
 </html>

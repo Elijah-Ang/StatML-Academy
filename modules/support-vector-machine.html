@@ -663,18 +663,16 @@
       font-size: .82rem;
     }
     .check-item::before {
-      content: "✓";
+      content: "";
       flex: 0 0 auto;
       width: 20px;
       height: 20px;
-      display: grid;
-      place-items: center;
-      border-radius: 50%;
-      background: var(--success-soft);
-      color: var(--success);
-      font-family: var(--mono);
-      font-size: .7rem;
-      font-weight: 700;
+      display: block;
+      margin: 2px 0 0;
+      border-left: 2px solid var(--success);
+      border-bottom: 2px solid var(--success);
+      transform: rotate(-45deg) skew(-6deg,-4deg) scale(.52);
+      transform-origin: 35% 55%;
     }
 
     .footer-note {
@@ -865,6 +863,296 @@ body.statml-standardized > .stage-dots { display:none !important; }
 @media (prefers-reduced-motion:reduce) { html { scroll-behavior:auto; } *,*::before,*::after { animation-duration:.01ms !important; animation-iteration-count:1 !important; transition-duration:.01ms !important; } }
 </style>
     <link rel="stylesheet" href="academic-rigor.css">
+    <link rel="stylesheet" href="handwritten-theme.css?v=20260826-handwritten-final-2">
+    <script src="handwritten-theme.js?v=20260826-handwritten-final-2" defer></script>
+    <style id="support-vector-machine-handwritten-visual">
+      :root { --svm-paper:#f5f0e5; --svm-ink:#2d2926; --svm-blue:#356fae; --svm-red:#b85c58; --svm-green:#4f8f69; --svm-gold:#c38b32; }
+      body { background:var(--svm-paper); color:var(--svm-ink); }
+      .hero, .story-shell, .stage, .stage-inner { background:transparent !important; }
+      .hero h1, .hero h2, .stage h2, .stage h3, .stage-kicker, .eyebrow, .scope-note, .scroll-cue { font-family:"Patrick Hand","Kalam","Comic Sans MS",cursive !important; }
+      .hero-subtitle, .objective, .stage p, .card, .formula, .insight, .quick-check, .mini-table, button, input, select { font-family:"Patrick Hand","Kalam","Comic Sans MS",cursive !important; }
+      .card, .formula, .insight, .quick-check, .mini-table, .controls, .control-panel, .question-card, .comparison-card { background:rgba(255,252,241,.68) !important; border-color:rgba(72,65,57,.42) !important; box-shadow:1px 2px 0 rgba(82,69,52,.08) !important; }
+      #canvasWrap { background:#fbf7ec !important; border-color:rgba(72,65,57,.42) !important; box-shadow:2px 3px 0 rgba(82,69,52,.08) !important; }
+      #svmCanvas, #heroCanvas { background:transparent; }
+      .statml-stage-rail { background:rgba(255,252,241,.76) !important; border-color:rgba(72,65,57,.32) !important; }
+    </style>
+    <style id="support-vector-machine-material-pass">
+      /* Keep the existing stage geometry, but make every paper surface read as
+         a notebook artifact instead of a polished component library. */
+      body.hw-handwritten .hero::before,
+      body.hw-handwritten .hero::after,
+      body.hw-handwritten .statml-hero::before,
+      body.hw-handwritten .statml-hero::after { display:none !important; background:none !important; mask-image:none !important; }
+      body.hw-handwritten :is(.hero,.story-shell,.stage,.stage-inner,.visual-column,.statml-visual) { background-color:transparent !important; background-image:none !important; }
+      body.hw-handwritten :is(.card,.formula,.insight,.quick-check,.mini-table,.controls,.control-panel,.question-card,.comparison-card,.visual-stage,.canvas-wrap,.statml-visual-card,.visual-foot,.hero-objectives,.objective) {
+        background-image:none !important;
+        background-color:rgba(255,252,241,.78) !important;
+        border-color:rgba(72,65,57,.42) !important;
+        border-radius:5px 8px 4px 7px !important;
+        box-shadow:1px 2px 0 rgba(82,69,52,.09) !important;
+        backdrop-filter:none !important;
+      }
+      body.hw-handwritten :is(.visual-card,.visual-head,.visual-foot,.metric-row,.metric,.legend,.legend-item,.canvas-hint,.visual-column) {
+        background-image:none !important;
+        background-color:rgba(255,252,241,.78) !important;
+        border-color:rgba(72,65,57,.42) !important;
+        border-radius:5px 8px 4px 7px !important;
+        box-shadow:1px 2px 0 rgba(82,69,52,.08) !important;
+        backdrop-filter:none !important;
+      }
+      body.hw-handwritten .visual-card,
+      body.hw-handwritten .visual-head,
+      body.hw-handwritten .canvas-wrap,
+      body.hw-handwritten .visual-foot,
+      body.hw-handwritten .metric-row,
+      body.hw-handwritten #svmCanvas { min-width:0 !important; width:100% !important; max-width:100% !important; }
+      body.hw-handwritten .canvas-wrap { overflow:hidden !important; }
+      body.hw-handwritten .visual-head { border-bottom:0 !important; }
+      body.hw-handwritten .visual-foot { border-top:0 !important; }
+      body.hw-handwritten .metric { border-style:solid !important; }
+      body.hw-handwritten .canvas-hint { border:0 !important; }
+      body.hw-handwritten :is(.card,.formula,.insight,.quick-check,.mini-table,.controls,.control-panel,.question-card,.comparison-card,.visual-stage,.canvas-wrap,.statml-visual-card) { border-style:solid !important; }
+      body.hw-handwritten :is(.hero h1,.statml-hero h1) { background:none !important; color:var(--svm-ink) !important; -webkit-text-fill-color:var(--svm-ink) !important; }
+      body.hw-handwritten :is(.eyebrow-dot,.stage-dot,.statml-stage-button,.legend-dot,.legend-swatch,.metric-dot) { border-radius:3px 6px 4px 5px !important; box-shadow:none !important; }
+      body.hw-handwritten :is(button,.btn,select,input[type="text"],input[type="number"],.class-button,.action-button) { background-image:none !important; background-color:rgba(248,243,230,.88) !important; border-color:rgba(72,65,57,.48) !important; border-radius:4px 6px 3px 5px !important; box-shadow:none !important; }
+      body.hw-handwritten :is(.stage-kicker,.eyebrow,.scope-note,.visual-overline,.visual-title,.visual-subtitle,.visual-foot) { text-shadow:none !important; }
+      body.hw-handwritten hr { border-top:0 !important; }
+      body.hw-handwritten .progress-bar { background:#356fae !important; box-shadow:none !important; }
+      body.hw-handwritten .stage-dots { background:rgba(255,252,241,.78) !important; border-color:rgba(72,65,57,.32) !important; box-shadow:none !important; }
+    </style>
+    <style id="support-vector-machine-ink-finishing">
+      html body.hw-handwritten.hw-handwritten :is(.scroll-cue,.scroll-hint,.scroll-indicator,.hero-scroll){background:transparent!important;background-image:none!important;clip-path:none!important;box-shadow:none!important;filter:none!important;text-decoration-line:underline!important;text-decoration-style:wavy!important;text-decoration-color:rgba(40,105,173,.55)!important;text-decoration-thickness:1px!important;text-underline-offset:4px!important}
+      html body.hw-handwritten.hw-handwritten :is(.scroll-cue span,.scroll-cue::before,.scroll-cue::after){background-image:none!important;background-color:transparent!important;box-shadow:none!important}
+      html body.hw-handwritten.hw-handwritten :is([style*="linear-gradient"],[style*="radial-gradient"]){background-image:none!important}
+      html body.hw-handwritten.hw-handwritten button:is(.active,.selected),html body.hw-handwritten.hw-handwritten button[aria-pressed="true"],html body.hw-handwritten.hw-handwritten .btn.active{background:#e6f0f8!important;background-image:none!important;color:#174f89!important;border-color:rgba(40,105,173,.64)!important;box-shadow:none!important}
+      body.hw-handwritten :is(.scroll-cue,.scroll-hint,.scroll-indicator,.hero-scroll){background:transparent!important;background-image:none!important;clip-path:none!important;box-shadow:none!important;filter:none!important;text-decoration-line:underline!important;text-decoration-style:wavy!important;text-decoration-color:rgba(40,105,173,.55)!important;text-decoration-thickness:1px!important;text-underline-offset:4px!important}
+      body.hw-handwritten :is(.scroll-cue span,.scroll-cue::before,.scroll-cue::after){background-image:none!important;background-color:transparent!important;box-shadow:none!important}
+      body.hw-handwritten :is([style*="linear-gradient"],[style*="radial-gradient"]){background-image:none!important}
+      body.hw-handwritten :is(.legend,.legend-card,.viz-legend,.viz-overlay,.tooltip,.panel,.visual-shell,.visual-stage,.visual-card,.canvas-wrap,.control-panel,.controls,#canvasWrap){background-image:none!important;backdrop-filter:none!important;border-color:rgba(88,83,72,.42)!important;border-radius:5px 8px 4px 7px!important;box-shadow:1px 2px 0 rgba(88,83,72,.09)!important}
+</style>
+<style id="support-vector-machine-material-override">
+  body:is(.hw-handwritten,.statml-standardized) :is(.statml-rigor-panel,.statml-rigor-panel *, .statml-rigor-grid>div) { font-family:"Patrick Hand","Kalam","Marker Felt","Chalkboard SE",cursive !important; }
+  body:is(.hw-handwritten,.statml-standardized) :is(.statml-rigor-panel,.statml-rigor-grid>div) { background-image:none!important; background-color:rgba(255,252,242,.78)!important; border-color:rgba(88,83,72,.42)!important; border-radius:5px 8px 4px 7px!important; box-shadow:1px 2px 0 rgba(88,83,72,.09)!important; }
+  body.hw-handwritten .hero .eyebrow { background:transparent!important; background-image:none!important; border:0!important; outline:0!important; border-radius:0!important; box-shadow:none!important; backdrop-filter:none!important; transform:rotate(-1deg); text-decoration-line:underline!important; text-decoration-style:wavy!important; text-decoration-color:rgba(40,105,173,.55)!important; text-underline-offset:4px!important; }
+  body.hw-handwritten .hero-objectives { background:transparent!important; background-image:none!important; border:0!important; box-shadow:none!important; padding:1rem!important; }
+  body.hw-handwritten .hero-objectives .objective { background:transparent!important; background-image:none!important; border:0!important; outline:0!important; border-radius:0!important; box-shadow:none!important; backdrop-filter:none!important; }
+  body.hw-handwritten .hero-objectives .objective:nth-child(1){transform:rotate(-.7deg)}
+  body.hw-handwritten .hero-objectives .objective:nth-child(2){transform:rotate(.45deg)}
+  body.hw-handwritten .hero-objectives .objective:nth-child(3){transform:rotate(-.35deg)}
+  body.hw-handwritten .hero-objectives .objective b { text-decoration-line:underline!important; text-decoration-style:wavy!important; text-decoration-color:rgba(40,105,173,.42)!important; text-underline-offset:3px!important; }
+  body.hw-handwritten .stage#stage-2 :is(.card,.quick-check) { border:0!important; outline:0!important; background:transparent!important; background-image:none!important; border-radius:0!important; box-shadow:none!important; }
+  body.hw-handwritten .stage#stage-2 :is(.card,.quick-check) > .hw-rough-frame { display:none!important; }
+  body.hw-handwritten .stage#stage-2 .card:nth-child(1){transform:rotate(-.45deg)}
+  body.hw-handwritten .stage#stage-2 .card:nth-child(2){transform:rotate(.5deg)}
+  body.hw-handwritten .stage#stage-2 .quick-check{transform:rotate(-.15deg)}
+  body.hw-handwritten :is(.visual-card,.visual-head,.canvas-wrap,.visual-foot,.metric-row,.metric){border:0!important;outline:0!important;box-shadow:none!important;background:transparent!important;background-image:none!important;border-radius:0!important}
+  body.hw-handwritten .statml-visual { border-left:0!important; }
+  body.hw-handwritten .visual-head{border-bottom:0!important}
+  body.hw-handwritten .visual-foot{border-top:0!important}
+  body.hw-handwritten .visual-foot, body.hw-handwritten .metric-row { background:transparent!important; border:0!important; }
+  body.hw-handwritten .metric { background:transparent!important; border:0!important; border-bottom:0!important; border-radius:0!important; }
+  body.hw-handwritten .statml-visual .visual-card,
+  body.hw-handwritten .statml-visual .canvas-wrap { box-shadow:none!important; }
+  body.hw-handwritten :is(.hero-objectives .objective,.visual-card,.visual-head,.canvas-wrap,.visual-foot,.metric).hw-rough-surface.hw-rough-surface { box-shadow:none!important; }
+  body.hw-handwritten :is(.hero-objectives .objective,.visual-card,.visual-head,.canvas-wrap,.visual-foot,.metric) > .hw-rough-frame { display:none!important; }
+  body.hw-handwritten .statml-site-nav { background:transparent!important; border:0!important; border-radius:0!important; box-shadow:none!important; backdrop-filter:none!important; }
+  body.hw-handwritten .statml-brand-mark { border-radius:3px 6px 4px 5px!important; box-shadow:none!important; }
+  body.hw-handwritten .legend-ring { border:0!important; border-radius:3px 6px 4px 5px!important; background:rgba(99,102,241,.28)!important; }
+  body.hw-handwritten .stage#stage-9 .formula,
+  body.hw-handwritten .stage#stage-9 .insight {
+    background:transparent!important; background-image:none!important; border:0!important; outline:0!important;
+    border-radius:0!important; box-shadow:none!important; backdrop-filter:none!important;
+    transform:rotate(-.2deg);
+  }
+  body.hw-handwritten .stage#stage-9 .formula { border-left:0!important; }
+  body.hw-handwritten .stage#stage-9 .insight { transform:rotate(.25deg); }
+  body.hw-handwritten .stage#stage-9 :is(.formula,.insight) > .hw-rough-frame { display:none!important; }
+  body.hw-handwritten .canvas-hint {
+    background:transparent!important; background-image:none!important; border:0!important; outline:0!important;
+    border-radius:0!important; box-shadow:none!important; backdrop-filter:none!important; padding:.12rem .18rem!important;
+    text-decoration-line:underline!important; text-decoration-style:wavy!important;
+    text-decoration-color:rgba(40,105,173,.5)!important; text-underline-offset:3px!important;
+  }
+  body.hw-handwritten .legend {
+    background:transparent!important; background-image:none!important; border:0!important; outline:0!important;
+    border-radius:0!important; box-shadow:none!important; padding:0!important; transform:rotate(.25deg);
+  }
+  body.hw-handwritten .legend-item {
+    background:transparent!important; background-image:none!important; border:0!important; outline:0!important;
+    border-radius:0!important; box-shadow:none!important; transform:rotate(-.35deg);
+  }
+  body.hw-handwritten .legend-dot,
+  body.hw-handwritten .legend-ring {
+    width:10px!important; height:7px!important; border:0!important; border-radius:3px 5px 2px 4px!important;
+    transform:rotate(-6deg); box-shadow:none!important;
+  }
+  body.hw-handwritten .legend-dot.red { transform:rotate(5deg); }
+  body.hw-handwritten .legend-ring { background:rgba(99,102,241,.28)!important; transform:rotate(4deg); }
+</style>
+<style id="support-vector-machine-no-dashed">
+  body:is(.hw-handwritten,.statml-standardized) :is(table,table *,[style*="dashed"]){border-style:solid!important;border-color:transparent!important}
+  /* The legend and live controls stay in the same grid cells, but their
+     polished component shells are opened up so only handwritten marks remain. */
+  html body.hw-handwritten .visual-card .legend,
+  html body.hw-handwritten .visual-card .legend-item{background:transparent!important;background-image:none!important;border:0!important;box-shadow:none!important;border-radius:0!important;padding:0!important}
+  html body.hw-handwritten .visual-card .controls{background:transparent!important;background-image:none!important;border:0!important;box-shadow:none!important;border-radius:0!important;padding:0!important}
+  html body.hw-handwritten .visual-card .control{background:transparent!important;background-image:none!important;border:0!important;box-shadow:none!important;border-radius:0!important}
+  /* #canvasWrap is part of the legacy surface selector, so these deliberately
+     carry an ID as well: the compact legend and C/gamma controls must remain
+     open paper marks even after the legacy runtime injects its card skin. */
+  body.hw-handwritten #canvasWrap .legend:not(#hw-never-legend),
+  body.hw-handwritten #canvasWrap .legend-item:not(#hw-never-legend){background:transparent!important;background-image:none!important;border:0!important;box-shadow:none!important;border-radius:0!important;padding:0!important}
+  body.hw-handwritten #controls#controls,
+  body.hw-handwritten #controls#controls .control{background:transparent!important;background-image:none!important;border:0!important;box-shadow:none!important;border-radius:0!important}
+  body.hw-handwritten #controls#controls{padding:0!important}
+  body.hw-handwritten #controls#controls .control label{background:transparent!important;border:0!important;box-shadow:none!important;border-radius:0!important;text-decoration-line:underline!important;text-decoration-style:wavy!important;text-decoration-color:rgba(40,105,173,.42)!important;text-underline-offset:3px!important}
+  body.hw-handwritten #controls#controls input[type="range"]{background:transparent!important;border:0!important;box-shadow:none!important}
+  body.hw-handwritten #controls#controls input[type="range"]::-webkit-slider-runnable-track{background:rgba(120,113,108,.32)!important;border:0!important;box-shadow:0 1px 0 rgba(53,111,174,.26)!important;border-radius:3px 5px 2px 4px!important}
+  body.hw-handwritten #controls#controls input[type="range"]::-moz-range-track{background:rgba(120,113,108,.32)!important;border:0!important;box-shadow:0 1px 0 rgba(53,111,174,.26)!important;border-radius:3px 5px 2px 4px!important}
+  /* The legacy surface rule carries an ID through :is(), so match that
+     specificity explicitly and keep the compact legend on open paper. */
+  body.hw-handwritten .visual-card .visual-head .legend:not(#hw-never-a):not(#hw-never-b),
+  body.hw-handwritten .visual-card .visual-head .legend-item:not(#hw-never-a):not(#hw-never-b){
+    background:transparent!important;
+    background-image:none!important;
+    border:0!important;
+    border-color:transparent!important;
+    box-shadow:none!important;
+    border-radius:0!important;
+    outline:0!important;
+    padding:0!important;
+  }
+  /* The legacy ID rule otherwise leaves a tidy rounded slab around the
+     canvas. Keep its footprint and hit areas, but let the plot's own doubled
+     ink frame carry the visual edge. */
+  html body.hw-handwritten #canvasWrap#canvasWrap{
+    background:transparent!important;
+    background-image:none!important;
+    border:0!important;
+    border-radius:0!important;
+    box-shadow:none!important;
+  }
+</style>
+<style id="support-vector-machine-ink-controls">
+  /* The stage rail remains a navigation control, but its hover note should
+     read as a loose paper annotation rather than a software tooltip. */
+  html body.hw-handwritten .statml-stage-button span {
+    background:#f1d477!important;
+    color:#174f89!important;
+    border:0!important;
+    border-radius:3px 8px 4px 6px!important;
+    clip-path:polygon(1% 12%,97% 1%,100% 84%,4% 100%)!important;
+    box-shadow:1px 2px 0 rgba(88,83,72,.16)!important;
+    font-family:"Patrick Hand","Kalam","Marker Felt","Chalkboard SE",cursive!important;
+    font-size:.78rem!important;
+    letter-spacing:.01em!important;
+    text-shadow:.25px .35px 0 rgba(23,79,137,.12)!important;
+  }
+  html body.hw-handwritten details.quick-check summary::after {
+    content:"+"!important;
+    font-family:"Patrick Hand","Kalam","Marker Felt","Chalkboard SE",cursive!important;
+    font-size:1.28rem!important;
+    font-weight:600!important;
+    line-height:1!important;
+    color:#356fae!important;
+    transform:rotate(-4deg)!important;
+    text-shadow:.45px .6px 0 rgba(53,111,174,.24)!important;
+  }
+  html body.hw-handwritten details.quick-check[open] summary::after {
+    content:"−"!important;
+    transform:rotate(2deg)!important;
+  }
+  /* This page's legacy control skin arrived after the shared notebook theme
+     and was resetting its range track to a flat browser-grey strip.  Keep the
+     original control boxes and hit areas, but restore a small dry-brush hatch
+     and uneven paper edges so the C/gamma controls read as hand-made marks. */
+  html body.hw-handwritten #controls#controls :is(select,button) {
+    border-color:transparent!important;
+    border-image-source:var(--hw-ruled-border)!important;
+    border-image-slice:3!important;
+    border-image-width:1!important;
+    border-radius:3px 5px 4px 2px!important;
+    background-color:rgba(248,243,230,.88)!important;
+    box-shadow:1px 2px 0 rgba(88,83,72,.14)!important;
+  }
+  html body.hw-handwritten #controls#controls input[type="range"]::-webkit-slider-runnable-track {
+    height:8px!important;
+    border:1px solid rgba(75,68,58,.52)!important;
+    border-radius:5px 3px 6px 4px / 3px 6px 4px 5px!important;
+    background:repeating-linear-gradient(167deg,rgba(40,105,173,.18) 0 2px,transparent 2px 5px),#e5edf0!important;
+    box-shadow:0 1px 0 rgba(53,111,174,.22)!important;
+  }
+  html body.hw-handwritten #controls#controls input[type="range"]::-moz-range-track {
+    height:8px!important;
+    border:1px solid rgba(75,68,58,.52)!important;
+    border-radius:5px 3px 6px 4px / 3px 6px 4px 5px!important;
+    background:repeating-linear-gradient(167deg,rgba(40,105,173,.18) 0 2px,transparent 2px 5px),#e5edf0!important;
+    box-shadow:0 1px 0 rgba(53,111,174,.22)!important;
+  }
+  html body.hw-handwritten #controls#controls input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance:none!important;
+    width:18px!important;
+    height:17px!important;
+    margin-top:-5px!important;
+    border:1.5px solid rgba(57,53,47,.72)!important;
+    border-radius:54% 46% 49% 51% / 45% 55% 47% 53%!important;
+    background:repeating-linear-gradient(151deg,rgba(157,112,12,.18) 0 1px,transparent 1px 4px),#f1d477!important;
+    box-shadow:1px 1px 0 rgba(57,53,47,.18)!important;
+  }
+  html body.hw-handwritten #controls#controls input[type="range"]::-moz-range-thumb {
+    width:18px!important;
+    height:17px!important;
+    border:1.5px solid rgba(57,53,47,.72)!important;
+    border-radius:54% 46% 49% 51% / 45% 55% 47% 53%!important;
+    background:repeating-linear-gradient(151deg,rgba(157,112,12,.18) 0 1px,transparent 1px 4px),#f1d477!important;
+    box-shadow:1px 1px 0 rgba(57,53,47,.18)!important;
+  }
+</style>
+<style id="support-vector-machine-geometry-preservation">
+  @media (min-width:901px){
+    /* The shared marker hook must not turn the original absolute scroll cue
+       into a flow item; reserve the baseline objective and eyebrow rows. */
+    html body.hw-handwritten .hero .scroll-cue{position:absolute!important}
+    html body.hw-handwritten .hero .hero-objectives{min-height:133.8125px!important}
+    html body.hw-handwritten .hero .eyebrow{border:1px solid transparent!important}
+  }
+</style>
+<style id="support-vector-machine-desktop-rhythm">
+  /* Preserve the baseline desktop stage cadence after handwritten wrapping;
+     the responsive mobile override below remains unchanged. */
+  @media (min-width:901px){
+    body.hw-handwritten .stage[data-stage="1"]{min-height:727.67px!important}
+    body.hw-handwritten .stage[data-stage="2"]{min-height:746.95px!important}
+    body.hw-handwritten .stage[data-stage="3"]{min-height:697.06px!important}
+    body.hw-handwritten .stage[data-stage="4"]{min-height:673.3px!important}
+    body.hw-handwritten .stage[data-stage="5"]{min-height:748.52px!important}
+    body.hw-handwritten .stage[data-stage="6"]{min-height:764.67px!important}
+    body.hw-handwritten .stage[data-stage="7"]{min-height:727.67px!important}
+    body.hw-handwritten .stage[data-stage="8"]{min-height:739.95px!important}
+    body.hw-handwritten .stage[data-stage="9"]{min-height:748.02px!important}
+    body.hw-handwritten .stage[data-stage="10"]{min-height:662.39px!important}
+    body.hw-handwritten .stage[data-stage="11"]{min-height:791.64px!important}
+    body.hw-handwritten .stage[data-stage="12"]{min-height:879.25px!important}
+    body.hw-handwritten .stage[data-stage="13"]{min-height:1036.95px!important}
+    body.hw-handwritten .stage[data-stage="14"]{min-height:894.41px!important}
+  }
+  @media (min-width:376px) and (max-width:900px){
+    body.hw-handwritten .stage[data-stage="1"]{min-height:688.52px!important}
+    body.hw-handwritten .stage[data-stage="2"]{min-height:820.69px!important}
+    body.hw-handwritten .stage[data-stage="3"]{min-height:703.84px!important}
+    body.hw-handwritten .stage[data-stage="4"]{min-height:680.08px!important}
+    body.hw-handwritten .stage[data-stage="5"]{min-height:683.91px!important}
+    body.hw-handwritten .stage[data-stage="6"]{min-height:819.06px!important}
+    body.hw-handwritten .stage[data-stage="7"]{min-height:734.45px!important}
+    body.hw-handwritten .stage[data-stage="8"]{min-height:710.72px!important}
+    body.hw-handwritten .stage[data-stage="9"]{min-height:731.03px!important}
+    body.hw-handwritten .stage[data-stage="10"]{min-height:631.41px!important}
+    body.hw-handwritten .stage[data-stage="11"]{min-height:845.03px!important}
+    body.hw-handwritten .stage[data-stage="12"]{min-height:929.34px!important}
+    body.hw-handwritten .stage[data-stage="13"]{min-height:1180.34px!important}
+    body.hw-handwritten .stage[data-stage="14"]{min-height:1049.03px!important}
+  }
+</style>
 </head>
 <body>
   <div class="progress-track" aria-hidden="true"><div class="progress-bar" id="progressBar"></div></div>
@@ -1268,6 +1556,85 @@ body.statml-standardized > .stage-dots { display:none !important; }
       const metricViolations = document.getElementById("metricViolations");
       const metricAccuracy = document.getElementById("metricAccuracy");
 
+      // Cosmetic-only rough ink. Model fitting, point order, and interaction state remain untouched.
+      function inkHash(key) {
+        const source = String(key); let h = 2166136261;
+        for (let i = 0; i < source.length; i++) { h ^= source.charCodeAt(i); h = Math.imul(h, 16777619); }
+        return h >>> 0;
+      }
+      function inkUnit(key, index = 0) {
+        let h = inkHash(`${key}:${index}`); h = Math.imul(h ^ (h >>> 16), 2246822507) >>> 0;
+        return (h % 10000) / 10000;
+      }
+      function inkLine(x1, y1, x2, y2, style = {}, key = 'line') {
+        ctx.save(); ctx.strokeStyle = style.color || '#4b4540'; ctx.lineWidth = style.width || 1.25;
+        ctx.lineCap = 'round'; ctx.lineJoin = 'round'; ctx.globalAlpha = style.alpha ?? 1; ctx.setLineDash(style.dash || []);
+        const wobble = style.wobble ?? 2.85;
+        const length = Math.max(1, Math.hypot(x2 - x1, y2 - y1));
+        const steps = Math.max(3, Math.min(11, Math.ceil(length / 120)));
+        const dx = x2 - x1, dy = y2 - y1, unit = Math.max(length, 1);
+        const nx = -dy / unit, ny = dx / unit;
+        for (let pass = 0; pass < 2; pass++) {
+          ctx.beginPath();
+          for (let i = 0; i <= steps; i++) {
+            const t = i / steps;
+            const edge = i === 0 || i === steps;
+            const transverse = (inkUnit(`${key}:normal:${pass}:${i}`) - .5) * wobble * (edge ? .35 : 1.1);
+            const along = (inkUnit(`${key}:along:${pass}:${i}`) - .5) * wobble * .34;
+            const px = x1 + dx * t + nx * transverse + (dx / unit) * along;
+            const py = y1 + dy * t + ny * transverse + (dy / unit) * along;
+            if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+          }
+          ctx.stroke();
+        }
+        ctx.restore();
+      }
+      function inkDot(x, y, radius, fill, key = 'dot', stroke = null, alpha = 1) {
+        ctx.save(); ctx.globalAlpha = alpha; ctx.fillStyle = fill; ctx.strokeStyle = stroke || fill; ctx.lineWidth = stroke ? 1.2 : 0;
+        const sides = radius < 4 ? 7 : 9;
+        for (let pass = 0; pass < 2; pass++) {
+          const ox = (inkUnit(key, pass * 2) - .5) * Math.max(1, radius * .14), oy = (inkUnit(key, pass * 2 + 1) - .5) * Math.max(1, radius * .14);
+          ctx.beginPath();
+          for (let i = 0; i < sides; i++) {
+            const a = i / sides * Math.PI * 2;
+            const rr = radius * (1 + (inkUnit(key, pass * 13 + i + 4) - .5) * .28);
+            const px = x + ox + Math.cos(a) * rr, py = y + oy + Math.sin(a) * rr;
+            if (i) ctx.lineTo(px, py); else ctx.moveTo(px, py);
+          }
+          ctx.closePath(); ctx.fill(); if (stroke) ctx.stroke();
+        }
+        ctx.restore();
+      }
+      function inkCircle(x, y, radius, color, key = 'ring', width = 1.4, dash = [], alpha = 1) {
+        ctx.save(); ctx.strokeStyle = color; ctx.lineWidth = width; ctx.lineCap = 'round'; ctx.globalAlpha = .9 * alpha; ctx.setLineDash(dash);
+        for (let pass = 0; pass < 2; pass++) {
+          ctx.beginPath(); const n = 18;
+          for (let i = 0; i <= n; i++) {
+            const a = i / n * Math.PI * 2;
+            const wobble = (inkUnit(key, pass * 2 + i) - .5) * Math.min(2.4, radius * .12);
+            const px = x + Math.cos(a) * (radius + wobble), py = y + Math.sin(a) * (radius + wobble);
+            if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+          }
+          ctx.stroke();
+        }
+        ctx.restore();
+      }
+      function heroInkDot(x, y, radius, fill, key = 'hero-dot') {
+        heroCtx.save(); heroCtx.fillStyle = fill; heroCtx.globalAlpha = .8;
+        for (let pass = 0; pass < 2; pass++) {
+          const ox = (inkUnit(key, pass * 2) - .5) * 1.2, oy = (inkUnit(key, pass * 2 + 1) - .5) * 1.2;
+          const sides = 9; heroCtx.beginPath();
+          for (let i=0;i<sides;i++) { const a=i/sides*Math.PI*2, rr=radius*(1+(inkUnit(key,pass*11+i+5)-.5)*.2); const px=x+ox+Math.cos(a)*rr, py=y+oy+Math.sin(a)*rr; if(i) heroCtx.lineTo(px,py); else heroCtx.moveTo(px,py); }
+          heroCtx.closePath(); heroCtx.fill();
+        }
+        heroCtx.restore();
+      }
+      function heroInkLine(x1, y1, x2, y2, color, width, dash, key) {
+        heroCtx.save(); heroCtx.strokeStyle = color; heroCtx.lineWidth = width; heroCtx.lineCap = 'round'; heroCtx.setLineDash(dash || []);
+        for (let pass = 0; pass < 3; pass++) { const ox=(inkUnit(key,pass*2)-.5)*1.7,oy=(inkUnit(key,pass*2+1)-.5)*1.7; const mx=(x1+x2)/2+(inkUnit(key,pass*2+7)-.5)*10,my=(y1+y2)/2+(inkUnit(key,pass*2+8)-.5)*10; heroCtx.beginPath(); heroCtx.moveTo(x1+ox,y1+oy); heroCtx.quadraticCurveTo(mx,my,x2-ox,y2-oy); heroCtx.stroke(); }
+        heroCtx.restore();
+      }
+
       function cloneData(data) { return data.map(p => ({...p})); }
       function kernelValue(a, b, type, gamma) {
         if (type === "linear") return a.x * b.x + a.y * b.y;
@@ -1454,33 +1821,129 @@ body.statml-standardized > .stage-dots { display:none !important; }
         context.arcTo(x,y,x+w,y,rr);
         context.closePath();
       }
+      function organicRect(context,x,y,w,h,r,key='organic-rect') {
+        context.beginPath();
+        if (w <= 0 || h <= 0) return;
+        const rr = Math.max(0, Math.min(r,w/2,h/2));
+        const amp = Math.min(2.2, Math.max(.35, Math.min(Math.abs(w),Math.abs(h))*.018));
+        const j = n => (inkUnit(`${key}:${n}`)-.5)*amp;
+        context.moveTo(x+rr+j(1),y+j(2));
+        context.lineTo(x+w-rr+j(3),y+j(4));
+        context.quadraticCurveTo(x+w+j(5),y+j(6),x+w+j(7),y+rr+j(8));
+        context.lineTo(x+w+j(9),y+h-rr+j(10));
+        context.quadraticCurveTo(x+w+j(11),y+h+j(12),x+w-rr+j(13),y+h+j(14));
+        context.lineTo(x+rr+j(15),y+h+j(16));
+        context.quadraticCurveTo(x+j(17),y+h+j(18),x+j(19),y+h-rr+j(20));
+        context.lineTo(x+j(21),y+rr+j(22));
+        context.quadraticCurveTo(x+j(23),y+j(24),x+rr+j(25),y+j(26));
+        context.closePath();
+      }
+      function inkFillRect(x,y,w,h,fill,key='fill-rect',alpha=1) {
+        ctx.save(); ctx.globalAlpha*=alpha; ctx.fillStyle=fill;
+        const wobble=Math.min(2.4,Math.max(.34,Math.min(Math.abs(w),Math.abs(h))*.17));
+        const j=(n)=>(inkUnit(`${key}:${n}`)-.5)*wobble;
+        ctx.beginPath(); ctx.moveTo(x+j(1),y+j(2)); ctx.lineTo(x+w*.48+j(3),y+j(4)); ctx.lineTo(x+w+j(5),y+h*.48+j(6)); ctx.lineTo(x+w*.52+j(7),y+h+j(8)); ctx.lineTo(x+j(9),y+h+j(10)); ctx.lineTo(x+j(11),y+h*.47+j(12)); ctx.closePath(); ctx.fill(); ctx.restore();
+      }
+      function inkPath(points,style={},key='path') {
+        if (!points || points.length < 2) return;
+        ctx.save(); ctx.strokeStyle=style.color||'#4b4540'; ctx.lineWidth=style.width||1.4; ctx.lineCap='round'; ctx.lineJoin='round'; ctx.globalAlpha*=style.alpha??1; ctx.setLineDash(style.dash||[]);
+        const wobble=style.wobble??.75;
+        for (let pass=0; pass<2; pass++) {
+          ctx.beginPath();
+          points.forEach((p,i)=>{const ox=(inkUnit(`${key}:x:${pass}:${i}`)-.5)*wobble,oy=(inkUnit(`${key}:y:${pass}:${i}`)-.5)*wobble;i?ctx.lineTo(p.x+ox,p.y+oy):ctx.moveTo(p.x+ox,p.y+oy);});
+          ctx.stroke();
+        }
+        ctx.restore();
+      }
+      function doubleInkLine(x1,y1,x2,y2,style={},key='double-line') {
+        const wobble=style.wobble??2.85, width=style.width||1.25, alpha=style.alpha??1;
+        inkLine(x1,y1,x2,y2,{color:style.color,width,dash:style.dash||[],alpha,wobble},`${key}-primary`);
+        const len=Math.max(1,Math.hypot(x2-x1,y2-y1)),nx=-(y2-y1)/len,ny=(x2-x1)/len,shift=(inkUnit(`${key}-echo-shift`)-.5)*1.8;
+        inkLine(x1+nx*shift,y1+ny*shift,x2+nx*shift,y2+ny*shift,{color:style.color,width:Math.max(.65,width*.52),dash:style.dash||[],alpha:alpha*.52,wobble:wobble+1.35},`${key}-echo`);
+      }
+      /* Dashed CSS/canvas cadence is too mechanical at plot scale. Draw each
+         broken pencil pass as its own short, slightly wandering stroke while
+         keeping the mathematical endpoints unchanged. */
+      function brokenInkLine(x1,y1,x2,y2,style={},key='broken-line') {
+        const width=style.width||1.25, alpha=style.alpha??1, length=Math.max(1,Math.hypot(x2-x1,y2-y1));
+        const dx=x2-x1, dy=y2-y1, nx=-dy/length, ny=dx/length;
+        const dash=style.dash||[7,6], base=Math.max(3,dash[0]||7), gap=Math.max(2,dash[1]||6), wobble=style.wobble??3.8;
+        const point=(t,pass,index,edge=false)=>{
+          const normal=(inkUnit(`${key}:normal:${pass}:${index}`)-.5)*wobble*(edge?.34:1.15);
+          const along=(inkUnit(`${key}:along:${pass}:${index}`)-.5)*wobble*.28;
+          return {x:x1+dx*t+nx*normal+(dx/length)*along,y:y1+dy*t+ny*normal+(dy/length)*along};
+        };
+        ctx.save(); ctx.strokeStyle=style.color||'#4b4540'; ctx.lineWidth=width; ctx.lineCap='round'; ctx.lineJoin='round'; ctx.globalAlpha=alpha;
+        for(let pass=0;pass<2;pass++){
+          let distance=0,index=0;
+          while(distance<length){
+            const seg=Math.min(length-distance,base*(.68+inkUnit(`${key}:seg:${pass}:${index}`)*.62));
+            const start=point(distance/length,pass,index,distance===0);
+            const end=point((distance+seg)/length,pass,index+1,distance+seg>=length);
+            const mid=point((distance+seg*.5)/length,pass,index+2,false);
+            ctx.beginPath(); ctx.moveTo(start.x,start.y); ctx.quadraticCurveTo(mid.x,mid.y,end.x,end.y); ctx.stroke();
+            distance+=seg+gap*(.7+inkUnit(`${key}:gap:${pass}:${index}`)*.65); index++;
+          }
+        }
+        ctx.restore();
+      }
+      function inkOutline(x,y,w,h,color,width,key,alpha=1,wobble=3.2) {
+        doubleInkLine(x,y,x+w,y,{color,width,alpha,wobble},`${key}-top`);
+        doubleInkLine(x+w,y,x+w,y+h,{color,width,alpha,wobble},`${key}-right`);
+        doubleInkLine(x+w,y+h,x,y+h,{color,width,alpha,wobble},`${key}-bottom`);
+        doubleInkLine(x,y+h,x,y,{color,width,alpha,wobble},`${key}-left`);
+      }
+      function inkRoundedRect(x,y,w,h,r,fill,stroke,key='rounded-card',width=1,alpha=1) {
+        ctx.save(); ctx.globalAlpha*=alpha;
+        if (fill) { ctx.fillStyle=fill; organicRect(ctx,x,y,w,h,r,key); ctx.fill(); }
+        if (stroke) inkOutline(x,y,w,h,stroke,width,key,1);
+        ctx.restore();
+      }
+      function clipRoundedRect(x,y,w,h,r) { ctx.beginPath(); roundedRect(ctx,x,y,w,h,r); ctx.clip(); }
+
+      function inkNoteRect(x,y,w,h,r,fill,stroke,key='ink-note',width=1,alpha=1) {
+        ctx.save(); ctx.globalAlpha*=alpha;
+        if (fill) { ctx.fillStyle=fill; organicRect(ctx,x,y,w,h,r,key); ctx.fill(); }
+        if (stroke) {
+          doubleInkLine(x,y,x+w,y,{color:stroke,width,alpha:1,dash:[],wobble:3.35},`${key}-top`);
+          doubleInkLine(x+w,y,x+w,y+h,{color:stroke,width,alpha:1,dash:[],wobble:3.35},`${key}-right`);
+          doubleInkLine(x+w,y+h,x,y+h,{color:stroke,width,alpha:1,dash:[],wobble:3.35},`${key}-bottom`);
+          doubleInkLine(x,y+h,x,y,{color:stroke,width,alpha:1,dash:[],wobble:3.35},`${key}-left`);
+        }
+        ctx.restore();
+      }
+
+      // Notebook guide marks are intentionally sparse and uneven. The model
+      // still uses the same coordinates; only the supporting paper marks are
+      // redrawn as broken pencil strokes instead of a plotting-library lattice.
+      function pencilGuide(x1,y1,x2,y2,key,alpha=.3) {
+        const len=Math.max(1,Math.hypot(x2-x1,y2-y1)),nx=-(y2-y1)/len,ny=(x2-x1)/len;
+        const spans=alpha>.5?[[.03,.97]]:[[.05,.28],[.36,.59],[.68,.94]];
+        spans.forEach(([start,end],part)=>{
+          const point=t=>({x:x1+(x2-x1)*t+nx*(inkUnit(`${key}:n:${part}`)-.5)*4.8,y:y1+(y2-y1)*t+ny*(inkUnit(`${key}:n:${part}`)-.5)*4.8});
+          const mid=(start+end)/2;
+          inkPath([point(start),point(mid),point(end)],{color:'#a89886',width:.75,alpha:alpha*(alpha>.5?1:.68),dash:[],wobble:1.7},`${key}-segment-${part}`);
+        });
+      }
 
       function drawGrid(r=plotRect()) {
         ctx.save();
-        ctx.fillStyle = "#fff";
-        roundedRect(ctx,r.x,r.y,r.w,r.h,16);
-        ctx.fill();
-        ctx.clip();
-        ctx.strokeStyle = COLORS.grid;
-        ctx.lineWidth = 1;
-        for (let v=-3; v<=3; v++) {
+        inkRoundedRect(r.x,r.y,r.w,r.h,16,"#fbf7ec",null,'grid-paper');
+        clipRoundedRect(r.x,r.y,r.w,r.h,16);
+        [-2.52,-.86,1.18,2.54].forEach((v,i)=> {
           const a = toPx({x:v,y:0},r);
-          ctx.beginPath(); ctx.moveTo(a.x,r.y); ctx.lineTo(a.x,r.y+r.h); ctx.stroke();
+          pencilGuide(a.x,r.y+3+inkUnit(`grid-top:${i}`)*2,a.x+inkUnit(`grid-drift:${i}`)*5,r.y+r.h-2,`grid-v-${i}`,.26);
           const b = toPx({x:0,y:v},r);
-          ctx.beginPath(); ctx.moveTo(r.x,b.y); ctx.lineTo(r.x+r.w,b.y); ctx.stroke();
-        }
-        ctx.strokeStyle = "rgba(168,162,158,.7)";
+          pencilGuide(r.x+2,b.y,r.x+r.w-3,b.y+inkUnit(`grid-drop:${i}`)*5,`grid-h-${i}`,.26);
+        });
         const x0 = toPx({x:0,y:0},r).x, y0=toPx({x:0,y:0},r).y;
-        ctx.beginPath(); ctx.moveTo(x0,r.y); ctx.lineTo(x0,r.y+r.h); ctx.stroke();
-        ctx.beginPath(); ctx.moveTo(r.x,y0); ctx.lineTo(r.x+r.w,y0); ctx.stroke();
+        pencilGuide(x0,r.y,x0+2.2,r.y+r.h,'axis-v',.63);
+        pencilGuide(r.x,y0,r.x+r.w,y0+2.1,'axis-h',.63);
         ctx.restore();
         ctx.save();
-        ctx.strokeStyle = "#dedbd7";
-        ctx.lineWidth=1;
-        roundedRect(ctx,r.x,r.y,r.w,r.h,16);
-        ctx.stroke();
+        inkOutline(r.x,r.y,r.w,r.h,"rgba(72,65,57,.52)",1,'grid-border',1,8.4);
         ctx.fillStyle=COLORS.muted;
-        ctx.font="10px JetBrains Mono, monospace";
+        ctx.font="12px 'Patrick Hand', 'Kalam', cursive";
         ctx.textAlign="center";
         for (let v=-2;v<=2;v+=2) {
           const p=toPx({x:v,y:yMin},r);
@@ -1491,7 +1954,7 @@ body.statml-standardized > .stage-dots { display:none !important; }
           const p=toPx({x:xMin,y:v},r);
           ctx.fillText(String(v),r.x-8,p.y+3);
         }
-        ctx.fillStyle="#78716c";
+        ctx.fillStyle="#4b4540";
         ctx.textAlign="right"; ctx.fillText("feature 1",r.x+r.w,r.y+r.h+30);
         ctx.save(); ctx.translate(r.x-32,r.y+10); ctx.rotate(-Math.PI/2); ctx.textAlign="right"; ctx.fillText("feature 2",0,0); ctx.restore();
         ctx.restore();
@@ -1507,37 +1970,33 @@ body.statml-standardized > .stage-dots { display:none !important; }
           ctx.save();
           ctx.globalAlpha=alpha;
           if (supportSet.has(i)) {
-            ctx.beginPath(); ctx.arc(q.x,q.y,10.5,0,Math.PI*2);
-            ctx.strokeStyle=COLORS.indigo; ctx.lineWidth=2.2; ctx.stroke();
+            inkCircle(q.x,q.y,10.5,'#356fae',`support-${i}`,2.05,[],alpha);
           }
-          ctx.beginPath(); ctx.arc(q.x,q.y,6.1,0,Math.PI*2);
-          ctx.fillStyle=p.label===1?COLORS.red:COLORS.blue;
-          ctx.fill();
-          ctx.strokeStyle="#fff"; ctx.lineWidth=1.8; ctx.stroke();
+          inkDot(q.x,q.y,6.1,p.label===1?'#b85c58':'#356fae',`point-${i}`, '#fbf7ec', alpha);
           if (p.outlier) {
-            ctx.beginPath(); ctx.arc(q.x,q.y,14,0,Math.PI*2);
-            ctx.setLineDash([3,3]); ctx.strokeStyle=COLORS.amber; ctx.lineWidth=1.4; ctx.stroke();
+            inkCircle(q.x,q.y,14,'#c38b32',`outlier-${i}`,1.25,[3,3],alpha);
           }
           if (annotateSlack && state.displayModel) {
             const slack=Math.max(0,1-p.label*state.displayModel.decision(p));
             if (slack>.02) {
               ctx.fillStyle=slack>1?COLORS.red:COLORS.amber;
-              ctx.font="600 10px JetBrains Mono, monospace";
+              ctx.font="12px 'Patrick Hand', 'Kalam', cursive";
               ctx.textAlign="left";
               ctx.fillText(`ξ ${slack.toFixed(2)}`,q.x+10,q.y-10);
             }
           }
           if (foldLabels) {
             ctx.fillStyle=COLORS.ink;
-            ctx.font="600 9px JetBrains Mono, monospace";
+            ctx.font="11px 'Patrick Hand', 'Kalam', cursive";
             ctx.textAlign="center";
             ctx.fillText(String((i%5)+1),q.x,q.y-12);
           }
           if (heldout && i%5===0) {
             const pred=state.displayModel.decision(p)>=0?1:-1;
-            ctx.beginPath(); ctx.rect(q.x-10,q.y-10,20,20);
-            ctx.strokeStyle=pred===p.label?COLORS.green:COLORS.amber;
-            ctx.lineWidth=2; ctx.stroke();
+            inkLine(q.x-10,q.y-10,q.x+10,q.y-10,{color:pred===p.label?'#4f8f69':'#c38b32',width:1.7,alpha},`heldout-top-${i}`);
+            inkLine(q.x+10,q.y-10,q.x+10,q.y+10,{color:pred===p.label?'#4f8f69':'#c38b32',width:1.7,alpha},`heldout-right-${i}`);
+            inkLine(q.x+10,q.y+10,q.x-10,q.y+10,{color:pred===p.label?'#4f8f69':'#c38b32',width:1.7,alpha},`heldout-bottom-${i}`);
+            inkLine(q.x-10,q.y+10,q.x-10,q.y-10,{color:pred===p.label?'#4f8f69':'#c38b32',width:1.7,alpha},`heldout-left-${i}`);
           }
           ctx.restore();
         });
@@ -1556,76 +2015,89 @@ body.statml-standardized > .stage-dots { display:none !important; }
         for (const p of candidates) if (p.x>=xMin-.001&&p.x<=xMax+.001&&p.y>=yMin-.001&&p.y<=yMax+.001) pts.push(p);
         if (pts.length<2) return;
         const a=toPx(pts[0],r), b=toPx(pts[1],r);
-        ctx.save();
-        ctx.strokeStyle=style.color||COLORS.indigo;
-        ctx.lineWidth=style.width||2;
-        if (style.dash) ctx.setLineDash(style.dash);
-        ctx.globalAlpha=style.alpha??1;
-        ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke();
-        ctx.restore();
+        const lineStyle={color:style.color||'#356fae',width:style.width||2,dash:style.dash||[],alpha:style.alpha??1,wobble:style.wobble??4.8};
+        if(lineStyle.dash.length) brokenInkLine(a.x,a.y,b.x,b.y,lineStyle,`level-${level}`);
+        else doubleInkLine(a.x,a.y,b.x,b.y,lineStyle,`level-${level}`);
       }
 
       function drawLinearRegions(model,r=plotRect(), alpha=.08) {
         if (!model) return;
-        const cols=44, rows=44;
+        const cols=28, rows=28;
         const cw=r.w/cols, ch=r.h/rows;
         ctx.save();
-        ctx.beginPath(); roundedRect(ctx,r.x,r.y,r.w,r.h,16); ctx.clip();
+        clipRoundedRect(r.x,r.y,r.w,r.h,16);
         for (let i=0;i<cols;i++) for(let j=0;j<rows;j++) {
           const p=fromPx(r.x+(i+.5)*cw,r.y+(j+.5)*ch,r);
           const s=model.decision(p);
-          ctx.fillStyle=s>=0?`rgba(220,38,38,${alpha})`:`rgba(37,99,235,${alpha})`;
-          ctx.fillRect(r.x+i*cw,r.y+j*ch,cw+1,ch+1);
+          inkFillRect(r.x+i*cw,r.y+j*ch,cw+1,ch+1,s>=0?`rgba(220,38,38,${alpha})`:`rgba(37,99,235,${alpha})`,`linear-region-${i}-${j}`);
         }
+        drawMarkerHatching(model,r,'linear-marker',.12);
         ctx.restore();
+      }
+
+      // Marker/crayon hatching keeps decision fields tactile while retaining the exact model boundary.
+      function drawMarkerHatching(model,r,key='marker',alpha=.12,predicate=null) {
+        if (!model) return;
+        const step=Math.max(17,Math.min(28,r.w / 18));
+        let row=0;
+        for(let y=r.y-step*.2;y<r.y+r.h+step;y+=step,row++) {
+          let col=0;
+          for(let x=r.x-step*.2;x<r.x+r.w+step;x+=step,col++) {
+            const mx=Math.min(r.x+r.w-1,Math.max(r.x+1,x+step*.5));
+            const my=Math.min(r.y+r.h-1,Math.max(r.y+1,y+step*.5));
+            const score=model.decision(fromPx(mx,my,r));
+            if(predicate && !predicate(score)) continue;
+            const positive=score>=0;
+            const tone=positive?'rgba(184,92,88,.72)':'rgba(53,111,174,.72)';
+            const inset=step*.16;
+            inkLine(x+inset,y+step-inset,x+step-inset,y+inset,{color:tone,width:2.35,alpha,wobble:1.8},`${key}-${row}-${col}`);
+          }
+        }
       }
 
       function drawCandidateLine(slope, intercept, color, width, dash, alpha, r=plotRect()) {
         const p1=toPx({x:xMin,y:slope*xMin+intercept},r), p2=toPx({x:xMax,y:slope*xMax+intercept},r);
-        ctx.save();ctx.beginPath();roundedRect(ctx,r.x,r.y,r.w,r.h,16);ctx.clip();
-        ctx.strokeStyle=color;ctx.lineWidth=width;ctx.setLineDash(dash||[]);ctx.globalAlpha=alpha;
-        ctx.beginPath();ctx.moveTo(p1.x,p1.y);ctx.lineTo(p2.x,p2.y);ctx.stroke();ctx.restore();
+        ctx.save();clipRoundedRect(r.x,r.y,r.w,r.h,16);
+        doubleInkLine(p1.x,p1.y,p2.x,p2.y,{color,width,dash:dash||[],alpha,wobble:4.15},`candidate-${slope}-${intercept}`);ctx.restore();
       }
 
       function drawMarginBand(model,r=plotRect()) {
         if (!model || model.type!=="linear") return;
         ctx.save();
-        ctx.beginPath(); roundedRect(ctx,r.x,r.y,r.w,r.h,16); ctx.clip();
-        const cols=90, cw=r.w/cols;
+        clipRoundedRect(r.x,r.y,r.w,r.h,16);
+        const cols=36, cw=r.w/cols;
         for(let i=0;i<cols;i++) {
           const x=xMin+(i+.5)/cols*(xMax-xMin);
           const yTop=(1-model.b-model.w.x*x)/model.w.y;
           const yBot=(-1-model.b-model.w.x*x)/model.w.y;
           const a=toPx({x,y:yTop},r), b=toPx({x,y:yBot},r);
-          ctx.fillStyle="rgba(99,102,241,.085)";
-          ctx.fillRect(r.x+i*cw,Math.min(a.y,b.y),cw+1,Math.abs(a.y-b.y));
+          inkFillRect(r.x+i*cw,Math.min(a.y,b.y),cw+1,Math.abs(a.y-b.y),"rgba(99,102,241,.085)",`margin-band-${i}`);
         }
+        drawMarkerHatching(model,r,'margin-marker',.08,score=>Math.abs(score)<1.08);
         ctx.restore();
-        lineForLevel(model,1,r,{color:COLORS.indigo,width:1.2,dash:[5,5],alpha:.75});
-        lineForLevel(model,-1,r,{color:COLORS.indigo,width:1.2,dash:[5,5],alpha:.75});
-        lineForLevel(model,0,r,{color:COLORS.ink,width:2.5,alpha:.95});
+        lineForLevel(model,1,r,{color:COLORS.indigo,width:1.2,dash:[7,6],alpha:.75,wobble:5.6});
+        lineForLevel(model,-1,r,{color:COLORS.indigo,width:1.2,dash:[6,7],alpha:.75,wobble:5.3});
+        lineForLevel(model,0,r,{color:COLORS.ink,width:2.5,alpha:.95,wobble:8.4});
       }
 
       function drawDecisionSurface(model,r=plotRect(), alpha=.13) {
         if (!model) return;
-        const cols=56, rows=56;
+        const cols=34, rows=34;
         const cw=r.w/cols, ch=r.h/rows;
-        ctx.save(); ctx.beginPath(); roundedRect(ctx,r.x,r.y,r.w,r.h,16); ctx.clip();
+        ctx.save(); clipRoundedRect(r.x,r.y,r.w,r.h,16);
         for(let i=0;i<cols;i++) for(let j=0;j<rows;j++) {
           const p=fromPx(r.x+(i+.5)*cw,r.y+(j+.5)*ch,r);
           const s=model.decision(p);
           const strength=Math.min(1,Math.abs(s)/1.8);
           const a=alpha*(.35+.65*strength);
-          ctx.fillStyle=s>=0?`rgba(220,38,38,${a})`:`rgba(37,99,235,${a})`;
-          ctx.fillRect(r.x+i*cw,r.y+j*ch,cw+1,ch+1);
+          inkFillRect(r.x+i*cw,r.y+j*ch,cw+1,ch+1,s>=0?`rgba(220,38,38,${a})`:`rgba(37,99,235,${a})`,`decision-surface-${i}-${j}`);
           if (Math.abs(s)<.055) {
-            ctx.fillStyle="rgba(31,41,55,.42)";
-            ctx.fillRect(r.x+i*cw,r.y+j*ch,cw+1,ch+1);
+            inkFillRect(r.x+i*cw,r.y+j*ch,cw+1,ch+1,"rgba(31,41,55,.42)",`decision-boundary-${i}-${j}`);
           } else if (Math.abs(Math.abs(s)-1)<.045) {
-            ctx.fillStyle="rgba(99,102,241,.32)";
-            ctx.fillRect(r.x+i*cw,r.y+j*ch,cw+1,ch+1);
+            inkFillRect(r.x+i*cw,r.y+j*ch,cw+1,ch+1,"rgba(99,102,241,.32)",`decision-margin-${i}-${j}`);
           }
         }
+        drawMarkerHatching(model,r,'decision-marker',.14);
         ctx.restore();
       }
 
@@ -1650,7 +2122,7 @@ body.statml-standardized > .stage-dots { display:none !important; }
         const r=plotRect(); drawGrid(r); drawMarginBand(state.displayModel,r); drawPoints(state.displayModel.data,{support:state.displayModel.support,r,fade:true});
         for(const i of state.displayModel.support) {
           const p=toPx(state.displayModel.data[i],r);
-          ctx.save();ctx.beginPath();ctx.arc(p.x,p.y,14+Math.sin(state.animationT/450+i)*1.5,0,Math.PI*2);ctx.strokeStyle="rgba(99,102,241,.34)";ctx.lineWidth=1.2;ctx.stroke();ctx.restore();
+          inkCircle(p.x,p.y,14+Math.sin(state.animationT/450+i)*1.5,'rgba(53,111,174,.5)',`focus-${i}`,1.1);
         }
       }
       function drawStage5() {
@@ -1694,7 +2166,7 @@ body.statml-standardized > .stage-dots { display:none !important; }
       function drawStage10() {
         const r=plotRect(); drawGrid(r); drawLinearRegions(state.displayModel,r,.055); lineForLevel(state.displayModel,0,r,{color:COLORS.amber,width:2.4}); drawPoints(state.displayModel.data,{r});
         const center=toPx({x:0,y:0},r); const edge=toPx({x:1.35,y:0},r);
-        ctx.save();ctx.beginPath();ctx.arc(center.x,center.y,Math.abs(edge.x-center.x),0,Math.PI*2);ctx.strokeStyle=COLORS.indigo;ctx.setLineDash([7,6]);ctx.lineWidth=2;ctx.stroke();ctx.restore();
+        inkCircle(center.x,center.y,Math.abs(edge.x-center.x),'#356fae','r2-threshold',1.7,[7,6]);
         drawFloatingLabel("r² threshold",center.x+70,center.y-75,"indigo");
       }
       function drawStage11() {
@@ -1716,12 +2188,21 @@ body.statml-standardized > .stage-dots { display:none !important; }
       }
 
       function drawFloatingLabel(text,x,y,tone="neutral") {
-        ctx.save();ctx.font="600 10px JetBrains Mono, monospace";
+        ctx.save();ctx.font="12px 'Patrick Hand', 'Kalam', cursive";
         const tw=ctx.measureText(text).width;
-        const colors={neutral:["rgba(255,255,255,.92)",COLORS.ink],amber:["rgba(254,243,199,.94)","#92400e"],indigo:["rgba(238,242,255,.94)","#4338ca"]};
-        const [bg,fg]=colors[tone]||colors.neutral;
-        roundedRect(ctx,x,y,tw+18,24,8);ctx.fillStyle=bg;ctx.fill();ctx.strokeStyle="rgba(231,229,228,.9)";ctx.stroke();
-        ctx.fillStyle=fg;ctx.textAlign="left";ctx.fillText(text,x+9,y+16);ctx.restore();
+        const colors={
+          neutral:["rgba(255,244,184,.42)",COLORS.ink,"#a98b2e"],
+          amber:["rgba(254,220,112,.48)","#824b16","#b27a22"],
+          indigo:["rgba(183,203,255,.48)","#3b347e","#5f70b8"]
+        };
+        const [marker,fg,underline]=colors[tone]||colors.neutral;
+        /* Labels are margin annotations, not UI cards: a broad, uneven marker
+           pass and two pencil underlines leave the paper open at every edge. */
+        const left=x+3, right=x+tw+15, baseline=y+17;
+        inkLine(left,baseline-1,right,baseline-1,{color:marker,width:7.5,alpha:.74,wobble:3.5},'floating-label-marker');
+        inkLine(left+1,baseline+3,right-1,baseline+3,{color:underline,width:1.35,alpha:.82,wobble:2.7},'floating-label-underline');
+        inkLine(left+4,baseline+5,right-3,baseline+5,{color:underline,width:.62,alpha:.48,wobble:2.15},'floating-label-underline-echo');
+        ctx.fillStyle=fg;ctx.textAlign="left";ctx.fillText(text,x+7,y+16);ctx.restore();
       }
       function drawMarginArrow(model,r) {
         if(!model||model.type!=="linear")return;
@@ -1730,82 +2211,87 @@ body.statml-standardized > .stage-dots { display:none !important; }
         const base={x:-model.b*model.w.x/(norm*norm),y:-model.b*model.w.y/(norm*norm)};
         const d=1/norm;
         const a=toPx({x:base.x-n.x*d,y:base.y-n.y*d},r), b=toPx({x:base.x+n.x*d,y:base.y+n.y*d},r);
-        ctx.save();ctx.strokeStyle=COLORS.indigo;ctx.lineWidth=1.5;ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke();
-        for(const p of [a,b]){ctx.beginPath();ctx.arc(p.x,p.y,3,0,Math.PI*2);ctx.fillStyle=COLORS.indigo;ctx.fill();}
-        const mid={x:(a.x+b.x)/2,y:(a.y+b.y)/2};drawFloatingLabel("margin",mid.x+8,mid.y-12,"indigo");ctx.restore();
+        inkLine(a.x,a.y,b.x,b.y,{color:'#356fae',width:1.35},'margin-arrow');
+        for(const p of [a,b]) inkDot(p.x,p.y,3,'#356fae','margin-end');
+        const mid={x:(a.x+b.x)/2,y:(a.y+b.y)/2};drawFloatingLabel("margin",mid.x+8,mid.y-12,"indigo");
       }
       function drawPanelTitle(r,title,sub,color) {
-        ctx.save();ctx.fillStyle="rgba(255,255,255,.9)";roundedRect(ctx,r.x+10,r.y+10,Math.min(124,r.w-20),42,10);ctx.fill();ctx.strokeStyle="rgba(231,229,228,.9)";ctx.stroke();
-        ctx.fillStyle=color;ctx.font="700 10px Inter, sans-serif";ctx.textAlign="left";ctx.fillText(title,r.x+20,r.y+27);
-        ctx.fillStyle=COLORS.muted;ctx.font="9px JetBrains Mono, monospace";ctx.fillText(sub,r.x+20,r.y+41);ctx.restore();
+        ctx.save();inkRoundedRect(r.x+10,r.y+10,Math.min(124,r.w-20),42,10,"rgba(255,252,241,.9)","rgba(72,65,57,.48)",'panel-title',1);
+        ctx.fillStyle=color;ctx.font="13px 'Patrick Hand', 'Kalam', cursive";ctx.textAlign="left";ctx.fillText(title,r.x+20,r.y+27);
+        ctx.fillStyle='#6f665e';ctx.font="11px 'Patrick Hand', 'Kalam', cursive";ctx.fillText(sub,r.x+20,r.y+41);ctx.restore();
       }
       function drawHingeChart(p) {
-        ctx.save();roundedRect(ctx,p.x,p.y,p.w,p.h,14);ctx.fillStyle="#fff";ctx.fill();ctx.strokeStyle="#e7e5e4";ctx.stroke();
-        ctx.fillStyle=COLORS.ink;ctx.font="700 11px Inter, sans-serif";ctx.textAlign="left";ctx.fillText("Hinge loss",p.x+14,p.y+22);
+        ctx.save();inkRoundedRect(p.x,p.y,p.w,p.h,14,"#fffaf0",'#887d73','hinge-card',1);
+        ctx.fillStyle='#2d2926';ctx.font="14px 'Patrick Hand', 'Kalam', cursive";ctx.textAlign="left";ctx.fillText("Hinge loss",p.x+14,p.y+22);
         const chart={x:p.x+28,y:p.y+48,w:p.w-42,h:Math.max(100,p.h-92)};
-        ctx.strokeStyle="#a8a29e";ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(chart.x,chart.y);ctx.lineTo(chart.x,chart.y+chart.h);ctx.lineTo(chart.x+chart.w,chart.y+chart.h);ctx.stroke();
+        inkLine(chart.x,chart.y,chart.x,chart.y+chart.h,{color:'#938778',width:1},'hinge-y'); inkLine(chart.x,chart.y+chart.h,chart.x+chart.w,chart.y+chart.h,{color:'#938778',width:1},'hinge-x');
         const mapX=v=>chart.x+(v+1.5)/4*chart.w, mapY=v=>chart.y+chart.h-v/2.5*chart.h;
-        ctx.strokeStyle=COLORS.indigo;ctx.lineWidth=2.5;ctx.beginPath();
-        for(let i=0;i<=120;i++){const m=-1.5+i/120*4;const loss=Math.max(0,1-m);const x=mapX(m),y=mapY(loss);if(i===0)ctx.moveTo(x,y);else ctx.lineTo(x,y);}ctx.stroke();
-        ctx.setLineDash([4,4]);ctx.strokeStyle="#c7d2fe";const x1=mapX(1);ctx.beginPath();ctx.moveTo(x1,chart.y);ctx.lineTo(x1,chart.y+chart.h);ctx.stroke();ctx.setLineDash([]);
-        ctx.fillStyle=COLORS.muted;ctx.font="9px JetBrains Mono, monospace";ctx.textAlign="center";ctx.fillText("signed margin y f(x)",chart.x+chart.w/2,p.y+p.h-16);
+        inkPath(Array.from({length:121},(_,i)=>{const m=-1.5+i/120*4;const loss=Math.max(0,1-m);return{x:mapX(m),y:mapY(loss)};}),{color:'#356fae',width:2.2},'hinge-curve');
+        const x1=mapX(1);
+        inkLine(x1,chart.y,x1,chart.y+chart.h,{color:'#9a8e80',width:1,dash:[4,4]},'hinge-threshold');
+        ctx.fillStyle='#6f665e';ctx.font="11px 'Patrick Hand', 'Kalam', cursive";ctx.textAlign="center";ctx.fillText("signed margin y f(x)",chart.x+chart.w/2,p.y+p.h-16);
         ctx.save();ctx.translate(p.x+11,chart.y+chart.h/2);ctx.rotate(-Math.PI/2);ctx.fillText("loss",0,0);ctx.restore();
-        ctx.fillStyle=COLORS.indigoDark;ctx.textAlign="right";ctx.fillText("zero after 1",chart.x+chart.w,chart.y+14);
+        ctx.fillStyle='#356fae';ctx.textAlign="right";ctx.fillText("zero after 1",chart.x+chart.w,chart.y+14);
         ctx.restore();
       }
       function drawQuery(query,model,r,ghost=false) {
         const q=toPx(query,r);const score=model.decision(query);
         ctx.save();
-        ctx.beginPath();ctx.arc(q.x,q.y,ghost?7:8,0,Math.PI*2);ctx.fillStyle=score>=0?COLORS.red:COLORS.blue;ctx.globalAlpha=ghost?.65:1;ctx.fill();ctx.strokeStyle="#fff";ctx.lineWidth=2;ctx.stroke();
-        ctx.beginPath();ctx.arc(q.x,q.y,14,0,Math.PI*2);ctx.strokeStyle=COLORS.indigo;ctx.lineWidth=1.5;ctx.setLineDash([4,3]);ctx.stroke();ctx.setLineDash([]);
+        inkDot(q.x,q.y,ghost?7:8,score>=0?'#b85c58':'#356fae','query', '#fbf7ec', ghost?.65:1);
+        inkCircle(q.x,q.y,14,'#356fae','query-ring',1.35,[4,3]);
         if(!ghost) drawFloatingLabel(`f(x) ${score>=0?"+":""}${score.toFixed(2)}`,q.x+12,q.y-30,"indigo");
         ctx.restore();
       }
       function drawScoreGauge(p,score) {
-        ctx.save();roundedRect(ctx,p.x,p.y,p.w,p.h,14);ctx.fillStyle="#fff";ctx.fill();ctx.strokeStyle="#e7e5e4";ctx.stroke();
-        ctx.fillStyle=COLORS.ink;ctx.font="700 11px Inter, sans-serif";ctx.textAlign="left";ctx.fillText("Decision score",p.x+14,p.y+22);
+        ctx.save();inkNoteRect(p.x,p.y,p.w,p.h,14,"#fffaf0",'#887d73','score-card',1);
+        ctx.fillStyle='#2d2926';ctx.font="14px 'Patrick Hand', 'Kalam', cursive";ctx.textAlign="left";ctx.fillText("Decision score",p.x+14,p.y+22);
         const cx=p.x+p.w/2, top=p.y+50, bottom=p.y+p.h-48;
         const clamped=Math.max(-3,Math.min(3,score));
         const y=bottom-(clamped+3)/6*(bottom-top);
-        const grad=ctx.createLinearGradient(0,top,0,bottom);grad.addColorStop(0,"rgba(220,38,38,.75)");grad.addColorStop(.5,"rgba(255,255,255,1)");grad.addColorStop(1,"rgba(37,99,235,.75)");
-        roundedRect(ctx,cx-12,top,24,bottom-top,12);ctx.fillStyle=grad;ctx.fill();ctx.strokeStyle="#d6d3d1";ctx.stroke();
-        ctx.beginPath();ctx.moveTo(cx-19,y);ctx.lineTo(cx+19,y);ctx.strokeStyle=COLORS.ink;ctx.lineWidth=2;ctx.stroke();
-        ctx.fillStyle=COLORS.ink;ctx.font="600 17px JetBrains Mono, monospace";ctx.textAlign="center";ctx.fillText(`${score>=0?"+":""}${score.toFixed(2)}`,cx,p.y+p.h-18);
-        ctx.fillStyle=COLORS.muted;ctx.font="9px Inter, sans-serif";ctx.fillText("not a probability",cx,p.y+p.h-4);
+        inkNoteRect(cx-12,top,24,bottom-top,12,"#fbf4e2","#887d73",'score-gauge',1);
+        const bands=9, bandH=(bottom-top)/bands;
+        for(let i=0;i<bands;i++) {
+          const tone=i<3?'rgba(200,94,88,.26)':i>5?'rgba(53,111,174,.26)':'rgba(241,212,119,.22)';
+          inkFillRect(cx-10,top+i*bandH,20,bandH+1,tone,`score-band-${i}`,.96);
+          inkLine(cx-8,top+i*bandH+bandH*.78,cx+8,top+i*bandH+bandH*.2,{color:i<3?'rgba(184,92,88,.72)':i>5?'rgba(53,111,174,.72)':'rgba(195,139,50,.72)',width:1.8,alpha:.6,wobble:1.2},`score-hatch-${i}`);
+        }
+        inkLine(cx-19,y,cx+19,y,{color:'#2d2926',width:1.7},'score-marker');
+        ctx.fillStyle='#2d2926';ctx.font="18px 'Patrick Hand', 'Kalam', cursive";ctx.textAlign="center";ctx.fillText(`${score>=0?"+":""}${score.toFixed(2)}`,cx,p.y+p.h-18);
+        ctx.fillStyle='#6f665e';ctx.font="11px 'Patrick Hand', 'Kalam', cursive";ctx.fillText("not a probability",cx,p.y+p.h-4);
         ctx.restore();
       }
       function drawFoldRibbon(r) {
         const boxW=Math.min(330,r.w*.72), boxH=86, x=r.x+(r.w-boxW)/2,y=r.y+r.h-boxH-18;
-        ctx.save();roundedRect(ctx,x,y,boxW,boxH,14);ctx.fillStyle="rgba(255,255,255,.94)";ctx.fill();ctx.strokeStyle="#e7e5e4";ctx.stroke();
-        ctx.fillStyle=COLORS.ink;ctx.font="700 10px Inter, sans-serif";ctx.textAlign="left";ctx.fillText("One fold at a time",x+14,y+20);
+        ctx.save();inkRoundedRect(x,y,boxW,boxH,14,"rgba(255,252,241,.94)",'#887d73','fold-card',1);
+        ctx.fillStyle='#2d2926';ctx.font="14px 'Patrick Hand', 'Kalam', cursive";ctx.textAlign="left";ctx.fillText("One fold at a time",x+14,y+20);
         const gap=5, cellW=(boxW-28-gap*4)/5;
         for(let i=0;i<5;i++){
-          const xx=x+14+i*(cellW+gap);roundedRect(ctx,xx,y+31,cellW,28,7);ctx.fillStyle=i===2?"#fef3c7":"#eef2ff";ctx.fill();ctx.strokeStyle=i===2?"#f59e0b":"#c7d2fe";ctx.stroke();
-          ctx.fillStyle=i===2?"#92400e":"#4338ca";ctx.font="600 9px JetBrains Mono, monospace";ctx.textAlign="center";ctx.fillText(i===2?"VALID":"TRAIN",xx+cellW/2,y+49);
+          const xx=x+14+i*(cellW+gap);inkRoundedRect(xx,y+31,cellW,28,7,i===2?"#f8e8b6":"#e7efe9",i===2?"#c38b32":"#7d9a83",`fold-cell-${i}`,1);
+          ctx.fillStyle=i===2?"#8c6425":"#4f6f58";ctx.font="12px 'Patrick Hand', 'Kalam', cursive";ctx.textAlign="center";ctx.fillText(i===2?"VALID":"TRAIN",xx+cellW/2,y+49);
         }
-        ctx.fillStyle=COLORS.muted;ctx.font="9px Inter, sans-serif";ctx.textAlign="center";ctx.fillText("Fit the scaler on TRAIN only, then transform VALID.",x+boxW/2,y+75);ctx.restore();
+        ctx.fillStyle='#6f665e';ctx.font="11px 'Patrick Hand', 'Kalam', cursive";ctx.textAlign="center";ctx.fillText("Fit the scaler on TRAIN only, then transform VALID.",x+boxW/2,y+75);ctx.restore();
       }
       function drawConfusionMatrix(p,model) {
         let tp=0,tn=0,fp=0,fn=0;
         model.data.forEach((d,i)=>{if(i%5!==0)return;const pred=model.decision(d)>=0?1:-1;if(d.label===1&&pred===1)tp++;else if(d.label===-1&&pred===-1)tn++;else if(d.label===-1)fp++;else fn++;});
         ctx.save();
-        ctx.fillStyle=COLORS.ink;ctx.font="700 11px Inter, sans-serif";ctx.textAlign="left";ctx.fillText("Holdout matrix",p.x,p.y-12);
+        ctx.fillStyle='#2d2926';ctx.font="14px 'Patrick Hand', 'Kalam', cursive";ctx.textAlign="left";ctx.fillText("Holdout matrix",p.x,p.y-12);
         const vals=[[tn,fp],[fn,tp]], labels=[["TN","FP"],["FN","TP"]], gap=5, cell=(p.w-gap)/2;
         for(let row=0;row<2;row++)for(let col=0;col<2;col++){
-          const x=p.x+col*(cell+gap),y=p.y+row*(cell+gap);roundedRect(ctx,x,y,cell,cell,10);ctx.fillStyle=row===col?"#ecfdf5":"#fff7ed";ctx.fill();ctx.strokeStyle=row===col?"#bbf7d0":"#fed7aa";ctx.stroke();
-          ctx.fillStyle=row===col?COLORS.green:COLORS.amber;ctx.font="700 18px JetBrains Mono, monospace";ctx.textAlign="center";ctx.fillText(String(vals[row][col]),x+cell/2,y+cell/2-1);
-          ctx.fillStyle=COLORS.muted;ctx.font="8px Inter, sans-serif";ctx.fillText(labels[row][col],x+cell/2,y+cell/2+14);
+          const x=p.x+col*(cell+gap),y=p.y+row*(cell+gap);inkRoundedRect(x,y,cell,cell,10,row===col?"#e7efe9":"#f8e8d5",row===col?"#7d9a83":"#c38b32",`holdout-cell-${row}-${col}`,1);
+          ctx.fillStyle=row===col?'#4f8f69':'#a66f24';ctx.font="20px 'Patrick Hand', 'Kalam', cursive";ctx.textAlign="center";ctx.fillText(String(vals[row][col]),x+cell/2,y+cell/2-1);
+          ctx.fillStyle='#6f665e';ctx.font="11px 'Patrick Hand', 'Kalam', cursive";ctx.fillText(labels[row][col],x+cell/2,y+cell/2+14);
         }ctx.restore();
       }
       function drawCalibrationCue(p) {
         if(p.h<70)return;
-        ctx.save();roundedRect(ctx,p.x,p.y,p.w,p.h,12);ctx.fillStyle="#fff";ctx.fill();ctx.strokeStyle="#e7e5e4";ctx.stroke();
-        ctx.fillStyle=COLORS.ink;ctx.font="700 10px Inter, sans-serif";ctx.textAlign="left";ctx.fillText("Calibration",p.x+12,p.y+19);
+        ctx.save();inkRoundedRect(p.x,p.y,p.w,p.h,12,"#fffaf0",'#887d73','calibration-card',1);
+        ctx.fillStyle='#2d2926';ctx.font="13px 'Patrick Hand', 'Kalam', cursive";ctx.textAlign="left";ctx.fillText("Calibration",p.x+12,p.y+19);
         const x0=p.x+24,y0=p.y+p.h-22,w=p.w-38,h=p.h-50;
-        ctx.strokeStyle="#a8a29e";ctx.beginPath();ctx.moveTo(x0,y0-h);ctx.lineTo(x0,y0);ctx.lineTo(x0+w,y0);ctx.stroke();
-        ctx.setLineDash([4,4]);ctx.strokeStyle="#c7d2fe";ctx.beginPath();ctx.moveTo(x0,y0);ctx.lineTo(x0+w,y0-h);ctx.stroke();ctx.setLineDash([]);
-        [[.18,.12],[.38,.31],[.62,.66],[.82,.78]].forEach(([a,b])=>{ctx.beginPath();ctx.arc(x0+a*w,y0-b*h,3.5,0,Math.PI*2);ctx.fillStyle=COLORS.indigo;ctx.fill();});
-        ctx.fillStyle=COLORS.muted;ctx.font="8px Inter, sans-serif";ctx.textAlign="center";ctx.fillText("predicted probability",x0+w/2,p.y+p.h-7);ctx.restore();
+        inkLine(x0,y0-h,x0,y0,{color:'#938778',width:1},'cal-y'); inkLine(x0,y0,x0+w,y0,{color:'#938778',width:1},'cal-x');
+        inkLine(x0,y0,x0+w,y0-h,{color:'#9a8e80',width:1,dash:[4,4]},'cal-diag');
+        [[.18,.12],[.38,.31],[.62,.66],[.82,.78]].forEach(([a,b],i)=>inkDot(x0+a*w,y0-b*h,3.5,'#356fae',`cal-dot-${i}`));
+        ctx.fillStyle='#6f665e';ctx.font="10px 'Patrick Hand', 'Kalam', cursive";ctx.textAlign="center";ctx.fillText("predicted probability",x0+w/2,p.y+p.h-7);ctx.restore();
       }
 
       function draw() {
@@ -1815,7 +2301,7 @@ body.statml-standardized > .stage-dots { display:none !important; }
           state.lastStage=state.stage;
         }
         ctx.clearRect(0,0,state.width,state.height);
-        ctx.fillStyle="#fdfdfc";ctx.fillRect(0,0,state.width,state.height);
+        inkFillRect(0,0,state.width,state.height,"#fbf7ec",'canvas-paper');
         const fn=({1:drawStage1,2:drawStage2,3:drawStage3,4:drawStage4,5:drawStage5,6:drawStage6,7:drawStage7,8:drawStage8,9:drawStage9,10:drawStage10,11:drawStage11,12:drawStage12,13:drawStage13,14:drawStage14})[state.stage];
         if(fn)fn();
       }
@@ -1914,25 +2400,28 @@ body.statml-standardized > .stage-dots { display:none !important; }
         heroCanvas.width=Math.round(rect.width*dpr);heroCanvas.height=Math.round(rect.height*dpr);heroCtx.setTransform(dpr,0,0,dpr,0,0);
       }
       const heroPoints=Array.from({length:34},(_,i)=>({
-        x:(i%2===0?.25:.75)+(Math.random()-.5)*.23,
-        y:Math.random()*.68+.14,
-        vx:(Math.random()-.5)*.000035,
-        vy:(Math.random()-.5)*.000025,
+        x:(i%2===0?.25:.75)+(((i*37)%17)/16-.5)*.23,
+        y:(((i*53)%97)/96)*.68+.14,
+        vx:(((i*29)%11)/10-.5)*.000035,
+        vy:(((i*43)%13)/12-.5)*.000025,
         label:i%2===0?-1:1,
-        phase:Math.random()*Math.PI*2
+        phase:(((i*71)%101)/100)*Math.PI*2
       }));
       function animateHero(t) {
         const w=heroCanvas.clientWidth,h=heroCanvas.clientHeight;heroCtx.clearRect(0,0,w,h);
         heroCtx.save();
-        for(const p of heroPoints){
+        for(const [i,p] of heroPoints.entries()){
           p.x+=p.vx*16;p.y+=p.vy*16;if(p.x<.04||p.x>.96)p.vx*=-1;if(p.y<.08||p.y>.92)p.vy*=-1;
           const x=p.x*w,y=p.y*h+Math.sin(t/1300+p.phase)*3;
-          heroCtx.beginPath();heroCtx.arc(x,y,4.4,0,Math.PI*2);heroCtx.fillStyle=p.label===1?"rgba(220,38,38,.24)":"rgba(37,99,235,.24)";heroCtx.fill();
+          heroInkDot(x,y,4.4,p.label===1?"rgba(184,92,88,.28)":"rgba(53,111,174,.28)",`hero-point-${i}`);
         }
-        heroCtx.strokeStyle="rgba(99,102,241,.18)";heroCtx.lineWidth=1.5;heroCtx.setLineDash([8,10]);
-        heroCtx.beginPath();heroCtx.moveTo(w*.18,h*.82);heroCtx.lineTo(w*.82,h*.18);heroCtx.stroke();
-        heroCtx.setLineDash([]);
-        heroCtx.strokeStyle="rgba(99,102,241,.08)";heroCtx.lineWidth=Math.max(34,w*.055);heroCtx.beginPath();heroCtx.moveTo(w*.18,h*.82);heroCtx.lineTo(w*.82,h*.18);heroCtx.stroke();
+        // A single broken pencil separator plus hand-placed construction ticks;
+        // avoid the soft, repeated band that reads like a charting-library fill.
+        heroInkLine(w*.18,h*.82,w*.82,h*.18,"rgba(53,111,174,.3)",1.9,[10,16],'hero-boundary');
+        for(let k=0;k<9;k++) {
+          const u=.12+k*.095, cx=w*(.18+.64*u), cy=h*(.82-.64*u), span=7+inkUnit(`hero-hatch-span:${k}`)*8, jx=(inkUnit(`hero-hatch-x:${k}`)-.5)*7, jy=(inkUnit(`hero-hatch-y:${k}`)-.5)*7;
+          heroInkLine(cx-span+jx,cy-span+jy,cx+span+jx,cy+span+jy,"rgba(53,111,174,.19)",1.15,[],`hero-hatch-${k}`);
+        }
         heroCtx.restore();
         requestAnimationFrame(animateHero);
       }

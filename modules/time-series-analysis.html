@@ -811,6 +811,135 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
 </style>
 
     <link rel="stylesheet" href="academic-rigor.css">
+    <link rel="stylesheet" href="handwritten-theme.css?v=20260826-handwritten-final-2">
+    <script src="handwritten-theme.js?v=20260826-handwritten-final-2" defer></script>
+    <style id="time-series-handwritten-shell">
+        body.hw-handwritten .hero-badge,
+        body.hw-handwritten .topic-badge,
+        body.hw-handwritten .statml-hero .hero-badge {
+            border: 0 !important; border-radius: 3px 5px 2px 4px !important;
+            background: linear-gradient(transparent 38%, rgba(241,212,119,.58) 38%, rgba(241,212,119,.58) 88%, transparent 88%) !important;
+            box-shadow: none !important;
+        }
+        body.hw-handwritten .statml-overview { border: 1px solid rgba(88,83,72,.28) !important; border-radius: 5px 8px 4px 7px !important; background: rgba(255,253,245,.78) !important; box-shadow: none !important; }
+        body.hw-handwritten .statml-overview-item { border-radius: 3px 5px 2px 4px !important; background: rgba(255,252,242,.32) !important; box-shadow: none !important; }
+        body.hw-handwritten .statml-overview-number { border: 1px solid rgba(40,105,173,.38) !important; border-radius: 2px 4px 2px 3px !important; background: rgba(230,240,248,.7) !important; box-shadow: none !important; }
+        body.hw-handwritten :is(.pill,.tag,.badge,.metric-badge,.feature-pill,.transform-bridge-badge) { border: 0 !important; border-radius: 2px 4px 2px 3px !important; background: linear-gradient(transparent 34%, rgba(241,212,119,.48) 34%, rgba(241,212,119,.48) 90%, transparent 90%) !important; box-shadow: none !important; }
+        body.hw-handwritten .statml-stage-rail { border-radius: 4px 6px 3px 5px !important; background-color: rgba(255,252,242,.82) !important; background-image: repeating-linear-gradient(176deg, rgba(223,178,45,.04) 0 2px, transparent 2px 8px), radial-gradient(circle at 14% 18%, rgba(255,255,255,.3), transparent 46%) !important; box-shadow: none !important; }
+        body.hw-handwritten .statml-stage-button { border-radius: 42% 58% 47% 53% !important; box-shadow: none !important; }
+        body.hw-handwritten .statml-stage-button[aria-current="step"] { background: var(--hw-yellow) !important; border-color: var(--hw-ink) !important; box-shadow: none !important; }
+        body.hw-handwritten .statml-stage-button span { border-radius: 3px 5px 2px 4px !important; background: var(--hw-yellow-soft) !important; color: var(--hw-ink) !important; box-shadow: none !important; }
+        body.hw-handwritten input[type="range"] { appearance: none !important; height: 7px !important; border: 0 !important; border-radius: 3px 5px 2px 4px !important; background: repeating-linear-gradient(167deg, rgba(40,105,173,.18) 0 2px, rgba(255,252,242,.72) 2px 6px) !important; box-shadow: 1px 1px 0 rgba(75,68,58,.12) !important; }
+        body.hw-handwritten input[type="range"]::-webkit-slider-thumb { appearance: none; width: 18px; height: 18px; border: 1px solid rgba(75,68,58,.52); border-radius: 42% 58% 47% 53%; background: var(--hw-yellow); box-shadow: 1px 2px 0 rgba(75,68,58,.16); transform: rotate(-3deg); }
+        body.hw-handwritten input[type="range"]::-moz-range-thumb { width: 18px; height: 18px; border: 1px solid rgba(75,68,58,.52); border-radius: 42% 58% 47% 53%; background: var(--hw-yellow); box-shadow: 1px 2px 0 rgba(75,68,58,.16); }
+        body.hw-handwritten.statml-standardized :is(.statml-overview,.statml-overview-item,.glass-card,.card,.metric-card,.control-panel,.controls,.quiz-card,.worked-example-widget,.formula-block,.math-block,.formula,.software-output,.model-report-block,.limitation-card,.playground-summary-card,.decision-card,.interactive,.panel,.chart-card,.figure-card,.visual-panel,.viz-panel,.canvas-container,.canvas-wrap,.viz-stage,.status-strip) { border: 1px solid rgba(88,83,72,.42) !important; border-radius: 5px 8px 4px 7px !important; background-color: rgba(255,252,242,.82) !important; background-image: repeating-linear-gradient(176deg, rgba(223,178,45,.035) 0 2px, transparent 2px 8px), radial-gradient(circle at 14% 18%, rgba(255,255,255,.25), transparent 46%) !important; box-shadow: 1px 2px 0 rgba(76,65,50,.10) !important; backdrop-filter: none !important; }
+        body.hw-handwritten.statml-standardized :is(.insight-box,.callout,.insight,.takeaway,.teaching-note,.look-here,.breakdown,.warning-note,.report,.plain-translation,.statml-takeaways) { border: 1px solid rgba(157,112,12,.34) !important; border-left: 4px solid var(--hw-blue) !important; border-radius: 2px 5px 3px 6px !important; background-color: #fff1b8 !important; background-image: repeating-linear-gradient(176deg, rgba(223,178,45,.07) 0 2px, transparent 2px 7px), radial-gradient(circle at 14% 18%, rgba(255,255,255,.42), transparent 46%) !important; box-shadow: 2px 3px 0 rgba(76,65,50,.14) !important; }
+        body.hw-handwritten.statml-standardized :is(.warning-note,.is-alert) { border-left-color: var(--hw-red) !important; background-color: var(--hw-red-soft) !important; background-image: repeating-linear-gradient(176deg, rgba(200,94,88,.055) 0 2px, transparent 2px 7px), radial-gradient(circle at 14% 18%, rgba(255,255,255,.34), transparent 46%) !important; }
+        body.hw-handwritten.statml-standardized :is(.report,.statml-takeaways) { border-left-color: var(--hw-green) !important; background-color: var(--hw-green-soft) !important; }
+        body.hw-handwritten.statml-standardized :is(button,.btn,.interactive-btn,.control-btn,select,input[type="text"],input[type="number"],textarea,.quiz-option,.scenario-options button,.control button) { border: 1px solid rgba(75,68,58,.52) !important; border-radius: 7px 4px 8px 5px !important; background-color: rgba(248,243,230,.88) !important; background-image: repeating-linear-gradient(167deg, rgba(40,105,173,.035) 0 2px, transparent 2px 6px) !important; box-shadow: 1px 2px 0 rgba(75,68,58,.08) !important; }
+        body.hw-handwritten.statml-standardized table { border-color: rgba(75,68,58,.5) !important; border-radius: 5px 8px 4px 7px !important; background-color: rgba(255,253,245,.70) !important; box-shadow: 1px 2px 0 rgba(75,68,58,.05) !important; }
+        body.hw-handwritten.statml-standardized :is(th,td) { border-color: rgba(75,68,58,.42) !important; border-style: dashed !important; }
+        body.hw-handwritten.statml-standardized th { background: rgba(241,212,119,.16) !important; }
+        body.hw-handwritten.statml-standardized :is(.statml-stage-button,.stage-dot) { min-height: 0 !important; width: 9px !important; height: 9px !important; padding: 0 !important; border-radius: 42% 58% 47% 53% !important; background: var(--hw-paper) !important; background-image: none !important; box-shadow: none !important; }
+        body.hw-handwritten.statml-standardized :is(.statml-stage-button,.stage-dot)[aria-current="step"], body.hw-handwritten.statml-standardized :is(.statml-stage-button,.stage-dot).active { background: var(--hw-yellow) !important; border-color: var(--hw-ink) !important; }
+        body.hw-handwritten.statml-standardized button.statml-stage-button, body.hw-handwritten.statml-standardized button.stage-dot { min-height: 0 !important; width: 9px !important; height: 9px !important; padding: 0 !important; border-radius: 42% 58% 47% 53% !important; background: var(--hw-paper) !important; background-image: none !important; box-shadow: none !important; }
+        body.hw-handwritten.statml-standardized button.statml-stage-button[aria-current="step"], body.hw-handwritten.statml-standardized button.stage-dot.active { background: var(--hw-yellow) !important; border-color: var(--hw-ink) !important; }
+    </style>
+    <style id="time-series-handwritten-cue-finish">
+        body.hw-handwritten .statml-hero :is(.scroll-cue,.scroll-hint,.scroll-indicator,.hero-scroll) {
+            position: static !important;
+            inset: auto !important;
+            align-self: center !important;
+            display: inline-flex !important;
+            flex-direction: column !important;
+            width: auto !important;
+            max-width: calc(100% - 2rem) !important;
+            margin: .65rem auto 0 !important;
+            padding: 0 !important;
+            border: 0 !important;
+            border-radius: 0 !important;
+            background: transparent !important;
+            background-image: none !important;
+            box-shadow: none !important;
+            clip-path: none !important;
+            transform: none !important;
+            animation: none !important;
+            text-decoration-line: underline !important;
+            text-decoration-style: wavy !important;
+            text-decoration-color: rgba(40,105,173,.55) !important;
+            text-decoration-thickness: 1px !important;
+            text-underline-offset: 4px !important;
+        }
+        body.hw-handwritten .statml-hero .scroll-indicator::after {
+            width: 1px !important;
+            height: 18px !important;
+            margin: .25rem auto 0 !important;
+            background: rgba(88,83,72,.35) !important;
+            transform: rotate(-1deg) !important;
+        }
+    </style>
+    <style id="time-series-handwritten-visual-surface-finish">
+        body.hw-handwritten.statml-standardized .statml-visual {
+            background-color: var(--hw-paper) !important;
+            background-image: none !important;
+            border-color: transparent !important;
+        }
+        body.hw-handwritten.statml-standardized .canvas-container {
+            border: 0 !important;
+            border-radius: 0 !important;
+            background-color: var(--hw-paper) !important;
+            background-image: repeating-linear-gradient(176deg, rgba(223,178,45,.026) 0 2px, transparent 2px 8px), radial-gradient(circle at 14% 18%, rgba(255,255,255,.26), transparent 46%) !important;
+            box-shadow: none !important;
+        }
+        body.hw-handwritten.statml-standardized .canvas-container > .hw-rough-frame,
+        body.hw-handwritten.statml-standardized .canvas-container::before,
+        body.hw-handwritten.statml-standardized .canvas-container::after {
+            display: none !important;
+            content: none !important;
+        }
+        body.hw-handwritten.statml-standardized .statml-prereq {
+            border: 0 !important;
+            border-left: 0 !important;
+            border-radius: 0 !important;
+            background: linear-gradient(176deg, transparent 0 46%, rgba(255,241,184,.9) 46% 94%, transparent 94%) !important;
+            box-shadow: none !important;
+            clip-path: polygon(.7% 3%, 99.1% 0, 99.5% 97%, .2% 100%) !important;
+            transform: rotate(-.28deg) !important;
+        }
+    </style>
+    <style id="time-series-handwritten-hero-bg-finish">
+        /* The authored hero keeps its exact absolute layer and dimensions;
+           handwritten mode removes only the old software glow. */
+        body.hw-handwritten .hero-bg {
+            background-image: none !important;
+        }
+    </style>
+<style id="time-series-analysis-handwritten-geometry-calibration">
+@media (min-width: 901px) {
+  body.hw-handwritten.statml-standardized [data-stage="1"]{min-height:1281px !important}
+  body.hw-handwritten.statml-standardized [data-stage="2"]{min-height:662.4px !important}
+  body.hw-handwritten.statml-standardized [data-stage="3"]{min-height:883px !important}
+  body.hw-handwritten.statml-standardized [data-stage="4"]{min-height:837px !important}
+  body.hw-handwritten.statml-standardized [data-stage="5"]{min-height:762px !important}
+  body.hw-handwritten.statml-standardized [data-stage="6"]{min-height:1030px !important}
+  body.hw-handwritten.statml-standardized [data-stage="7"]{min-height:1121px !important}
+  body.hw-handwritten.statml-standardized [data-stage="8"]{min-height:1080px !important}
+  body.hw-handwritten.statml-standardized [data-stage="9"]{min-height:799px !important}
+  body.hw-handwritten.statml-standardized [data-stage="10"]{min-height:2004px !important}
+}
+@media (min-width: 360px) and (max-width: 900px) {
+  body.hw-handwritten.statml-standardized [data-stage="1"]{min-height:1269px !important}
+  body.hw-handwritten.statml-standardized [data-stage="2"]{min-height:624px !important}
+  body.hw-handwritten.statml-standardized [data-stage="3"]{min-height:878px !important}
+  body.hw-handwritten.statml-standardized [data-stage="4"]{min-height:852px !important}
+  body.hw-handwritten.statml-standardized [data-stage="5"]{min-height:731px !important}
+  body.hw-handwritten.statml-standardized [data-stage="6"]{min-height:1147px !important}
+  body.hw-handwritten.statml-standardized [data-stage="7"]{min-height:1224px !important}
+  body.hw-handwritten.statml-standardized [data-stage="8"]{min-height:1172px !important}
+  body.hw-handwritten.statml-standardized [data-stage="9"]{min-height:814px !important}
+  body.hw-handwritten.statml-standardized [data-stage="10"]{min-height:2258px !important}
+}
+</style>
 </head>
 <body>
 <nav class="statml-site-nav" aria-label="StatML Academy navigation">
@@ -1379,7 +1508,18 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
             return height - padding - ((y - minY) / (maxY - minY)) * availableHeight;
         }
 
-        function drawGrid(ySteps = 5) {
+        // Shared paper-and-ink primitives for every time-series state. Seeds
+        // only determine repeatable stroke wobble; generated data and stage
+        // transitions are unchanged.
+        const tsInk = { paper: '#fbf4e2', line: '#596259', text: '#252822', muted: '#697269', blue: '#2869ad', green: '#4f956b', purple: '#7960ae', orange: '#d89439', red: '#c85e58', neutral: '#cdbf9f' };
+        function tsRandom(seed) { if (window.StatMLInk?.inkRandom) return window.StatMLInk.inkRandom(seed); let s = 2166136261 >>> 0; for (const ch of String(seed)) { s ^= ch.charCodeAt(0); s = Math.imul(s, 16777619) >>> 0; } return () => { s = (Math.imul(s, 1664525) + 1013904223) >>> 0; return s / 4294967296; }; }
+        function tsText(s, x, y, color = tsInk.text, size = 12, align = 'left', alpha = 1, weight = 400) { ctx.save(); ctx.globalAlpha = alpha; ctx.fillStyle = color; ctx.font = `${weight} ${size}px "Patrick Hand", "Kalam", "Chalkboard SE", cursive`; ctx.textAlign = align; ctx.textBaseline = 'alphabetic'; ctx.fillText(s, x, y); ctx.restore(); }
+        function tsLine(points, { color = tsInk.line, width = 1.2, dash = [], alpha = 1, seed = 'ts-line' } = {}) { if (!points || points.length < 2) return; const r = tsRandom(seed), rough = points.map((p, i) => i === 0 || i === points.length - 1 ? p : [p[0] + (r() - .5) * 3.1, p[1] + (r() - .5) * 3.1]); const pts = points.length === 2 ? [rough[0], [(points[0][0] + points[1][0]) / 2 + (r() - .5) * 4, (points[0][1] + points[1][1]) / 2 + (r() - .5) * 4], rough[1]] : rough; const r2 = tsRandom(`${seed}:second`), second = pts.map((p, i) => i === 0 || i === pts.length - 1 ? p : [p[0] + (r2() - .5) * 3, p[1] + (r2() - .5) * 3]); const draw = (line, passAlpha, passWidth) => { ctx.save(); ctx.globalAlpha = passAlpha; ctx.strokeStyle = color; ctx.lineWidth = passWidth; ctx.lineCap = 'round'; ctx.lineJoin = 'round'; ctx.setLineDash(dash); ctx.beginPath(); line.forEach((p, i) => i ? ctx.lineTo(p[0], p[1]) : ctx.moveTo(p[0], p[1])); ctx.stroke(); ctx.restore(); }; draw(second, alpha * .5, Math.max(.65, width * .56)); draw(pts, alpha * .86, width); }
+        function tsDot(x, y, radius, { color = tsInk.blue, alpha = 1, seed = 'ts-dot' } = {}) { const r = tsRandom(seed), pts = [], n = 13; for (let i = 0; i < n; i++) { const a = i / n * Math.PI * 2, rr = radius + (r() - .5) * Math.min(2.8, radius * .4); pts.push([x + Math.cos(a) * rr, y + Math.sin(a) * rr]); } const r2 = tsRandom(`${seed}:second`), second = pts.map(p => [p[0] + (r2() - .5) * 2.5, p[1] + (r2() - .5) * 2.5]); ctx.save(); ctx.globalAlpha = alpha; ctx.fillStyle = color; ctx.strokeStyle = color; ctx.lineWidth = .8; ctx.beginPath(); pts.forEach((p, i) => i ? ctx.lineTo(p[0], p[1]) : ctx.moveTo(p[0], p[1])); ctx.closePath(); ctx.fill(); ctx.globalAlpha = alpha * .68; ctx.lineWidth = 1; ctx.beginPath(); second.forEach((p, i) => i ? ctx.lineTo(p[0], p[1]) : ctx.moveTo(p[0], p[1])); ctx.closePath(); ctx.stroke(); ctx.restore(); }
+        function tsPoly(points, { fill = null, stroke = tsInk.line, alpha = 1, seed = 'ts-poly' } = {}) { const r = tsRandom(seed), pts = points.map((p, i) => i === 0 || i === points.length - 1 ? p : [p[0] + (r() - .5) * 1.5, p[1] + (r() - .5) * 1.5]); ctx.save(); ctx.globalAlpha = alpha; ctx.beginPath(); pts.forEach((p, i) => i ? ctx.lineTo(p[0], p[1]) : ctx.moveTo(p[0], p[1])); ctx.closePath(); if (fill) { ctx.fillStyle = fill; ctx.fill(); } if (stroke) { ctx.strokeStyle = stroke; ctx.lineWidth = 1.05; ctx.stroke(); } ctx.restore(); }
+        function tsClear() { ctx.save(); ctx.globalAlpha = 1; ctx.clearRect(0, 0, width, height); ctx.fillStyle = tsInk.paper; ctx.fillRect(0, 0, width, height); ctx.globalAlpha = .12; for (let y = 16; y < height; y += 28) tsLine([[8, y], [width - 8, y]], { color: tsInk.neutral, width: .45, seed: `ts:paper:${y}` }); ctx.restore(); }
+
+        function drawGridLegacy(ySteps = 5) {
             ctx.strokeStyle = colors.grid;
             ctx.lineWidth = 1;
             
@@ -1400,7 +1540,7 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
             ctx.fillStyle = colors.textMuted;
             ctx.textAlign = 'right';
             ctx.textBaseline = 'middle';
-            ctx.font = '400 11px Inter, sans-serif';
+            ctx.font = '400 11px "Patrick Hand", "Kalam", "Chalkboard SE", cursive';
             for (let i = 0; i <= ySteps; i++) {
                 const yVal = minY + (i * step);
                 const y = mapY(yVal);
@@ -1455,7 +1595,7 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
             }
         }
 
-        function drawPath(dataset, key, color, widthLine = 2, alpha = 1) {
+        function drawPathLegacy(dataset, key, color, widthLine = 2, alpha = 1) {
             ctx.beginPath();
             ctx.strokeStyle = color;
             ctx.lineWidth = widthLine;
@@ -1473,7 +1613,7 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
             ctx.globalAlpha = 1;
         }
 
-        function drawPoints(dataset, key, alpha = 1, rad = 3, colorOverride = colors.point) {
+        function drawPointsLegacy(dataset, key, alpha = 1, rad = 3, colorOverride = colors.point) {
             ctx.fillStyle = colorOverride;
             ctx.globalAlpha = alpha;
             for (let i = 0; i < dataset.length; i++) {
@@ -1487,8 +1627,8 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
             ctx.globalAlpha = 1;
         }
 
-        function drawStageChip(text, iconColor) {
-            ctx.font = '600 12px Inter, sans-serif';
+        function drawStageChipLegacy(text, iconColor) {
+            ctx.font = '600 12px "Patrick Hand", "Kalam", "Chalkboard SE", cursive';
             ctx.textAlign = 'left';
             ctx.textBaseline = 'middle';
             const padX = 12;
@@ -1521,6 +1661,19 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
             ctx.fillText(text, x + padX + 16, y + boxH/2);
         }
 
+        function drawGrid(ySteps = 5) {
+            const minY = currentYRange[0], maxY = currentYRange[1], step = (maxY - minY) / ySteps;
+            for (let i = 0; i <= ySteps; i++) { const yVal = minY + i * step, y = mapY(yVal); tsLine([[width * .08, y], [width * .92, y]], { color: tsInk.neutral, width: .65, alpha: .62, seed: `ts:grid:y:${i}` }); tsText(yVal.toFixed(0), width * .08 - 8, y + 4, tsInk.muted, 11, 'right'); }
+            if (minY < 0 && maxY > 0) tsLine([[width * .08, mapY(0)], [width * .92, mapY(0)]], { color: tsInk.red, width: .9, dash: [5, 5], alpha: .72, seed: 'ts:grid:zero' });
+            tsLine([[width * .08, mapY(minY)], [width * .92, mapY(minY)]], { color: tsInk.line, width: 1.25, seed: 'ts:grid:baseline' });
+            const minX = Math.max(0, Math.floor(currentXRange[0])), maxX = Math.ceil(currentXRange[1]);
+            if (currentStageIndex === 6) { const tickStep = params.lags > 20 ? 4 : (params.lags > 10 ? 2 : 1); for (let t = 0; t <= params.lags; t += tickStep) { const x = mapX(t), y = mapY(minY); tsLine([[x, y], [x, y + 5]], { color: tsInk.line, width: .8, seed: `ts:grid:lag:${t}` }); tsText(`Lag ${t}`, x, y + 17, tsInk.muted, 11, 'center'); } }
+            else { for (let t = minX; t <= maxX; t++) if (t % 12 === 0) { const x = mapX(t), y = mapY(minY); tsLine([[x, y], [x, y + 5]], { color: tsInk.line, width: .8, seed: `ts:grid:month:${t}` }); if (t > 0) tsText(`Y${t / 12}`, x, y + 17, tsInk.muted, 11, 'center'); } }
+        }
+        function drawPath(dataset, key, color, widthLine = 2, alpha = 1) { const pts = dataset.map(pt => [mapX(pt.t), mapY(pt[key])]); const handColor = color === colors.mainLine ? tsInk.line : color === colors.trend ? tsInk.green : color === colors.seasonal ? tsInk.blue : color === colors.noise ? tsInk.orange : color === colors.forecast ? tsInk.orange : color === colors.diffLine ? tsInk.blue : color === colors.error ? tsInk.red : tsInk.purple; tsLine(pts, { color: handColor, width: widthLine, alpha, seed: `ts:path:${key}:${handColor}` }); }
+        function drawPoints(dataset, key, alpha = 1, rad = 3, colorOverride = colors.point) { const handColor = colorOverride === colors.error ? tsInk.red : colorOverride === colors.noise ? tsInk.orange : colorOverride === colors.diffLine ? tsInk.blue : colorOverride === colors.forecast ? tsInk.orange : tsInk.blue; dataset.forEach((pt, i) => tsDot(mapX(pt.t), mapY(pt[key]), rad, { color: handColor, alpha, seed: `ts:point:${key}:${i}` })); }
+        function drawStageChip(text, iconColor) { const x = width * .08 + 10, y = 20, boxW = Math.min(width * .72, Math.max(142, text.length * 7 + 38)), boxH = 28; tsPoly([[x, y], [x + boxW, y + 1], [x + boxW - 2, y + boxH], [x + 2, y + boxH - 1]], { fill: 'rgba(255,253,245,.9)', stroke: tsInk.neutral, alpha: .96, seed: 'ts:chip' }); tsDot(x + 16, y + boxH / 2, 4, { color: iconColor === colors.error ? tsInk.red : iconColor === colors.forecast ? tsInk.orange : tsInk.blue, seed: 'ts:chip-dot' }); tsText(text, x + 28, y + boxH / 2 + 4, tsInk.text, 12, 'left', 1, 700); }
+
         function wakeUpAnimation() {
             if (!isAnimating) {
                 isAnimating = true;
@@ -1529,8 +1682,7 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
         }
 
         function draw() {
-            ctx.fillStyle = colors.bg;
-            ctx.fillRect(0, 0, width, height);
+            tsClear();
 
             animationProgress += (targetProgress - animationProgress) * 0.08;
             const s = currentStageIndex;
@@ -1575,7 +1727,7 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
 
             if (s !== 3) drawGrid(); // S3 draws its own lane grid
 
-            ctx.font = '600 13px Inter, sans-serif';
+            ctx.font = '600 13px "Patrick Hand", "Kalam", "Chalkboard SE", cursive';
             ctx.textAlign = 'left';
             ctx.textBaseline = 'alphabetic';
 
@@ -1597,16 +1749,8 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
                 const p = animationProgress;
                 
                 // Fade in dividers smoothly
-                ctx.globalAlpha = p * Math.min(1, p * 2);
-                ctx.strokeStyle = colors.border;
-                ctx.lineWidth = 1;
                 const laneH = height / 4;
-                for(let i=1; i<4; i++) {
-                    ctx.beginPath();
-                    ctx.moveTo(width*0.08, i*laneH);
-                    ctx.lineTo(width*0.92, i*laneH);
-                    ctx.stroke();
-                }
+                for(let i=1; i<4; i++) tsLine([[width * .08, i * laneH], [width * .92, i * laneH]], { color: tsInk.neutral, width: .8, alpha: p * Math.min(1, p * 2), seed: `ts:decomp-divider:${i}` });
 
                 const drawDecompLane = (key, color, laneIdx, label, isObserved = false) => {
                     const topPx = laneIdx * laneH + 20; 
@@ -1625,16 +1769,12 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
                     if (min === max) { min -= 1; max += 1; }
                     
                     // Main line fades out to reference color, components fade in to their real color
-                    ctx.globalAlpha = isObserved ? Math.max(0.2, 1 - p*0.6) : p; 
-                    ctx.beginPath();
-                    ctx.strokeStyle = isObserved ? colors.textDim : color; 
-                    ctx.lineWidth = isObserved ? 1.5 : 2;
-                    ctx.lineJoin = 'round';
                     
                     const topLaneTopPx = 20;
                     const topLaneBotPx = laneH - 10;
                     let topMin = baseRange[0], topMax = baseRange[1];
 
+                    const lanePoints = [];
                     for (let i = 0; i < N; i++) {
                         const pt = tsData[i];
                         const x = mapX(pt.t);
@@ -1647,14 +1787,11 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
                         const ease = Math.sin(p * Math.PI / 2);
                         const currentY = startY + (targetY - startY) * ease;
 
-                        if (i === 0) ctx.moveTo(x, currentY);
-                        else ctx.lineTo(x, currentY);
+                        lanePoints.push([x, currentY]);
                     }
-                    ctx.stroke();
-                    
-                    ctx.globalAlpha = isObserved ? 1 : p;
-                    ctx.fillStyle = isObserved ? colors.textMain : color;
-                    ctx.fillText(label, mapX(0) + 5, topPx + 2);
+                    const handColor = isObserved ? tsInk.muted : (color === colors.trend ? tsInk.green : color === colors.seasonal ? tsInk.blue : tsInk.orange);
+                    tsLine(lanePoints, { color: handColor, width: isObserved ? 1.35 : 1.9, alpha: isObserved ? Math.max(.2, 1 - p * .6) : p, seed: `ts:decomp:${key}` });
+                    tsText(label, mapX(0) + 5, topPx + 2, isObserved ? tsInk.text : handColor, 12, 'left', isObserved ? 1 : p, 700);
                 };
 
                 drawDecompLane('y', colors.textDim, 0, "OBSERVED DATA (REFERENCE)", true);
@@ -1662,7 +1799,6 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
                 drawDecompLane('seasonal', colors.seasonal, 2, "2. SEASONALITY");
                 drawDecompLane('noise', colors.noise, 3, "3. NOISE (REMAINDER)");
                 
-                ctx.globalAlpha = 1;
             }
             else if (s === 4) {
                 chipText = "Checking Stationarity";
@@ -1670,25 +1806,13 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
 
                 drawPath(tsData, 'y', colors.mainLine, 1.5, 0.4);
                 
-                ctx.beginPath();
-                ctx.strokeStyle = colors.error;
-                ctx.lineWidth = 3;
-                ctx.globalAlpha = animationProgress;
-                for(let i=0; i < maData.length; i++) {
-                    const x = mapX(maData[i].t);
-                    const y = mapY(maData[i].y);
-                    if(i===0) ctx.moveTo(x,y);
-                    else ctx.lineTo(x,y);
-                }
-                ctx.stroke();
+                drawPath(maData, 'y', colors.error, 2.5, animationProgress);
                 
                 const labelIdx = Math.floor(maData.length * 0.3);
                 const maPt = maData[labelIdx];
                 if (maPt) {
-                    ctx.fillStyle = colors.error;
-                    ctx.fillText("Rolling Moving Average (12m)", mapX(maPt.t), mapY(maPt.y) - 20);
+                    tsText("Rolling Moving Average (12m)", mapX(maPt.t), mapY(maPt.y) - 20, tsInk.red, 12, 'left', animationProgress, 700);
                 }
-                ctx.globalAlpha = 1;
             }
             else if (s === 5) {
                 chipText = params.diff ? "Differenced (Mean Stabilized)" : "Raw Series Active";
@@ -1696,27 +1820,19 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
 
                 if (!params.diff) {
                     drawPath(tsData, 'y', colors.mainLine, 2);
-                    ctx.globalAlpha = animationProgress;
-                    ctx.fillStyle = colors.textDim;
-                    ctx.fillText("Raw Series (Trend Intact)", mapX(10), mapY(tsData[10].y) - 20);
+                    tsText("Raw Series (Trend Intact)", mapX(10), mapY(tsData[10].y) - 20, tsInk.muted, 12, 'left', animationProgress, 700);
                 } else {
                     drawPath(tsDiff, 'y', colors.diffLine, 2);
-                    ctx.globalAlpha = animationProgress;
-                    ctx.fillStyle = colors.diffLine;
-                    ctx.fillText("Differenced Series", mapX(10), mapY(tsDiff[9]?.y || 0) - 25);
+                    tsText("Differenced Series", mapX(10), mapY(tsDiff[9]?.y || 0) - 25, tsInk.blue, 12, 'left', animationProgress, 700);
                 }
-                ctx.globalAlpha = 1;
             }
             else if (s === 6) {
                 chipText = "ACF Computed";
                 chipColor = colors.accent;
 
-                ctx.globalAlpha = animationProgress;
-                
                 // Draw 95% Confidence Bounds
                 const sig = 1.96 / Math.sqrt(N);
-                ctx.fillStyle = 'rgba(156, 163, 175, 0.2)';
-                ctx.fillRect(mapX(0), mapY(sig), mapX(params.lags) - mapX(0), mapY(-sig) - mapY(sig));
+                tsPoly([[mapX(0), mapY(sig)], [mapX(params.lags), mapY(sig)], [mapX(params.lags), mapY(-sig)], [mapX(0), mapY(-sig)]], { fill: 'rgba(121,96,174,.10)', stroke: tsInk.purple, alpha: animationProgress, seed: 'ts:acf:band' });
 
                 for(let lag=0; lag<=params.lags; lag++) {
                     const val = acfData[lag];
@@ -1724,14 +1840,10 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
                     const y = mapY(val);
                     const zeroY = mapY(0);
                     
-                    ctx.fillStyle = colors.accent;
-                    ctx.fillRect(x - 4, y, 8, zeroY - y);
+                    tsPoly([[x - 4, zeroY], [x - 3, y], [x + 4, y], [x + 4, zeroY]], { fill: 'rgba(40,105,173,.22)', stroke: tsInk.blue, alpha: animationProgress, seed: `ts:acf:bar:${lag}` });
                 }
                 
-                ctx.fillStyle = colors.textMain;
-                ctx.fillText(`95% Sig. Limit (\xB1${sig.toFixed(2)})`, mapX(0), mapY(sig) - 10);
-                
-                ctx.globalAlpha = 1;
+                tsText(`95% Sig. Limit (\xB1${sig.toFixed(2)})`, mapX(0), mapY(sig) - 10, tsInk.purple, 12, 'left', animationProgress, 700);
             }
             else if (s === 7 || s === 9 || s === 10) {
                 chipText = "Forecast Deployed";
@@ -1739,93 +1851,56 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
 
                 drawPath(tsData, 'y', colors.mainLine, 2);
                 
-                ctx.globalAlpha = 1;
-                
                 const visiblePts = Math.max(1, Math.floor(forecastData.length * animationProgress));
                 
                 // Draw forecast CI fan (grows outwards in X)
-                ctx.beginPath();
-                ctx.fillStyle = colors.forecastBand;
+                const upperPts = [], lowerPts = [];
                 for(let i=0; i<visiblePts; i++) {
                     const pt = forecastData[i];
                     // Fan out effect based on animation progress
                     const targetUpper = pt.y + (pt.upper - pt.y) * animationProgress;
-                    if(i===0) ctx.moveTo(mapX(pt.t), mapY(targetUpper));
-                    else ctx.lineTo(mapX(pt.t), mapY(targetUpper));
+                    upperPts.push([mapX(pt.t), mapY(targetUpper)]);
                 }
                 for(let i=visiblePts-1; i>=0; i--) {
                     const pt = forecastData[i];
                     const targetLower = pt.y - (pt.y - pt.lower) * animationProgress;
-                    ctx.lineTo(mapX(pt.t), mapY(targetLower));
+                    lowerPts.push([mapX(pt.t), mapY(targetLower)]);
                 }
-                ctx.closePath();
-                ctx.fill();
+                tsPoly([...upperPts, ...lowerPts], { fill: 'rgba(216,148,57,.14)', stroke: tsInk.orange, alpha: animationProgress, seed: 'ts:forecast:band' });
 
                 // Draw forecast line expanding outwards in X
-                ctx.beginPath();
-                ctx.strokeStyle = colors.forecast;
-                ctx.lineWidth = 3;
-                for (let i = 0; i < visiblePts; i++) {
-                    const pt = forecastData[i];
-                    if (i === 0) ctx.moveTo(mapX(pt.t), mapY(pt.y));
-                    else ctx.lineTo(mapX(pt.t), mapY(pt.y));
-                }
-                ctx.stroke();
+                drawPath(forecastData.slice(0, visiblePts), 'y', colors.forecast, 2.5, animationProgress);
                 
-                ctx.strokeStyle = colors.axis;
-                ctx.setLineDash([5, 5]);
-                ctx.lineWidth = 1;
-                ctx.beginPath();
                 const divX = mapX(N);
-                ctx.moveTo(divX, mapY(currentYRange[0]));
-                ctx.lineTo(divX, mapY(currentYRange[1]));
-                ctx.stroke();
-                ctx.setLineDash([]);
+                tsLine([[divX, mapY(currentYRange[0])], [divX, mapY(currentYRange[1])]], { color: tsInk.muted, width: 1, dash: [5, 5], seed: 'ts:forecast:divider' });
                 
-                ctx.fillStyle = colors.textDim;
-                ctx.textAlign = 'right';
-                ctx.fillText("Historical Data", divX - 10, mapY(currentYRange[1]) + 30);
-                ctx.fillStyle = colors.forecast;
-                ctx.textAlign = 'left';
-                ctx.fillText("Forecast Horizon", divX + 10, mapY(currentYRange[1]) + 30);
-                
-                ctx.globalAlpha = 1;
+                tsText("Historical Data", divX - 10, mapY(currentYRange[1]) + 30, tsInk.muted, 12, 'right', 1, 700);
+                // Keep the existing annotation inside the canvas when the
+                // forecast divider sits close to the right plot boundary.
+                // Right-aligning at the padded edge preserves the label and
+                // its hand-ink treatment without changing the chart scale.
+                tsText("Forecast Horizon", width - 12, mapY(currentYRange[1]) + 30, tsInk.orange, 12, 'right', 1, 700);
             }
             else if (s === 8) {
                 chipText = params.badRes ? "Pattern Leftover (Bad)" : "White Noise (Good)";
                 chipColor = params.badRes ? colors.error : colors.noise;
 
-                ctx.globalAlpha = animationProgress;
-
                 const expectedLimit = params.noise * 1.5;
                 const zoneTop = mapY(expectedLimit);
                 const zoneBot = mapY(-expectedLimit);
-                ctx.fillStyle = 'rgba(156, 163, 175, 0.12)'; 
-                ctx.fillRect(mapX(0), zoneTop, mapX(N) - mapX(0), zoneBot - zoneTop);
-                
-                ctx.fillStyle = colors.textMuted;
-                ctx.fillText("Expected Noise Zone", mapX(N) - 145, zoneTop - 8);
+                tsPoly([[mapX(0), zoneTop], [mapX(N), zoneTop], [mapX(N), zoneBot], [mapX(0), zoneBot]], { fill: 'rgba(121,96,174,.09)', stroke: tsInk.purple, alpha: animationProgress, seed: 'ts:residual:zone' });
 
-                ctx.strokeStyle = colors.axis;
-                ctx.setLineDash([5, 5]);
-                ctx.lineWidth = 1;
-                ctx.beginPath();
-                ctx.moveTo(mapX(0), mapY(0));
-                ctx.lineTo(mapX(N), mapY(0));
-                ctx.stroke();
-                ctx.setLineDash([]);
+                tsText("Expected Noise Zone", mapX(N) - 145, zoneTop - 8, tsInk.muted, 12, 'left', animationProgress, 700);
+
+                tsLine([[mapX(0), mapY(0)], [mapX(N), mapY(0)]], { color: tsInk.red, width: .9, dash: [5, 5], alpha: animationProgress, seed: 'ts:residual:zero' });
 
                 const sourceData = params.badRes ? badResData : tsData.map(d => ({ t: d.t, res: d.noise }));
                 const drawColor = params.badRes ? colors.error : colors.noise;
-                
+
                 drawPath(sourceData, 'res', drawColor, 1.5);
                 drawPoints(sourceData, 'res', 1, 2.5, drawColor);
                 
-                ctx.fillStyle = drawColor;
-                ctx.textAlign = 'left';
-                ctx.fillText(params.badRes ? "Bad Residuals (Uncaptured Pattern)" : "Idealized Residuals (Pure Noise)", mapX(2), mapY(currentYRange[1]) + 20);
-                
-                ctx.globalAlpha = 1;
+                tsText(params.badRes ? "Bad Residuals (Uncaptured Pattern)" : "Idealized Residuals (Pure Noise)", mapX(2), mapY(currentYRange[1]) + 20, params.badRes ? tsInk.red : tsInk.orange, 12, 'left', animationProgress, 700);
             }
 
             if (s !== 3) {
@@ -1885,19 +1960,13 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
                 if (validPoint && lines.length > 0) {
                     const hx = mapX(t);
                     
-                    // Draw Crosshair
-                    ctx.strokeStyle = 'rgba(0,0,0,0.15)';
-                    ctx.lineWidth = 1;
-                    ctx.beginPath();
-                    ctx.moveTo(hx, mapY(currentYRange[0]));
-                    ctx.lineTo(hx, mapY(currentYRange[1]));
-                    ctx.stroke();
-
-                    ctx.font = '500 12px Inter, sans-serif';
-                    ctx.textAlign = 'left';
-                    ctx.textBaseline = 'top';
+                    // Draw Crosshair and a paper note, matching the reference
+                    // notebook treatment instead of a glossy browser tooltip.
+                    tsLine([[hx, mapY(currentYRange[0])], [hx, mapY(currentYRange[1])]], { color: tsInk.muted, width: .9, dash: [4, 4], alpha: .55, seed: 'ts:hover:crosshair' });
+                    ctx.save(); ctx.font = '400 12px "Patrick Hand", "Kalam", cursive';
                     let maxW = 0;
                     lines.forEach(l => { maxW = Math.max(maxW, ctx.measureText(l).width); });
+                    ctx.restore();
                     
                     const boxW = maxW + 24;
                     const boxH = lines.length * 18 + 12;
@@ -1909,30 +1978,9 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
                     if (boxY + boxH > height - padding) boxY = mouse.y - boxH - 12;
                     if (boxY < 60 && boxX < 240) boxY = 60; // Avoid top left chip area
 
-                    // Tooltip Container
-                    ctx.fillStyle = 'rgba(255, 255, 255, 0.95)';
-                    ctx.shadowColor = 'rgba(0,0,0,0.12)';
-                    ctx.shadowBlur = 12;
-                    ctx.shadowOffsetY = 4;
-                    ctx.beginPath();
-                    ctx.roundRect(boxX, boxY, boxW, boxH, 6);
-                    ctx.fill();
-                    ctx.strokeStyle = colors.border;
-                    ctx.stroke();
-
-                    // Text
-                    ctx.shadowColor = 'transparent';
-                    ctx.fillStyle = colors.textMain;
-                    lines.forEach((l, idx) => {
-                        ctx.fillText(l, boxX + 12, boxY + 8 + idx * 18);
-                    });
-                    
-                    // Emphasized Active Point
-                    ctx.fillStyle = dotColor;
-                    ctx.beginPath(); ctx.arc(hx, hy, 4, 0, Math.PI*2); ctx.fill();
-                    ctx.strokeStyle = colors.surface;
-                    ctx.lineWidth = 1.5;
-                    ctx.stroke();
+                    tsPoly([[boxX, boxY], [boxX + boxW, boxY + 1], [boxX + boxW - 2, boxY + boxH], [boxX + 2, boxY + boxH - 1]], { fill: 'rgba(255,253,245,.94)', stroke: tsInk.neutral, seed: 'ts:hover:note' });
+                    lines.forEach((l, idx) => tsText(l, boxX + 12, boxY + 18 + idx * 18, tsInk.text, 12));
+                    tsDot(hx, hy, 4, { color: dotColor === colors.error ? tsInk.red : dotColor === colors.forecast ? tsInk.orange : tsInk.blue, seed: 'ts:hover:point' });
                 }
             }
         }

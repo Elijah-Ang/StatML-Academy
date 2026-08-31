@@ -473,7 +473,7 @@
     .cv-stability-table tr:nth-child(3) td:nth-child(2) { color: var(--accent-dark); font-weight: 700; }
     .cv-stability-table tr:nth-child(4) td:nth-child(2) { color: var(--amber); font-weight: 700; }
     .cv-stability-table tr:nth-child(5) td:nth-child(2), .cv-stability-table tr:nth-child(6) td:nth-child(2) { color: var(--coral); font-weight: 700; }
-    .cv-why-note { margin-top: 0.65rem; padding: 0.75rem 0.9rem; border: 1px dashed #a5b4fc; border-radius: 12px; background: #f5f3ff; color: var(--accent-dark); font-size: 0.78rem; line-height: 1.5; }
+    .cv-why-note { margin-top: 0.65rem; padding: 0.75rem 0.9rem; border: 1px solid transparent; border-radius: 12px; background: #f5f3ff; color: var(--accent-dark); font-size: 0.78rem; line-height: 1.5; }
 
     .metrics {
       display: grid;
@@ -694,9 +694,7 @@
     .canvas-wrap {
       position: relative;
       min-height: 0;
-      background:
-        radial-gradient(circle at 50% 18%, rgba(99,102,241,0.045), transparent 43%),
-        #fcfcfb;
+      background: #fcfcfb;
     }
     #lessonCanvas {
       width: 100%;
@@ -951,6 +949,176 @@ body.statml-standardized > .stage-dots { display:none !important; }
 @media (prefers-reduced-motion:reduce) { html { scroll-behavior:auto; } *,*::before,*::after { animation-duration:.01ms !important; animation-iteration-count:1 !important; transition-duration:.01ms !important; } }
 </style>
     <link rel="stylesheet" href="academic-rigor.css">
+    <link rel="stylesheet" href="handwritten-theme.css?v=20260826-handwritten-final-2">
+    <script src="handwritten-theme.js?v=20260826-handwritten-final-2" defer></script>
+<style id="one-r-material-pass">
+body:is(.hw-handwritten,.statml-standardized){background:#f5f0e5!important;color:#292524!important}
+body:is(.hw-handwritten,.statml-standardized) :is(.statml-hero,.hero,.hero-section,#hero)::before,
+body:is(.hw-handwritten,.statml-standardized) :is(.statml-hero,.hero,.hero-section,#hero)::after{background:none!important;background-image:none!important;opacity:0!important}
+body:is(.hw-handwritten,.statml-standardized) :is(.hero-grid,.hero-orbit,.hero-orbits,.hero-particles,.hero-dots,.hero-lines,.hero-signal){background:none!important;background-image:none!important;box-shadow:none!important}
+body:is(.hw-handwritten,.statml-standardized) :is(.hero,.statml-hero,.hero-section,#hero){background:none!important;background-image:none!important}
+body:is(.hw-handwritten,.statml-standardized) .hero-orbits .orbit-dot{display:block!important;box-shadow:none!important;width:10px!important;height:7px!important;border-radius:3px 6px 2px 5px!important;opacity:.52!important;animation:none!important;transform:rotate(-7deg)!important}
+body:is(.hw-handwritten,.statml-standardized) :is(.hero h1,.statml-hero h1,#hero h1){background:none!important;color:#292524!important;-webkit-text-fill-color:#292524!important;text-shadow:.6px .8px 0 rgba(88,83,72,.12)!important}
+body:is(.hw-handwritten,.statml-standardized) :is(.glass-card,.card,.metric-card,.control-panel,.controls,.quiz-card,.formula,.formula-block,.math-block,.insight,.insight-box,.takeaway,.plain-translation,.question-card,.comparison-card,.visual-stage,.canvas-wrap,.statml-visual-card,.statml-overview,.hero-objectives,.learning-goals,.hero-goals,.fold-box,.legend-card,.table-card,.stage-card,.info-card,.metric,.pipeline,.mini-check,.visual-shell,.choice-grid,.mini-pipeline,details,pre,table){background-image:none!important;background-color:rgba(255,252,242,.8)!important;border-color:rgba(88,83,72,.42)!important;border-radius:5px 8px 4px 7px!important;box-shadow:1px 2px 0 rgba(88,83,72,.09)!important;backdrop-filter:none!important}
+body:is(.hw-handwritten,.statml-standardized) :is(button,.btn,.control-btn,.interactive-btn,.action-button,select,input[type=text],input[type=number],.quiz-option,.toggle,.choice,.segmented button){background-image:none!important;background-color:rgba(248,243,230,.9)!important;border-color:rgba(88,83,72,.48)!important;border-radius:4px 6px 3px 5px!important;box-shadow:none!important}
+body:is(.hw-handwritten,.statml-standardized) :is(.tag,.pill,.chip,.badge,.topic-badge,.hero-badge,.stage-badge,.metric-badge,.stage-dot,.orbit-dot,.legend-color,.legend-color-ring,.swatch,.eyebrow-dot){border-radius:3px 6px 4px 5px!important;box-shadow:none!important}
+body:is(.hw-handwritten,.statml-standardized) :is(.progress-bar,.module-progress span){background:#356fae!important;background-image:none!important;box-shadow:none!important}
+body:is(.hw-handwritten,.statml-standardized) :is(.statml-stage-rail,.stage-dots,#stage-dots,#stage-dots-container){background:rgba(255,252,242,.8)!important;background-image:none!important;border-color:rgba(88,83,72,.32)!important;border-radius:5px 7px 4px 6px!important;box-shadow:none!important}
+body:is(.hw-handwritten,.statml-standardized) hr{border-top:1px solid transparent!important}
+body:is(.hw-handwritten,.statml-standardized) :is(.section,.story-section,.stage,.stage-section,.chapter,.statml-stage){background-color:transparent!important;background-image:none!important}
+body:is(.hw-handwritten,.statml-standardized) canvas{background:#fbf6e9!important;background-image:none!important}
+</style>
+<style id="one-r-ink-finishing">
+html body.hw-handwritten.hw-handwritten :is(.scroll-cue,.scroll-hint,.scroll-indicator,.hero-scroll){background:transparent!important;background-image:none!important;clip-path:none!important;box-shadow:none!important;filter:none!important;text-decoration-line:underline!important;text-decoration-style:wavy!important;text-decoration-color:rgba(40,105,173,.55)!important;text-decoration-thickness:1px!important;text-underline-offset:4px!important}
+html body.hw-handwritten.hw-handwritten :is(.scroll-cue span,.scroll-cue::before,.scroll-cue::after){background-image:none!important;background-color:transparent!important;box-shadow:none!important}
+html body.hw-handwritten.hw-handwritten :is([style*="linear-gradient"],[style*="radial-gradient"]){background-image:none!important}
+html body.hw-handwritten.hw-handwritten button:is(.active,.selected),html body.hw-handwritten.hw-handwritten button[aria-pressed="true"],html body.hw-handwritten.hw-handwritten .btn.active{background:#e6f0f8!important;background-image:none!important;color:#174f89!important;border-color:rgba(40,105,173,.64)!important;box-shadow:none!important}
+body:is(.hw-handwritten,.statml-standardized) :is(.scroll-cue,.scroll-hint,.scroll-indicator,.hero-scroll){background:transparent!important;background-image:none!important;clip-path:none!important;box-shadow:none!important;filter:none!important;text-decoration-line:underline!important;text-decoration-style:wavy!important;text-decoration-color:rgba(40,105,173,.55)!important;text-decoration-thickness:1px!important;text-underline-offset:4px!important}
+body:is(.hw-handwritten,.statml-standardized) :is(.scroll-cue span,.scroll-cue::before,.scroll-cue::after){background-image:none!important;background-color:transparent!important;box-shadow:none!important}
+body:is(.hw-handwritten,.statml-standardized) :is([style*="linear-gradient"],[style*="radial-gradient"]){background-image:none!important}
+body:is(.hw-handwritten,.statml-standardized) :is(.legend,.legend-card,.viz-legend,.viz-overlay,.tooltip,.panel,.visual-shell,.visual-stage,.visual-card,.canvas-wrap,.control-panel,.controls,.card,.rulebook,.prediction-card){background-image:none!important;backdrop-filter:none!important;border-color:rgba(88,83,72,.42)!important;border-radius:5px 8px 4px 7px!important;box-shadow:1px 2px 0 rgba(88,83,72,.09)!important}
+</style>
+<style id="one-r-material-override">
+  body:is(.hw-handwritten,.statml-standardized) :is(.statml-rigor-panel,.statml-rigor-panel *, .statml-rigor-grid>div) { font-family:"Patrick Hand","Kalam","Marker Felt","Chalkboard SE",cursive !important; }
+  body:is(.hw-handwritten,.statml-standardized) :is(.statml-rigor-panel,.statml-rigor-grid>div) { background-image:none!important; background-color:rgba(255,252,242,.78)!important; border-color:rgba(88,83,72,.42)!important; border-radius:5px 8px 4px 7px!important; box-shadow:1px 2px 0 rgba(88,83,72,.09)!important; }
+  body:is(.hw-handwritten,.statml-standardized) .cv-section-heading > span { background:#e6f0f8!important; background-image:none!important; color:#174f89!important; border:1px solid rgba(40,105,173,.5)!important; border-radius:3px 6px 4px 5px!important; box-shadow:none!important; transform:rotate(-1deg); }
+  body.hw-handwritten .hero .eyebrow { background:transparent!important; background-image:none!important; border:0!important; outline:0!important; border-radius:0!important; box-shadow:none!important; padding:.2rem!important; transform:rotate(-.7deg); text-decoration-line:underline!important; text-decoration-style:wavy!important; text-decoration-color:rgba(40,105,173,.55)!important; text-underline-offset:4px!important; }
+  body.hw-handwritten .hero .eyebrow-dot { width:9px!important; height:7px!important; border-radius:3px 6px 2px 5px!important; background:#356fae!important; box-shadow:none!important; transform:rotate(-8deg); }
+</style>
+<style id="one-r-no-dashed">
+  body:is(.hw-handwritten,.statml-standardized) :is(table,table *,[style*="dashed"]){border-style:solid!important;border-color:transparent!important}
+</style>
+<style id="one-r-shell-ink">
+  /* Preserve the sticky workbench dimensions while replacing the polished
+     rounded shell with two clipped, offset pencil passes. */
+  html body.hw-handwritten .visual-shell {
+    background:rgba(255,252,242,.34)!important; background-image:none!important;
+    border:0!important; border-radius:0!important; box-shadow:none!important;
+    backdrop-filter:none!important; overflow:hidden!important; position:relative;
+  }
+  html body.hw-handwritten .visual-shell::before,
+  html body.hw-handwritten .visual-shell::after {
+    content:""; position:absolute; inset:1px; pointer-events:none; z-index:6;
+    border:1.2px solid rgba(88,83,72,.5);
+    clip-path:polygon(0 1%,17% 0,37% 1.3%,59% .2%,81% 1%,100% 0,
+      99% 23%,100% 48%,98.8% 73%,100% 100%,80% 99%,59% 100%,38% 98.7%,17% 100%,0 99%,.9% 76%,0 51%,1% 27%);
+    transform:rotate(-.08deg);
+  }
+  html body.hw-handwritten .visual-shell::after {
+    inset:4px 2px 2px 3px; border-color:rgba(53,111,174,.25); border-width:.9px;
+    clip-path:polygon(1% 0,27% 1.5%,55% 0,83% 1%,99% 0,100% 31%,98.7% 66%,100% 99%,72% 98.5%,45% 100%,19% 98%,0 100%,1.2% 68%,0 36%);
+    transform:rotate(.12deg);
+  }
+  html body.hw-handwritten .visual-header {
+    position:relative; z-index:1; background:transparent!important;
+    border-bottom:0!important; box-shadow:none!important;
+  }
+  html body.hw-handwritten .visual-header::after {
+    content:""; position:absolute; left:2%; right:1.4%; bottom:-1px; height:5px;
+    background:rgba(120,106,92,.3); pointer-events:none;
+    clip-path:polygon(0 45%,14% 20%,30% 51%,48% 26%,65% 53%,80% 22%,100% 41%,100% 65%,82% 45%,66% 72%,49% 48%,31% 70%,14% 44%,0 70%);
+    transform:rotate(-.08deg);
+  }
+  html body.hw-handwritten .visual-footer {
+    position:relative; z-index:1; background:transparent!important;
+    border-top:0!important; box-shadow:none!important;
+  }
+  html body.hw-handwritten .visual-footer::before {
+    content:""; position:absolute; left:2%; right:2%; top:-1px; height:4px;
+    background:rgba(120,106,92,.24); pointer-events:none;
+    clip-path:polygon(0 48%,18% 25%,36% 55%,54% 30%,73% 57%,100% 35%,100% 67%,77% 72%,56% 49%,36% 75%,17% 46%,0 70%);
+  }
+  /* Stage badge is an underlined marker note with the same text and hit area. */
+  html body.hw-handwritten .stage-badge {
+    border:0!important; border-radius:0!important; background:rgba(246,211,72,.27)!important;
+    background-image:none!important; box-shadow:none!important; clip-path:polygon(1% 10%,98% 0,100% 85%,3% 100%);
+    transform:rotate(1deg); padding:.42rem .62rem!important;
+  }
+  html body.hw-handwritten .stage-badge::before {
+    width:14px; height:4px; border-radius:0!important; background:rgba(194,139,34,.54)!important;
+    clip-path:polygon(0 40%,25% 15%,52% 48%,78% 20%,100% 42%,100% 72%,77% 54%,51% 78%,25% 47%,0 75%);
+  }
+  /* Fixed rail and dots remain fully interactive, but read as margin dabs. */
+  html body.hw-handwritten .stage-dots {
+    background:transparent!important; background-image:none!important; border:0!important;
+    border-radius:0!important; box-shadow:none!important; backdrop-filter:none!important;
+    padding:.5rem .42rem!important;
+  }
+  html body.hw-handwritten .stage-dots::before {
+    content:""; position:absolute; inset:1px 2px; pointer-events:none; z-index:-1;
+    border:1px solid rgba(88,83,72,.34);
+    clip-path:polygon(7% 0,96% 2%,100% 24%,98% 51%,100% 77%,94% 100%,9% 98%,0 76%,2% 49%,0 23%);
+    transform:rotate(-.8deg);
+  }
+  html body.hw-handwritten .stage-dot {
+    border:0!important; border-radius:48% 52% 43% 57%!important; background:#b8b0a1!important;
+    clip-path:polygon(8% 16%,38% 2%,76% 10%,100% 42%,87% 84%,54% 100%,15% 89%,0 53%);
+    box-shadow:1px 1px 0 rgba(88,83,72,.16)!important;
+    transform:rotate(-8deg);
+  }
+  html body.hw-handwritten .stage-dot:nth-child(2n){transform:rotate(7deg) scale(.9)}
+  html body.hw-handwritten .stage-dot:nth-child(3n){transform:rotate(-2deg) scale(1.08)}
+  html body.hw-handwritten .stage-dot.active{background:#356fae!important;transform:rotate(-4deg) scale(1.35)}
+</style>
+<style id="one-r-doodle-style">
+  .hw-doodle{display:inline-block;width:1.12em;height:1.12em;vertical-align:-.18em;margin-inline-end:.22em;overflow:visible;color:currentColor;transform:rotate(-2deg);pointer-events:none}
+  .hw-doodle path{fill:none;stroke:currentColor;stroke-width:1.65;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke}
+</style>
+<style id="one-r-desktop-rhythm">
+  /* Restore the original desktop stage cadence as minimums; mobile remains
+     on the existing responsive auto-height rules. */
+  @media (min-width:901px){
+    body.hw-handwritten .stage[data-stage="1"]{min-height:733.64px!important}
+    body.hw-handwritten .stage[data-stage="2"]{min-height:831.63px!important}
+    body.hw-handwritten .stage[data-stage="3"]{min-height:1012.63px!important}
+    body.hw-handwritten .stage[data-stage="4"]{min-height:1053.91px!important}
+    body.hw-handwritten .stage[data-stage="5"]{min-height:1133.98px!important}
+    body.hw-handwritten .stage[data-stage="6"]{min-height:946.08px!important}
+    body.hw-handwritten .stage[data-stage="7"]{min-height:851.39px!important}
+    body.hw-handwritten .stage[data-stage="8"]{min-height:917px!important}
+    body.hw-handwritten .stage[data-stage="9"]{min-height:1016.59px!important}
+    body.hw-handwritten .stage[data-stage="10"]{min-height:1779.19px!important}
+    body.hw-handwritten .stage[data-stage="11"]{min-height:1126.84px!important}
+    body.hw-handwritten .stage[data-stage="12"]{min-height:1333.42px!important}
+  }
+  @media (min-width:376px) and (max-width:900px){
+    body.hw-handwritten .stage[data-stage="1"]{min-height:721.67px!important}
+    body.hw-handwritten .stage[data-stage="2"]{min-height:894.81px!important}
+    body.hw-handwritten .stage[data-stage="3"]{min-height:1050.30px!important}
+    body.hw-handwritten .stage[data-stage="4"]{min-height:1037.23px!important}
+    body.hw-handwritten .stage[data-stage="5"]{min-height:1137.08px!important}
+    body.hw-handwritten .stage[data-stage="6"]{min-height:1110.14px!important}
+    body.hw-handwritten .stage[data-stage="7"]{min-height:917.98px!important}
+    body.hw-handwritten .stage[data-stage="8"]{min-height:1102.08px!important}
+    body.hw-handwritten .stage[data-stage="9"]{min-height:1041.73px!important}
+    body.hw-handwritten .stage[data-stage="10"]{min-height:2264.61px!important}
+    body.hw-handwritten .stage[data-stage="11"]{min-height:1191.36px!important}
+    body.hw-handwritten .stage[data-stage="12"]{min-height:1636.28px!important}
+  }
+</style>
+<style id="one-r-mobile-table-fit">
+  /* Keep the final comparison card inside the narrow narrative column. The
+     source table remains identical; only its mobile cells are allowed to
+     wrap instead of forcing a clipped horizontal reading window. */
+  @media (max-width:560px){
+    html body:is(.hw-handwritten,.statml-standardized) #stage-11 .mini-table{
+      width:100%!important;
+      table-layout:fixed!important;
+    }
+    html body:is(.hw-handwritten,.statml-standardized) #stage-11 .mini-table th,
+    html body:is(.hw-handwritten,.statml-standardized) #stage-11 .mini-table td{
+      white-space:normal!important;
+      overflow-wrap:anywhere;
+      padding:.42rem .32rem!important;
+      font-size:.68rem!important;
+      line-height:1.18!important;
+    }
+    html body:is(.hw-handwritten,.statml-standardized) #stage-11 .mini-table th{
+      font-size:.56rem!important;
+      letter-spacing:.03em!important;
+    }
+  }
+</style>
 </head>
 <body>
   <div class="progress-track" aria-hidden="true"><div class="progress-bar" id="progressBar"></div></div>
@@ -1149,7 +1317,7 @@ body.statml-standardized > .stage-dots { display:none !important; }
           <div class="metrics">
             <div class="metric"><span class="metric-value">1</span><span class="metric-label">Feature used</span></div>
             <div class="metric"><span class="metric-value">0</span><span class="metric-label">Interactions</span></div>
-            <div class="metric"><span class="metric-value">✓</span><span class="metric-label">Inspectability</span></div>
+            <div class="metric"><span class="metric-value"><svg class="hw-doodle" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="m4.5 12.5 4.1 4.1L19.5 6"></path></svg></span><span class="metric-label">Inspectability</span></div>
           </div>
           <div class="comparison-card" style="padding:1.1rem;display:grid;grid-template-columns:1fr 1fr;gap:0.8rem;">
             <div><div class="card-title">One-R sees</div><p style="margin:0;">One column and one lookup table.</p></div>
@@ -1457,8 +1625,84 @@ body.statml-standardized > .stage-dots { display:none !important; }
       let dpr = 1;
       let animationFrame = null;
 
-      const fontSans = 'Inter, system-ui, -apple-system, "Segoe UI", sans-serif';
-      const fontMono = '"JetBrains Mono", ui-monospace, monospace';
+      // The canvas is the module's existing visual owner.  Keep its geometry
+      // and draw order, but give every stroke the small, repeatable variation
+      // of pencil on paper.  The jitter is cosmetic only and never consumes
+      // or changes the lesson's data/state RNG path.
+      const fontSans = '"Patrick Hand", "Kalam", "Marker Felt", cursive';
+      const fontMono = '"Patrick Hand", "Kalam", "Marker Felt", cursive';
+      const inkSeed = 0x4f4e4552;
+      let inkCounter = 0;
+
+      function inkNoise(amount = 1) {
+        const n = Math.sin((inkSeed + inkCounter++ * 97.13) * 12.9898) * 43758.5453;
+        return (n - Math.floor(n) - 0.5) * amount;
+      }
+
+      function roughPathRect(x, y, w, h, r) {
+        const radius = Math.min(r, w / 2, h / 2);
+        const n = Math.max(1.15, Math.min(4.3, Math.min(w, h) * 0.035));
+        ctx.beginPath();
+        ctx.moveTo(x + radius + inkNoise(n), y + inkNoise(n));
+        ctx.lineTo(x + w - radius + inkNoise(n), y + inkNoise(n));
+        ctx.quadraticCurveTo(x + w + inkNoise(n), y + inkNoise(n), x + w + inkNoise(n), y + radius + inkNoise(n));
+        ctx.lineTo(x + w + inkNoise(n), y + h - radius + inkNoise(n));
+        ctx.quadraticCurveTo(x + w + inkNoise(n), y + h + inkNoise(n), x + w - radius + inkNoise(n), y + h + inkNoise(n));
+        ctx.lineTo(x + radius + inkNoise(n), y + h + inkNoise(n));
+        ctx.quadraticCurveTo(x + inkNoise(n), y + h + inkNoise(n), x + inkNoise(n), y + h - radius + inkNoise(n));
+        ctx.lineTo(x + inkNoise(n), y + radius + inkNoise(n));
+        ctx.quadraticCurveTo(x + inkNoise(n), y + inkNoise(n), x + radius + inkNoise(n), y + inkNoise(n));
+        ctx.closePath();
+      }
+
+      function roughArcPath(x, y, r, start, end, steps = 20, radialJitter = 0.025) {
+        ctx.beginPath();
+        for (let i = 0; i <= steps; i++) {
+          const t = i / steps;
+          const angle = start + (end - start) * t;
+          const radius = r * (1 + inkNoise(Math.max(.075, radialJitter)));
+          const px = x + Math.cos(angle) * radius + inkNoise(.28);
+          const py = y + Math.sin(angle) * radius + inkNoise(.28);
+          if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+        }
+      }
+
+      function roughEllipsePath(x, y, rx, ry, steps = 18) {
+        ctx.beginPath();
+        for (let i = 0; i <= steps; i++) {
+          const angle = Math.PI * 2 * i / steps;
+          const wobble = 1 + inkNoise(0.16);
+          const px = x + Math.cos(angle) * rx * wobble + inkNoise(.46);
+          const py = y + Math.sin(angle) * ry * wobble + inkNoise(.46);
+          if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+        }
+        ctx.closePath();
+      }
+
+      function roughFillRect(x, y, w, h, fill) {
+        roughPathRect(x, y, w, h, Math.min(2, Math.max(0.35, Math.min(w, h) * 0.015)));
+        ctx.fillStyle = fill;
+        ctx.fill();
+      }
+
+      function markerDab(x, y, radius, fill, key = "marker-dab") {
+        /* Small observations should look like a quick felt-tip touch, not a
+           set of mathematically identical status circles. */
+        ctx.save(); ctx.fillStyle = fill; ctx.globalAlpha = .94;
+        for (let pass = 0; pass < 2; pass++) {
+          const points = 8;
+          ctx.beginPath();
+          for (let i = 0; i < points; i++) {
+            const angle = Math.PI * 2 * i / points;
+            const rr = radius * (1 + inkNoise(.24) + (i % 3 === 0 ? .07 : 0));
+            const px = x + inkNoise(radius * .22) + Math.cos(angle) * rr;
+            const py = y + inkNoise(radius * .22) + Math.sin(angle) * rr;
+            i ? ctx.lineTo(px, py) : ctx.moveTo(px, py);
+          }
+          ctx.closePath(); ctx.fill();
+        }
+        ctx.restore();
+      }
 
       function majority(values) {
         const counts = new Map();
@@ -1483,22 +1727,89 @@ body.statml-standardized > .stage-dots { display:none !important; }
       const rulebooks = Object.fromEntries(Object.keys(FEATURES).map(name => [name, buildRulebook(name)]));
 
       function roundRect(x, y, w, h, r, fill, stroke = null, lineWidth = 1) {
-        const radius = Math.min(r, w / 2, h / 2);
-        ctx.beginPath();
-        ctx.roundRect(x, y, w, h, radius);
-        if (fill) { ctx.fillStyle = fill; ctx.fill(); }
-        if (stroke) { ctx.strokeStyle = stroke; ctx.lineWidth = lineWidth; ctx.stroke(); }
+        roughPathRect(x, y, w, h, r);
+        if (fill) {
+          ctx.fillStyle = fill;
+          ctx.fill();
+          if (fill !== "transparent" && w > 18 && h > 12) {
+            ctx.save();
+            roughPathRect(x + .35, y + .3, Math.max(1, w - .7), Math.max(1, h - .6), r);
+            ctx.clip();
+            ctx.globalAlpha = .16;
+            ctx.strokeStyle = stroke || palette.ink2;
+            ctx.lineWidth = .7;
+            for (let q = -h; q < w + h; q += 9) {
+              ctx.beginPath(); ctx.moveTo(x + q, y + h); ctx.lineTo(x + q + h, y); ctx.stroke();
+            }
+            ctx.restore();
+          }
+        }
+        if (stroke) {
+          ctx.strokeStyle = stroke; ctx.lineWidth = lineWidth; ctx.stroke();
+          roughPathRect(x + .7, y - .45, w, h, r);
+          ctx.globalAlpha = .36; ctx.lineWidth = Math.max(.55, lineWidth * .55); ctx.stroke(); ctx.globalAlpha = 1;
+        }
+      }
+
+      // A few of the lesson's emphasis blocks are intentionally broad washes
+      // rather than UI panels.  Keep their original bounds, but lay the color
+      // down in overlapping marker passes with a visible paper hatch.
+      function markerWashRect(x, y, w, h, r, fill, stroke = null, lineWidth = 1) {
+        const inheritedAlpha = ctx.globalAlpha;
+        ctx.save();
+        roughPathRect(x, y, w, h, r);
+        ctx.fillStyle = fill;
+        ctx.globalAlpha = inheritedAlpha * .64;
+        ctx.fill();
+        ctx.save();
+        roughPathRect(x + .45, y + .35, Math.max(1, w - .9), Math.max(1, h - .7), r);
+        ctx.clip();
+        ctx.globalAlpha = inheritedAlpha * .34;
+        ctx.strokeStyle = stroke || fill;
+        ctx.lineWidth = Math.max(.8, Math.min(2, Math.min(Math.abs(w), Math.abs(h)) * .035));
+        ctx.lineCap = "round";
+        for (let q = -Math.abs(h); q < Math.abs(w) + Math.abs(h); q += 7) {
+          ctx.beginPath();
+          ctx.moveTo(x + q + inkNoise(.7), y + h + inkNoise(.7));
+          ctx.lineTo(x + q + h + inkNoise(.7), y + inkNoise(.7));
+          ctx.stroke();
+        }
+        ctx.restore();
+        if (stroke) {
+          ctx.globalAlpha = inheritedAlpha;
+          ctx.strokeStyle = stroke;
+          ctx.lineWidth = lineWidth;
+          roughPathRect(x, y, w, h, r); ctx.stroke();
+          ctx.globalAlpha = inheritedAlpha * .42;
+          ctx.lineWidth = Math.max(.55, lineWidth * .58);
+          roughPathRect(x + .9, y - .55, w, h, r); ctx.stroke();
+        }
+        ctx.restore();
+      }
+
+      function markerBarRect(x, y, w, h, fill) {
+        markerWashRect(x, y, w, h, Math.min(6, Math.max(1, w * .18)), fill, fill, 1.05);
       }
 
       function line(x1, y1, x2, y2, color = palette.lineStrong, width = 1, dash = []) {
         ctx.save();
         ctx.beginPath();
         ctx.setLineDash(dash);
-        ctx.moveTo(x1, y1);
-        ctx.lineTo(x2, y2);
+        const length = Math.hypot(x2 - x1, y2 - y1);
+        const steps = Math.max(3, Math.ceil(length / 54));
+        for (let i = 0; i <= steps; i++) {
+          const t = i / steps;
+          const edge = i === 0 || i === steps;
+          const px = x1 + (x2 - x1) * t + inkNoise(edge ? 1.55 : Math.min(5.1, width * 2.1 + 1.8));
+          const py = y1 + (y2 - y1) * t + (edge ? inkNoise(1.55) : inkNoise(Math.min(5.1, width * 2.1 + 1.8)));
+          if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+        }
         ctx.strokeStyle = color;
         ctx.lineWidth = width;
+        ctx.lineCap = "round";
+        ctx.lineJoin = "round";
         ctx.stroke();
+        ctx.globalAlpha = .32; ctx.translate(.85, -.45); ctx.stroke();
         ctx.restore();
       }
 
@@ -1542,11 +1853,15 @@ body.statml-standardized > .stage-dots { display:none !important; }
       }
 
       function circle(x, y, r, fill, stroke = null, lineWidth = 1) {
-        ctx.beginPath();
-        ctx.arc(x, y, r, 0, Math.PI * 2);
+        roughEllipsePath(x, y, r, r, Math.max(12, Math.min(24, Math.round(r * 2.5))));
         ctx.fillStyle = fill;
         ctx.fill();
         if (stroke) { ctx.strokeStyle = stroke; ctx.lineWidth = lineWidth; ctx.stroke(); }
+      }
+
+      function handCheck(x, y, size, color) {
+        line(x - size * .42, y, x - size * .1, y + size * .34, color, Math.max(1.1, size * .12));
+        line(x - size * .1, y + size * .34, x + size * .5, y - size * .42, color, Math.max(1.1, size * .12));
       }
 
       function targetColor(target, soft = false) {
@@ -1583,7 +1898,7 @@ body.statml-standardized > .stage-dots { display:none !important; }
         const tableH = rowH * (DATA.length + 1);
         const y0 = top + Math.max(0, (availableH - tableH) * 0.38);
 
-        roundRect(marginX, y0, width, tableH, 16, "rgba(255,255,255,0.95)", palette.lineStrong);
+        roundRect(marginX, y0, width, tableH, 2, "rgba(255,252,242,0.66)", palette.lineStrong);
         let x = marginX;
         columns.forEach((col, i) => {
           const canonical = col === "Temp" ? "Temperature" : col;
@@ -1605,7 +1920,8 @@ body.statml-standardized > .stage-dots { display:none !important; }
           vals.forEach((val, c) => {
             if (columns[c] === "Target") {
               const dotX = cx + Math.min(16, colWidths[c] * 0.26);
-              circle(dotX, rowY + rowH / 2, Math.max(3.2, rowH * 0.18), targetColor(val));
+              const dabRadius = Math.max(3.35, rowH * (0.16 + ((r + (val === "Yes" ? 1 : 2)) % 4) * .022));
+              markerDab(dotX, rowY + rowH / 2, dabRadius, targetColor(val), `target-${row.id}-${val}`);
               if (!compact || colWidths[c] > 65) text(val, dotX + 10, rowY + rowH / 2 + 0.5, { size: compact ? 8 : 9, color: palette.ink2, baseline: "middle", mono: true });
             } else {
               text(val, cx + 10, rowY + rowH / 2 + 0.5, { size: compact ? 7.5 : 9, color: palette.ink2, baseline: "middle", mono: true, maxWidth: colWidths[c] - 14 });
@@ -1637,12 +1953,13 @@ body.statml-standardized > .stage-dots { display:none !important; }
         ctx.save();
         ctx.lineWidth = Math.max(18, radius * 0.22);
         ctx.lineCap = "round";
+        ctx.lineJoin = "round";
         ctx.strokeStyle = "#edf0ed";
-        ctx.beginPath(); ctx.arc(centerX, centerY, radius, 0, Math.PI * 2); ctx.stroke();
+        roughArcPath(centerX, centerY, radius, 0, Math.PI * 2, 40, 0.014); ctx.stroke();
         ctx.strokeStyle = palette.green;
-        ctx.beginPath(); ctx.arc(centerX, centerY, radius, start, start + Math.PI * 2 * yesCount / total); ctx.stroke();
+        roughArcPath(centerX, centerY, radius, start, start + Math.PI * 2 * yesCount / total, 22, 0.018); ctx.stroke();
         ctx.strokeStyle = palette.coral;
-        ctx.beginPath(); ctx.arc(centerX, centerY, radius, start + Math.PI * 2 * yesCount / total + 0.045, start + Math.PI * 2 - 0.045); ctx.stroke();
+        roughArcPath(centerX, centerY, radius, start + Math.PI * 2 * yesCount / total + 0.045, start + Math.PI * 2 - 0.045, 20, 0.018); ctx.stroke();
         ctx.restore();
         text("8", centerX, centerY - 11, { size: Math.max(30, radius * 0.34), weight: 700, color: palette.green, align: "center", baseline: "middle", mono: true });
         text("YES rows", centerX, centerY + 24, { size: 11, weight: 800, color: palette.muted, align: "center", baseline: "middle", mono: true });
@@ -1684,8 +2001,8 @@ body.statml-standardized > .stage-dots { display:none !important; }
           const noH = barAreaH * rule.no / maxCount;
           const barW = Math.min(32, cardW * 0.23);
           const center = x + cardW / 2;
-          roundRect(center - barW - 4, barAreaY + barAreaH - yesH, barW, yesH, 6, palette.green);
-          roundRect(center + 4, barAreaY + barAreaH - noH, barW, noH, 6, palette.coral);
+          markerBarRect(center - barW - 4, barAreaY + barAreaH - yesH, barW, yesH, palette.green);
+          markerBarRect(center + 4, barAreaY + barAreaH - noH, barW, noH, palette.coral);
           text(String(rule.yes), center - barW / 2 - 4, countY, { size: 9, weight: 700, color: palette.green, align: "center", mono: true });
           text(String(rule.no), center + barW / 2 + 4, countY, { size: 9, weight: 700, color: palette.coral, align: "center", mono: true });
           const predColor = rule.prediction === "Yes" ? palette.green : palette.coral;
@@ -1698,7 +2015,7 @@ body.statml-standardized > .stage-dots { display:none !important; }
         if (!shortCanvas) {
           const summaryW = Math.min(410, cssWidth - left * 2);
           const summaryX = (cssWidth - summaryW) / 2;
-          roundRect(summaryX, y + cardH + 28, summaryW, 58, 15, palette.accentSoft, "#ddd6fe");
+          markerWashRect(summaryX, y + cardH + 28, summaryW, 58, 15, palette.accentSoft, "#ddd6fe", 1.05);
           text(`${featureName} rulebook`, summaryX + 16, y + cardH + 49, { size: 10, weight: 800, color: palette.accentDark, mono: true });
           text(`${book.errors} training errors · ${(book.errors / DATA.length * 100).toFixed(1)}% error`, summaryX + 16, y + cardH + 72, { size: 11, weight: 700, color: palette.ink2, mono: true });
         }
@@ -1955,16 +2272,16 @@ body.statml-standardized > .stage-dots { display:none !important; }
           ctx.fillStyle = color;
           ctx.lineWidth = compact ? 1.2 : 1.5;
           if (heldOut) {
-            ctx.beginPath();
-            ctx.arc(x, y - 2, compact ? 4 : 6, Math.PI, 0);
+            roughArcPath(x, y - 2, compact ? 4 : 6, Math.PI, 0, 9, 0.04);
             ctx.stroke();
             roundRect(x - (compact ? 5 : 7), y - 2, compact ? 10 : 14, compact ? 9 : 12, 2, color);
             ctx.fillStyle = "#fff";
-            ctx.beginPath(); ctx.arc(x, y + 2, compact ? 1 : 1.5, 0, Math.PI * 2); ctx.fill();
+            roughEllipsePath(x, y + 2, compact ? 1 : 1.5, compact ? 1 : 1.5, 10); ctx.fill();
             line(x, y + 3, x, y + (compact ? 6 : 7), "#fff", compact ? 1 : 1.5);
           } else {
-            ctx.beginPath(); ctx.arc(x, y, compact ? 7 : 9, 0, Math.PI * 2); ctx.stroke();
-            ctx.beginPath(); ctx.moveTo(x - (compact ? 3 : 4), y); ctx.lineTo(x - (compact ? 1 : 1.5), y + (compact ? 2 : 3)); ctx.lineTo(x + (compact ? 4 : 5), y - (compact ? 3 : 4)); ctx.stroke();
+            roughEllipsePath(x, y, compact ? 7 : 9, compact ? 7 : 9, 14); ctx.stroke();
+            line(x - (compact ? 3 : 4), y, x - (compact ? 1 : 1.5), y + (compact ? 2 : 3), color, ctx.lineWidth);
+            line(x - (compact ? 1 : 1.5), y + (compact ? 2 : 3), x + (compact ? 4 : 5), y - (compact ? 3 : 4), color, ctx.lineWidth);
           }
           ctx.restore();
         }
@@ -2000,18 +2317,18 @@ body.statml-standardized > .stage-dots { display:none !important; }
           if (type === "data") {
             for (let i = 0; i < 3; i++) {
               const yy = y - size * 0.24 + i * size * 0.2;
-              ctx.beginPath(); ctx.ellipse(x, yy, size * 0.27, size * 0.1, 0, 0, Math.PI * 2); ctx.fill();
-              ctx.fillRect(x - size * 0.27, yy, size * 0.54, size * 0.16);
+              roughEllipsePath(x, yy, size * 0.27, size * 0.1, 12); ctx.fill();
+              roundRect(x - size * 0.27, yy, size * 0.54, size * 0.16, size * 0.04, color);
             }
           } else if (type === "learn") {
             circle(x, y, size * 0.28, "transparent", color, Math.max(1.5, size * 0.07));
-            text("✦", x, y + size * 0.07, { size: size * 0.45, weight: 800, color, align: "center", baseline: "middle" });
+            text("*", x, y + size * 0.07, { size: size * 0.45, weight: 800, color, align: "center", baseline: "middle" });
           } else if (type === "freeze") {
             roundRect(x - size * 0.25, y - size * 0.02, size * 0.5, size * 0.34, size * 0.06, color);
-            ctx.beginPath(); ctx.arc(x, y - size * 0.02, size * 0.2, Math.PI, 0); ctx.stroke();
+            roughArcPath(x, y - size * 0.02, size * 0.2, Math.PI, 0, 9, 0.04); ctx.stroke();
             circle(x, y + size * 0.12, size * 0.045, "#fff");
           } else if (type === "held") {
-            ctx.beginPath(); ctx.moveTo(x - size * 0.36, y); ctx.quadraticCurveTo(x, y - size * 0.35, x + size * 0.36, y); ctx.quadraticCurveTo(x, y + size * 0.35, x - size * 0.36, y); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(x - size * 0.36, y + inkNoise(0.8)); ctx.quadraticCurveTo(x, y - size * 0.35 + inkNoise(1), x + size * 0.36, y + inkNoise(0.8)); ctx.quadraticCurveTo(x, y + size * 0.35 + inkNoise(1), x - size * 0.36, y + inkNoise(0.8)); ctx.stroke();
             circle(x, y, size * 0.1, color);
           } else {
             const barW = size * 0.12;
@@ -2022,7 +2339,7 @@ body.statml-standardized > .stage-dots { display:none !important; }
 
         function drawArrow(x1, x2, y) {
           line(x1, y, x2 - 8, y, palette.lineStrong, compact ? 1.5 : 2.5);
-          ctx.save(); ctx.fillStyle = palette.ink2; ctx.beginPath(); ctx.moveTo(x2 - 8, y - 6); ctx.lineTo(x2, y); ctx.lineTo(x2 - 8, y + 6); ctx.closePath(); ctx.fill(); ctx.restore();
+          ctx.save(); ctx.fillStyle = palette.ink2; ctx.beginPath(); ctx.moveTo(x2 - 8 + inkNoise(0.7), y - 6 + inkNoise(0.7)); ctx.lineTo(x2 + inkNoise(0.7), y + inkNoise(0.7)); ctx.lineTo(x2 - 8 + inkNoise(0.7), y + 6 + inkNoise(0.7)); ctx.closePath(); ctx.fill(); ctx.restore();
         }
 
         nodes.forEach((node, i) => {
@@ -2072,11 +2389,9 @@ body.statml-standardized > .stage-dots { display:none !important; }
         colRatios.forEach((ratio, i) => colX.push(colX[i] + contentW * ratio));
         const selectedColumn = { recall: 1, precision: 2, accuracy: 3 }[metricKey];
         roundRect(margin, tableY, contentW, tableH, compact ? 8 : 12, "rgba(255,255,255,0.8)", palette.line);
-        ctx.fillStyle = "rgba(99,102,241,0.055)";
-        ctx.fillRect(colX[selectedColumn], tableY + 1, contentW * colRatios[selectedColumn], tableH - 2);
-        ctx.fillStyle = "#f5f5fb"; ctx.fillRect(margin + 1, tableY + 1, contentW - 2, headerH);
-        ctx.fillStyle = "rgba(99,102,241,0.11)";
-        ctx.fillRect(colX[selectedColumn], tableY + 1, contentW * colRatios[selectedColumn], headerH);
+        roughFillRect(colX[selectedColumn], tableY + 1, contentW * colRatios[selectedColumn], tableH - 2, "rgba(99,102,241,0.055)");
+        roughFillRect(margin + 1, tableY + 1, contentW - 2, headerH, "#f5f5fb");
+        roughFillRect(colX[selectedColumn], tableY + 1, contentW * colRatios[selectedColumn], headerH, "rgba(99,102,241,0.11)");
         ["Fold", "Recall (R)", "Precision (P)", "Accuracy (A)"].forEach((label, i) => text(label, colX[i] + (i === 0 ? 8 : contentW * colRatios[i] / 2), tableY + headerH / 2 + 1, { size: compact ? 6 : 9, weight: 800, color: i === selectedColumn ? palette.accentDark : palette.ink2, align: i === 0 ? "left" : "center", baseline: "middle", mono: true }));
         for (let i = 1; i < 4; i++) line(colX[i], tableY, colX[i], tableY + tableH, palette.line);
         line(margin, tableY + headerH, margin + contentW, tableY + headerH, palette.lineStrong);
@@ -2115,7 +2430,8 @@ body.statml-standardized > .stage-dots { display:none !important; }
         const stableX = splitX + 16;
         const stableY = summaryY + (tiny ? 39 : compact ? 49 : 75);
         circle(stableX + (compact ? 17 : 28), stableY, compact ? 16 : 28, "#fff", assessment.color, compact ? 1.5 : 2.5);
-        text(assessment.decision === "PROCEED" ? "✓" : "!", stableX + (compact ? 17 : 28), stableY + 1, { size: compact ? 15 : 27, weight: 800, color: assessment.color, align: "center", baseline: "middle" });
+        if (assessment.decision === "PROCEED") handCheck(stableX + (compact ? 17 : 28), stableY + 1, compact ? 15 : 27, assessment.color);
+        else text("!", stableX + (compact ? 17 : 28), stableY + 1, { size: compact ? 15 : 27, weight: 800, color: assessment.color, align: "center", baseline: "middle" });
         text(assessment.label, stableX + (compact ? 42 : 66), stableY - (compact ? 6 : 17), { size: compact ? 7 : 12, weight: 800, color: assessment.color, baseline: "middle" });
         text(`${metric.label}: ${metric.stability.toFixed(2)}% (${assessment.threshold})`, stableX + (compact ? 42 : 66), stableY + (compact ? 9 : 4), { size: compact ? 6 : 9, color: palette.ink2, baseline: "middle" });
         wrapText(metric.explanation, stableX + (compact ? 42 : 66), stableY + (compact ? 22 : 21), contentW * 0.38 - (compact ? 52 : 76), compact ? 10 : 14, { size: compact ? 5.5 : 8.5, color: palette.ink2 });
@@ -2182,6 +2498,7 @@ body.statml-standardized > .stage-dots { display:none !important; }
 
       function draw() {
         if (!cssWidth || !cssHeight) return;
+        inkCounter = 0;
         ctx.clearRect(0, 0, cssWidth, cssHeight);
         ctx.fillStyle = "#fcfcfb";
         ctx.fillRect(0, 0, cssWidth, cssHeight);

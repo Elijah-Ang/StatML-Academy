@@ -2,7 +2,7 @@ import { cp, mkdir, readFile, rm } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { lessons as foundationLessons } from './generate-foundations.mjs';
-import { CORE_MODULES } from './core-modules.mjs';
+import { CORE_MODULES, coreNavLabel } from './core-modules.mjs';
 
 const root = resolve(import.meta.dirname, '..');
 const dist = join(root, 'dist');
@@ -65,7 +65,7 @@ for (const [index, slug] of originalModules.entries()) {
   if (!html.includes('academic-rigor.css')) errors.push(`${rel}: missing shared rigor stylesheet`);
   if (!html.includes('academic-rigor.js')) errors.push(`${rel}: missing shared rigor interface script`);
   if (!html.includes('core-modules.js')) errors.push(`${rel}: missing canonical core navigation script`);
-  const expectedLabel=`module ${String(index+1).padStart(2,'0')}/${originalModules.length}`;
+  const expectedLabel=coreNavLabel(CORE_MODULES[index],index,originalModules.length);
   if (!html.includes(`<span class="statml-nav-meta">${expectedLabel}</span>`)) errors.push(`${rel}: expected generated navigation label ${expectedLabel}`);
   if (/\/18\b/.test(html)) errors.push(`${rel}: outdated /18 module total returned`);
 }

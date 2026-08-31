@@ -981,6 +981,153 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
 </style>
 
     <link rel="stylesheet" href="academic-rigor.css">
+    <link rel="stylesheet" href="handwritten-theme.css?v=20260826-handwritten-final-2">
+    <script src="handwritten-theme.js?v=20260826-handwritten-final-2" defer></script>
+    <style id="pca-handwritten-shell">
+        body.hw-handwritten .hero-badge,
+        body.hw-handwritten .topic-badge,
+        body.hw-handwritten .statml-hero .hero-badge {
+            border: 0 !important; border-radius: 3px 5px 2px 4px !important;
+            background: linear-gradient(transparent 38%, rgba(241,212,119,.58) 38%, rgba(241,212,119,.58) 88%, transparent 88%) !important;
+            box-shadow: none !important;
+        }
+        body.hw-handwritten .statml-overview { border: 1px solid rgba(88,83,72,.28) !important; border-radius: 5px 8px 4px 7px !important; background: rgba(255,253,245,.78) !important; box-shadow: none !important; }
+        body.hw-handwritten .statml-overview-item { border-radius: 3px 5px 2px 4px !important; background: rgba(255,252,242,.32) !important; box-shadow: none !important; }
+        body.hw-handwritten .statml-overview-number { border: 1px solid rgba(40,105,173,.38) !important; border-radius: 2px 4px 2px 3px !important; background: rgba(230,240,248,.7) !important; box-shadow: none !important; }
+        body.hw-handwritten :is(.pill,.tag,.badge,.metric-badge,.feature-pill,.transform-bridge-badge) { border: 0 !important; border-radius: 2px 4px 2px 3px !important; background: linear-gradient(transparent 34%, rgba(241,212,119,.48) 34%, rgba(241,212,119,.48) 90%, transparent 90%) !important; box-shadow: none !important; }
+        body.hw-handwritten .statml-stage-rail { border-radius: 4px 6px 3px 5px !important; background-color: rgba(255,252,242,.82) !important; background-image: repeating-linear-gradient(176deg, rgba(223,178,45,.04) 0 2px, transparent 2px 8px), radial-gradient(circle at 14% 18%, rgba(255,255,255,.3), transparent 46%) !important; box-shadow: none !important; }
+        body.hw-handwritten .statml-stage-button { border-radius: 42% 58% 47% 53% !important; box-shadow: none !important; }
+        body.hw-handwritten .statml-stage-button[aria-current="step"] { background: var(--hw-yellow) !important; border-color: var(--hw-ink) !important; box-shadow: none !important; }
+        body.hw-handwritten .statml-stage-button span { border-radius: 3px 5px 2px 4px !important; background: var(--hw-yellow-soft) !important; color: var(--hw-ink) !important; box-shadow: none !important; }
+        body.hw-handwritten input[type="range"] { appearance: none !important; height: 7px !important; border: 0 !important; border-radius: 3px 5px 2px 4px !important; background: repeating-linear-gradient(167deg, rgba(40,105,173,.18) 0 2px, rgba(255,252,242,.72) 2px 6px) !important; box-shadow: 1px 1px 0 rgba(75,68,58,.12) !important; }
+        body.hw-handwritten input[type="range"]::-webkit-slider-thumb { appearance: none; width: 18px; height: 18px; border: 1px solid rgba(75,68,58,.52); border-radius: 42% 58% 47% 53%; background: var(--hw-yellow); box-shadow: 1px 2px 0 rgba(75,68,58,.16); transform: rotate(-3deg); }
+        body.hw-handwritten input[type="range"]::-moz-range-thumb { width: 18px; height: 18px; border: 1px solid rgba(75,68,58,.52); border-radius: 42% 58% 47% 53%; background: var(--hw-yellow); box-shadow: 1px 2px 0 rgba(75,68,58,.16); }
+        body.hw-handwritten.statml-standardized :is(.statml-overview,.statml-overview-item,.glass-card,.card,.metric-card,.control-panel,.controls,.quiz-card,.worked-example-widget,.formula-block,.math-block,.formula,.software-output,.model-report-block,.limitation-card,.playground-summary-card,.decision-card,.interactive,.panel,.chart-card,.figure-card,.visual-panel,.viz-panel,.canvas-container,.canvas-wrap,.viz-stage,.status-strip) { border: 1px solid rgba(88,83,72,.42) !important; border-radius: 5px 8px 4px 7px !important; background-color: rgba(255,252,242,.82) !important; background-image: repeating-linear-gradient(176deg, rgba(223,178,45,.035) 0 2px, transparent 2px 8px), radial-gradient(circle at 14% 18%, rgba(255,255,255,.25), transparent 46%) !important; box-shadow: 1px 2px 0 rgba(76,65,50,.10) !important; backdrop-filter: none !important; }
+        body.hw-handwritten.statml-standardized :is(.insight-box,.callout,.insight,.takeaway,.teaching-note,.look-here,.breakdown,.warning-note,.report,.plain-translation,.statml-takeaways) { border: 1px solid rgba(157,112,12,.34) !important; border-left: 4px solid var(--hw-blue) !important; border-radius: 2px 5px 3px 6px !important; background-color: #fff1b8 !important; background-image: repeating-linear-gradient(176deg, rgba(223,178,45,.07) 0 2px, transparent 2px 7px), radial-gradient(circle at 14% 18%, rgba(255,255,255,.42), transparent 46%) !important; box-shadow: 2px 3px 0 rgba(76,65,50,.14) !important; }
+        body.hw-handwritten.statml-standardized :is(.warning-note,.is-alert) { border-left-color: var(--hw-red) !important; background-color: var(--hw-red-soft) !important; background-image: repeating-linear-gradient(176deg, rgba(200,94,88,.055) 0 2px, transparent 2px 7px), radial-gradient(circle at 14% 18%, rgba(255,255,255,.34), transparent 46%) !important; }
+        body.hw-handwritten.statml-standardized :is(.report,.statml-takeaways) { border-left-color: var(--hw-green) !important; background-color: var(--hw-green-soft) !important; }
+        body.hw-handwritten.statml-standardized :is(button,.btn,.interactive-btn,.control-btn,select,input[type="text"],input[type="number"],textarea,.quiz-option,.scenario-options button,.control button) { border: 1px solid rgba(75,68,58,.52) !important; border-radius: 7px 4px 8px 5px !important; background-color: rgba(248,243,230,.88) !important; background-image: repeating-linear-gradient(167deg, rgba(40,105,173,.035) 0 2px, transparent 2px 6px) !important; box-shadow: 1px 2px 0 rgba(75,68,58,.08) !important; }
+        body.hw-handwritten.statml-standardized table { border-color: rgba(75,68,58,.5) !important; border-radius: 5px 8px 4px 7px !important; background-color: rgba(255,253,245,.70) !important; box-shadow: 1px 2px 0 rgba(75,68,58,.05) !important; }
+        body.hw-handwritten.statml-standardized :is(th,td) { border-color: rgba(75,68,58,.42) !important; border-style: dashed !important; }
+        body.hw-handwritten.statml-standardized th { background: rgba(241,212,119,.16) !important; }
+        body.hw-handwritten.statml-standardized :is(.statml-stage-button,.stage-dot) { min-height: 0 !important; width: 9px !important; height: 9px !important; padding: 0 !important; border-radius: 42% 58% 47% 53% !important; background: var(--hw-paper) !important; background-image: none !important; box-shadow: none !important; }
+        body.hw-handwritten.statml-standardized :is(.statml-stage-button,.stage-dot)[aria-current="step"], body.hw-handwritten.statml-standardized :is(.statml-stage-button,.stage-dot).active { background: var(--hw-yellow) !important; border-color: var(--hw-ink) !important; }
+        body.hw-handwritten.statml-standardized button.statml-stage-button, body.hw-handwritten.statml-standardized button.stage-dot { min-height: 0 !important; width: 9px !important; height: 9px !important; padding: 0 !important; border-radius: 42% 58% 47% 53% !important; background: var(--hw-paper) !important; background-image: none !important; box-shadow: none !important; }
+        body.hw-handwritten.statml-standardized button.statml-stage-button[aria-current="step"], body.hw-handwritten.statml-standardized button.stage-dot.active { background: var(--hw-yellow) !important; border-color: var(--hw-ink) !important; }
+    </style>
+    <style id="pca-handwritten-visual">
+        /* Keep the original PCA split layout and canvas stages; only the
+           visual shell is translated into paper, pencil, and ink. */
+        .visualization-column,
+        .transform-visual,
+        .transform-panel,
+        .transform-card,
+        .transform-table-wrap,
+        .transform-table-scroll {
+            background: rgba(255,252,242,.78) !important;
+            border-color: rgba(88,83,72,.44) !important;
+            box-shadow: 1px 2px 0 rgba(88,83,72,.08) !important;
+        }
+        #main-canvas { background: #fbf4e2 !important; }
+        .feature-pill,
+        .pill,
+        .play-button,
+        .control-button,
+        .topic-badge {
+            background: rgba(255,252,242,.86) !important;
+            border-color: rgba(88,83,72,.5) !important;
+            color: var(--hw-ink) !important;
+            border-radius: 4px 6px 3px 5px !important;
+            box-shadow: none !important;
+        }
+        .play-button:hover,
+        .control-button:hover { background: var(--hw-yellow-soft) !important; }
+        .transform-table th,
+        .transform-table td { border-color: rgba(88,83,72,.34) !important; }
+        .transform-table th { background: rgba(241,212,119,.22) !important; }
+        .transform-table tr.is-linked { background: rgba(230,240,248,.7) !important; }
+    </style>
+    <style id="pca-handwritten-cue-finish">
+        body.hw-handwritten .statml-hero :is(.scroll-cue,.scroll-hint,.scroll-indicator,.hero-scroll) {
+            position: static !important;
+            inset: auto !important;
+            align-self: center !important;
+            display: inline-flex !important;
+            width: auto !important;
+            max-width: calc(100% - 2rem) !important;
+            margin: .65rem auto 0 !important;
+            padding: 0 !important;
+            border: 0 !important;
+            border-radius: 0 !important;
+            background: transparent !important;
+            background-image: none !important;
+            box-shadow: none !important;
+            clip-path: none !important;
+            transform: none !important;
+            animation: none !important;
+            text-decoration-line: underline !important;
+            text-decoration-style: wavy !important;
+            text-decoration-color: rgba(40,105,173,.55) !important;
+            text-decoration-thickness: 1px !important;
+            text-underline-offset: 4px !important;
+        }
+        </style>
+    <style id="pca-handwritten-visual-surface-finish">
+        body.hw-handwritten.statml-standardized .statml-visual {
+            background-color: var(--hw-paper) !important;
+            background-image: none !important;
+            border-color: transparent !important;
+        }
+        body.hw-handwritten.statml-standardized .statml-visual #main-canvas {
+            border: 0 !important;
+            border-radius: 0 !important;
+            background-color: var(--hw-paper) !important;
+            background-image: repeating-linear-gradient(176deg, rgba(223,178,45,.026) 0 2px, transparent 2px 8px), radial-gradient(circle at 14% 18%, rgba(255,255,255,.26), transparent 46%) !important;
+            box-shadow: none !important;
+        }
+        body.hw-handwritten.statml-standardized .transform-card {
+            border: 1px solid rgba(88,83,72,.42) !important;
+            border-radius: 3px 7px 4px 6px !important;
+            background-color: rgba(255,252,242,.82) !important;
+            background-image: repeating-linear-gradient(176deg, rgba(223,178,45,.035) 0 2px, transparent 2px 8px), radial-gradient(circle at 14% 18%, rgba(255,255,255,.26), transparent 46%) !important;
+            box-shadow: 1px 2px 0 rgba(76,65,50,.10) !important;
+        }
+        body.hw-handwritten.statml-standardized .statml-prereq {
+            border: 1px solid rgba(157,112,12,.34) !important;
+            border-left: 4px solid var(--hw-blue) !important;
+            border-radius: 2px 5px 3px 6px !important;
+            background-color: #fff1b8 !important;
+            background-image: repeating-linear-gradient(176deg, rgba(223,178,45,.07) 0 2px, transparent 2px 7px), radial-gradient(circle at 14% 18%, rgba(255,255,255,.42), transparent 46%) !important;
+            box-shadow: 2px 3px 0 rgba(76,65,50,.14) !important;
+            transform: rotate(-.35deg) !important;
+        }
+    </style>
+<style id="pca-handwritten-geometry-calibration">
+@media (min-width: 901px) {
+  body.hw-handwritten.statml-standardized [data-stage="1"]{min-height:1102px !important}
+  body.hw-handwritten.statml-standardized [data-stage="2"]{min-height:782px !important}
+  body.hw-handwritten.statml-standardized [data-stage="3"]{min-height:713px !important}
+  body.hw-handwritten.statml-standardized [data-stage="4"]{min-height:1196px !important}
+  body.hw-handwritten.statml-standardized [data-stage="5"]{min-height:1310px !important}
+  body.hw-handwritten.statml-standardized [data-stage="6"]{min-height:720px !important}
+  body.hw-handwritten.statml-standardized [data-stage="7"]{min-height:1056px !important}
+  body.hw-handwritten.statml-standardized [data-stage="8"]{min-height:1019px !important}
+  body.hw-handwritten.statml-standardized [data-stage="9"]{min-height:912px !important}
+  body.hw-handwritten.statml-standardized [data-stage="10"]{min-height:2052px !important}
+}
+@media (min-width: 360px) and (max-width: 900px) {
+  body.hw-handwritten.statml-standardized [data-stage="1"]{min-height:1224px !important}
+  body.hw-handwritten.statml-standardized [data-stage="2"]{min-height:852px !important}
+  body.hw-handwritten.statml-standardized [data-stage="3"]{min-height:701px !important}
+  body.hw-handwritten.statml-standardized [data-stage="4"]{min-height:1251px !important}
+  body.hw-handwritten.statml-standardized [data-stage="5"]{min-height:1541px !important}
+  body.hw-handwritten.statml-standardized [data-stage="6"]{min-height:736px !important}
+  body.hw-handwritten.statml-standardized [data-stage="7"]{min-height:1126px !important}
+  body.hw-handwritten.statml-standardized [data-stage="8"]{min-height:1054px !important}
+  body.hw-handwritten.statml-standardized [data-stage="9"]{min-height:935px !important}
+  body.hw-handwritten.statml-standardized [data-stage="10"]{min-height:2328px !important}
+}
+</style>
 </head>
 <body>
 <nav class="statml-site-nav" aria-label="StatML Academy navigation">
@@ -1287,29 +1434,208 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
 
         let activeStage = 1;
 
-        const FONT_PROSE = 'Inter, sans-serif';
-        const FONT_MONO = '"JetBrains Mono", monospace';
+        const FONT_PROSE = '"Patrick Hand", "Kalam", "Marker Felt", cursive';
+        const FONT_MONO = '"Patrick Hand", "Kalam", cursive';
 
         const colors = {
-            bg: '#ffffff',
-            grid: '#f0efeb',
-            axis: '#e7e5e4',
-            axisText: '#6b7280',
-            point: '#6b7280',
-            pointHighlight: '#4f46e5',
-            linePC1: '#6366f1',
-            linePC2: '#d97706',
-            projection: '#a5b4fc',
-            projectionPC2: 'rgba(217, 119, 6, 0.28)',
-            varianceZone: 'rgba(99, 102, 241, 0.15)',
-            varianceZonePC2: 'rgba(217, 119, 6, 0.12)',
-            accentDark: '#4f46e5',
-            textMain: '#1f2937',
-            textDim: '#4b5563',
-            heatPositive: 'rgba(99, 102, 241, ',
-            heatNegative: 'rgba(217, 119, 6, ',
-            rowStripe: 'rgba(240, 239, 235, 0.5)'
+            bg: '#fbf4e2',
+            grid: 'rgba(88, 83, 72, .16)',
+            axis: 'rgba(61, 67, 60, .72)',
+            axisText: '#4f5a51',
+            point: '#4f956b',
+            pointHighlight: '#2869ad',
+            linePC1: '#2869ad',
+            linePC2: '#c85e58',
+            projection: 'rgba(40, 105, 173, .56)',
+            projectionPC2: 'rgba(200, 94, 88, .42)',
+            varianceZone: 'rgba(40, 105, 173, .12)',
+            varianceZonePC2: 'rgba(200, 94, 88, .10)',
+            accentDark: '#2869ad',
+            textMain: '#202421',
+            textDim: '#4f5a51',
+            heatPositive: 'rgba(40, 105, 173, ',
+            heatNegative: 'rgba(200, 94, 88, ',
+            rowStripe: 'rgba(241, 212, 119, .11)'
         };
+
+        // Cosmetic ink helpers use a separate deterministic hash. They never
+        // touch the seeded PCA data generator above, so scores and stages stay
+        // numerically identical to the original module.
+        const inkHash = (key) => {
+            if (window.StatMLInk?.hash) return window.StatMLInk.hash(`pca:${key}`);
+            let h = 2166136261 >>> 0;
+            String(key).split('').forEach(ch => { h ^= ch.charCodeAt(0); h = Math.imul(h, 16777619) >>> 0; });
+            return h >>> 0;
+        };
+        const inkUnit = (key) => (inkHash(key) % 10000) / 10000;
+
+        function inkPoint(context, x, y, radius, key, fill, stroke = 'rgba(32,36,33,.66)', width = 1) {
+            const sides = 13;
+            context.save();
+            context.fillStyle = fill;
+            context.strokeStyle = stroke;
+            context.lineWidth = width;
+            context.lineJoin = 'round';
+            context.beginPath();
+            for (let i = 0; i < sides; i += 1) {
+                const angle = (Math.PI * 2 * i) / sides;
+                const radiusJitter = radius * (1 + (inkUnit(`${key}:r:${i}`) - .5) * .30);
+                const px = x + Math.cos(angle) * radiusJitter;
+                const py = y + Math.sin(angle) * radiusJitter;
+                if (i === 0) context.moveTo(px, py); else context.lineTo(px, py);
+            }
+            context.closePath(); context.fill();
+            if (stroke && width > 0) {
+                context.stroke();
+                context.globalAlpha = .48;
+                context.lineWidth = Math.max(.6, width * .56);
+                context.translate(.65, -.45);
+                context.stroke();
+            }
+            context.restore();
+        }
+
+        function inkLine(context, x1, y1, x2, y2, key, options = {}) {
+            const dx = x2 - x1, dy = y2 - y1;
+            const length = Math.max(Math.hypot(dx, dy), 1);
+            const nx = -dy / length, ny = dx / length;
+            const wobble = options.wobble ?? Math.min(2.1, length * .012);
+            const mid = .5 + (inkUnit(`${key}:mid`) - .5) * .08;
+            const mx = x1 + dx * mid + nx * (inkUnit(`${key}:mx`) - .5) * wobble;
+            const my = y1 + dy * mid + ny * (inkUnit(`${key}:my`) - .5) * wobble;
+            const drawPass = (passAlpha, passWidth, offset) => {
+                context.save();
+                context.globalAlpha = passAlpha;
+                context.strokeStyle = options.color || colors.axis;
+                context.lineWidth = passWidth;
+                context.lineCap = 'round'; context.lineJoin = 'round';
+                if (options.dash) context.setLineDash(options.dash);
+                context.beginPath();
+                context.moveTo(x1 + nx * (inkUnit(`${key}:a:${offset}`) - .5) * wobble * .35,
+                    y1 + ny * (inkUnit(`${key}:b:${offset}`) - .5) * wobble * .35);
+                context.quadraticCurveTo(mx + nx * offset, my + ny * offset,
+                    x2 + nx * (inkUnit(`${key}:c:${offset}`) - .5) * wobble * .35,
+                    y2 + ny * (inkUnit(`${key}:d:${offset}`) - .5) * wobble * .35);
+                context.stroke(); context.restore();
+            };
+            drawPass(.48, Math.max(.65, (options.width || 1.35) * .56), .85);
+            drawPass(.86, options.width || 1.35, 0);
+        }
+
+        function inkPolyline(context, points, key, options = {}) {
+            if (!points.length) return;
+            const drawPass = (passAlpha, passWidth, offset) => {
+                context.save();
+                context.globalAlpha = passAlpha;
+                context.strokeStyle = options.color || colors.axis;
+                context.lineWidth = passWidth;
+                context.lineCap = 'round'; context.lineJoin = 'round';
+                if (options.dash) context.setLineDash(options.dash);
+                context.beginPath();
+                points.forEach((point, index) => {
+                    const wobble = options.wobble || 1.2;
+                    const x = point.x + (inkUnit(`${key}:x:${index}:${offset}`) - .5) * wobble + offset * .55;
+                    const y = point.y + (inkUnit(`${key}:y:${index}:${offset}`) - .5) * wobble - offset * .35;
+                    if (index === 0) context.moveTo(x, y); else context.lineTo(x, y);
+                });
+                context.stroke(); context.restore();
+            };
+            drawPass(.48, Math.max(.7, (options.width || 1.5) * .56), .85);
+            drawPass(.86, options.width || 1.5, 0);
+        }
+
+        function inkRect(context, x, y, width, height, key, fill, stroke = 'rgba(61,67,60,.5)', lineWidth = 1) {
+            const j = (part, amount = 2.1) => (inkUnit(`${key}:${part}`) - .5) * amount;
+            context.save(); context.fillStyle = fill; context.strokeStyle = stroke; context.lineWidth = lineWidth;
+            context.beginPath();
+            context.moveTo(x + j('tl'), y + j('tt'));
+            context.lineTo(x + width + j('tr'), y + j('tt2'));
+            context.lineTo(x + width + j('br'), y + height + j('bb'));
+            context.lineTo(x + j('bl'), y + height + j('bb2'));
+            context.closePath(); context.fill();
+            if (stroke && lineWidth > 0) {
+                context.stroke();
+                context.globalAlpha = .48;
+                context.lineWidth = Math.max(.6, lineWidth * .56);
+                context.translate(.85, -.55);
+                context.stroke();
+            }
+            context.restore();
+        }
+
+        /* Heatmap cells are marks made with a felt tip, not a matrix of
+           browser-perfect rectangles.  Keep each cell's authored footprint
+           and value, but give its edge a few asymmetric corners and leave
+           deterministic dry-brush gaps in the fill. */
+        function inkSwatch(context, x, y, width, height, key, fill) {
+            const j = (part, amount) => (inkUnit(`${key}:${part}`) - .5) * amount;
+            const insetX = Math.min(2.8, Math.max(.8, width * .11));
+            const insetY = Math.min(2.1, Math.max(.55, height * .12));
+            const points = [
+                { x: x + insetX + j('tlx', 1.5), y: y + insetY + j('tly', 1.2) },
+                { x: x + width * .34 + j('t1x', 1.9), y: y + insetY * .58 + j('t1y', 1.5) },
+                { x: x + width - insetX * .55 + j('trx', 1.5), y: y + insetY + j('try', 1.3) },
+                { x: x + width - insetX * .22 + j('r1x', 1.25), y: y + height * .47 + j('r1y', 1.8) },
+                { x: x + width - insetX + j('brx', 1.45), y: y + height - insetY * .45 + j('bry', 1.1) },
+                { x: x + width * .58 + j('b1x', 1.8), y: y + height - insetY * .18 + j('b1y', 1.45) },
+                { x: x + insetX * .35 + j('blx', 1.55), y: y + height - insetY + j('bly', 1.3) },
+                { x: x + insetX * .1 + j('l1x', 1.25), y: y + height * .55 + j('l1y', 1.6) }
+            ];
+            const path = () => {
+                context.beginPath();
+                points.forEach((point, index) => index ? context.lineTo(point.x, point.y) : context.moveTo(point.x, point.y));
+                context.closePath();
+            };
+            context.save();
+            context.fillStyle = fill;
+            path();
+            context.fill();
+            /* Broken second edge pass: just enough overlap to read as ink,
+               without rebuilding the original rectangular grid. */
+            context.globalAlpha = .24;
+            context.strokeStyle = 'rgba(61,67,60,.52)';
+            context.lineWidth = Math.min(1, Math.max(.45, height * .035));
+            context.lineCap = 'round'; context.lineJoin = 'round';
+            path(); context.stroke();
+
+            /* Sparse clipped hatch/grain leaves non-uniform paper showing
+               through each swatch.  All randomness is keyed by row/column. */
+            context.save();
+            path(); context.clip();
+            const grainCount = height < 9 ? 1 : (width < 34 ? 2 : 3);
+            for (let index = 0; index < grainCount; index += 1) {
+                const gx = x - 3 + (inkUnit(`${key}:grain-x:${index}`) * (width + 6));
+                const gy = y + 2 + (inkUnit(`${key}:grain-y:${index}`) * Math.max(height - 4, 2));
+                const length = Math.max(4, width * (.24 + inkUnit(`${key}:grain-l:${index}`) * .34));
+                context.globalAlpha = .11 + inkUnit(`${key}:grain-a:${index}`) * .11;
+                context.strokeStyle = 'rgba(255,252,242,.9)';
+                context.lineWidth = Math.max(.55, Math.min(1.15, height * .055));
+                context.beginPath();
+                context.moveTo(gx, gy);
+                context.lineTo(gx + length, gy + 1.1 + (inkUnit(`${key}:grain-s:${index}`) - .5) * 1.8);
+                context.stroke();
+            }
+            context.restore();
+            context.restore();
+        }
+
+        function inkPolygon(context, points, key, fill, stroke = null, lineWidth = 0) {
+            const jittered = points.map((point, index) => ({
+                x: point.x + (inkUnit(`${key}:x:${index}`) - .5) * 1.35,
+                y: point.y + (inkUnit(`${key}:y:${index}`) - .5) * 1.35
+            }));
+            context.save();
+            context.fillStyle = fill;
+            context.strokeStyle = stroke || fill;
+            context.lineWidth = lineWidth;
+            context.lineJoin = 'round';
+            context.beginPath();
+            jittered.forEach((point, index) => index ? context.lineTo(point.x, point.y) : context.moveTo(point.x, point.y));
+            context.closePath();
+            context.fill();
+            if (stroke && lineWidth > 0) context.stroke();
+            context.restore();
+        }
 
         const featureMeta = [
             { name: 'Speed', short: 'Spd', unit: 'm/s' },
@@ -1747,30 +2073,31 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
         function roundedRectPath(context, x, y, width, height, radius) {
             const r = Math.min(radius, width / 2, height / 2);
             context.beginPath();
-            context.moveTo(x + r, y);
-            context.arcTo(x + width, y, x + width, y + height, r);
-            context.arcTo(x + width, y + height, x, y + height, r);
-            context.arcTo(x, y + height, x, y, r);
-            context.arcTo(x, y, x + width, y, r);
+            const wobble = (part, amount = 1.3) => (inkUnit(`round:${x}:${y}:${width}:${height}:${part}`) - .5) * amount;
+            context.moveTo(x + r + wobble('tl'), y + wobble('t'));
+            context.quadraticCurveTo(x + width * .52, y + wobble('t2'), x + width + wobble('tr'), y + r + wobble('tr2'));
+            context.quadraticCurveTo(x + width + wobble('r'), y + height * .52, x + width - r + wobble('br'), y + height + wobble('b'));
+            context.quadraticCurveTo(x + width * .48, y + height + wobble('b2'), x + wobble('bl'), y + height - r + wobble('bl2'));
+            context.quadraticCurveTo(x + wobble('l'), y + height * .48, x + r + wobble('tl2'), y + wobble('t3'));
             context.closePath();
         }
 
         function drawCard(context, rect, title, subtitle) {
             roundedRectPath(context, rect.x, rect.y, rect.w, rect.h, 18);
-            context.fillStyle = colors.bg;
+            context.fillStyle = 'rgba(255,252,242,.74)';
             context.fill();
-            context.lineWidth = 1;
+            context.lineWidth = 1.15;
             context.strokeStyle = colors.axis;
             context.stroke();
 
             context.fillStyle = colors.textMain;
-            context.font = `600 16px ${FONT_PROSE}`;
+            context.font = `400 20px ${FONT_PROSE}`;
             context.textAlign = 'left';
             context.fillText(title, rect.x + 18, rect.y + 26);
 
             if (subtitle) {
                 context.fillStyle = colors.axisText;
-                context.font = `500 12px ${FONT_PROSE}`;
+                context.font = `400 15px ${FONT_PROSE}`;
                 context.fillText(subtitle, rect.x + 18, rect.y + 44);
             }
 
@@ -1822,40 +2149,24 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
         }
 
         function drawGrid(context) {
-            context.strokeStyle = colors.grid;
-            context.lineWidth = 1;
-
             const gridSize = 40;
             const width = state.width * 2;
             const height = state.height * 2;
-
-            context.beginPath();
             for (let x = -width; x <= width; x += gridSize) {
-                context.moveTo(x, -height);
-                context.lineTo(x, height);
+                inkLine(context, x, -height, x, height, `world-grid-v-${x}`, { color: colors.grid, width: .75, wobble: .65 });
             }
             for (let y = -height; y <= height; y += gridSize) {
-                context.moveTo(-width, y);
-                context.lineTo(width, y);
+                inkLine(context, -width, y, width, y, `world-grid-h-${y}`, { color: colors.grid, width: .75, wobble: .65 });
             }
-            context.stroke();
         }
 
         function drawAxes(context) {
-            context.strokeStyle = colors.axis;
-            context.lineWidth = 2;
-
             const axisLength = Math.max(state.width, state.height) * 1.5;
-
-            context.beginPath();
-            context.moveTo(-axisLength, 0);
-            context.lineTo(axisLength, 0);
-            context.moveTo(0, -axisLength);
-            context.lineTo(0, axisLength);
-            context.stroke();
+            inkLine(context, -axisLength, 0, axisLength, 0, 'world-axis-x', { color: colors.axis, width: 1.55, wobble: 1.3 });
+            inkLine(context, 0, -axisLength, 0, axisLength, 'world-axis-y', { color: colors.axis, width: 1.55, wobble: 1.3 });
 
             context.fillStyle = colors.axisText;
-            context.font = `500 14px ${FONT_PROSE}`;
+            context.font = `400 18px ${FONT_PROSE}`;
             context.textAlign = 'left';
 
             context.save();
@@ -1895,22 +2206,17 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
         function drawProjectionOverlay(context, points, angle, options = {}) {
             let maxDist = -Infinity;
             let minDist = Infinity;
-
-            context.strokeStyle = options.strokeStyle;
-            context.lineWidth = options.lineWidth || 1;
-            context.setLineDash(options.dash || []);
-            context.beginPath();
-
-            points.forEach((point) => {
+            points.forEach((point, index) => {
                 const projection = getProjectedPoint(point.x, point.y, angle);
-                context.moveTo(point.x, -point.y);
-                context.lineTo(projection.x, -projection.y);
+                inkLine(context, point.x, -point.y, projection.x, -projection.y, `projection-${options.strokeStyle}-${index}`, {
+                    color: options.strokeStyle,
+                    width: options.lineWidth || 1,
+                    dash: options.dash || [3, 4],
+                    wobble: .9
+                });
                 maxDist = Math.max(maxDist, projection.dist);
                 minDist = Math.min(minDist, projection.dist);
             });
-
-            context.stroke();
-            context.setLineDash([]);
 
             if (options.bandColor && maxDist > -Infinity) {
                 const bandWidth = options.bandWidth || 32;
@@ -1923,13 +2229,12 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
                 const p2x = maxDist * vx;
                 const p2y = maxDist * vy;
 
-                context.fillStyle = options.bandColor;
-                context.beginPath();
-                context.moveTo(p1x + nx, -(p1y + ny));
-                context.lineTo(p2x + nx, -(p2y + ny));
-                context.lineTo(p2x - nx, -(p2y - ny));
-                context.lineTo(p1x - nx, -(p1y - ny));
-                context.fill();
+                inkPolygon(context, [
+                    { x: p1x + nx, y: -(p1y + ny) },
+                    { x: p2x + nx, y: -(p2y + ny) },
+                    { x: p2x - nx, y: -(p2y - ny) },
+                    { x: p1x - nx, y: -(p1y - ny) }
+                ], `projection-band-${options.strokeStyle}`, options.bandColor);
             }
         }
 
@@ -1956,12 +2261,7 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
                     bandWidth: 20
                 });
             } else if (state.showProjections) {
-                context.strokeStyle = colors.projection;
-                context.lineWidth = 1;
-                context.setLineDash([4, 4]);
-                context.beginPath();
-
-                points.forEach((point) => {
+                points.forEach((point, index) => {
                     let projection;
 
                     if (state.projectionAxis === 'x') projection = { x: point.x, y: 0, dist: point.x };
@@ -1971,8 +2271,12 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
 
                     if (!projection) return;
 
-                    context.moveTo(point.x, -point.y);
-                    context.lineTo(projection.x, -projection.y);
+                    inkLine(context, point.x, -point.y, projection.x, -projection.y, `axis-projection-${index}`, {
+                        color: colors.projection,
+                        width: 1,
+                        dash: [4, 4],
+                        wobble: .85
+                    });
 
                     if (state.showVariance && (state.projectionAxis === 'pc1' || state.projectionAxis === 'x')) {
                         maxDist = Math.max(maxDist, projection.dist);
@@ -1980,14 +2284,9 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
                     }
                 });
 
-                context.stroke();
-                context.setLineDash([]);
             }
 
             if (state.showVariance && state.showProjections && maxDist > -Infinity) {
-                context.fillStyle = colors.varianceZone;
-                context.beginPath();
-
                 const bandWidth = 40;
                 const vx = Math.cos(activeAngle);
                 const vy = Math.sin(activeAngle);
@@ -1998,11 +2297,12 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
                 const p2x = maxDist * vx;
                 const p2y = maxDist * vy;
 
-                context.moveTo(p1x + nx, -(p1y + ny));
-                context.lineTo(p2x + nx, -(p2y + ny));
-                context.lineTo(p2x - nx, -(p2y - ny));
-                context.lineTo(p1x - nx, -(p1y - ny));
-                context.fill();
+                inkPolygon(context, [
+                    { x: p1x + nx, y: -(p1y + ny) },
+                    { x: p2x + nx, y: -(p2y + ny) },
+                    { x: p2x - nx, y: -(p2y - ny) },
+                    { x: p1x - nx, y: -(p1y - ny) }
+                ], 'variance-band-pc1', colors.varianceZone);
             }
 
             const lineLength = Math.max(state.width, state.height);
@@ -2010,15 +2310,12 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
                 const vx = Math.cos(activeAngle);
                 const vy = Math.sin(activeAngle);
 
-                context.strokeStyle = colors.linePC1;
-                context.lineWidth = 3;
-                context.beginPath();
-                context.moveTo(-lineLength * vx, lineLength * vy);
-                context.lineTo(lineLength * vx, -lineLength * vy);
-                context.stroke();
+                inkLine(context, -lineLength * vx, lineLength * vy, lineLength * vx, -lineLength * vy, 'pc1-axis', {
+                    color: colors.linePC1, width: 2.8, wobble: 2.4
+                });
 
                 context.fillStyle = colors.linePC1;
-                context.font = `600 14px ${FONT_PROSE}`;
+                context.font = `400 19px ${FONT_PROSE}`;
                 context.save();
                 context.translate((lineLength / 3) * vx, -((lineLength / 3) * vy) - 10);
                 context.rotate(-activeAngle + state.worldRotation);
@@ -2030,15 +2327,12 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
                 const vx = Math.cos(activeAngle + Math.PI / 2);
                 const vy = Math.sin(activeAngle + Math.PI / 2);
 
-                context.strokeStyle = colors.linePC2;
-                context.lineWidth = 3;
-                context.beginPath();
-                context.moveTo(-lineLength * vx, lineLength * vy);
-                context.lineTo(lineLength * vx, -lineLength * vy);
-                context.stroke();
+                inkLine(context, -lineLength * vx, lineLength * vy, lineLength * vx, -lineLength * vy, 'pc2-axis', {
+                    color: colors.linePC2, width: 2.8, wobble: 2.4
+                });
 
                 context.fillStyle = colors.linePC2;
-                context.font = `600 14px ${FONT_PROSE}`;
+                context.font = `400 19px ${FONT_PROSE}`;
                 context.save();
                 context.translate((lineLength / 3) * vx + 10, -((lineLength / 3) * vy));
                 context.rotate(-activeAngle - Math.PI / 2 + state.worldRotation);
@@ -2046,14 +2340,17 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
                 context.restore();
             }
 
-            points.forEach((point) => {
-                context.beginPath();
-                context.arc(point.x, -point.y, 5, 0, Math.PI * 2);
-                context.fillStyle = (state.showPC1 || state.isInteractive) ? colors.pointHighlight : colors.point;
-                context.fill();
-                context.strokeStyle = colors.bg;
-                context.lineWidth = 1.5;
-                context.stroke();
+            points.forEach((point, index) => {
+                inkPoint(
+                    context,
+                    point.x,
+                    -point.y,
+                    5,
+                    `scatter-${point.id}-${index}`,
+                    (state.showPC1 || state.isInteractive) ? colors.pointHighlight : colors.point,
+                    'rgba(32,36,33,.62)',
+                    1
+                );
             });
 
             if (!state.isInteractive && activeStage === 3) {
@@ -2072,39 +2369,24 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
             const maxAbsY = Math.max(...points.map((point) => Math.abs(point[1])), 1);
             const scale = Math.min((rect.w * 0.38) / maxAbsX, (rect.h * 0.34) / maxAbsY);
 
-            context.strokeStyle = colors.grid;
-            context.lineWidth = 1;
-            context.beginPath();
-            context.moveTo(rect.x + 8, centerY);
-            context.lineTo(rect.x + rect.w - 8, centerY);
-            context.moveTo(centerX, rect.y + 8);
-            context.lineTo(centerX, rect.y + rect.h - 8);
-            context.stroke();
+            inkLine(context, rect.x + 8, centerY, rect.x + rect.w - 8, centerY, `panel-x-${rect.x}-${rect.y}`, { color: colors.grid, width: .9, wobble: .7 });
+            inkLine(context, centerX, rect.y + 8, centerX, rect.y + rect.h - 8, `panel-y-${rect.x}-${rect.y}`, { color: colors.grid, width: .9, wobble: .7 });
 
             if (typeof options.pcAngle === 'number') {
                 const vx = Math.cos(options.pcAngle);
                 const vy = Math.sin(options.pcAngle);
                 const length = Math.min(rect.w, rect.h) * 0.45;
-                context.strokeStyle = options.lineColor || colors.linePC1;
-                context.lineWidth = 3;
-                context.beginPath();
-                context.moveTo(centerX - vx * length, centerY + vy * length);
-                context.lineTo(centerX + vx * length, centerY - vy * length);
-                context.stroke();
+                inkLine(context, centerX - vx * length, centerY + vy * length, centerX + vx * length, centerY - vy * length,
+                    `panel-pc-${rect.x}-${rect.y}`, { color: options.lineColor || colors.linePC1, width: 2.5, wobble: 1.8 });
             }
 
-            points.forEach(([x, y]) => {
-                context.beginPath();
-                context.arc(centerX + x * scale, centerY - y * scale, 4, 0, Math.PI * 2);
-                context.fillStyle = options.pointColor || colors.pointHighlight;
-                context.fill();
-                context.strokeStyle = colors.bg;
-                context.lineWidth = 1;
-                context.stroke();
+            points.forEach(([x, y], index) => {
+                inkPoint(context, centerX + x * scale, centerY - y * scale, 4, `panel-point-${rect.x}-${rect.y}-${index}`,
+                    options.pointColor || colors.pointHighlight, 'rgba(32,36,33,.58)', .85);
             });
 
             context.fillStyle = colors.axisText;
-            context.font = `500 12px ${FONT_PROSE}`;
+            context.font = `400 16px ${FONT_PROSE}`;
             context.textAlign = 'center';
             context.fillText(options.xLabel || '', rect.x + rect.w / 2, rect.y + rect.h + 10);
 
@@ -2116,7 +2398,7 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
 
             if (options.footnote) {
                 context.fillStyle = colors.textDim;
-                context.font = `500 12px ${FONT_PROSE}`;
+                context.font = `400 15px ${FONT_PROSE}`;
                 context.textAlign = 'left';
                 context.fillText(options.footnote, rect.x, rect.y + rect.h - 8);
             }
@@ -2132,7 +2414,7 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
             const cellHeight = (rect.h - headerHeight - 12) / rowIndexes.length;
 
             context.fillStyle = colors.axisText;
-            context.font = `600 11px ${FONT_PROSE}`;
+            context.font = `400 15px ${FONT_PROSE}`;
             context.textAlign = 'center';
             featureMeta.forEach((feature, index) => {
                 context.fillText(feature.short, rect.x + cellWidth * index + cellWidth / 2, rect.y + 12);
@@ -2142,18 +2424,20 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
                 const values = standardizedMatrix[rowIndex];
                 values.forEach((value, colIndex) => {
                     const alpha = 0.18 + Math.min(Math.abs(value) / 2.5, 1) * 0.58;
-                    context.fillStyle = `${value >= 0 ? colors.heatPositive : colors.heatNegative}${alpha})`;
-                    context.fillRect(
+                    inkSwatch(
+                        context,
                         rect.x + colIndex * cellWidth + 1,
                         rect.y + headerHeight + displayRow * cellHeight,
                         cellWidth - 2,
-                        Math.max(cellHeight - 1, 1.5)
+                        Math.max(cellHeight - 1, 1.5),
+                        `heat-${rowIndex}-${colIndex}`,
+                        `${value >= 0 ? colors.heatPositive : colors.heatNegative}${alpha})`
                     );
                 });
             });
 
             context.fillStyle = colors.textDim;
-            context.font = `500 12px ${FONT_PROSE}`;
+            context.font = `400 15px ${FONT_PROSE}`;
             context.textAlign = 'left';
             context.fillText('Each row is a student. Each column is a different feature.', rect.x, rect.y + rect.h + 8);
         }
@@ -2187,12 +2471,7 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
             const barMax = content.w * 0.46;
             const rowHeight = content.h / loadings.length;
 
-            context.strokeStyle = colors.axis;
-            context.lineWidth = 2;
-            context.beginPath();
-            context.moveTo(zeroX, content.y);
-            context.lineTo(zeroX, content.y + content.h);
-            context.stroke();
+            inkLine(context, zeroX, content.y, zeroX, content.y + content.h, 'loading-zero', { color: colors.axis, width: 1.35, wobble: 1.1 });
 
             featureMeta.forEach((feature, index) => {
                 const loading = loadings[index];
@@ -2200,16 +2479,16 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
                 const y = content.y + rowHeight * index + rowHeight * 0.55;
 
                 context.fillStyle = colors.textDim;
-                context.font = `500 14px ${FONT_PROSE}`;
+                context.font = `400 18px ${FONT_PROSE}`;
                 context.textAlign = 'left';
                 context.fillText(feature.name, content.x, y + 5);
 
-                context.fillStyle = loading >= 0 ? colors.linePC1 : colors.linePC2;
-                roundedRectPath(context, loading >= 0 ? zeroX : zeroX - barWidth, y - 9, barWidth, 18, 9);
-                context.fill();
+                inkRect(context, loading >= 0 ? zeroX : zeroX - barWidth, y - 9, barWidth, 18,
+                    `loading-bar-${index}`, loading >= 0 ? 'rgba(40,105,173,.56)' : 'rgba(200,94,88,.54)',
+                    loading >= 0 ? colors.linePC1 : colors.linePC2, 1);
 
                 context.fillStyle = colors.textMain;
-                context.font = `600 13px ${FONT_MONO}`;
+                context.font = `400 14px ${FONT_MONO}`;
                 context.textAlign = loading >= 0 ? 'left' : 'right';
                 context.fillText(
                     formatSigned(loading),
@@ -2219,7 +2498,7 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
             });
 
             context.fillStyle = colors.axisText;
-            context.font = `500 13px ${FONT_PROSE}`;
+            context.font = `400 16px ${FONT_PROSE}`;
             context.textAlign = 'left';
             context.fillText(`PC1 explains ${formatPercent(fullPca.explainedVariance[0])} of the standardized variance in this dataset.`, content.x, content.y + content.h + 8);
         }
@@ -2263,7 +2542,7 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
             headers.forEach((header, index) => {
                 const width = colWidths[index];
                 context.fillStyle = colors.axisText;
-                context.font = `600 11px ${FONT_PROSE}`;
+                context.font = `400 15px ${FONT_PROSE}`;
                 context.textAlign = index === 0 ? 'left' : 'right';
                 context.fillText(
                     header,
@@ -2273,25 +2552,20 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
                 xCursor += width;
             });
 
-            context.strokeStyle = colors.axis;
-            context.lineWidth = 1;
-            context.beginPath();
-            context.moveTo(rect.x, rect.y + headerHeight - 4);
-            context.lineTo(rect.x + rect.w, rect.y + headerHeight - 4);
-            context.stroke();
+            inkLine(context, rect.x, rect.y + headerHeight - 4, rect.x + rect.w, rect.y + headerHeight - 4,
+                `table-header-${rect.x}-${rect.y}`, { color: colors.axis, width: 1.05, wobble: .9 });
 
             rows.forEach((row, rowIndex) => {
                 const top = rect.y + headerHeight + rowHeight * rowIndex;
                 if (rowIndex % 2 === 0) {
-                    context.fillStyle = colors.rowStripe;
-                    context.fillRect(rect.x, top, rect.w, rowHeight);
+                    inkRect(context, rect.x, top, rect.w, rowHeight, `table-stripe-${rect.x}-${rowIndex}`, colors.rowStripe, null, 0);
                 }
 
                 let columnX = rect.x;
                 row.forEach((value, colIndex) => {
                     const width = colWidths[colIndex];
                     context.fillStyle = colors.textMain;
-                    context.font = `500 12px ${FONT_MONO}`;
+                    context.font = `400 14px ${FONT_MONO}`;
                     context.textAlign = colIndex === 0 ? 'left' : 'right';
                     context.fillText(
                         value,
@@ -2301,9 +2575,8 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
 
                     if (colIndex === 0 && rowColors[rowIndex]) {
                         context.fillStyle = rowColors[rowIndex];
-                        context.beginPath();
-                        context.arc(columnX + 8, top + rowHeight * 0.52, 4, 0, Math.PI * 2);
-                        context.fill();
+                        inkPoint(context, columnX + 8, top + rowHeight * 0.52, 3.2,
+                            `table-mark-${rect.x}-${rowIndex}`, rowColors[rowIndex], null, 0);
                     }
 
                     columnX += width;
@@ -2321,36 +2594,23 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
             const cumulativeData = fullPca.cumulativeVariance;
             const legendY = Math.max(12, margin - 34);
 
-            context.fillStyle = colors.projection;
-            context.fillRect(startX + graphWidth / 2 - 105, legendY, 12, 12);
+            inkRect(context, startX + graphWidth / 2 - 105, legendY, 12, 12, 'scree-legend-bar', 'rgba(40,105,173,.5)', colors.linePC1, .7);
             context.fillStyle = colors.textDim;
-            context.font = `500 13px ${FONT_PROSE}`;
+            context.font = `400 16px ${FONT_PROSE}`;
             context.textAlign = 'left';
             context.fillText('Individual', startX + graphWidth / 2 - 85, legendY + 10);
 
-            context.strokeStyle = colors.accentDark;
-            context.lineWidth = 3;
-            context.beginPath();
-            context.moveTo(startX + graphWidth / 2 + 25, legendY + 6);
-            context.lineTo(startX + graphWidth / 2 + 42, legendY + 6);
-            context.stroke();
-            context.beginPath();
-            context.arc(startX + graphWidth / 2 + 33.5, legendY + 6, 4, 0, Math.PI * 2);
-            context.fillStyle = colors.accentDark;
-            context.fill();
+            inkLine(context, startX + graphWidth / 2 + 25, legendY + 6, startX + graphWidth / 2 + 42, legendY + 6,
+                'scree-legend-line', { color: colors.accentDark, width: 2.2, wobble: .7 });
+            inkPoint(context, startX + graphWidth / 2 + 33.5, legendY + 6, 4, 'scree-legend-point', colors.accentDark, colors.accentDark, .6);
             context.fillStyle = colors.textDim;
             context.fillText('Cumulative', startX + graphWidth / 2 + 52, legendY + 10);
 
-            context.strokeStyle = colors.axis;
-            context.lineWidth = 2;
-            context.beginPath();
-            context.moveTo(startX, margin);
-            context.lineTo(startX, startY);
-            context.lineTo(startX + graphWidth, startY);
-            context.stroke();
+            inkLine(context, startX, margin, startX, startY, 'scree-axis-y', { color: colors.axis, width: 1.45, wobble: 1.1 });
+            inkLine(context, startX, startY, startX + graphWidth, startY, 'scree-axis-x', { color: colors.axis, width: 1.45, wobble: 1.1 });
 
             context.fillStyle = colors.axisText;
-            context.font = `500 14px ${FONT_PROSE}`;
+            context.font = `400 18px ${FONT_PROSE}`;
             context.textAlign = 'center';
             context.fillText('Principal Component', startX + graphWidth / 2, startY + 40);
 
@@ -2366,11 +2626,7 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
                 context.textAlign = 'right';
                 context.fillText(`${tick * 10}%`, startX - 10, y + 5);
 
-                context.strokeStyle = colors.grid;
-                context.beginPath();
-                context.moveTo(startX, y);
-                context.lineTo(startX + graphWidth, y);
-                context.stroke();
+                inkLine(context, startX, y, startX + graphWidth, y, `scree-grid-${tick}`, { color: colors.grid, width: .8, wobble: .55 });
             }
 
             const spacing = graphWidth / (pveData.length + 1);
@@ -2380,40 +2636,30 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
                 const x = startX + spacing * (index + 1);
                 const y = startY - value * graphHeight;
 
-                context.fillStyle = colors.projection;
-                context.fillRect(x - barWidth / 2, y, barWidth, value * graphHeight);
+                inkRect(context, x - barWidth / 2, y, barWidth, value * graphHeight, `scree-bar-${index}`,
+                    'rgba(40,105,173,.48)', colors.linePC1, .8);
 
                 context.fillStyle = colors.axisText;
                 context.textAlign = 'center';
-                context.font = `500 12px ${FONT_PROSE}`;
+                context.font = `400 16px ${FONT_PROSE}`;
                 context.fillText(`PC${index + 1}`, x, startY + 20);
             });
 
-            context.strokeStyle = colors.accentDark;
-            context.lineWidth = 3;
-            context.beginPath();
-            cumulativeData.forEach((value, index) => {
+            const cumulativePoints = cumulativeData.map((value, index) => {
                 const x = startX + spacing * (index + 1);
                 const y = startY - value * graphHeight;
-                if (index === 0) context.moveTo(x, y);
-                else context.lineTo(x, y);
+                return { x, y };
             });
-            context.stroke();
+            inkPolyline(context, cumulativePoints, 'scree-cumulative', { color: colors.accentDark, width: 2.3, wobble: 1.2 });
 
             cumulativeData.forEach((value, index) => {
                 const x = startX + spacing * (index + 1);
                 const y = startY - value * graphHeight;
 
-                context.beginPath();
-                context.arc(x, y, 6, 0, Math.PI * 2);
-                context.fillStyle = colors.accentDark;
-                context.fill();
-                context.strokeStyle = colors.bg;
-                context.lineWidth = 2;
-                context.stroke();
+                inkPoint(context, x, y, 6, `scree-cumulative-point-${index}`, colors.accentDark, colors.bg, 1.2);
 
                 context.fillStyle = colors.textMain;
-                context.font = `600 12px ${FONT_PROSE}`;
+                context.font = `400 16px ${FONT_PROSE}`;
                 context.textAlign = 'center';
                 context.fillText(formatPercent(value), x, y - 15);
             });

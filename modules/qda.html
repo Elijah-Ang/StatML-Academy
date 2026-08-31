@@ -683,7 +683,7 @@
         .quiz-feedback {
             margin-top: 0.75rem;
             padding-top: 0.75rem;
-            border-top: 1px dashed var(--border-color);
+            border-top: 1px solid transparent;
             font-size: 0.85rem;
         }
         .quiz-feedback.correct-feedback { color: #15803d; }
@@ -835,7 +835,7 @@
             color: var(--text-muted);
             font-style: italic;
             font-size: 0.8rem !important;
-            border-top: 1px dashed var(--border-color);
+            border-top: 1px solid transparent;
             padding-top: 0.3rem;
             margin-top: 0.3rem;
         }
@@ -1254,8 +1254,209 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
 </style>
 
     <link rel="stylesheet" href="academic-rigor.css">
+    <link rel="stylesheet" href="handwritten-theme.css?v=20260826-handwritten-final-2">
+    <script src="handwritten-theme.js?v=20260826-handwritten-final-2" defer></script>
+    <style id="qda-handwritten-visual">
+        #viz-plot-area,
+        .legend-card,
+        .fit-class-card,
+        .probe-card,
+        .glass-card,
+        .quiz-card {
+            background: rgba(255,252,242,.82) !important;
+            border-color: rgba(88,83,72,.44) !important;
+            border-radius: 7px 5px 8px 4px !important;
+            box-shadow: 1px 2px 0 rgba(88,83,72,.08) !important;
+        }
+        #qda-canvas { background: #fbf4e2 !important; }
+        .btn, .quiz-option, input[type="range"] {
+            border-color: rgba(88,83,72,.5) !important;
+            border-radius: 4px 6px 3px 5px !important;
+            box-shadow: none !important;
+        }
+    </style>
+    <style id="qda-material-pass">
+        body:is(.hw-handwritten,.statml-standardized){background:#f5f0e5!important;color:#292524!important}
+        body:is(.hw-handwritten,.statml-standardized) :is(.hero,.statml-hero,.hero-section,#hero)::before,
+        body:is(.hw-handwritten,.statml-standardized) :is(.hero,.statml-hero,.hero-section,#hero)::after{background:none!important;background-image:none!important;opacity:0!important}
+        body:is(.hw-handwritten,.statml-standardized) :is(.hero-grid,.hero-orbit,.hero-orbits,.hero-particles,.hero-dots,.hero-lines,.hero-signal){background:none!important;background-image:none!important;box-shadow:none!important}
+        body:is(.hw-handwritten,.statml-standardized) :is(.hero,.statml-hero,.hero-section,#hero){background:none!important;background-image:none!important}
+        body:is(.hw-handwritten,.statml-standardized) :is(.hero h1,.statml-hero h1,#hero h1){background:none!important;color:#292524!important;-webkit-text-fill-color:#292524!important;text-shadow:.6px .8px 0 rgba(88,83,72,.12)!important}
+        body:is(.hw-handwritten,.statml-standardized) :is(.glass-card,.card,.metric-card,.control-panel,.controls,.quiz-card,.formula,.formula-block,.math-block,.insight,.insight-box,.takeaway,.plain-translation,.question-card,.comparison-card,.visual-stage,.canvas-wrap,.statml-visual-card,.statml-overview,.hero-objectives,.learning-goals,.hero-goals,.fold-box,.legend-card,.table-card,.stage-card,.info-card,.metric,.pipeline,.mini-check,details,pre,table,#viz-plot-area,.fit-class-card,.probe-card){background-image:none!important;background-color:rgba(255,252,242,.8)!important;border-color:rgba(88,83,72,.42)!important;border-radius:5px 8px 4px 7px!important;box-shadow:1px 2px 0 rgba(88,83,72,.09)!important;backdrop-filter:none!important}
+        body:is(.hw-handwritten,.statml-standardized) :is(button,.btn,.control-btn,.interactive-btn,.action-button,select,input[type=text],input[type=number],.quiz-option,.toggle,.choice,.segmented button){background-image:none!important;background-color:rgba(248,243,230,.9)!important;border-color:rgba(88,83,72,.48)!important;border-radius:4px 6px 3px 5px!important;box-shadow:none!important}
+        body:is(.hw-handwritten,.statml-standardized) :is(.tag,.pill,.chip,.badge,.topic-badge,.hero-badge,.stage-badge,.metric-badge,.stage-dot,.orbit-dot,.legend-color,.legend-color-ring,.swatch,.eyebrow-dot){border-radius:3px 6px 4px 5px!important;box-shadow:none!important}
+        body:is(.hw-handwritten,.statml-standardized) :is(.progress-bar,.module-progress span){background:#356fae!important;background-image:none!important;box-shadow:none!important}
+        body:is(.hw-handwritten,.statml-standardized) :is(.statml-stage-rail,.stage-dots,#stage-dots,#stage-dots-container){background:rgba(255,252,242,.8)!important;background-image:none!important;border-color:rgba(88,83,72,.32)!important;border-radius:5px 7px 4px 6px!important;box-shadow:none!important}
+        body:is(.hw-handwritten,.statml-standardized) hr{border-top:1px solid transparent!important}
+        body:is(.hw-handwritten,.statml-standardized) :is(.section,.story-section,.stage,.stage-section,.chapter,.statml-stage){background-color:transparent!important;background-image:none!important}
+        body:is(.hw-handwritten,.statml-standardized) canvas{background:#fbf6e9!important;background-image:none!important}
+        body:is(.hw-handwritten,.statml-standardized) :is(.viz-overlay,.legend-item,.axis-label,.output-popover){background:rgba(255,252,242,.9)!important;background-image:none!important;border-color:rgba(88,83,72,.42)!important;border-radius:5px 8px 4px 7px!important;box-shadow:1px 2px 0 rgba(88,83,72,.1)!important;backdrop-filter:none!important}
+        body:is(.hw-handwritten,.statml-standardized) #viz-legend :is(.legend-item,div:first-child){border-color:rgba(88,83,72,.3)!important}
+        body:is(.hw-handwritten,.statml-standardized) :is(.swatch,.legend-item span){border-radius:3px 6px 4px 5px!important}
+</style>
+<style id="qda-ink-finishing">
+html body.hw-handwritten.hw-handwritten :is(.scroll-cue,.scroll-hint,.scroll-indicator,.hero-scroll){background:transparent!important;background-image:none!important;clip-path:none!important;box-shadow:none!important;filter:none!important;text-decoration-line:underline!important;text-decoration-style:wavy!important;text-decoration-color:rgba(40,105,173,.55)!important;text-decoration-thickness:1px!important;text-underline-offset:4px!important}
+html body.hw-handwritten.hw-handwritten :is(.scroll-cue span,.scroll-cue::before,.scroll-cue::after){background-image:none!important;background-color:transparent!important;box-shadow:none!important}
+html body.hw-handwritten.hw-handwritten :is([style*="linear-gradient"],[style*="radial-gradient"]){background-image:none!important}
+html body.hw-handwritten.hw-handwritten button:is(.active,.selected),html body.hw-handwritten.hw-handwritten button[aria-pressed="true"],html body.hw-handwritten.hw-handwritten .btn.active{background:#e6f0f8!important;background-image:none!important;color:#174f89!important;border-color:rgba(40,105,173,.64)!important;box-shadow:none!important}
+body:is(.hw-handwritten,.statml-standardized) :is(.scroll-cue,.scroll-hint,.scroll-indicator,.hero-scroll){background:transparent!important;background-image:none!important;clip-path:none!important;box-shadow:none!important;filter:none!important;text-decoration-line:underline!important;text-decoration-style:wavy!important;text-decoration-color:rgba(40,105,173,.55)!important;text-decoration-thickness:1px!important;text-underline-offset:4px!important}
+body:is(.hw-handwritten,.statml-standardized) :is(.scroll-cue span,.scroll-cue::before,.scroll-cue::after){background-image:none!important;background-color:transparent!important;box-shadow:none!important}
+body:is(.hw-handwritten,.statml-standardized) :is([style*="linear-gradient"],[style*="radial-gradient"]){background-image:none!important}
+body:is(.hw-handwritten,.statml-standardized) :is(.legend,.legend-card,.viz-legend,.viz-overlay,.tooltip,.panel,.visual-shell,.visual-stage,.visual-card,.canvas-wrap,.control-panel,.controls,#viz-plot-area,.fit-class-card,.probe-card){background-image:none!important;backdrop-filter:none!important;border-color:rgba(88,83,72,.42)!important;border-radius:5px 8px 4px 7px!important;box-shadow:1px 2px 0 rgba(88,83,72,.09)!important}
+</style>
+<style id="qda-material-override">
+  body:is(.hw-handwritten,.statml-standardized) :is(.statml-rigor-panel,.statml-rigor-panel *, .statml-rigor-grid>div) { font-family:"Patrick Hand","Kalam","Marker Felt","Chalkboard SE",cursive !important; }
+  body:is(.hw-handwritten,.statml-standardized) :is(.statml-rigor-panel,.statml-rigor-grid>div) { background-image:none!important; background-color:rgba(255,252,242,.78)!important; border-color:rgba(88,83,72,.42)!important; border-radius:5px 8px 4px 7px!important; box-shadow:1px 2px 0 rgba(88,83,72,.09)!important; }
+</style>
+<style id="qda-no-dashed">
+  body:is(.hw-handwritten,.statml-standardized) :is(table,table *,[style*="dashed"]){border-style:solid!important;border-color:transparent!important}
+</style>
+<style id="qda-doodle-style">
+  .hw-doodle{display:inline-block;width:1.12em;height:1.12em;vertical-align:-.18em;margin-inline-end:.22em;overflow:visible;color:currentColor;transform:rotate(-2deg);pointer-events:none}
+  .hw-doodle use{fill:none;stroke:currentColor;stroke-width:1.65;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke}
+  .hw-doodle:nth-of-type(2n){transform:rotate(2deg)}
+  .hw-doodle-sprite{position:absolute!important;width:0!important;height:0!important;overflow:hidden!important;pointer-events:none!important}
+</style>
+<style id="qda-legend-ink">
+  /* The legend remains in the original plot corner, with labels and swatches on paper. */
+  body:is(.hw-handwritten,.statml-standardized) #viz-legend,
+  body:is(.hw-handwritten,.statml-standardized) #viz-legend .legend-item,
+  body:is(.hw-handwritten,.statml-standardized) #viz-legend > div:first-child{
+    background:transparent!important;
+    background-image:none!important;
+    border:0!important;
+    border-color:transparent!important;
+    box-shadow:none!important;
+    border-radius:0!important;
+  }
+  body:is(.hw-handwritten,.statml-standardized) #viz-legend .legend-item{
+    text-decoration-line:underline!important;
+    text-decoration-style:wavy!important;
+    text-decoration-color:rgba(53,111,174,.38)!important;
+    text-underline-offset:3px!important;
+  }
+  body:is(.hw-handwritten,.statml-standardized) #viz-legend .swatch{
+    border-radius:4px 2px 5px 3px!important;
+    box-shadow:1px 1px 0 rgba(88,83,72,.22)!important;
+    transform:rotate(-3deg)!important;
+  }
+</style>
+<style id="qda-plot-ink">
+  /* Keep the original plot and hit area, but open its surface onto paper and
+     let the canvas painter supply the visible, doubled perimeter. */
+  html body.hw-handwritten #viz-container {
+    background:rgba(255,252,242,.3)!important; background-image:none!important;
+    border:0!important; border-radius:0!important; box-shadow:none!important;
+    overflow:hidden!important; position:relative;
+  }
+  html body.hw-handwritten #viz-container::before,
+  html body.hw-handwritten #viz-container::after {
+    content:""; position:absolute; inset:1px; pointer-events:none; z-index:7;
+    border:1.15px solid rgba(88,83,72,.45);
+    clip-path:polygon(0 1%,18% 0,38% 1.3%,59% .2%,81% 1%,100% 0,
+      99% 22%,100% 48%,98.8% 75%,100% 100%,80% 99%,59% 100%,38% 98.8%,17% 100%,0 99%,.9% 76%,0 52%,1% 27%);
+    transform:rotate(-.08deg);
+  }
+  html body.hw-handwritten #viz-container::after {
+    inset:4px 2px 2px 3px; border-color:rgba(53,111,174,.22); border-width:.85px;
+    clip-path:polygon(1% 0,27% 1.5%,55% 0,83% 1%,99% 0,100% 31%,98.7% 66%,100% 99%,72% 98.5%,45% 100%,19% 98%,0 100%,1.2% 68%,0 36%);
+    transform:rotate(.12deg);
+  }
+  html body.hw-handwritten #viz-plot-area {
+    background:transparent!important; background-image:none!important;
+    border:0!important; border-radius:0!important; box-shadow:none!important;
+  }
+  html body.hw-handwritten #qda-canvas { background:transparent!important; background-image:none!important; }
+  html body.hw-handwritten :is(.axis-label,#viz-status) {
+    background:transparent!important; background-image:none!important;
+    border:0!important; border-radius:0!important; box-shadow:none!important;
+    text-decoration-line:underline!important; text-decoration-style:wavy!important;
+    text-decoration-color:rgba(53,111,174,.42)!important; text-underline-offset:3px!important;
+  }
+  html body.hw-handwritten #tooltip {
+    background:#fff1b8!important; background-image:none!important; border:0!important;
+    border-radius:0!important; box-shadow:2px 2px 0 rgba(88,83,72,.14)!important;
+    clip-path:polygon(.8% 3%,98.7% 0,99.6% 97.5%,1.5% 100%)!important;
+    transform:rotate(-.8deg)!important; backdrop-filter:none!important;
+  }
+</style>
+<style id="qda-desktop-rhythm">
+  /* Restore the original desktop stage boxes as minimums; handwritten
+     responsive rules remain authoritative below the desktop breakpoint. */
+  @media (min-width:901px){
+    body.hw-handwritten .stage[data-stage="1"]{min-height:2065.41px!important}
+    body.hw-handwritten .stage[data-stage="2"]{min-height:1282.98px!important}
+    body.hw-handwritten .stage[data-stage="3"]{min-height:1081.98px!important}
+    body.hw-handwritten .stage[data-stage="4"]{min-height:1937.88px!important}
+    body.hw-handwritten .stage[data-stage="5"]{min-height:1288.94px!important}
+    body.hw-handwritten .stage[data-stage="6"]{min-height:1115.75px!important}
+    body.hw-handwritten .stage[data-stage="7"]{min-height:3128.91px!important}
+    body.hw-handwritten .stage[data-stage="8"]{min-height:1420.7px!important}
+    body.hw-handwritten .stage[data-stage="9"]{min-height:1778.13px!important}
+    body.hw-handwritten .stage[data-stage="10"]{min-height:2747.92px!important}
+  }
+  @media (min-width:376px) and (max-width:900px){
+    body.hw-handwritten .stage[data-stage="1"]{min-height:2175.52px!important}
+    body.hw-handwritten .stage[data-stage="2"]{min-height:1393.05px!important}
+    body.hw-handwritten .stage[data-stage="3"]{min-height:1101.27px!important}
+    body.hw-handwritten .stage[data-stage="4"]{min-height:2039.81px!important}
+    body.hw-handwritten .stage[data-stage="5"]{min-height:1387.98px!important}
+    body.hw-handwritten .stage[data-stage="6"]{min-height:1170.33px!important}
+    body.hw-handwritten .stage[data-stage="7"]{min-height:3341.19px!important}
+    body.hw-handwritten .stage[data-stage="8"]{min-height:1551.34px!important}
+    body.hw-handwritten .stage[data-stage="9"]{min-height:2110.41px!important}
+    body.hw-handwritten .stage[data-stage="10"]{min-height:2985.83px!important}
+  }
+</style>
+<style id="qda-layout-polish">
+  /* The shared hero flow reclassifies the legacy cue as a relative flex
+     child. Reset its old bottom offset so it follows the outcomes card rather
+     than sitting on top of the second outcome. */
+  html body:is(.hw-handwritten,.statml-standardized) #hero > .scroll-cue {
+    position: relative !important;
+    inset: auto !important;
+    margin: .9rem auto 0 !important;
+    transform: none !important;
+  }
+
+  /* The probe card is positioned inside the plot only while it is active.
+     Keep the inactive card out of the scrollable geometry so it cannot make
+     the canvas panel taller than its original viewport-sized frame. */
+  html body:is(.hw-handwritten,.statml-standardized) #viz-plot-area > #tooltip[style*="opacity: 0"] {
+    display: none !important;
+  }
+
+  /* The dictionary is explanatory content, not a second scroll surface.
+     Let its rows wrap naturally so the final definition is never cut off. */
+  html body:is(.hw-handwritten,.statml-standardized) #narrative-column section.stage[data-stage="1"] div[style*="max-height"] {
+    max-height: none !important;
+    overflow: visible !important;
+  }
+</style>
 </head>
 <body>
+<svg class="hw-doodle-sprite" aria-hidden="true" focusable="false"><defs>
+  <symbol id="qda-dot" viewBox="0 0 24 24"><path d="M12.3 5.2c3.9.2 6.6 3.2 6.2 6.8-.4 3.9-3.6 6.5-7.1 6.1-3.7-.4-6-3.4-5.5-6.9.5-3.5 2.7-6.2 6.4-6Z"/></symbol>
+  <symbol id="qda-apple" viewBox="0 0 24 24"><path d="M12.2 7.4c-1.6-2.1-4.5-1.2-5.6.5-1.6 2.5-.8 7.4 1.1 10 1 1.4 2 2.7 3.8 2.5.8-.1 1.3-.6 2.2-.6s1.4.5 2.2.6c1.8.2 2.8-1.2 3.8-2.6 1-1.5 1.5-3 1.5-3.1-3.6-1.4-3.7-6.5-.1-8.1-1-1.4-2.6-2.2-4.3-2.3-1.5-.1-2.8.9-3.6.9-.9 0-2-.9-3.2-.8-2 .1-3.8 1.2-4.8 3 .0 0 4.8 2.8 7 0Z"/><path d="M13 5.7c.2-1.2.8-2.2 1.8-2.9M14.8 3c1.1-.1 2.2.4 2.8 1.2"/></symbol>
+  <symbol id="qda-pear" viewBox="0 0 24 24"><path d="M12.3 8.9c-1.8 0-3.1 1.3-3.7 3.4-.7 2.4-2.4 4.2-2.1 6.3.3 2.1 2.1 3.5 4 3.5 1.1 0 1.4-.6 2.8-.6s1.8.6 2.8.6c1.9 0 3.5-1.4 3.9-3.4.4-2.1-1.2-4-2-6.4-.6-2-1.8-3.4-3.7-3.4-.8 0-1.2.5-2 .5s-1.2-.5-2-.5Z"/><path d="M12.4 8.9c-.5-1.7-.2-3.1 1-4.2M13.5 4.7c1.1-.2 2.3.1 3.1.9"/></symbol>
+  <symbol id="qda-chart" viewBox="0 0 24 24"><path d="M4 18.5V5.4M4 18.5h16M7 15.3l3-3.8 2.6 2 5.2-6"/><path d="m15.4 7.5 2.4-.2-.2 2.3"/></symbol>
+  <symbol id="qda-loop" viewBox="0 0 24 24"><path d="M18.5 8.5A7 7 0 0 0 6.8 6.2L5 8.5M5 5.3v3.2h3.2M5.5 15.5a7 7 0 0 0 11.7 2.3l1.8-2.3M19 18.7v-3.2h-3.2"/></symbol>
+  <symbol id="qda-chart-up" viewBox="0 0 24 24"><path d="M4 18.5V5.4M4 18.5h16M7 15.3l3-3.8 2.6 2 5.2-6"/><path d="m15.4 7.5 2.4-.2-.2 2.3"/></symbol>
+  <symbol id="qda-chart-down" viewBox="0 0 24 24"><path d="M4 5.5v13M4 18.5h16M7 8.2l3 3.7 2.6-2 5.2 6"/><path d="m15.4 15.9 2.4.2-.2-2.3"/></symbol>
+  <symbol id="qda-check" viewBox="0 0 24 24"><path d="m4.5 12.5 4.1 4.1L19.5 6"/></symbol>
+  <symbol id="qda-cross" viewBox="0 0 24 24"><path d="M6 6.2c3.8 3.3 7.3 7.6 12 11.7M18 6c-3.6 3.5-7.7 7.4-12 12"/></symbol>
+  <symbol id="qda-bulb" viewBox="0 0 24 24"><path d="M8.2 10.5c0-2.3 1.7-4.4 4-4.5 2.2-.1 3.9 1.8 3.9 4.2 0 1.5-.7 2.5-1.7 3.4-.5.5-.8 1.1-.8 2H10c0-.8-.3-1.5-.8-1.9-1-.9-1-1.7-1-3.2Z"/><path d="M10.2 18h3.7M10.8 20h2.5M11 16h2"/></symbol>
+  <symbol id="qda-warning" viewBox="0 0 24 24"><path d="m12.1 3.2 9 16.9H3.1Z"/><path d="M12 9v5.1M12 17.3v.2"/></symbol>
+  <symbol id="qda-ruler" viewBox="0 0 24 24"><path d="M4 19h15L4 5v14Z"/><path d="M7 16h2M10 16h2M13 16h2"/></symbol>
+  <symbol id="qda-measure" viewBox="0 0 24 24"><path d="M4 17.5 17.5 4l2.7 2.7L6.7 20.2Z"/><path d="m9 15.2 1.8 1.8M11.7 12.5l1.8 1.8M14.4 9.8l1.8 1.8"/></symbol>
+  <symbol id="qda-trophy" viewBox="0 0 24 24"><path d="M8 5h8v4.4c0 2.8-1.6 4.7-4 4.7s-4-1.9-4-4.7Z"/><path d="M8 7H5.2c-.2 2.7 1 4.3 3.1 4.3M16 7h2.8c.2 2.7-1 4.3-3.1 4.3M12 14.2v4M8.5 20h7"/></symbol>
+  <symbol id="qda-calculator" viewBox="0 0 24 24"><path d="M5.1 4.2c3.5-.4 7.3-.2 13.7.1l-.4 15.8c-4.8.3-9.1.2-13.5-.1Z"/><path d="M8 7.3h7.8M8 11h1M11.5 11h1M15 11h1M8 14.5h1M11.5 14.5h1M15 14.5h1M8 18h1M11.5 18h1M15 18h1"/></symbol>
+  <symbol id="qda-clipboard" viewBox="0 0 24 24"><path d="M6 5.5h12v14.2H6Z"/><path d="M9 5V3.8h6v1.5M8.5 9.5h7M8.5 13h7M8.5 16.5h4"/></symbol>
+  <symbol id="qda-sparkle" viewBox="0 0 24 24"><path d="M12 3.2 13.8 10l6.7 2-6.7 1.9-1.8 6.8-1.8-6.8-6.7-1.9 6.7-2Z"/><path d="m19 4 .4 1.4L21 6l-1.6.5L19 8l-.4-1.5L17 6l1.6-.6Z"/></symbol>
+  <symbol id="qda-ban" viewBox="0 0 24 24"><path d="M12 4.2c4.3 0 7.8 3.4 7.8 7.7s-3.5 7.8-7.8 7.8-7.8-3.5-7.8-7.8S7.7 4.2 12 4.2Z"/><path d="m6.5 18 11-12"/></symbol>
+  <symbol id="qda-lightning" viewBox="0 0 24 24"><path d="m13.8 2.8-8 10.4h5.9l-1.4 8 8.2-10.8h-5.8Z"/></symbol>
+  <symbol id="qda-web" viewBox="0 0 24 24"><path d="M12 4.2c4.4 0 7.8 3.4 7.8 7.7s-3.4 7.9-7.8 7.9-7.8-3.5-7.8-7.9S7.6 4.2 12 4.2Z"/><path d="M5 8.5c3.3 1.6 7.2 1.8 11 1 1.4-.3 2.6-.8 3.5-1.4M6.5 16.8c2.2-1.8 4.2-2.7 6.2-2.7 1.7 0 3.6.5 5.3 1.5M12 4.4c-1.5 2.3-2.2 4.8-2.2 7.5s.8 5.3 2.3 7.7M12 4.4c1.6 2.3 2.4 4.8 2.4 7.5s-.8 5.3-2.4 7.7"/></symbol>
+</defs></svg>
 <nav class="statml-site-nav" aria-label="StatML Academy navigation">
   <a class="statml-brand-link" href="../index.html"><span class="statml-brand-mark">S</span><span>StatML Academy</span></a>
   <span class="statml-nav-topic">Quadratic Discriminant Analysis (QDA)</span>
@@ -1298,15 +1499,15 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
                 <div class="glass-card">
                     <h3 style="margin-bottom:0.75rem; font-size:1.1rem; border-bottom:1px solid var(--border-color); padding-bottom:0.25rem;">Tiny QDA Dictionary</h3>
                     <div style="font-size:0.85rem; display:flex; flex-direction:column; gap:0.5rem; max-height: 250px; overflow-y:auto; padding-right:0.25rem;">
-                        <p>🔹 <strong>Feature:</strong> An input variable/measurement (e.g., Sweetness, Roundness).</p>
-                        <p>🔹 <strong>Label / Class:</strong> The category we want to predict (e.g., Apple, Pear).</p>
-                        <p>🔹 <strong>Mean ($\mu$):</strong> The center coordinate of a class's data cloud.</p>
-                        <p>🔹 <strong>Covariance Matrix ($\Sigma$):</strong> The learned shape, spread, and tilt of a class cloud.</p>
-                        <p>🔹 <strong>Prior Probability ($\pi$):</strong> The baseline proportion of each class in the dataset.</p>
-                        <p>🔹 <strong>Mahalanobis Distance:</strong> A shape-aware distance metric scaled by a class cloud's variance.</p>
-                        <p>🔹 <strong>Posterior Probability:</strong> The calculated probability that a point belongs to a class <em>after</em> measuring its features.</p>
-                        <p>🔹 <strong>Discriminant Score ($\delta$):</strong> The classification value calculated by QDA; highest score wins.</p>
-                        <p>🔹 <strong>Regularization:</strong> Adding a small constant diagonal shift to stabilize covariance estimation.</p>
+                        <p><svg class="hw-doodle" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><use href="#qda-dot"></use></svg> <strong>Feature:</strong> An input variable/measurement (e.g., Sweetness, Roundness).</p>
+                        <p><svg class="hw-doodle" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><use href="#qda-dot"></use></svg> <strong>Label / Class:</strong> The category we want to predict (e.g., Apple, Pear).</p>
+                        <p><svg class="hw-doodle" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><use href="#qda-dot"></use></svg> <strong>Mean ($\mu$):</strong> The center coordinate of a class's data cloud.</p>
+                        <p><svg class="hw-doodle" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><use href="#qda-dot"></use></svg> <strong>Covariance Matrix ($\Sigma$):</strong> The learned shape, spread, and tilt of a class cloud.</p>
+                        <p><svg class="hw-doodle" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><use href="#qda-dot"></use></svg> <strong>Prior Probability ($\pi$):</strong> The baseline proportion of each class in the dataset.</p>
+                        <p><svg class="hw-doodle" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><use href="#qda-dot"></use></svg> <strong>Mahalanobis Distance:</strong> A shape-aware distance metric scaled by a class cloud's variance.</p>
+                        <p><svg class="hw-doodle" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><use href="#qda-dot"></use></svg> <strong>Posterior Probability:</strong> The calculated probability that a point belongs to a class <em>after</em> measuring its features.</p>
+                        <p><svg class="hw-doodle" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><use href="#qda-dot"></use></svg> <strong>Discriminant Score ($\delta$):</strong> The classification value calculated by QDA; highest score wins.</p>
+                        <p><svg class="hw-doodle" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><use href="#qda-dot"></use></svg> <strong>Regularization:</strong> Adding a small constant diagonal shift to stabilize covariance estimation.</p>
                     </div>
                 </div>
 
@@ -1416,8 +1617,8 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
                         $\Sigma = \begin{pmatrix} \text{Variance}(X_1) & \text{Covariance}(X_1, X_2) \\ \text{Covariance}(X_1, X_2) & \text{Variance}(X_2) \end{pmatrix}$
                     </div>
                     <p style="font-size:0.85rem; line-height:1.4;">
-                        📊 <strong>Diagonal entries:</strong> Represent the independent spread of Sweetness and Roundness. <br>
-                        🔄 <strong>Off-diagonal entries:</strong> Represent the relationship. A positive value means sweeter fruit is generally rounder, creating a diagonal tilt!
+                        <svg class="hw-doodle" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><use href="#qda-chart"></use></svg> <strong>Diagonal entries:</strong> Represent the independent spread of Sweetness and Roundness. <br>
+                        <svg class="hw-doodle" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><use href="#qda-loop"></use></svg> <strong>Off-diagonal entries:</strong> Represent the relationship. A positive value means sweeter fruit is generally rounder, creating a diagonal tilt!
                     </p>
                 </div>
 
@@ -1575,8 +1776,8 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
                         <span id="val-ridge" class="mono">0.10</span>
                     </div>
                     <p style="font-size:0.8rem; color:var(--text-dim); line-height:1.4;">
-                        📈 <strong>Low Ridge (0.0):</strong> Maximum flexibility, but highly sensitive to noise and singularity.<br>
-                        📉 <strong>High Ridge (1.5):</strong> Increases stability, squeezing matrices to be circular. The curved boundary smooths out, behaving more like LDA!
+                        <svg class="hw-doodle" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><use href="#qda-chart-up"></use></svg> <strong>Low Ridge (0.0):</strong> Maximum flexibility, but highly sensitive to noise and singularity.<br>
+                        <svg class="hw-doodle" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><use href="#qda-chart-down"></use></svg> <strong>High Ridge (1.5):</strong> Increases stability, squeezing matrices to be circular. The curved boundary smooths out, behaving more like LDA!
                     </p>
                 </div>
 
@@ -1637,7 +1838,7 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
                         <input type="range" id="param-p" min="1" max="30" value="2">
                         <span id="val-param-p" class="mono">2</span>
                     </div>
-                    <div style="margin-top:0.75rem; border-top:1px dashed var(--border-color); padding-top:0.75rem; font-size:0.85rem;">
+                    <div style="margin-top:0.75rem; border-top:1px solid transparent; padding-top:0.75rem; font-size:0.85rem;">
                         <div style="display:flex; justify-content:space-between; margin-bottom:4px;">
                             <span>LDA Parameters:</span>
                             <strong id="lda-param-count">7</strong>
@@ -1653,24 +1854,24 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
                 <div class="glass-card">
                     <p style="margin-bottom:0.5rem;"><strong>When QDA Thrives:</strong></p>
                     <ul style="margin-left:1.5rem; margin-bottom:1rem; font-size:0.9rem; display:flex; flex-direction:column; gap:0.25rem;">
-                        <li>✓ Classes have completely different shapes and orientations.</li>
-                        <li>✓ The dataset is large enough to estimate parameters reliably.</li>
-                        <li>✓ Boundaries are naturally curved.</li>
+                        <li><svg class="hw-doodle" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><use href="#qda-check"></use></svg> Classes have completely different shapes and orientations.</li>
+                        <li><svg class="hw-doodle" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><use href="#qda-check"></use></svg> The dataset is large enough to estimate parameters reliably.</li>
+                        <li><svg class="hw-doodle" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><use href="#qda-check"></use></svg> Boundaries are naturally curved.</li>
                     </ul>
                     <p style="margin-bottom:0.5rem;"><strong>When QDA Struggles:</strong></p>
                     <ul style="margin-left:1.5rem; font-size:0.9rem; display:flex; flex-direction:column; gap:0.25rem;">
-                        <li>✗ Extremely small datasets (leads to overfitting and singular matrices).</li>
-                        <li>✗ Datasets with many features (parameter explosion).</li>
-                        <li>✗ Outliers present that distort covariance matrix estimation.</li>
+                        <li><svg class="hw-doodle" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><use href="#qda-cross"></use></svg> Extremely small datasets (leads to overfitting and singular matrices).</li>
+                        <li><svg class="hw-doodle" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><use href="#qda-cross"></use></svg> Datasets with many features (parameter explosion).</li>
+                        <li><svg class="hw-doodle" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><use href="#qda-cross"></use></svg> Outliers present that distort covariance matrix estimation.</li>
                     </ul>
                 </div>
 
                 <div class="glass-card">
                     <p style="margin-bottom:0.5rem;"><strong>Alternatives to QDA:</strong></p>
                     <ul style="margin-left:1.5rem; font-size:0.9rem; display:flex; flex-direction:column; gap:0.25rem;">
-                        <li>💡 <strong>LDA:</strong> If dataset is small or class spreads are similar.</li>
-                        <li>💡 <strong>Logistic Regression:</strong> If you prefer to model class boundaries without making Gaussian distribution assumptions.</li>
-                        <li>💡 <strong>KNN or SVM:</strong> If decision boundaries are highly complex or non-Gaussian.</li>
+                        <li><svg class="hw-doodle" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><use href="#qda-bulb"></use></svg> <strong>LDA:</strong> If dataset is small or class spreads are similar.</li>
+                        <li><svg class="hw-doodle" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><use href="#qda-bulb"></use></svg> <strong>Logistic Regression:</strong> If you prefer to model class boundaries without making Gaussian distribution assumptions.</li>
+                        <li><svg class="hw-doodle" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><use href="#qda-bulb"></use></svg> <strong>KNN or SVM:</strong> If decision boundaries are highly complex or non-Gaussian.</li>
                     </ul>
                 </div>
             </section>
@@ -1717,6 +1918,7 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
     </div>
 
     <script>
+        const qdaDoodle = name => `<svg class="hw-doodle" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><use href="#qda-${name}"></use></svg>`;
         // --- MATH & ESTIMATION ENGINE ---
 
         let currentSeedA = 42;
@@ -1957,24 +2159,24 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
             el.innerHTML = `
             <div class="fit-grid">
                 <div class="fit-class-card apple-border">
-                    <h4 class="apple-text">🍎 Apple Class Statistics ($k=A$)</h4>
+                    <h4 class="apple-text"><svg class="hw-doodle" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><use href="#qda-apple"></use></svg> Apple Class Statistics ($k=A$)</h4>
                     <div class="fit-metric">Prior probability: <span class="mono">$\\pi_A = ${priorA.toFixed(3)}$</span></div>
                     <div class="fit-metric">Mean vector: <span class="mono">$\\hat{\\mu}_A = [${estMuA.x.toFixed(2)}, ${estMuA.y.toFixed(2)}]^T$</span></div>
                     <div class="fit-metric" style="margin-top:0.4rem;">Covariance Matrix:</div>
                     <div class="matrix-container" onclick="showCovExplainer('apple', this, event)">
                         $$\\hat{\\Sigma}_A = \\begin{pmatrix} ${estCovA[0][0].toFixed(3)} & ${estCovA[0][1].toFixed(3)} \\\\ ${estCovA[1][0].toFixed(3)} & ${estCovA[1][1].toFixed(3)} \\end{pmatrix}$$
                     </div>
-                    <div class="click-tip">💡 Click covariance matrix to inspect anatomy!</div>
+                    <div class="click-tip">${qdaDoodle('bulb')} Click covariance matrix to inspect anatomy!</div>
                 </div>
                 <div class="fit-class-card pear-border">
-                    <h4 class="pear-text">🍐 Pear Class Statistics ($k=B$)</h4>
+                    <h4 class="pear-text"><svg class="hw-doodle" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><use href="#qda-pear"></use></svg> Pear Class Statistics ($k=B$)</h4>
                     <div class="fit-metric">Prior probability: <span class="mono">$\\pi_B = ${priorB.toFixed(3)}$</span></div>
                     <div class="fit-metric">Mean vector: <span class="mono">$\\hat{\\mu}_B = [${estMuB.x.toFixed(2)}, ${estMuB.y.toFixed(2)}]^T$</span></div>
                     <div class="fit-metric" style="margin-top:0.4rem;">Covariance Matrix:</div>
                     <div class="matrix-container" onclick="showCovExplainer('pear', this, event)">
                         $$\\hat{\\Sigma}_B = \\begin{pmatrix} ${estCovB[0][0].toFixed(3)} & ${estCovB[0][1].toFixed(3)} \\\\ ${estCovB[1][0].toFixed(3)} & ${estCovB[1][1].toFixed(3)} \\end{pmatrix}$$
                     </div>
-                    <div class="click-tip">💡 Click covariance matrix to inspect anatomy!</div>
+                    <div class="click-tip">${qdaDoodle('bulb')} Click covariance matrix to inspect anatomy!</div>
                 </div>
             </div>
             `;
@@ -2004,7 +2206,7 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
             }
 
             const body = `
-                <h3 class="${colorClass}" style="margin-bottom: 1rem; font-size: 1.15rem; font-weight:700;">📊 Covariance Matrix Anatomy: ${name}</h3>
+                <h3 class="${colorClass}" style="margin-bottom: 1rem; font-size: 1.15rem; font-weight:700;">${qdaDoodle('chart')} Covariance Matrix Anatomy: ${name}</h3>
                 <p style="margin-bottom: 1rem; font-size:0.88rem; line-height: 1.55;">Here is the empirical covariance matrix estimated live from your active training partition:</p>
 
                 <div class="formula-block" style="font-size: 1.1rem; margin:1rem 0; padding:1rem 1rem 0.5rem 1rem;">
@@ -2074,18 +2276,18 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
             el.innerHTML = `
             <div class="glass-card" style="font-size: 0.9rem; border-top: 4px solid var(--accent);">
                 <h4 style="margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
-                    <span>🧮 Live Worked QDA Formula Score</span>
+                    <span>${qdaDoodle('calculator')} Live Worked QDA Formula Score</span>
                 </h4>
                 <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom: 0.75rem;">Evaluating current coordinates: $x = [${probe.x.toFixed(2)}, ${probe.y.toFixed(2)}]^T$</p>
 
                 <div style="margin-bottom: 0.85rem; border-left: 3px solid var(--class-a); padding-left: 0.65rem; background: var(--bg-page); padding-top: 0.4rem; padding-bottom: 0.4rem; border-radius: 0 6px 6px 0;">
                     <p style="font-weight:700; color:var(--class-a); font-size:0.85rem; margin-bottom: 0.35rem;">Apple Class Score: $\\delta_{\\text{Apple}}(x)$</p>
                     <ul style="list-style: none; padding-left: 0; font-size: 0.82rem; display: flex; flex-direction: column; gap: 2px;">
-                        <li>📐 Size Penalty ($-0.5 \\ln |\\Sigma_{\\text{Apple}}|$): <strong class="mono">${term1A.toFixed(3)}</strong></li>
-                        <li>📏 Distance Penalty ($-0.5 D_M^2$): <strong class="mono">${term2A.toFixed(3)}</strong></li>
-                        <li>📈 Prior Boost ($\\ln \\pi_{\\text{Apple}}$): <strong class="mono">${term3A.toFixed(3)}</strong></li>
-                        <li style="border-top: 1px dashed var(--border-color); margin-top: 4px; padding-top: 2px; font-weight: 700;">
-                            🏆 Total Score $\\delta_{\\text{Apple}}(x)$: <span class="mono">${sa.toFixed(3)}</span>
+                        <li>${qdaDoodle('measure')} Size Penalty ($-0.5 \\ln |\\Sigma_{\\text{Apple}}|$): <strong class="mono">${term1A.toFixed(3)}</strong></li>
+                        <li>${qdaDoodle('ruler')} Distance Penalty ($-0.5 D_M^2$): <strong class="mono">${term2A.toFixed(3)}</strong></li>
+                        <li>${qdaDoodle('chart-up')} Prior Boost ($\\ln \\pi_{\\text{Apple}}$): <strong class="mono">${term3A.toFixed(3)}</strong></li>
+                        <li style="border-top: 1px solid transparent; margin-top: 4px; padding-top: 2px; font-weight: 700;">
+                            ${qdaDoodle('trophy')} Total Score $\\delta_{\\text{Apple}}(x)$: <span class="mono">${sa.toFixed(3)}</span>
                         </li>
                     </ul>
                 </div>
@@ -2093,16 +2295,16 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
                 <div style="margin-bottom: 0.85rem; border-left: 3px solid var(--class-b); padding-left: 0.65rem; background: var(--bg-page); padding-top: 0.4rem; padding-bottom: 0.4rem; border-radius: 0 6px 6px 0;">
                     <p style="font-weight:700; color:var(--class-b); font-size:0.85rem; margin-bottom: 0.35rem;">Pear Class Score: $\\delta_{\\text{Pear}}(x)$</p>
                     <ul style="list-style: none; padding-left: 0; font-size: 0.82rem; display: flex; flex-direction: column; gap: 2px;">
-                        <li>📐 Size Penalty ($-0.5 \\ln |\\Sigma_{\\text{Pear}}|$): <strong class="mono">${term1B.toFixed(3)}</strong></li>
-                        <li>📏 Distance Penalty ($-0.5 D_M^2$): <strong class="mono">${term2B.toFixed(3)}</strong></li>
-                        <li>📈 Prior Boost ($\\ln \\pi_{\\text{Pear}}$): <strong class="mono">${term3B.toFixed(3)}</strong></li>
-                        <li style="border-top: 1px dashed var(--border-color); margin-top: 4px; padding-top: 2px; font-weight: 700;">
-                            🏆 Total Score $\\delta_{\\text{Pear}}(x)$: <span class="mono">${sb.toFixed(3)}</span>
+                        <li>${qdaDoodle('measure')} Size Penalty ($-0.5 \\ln |\\Sigma_{\\text{Pear}}|$): <strong class="mono">${term1B.toFixed(3)}</strong></li>
+                        <li>${qdaDoodle('ruler')} Distance Penalty ($-0.5 D_M^2$): <strong class="mono">${term2B.toFixed(3)}</strong></li>
+                        <li>${qdaDoodle('chart-up')} Prior Boost ($\\ln \\pi_{\\text{Pear}}$): <strong class="mono">${term3B.toFixed(3)}</strong></li>
+                        <li style="border-top: 1px solid transparent; margin-top: 4px; padding-top: 2px; font-weight: 700;">
+                            ${qdaDoodle('trophy')} Total Score $\\delta_{\\text{Pear}}(x)$: <span class="mono">${sb.toFixed(3)}</span>
                         </li>
                     </ul>
                 </div>
 
-                <p style="margin-top: 0.5rem; border-top: 1px dashed var(--border-color); padding-top: 0.5rem; font-size:0.85rem;">
+                <p style="margin-top: 0.5rem; border-top: 1px solid transparent; padding-top: 0.5rem; font-size:0.85rem;">
                     <strong>Decision:</strong> Since ${decisionText}
                 </p>
             </div>
@@ -2133,7 +2335,7 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
             const probA = (expA / (expA + expB)) * 100;
             const probB = (expB / (expA + expB)) * 100;
 
-            const pred = sa > sb ? '🍎 Apple' : '🍐 Pear';
+            const pred = sa > sb ? `${qdaDoodle('apple')}Apple` : `${qdaDoodle('pear')}Pear`;
             const predColor = sa > sb ? 'var(--class-a)' : 'var(--class-b)';
 
             el.innerHTML = `
@@ -2143,14 +2345,14 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
 
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 0.75rem;">
                     <div class="class-score-card apple-border">
-                        <span class="apple-text" style="font-weight: 700; display: block; margin-bottom: 0.25rem; font-size:0.8rem;">🍎 Apple Class</span>
+                        <span class="apple-text" style="font-weight: 700; display: block; margin-bottom: 0.25rem; font-size:0.8rem;">${qdaDoodle('apple')}Apple Class</span>
                         <div class="stat-row"><span>Mahalanobis $D_M$:</span> <strong class="mono">${dmA.toFixed(2)}</strong></div>
                         <div class="stat-row"><span>Score $\\delta_A$:</span> <strong class="mono">${sa.toFixed(2)}</strong></div>
                         <div class="stat-row"><span>Posterior Prob:</span> <strong class="mono">${probA.toFixed(1)}%</strong></div>
                     </div>
 
                     <div class="class-score-card pear-border">
-                        <span class="pear-text" style="font-weight: 700; display: block; margin-bottom: 0.25rem; font-size:0.8rem;">🍐 Pear Class</span>
+                        <span class="pear-text" style="font-weight: 700; display: block; margin-bottom: 0.25rem; font-size:0.8rem;">${qdaDoodle('pear')}Pear Class</span>
                         <div class="stat-row"><span>Mahalanobis $D_M$:</span> <strong class="mono">${dmB.toFixed(2)}</strong></div>
                         <div class="stat-row"><span>Score $\\delta_B$:</span> <strong class="mono">${sb.toFixed(2)}</strong></div>
                         <div class="stat-row"><span>Posterior Prob:</span> <strong class="mono">${probB.toFixed(1)}%</strong></div>
@@ -2176,19 +2378,19 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
             <div class="metrics-grid">
                 <div class="metric-card" onclick="highlightMetricCard('accuracy')">
                     <span class="metric-val mono">${(accuracy * 100).toFixed(1)}%</span>
-                    <span class="metric-lbl">Accuracy 🔍</span>
+                    <span class="metric-lbl">Accuracy ?</span>
                 </div>
                 <div class="metric-card" onclick="highlightMetricCard('precision')">
                     <span class="metric-val mono">${(precision * 100).toFixed(1)}%</span>
-                    <span class="metric-lbl">Precision 🎯</span>
+                    <span class="metric-lbl">Precision ◎</span>
                 </div>
                 <div class="metric-card" onclick="highlightMetricCard('recall')">
                     <span class="metric-val mono">${(recall * 100).toFixed(1)}%</span>
-                    <span class="metric-lbl">Recall 🔎</span>
+                    <span class="metric-lbl">Recall ?</span>
                 </div>
                 <div class="metric-card" onclick="highlightMetricCard('f1')">
                     <span class="metric-val mono">${(f1 * 100).toFixed(1)}%</span>
-                    <span class="metric-lbl">F1 Score ⚖️</span>
+                    <span class="metric-lbl">F1 Score balance</span>
                 </div>
             </div>
 
@@ -2201,8 +2403,8 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
                     </tr>
                     <tr>
                         <th style="border:none;"></th>
-                        <th class="apple-text" style="background:var(--class-a-bg); font-size:0.8rem; padding:0.4rem;">🍎 Apple</th>
-                        <th class="pear-text" style="background:var(--class-b-bg); font-size:0.8rem; padding:0.4rem;">🍐 Pear</th>
+                        <th class="apple-text" style="background:var(--class-a-bg); font-size:0.8rem; padding:0.4rem;"><svg class="hw-doodle" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><use href="#qda-apple"></use></svg> Apple</th>
+                        <th class="pear-text" style="background:var(--class-b-bg); font-size:0.8rem; padding:0.4rem;"><svg class="hw-doodle" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><use href="#qda-pear"></use></svg> Pear</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -2278,7 +2480,7 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
 
                     <div class="metric-explain-grid">
                         <div class="metric-explain-card" id="explain-accuracy">
-                            <h4><span>Accuracy</span> <span style="font-size: 1.2rem;">🔍</span></h4>
+                            <h4><span>Accuracy</span> <span style="font-size: 1.2rem;">?</span></h4>
                             <p><strong>Formula:</strong> $\\frac{\\text{TP} + \\text{TN}}{\\text{Total}}$</p>
                             <p><strong>Live calculation:</strong> $\\frac{${tp} + ${tn}}{${total}} = ${pct(accuracy)}$</p>
                             <p><strong>Meaning:</strong> Out of all test fruits, how many did the model classify correctly?</p>
@@ -2286,7 +2488,7 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
                         </div>
 
                         <div class="metric-explain-card" id="explain-precision">
-                            <h4><span>Precision</span> <span style="font-size: 1.2rem;">🎯</span></h4>
+                            <h4><span>Precision</span> <span style="font-size: 1.2rem;">◎</span></h4>
                             <p><strong>Formula:</strong> $\\frac{\\text{TP}}{\\text{TP} + \\text{FP}}$</p>
                             <p><strong>Live calculation:</strong> $\\frac{${tp}}{${tp} + ${fp}} = ${pct(precision)}$</p>
                             <p><strong>Meaning:</strong> When the model predicts Apple, how often is it actually Apple?</p>
@@ -2294,7 +2496,7 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
                         </div>
 
                         <div class="metric-explain-card" id="explain-recall">
-                            <h4><span>Recall</span> <span style="font-size: 1.2rem;">🔎</span></h4>
+                            <h4><span>Recall</span> <span style="font-size: 1.2rem;">?</span></h4>
                             <p><strong>Formula:</strong> $\\frac{\\text{TP}}{\\text{TP} + \\text{FN}}$</p>
                             <p><strong>Live calculation:</strong> $\\frac{${tp}}{${tp} + ${fn}} = ${pct(recall)}$</p>
                             <p><strong>Meaning:</strong> Of all real Apples, how many did the model successfully find?</p>
@@ -2302,7 +2504,7 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
                         </div>
 
                         <div class="metric-explain-card" id="explain-f1">
-                            <h4><span>F1 Score</span> <span style="font-size: 1.2rem;">⚖️</span></h4>
+                            <h4><span>F1 Score</span> <span style="font-size: 1.2rem;">balance</span></h4>
                             <p><strong>Formula:</strong> $2 \\times \\frac{\\text{Precision} \\times \\text{Recall}}{\\text{Precision} + \\text{Recall}}$</p>
                             <p><strong>Live calculation:</strong><br>
                                 Precision = ${dec(precisionDec)}, Recall = ${dec(recallDec)}<br>
@@ -2354,7 +2556,7 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
             }
 
             const body = `
-                <h3 style="margin-bottom: 0.75rem; font-size: 1.15rem; color: var(--accent-dark); font-weight: 700;">📊 ${title}</h3>
+                <h3 style="margin-bottom: 0.75rem; font-size: 1.15rem; color: var(--accent-dark); font-weight: 700;">${qdaDoodle('chart')} ${title}</h3>
                 <p style="font-size: 0.88rem; line-height: 1.55; margin-bottom: 0.85rem;">${desc}</p>
                 <div class="glass-card" style="border-left: 3px solid var(--accent); margin-bottom: 0.85rem; padding: 0.75rem 0.95rem; font-size:0.84rem; background: var(--bg-page);">
                     <strong>Classification Status:</strong> ${formula}
@@ -2445,7 +2647,7 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
                     </div>
                 </div>
             </div>
-            <p style="font-size:0.8rem; text-align:center; color:var(--text-muted); margin-top:-0.5rem; margin-bottom:1.5rem;">👆 Click any highlighted log row above to open an interactive explainer!</p>
+            <p style="font-size:0.8rem; text-align:center; color:var(--text-muted); margin-top:-0.5rem; margin-bottom:1.5rem;">^ Click any highlighted log row above to open an interactive explainer!</p>
             `;
         }
 
@@ -2502,7 +2704,7 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
             }
 
             const body = `
-                <h3 style="margin-bottom: 0.75rem; font-size: 1.15rem; color: var(--accent-dark); font-weight: 700;">🔍 ${title}</h3>
+                <h3 style="margin-bottom: 0.75rem; font-size: 1.15rem; color: var(--accent-dark); font-weight: 700;">? ${title}</h3>
                 <p style="font-size: 0.88rem; line-height: 1.55; margin-bottom: 0.85rem;">${desc}</p>
                 <div class="glass-card" style="border-left: 3px solid var(--accent); margin-bottom: 0.85rem; padding: 0.75rem 0.95rem; font-size:0.84rem; background: var(--bg-page);">
                     <strong>Interpretation:</strong> ${interpretation}
@@ -2612,7 +2814,7 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
             const ratio = qdaCount / ldaCount;
             let msg = "";
             if (pVal > 10) {
-                msg = `⚠️ With ${pVal} features, QDA requires ${ratio.toFixed(1)}x more parameters than LDA! QDA is highly vulnerable to overfitting unless your dataset is extremely large.`;
+                msg = `${qdaDoodle('warning')} With ${pVal} features, QDA requires ${ratio.toFixed(1)}x more parameters than LDA! QDA is highly vulnerable to overfitting unless your dataset is extremely large.`;
             } else {
                 msg = `For small $p=${pVal}$, QDA is manageable. But notice how fast QDA's parameter count increases as you add more features!`;
             }
@@ -2661,19 +2863,43 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
         function unmapX(px) { return (px / width) * VIEW_SIZE; }
         function unmapY(py) { return (1 - (py / height)) * VIEW_SIZE; }
 
+        // Separate deterministic ink stream: it changes stroke character only,
+        // never the generated class samples or QDA scores.
+        const inkHash = key => window.StatMLInk?.hash ? window.StatMLInk.hash(`qda:${key}`) : [...String(key)].reduce((h,ch)=>Math.imul(h^ch.charCodeAt(0),16777619)>>>0,2166136261);
+        const inkUnit = key => (inkHash(key)%10000)/10000;
+        function inkLine(x1,y1,x2,y2,key,options={}){const dx=x2-x1,dy=y2-y1,len=Math.max(Math.hypot(dx,dy),1),nx=-dy/len,ny=dx/len,w=options.wobble??Math.max(1.7,Math.min(5.2,len*.024)),steps=Math.max(3,Math.min(12,Math.ceil(len/110)));ctx.save();ctx.strokeStyle=options.color||'rgba(61,67,60,.72)';ctx.lineWidth=options.width||1.2;ctx.lineCap='round';ctx.lineJoin='round';if(options.dash)ctx.setLineDash(options.dash);for(let pass=0;pass<2;pass++){ctx.beginPath();for(let i=0;i<=steps;i++){const t=i/steps,edge=i===0||i===steps,normal=(inkUnit(`${key}:n:${pass}:${i}`)-.5)*w*(edge?.35:1.15),along=(inkUnit(`${key}:a:${pass}:${i}`)-.5)*w*.3,px=x1+dx*t+nx*normal+(dx/len)*along,py=y1+dy*t+ny*normal+(dy/len)*along;i?ctx.lineTo(px,py):ctx.moveTo(px,py)}ctx.stroke()}ctx.restore();}
+        function inkPath(points,key,options={}){if(!points||points.length<2)return;ctx.save();ctx.strokeStyle=options.color||'rgba(61,67,60,.72)';ctx.lineWidth=options.width||1.2;ctx.lineCap='round';ctx.lineJoin='round';if(options.dash)ctx.setLineDash(options.dash);for(let pass=0;pass<2;pass++){ctx.beginPath();points.forEach((p,i)=>{const ox=(inkUnit(`${key}:x:${pass}:${i}`)-.5)*(options.wobble??1),oy=(inkUnit(`${key}:y:${pass}:${i}`)-.5)*(options.wobble??1);i?ctx.lineTo(p.x+ox,p.y+oy):ctx.moveTo(p.x+ox,p.y+oy);});if(options.close)ctx.closePath();ctx.stroke();}ctx.restore();}
+        function inkSegments(segments,key,options={}){if(!segments.length)return;ctx.save();ctx.strokeStyle=options.color||'rgba(61,67,60,.72)';ctx.lineWidth=options.width||1.2;ctx.lineCap='round';ctx.lineJoin='round';if(options.dash)ctx.setLineDash(options.dash);for(let pass=0;pass<2;pass++){ctx.beginPath();segments.forEach((s,i)=>{const ox=(inkUnit(`${key}:x:${pass}:${i}`)-.5)*(options.wobble??.8),oy=(inkUnit(`${key}:y:${pass}:${i}`)-.5)*(options.wobble??.8);ctx.moveTo(s.a.x+ox,s.a.y+oy);ctx.lineTo(s.b.x+ox,s.b.y+oy);});ctx.stroke();}ctx.restore();}
+        function inkDot(x,y,r,key,fill,stroke='rgba(32,36,33,.62)',width=1){ctx.save();ctx.fillStyle=fill;ctx.strokeStyle=stroke;ctx.lineWidth=width;ctx.lineJoin='round';const sides=r<3?7:8;for(let pass=0;pass<2;pass++){const ox=(inkUnit(`${key}:ox:${pass}`)-.5)*Math.max(.9,r*.22),oy=(inkUnit(`${key}:oy:${pass}`)-.5)*Math.max(.9,r*.22);ctx.beginPath();for(let i=0;i<sides;i++){const a=Math.PI*2*i/sides,rr=r*(1+(inkUnit(`${key}:r:${pass}:${i}`)-.5)*.42),px=x+ox+Math.cos(a)*rr,py=y+oy+Math.sin(a)*rr;i?ctx.lineTo(px,py):ctx.moveTo(px,py)}ctx.closePath();ctx.fill();if(stroke&&width)ctx.stroke()}ctx.restore();}
+        function inkCircle(x,y,r,key,color,width=1.4){const pts=Array.from({length:16},(_,i)=>{const a=Math.PI*2*i/16,rr=r*(1+(inkUnit(`${key}:${i}`)-.5)*.3);return{x:x+Math.cos(a)*rr,y:y+Math.sin(a)*rr};});pts.push(pts[0]);ctx.save();ctx.strokeStyle=color;ctx.lineWidth=width;ctx.lineCap='round';ctx.lineJoin='round';for(let pass=0;pass<2;pass++){ctx.beginPath();pts.forEach((p,i)=>{const ox=(inkUnit(`${key}:ox:${pass}:${i}`)-.5)*.9,oy=(inkUnit(`${key}:oy:${pass}:${i}`)-.5)*.9;i?ctx.lineTo(p.x+ox,p.y+oy):ctx.moveTo(p.x+ox,p.y+oy)});ctx.stroke()}ctx.restore();}
+        function inkFillRect(x,y,w,h,fill,key='fill-rect',alpha=1){
+            ctx.save();ctx.globalAlpha*=alpha;ctx.fillStyle=fill;
+            const amp=Math.min(1.7,Math.max(.35,Math.min(Math.abs(w),Math.abs(h))*.14)),j=n=>(inkUnit(`${key}:${n}`)-.5)*amp;
+            ctx.beginPath();ctx.moveTo(x+j(1),y+j(2));ctx.lineTo(x+w*.52+j(3),y+j(4));ctx.lineTo(x+w+j(5),y+h*.48+j(6));ctx.lineTo(x+w*.5+j(7),y+h+j(8));ctx.lineTo(x+j(9),y+h+j(10));ctx.lineTo(x+j(11),y+h*.5+j(12));ctx.closePath();ctx.fill();ctx.restore();
+        }
+
+        function sketchGuide(x1,y1,x2,y2,key,options={}){
+            const dx=x2-x1,dy=y2-y1,len=Math.max(1,Math.hypot(dx,dy)),nx=-dy/len,ny=dx/len;
+            [[.05,.28],[.36,.59],[.68,.94]].forEach(([start,end],i)=>{
+                const point=t=>({x:x1+dx*t+nx*(inkUnit(`${key}:n:${i}`)-.5)*4.8,y:y1+dy*t+ny*(inkUnit(`${key}:n:${i}`)-.5)*4.8});
+                const mid=(start+end)/2;
+                inkPath([point(start),point(mid),point(end)],`${key}:${i}`,{color:options.color||'rgba(88,83,72,.24)',width:options.width||.86,dash:[],wobble:1.45});
+            });
+        }
+
         function drawGrid() {
-            ctx.strokeStyle = '#f3f4f6';
-            ctx.lineWidth = 1;
-            for (let i = 0; i <= VIEW_SIZE; i++) {
-                ctx.beginPath(); ctx.moveTo(mapX(i), 0); ctx.lineTo(mapX(i), height); ctx.stroke();
-                ctx.beginPath(); ctx.moveTo(0, mapY(i)); ctx.lineTo(width, mapY(i)); ctx.stroke();
-            }
+            const marks=[.35,1.42,2.65,3.95,5.25,6.55,7.65];
+            marks.forEach((v,i)=>{
+                const x=mapX(v),y=mapY(v);
+                sketchGuide(x+inkUnit(`grid-v-offset:${i}`)*2-1,2,x+inkUnit(`grid-v-drift:${i}`)*4-2,height-2,`grid-v-${i}`);
+                sketchGuide(2,y+inkUnit(`grid-h-offset:${i}`)*2-1,width-2,y+inkUnit(`grid-h-drift:${i}`)*4-2,`grid-h-${i}`);
+            });
         }
 
         // Draw points with Train vs Test set differences
         function drawPoints(pts, color, isTest = false, evaluate = false) {
             for (let p of pts) {
-                ctx.beginPath();
+                const px = mapX(p.x), py = mapY(p.y);
                 if (isTest) {
                     if (evaluate) {
                         const sa = scoreQDA(p.x, p.y, estMuA, invA, detA, priorA);
@@ -2681,37 +2907,23 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
                         const predApple = (sa > sb);
                         const correct = (predApple === p.isApple);
 
-                        ctx.strokeStyle = correct ? 'var(--success)' : '#ef4444';
-                        ctx.lineWidth = 2.5;
-                        ctx.arc(mapX(p.x), mapY(p.y), 6, 0, Math.PI * 2);
-                        ctx.stroke();
-
-                        ctx.fillStyle = color;
-                        ctx.beginPath();
-                        ctx.arc(mapX(p.x), mapY(p.y), 2.5, 0, Math.PI * 2);
-                        ctx.fill();
+                        inkCircle(px, py, 6, `eval-ring-${p.x}-${p.y}`, correct ? '#4f956b' : '#c85e58', 2);
+                        inkDot(px, py, 2.5, `eval-dot-${p.x}-${p.y}`, color, 'rgba(32,36,33,.55)', .7);
                     } else {
-                        ctx.strokeStyle = color;
-                        ctx.lineWidth = 2;
-                        ctx.arc(mapX(p.x), mapY(p.y), 5, 0, Math.PI * 2);
-                        ctx.stroke();
-
-                        ctx.fillStyle = color.replace('0.6', '0.15').replace(')', ', 0.15)');
-                        ctx.beginPath();
-                        ctx.arc(mapX(p.x), mapY(p.y), 2, 0, Math.PI * 2);
-                        ctx.fill();
+                        inkCircle(px, py, 5, `test-ring-${p.x}-${p.y}`, color, 1.6);
+                        inkDot(px, py, 2, `test-dot-${p.x}-${p.y}`, color, 'rgba(32,36,33,.48)', .6);
                     }
                 } else {
-                    ctx.fillStyle = color;
-                    ctx.arc(mapX(p.x), mapY(p.y), 4.5, 0, Math.PI * 2);
-                    ctx.fill();
+                    inkDot(px, py, 4.5, `train-dot-${p.x}-${p.y}`, color, 'rgba(32,36,33,.55)', .7);
                 }
             }
         }
 
         function drawEllipse(mu, cov, color, scale = 1, dashed = false) {
             ctx.strokeStyle = color;
-            ctx.lineWidth = 2;
+            ctx.lineWidth = 1.8;
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
             if (dashed) ctx.setLineDash([5, 5]);
             else ctx.setLineDash([]);
 
@@ -2719,35 +2931,34 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
             const l10 = cov[1][0] / l00;
             const l11 = Math.sqrt(Math.max(cov[1][1] - l10 * l10, 0.0001));
 
-            ctx.beginPath();
-            const steps = 60;
+            const steps = 32;
+            const ellipsePoints = [];
             for (let i = 0; i <= steps; i++) {
                 const theta = (i / steps) * Math.PI * 2;
                 const zx = Math.cos(theta) * scale;
                 const zy = Math.sin(theta) * scale;
                 const ex = mu.x + l00 * zx;
                 const ey = mu.y + l10 * zx + l11 * zy;
-                if (i === 0) ctx.moveTo(mapX(ex), mapY(ey));
-                else ctx.lineTo(mapX(ex), mapY(ey));
+                ellipsePoints.push({ x: mapX(ex), y: mapY(ey) });
             }
-            ctx.stroke();
+            inkPath(ellipsePoints,`ellipse:${mu.x}:${mu.y}`,{color,width:1.8,close:true,wobble:1.1});
             ctx.setLineDash([]);
         }
 
         function drawCenter(mu, color) {
             const x = mapX(mu.x);
             const y = mapY(mu.y);
-            ctx.fillStyle = '#ffffff';
+            ctx.fillStyle = '#fbf4e2';
             ctx.strokeStyle = color;
             ctx.lineWidth = 3;
-            ctx.beginPath(); ctx.arc(x, y, 6, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
-            ctx.lineWidth = 2;
-            ctx.beginPath(); ctx.moveTo(x - 8, y); ctx.lineTo(x + 8, y); ctx.moveTo(x, y - 8); ctx.lineTo(x, y + 8); ctx.stroke();
+            inkDot(x, y, 6, `center-dot-${x}-${y}`, '#fbf4e2', color, 1.8);
+            inkLine(x - 8, y, x + 8, y, `center-h-${x}-${y}`, { color, width: 1.5, wobble: .8 });
+            inkLine(x, y - 8, x, y + 8, `center-v-${x}-${y}`, { color, width: 1.5, wobble: .8 });
         }
 
         // Trace sign changes to draw boundary curves
         function drawDecisionBoundary(alpha = 0.15) {
-            const res = 80;
+            const res = 48;
             const dx = width / res;
             const dy = height / res;
 
@@ -2783,51 +2994,52 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
                     } else {
                         isApple = qdaGrid[i][j] > 0;
                     }
-                    ctx.fillStyle = isApple ? 'rgba(230, 57, 70, 1)' : 'rgba(42, 157, 143, 1)';
-                    ctx.fillRect(i*dx - 0.5, j*dy - 0.5, dx+1.5, dy+1.5);
+                    inkFillRect(i*dx - 0.5, j*dy - 0.5, dx+1.5, dy+1.5, isApple ? 'rgba(184, 92, 88, 1)' : 'rgba(79, 149, 107, 1)', `boundary-cell-${i}-${j}`);
                 }
             }
             ctx.globalAlpha = 1.0;
 
-            // Draw actual crisp boundary line(s)
-            ctx.lineWidth = 3;
+            // Sparse marker hatching keeps the decision field tactile without
+            // exposing the 80x80 raster as a digital checkerboard.
+            ctx.save();
+            ctx.globalAlpha = Math.min(alpha * .72, .28);
+            for (let i = 1; i < res - 1; i += 4) {
+                for (let j = 1; j < res - 1; j += 4) {
+                    const hatchApple = boundaryMode === 'LDA' ? ldaGrid[i][j] > 0 : qdaGrid[i][j] > 0;
+                    const hx = i * dx, hy = j * dy;
+                    inkLine(hx - dx * .32, hy + dy * .38, hx + dx * .42, hy - dy * .34, `boundary-hatch-${i}-${j}`, { color: hatchApple ? '#b85c58' : '#4f956b', width: 1.05, wobble: .7 });
+                }
+            }
+            ctx.restore();
 
             if (boundaryMode === 'QDA' || boundaryMode === 'BOTH') {
-                ctx.strokeStyle = '#1e293b';
-                ctx.beginPath();
+                const qdaSegments=[];
                 for (let i = 0; i < res - 1; i++) {
                     for (let j = 0; j < res - 1; j++) {
                         if ((qdaGrid[i][j] > 0) !== (qdaGrid[i+1][j] > 0)) {
-                            ctx.moveTo(mapX(unmapX(dx * (i + 0.5))), mapY(unmapY(dy * (j + 0.5))));
-                            ctx.lineTo(mapX(unmapX(dx * (i + 1.5))), mapY(unmapY(dy * (j + 0.5))));
+                            qdaSegments.push({a:{x:mapX(unmapX(dx*(i+.5))),y:mapY(unmapY(dy*(j+.5)))},b:{x:mapX(unmapX(dx*(i+1.5))),y:mapY(unmapY(dy*(j+.5)))}});
                         }
                         if ((qdaGrid[i][j] > 0) !== (qdaGrid[i][j+1] > 0)) {
-                            ctx.moveTo(mapX(unmapX(dx * (i + 0.5))), mapY(unmapY(dy * (j + 0.5))));
-                            ctx.lineTo(mapX(unmapX(dx * (i + 0.5))), mapY(unmapY(dy * (j + 1.5))));
+                            qdaSegments.push({a:{x:mapX(unmapX(dx*(i+.5))),y:mapY(unmapY(dy*(j+.5)))},b:{x:mapX(unmapX(dx*(i+.5))),y:mapY(unmapY(dy*(j+1.5)))}});
                         }
                     }
                 }
-                ctx.stroke();
+                inkSegments(qdaSegments,'qda-boundary',{color:'#3d433c',width:2.3,wobble:1.1});
             }
 
             if (boundaryMode === 'LDA' || boundaryMode === 'BOTH') {
-                ctx.strokeStyle = '#6366f1';
-                ctx.setLineDash([4, 4]);
-                ctx.beginPath();
+                const ldaSegments=[];
                 for (let i = 0; i < res - 1; i++) {
                     for (let j = 0; j < res - 1; j++) {
                         if ((ldaGrid[i][j] > 0) !== (ldaGrid[i+1][j] > 0)) {
-                            ctx.moveTo(mapX(unmapX(dx * (i + 0.5))), mapY(unmapY(dy * (j + 0.5))));
-                            ctx.lineTo(mapX(unmapX(dx * (i + 1.5))), mapY(unmapY(dy * (j + 0.5))));
+                            ldaSegments.push({a:{x:mapX(unmapX(dx*(i+.5))),y:mapY(unmapY(dy*(j+.5)))},b:{x:mapX(unmapX(dx*(i+1.5))),y:mapY(unmapY(dy*(j+.5)))}});
                         }
                         if ((ldaGrid[i][j] > 0) !== (ldaGrid[i][j+1] > 0)) {
-                            ctx.moveTo(mapX(unmapX(dx * (i + 0.5))), mapY(unmapY(dy * (j + 0.5))));
-                            ctx.lineTo(mapX(unmapX(dx * (i + 0.5))), mapY(unmapY(dy * (j + 1.5))));
+                            ldaSegments.push({a:{x:mapX(unmapX(dx*(i+.5))),y:mapY(unmapY(dy*(j+.5)))},b:{x:mapX(unmapX(dx*(i+.5))),y:mapY(unmapY(dy*(j+1.5)))}});
                         }
                     }
                 }
-                ctx.stroke();
-                ctx.setLineDash([]);
+                inkSegments(ldaSegments,'lda-boundary',{color:'#2869ad',width:1.8,dash:[4,4],wobble:.9});
             }
         }
 
@@ -2837,23 +3049,14 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
             const py = mapY(probe.y);
 
             // Lines to estimated centers
-            ctx.strokeStyle = 'rgba(230, 57, 70, 0.45)';
-            ctx.lineWidth = 1.5;
-            ctx.setLineDash([4, 4]);
-            ctx.beginPath(); ctx.moveTo(px, py); ctx.lineTo(mapX(estMuA.x), mapY(estMuA.y)); ctx.stroke();
-
-            ctx.strokeStyle = 'rgba(42, 157, 143, 0.45)';
-            ctx.beginPath(); ctx.moveTo(px, py); ctx.lineTo(mapX(estMuB.x), mapY(estMuB.y)); ctx.stroke();
-            ctx.setLineDash([]);
+            inkLine(px, py, mapX(estMuA.x), mapY(estMuA.y), 'probe-a', { color: 'rgba(200,94,88,.5)', width: 1.3, dash: [4,4], wobble: .9 });
+            inkLine(px, py, mapX(estMuB.x), mapY(estMuB.y), 'probe-b', { color: 'rgba(79,149,107,.5)', width: 1.3, dash: [4,4], wobble: .9 });
 
             // Pulsing ring
-            ctx.strokeStyle = '#1f2937';
-            ctx.lineWidth = 1;
-            ctx.beginPath(); ctx.arc(px, py, 12 + Math.sin(Date.now()/200)*3, 0, Math.PI * 2); ctx.stroke();
+            inkCircle(px, py, 12 + Math.sin(Date.now()/200)*3, 'probe-ring', '#3d433c', 1.1);
 
             // Coordinate point
-            ctx.fillStyle = '#1f2937';
-            ctx.beginPath(); ctx.arc(px, py, 6, 0, Math.PI * 2); ctx.fill();
+            inkDot(px, py, 6, 'probe-dot', '#3d433c', '#202421', 1);
         }
 
         function updateStatusText() {
@@ -2905,9 +3108,18 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
 
         function render() {
             ctx.clearRect(0, 0, width, height);
-            drawGrid();
-
+            // The container edge is transparent to retain the original box
+            // geometry; these two loose passes keep the plot visibly penned.
+            inkLine(1.3, 1.3, Math.max(1, width - 1.3), 1.3, 'qda-frame-top', { color: 'rgba(120,106,92,.5)', width: 1.1, wobble: 4.6 });
+            inkLine(width - 1.3, 1.3, width - 1.3, Math.max(1, height - 1.3), 'qda-frame-right', { color: 'rgba(120,106,92,.5)', width: 1.1, wobble: 4.6 });
+            inkLine(width - 1.3, height - 1.3, 1.3, height - 1.3, 'qda-frame-bottom', { color: 'rgba(120,106,92,.5)', width: 1.1, wobble: 4.6 });
+            inkLine(1.3, height - 1.3, 1.3, 1.3, 'qda-frame-left', { color: 'rgba(120,106,92,.5)', width: 1.1, wobble: 4.6 });
             const showBoundary = (currentStage === 3 || currentStage === 6 || currentStage === 7 || currentStage === 8 || currentStage === 9 || currentStage === 10);
+
+            // A decision field is already a visual explanation; leave its
+            // surface paper-clear so the organic marker wash and boundary do
+            // not sit on top of a competing charting-library grid.
+            if (!showBoundary) drawGrid();
 
             // 1. Draw boundary regions
             if (showBoundary) {
@@ -2933,41 +3145,41 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
             const showEval = (currentStage === 7);
 
             if (showSplit) {
-                drawPoints(ptsA_train, 'rgba(230, 57, 70, 0.6)', false, false);
-                drawPoints(ptsB_train, 'rgba(42, 157, 143, 0.6)', false, false);
-                drawPoints(ptsA_test, 'rgba(230, 57, 70, 0.8)', true, showEval);
-                drawPoints(ptsB_test, 'rgba(42, 157, 143, 0.8)', true, showEval);
+                drawPoints(ptsA_train, 'rgba(184, 92, 88, 0.68)', false, false);
+                drawPoints(ptsB_train, 'rgba(79, 149, 107, 0.68)', false, false);
+                drawPoints(ptsA_test, 'rgba(184, 92, 88, 0.82)', true, showEval);
+                drawPoints(ptsB_test, 'rgba(79, 149, 107, 0.82)', true, showEval);
             } else {
-                drawPoints(ptsA, 'rgba(230, 57, 70, 0.6)', false, false);
-                drawPoints(ptsB, 'rgba(42, 157, 143, 0.6)', false, false);
+                drawPoints(ptsA, 'rgba(184, 92, 88, 0.68)', false, false);
+                drawPoints(ptsB, 'rgba(79, 149, 107, 0.68)', false, false);
             }
 
             // 3. Draw model outlines & shapes
             if (currentStage === 3) {
                 // Shared average shape for LDA
-                drawEllipse(estMuA, estSharedCov, '#e63946', 1.5, true);
-                drawEllipse(estMuB, estSharedCov, '#2a9d8f', 1.5, true);
+                drawEllipse(estMuA, estSharedCov, '#b85c58', 1.5, true);
+                drawEllipse(estMuB, estSharedCov, '#4f956b', 1.5, true);
             }
             else if (currentStage === 5) {
                 // Concentric equal-distance contours for Mahalanobis
-                drawEllipse(estMuA, estCovA, 'rgba(230, 57, 70, 0.25)', 0.8);
-                drawEllipse(estMuA, estCovA, 'rgba(230, 57, 70, 0.55)', 1.5);
-                drawEllipse(estMuA, estCovA, 'rgba(230, 57, 70, 0.25)', 2.2);
+                drawEllipse(estMuA, estCovA, 'rgba(184, 92, 88, 0.25)', 0.8);
+                drawEllipse(estMuA, estCovA, 'rgba(184, 92, 88, 0.55)', 1.5);
+                drawEllipse(estMuA, estCovA, 'rgba(184, 92, 88, 0.25)', 2.2);
 
-                drawEllipse(estMuB, estCovB, 'rgba(42, 157, 143, 0.25)', 0.8);
-                drawEllipse(estMuB, estCovB, 'rgba(42, 157, 143, 0.55)', 1.5);
-                drawEllipse(estMuB, estCovB, 'rgba(42, 157, 143, 0.25)', 2.2);
+                drawEllipse(estMuB, estCovB, 'rgba(79, 149, 107, 0.25)', 0.8);
+                drawEllipse(estMuB, estCovB, 'rgba(79, 149, 107, 0.55)', 1.5);
+                drawEllipse(estMuB, estCovB, 'rgba(79, 149, 107, 0.25)', 2.2);
             }
             else if (currentStage >= 4) {
                 // Unique covariance shapes for QDA
-                drawEllipse(estMuA, estCovA, '#e63946', 1.5);
-                drawEllipse(estMuB, estCovB, '#2a9d8f', 1.5);
+                drawEllipse(estMuA, estCovA, '#b85c58', 1.5);
+                drawEllipse(estMuB, estCovB, '#4f956b', 1.5);
             }
 
             // 4. Draw mean center markers
             if (currentStage >= 4) {
-                drawCenter(estMuA, '#e63946');
-                drawCenter(estMuB, '#2a9d8f');
+                drawCenter(estMuA, '#b85c58');
+                drawCenter(estMuB, '#4f956b');
             }
 
             // 5. Draw active interactive probe tool

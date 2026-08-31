@@ -328,7 +328,7 @@
         /* --- Worked Example UI --- */
         .worked-example-widget {
             margin-top: 1.5rem;
-            border-top: 1px dashed var(--border);
+            border-top: 1px solid transparent;
             padding-top: 1.25rem;
         }
         
@@ -1153,8 +1153,149 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
 }
 </style>
+<style id="hierarchical-clustering-layout-polish">
+  /* Keep the generated lesson-outcomes card and the legacy scroll cue in
+     normal flow. The old relative bottom offset placed the cue over outcome
+     two at desktop and on narrow screens. */
+  html body:is(.hw-handwritten,.statml-standardized) .statml-hero > .statml-overview + .scroll-cue {
+    position: relative !important;
+    inset: auto !important;
+    margin: .9rem auto 0 !important;
+    transform: none !important;
+  }
+</style>
 
     <link rel="stylesheet" href="academic-rigor.css">
+    <link rel="stylesheet" href="handwritten-theme.css?v=20260826-handwritten-final-2">
+    <script src="handwritten-theme.js?v=20260826-handwritten-final-2" defer></script>
+    <style id="hierarchical-handwritten-visual">
+        #viz-stage,
+        #process-panel,
+        #scrubber-panel,
+        .matrix-panel,
+        .legend,
+        .control-panel {
+            background: rgba(255,252,242,.82) !important;
+            border-color: rgba(88,83,72,.46) !important;
+            border-radius: 7px 5px 8px 4px !important;
+            box-shadow: 1px 2px 0 rgba(88,83,72,.08) !important;
+        }
+        #viz-canvas { background: #fbf4e2 !important; }
+        .matrix-table th,
+        .matrix-table td { border-color: rgba(88,83,72,.3) !important; }
+        .matrix-table thead th,
+        .matrix-header-highlight { background: rgba(241,212,119,.22) !important; }
+        .linkage-btn,
+        .matrix-mode-btn,
+        input[type="range"] {
+            border-color: rgba(88,83,72,.5) !important;
+            border-radius: 4px 6px 3px 5px !important;
+            box-shadow: none !important;
+        }
+    </style>
+    <style id="hierarchical-clustering-material-pass">
+        body:is(.hw-handwritten,.statml-standardized){background:#f5f0e5!important;color:#292524!important}
+        body:is(.hw-handwritten,.statml-standardized) :is(.hero,.statml-hero,.hero-section,#hero)::before,
+        body:is(.hw-handwritten,.statml-standardized) :is(.hero,.statml-hero,.hero-section,#hero)::after{background:none!important;background-image:none!important;opacity:0!important}
+        body:is(.hw-handwritten,.statml-standardized) :is(.hero-grid,.hero-orbit,.hero-orbits,.hero-particles,.hero-dots,.hero-lines,.hero-signal){background:none!important;background-image:none!important;box-shadow:none!important}
+        body:is(.hw-handwritten,.statml-standardized) :is(.hero,.statml-hero,.hero-section,#hero){background:none!important;background-image:none!important}
+        body:is(.hw-handwritten,.statml-standardized) :is(.hero h1,.statml-hero h1,#hero h1){background:none!important;color:#292524!important;-webkit-text-fill-color:#292524!important;text-shadow:.6px .8px 0 rgba(88,83,72,.12)!important}
+        body:is(.hw-handwritten,.statml-standardized) :is(.glass-card,.card,.metric-card,.control-panel,.controls,.quiz-card,.formula,.formula-block,.math-block,.insight,.insight-box,.takeaway,.plain-translation,.question-card,.comparison-card,.visual-stage,.canvas-wrap,.statml-visual-card,.statml-overview,.hero-objectives,.learning-goals,.hero-goals,.fold-box,.legend-card,.table-card,.stage-card,.info-card,.metric,.pipeline,.mini-check,details,pre,table,#process-panel,#viz-stage){background-image:none!important;background-color:rgba(255,252,242,.8)!important;border-color:rgba(88,83,72,.42)!important;border-radius:5px 8px 4px 7px!important;box-shadow:1px 2px 0 rgba(88,83,72,.09)!important;backdrop-filter:none!important}
+        body:is(.hw-handwritten,.statml-standardized) :is(button,.btn,.control-btn,.interactive-btn,.action-button,select,input[type=text],input[type=number],.quiz-option,.toggle,.choice,.segmented button,.linkage-btn,.matrix-mode-btn){background-image:none!important;background-color:rgba(248,243,230,.9)!important;border-color:rgba(88,83,72,.48)!important;border-radius:4px 6px 3px 5px!important;box-shadow:none!important}
+        body:is(.hw-handwritten,.statml-standardized) :is(.tag,.pill,.chip,.badge,.topic-badge,.hero-badge,.stage-badge,.metric-badge,.stage-dot,.orbit-dot,.legend-color,.legend-color-ring,.swatch,.eyebrow-dot){border-radius:3px 6px 4px 5px!important;box-shadow:none!important}
+        body:is(.hw-handwritten,.statml-standardized) :is(.progress-bar,.module-progress span){background:#356fae!important;background-image:none!important;box-shadow:none!important}
+        body:is(.hw-handwritten,.statml-standardized) :is(.statml-stage-rail,.stage-dots,#stage-dots,#stage-dots-container){background:rgba(255,252,242,.8)!important;background-image:none!important;border-color:rgba(88,83,72,.32)!important;border-radius:5px 7px 4px 6px!important;box-shadow:none!important}
+        body:is(.hw-handwritten,.statml-standardized) hr{border-top:1px solid transparent!important}
+        body:is(.hw-handwritten,.statml-standardized) :is(.section,.story-section,.stage,.stage-section,.chapter,.statml-stage){background-color:transparent!important;background-image:none!important}
+        body:is(.hw-handwritten,.statml-standardized) canvas{background:#fbf6e9!important;background-image:none!important}
+</style>
+<style id="hierarchical-clustering-ink-finishing">
+html body.hw-handwritten.hw-handwritten :is(.scroll-cue,.scroll-hint,.scroll-indicator,.hero-scroll){background:transparent!important;background-image:none!important;clip-path:none!important;box-shadow:none!important;filter:none!important;text-decoration-line:underline!important;text-decoration-style:wavy!important;text-decoration-color:rgba(40,105,173,.55)!important;text-decoration-thickness:1px!important;text-underline-offset:4px!important}
+html body.hw-handwritten.hw-handwritten :is(.scroll-cue span,.scroll-cue::before,.scroll-cue::after){background-image:none!important;background-color:transparent!important;box-shadow:none!important}
+html body.hw-handwritten.hw-handwritten :is([style*="linear-gradient"],[style*="radial-gradient"]){background-image:none!important}
+html body.hw-handwritten.hw-handwritten button:is(.active,.selected),html body.hw-handwritten.hw-handwritten button[aria-pressed="true"],html body.hw-handwritten.hw-handwritten .btn.active{background:#e6f0f8!important;background-image:none!important;color:#174f89!important;border-color:rgba(40,105,173,.64)!important;box-shadow:none!important}
+body:is(.hw-handwritten,.statml-standardized) :is(.scroll-cue,.scroll-hint,.scroll-indicator,.hero-scroll){background:transparent!important;background-image:none!important;clip-path:none!important;box-shadow:none!important;filter:none!important;text-decoration-line:underline!important;text-decoration-style:wavy!important;text-decoration-color:rgba(40,105,173,.55)!important;text-decoration-thickness:1px!important;text-underline-offset:4px!important}
+body:is(.hw-handwritten,.statml-standardized) :is(.scroll-cue span,.scroll-cue::before,.scroll-cue::after){background-image:none!important;background-color:transparent!important;box-shadow:none!important}
+body:is(.hw-handwritten,.statml-standardized) :is([style*="linear-gradient"],[style*="radial-gradient"]){background-image:none!important}
+body:is(.hw-handwritten,.statml-standardized) :is(.legend,.legend-card,.viz-legend,.viz-overlay,.tooltip,.panel,.visual-shell,.visual-stage,.visual-card,.canvas-wrap,.control-panel,.controls,#viz-stage,#process-panel,#scrubber-panel){background-image:none!important;backdrop-filter:none!important;border-color:rgba(88,83,72,.42)!important;border-radius:5px 8px 4px 7px!important;box-shadow:1px 2px 0 rgba(88,83,72,.09)!important}
+</style>
+<style id="hierarchical-clustering-material-override">
+  body:is(.hw-handwritten,.statml-standardized) :is(.statml-rigor-panel,.statml-rigor-panel *, .statml-rigor-grid>div) { font-family:"Patrick Hand","Kalam","Marker Felt","Chalkboard SE",cursive !important; }
+  body:is(.hw-handwritten,.statml-standardized) :is(.statml-rigor-panel,.statml-rigor-grid>div) { background-image:none!important; background-color:rgba(255,252,242,.78)!important; border-color:rgba(88,83,72,.42)!important; border-radius:5px 8px 4px 7px!important; box-shadow:1px 2px 0 rgba(88,83,72,.09)!important; }
+</style>
+<style id="hierarchical-clustering-no-dashed">
+  body:is(.hw-handwritten,.statml-standardized) :is(table,table *,[style*="dashed"]){border-style:solid!important;border-color:transparent!important}
+</style>
+<style id="hierarchical-clustering-canvas-ink">
+  /* Leave the plot on the same paper-sized canvas, but remove the pristine
+     card shell and turn the two overlays into notebook marks. */
+  html body.hw-handwritten .canvas-wrapper{
+    background:#fbf4e2!important;
+    background-image:none!important;
+    border:0!important;
+    border-radius:0!important;
+    box-shadow:none!important;
+  }
+  html body.hw-handwritten #randomize-btn{
+    background:transparent!important;
+    background-image:none!important;
+    border:0!important;
+    border-radius:0!important;
+    box-shadow:none!important;
+    color:#285f91!important;
+    text-decoration-line:underline!important;
+    text-decoration-style:wavy!important;
+    text-decoration-color:rgba(40,105,173,.58)!important;
+    text-underline-offset:4px!important;
+    transform:rotate(-1deg)!important;
+  }
+  html body.hw-handwritten .viz-tooltip{
+    background:#fff1b8!important;
+    background-image:none!important;
+    border:0!important;
+    border-radius:0!important;
+    box-shadow:2px 2px 0 rgba(88,83,72,.16)!important;
+    backdrop-filter:none!important;
+    clip-path:polygon(.8% 3%,98.7% 0,99.6% 97.5%,1.5% 100% )!important;
+    transform:rotate(-1.1deg)!important;
+  }
+  html body.hw-handwritten .viz-toolbar-note{
+    background:#fff1b8!important;
+    background-image:none!important;
+    border:0!important;
+    border-radius:0!important;
+    box-shadow:2px 2px 0 rgba(88,83,72,.12)!important;
+    backdrop-filter:none!important;
+    clip-path:polygon(.5% 2%,99% 0,99.5% 98%,1% 100%)!important;
+    transform:rotate(.7deg)!important;
+  }
+</style>
+<style id="hierarchical-clustering-desktop-rhythm">
+  /* Match the baseline desktop section cadence while keeping mobile sizing
+     and all handwritten content/interaction rules unchanged. */
+  @media (min-width:901px){
+    body.hw-handwritten section[data-stage="1"]{min-height:1021.98px!important}
+    body.hw-handwritten section[data-stage="2"]{min-height:787.94px!important}
+    body.hw-handwritten section[data-stage="3"]{min-height:662.39px!important}
+    body.hw-handwritten section[data-stage="4"]{min-height:1840.44px!important}
+    body.hw-handwritten section[data-stage="5"]{min-height:780.98px!important}
+    body.hw-handwritten section[data-stage="6"]{min-height:813.63px!important}
+    body.hw-handwritten section[data-stage="7"]{min-height:918.64px!important}
+    body.hw-handwritten section[data-stage="8"]{min-height:786.38px!important}
+    body.hw-handwritten section[data-stage="9"]{min-height:2353.95px!important}
+  }
+  @media (min-width:376px) and (max-width:900px){
+    body.hw-handwritten section[data-stage="1"]{min-height:1093.39px!important}
+    body.hw-handwritten section[data-stage="2"]{min-height:861.67px!important}
+    body.hw-handwritten section[data-stage="3"]{min-height:673.77px!important}
+    body.hw-handwritten section[data-stage="4"]{min-height:2092.16px!important}
+    body.hw-handwritten section[data-stage="5"]{min-height:897.97px!important}
+    body.hw-handwritten section[data-stage="6"]{min-height:799.55px!important}
+    body.hw-handwritten section[data-stage="7"]{min-height:995.80px!important}
+    body.hw-handwritten section[data-stage="8"]{min-height:859.95px!important}
+    body.hw-handwritten section[data-stage="9"]{min-height:2397.31px!important}
+  }
+</style>
 </head>
 <body>
 <nav class="statml-site-nav" aria-label="StatML Academy navigation">
@@ -1795,8 +1936,37 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
             updateDynamicUI();
         }
 
-        // Colors for clusters when cut
-        const clusterColors = ['#6366f1', '#10b981', '#f59e0b', '#f43f5e', '#0ea5e9', '#8b5cf6', '#ec4899'];
+        // Paper-and-pencil palette and deterministic cosmetic ink. The random
+        // dataset and clustering calculations above remain untouched.
+        const clusterColors = ['#2869ad', '#4f956b', '#d19a39', '#c85e58', '#4f8aa8', '#7960ae', '#b66b96'];
+        const inkHash = (key) => {
+            if (window.StatMLInk?.hash) return window.StatMLInk.hash(`hierarchical:${key}`);
+            let h = 2166136261 >>> 0;
+            String(key).split('').forEach(ch => { h ^= ch.charCodeAt(0); h = Math.imul(h, 16777619) >>> 0; });
+            return h >>> 0;
+        };
+        const inkUnit = key => (inkHash(key) % 10000) / 10000;
+        function inkLine(x1, y1, x2, y2, key, options = {}) {
+            const dx=x2-x1,dy=y2-y1,length=Math.max(Math.hypot(dx,dy),1),nx=-dy/length,ny=dx/length;
+            const wobble=options.wobble ?? Math.max(1.3,Math.min(4,length*.02)),steps=Math.max(3,Math.min(12,Math.ceil(length/110)));
+            ctx.save();ctx.strokeStyle=options.color||'rgba(61,67,60,.72)';ctx.lineWidth=options.width||1.25;ctx.lineCap='round';ctx.lineJoin='round';
+            if(options.dash)ctx.setLineDash(options.dash);
+            for(let pass=0;pass<2;pass++){ctx.beginPath();for(let i=0;i<=steps;i++){const t=i/steps,edge=i===0||i===steps,normal=(inkUnit(`${key}:n:${pass}:${i}`)-.5)*wobble*(edge?.35:1.15),along=(inkUnit(`${key}:a:${pass}:${i}`)-.5)*wobble*.3,px=x1+dx*t+nx*normal+(dx/length)*along,py=y1+dy*t+ny*normal+(dy/length)*along;i?ctx.lineTo(px,py):ctx.moveTo(px,py)}ctx.stroke();}ctx.restore();
+        }
+        function inkDot(x,y,r,key,fill,stroke='rgba(32,36,33,.62)',width=1){
+            ctx.save();ctx.fillStyle=fill;ctx.strokeStyle=stroke;ctx.lineWidth=width;ctx.lineJoin='round';const sides=r<3?7:9;
+            for(let pass=0;pass<2;pass++){const ox=(inkUnit(`${key}:ox:${pass}`)-.5)*Math.max(.7,r*.16),oy=(inkUnit(`${key}:oy:${pass}`)-.5)*Math.max(.7,r*.16);ctx.beginPath();for(let i=0;i<sides;i++){const a=Math.PI*2*i/sides,rr=r*(1+(inkUnit(`${key}:r:${pass}:${i}`)-.5)*.3),px=x+ox+Math.cos(a)*rr,py=y+oy+Math.sin(a)*rr;i?ctx.lineTo(px,py):ctx.moveTo(px,py)}ctx.closePath();ctx.fill();if(stroke&&width)ctx.stroke();}ctx.restore();
+        }
+        function inkFillCircle(x,y,r,key,fill,alpha=1){
+            ctx.save();ctx.globalAlpha*=alpha;ctx.fillStyle=fill;ctx.beginPath();
+            for(let i=0;i<14;i++){const a=i*0.4487989505,rr=r*(1+(inkUnit(`${key}:r${i}`)-.5)*.18),px=x+Math.cos(a)*rr,py=y+Math.sin(a)*rr;if(i)ctx.lineTo(px,py);else ctx.moveTo(px,py);}
+            ctx.closePath();ctx.fill();ctx.restore();
+        }
+        function inkCircle(x,y,r,key,color,width=1.4){
+            const pts=Array.from({length:12},(_,i)=>{const a=Math.PI*2*i/12,rr=r*(1+(inkUnit(`${key}:${i}`)-.5)*.18);return{x:x+Math.cos(a)*rr,y:y+Math.sin(a)*rr};});
+            pts.push(pts[0]);
+            ctx.save();ctx.strokeStyle=color;ctx.lineWidth=width;ctx.lineCap='round';ctx.lineJoin='round';ctx.beginPath();pts.forEach((p,i)=>i?ctx.lineTo(p.x,p.y):ctx.moveTo(p.x,p.y));ctx.stroke();ctx.restore();
+        }
 
         function getClustersAtCut(node, cutThreshold, clustersResult = []) {
             if (!node) {
@@ -2152,15 +2322,7 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
             const x2 = renderCache.scatterPadX + rightCenter.x * renderCache.scatterDrawW;
             const y2 = renderCache.scatterPadY + rightCenter.y * renderCache.scatterDrawH;
 
-            ctx.save();
-            ctx.setLineDash([6, 5]);
-            ctx.strokeStyle = 'rgba(99, 102, 241, 0.75)';
-            ctx.lineWidth = 2;
-            ctx.beginPath();
-            ctx.moveTo(x1, y1);
-            ctx.lineTo(x2, y2);
-            ctx.stroke();
-            ctx.restore();
+            inkLine(x1, y1, x2, y2, 'closest-pair', { color: 'rgba(40,105,173,.72)', width: 1.8, dash: [6,5], wobble: 1.4 });
         }
 
         function drawHoverLink(position) {
@@ -2171,30 +2333,10 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
             const highlightColor = '#f59e0b';
 
             if (state.dendroTransition > 0.4) {
-                ctx.save();
-                ctx.setLineDash([6, 4]);
-                ctx.strokeStyle = 'rgba(245, 158, 11, 0.9)';
-                ctx.lineWidth = 2;
-                ctx.beginPath();
-                ctx.moveTo(position.scatterX, position.scatterY);
-                ctx.lineTo(position.leafX, position.leafY);
-                ctx.stroke();
-                ctx.restore();
-
-                ctx.beginPath();
-                ctx.arc(position.scatterX, position.scatterY, 7.5, 0, Math.PI * 2);
-                ctx.fillStyle = highlightColor;
-                ctx.fill();
-                ctx.strokeStyle = '#ffffff';
-                ctx.lineWidth = 2;
-                ctx.stroke();
+                inkLine(position.scatterX, position.scatterY, position.leafX, position.leafY, 'hover-link', { color: 'rgba(200,94,88,.9)', width: 1.8, dash: [6,4], wobble: 1.4 });
+                inkDot(position.scatterX, position.scatterY, 7.5, 'hover-point', highlightColor, 'rgba(32,36,33,.7)', 1.2);
             }
-
-            ctx.beginPath();
-            ctx.arc(position.currentX, position.currentY, 10, 0, Math.PI * 2);
-            ctx.strokeStyle = highlightColor;
-            ctx.lineWidth = 2.5;
-            ctx.stroke();
+            inkCircle(position.currentX, position.currentY, 10, 'hover-ring', highlightColor, 2.1);
         }
 
         function draw() {
@@ -2264,14 +2406,10 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
                             branchColor = `rgba(31, 41, 55, ${state.dendroTransition})`;
                         }
 
-                        ctx.strokeStyle = branchColor;
                         ctx.globalAlpha = state.dendroTransition;
-                        ctx.beginPath();
-                        ctx.moveTo(lx, ly);
-                        ctx.lineTo(lx, py);
-                        ctx.lineTo(rx, py);
-                        ctx.lineTo(rx, ry);
-                        ctx.stroke();
+                        inkLine(lx, ly, lx, py, `branch-left-${merge.id}`, { color: branchColor, width: 1.8, wobble: 2.15 });
+                        inkLine(lx, py, rx, py, `branch-top-${merge.id}`, { color: branchColor, width: 1.8, wobble: 2.15 });
+                        inkLine(rx, py, rx, ry, `branch-right-${merge.id}`, { color: branchColor, width: 1.8, wobble: 2.15 });
                         ctx.globalAlpha = 1.0;
                     }
                 });
@@ -2295,13 +2433,8 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
                             const maxR = merge.radius * scatterSize;
                             const r = maxR * (1 - state.dendroTransition) + 10 * state.dendroTransition;
 
-                            ctx.beginPath();
-                            ctx.arc(x, y, r + 5, 0, Math.PI * 2);
-                            ctx.fillStyle = `rgba(99, 102, 241, ${0.05 * finalOpacity})`;
-                            ctx.fill();
-                            ctx.strokeStyle = `rgba(99, 102, 241, ${0.3 * finalOpacity})`;
-                            ctx.lineWidth = 1;
-                            ctx.stroke();
+                            inkFillCircle(x, y, r + 5, `merge-fill-${merge.id}`, `rgba(40,105,173,${0.05 * finalOpacity})`);
+                            inkCircle(x, y, r + 5, `merge-ring-${merge.id}`, `rgba(40,105,173,${0.3 * finalOpacity})`, 1);
                         }
                     }
                 });
@@ -2329,23 +2462,13 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
                     currentY
                 });
 
-                ctx.beginPath();
-                ctx.arc(currentX, currentY, 6, 0, Math.PI * 2);
-                ctx.fillStyle = colorMap.get(point.id);
-                ctx.fill();
+                inkDot(currentX, currentY, 6, `point-${point.id}`, colorMap.get(point.id), 'rgba(32,36,33,.64)', 1);
                 
                 if (state.stage === 8 && point.id === outlierPointId) {
-                    ctx.strokeStyle = varColor('--error', '#ef4444');
-                    ctx.lineWidth = 2;
-                    ctx.stroke();
-                    ctx.beginPath();
-                    ctx.arc(currentX, currentY, 12, 0, Math.PI * 2);
-                    ctx.strokeStyle = 'rgba(239, 68, 68, 0.4)';
-                    ctx.stroke();
+                    inkCircle(currentX, currentY, 6, `outlier-ring-${point.id}`, varColor('--error', '#c85e58'), 2);
+                    inkCircle(currentX, currentY, 12, `outlier-ring-wide-${point.id}`, 'rgba(200,94,88,.4)', 1);
                 } else {
-                    ctx.strokeStyle = '#ffffff';
-                    ctx.lineWidth = 1.5;
-                    ctx.stroke();
+                    // inkDot already supplies the restrained outline.
                 }
             });
 
@@ -2355,14 +2478,7 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
 
             if (cutActive && state.dendroTransition > 0.5) {
                 const cutY = ch - dendroPadY - state.cutHeight * dendroDrawH;
-                ctx.beginPath();
-                ctx.moveTo(dendroPadX - 20, cutY);
-                ctx.lineTo(cw - dendroPadX + 20, cutY);
-                ctx.setLineDash([5, 5]);
-                ctx.strokeStyle = 'rgba(245, 158, 11, 0.8)';
-                ctx.lineWidth = 2;
-                ctx.stroke();
-                ctx.setLineDash([]);
+                inkLine(dendroPadX - 20, cutY, cw - dendroPadX + 20, cutY, 'cut-line', { color: 'rgba(200,94,88,.8)', width: 1.8, dash: [5,5], wobble: 2.25 });
             }
 
             requestAnimationFrame(draw);

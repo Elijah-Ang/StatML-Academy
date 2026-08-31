@@ -712,6 +712,154 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
 </style>
 
     <link rel="stylesheet" href="academic-rigor.css">
+    <link rel="stylesheet" href="handwritten-theme.css?v=20260826-handwritten-final-2">
+    <script src="handwritten-theme.js?v=20260826-handwritten-final-2" defer></script>
+    <style id="correlation-handwritten-shell">
+        body.hw-handwritten .hero-badge,
+        body.hw-handwritten .topic-badge,
+        body.hw-handwritten .statml-hero .hero-badge {
+            border: 0 !important; border-radius: 3px 5px 2px 4px !important;
+            background: linear-gradient(transparent 38%, rgba(241,212,119,.58) 38%, rgba(241,212,119,.58) 88%, transparent 88%) !important;
+            box-shadow: none !important;
+        }
+        body.hw-handwritten .statml-overview { border: 1px solid rgba(88,83,72,.28) !important; border-radius: 5px 8px 4px 7px !important; background: rgba(255,253,245,.78) !important; box-shadow: none !important; }
+        body.hw-handwritten .statml-overview-item { border-radius: 3px 5px 2px 4px !important; background: rgba(255,252,242,.32) !important; box-shadow: none !important; }
+        body.hw-handwritten .statml-overview-number { border: 1px solid rgba(40,105,173,.38) !important; border-radius: 2px 4px 2px 3px !important; background: rgba(230,240,248,.7) !important; box-shadow: none !important; }
+        body.hw-handwritten :is(.pill,.tag,.badge,.metric-badge,.feature-pill,.transform-bridge-badge) { border: 0 !important; border-radius: 2px 4px 2px 3px !important; background: linear-gradient(transparent 34%, rgba(241,212,119,.48) 34%, rgba(241,212,119,.48) 90%, transparent 90%) !important; box-shadow: none !important; }
+        body.hw-handwritten.statml-standardized :is(.statml-overview,.statml-overview-item,.glass-card,.card,.metric-card,.control-panel,.controls,.quiz-card,.worked-example-widget,.formula-block,.math-block,.formula,.software-output,.model-report-block,.limitation-card,.playground-summary-card,.decision-card,.interactive,.panel,.chart-card,.figure-card,.visual-panel,.viz-panel,.canvas-container,.canvas-wrap,.viz-stage,.status-strip) { border: 1px solid rgba(88,83,72,.42) !important; border-radius: 5px 8px 4px 7px !important; background-color: rgba(255,252,242,.82) !important; background-image: repeating-linear-gradient(176deg, rgba(223,178,45,.035) 0 2px, transparent 2px 8px), radial-gradient(circle at 14% 18%, rgba(255,255,255,.25), transparent 46%) !important; box-shadow: 1px 2px 0 rgba(76,65,50,.10) !important; backdrop-filter: none !important; }
+        body.hw-handwritten.statml-standardized :is(button,.btn,.interactive-btn,.control-btn,select,input[type="text"],input[type="number"],textarea,.quiz-option,.scenario-options button,.control button) { border: 1px solid rgba(75,68,58,.52) !important; border-radius: 7px 4px 8px 5px !important; background-color: rgba(248,243,230,.88) !important; background-image: repeating-linear-gradient(167deg, rgba(40,105,173,.035) 0 2px, transparent 2px 6px) !important; box-shadow: 1px 2px 0 rgba(75,68,58,.08) !important; }
+        body.hw-handwritten.statml-standardized table { border-color: rgba(75,68,58,.5) !important; border-radius: 5px 8px 4px 7px !important; background-color: rgba(255,253,245,.70) !important; box-shadow: 1px 2px 0 rgba(75,68,58,.05) !important; }
+        body.hw-handwritten.statml-standardized :is(th,td) { border-color: rgba(75,68,58,.42) !important; border-style: dashed !important; }
+        body.hw-handwritten.statml-standardized th { background: rgba(241,212,119,.16) !important; }
+        body.hw-handwritten.statml-standardized :is(.statml-stage-button,.stage-dot) { min-height: 0 !important; width: 9px !important; height: 9px !important; padding: 0 !important; border-radius: 42% 58% 47% 53% !important; background: var(--hw-paper) !important; background-image: none !important; box-shadow: none !important; }
+        body.hw-handwritten.statml-standardized :is(.statml-stage-button,.stage-dot)[aria-current="step"], body.hw-handwritten.statml-standardized :is(.statml-stage-button,.stage-dot).active { background: var(--hw-yellow) !important; border-color: var(--hw-ink) !important; }
+        body.hw-handwritten.statml-standardized button.statml-stage-button, body.hw-handwritten.statml-standardized button.stage-dot { min-height: 0 !important; width: 9px !important; height: 9px !important; padding: 0 !important; border-radius: 42% 58% 47% 53% !important; background: var(--hw-paper) !important; background-image: none !important; box-shadow: none !important; }
+        body.hw-handwritten.statml-standardized button.statml-stage-button[aria-current="step"], body.hw-handwritten.statml-standardized button.stage-dot.active { background: var(--hw-yellow) !important; border-color: var(--hw-ink) !important; }
+        body.hw-handwritten .statml-stage .insight-box {
+            position: relative !important;
+            border: 1px solid rgba(157,112,12,.34) !important;
+            border-left: 4px solid var(--hw-blue) !important;
+            border-radius: 2px 5px 3px 6px !important;
+            background-color: #fff1b8 !important;
+            background-image: repeating-linear-gradient(176deg, rgba(223,178,45,.07) 0 2px, transparent 2px 7px), radial-gradient(circle at 14% 18%, rgba(255,255,255,.42), transparent 46%) !important;
+            box-shadow: 2px 3px 0 rgba(76,65,50,.14) !important;
+            clip-path: polygon(.35% 1%, 99.25% .15%, 99.85% 98.7%, .15% 99.6%) !important;
+            transform: rotate(-.35deg) !important;
+        }
+        body.hw-handwritten .statml-stage .insight-box::before {
+            content: "";
+            position: absolute;
+            top: 4px;
+            left: 50%;
+            width: 62px;
+            height: 11px;
+            pointer-events: none;
+            opacity: .54;
+            background: repeating-linear-gradient(87deg, rgba(135,105,68,.11) 0 1px, transparent 1px 4px), rgba(221,199,151,.72);
+            clip-path: polygon(2% 20%, 98% 0, 95% 92%, 0 100%);
+            transform: translateX(-50%) rotate(-1.8deg);
+            z-index: 2;
+        }
+        body.hw-handwritten .statml-stage .insight-box[style*="border-left-color"] {
+            border-left-color: var(--hw-red) !important;
+            background-color: #fde9de !important;
+            background-image: repeating-linear-gradient(176deg, rgba(200,94,88,.055) 0 2px, transparent 2px 7px), radial-gradient(circle at 14% 18%, rgba(255,255,255,.34), transparent 46%) !important;
+        }
+        body.hw-handwritten .statml-stage-rail { border-radius: 4px 6px 3px 5px !important; background-color: rgba(255,252,242,.82) !important; background-image: repeating-linear-gradient(176deg, rgba(223,178,45,.04) 0 2px, transparent 2px 8px), radial-gradient(circle at 14% 18%, rgba(255,255,255,.3), transparent 46%) !important; box-shadow: none !important; }
+        body.hw-handwritten .statml-stage-button { border-radius: 42% 58% 47% 53% !important; box-shadow: none !important; }
+        body.hw-handwritten .statml-stage-button[aria-current="step"] { background: var(--hw-yellow) !important; border-color: var(--hw-ink) !important; box-shadow: none !important; }
+        body.hw-handwritten .statml-stage-button span { border-radius: 3px 5px 2px 4px !important; background: var(--hw-yellow-soft) !important; color: var(--hw-ink) !important; box-shadow: none !important; }
+        body.hw-handwritten input[type="range"] { appearance: none !important; height: 7px !important; border: 0 !important; border-radius: 3px 5px 2px 4px !important; background: repeating-linear-gradient(167deg, rgba(40,105,173,.18) 0 2px, rgba(255,252,242,.72) 2px 6px) !important; box-shadow: 1px 1px 0 rgba(75,68,58,.12) !important; }
+        body.hw-handwritten input[type="range"]::-webkit-slider-thumb { appearance: none; width: 18px; height: 18px; border: 1px solid rgba(75,68,58,.52); border-radius: 42% 58% 47% 53%; background: var(--hw-yellow); box-shadow: 1px 2px 0 rgba(75,68,58,.16); transform: rotate(-3deg); }
+        body.hw-handwritten input[type="range"]::-moz-range-thumb { width: 18px; height: 18px; border: 1px solid rgba(75,68,58,.52); border-radius: 42% 58% 47% 53%; background: var(--hw-yellow); box-shadow: 1px 2px 0 rgba(75,68,58,.16); }
+    </style>
+    <style id="correlation-handwritten-cue-finish">
+        body.hw-handwritten .statml-hero :is(.scroll-cue,.scroll-hint,.scroll-indicator,.hero-scroll) {
+            position: static !important;
+            inset: auto !important;
+            align-self: center !important;
+            display: inline-flex !important;
+            width: auto !important;
+            max-width: calc(100% - 2rem) !important;
+            margin: .65rem auto 0 !important;
+            padding: 0 !important;
+            border: 0 !important;
+            border-radius: 0 !important;
+            background: transparent !important;
+            background-image: none !important;
+            box-shadow: none !important;
+            clip-path: none !important;
+            transform: none !important;
+            animation: none !important;
+            text-decoration-line: underline !important;
+            text-decoration-style: wavy !important;
+            text-decoration-color: rgba(40,105,173,.55) !important;
+            text-decoration-thickness: 1px !important;
+            text-underline-offset: 4px !important;
+        }
+    </style>
+    <style id="correlation-handwritten-ink-finish">
+        /* Keep the lesson as a paper spread: the authored cards provide the
+           local emphasis, while the two columns themselves stay unboxed. */
+        body.hw-handwritten.statml-standardized .statml-narrative,
+        body.hw-handwritten.statml-standardized .statml-stage {
+            background-color: transparent !important;
+            background-image: none !important;
+            border-color: transparent !important;
+            box-shadow: none !important;
+        }
+        body.hw-handwritten.statml-standardized .statml-stage > .hw-rough-frame {
+            display: none !important;
+        }
+        body.hw-handwritten.statml-standardized .statml-visual {
+            background-color: var(--hw-paper) !important;
+            background-image: none !important;
+            border: 0 !important;
+            border-radius: 0 !important;
+            box-shadow: none !important;
+        }
+        body.hw-handwritten.statml-standardized .canvas-container {
+            background-color: var(--hw-paper) !important;
+            background-image: none !important;
+            border: 0 !important;
+            border-radius: 0 !important;
+            box-shadow: none !important;
+        }
+        /* The paper spread itself is the visual surface; the axes and
+           renderer strokes provide the only plot edge. */
+        body.hw-handwritten.statml-standardized .canvas-container::before,
+        body.hw-handwritten.statml-standardized .canvas-container::after {
+            display: none !important;
+            content: none !important;
+        }
+    </style>
+<style id="correlation-handwritten-geometry-calibration">
+@media (min-width: 901px) {
+  body.hw-handwritten.statml-standardized [data-stage="1"]{min-height:1174px !important}
+  body.hw-handwritten.statml-standardized [data-stage="2"]{min-height:725px !important}
+  body.hw-handwritten.statml-standardized [data-stage="3"]{min-height:827px !important}
+  body.hw-handwritten.statml-standardized [data-stage="4"]{min-height:753px !important}
+  body.hw-handwritten.statml-standardized [data-stage="5"]{min-height:852px !important}
+  body.hw-handwritten.statml-standardized [data-stage="6"]{min-height:819px !important}
+  body.hw-handwritten.statml-standardized [data-stage="7"]{min-height:662.4px !important}
+  body.hw-handwritten.statml-standardized [data-stage="8"]{min-height:909px !important}
+  body.hw-handwritten.statml-standardized [data-stage="9"]{min-height:807px !important}
+  body.hw-handwritten.statml-standardized [data-stage="10"]{min-height:2312px !important}
+  body.hw-handwritten.statml-standardized [data-stage="3"]{padding-bottom:78px !important}
+}
+@media (min-width: 360px) and (max-width: 900px) {
+  body.hw-handwritten.statml-standardized [data-stage="1"]{min-height:1212px !important}
+  body.hw-handwritten.statml-standardized [data-stage="2"]{min-height:748px !important}
+  body.hw-handwritten.statml-standardized [data-stage="3"]{min-height:825px !important}
+  body.hw-handwritten.statml-standardized [data-stage="4"]{min-height:721px !important}
+  body.hw-handwritten.statml-standardized [data-stage="5"]{min-height:874px !important}
+  body.hw-handwritten.statml-standardized [data-stage="6"]{min-height:861px !important}
+  body.hw-handwritten.statml-standardized [data-stage="7"]{min-height:685px !important}
+  body.hw-handwritten.statml-standardized [data-stage="8"]{min-height:932px !important}
+  body.hw-handwritten.statml-standardized [data-stage="9"]{min-height:890px !important}
+  body.hw-handwritten.statml-standardized [data-stage="10"]{min-height:2670px !important}
+}
+</style>
 </head>
 <body>
 <nav class="statml-site-nav" aria-label="StatML Academy navigation">
@@ -777,7 +925,7 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
                 <div class="stage-label">Stage 02</div>
                 <h2>Direction and Form</h2>
                 <p>The first thing we look for in a scatterplot is the <strong>direction</strong> and <strong>form</strong> of the relationship.</p>
-                <p>If the dots rise from left to right, we have a <span class="pill positive">Positive Correlation</span>. As study hours go up, test scores also go up.</p>
+                <p>If the dots rise from left to right, we have a <span class="hw-marker-label positive">Positive Correlation</span>. As study hours go up, test scores also go up.</p>
                 <div class="insight-box">
                     <p><strong>The "Walking Friends" metaphor:</strong> Think of two friends. If they both walk forward together, that's a positive correlation. If one walks forward while the other walks backward, that's negative.</p>
                 </div>
@@ -966,8 +1114,8 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
 
         function drawHero() {
             hCtx.clearRect(0, 0, hWidth, hHeight);
-            hCtx.fillStyle = 'rgba(99, 102, 241, 0.5)';
-            hCtx.strokeStyle = 'rgba(99, 102, 241, 0.15)';
+            hCtx.fillStyle = 'rgba(40, 105, 173, 0.42)';
+            hCtx.strokeStyle = 'rgba(40, 105, 173, 0.16)';
             
             particles.forEach((p, i) => {
                 p.x += p.vx;
@@ -976,18 +1124,14 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
                 if(p.x < 0 || p.x > hWidth) p.vx *= -1;
                 if(p.y < 0 || p.y > hHeight) p.vy *= -1;
                 
-                hCtx.beginPath();
-                hCtx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-                hCtx.fill();
+                hCtx.save(); hCtx.globalAlpha = .75; hCtx.beginPath();
+                hCtx.moveTo(p.x + p.radius, p.y); hCtx.quadraticCurveTo(p.x + p.radius * .7, p.y + p.radius, p.x, p.y + p.radius * .85); hCtx.quadraticCurveTo(p.x - p.radius, p.y + p.radius * .4, p.x - p.radius * .8, p.y - p.radius * .2); hCtx.quadraticCurveTo(p.x, p.y - p.radius, p.x + p.radius, p.y); hCtx.fill(); hCtx.restore();
 
                 for(let j=i+1; j<particles.length; j++) {
                     const p2 = particles[j];
                     const dist = Math.hypot(p.x - p2.x, p.y - p2.y);
                     if(dist < 100) {
-                        hCtx.beginPath();
-                        hCtx.moveTo(p.x, p.y);
-                        hCtx.lineTo(p2.x, p2.y);
-                        hCtx.stroke();
+                        hCtx.save(); hCtx.globalAlpha = .45; hCtx.beginPath(); hCtx.moveTo(p.x, p.y); hCtx.quadraticCurveTo((p.x + p2.x) / 2 + ((i + j) % 3 - 1), (p.y + p2.y) / 2 + ((j - i) % 3 - 1), p2.x, p2.y); hCtx.stroke(); hCtx.restore();
                     }
                 }
             });
@@ -1079,6 +1223,67 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
             return (val - inMin) * (outMax - outMin) / (inMax - inMin) + outMin;
         }
 
+        const corrInk = { paper: '#fbf4e2', line: '#596259', text: '#252822', muted: '#697269', blue: '#2869ad', green: '#4f956b', orange: '#d89439', purple: '#7960ae', red: '#c85e58', neutral: '#cdbf9f' };
+        function corrRandom(seed) {
+            if (window.StatMLInk?.inkRandom) return window.StatMLInk.inkRandom(seed);
+            let s = 2166136261 >>> 0; for (const ch of String(seed)) { s ^= ch.charCodeAt(0); s = Math.imul(s, 16777619) >>> 0; }
+            return () => { s = (Math.imul(s, 1664525) + 1013904223) >>> 0; return s / 4294967296; };
+        }
+        function corrText(s, x, y, color = corrInk.text, size = 13, align = 'left', alpha = 1, weight = 400) { ctx.save(); ctx.globalAlpha = alpha; ctx.fillStyle = color; ctx.font = `${weight} ${size}px "Patrick Hand", "Kalam", "Chalkboard SE", cursive`; ctx.textAlign = align; ctx.textBaseline = 'alphabetic'; ctx.fillText(s, x, y); ctx.restore(); }
+        function corrLine(points, { color = corrInk.line, width = 1.2, dash = [], alpha = 1, seed = 'corr-line' } = {}) {
+            const r = corrRandom(seed);
+            /* Long ruler lines get a few low-frequency bends rather than a
+               single perturbed midpoint. Endpoints remain exact so axes and
+               the regression segment still land on the authored geometry. */
+            const rough = [points[0]];
+            /* At the rendered 1× scale a small midpoint wobble disappears,
+               especially on the long axes and trend segment.  Use a few
+               broad, low-frequency bends and a readable second pen pass;
+               the primary pass still lands on the exact authored endpoints. */
+            const drift = Math.min(20, Math.max(4.2, width * 7.2));
+            for (let segment = 0; segment < points.length - 1; segment += 1) {
+                const start = points[segment], end = points[segment + 1];
+                const distance = Math.hypot(end[0] - start[0], end[1] - start[1]);
+                const interiorCount = Math.max(2, Math.min(5, Math.round(distance / 140)));
+                for (let i = 1; i <= interiorCount; i += 1) {
+                    const t = i / (interiorCount + 1);
+                    /* Combine a seeded wobble with a slow sinusoidal bend so
+                       no long line can collapse into a ruler-straight stroke
+                       at 1× capture scale. */
+                    const bend = Math.sin((segment * 5 + i) * 1.37) * drift * .58 + (r() - .5) * drift * .72;
+                    const along = Math.cos((segment * 3 + i) * 1.11) * drift * .12;
+                    const dx = end[0] - start[0], dy = end[1] - start[1], len = Math.max(1, Math.hypot(dx, dy));
+                    rough.push([
+                        start[0] + dx * t - dy / len * bend + dx / len * along,
+                        start[1] + dy * t + dx / len * bend + dy / len * along
+                    ]);
+                }
+                rough.push(end);
+            }
+            const secondRandom = corrRandom(`${seed}:second`);
+            const second = rough.map((p, i) => {
+                const endpoint = i === 0 || i === rough.length - 1;
+                const offset = endpoint ? Math.min(6.2, drift * .58) : Math.max(6.4, drift * 1.02);
+                return [p[0] + (secondRandom() - .5) * offset, p[1] + (secondRandom() - .5) * offset];
+            });
+            ctx.save(); ctx.globalAlpha = alpha; ctx.strokeStyle = color; ctx.lineCap = 'round'; ctx.lineJoin = 'round'; ctx.setLineDash(dash);
+            ctx.globalAlpha = alpha * .74; ctx.lineWidth = Math.max(.7, width * .68); ctx.beginPath(); second.forEach((p, i) => i ? ctx.lineTo(p[0], p[1]) : ctx.moveTo(p[0], p[1])); ctx.stroke();
+            ctx.globalAlpha = alpha * .82; ctx.lineWidth = width; ctx.beginPath(); rough.forEach((p, i) => i ? ctx.lineTo(p[0], p[1]) : ctx.moveTo(p[0], p[1])); ctx.stroke();
+            ctx.restore();
+        }
+        function corrDot(x, y, radius, { color = corrInk.blue, alpha = 1, seed = 'corr-dot' } = {}) {
+            const r = corrRandom(seed), pts = [], secondRandom = corrRandom(`${seed}:second`), second = [];
+            for (let i = 0; i < 13; i++) { const a = i / 13 * Math.PI * 2, rr = radius + (r() - .5) * Math.min(3.2, radius * .44); pts.push([x + Math.cos(a) * rr, y + Math.sin(a) * rr]); }
+            for (let i = 0; i < pts.length; i++) second.push([pts[i][0] + (secondRandom() - .5) * 2.8, pts[i][1] + (secondRandom() - .5) * 2.8]);
+            ctx.save(); ctx.globalAlpha = alpha; ctx.fillStyle = color; ctx.strokeStyle = color; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+            ctx.beginPath(); pts.forEach((p, i) => i ? ctx.lineTo(p[0], p[1]) : ctx.moveTo(p[0], p[1])); ctx.closePath(); ctx.fill();
+            ctx.globalAlpha = alpha * .72; ctx.lineWidth = 1.05; ctx.beginPath(); second.forEach((p, i) => i ? ctx.lineTo(p[0], p[1]) : ctx.moveTo(p[0], p[1])); ctx.closePath(); ctx.stroke();
+            ctx.globalAlpha = alpha * .9; ctx.lineWidth = .72; ctx.beginPath(); pts.forEach((p, i) => i ? ctx.lineTo(p[0], p[1]) : ctx.moveTo(p[0], p[1])); ctx.closePath(); ctx.stroke();
+            ctx.restore();
+        }
+        function corrPoly(points, { fill = null, stroke = corrInk.line, alpha = 1, seed = 'corr-poly' } = {}) { const r = corrRandom(seed), pts = points.map((p, i) => i === 0 || i === points.length - 1 ? p : [p[0] + (r() - .5) * 1.5, p[1] + (r() - .5) * 1.5]); ctx.save(); ctx.globalAlpha = alpha; ctx.beginPath(); pts.forEach((p, i) => i ? ctx.lineTo(p[0], p[1]) : ctx.moveTo(p[0], p[1])); ctx.closePath(); if (fill) { ctx.fillStyle = fill; ctx.fill(); } if (stroke) { ctx.strokeStyle = stroke; ctx.lineWidth = 1.05; ctx.stroke(); } ctx.restore(); }
+        function corrClear() { ctx.save(); ctx.globalAlpha = 1; ctx.clearRect(0, 0, width, height); ctx.fillStyle = corrInk.paper; ctx.fillRect(0, 0, width, height); ctx.globalAlpha = .12; for (let y = 18; y < height; y += 28) corrLine([[10, y], [width - 10, y]], { color: corrInk.neutral, width: .45, seed: `corr:paper:${y}` }); ctx.restore(); }
+
         // High-performance numerical integration of t-distribution PDF for exact live p-values
         const halfAreaCache = {};
         function calculatePValue(r, n) {
@@ -1149,8 +1354,9 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
         points = baseData.map(p => ({x: p.x, y: p.y, renderX: p.x, renderY: p.y, isOutlier: false}));
         targetPoints = [...points];
 
-        // Draw Loop
-        function draw() {
+        // Previous clean renderer retained only as a semantic reference; the
+        // live canvas is painted by the hand-drawn renderer below.
+        function drawLegacy() {
             ctx.clearRect(0, 0, width, height);
             
             xRange.min = lerp(xRange.min, targetXRange.min, 0.05);
@@ -1192,7 +1398,7 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
             function getPY(val) { return mapRange(val, yRange.min, yRange.max, height - padY, padY); }
 
             ctx.fillStyle = colors.text;
-            ctx.font = '600 13px Inter';
+            ctx.font = '600 13px "Patrick Hand", "Kalam", "Chalkboard SE", cursive';
             ctx.textAlign = 'left';
             ctx.textBaseline = 'top';
             ctx.fillText('Scatterplot: Study vs Score', padX, 25);
@@ -1210,7 +1416,7 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
                 ctx.fillRect(pxMeanX, pyMeanY, width - padX - pxMeanX, height - padY - pyMeanY);
                 
                 ctx.fillStyle = colors.text;
-                ctx.font = '12px Inter';
+                ctx.font = '12px "Patrick Hand", "Kalam", "Chalkboard SE", cursive';
                 ctx.textAlign = 'center';
                 ctx.fillText('(+) Positive contribution', pxMeanX + 80, pyMeanY - 20);
                 ctx.fillText('(-) Negative', pxMeanX - 60, pyMeanY - 20);
@@ -1226,7 +1432,7 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
             ctx.stroke();
 
             ctx.fillStyle = colors.text;
-            ctx.font = '12px JetBrains Mono';
+            ctx.font = '12px "Patrick Hand", "Kalam", "Chalkboard SE", cursive';
             ctx.textAlign = 'center';
             ctx.textBaseline = 'top';
             for(let i=Math.ceil(xRange.min); i<=xRange.max; i+= (xRange.max-xRange.min > 10 ? 2 : 1)) {
@@ -1235,10 +1441,10 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
                 ctx.beginPath(); ctx.moveTo(px, height-padY); ctx.lineTo(px, height-padY+4); ctx.stroke();
             }
             
-            ctx.font = '500 13px Inter';
+            ctx.font = '500 13px "Patrick Hand", "Kalam", "Chalkboard SE", cursive';
             ctx.fillText('Hours Studied (X)', width/2, height - padY + 35); 
 
-            ctx.font = '12px JetBrains Mono';
+            ctx.font = '12px "Patrick Hand", "Kalam", "Chalkboard SE", cursive';
             ctx.textAlign = 'right';
             ctx.textBaseline = 'middle';
             let yStep = yRange.max - yRange.min > 40 ? 10 : 10;
@@ -1252,7 +1458,7 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
             ctx.translate(padX - 45, height/2);
             ctx.rotate(-Math.PI/2);
             ctx.textAlign = 'center';
-            ctx.font = '500 13px Inter';
+            ctx.font = '500 13px "Patrick Hand", "Kalam", "Chalkboard SE", cursive';
             ctx.fillText('Test Score (Y)', 0, 0);
             ctx.restore();
 
@@ -1269,7 +1475,7 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
                 ctx.setLineDash([]);
                 
                 ctx.fillStyle = colors.mean;
-                ctx.font = '12px Inter';
+                ctx.font = '12px "Patrick Hand", "Kalam", "Chalkboard SE", cursive';
                 ctx.textAlign = 'left';
                 ctx.fillText('X̄', pxMeanX + 5, height - padY - 10);
                 ctx.fillText('Ȳ', padX + 10, pyMeanY - 5);
@@ -1290,7 +1496,7 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
                 // Explicit label safely anchored near the bottom axis to avoid point overlap
                 if (currentStage === 6 && showTrendline > 0.5) {
                     const label = 'Misleading Linear Summary';
-                    ctx.font = '600 12px Inter';
+                    ctx.font = '600 12px "Patrick Hand", "Kalam", "Chalkboard SE", cursive';
                     const textMetrics = ctx.measureText(label);
                     const midX = getPX((xRange.min + xRange.max) / 2);
                     const labelY = height - padY - 20;
@@ -1386,6 +1592,56 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
                 }
             }
 
+            requestAnimationFrame(draw);
+        }
+
+        function draw() {
+            corrClear();
+            xRange.min = lerp(xRange.min, targetXRange.min, .05); xRange.max = lerp(xRange.max, targetXRange.max, .05);
+            yRange.min = lerp(yRange.min, targetYRange.min, .05); yRange.max = lerp(yRange.max, targetYRange.max, .05);
+            showTrendline = lerp(showTrendline, targetShowTrendline, .1); showMeans = lerp(showMeans, targetShowMeans, .05); showQuadrants = lerp(showQuadrants, targetShowQuadrants, .05);
+            const activePoints = [];
+            for (let i = 0; i < targetPoints.length; i++) {
+                if (!points[i]) points[i] = { x: targetPoints[i].x, y: targetPoints[i].y, renderX: targetPoints[i].x, renderY: targetPoints[i].y, isOutlier: targetPoints[i].isOutlier, a: 0 };
+                points[i].renderX = lerp(points[i].renderX, targetPoints[i].x, .1); points[i].renderY = lerp(points[i].renderY, targetPoints[i].y, .1); points[i].isOutlier = targetPoints[i].isOutlier; points[i].a = lerp(points[i].a !== undefined ? points[i].a : 1, 1, .1); activePoints.push(points[i]);
+            }
+            if (points.length > targetPoints.length) { for (let i = targetPoints.length; i < points.length; i++) { points[i].a = lerp(points[i].a, 0, .1); if (points[i].a > .01) activePoints.push(points[i]); } if (points[points.length - 1].a <= .01) points.pop(); }
+            const stats = calcStats(activePoints), targetStats = calcStats(targetPoints), padX = 70, padY = 70;
+            const getPX = val => mapRange(val, xRange.min, xRange.max, padX, width - padX), getPY = val => mapRange(val, yRange.min, yRange.max, height - padY, padY);
+            corrText('Scatterplot: Study vs Score', padX, 25, corrInk.text, 15, 'left', 1, 700);
+
+            if (showQuadrants > .01) {
+                const pxMeanX = getPX(stats.meanX), pyMeanY = getPY(stats.meanY);
+                corrPoly([[pxMeanX, padY], [width - padX, padY], [width - padX, pyMeanY], [pxMeanX, pyMeanY]], { fill: 'rgba(79,149,107,.12)', stroke: null, alpha: showQuadrants, seed: 'quadrant:positive:top' });
+                corrPoly([[padX, pyMeanY], [pxMeanX, pyMeanY], [pxMeanX, height - padY], [padX, height - padY]], { fill: 'rgba(79,149,107,.12)', stroke: null, alpha: showQuadrants, seed: 'quadrant:positive:bottom' });
+                corrPoly([[padX, padY], [pxMeanX, padY], [pxMeanX, pyMeanY], [padX, pyMeanY]], { fill: 'rgba(200,94,88,.11)', stroke: null, alpha: showQuadrants, seed: 'quadrant:negative:top' });
+                corrPoly([[pxMeanX, pyMeanY], [width - padX, pyMeanY], [width - padX, height - padY], [pxMeanX, height - padY]], { fill: 'rgba(200,94,88,.11)', stroke: null, alpha: showQuadrants, seed: 'quadrant:negative:bottom' });
+                corrText('(+) Positive contribution', pxMeanX + 80, pyMeanY - 20, corrInk.green, 12, 'center', showQuadrants, 700); corrText('(-) Negative', pxMeanX - 60, pyMeanY - 20, corrInk.red, 12, 'center', showQuadrants, 700);
+            }
+            corrLine([[padX, padY], [padX, height - padY], [width - padX, height - padY]], { color: corrInk.line, width: 1.3, seed: 'corr:axes' });
+            for (let i = Math.ceil(xRange.min); i <= xRange.max; i += (xRange.max - xRange.min > 10 ? 2 : 1)) { const px = getPX(i); corrText(i, px, height - padY + 15, corrInk.muted, 12, 'center'); corrLine([[px, height - padY], [px, height - padY + 4]], { color: corrInk.line, width: .8, seed: `corr:xtick:${i}` }); }
+            corrText('Hours Studied (X)', width / 2, height - padY + 35, corrInk.muted, 13, 'center');
+            const yStep = 10;
+            for (let i = Math.ceil(yRange.min / yStep) * yStep; i <= yRange.max; i += yStep) { const py = getPY(i); corrText(i, padX - 10, py + 4, corrInk.muted, 12, 'right'); corrLine([[padX - 4, py], [padX, py]], { color: corrInk.line, width: .8, seed: `corr:ytick:${i}` }); }
+            ctx.save(); ctx.translate(padX - 45, height / 2); ctx.rotate(-Math.PI / 2); corrText('Test Score (Y)', 0, 0, corrInk.muted, 13, 'center'); ctx.restore();
+
+            if (showMeans > .01) { const pxMeanX = getPX(stats.meanX), pyMeanY = getPY(stats.meanY); corrLine([[pxMeanX, padY], [pxMeanX, height - padY]], { color: corrInk.orange, width: 1.25, dash: [5, 5], alpha: showMeans, seed: 'corr:mean:x' }); corrLine([[padX, pyMeanY], [width - padX, pyMeanY]], { color: corrInk.orange, width: 1.25, dash: [5, 5], alpha: showMeans, seed: 'corr:mean:y' }); corrText('X̄', pxMeanX + 5, height - padY - 10, corrInk.orange, 13, 'left', showMeans, 700); corrText('Ȳ', padX + 10, pyMeanY - 5, corrInk.orange, 13, 'left', showMeans, 700); }
+            if (showTrendline > .01) { const y1 = stats.m * xRange.min + stats.b, y2 = stats.m * xRange.max + stats.b; corrLine([[getPX(xRange.min), getPY(y1)], [getPX(xRange.max), getPY(y2)]], { color: corrInk.line, width: 2.1, alpha: showTrendline, seed: 'corr:trend' }); if (currentStage === 6 && showTrendline > .5) { const midX = getPX((xRange.min + xRange.max) / 2), labelY = height - padY - 20; corrPoly([[midX - 78, labelY - 13], [midX + 78, labelY - 13], [midX + 78, labelY + 11], [midX - 78, labelY + 11]], { fill: 'rgba(255,253,245,.9)', stroke: corrInk.neutral, alpha: showTrendline, seed: 'corr:trend-label' }); corrText('Misleading Linear Summary', midX, labelY + 4, corrInk.red, 12, 'center', showTrendline, 700); } }
+            activePoints.forEach((p, i) => corrDot(getPX(p.renderX), getPY(p.renderY), 6, { color: p.isOutlier ? corrInk.red : corrInk.blue, alpha: p.a !== undefined ? p.a : 1, seed: `corr:point:${i}` }));
+
+            if (currentStage === 3) rDisplay.innerText = stats.r.toFixed(2);
+            if (currentStage === 6) curveRDisplay.innerText = stats.r === 0 || Math.abs(stats.r) < .005 ? '0.00' : stats.r.toFixed(2);
+            if (currentStage >= 8) {
+                const liveN = activePoints.length, liveRVal = stats.r, targetN = targetPoints.length, targetRVal = targetStats.r;
+                const stage8N = document.getElementById('stage8-n-display'); if (stage8N) stage8N.innerText = liveN;
+                const stage8RDisplay = document.getElementById('stage8-r-display'); if (stage8RDisplay) stage8RDisplay.innerText = liveRVal === 0 || Math.abs(liveRVal) < .005 ? '0.00' : liveRVal.toFixed(2);
+                const isSettled = Math.abs(liveRVal - targetRVal) < .005 && liveN === targetN, stage8PDisplay = document.getElementById('stage8-p-display'), stage8DecisionText = document.getElementById('stage8-decision-text');
+                if (currentStage === 8) {
+                    if (!isSettled) { if (stage8PDisplay) stage8PDisplay.innerText = '--'; if (stage8DecisionText) stage8DecisionText.innerHTML = '<em style="color: var(--text-muted);">Awaiting statistical computation...</em>'; }
+                    else { const pValTarget = calculatePValue(targetRVal, targetN); let pStr, pLabel; if (pValTarget < .001) { pStr = '< .001'; pLabel = 'p < .001'; } else if (pValTarget < .01) { pStr = '< .01'; pLabel = 'p < .01'; } else { pStr = pValTarget.toFixed(3).replace(/^0\./, '.'); pLabel = 'p = ' + pStr; } if (stage8PDisplay) stage8PDisplay.innerText = pStr; if (stage8DecisionText) stage8DecisionText.innerHTML = pValTarget < .05 ? `Because our p-value (<span class="mono">${pLabel}</span>) is smaller than our alpha threshold (usually 0.05), we <strong style="color:var(--success)">reject the null hypothesis</strong>. The data provide evidence against zero population correlation under the model assumptions.` : `Because our p-value (<span class="mono">${pLabel}</span>) is greater than our alpha threshold (usually 0.05), we <strong style="color:var(--error)">fail to reject the null hypothesis</strong>. There is not sufficient evidence to conclude a linear relationship exists.`; }
+                }
+                if (currentStage === 9) { const pValTarget = calculatePValue(targetRVal, targetN), pLabel = pValTarget < .001 ? 'p < .001' : (pValTarget < .01 ? 'p < .01' : 'p = ' + pValTarget.toFixed(3).replace(/^0\./, '.')); const s9R = document.getElementById('stage9-r-text'), s9P = document.getElementById('stage9-p-text'); if (s9R) s9R.innerText = targetRVal === 0 || Math.abs(targetRVal) < .005 ? '0.00' : targetRVal.toFixed(2); if (s9P) s9P.innerText = pLabel; }
+            }
             requestAnimationFrame(draw);
         }
 

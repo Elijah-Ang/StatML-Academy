@@ -8,6 +8,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="handwritten-theme.css?v=20260826-handwritten-final-2">
+  <script src="handwritten-theme.js?v=20260826-handwritten-final-2" defer></script>
   <style>
     *,*::before,*::after{box-sizing:border-box}
     :root{
@@ -78,7 +80,7 @@
     .metric-card{padding:.9rem;border:1px solid var(--statml-border);border-radius:var(--statml-radius-card);background:var(--statml-page);text-align:center}
     .metric-value{font-family:var(--mono);font-size:1.18rem;font-weight:700;color:var(--statml-text)}
     .metric-label{margin-top:.25rem;color:var(--statml-text-muted);font-family:var(--mono);font-size:.65rem;letter-spacing:.06em;text-transform:uppercase}
-    .plain-translation{display:grid;grid-template-columns:auto 1fr;gap:.75rem;align-items:start;margin:1.1rem 0;padding:1rem;border:1px dashed #c7d2fe;border-radius:var(--statml-radius-card);background:#fafaff}
+    .plain-translation{display:grid;grid-template-columns:auto 1fr;gap:.75rem;align-items:start;margin:1.1rem 0;padding:1rem;border:1px solid transparent;border-radius:var(--statml-radius-card);background:#fafaff}
     .plain-icon{display:grid;place-items:center;width:30px;height:30px;border-radius:9px;background:var(--statml-brand-soft);color:var(--statml-brand-strong);font-family:var(--mono);font-weight:700}
     .plain-translation p{margin:0;font-size:.92rem}
     .two-col,.compare-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.75rem}
@@ -149,6 +151,121 @@
     @media(max-width:360px){.statml-narrative{padding-inline:.9rem}.mini-table{table-layout:fixed;font-size:.72rem}.mini-table th,.mini-table td{padding:.45rem .28rem;overflow-wrap:anywhere}.mini-table th{font-size:.58rem;letter-spacing:.02em}.mini-table .tag{padding:.12rem .3rem;font-size:.58rem}.statml-stage p,.statml-stage li{font-size:.92rem}}
     @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
   </style>
+  <style id="neural-networks-material-pass">
+    body:is(.hw-handwritten,.statml-standardized){background:#f5f0e5!important;color:#292524!important}
+    body:is(.hw-handwritten,.statml-standardized) :is(.statml-hero,.hero,.hero-section,#hero)::before,
+    body:is(.hw-handwritten,.statml-standardized) :is(.statml-hero,.hero,.hero-section,#hero)::after{background:none!important;background-image:none!important;opacity:0!important}
+    body:is(.hw-handwritten,.statml-standardized) :is(.hero-grid,.hero-orbit,.hero-orbits,.hero-particles,.hero-dots,.hero-lines,.hero-signal){background:none!important;background-image:none!important;box-shadow:none!important}
+    body:is(.hw-handwritten,.statml-standardized) :is(.hero,.statml-hero,.hero-section,#hero){background:none!important;background-image:none!important}
+    body:is(.hw-handwritten,.statml-standardized) :is(.hero h1,.statml-hero h1,#hero h1){background:none!important;color:#292524!important;-webkit-text-fill-color:#292524!important;text-shadow:.6px .8px 0 rgba(88,83,72,.12)!important}
+    body:is(.hw-handwritten,.statml-standardized) :is(.glass-card,.card,.metric-card,.control-panel,.controls,.quiz-card,.formula,.formula-block,.math-block,.insight,.insight-box,.takeaway,.plain-translation,.question-card,.comparison-card,.visual-stage,.canvas-wrap,.statml-visual-card,.statml-overview,.hero-objectives,.learning-goals,.hero-goals,.fold-box,.legend-card,.table-card,.stage-card,.info-card,.metric,.pipeline,.mini-check,.statml-stage,.statml-stage-rail,details,pre,table,.split-key,.tensor-control,.sliders,.architecture-control,.release-checklist){background-image:none!important;background-color:rgba(255,252,242,.8)!important;border-color:rgba(88,83,72,.42)!important;border-radius:5px 8px 4px 7px!important;box-shadow:1px 2px 0 rgba(88,83,72,.09)!important;backdrop-filter:none!important}
+    body:is(.hw-handwritten,.statml-standardized) :is(button,.btn,.control-btn,.interactive-btn,.action-button,select,input[type=text],input[type=number],.quiz-option,.toggle,.choice,.segmented button,.toggle-button,.primary-button){background-image:none!important;background-color:rgba(248,243,230,.9)!important;border-color:rgba(88,83,72,.48)!important;border-radius:4px 6px 3px 5px!important;box-shadow:none!important}
+    body:is(.hw-handwritten,.statml-standardized) :is(.tag,.pill,.chip,.badge,.topic-badge,.hero-badge,.stage-badge,.metric-badge,.stage-dot,.orbit-dot,.legend-color,.legend-color-ring,.swatch,.eyebrow-dot,.statml-stage-button){border-radius:3px 6px 4px 5px!important;box-shadow:none!important}
+    body:is(.hw-handwritten,.statml-standardized) :is(.progress-bar,.module-progress span){background:#356fae!important;background-image:none!important;box-shadow:none!important}
+    body:is(.hw-handwritten,.statml-standardized) hr{border-top:1px solid transparent!important}
+    body:is(.hw-handwritten,.statml-standardized) :is(.section,.story-section,.stage,.stage-section,.chapter,.statml-stage,.statml-layout,.statml-narrative){background-color:transparent!important;background-image:none!important}
+    body:is(.hw-handwritten,.statml-standardized) canvas{background:#fbf6e9!important;background-image:none!important}
+  </style>
+  <style id="neural-networks-ink-finishing">
+    html body.hw-handwritten.hw-handwritten :is(.scroll-cue,.scroll-hint,.scroll-indicator,.hero-scroll){background:transparent!important;background-image:none!important;clip-path:none!important;box-shadow:none!important;filter:none!important;text-decoration-line:underline!important;text-decoration-style:wavy!important;text-decoration-color:rgba(40,105,173,.55)!important;text-decoration-thickness:1px!important;text-underline-offset:4px!important}
+    html body.hw-handwritten.hw-handwritten :is(.scroll-cue span,.scroll-cue::before,.scroll-cue::after){background-image:none!important;background-color:transparent!important;box-shadow:none!important}
+    html body.hw-handwritten.hw-handwritten :is([style*="linear-gradient"],[style*="radial-gradient"]){background-image:none!important}
+    html body.hw-handwritten.hw-handwritten button:is(.active,.selected),html body.hw-handwritten.hw-handwritten button[aria-pressed="true"],html body.hw-handwritten.hw-handwritten .btn.active{background:#e6f0f8!important;background-image:none!important;color:#174f89!important;border-color:rgba(40,105,173,.64)!important;box-shadow:none!important}
+    body:is(.hw-handwritten,.statml-standardized) :is(.scroll-cue,.scroll-hint,.scroll-indicator,.hero-scroll){background:transparent!important;background-image:none!important;clip-path:none!important;box-shadow:none!important;filter:none!important;text-decoration-line:underline!important;text-decoration-style:wavy!important;text-decoration-color:rgba(40,105,173,.55)!important;text-decoration-thickness:1px!important;text-underline-offset:4px!important}
+    body:is(.hw-handwritten,.statml-standardized) :is(.scroll-cue span,.scroll-cue::before,.scroll-cue::after){background-image:none!important;background-color:transparent!important;box-shadow:none!important}
+    body:is(.hw-handwritten,.statml-standardized) :is([style*="linear-gradient"],[style*="radial-gradient"]){background-image:none!important}
+    body:is(.hw-handwritten,.statml-standardized) :is(.legend,.legend-card,.viz-legend,.viz-overlay,.tooltip,.panel,.visual-shell,.visual-stage,.visual-card,.canvas-wrap,.control-panel,.controls,.step-card,.architecture-control){background-image:none!important;backdrop-filter:none!important;border-color:rgba(88,83,72,.42)!important;border-radius:5px 8px 4px 7px!important;box-shadow:1px 2px 0 rgba(88,83,72,.09)!important}
+  </style>
+  <style id="neural-networks-material-override">
+    body:is(.hw-handwritten,.statml-standardized) :is(.statml-rigor-panel,.statml-rigor-panel *, .statml-rigor-grid>div,.choice-learn-panel,.choice-learn-side) { font-family:"Patrick Hand","Kalam","Marker Felt","Chalkboard SE",cursive !important; }
+    body:is(.hw-handwritten,.statml-standardized) :is(.statml-rigor-panel,.statml-rigor-grid>div,.choice-learn-panel,.choice-learn-side) { background-image:none!important; background-color:rgba(255,252,242,.78)!important; border-color:rgba(88,83,72,.42)!important; border-radius:5px 8px 4px 7px!important; box-shadow:1px 2px 0 rgba(88,83,72,.09)!important; }
+    body.hw-handwritten .statml-visual-card,
+    body.hw-handwritten .visual-topbar,
+    body.hw-handwritten .visual-foot { background:transparent!important; background-image:none!important; border:0!important; outline:0!important; border-radius:0!important; box-shadow:none!important; backdrop-filter:none!important; }
+    /* The bootstrap's rough-frame is useful for ordinary paper notes, but the
+       visual shell and overview are already open composition.  Leaving those
+       frames in place creates a second, still-rectangular software card. */
+    html body.hw-handwritten .hw-rough-surface.statml-visual-card,
+    html body.hw-handwritten .hw-rough-surface.statml-overview,
+    html body.hw-handwritten .hw-rough-surface.statml-overview-item,
+    html body.hw-handwritten .hw-rough-surface.visual-foot,
+    html body.hw-handwritten .hw-rough-surface.statml-stage-rail { box-shadow:none!important; border:0!important; border-radius:0!important; background:transparent!important; background-color:transparent!important; }
+    html body.hw-handwritten .hw-rough-surface.statml-visual-card,
+    html body.hw-handwritten .hw-rough-surface.statml-overview,
+    html body.hw-handwritten .hw-rough-surface.statml-overview-item { background:transparent!important; background-color:transparent!important; }
+    html body.hw-handwritten .statml-visual-card > .hw-rough-frame,
+    html body.hw-handwritten .statml-overview > .hw-rough-frame,
+    html body.hw-handwritten .statml-overview-item > .hw-rough-frame,
+    html body.hw-handwritten .visual-foot > .hw-rough-frame,
+    html body.hw-handwritten .statml-stage-rail > .hw-rough-frame { display:none!important; }
+    html body.hw-handwritten .statml-visual { border-left:0!important; border-bottom:0!important; }
+    html body.hw-handwritten .canvas-wrap { background:transparent!important; background-color:transparent!important; background-image:none!important; border:0!important; box-shadow:none!important; }
+    html body.hw-handwritten .visual-topbar { border-bottom:0!important; background:transparent!important; background-color:transparent!important; }
+    html body.hw-handwritten .visual-foot { border-top:0!important; }
+    html body.hw-handwritten .statml-stage-rail { background:transparent!important; background-image:none!important; }
+    body.hw-handwritten .visual-topbar { transform:rotate(-.2deg); }
+    body.hw-handwritten .visual-badge { background:transparent!important; background-image:none!important; border:0!important; outline:0!important; border-radius:0!important; box-shadow:none!important; padding:.15rem .22rem!important; transform:rotate(1.2deg); text-decoration-line:underline!important; text-decoration-style:wavy!important; text-decoration-color:rgba(40,105,173,.55)!important; text-underline-offset:3px!important; }
+    body.hw-handwritten .statml-overview { background:transparent!important; background-image:none!important; border:0!important; outline:0!important; border-radius:0!important; box-shadow:none!important; backdrop-filter:none!important; }
+    body.hw-handwritten .statml-overview-item { background:transparent!important; background-image:none!important; border:0!important; outline:0!important; border-radius:0!important; box-shadow:none!important; }
+    body.hw-handwritten .statml-overview-item:nth-child(1) { transform:rotate(-.55deg); }
+    body.hw-handwritten .statml-overview-item:nth-child(2) { transform:rotate(.35deg); }
+    body.hw-handwritten .statml-overview-item:nth-child(3) { transform:rotate(-.25deg); }
+    body.hw-handwritten .statml-overview-number { width:auto!important; height:auto!important; min-width:1.1rem!important; background:transparent!important; border:0!important; border-radius:0!important; box-shadow:none!important; font-family:"Patrick Hand","Kalam","Marker Felt","Chalkboard SE",cursive!important; text-decoration-line:underline!important; text-decoration-style:wavy!important; text-decoration-color:rgba(40,105,173,.48)!important; text-underline-offset:3px!important; }
+    html body.hw-handwritten .visual-badge { padding:.1rem .12rem!important; text-decoration-line:underline!important; text-decoration-style:wavy!important; text-decoration-color:rgba(40,105,173,.55)!important; text-underline-offset:3px!important; }
+  </style>
+<style id="neural-networks-no-dashed">
+  body:is(.hw-handwritten,.statml-standardized) :is(table,table *,[style*="dashed"]){border-style:solid!important;border-color:transparent!important}
+</style>
+<style id="neural-networks-doodle-style">
+  .hw-doodle{display:inline-block;width:1.12em;height:1.12em;vertical-align:-.18em;margin-inline-end:.22em;overflow:visible;color:currentColor;transform:rotate(-2deg);pointer-events:none}
+  .hw-doodle path{fill:none;stroke:currentColor;stroke-width:1.65;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke}
+</style>
+<style id="neural-networks-desktop-rhythm">
+  /* Keep each handwritten chapter at the original desktop scroll cadence;
+     the existing mobile auto-height rules remain authoritative below 901px. */
+  @media (min-width:901px){
+    body.hw-handwritten section[data-stage="1"]{min-height:1179.03px!important}
+    body.hw-handwritten section[data-stage="2"]{min-height:934.5px!important}
+    body.hw-handwritten section[data-stage="3"]{min-height:1600.03px!important}
+    body.hw-handwritten section[data-stage="4"]{min-height:1309.63px!important}
+    body.hw-handwritten section[data-stage="5"]{min-height:1165.03px!important}
+    body.hw-handwritten section[data-stage="6"]{min-height:1881.42px!important}
+    body.hw-handwritten section[data-stage="7"]{min-height:805.77px!important}
+    body.hw-handwritten section[data-stage="8"]{min-height:1114.05px!important}
+    body.hw-handwritten section[data-stage="9"]{min-height:810.11px!important}
+    body.hw-handwritten section[data-stage="10"]{min-height:1050.23px!important}
+    body.hw-handwritten section[data-stage="11"]{min-height:987.69px!important}
+    body.hw-handwritten section[data-stage="12"]{min-height:1845.19px!important}
+    body.hw-handwritten section[data-stage="13"]{min-height:1689px!important}
+    body.hw-handwritten section[data-stage="14"]{min-height:1364.78px!important}
+    body.hw-handwritten section[data-stage="15"]{min-height:1238.19px!important}
+    body.hw-handwritten section[data-stage="16"]{min-height:947.91px!important}
+    body.hw-handwritten section[data-stage="17"]{min-height:1497.02px!important}
+    body.hw-handwritten section[data-stage="18"]{min-height:889px!important}
+    body.hw-handwritten section[data-stage="19"]{min-height:1362.14px!important}
+  }
+  @media (min-width:376px) and (max-width:900px){
+    body.hw-handwritten section[data-stage="1"]{min-height:1247.73px!important}
+    body.hw-handwritten section[data-stage="2"]{min-height:1059.48px!important}
+    body.hw-handwritten section[data-stage="3"]{min-height:2001.72px!important}
+    body.hw-handwritten section[data-stage="4"]{min-height:1519.31px!important}
+    body.hw-handwritten section[data-stage="5"]{min-height:1217.42px!important}
+    body.hw-handwritten section[data-stage="6"]{min-height:2318.91px!important}
+    body.hw-handwritten section[data-stage="7"]{min-height:869.45px!important}
+    body.hw-handwritten section[data-stage="8"]{min-height:1316.16px!important}
+    body.hw-handwritten section[data-stage="9"]{min-height:845.23px!important}
+    body.hw-handwritten section[data-stage="10"]{min-height:1079.97px!important}
+    body.hw-handwritten section[data-stage="11"]{min-height:1222.03px!important}
+    body.hw-handwritten section[data-stage="12"]{min-height:2255.02px!important}
+    body.hw-handwritten section[data-stage="13"]{min-height:2111.63px!important}
+    body.hw-handwritten section[data-stage="14"]{min-height:1671.84px!important}
+    body.hw-handwritten section[data-stage="15"]{min-height:1332.86px!important}
+    body.hw-handwritten section[data-stage="16"]{min-height:932.78px!important}
+    body.hw-handwritten section[data-stage="17"]{min-height:1799.11px!important}
+    body.hw-handwritten section[data-stage="18"]{min-height:1018.33px!important}
+    body.hw-handwritten section[data-stage="19"]{min-height:1488.33px!important}
+  }
+</style>
 </head>
 <body class="statml-standardized">
   <a class="skip-link" href="#lesson">Skip to lesson</a>
@@ -360,7 +477,7 @@ weights are still unchanged</div>
         <div class="stage-label">Stage 12</div>
         <h2>Choose the model before validation gets worse</h2>
         <p>Training loss can keep falling while validation loss eventually rises. That is the causal signature of overfitting: the model is improving on examples it trains on while becoming less useful on unseen data. Keep the checkpoint near the lowest validation loss, not the final training step.</p>
-        <div class="plain-translation"><span class="plain-icon">⌁</span><p><strong>Local is not global:</strong> an optimizer follows nearby slopes and may settle in one valley even if a lower valley exists elsewhere. Validation asks a different question: whichever valley training reaches, does that model generalize?</p></div>
+        <div class="plain-translation"><span class="plain-icon"><svg class="hw-doodle" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M4 13c2-5 4-5 6 0s4 5 6 0 2-5 4-1"></path></svg></span><p><strong>Local is not global:</strong> an optimizer follows nearby slopes and may settle in one valley even if a lower valley exists elsewhere. Validation asks a different question: whichever valley training reaches, does that model generalize?</p></div>
         <div class="plain-translation"><span class="plain-icon">!</span><p><strong>Why can dependence be bad?</strong> A neuron might learn a brittle shortcut such as “attendance decides everything.” If later neurons rely heavily on that one pathway, the network may fail when the shortcut does not hold for new students.</p></div>
         <div class="control-card">
           <span class="content-kicker">Regularization control</span>
@@ -535,17 +652,36 @@ prediction = Pass</div>
     window.addEventListener('resize',resize,{passive:true});
 
     const C={ink:'#1f2937',muted:'#6b7280',line:'#d9dde7',brand:'#6366f1',brand2:'#4f46e5',soft:'#eef2ff',green:'#16a34a',amber:'#d97706',red:'#dc2626',blue:'#2563eb',cyan:'#0891b2',paper:'#f7f7f4',surface:'#ffffff'};
-    function rr(x,y,w,h,r=12,fill=C.surface,stroke=C.line){ctx.beginPath();ctx.roundRect(x,y,w,h,r);if(fill){ctx.fillStyle=fill;ctx.fill()}if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=1;ctx.stroke()}}
-    function line(x1,y1,x2,y2,color=C.line,width=1,dash=[]){ctx.beginPath();ctx.setLineDash(dash);ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.strokeStyle=color;ctx.lineWidth=width;ctx.stroke();ctx.setLineDash([])}
-    function text(t,x,y,size=13,color=C.ink,align='left',weight=500,font='Inter'){ctx.fillStyle=color;ctx.font=`${weight} ${size}px ${font}`;ctx.textAlign=align;ctx.textBaseline='middle';ctx.fillText(t,x,y)}
+    const inkSeed=0x4e4e4554;let inkCounter=0;
+    function inkNoise(amount=1){const n=Math.sin((inkSeed+inkCounter++*79.31)*12.9898)*43758.5453;return(n-Math.floor(n)-.5)*amount}
+    function inkRectPath(context,x,y,w,h,r=0){const n=Math.max(1.6,Math.min(4.8,Math.min(w,h)*.04));const q=Math.min(r,w/2,h/2);context.beginPath();context.moveTo(x+q+inkNoise(n),y+inkNoise(n));context.lineTo(x+w-q+inkNoise(n),y+inkNoise(n));context.quadraticCurveTo(x+w+inkNoise(n),y+inkNoise(n),x+w+inkNoise(n),y+q+inkNoise(n));context.lineTo(x+w+inkNoise(n),y+h-q+inkNoise(n));context.quadraticCurveTo(x+w+inkNoise(n),y+h+inkNoise(n),x+w-q+inkNoise(n),y+h+inkNoise(n));context.lineTo(x+q+inkNoise(n),y+h+inkNoise(n));context.quadraticCurveTo(x+inkNoise(n),y+h+inkNoise(n),x+inkNoise(n),y+h-q+inkNoise(n));context.lineTo(x+inkNoise(n),y+q+inkNoise(n));context.quadraticCurveTo(x+inkNoise(n),y+inkNoise(n),x+q+inkNoise(n),y+inkNoise(n));context.closePath()}
+    function inkCirclePath(context,x,y,r,steps=18){context.beginPath();for(let i=0;i<=steps;i++){const a=Math.PI*2*i/steps,rr=r*(1+inkNoise(r<8?.16:.085)),j=r<8?.8:.28,px=x+Math.cos(a)*rr+inkNoise(j),py=y+Math.sin(a)*rr+inkNoise(j);if(!i)context.moveTo(px,py);else context.lineTo(px,py)}context.closePath()}
+    function inkLine(context,x1,y1,x2,y2,color,width=1,dash=[]){const len=Math.max(1,Math.hypot(x2-x1,y2-y1)),steps=Math.max(3,Math.min(18,Math.ceil(len/42))),dx=x2-x1,dy=y2-y1,nx=-dy/len,ny=dx/len;context.save();context.setLineDash(dash);context.strokeStyle=color;context.lineWidth=width;context.lineCap='round';context.lineJoin='round';for(let pass=0;pass<2;pass++){context.beginPath();for(let i=0;i<=steps;i++){const t=i/steps,edge=i===0||i===steps,normal=inkNoise(edge?.85:Math.min(5.2,Math.max(3.2,width*2.2+1.8))),along=inkNoise(edge?.34:Math.min(1.35,width*.56+.4)),px=x1+dx*t+nx*normal+(dx/len)*along,py=y1+dy*t+ny*normal+(dy/len)*along;i?context.lineTo(px,py):context.moveTo(px,py)}context.stroke()}context.restore()}
+    function handFont(font){return String(font||'13px "Patrick Hand"').replace(/["']/g,'').replace(/Inter|JetBrains Mono|system-ui|sans-serif|monospace|Patrick Hand|Kalam/g,'"Patrick Hand"')}
+    function handText(context,t,x,y,size,color,align='left',weight=500,font='Patrick Hand',baseline='middle'){context.save();context.fillStyle=color;context.font=`${weight} ${size}px ${handFont(font)}`;context.textAlign=align;context.textBaseline=baseline;context.fillText(t,x,y);context.restore()}
+    function rr(x,y,w,h,r=12,fill=C.surface,stroke=C.line){inkRectPath(ctx,x,y,w,h,r);if(fill){ctx.fillStyle=fill;ctx.fill()}if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=1.45;ctx.stroke();inkRectPath(ctx,x+.8,y-.55,w,h,r);ctx.globalAlpha=.52;ctx.lineWidth=.82;ctx.stroke();ctx.globalAlpha=1}if(fill&&fill!=='transparent'&&w>24&&h>18){ctx.save();inkRectPath(ctx,x+.4,y+.3,w-1,h-1,r);ctx.clip();ctx.globalAlpha=fill===C.surface||fill==='#fff'?.14:.20;ctx.strokeStyle=stroke||C.ink;ctx.lineWidth=.65;for(let q=-h;q<w;q+=8){ctx.beginPath();ctx.moveTo(x+q,y+h);ctx.lineTo(x+q+h,y);ctx.stroke()}ctx.restore()}}
+    function markerPanel(x,y,w,h,r=12,fill=C.soft,stroke='rgba(99,102,241,.3)'){
+      // The final cycle's centre is a paper note with a marker wash, not a
+      // smooth UI card.  Preserve the original rectangle and text footprint.
+      ctx.save();
+      inkRectPath(ctx,x,y,w,h,r);ctx.fillStyle=fill;ctx.globalAlpha=.62;ctx.fill();
+      ctx.save();inkRectPath(ctx,x+.5,y+.4,w-1,h-1,r);ctx.clip();ctx.globalAlpha=.34;ctx.strokeStyle=stroke||fill;ctx.lineWidth=1;ctx.lineCap='round';
+      for(let q=-h;q<w+h;q+=8){ctx.beginPath();ctx.moveTo(x+q+inkNoise(.8),y+h+inkNoise(.8));ctx.lineTo(x+q+h+inkNoise(.8),y+inkNoise(.8));ctx.stroke()}
+      ctx.restore();
+      if(stroke){ctx.globalAlpha=.9;ctx.strokeStyle=stroke;ctx.lineWidth=1.45;inkRectPath(ctx,x,y,w,h,r);ctx.stroke();ctx.globalAlpha=.42;ctx.lineWidth=.78;inkRectPath(ctx,x+.9,y-.55,w,h,r);ctx.stroke()}
+      ctx.restore();
+    }
+    function line(x1,y1,x2,y2,color=C.line,width=1,dash=[]){inkLine(ctx,x1,y1,x2,y2,color,width,dash)}
+    function handCheck(x,y,size,color){line(x-size*.42,y,x-size*.1,y+size*.34,color,Math.max(1.1,size*.12));line(x-size*.1,y+size*.34,x+size*.5,y-size*.42,color,Math.max(1.1,size*.12));}
+    function text(t,x,y,size=13,color=C.ink,align='left',weight=500,font='Patrick Hand'){handText(ctx,t,x,y,size,color,align,weight,font)}
     function wrap(t,x,y,maxW,lineH=17,size=12,color=C.muted,weight=400,align='left'){
-      ctx.font=`${weight} ${size}px Inter`;ctx.fillStyle=color;ctx.textAlign=align;ctx.textBaseline='top';
+      ctx.font=`${weight} ${size}px ${handFont('Patrick Hand')}`;ctx.fillStyle=color;ctx.textAlign=align;ctx.textBaseline='top';
       const words=t.split(' ');let row='',yy=y;for(const word of words){const test=row?row+' '+word:word;if(ctx.measureText(test).width>maxW&&row){ctx.fillText(row,x,yy);row=word;yy+=lineH}else row=test}if(row)ctx.fillText(row,x,yy);return yy+lineH;
     }
-    function badge(t,x,y,color=C.brand,size=10){ctx.font=`600 ${size}px "JetBrains Mono"`;const w=ctx.measureText(t).width+18,h=size+14;rr(x,y,w,h,h/2,color+'12',color+'35');text(t,x+w/2,y+h/2,size,color,'center',600,'"JetBrains Mono"');return w}
-    function labelChip(t,x,y,color=C.ink,size=10,align='right'){ctx.font=`700 ${size}px "JetBrains Mono"`;const w=ctx.measureText(t).width+14,h=size+10,left=align==='right'?x-w:align==='center'?x-w/2:x;rr(left,y-h/2,w,h,5,'#fff',color+'35');text(t,align==='right'?x-7:align==='center'?x:left+7,y,size,color,align,700,'"JetBrains Mono"');return w}
-    function arrow(x1,y1,x2,y2,color=C.brand,width=2,alpha=1){ctx.save();ctx.globalAlpha=alpha;line(x1,y1,x2,y2,color,width);const a=Math.atan2(y2-y1,x2-x1);ctx.beginPath();ctx.moveTo(x2,y2);ctx.lineTo(x2-8*Math.cos(a-.45),y2-8*Math.sin(a-.45));ctx.lineTo(x2-8*Math.cos(a+.45),y2-8*Math.sin(a+.45));ctx.closePath();ctx.fillStyle=color;ctx.fill();ctx.restore()}
-    function node(x,y,r,label,fill=C.surface,stroke=C.brand,muted=false){ctx.save();ctx.globalAlpha=muted?.28:1;ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.fillStyle=fill;ctx.fill();ctx.strokeStyle=stroke;ctx.lineWidth=muted?1:2;ctx.stroke();if(label!==undefined)text(String(label),x,y,Math.max(9,r*.6),stroke,'center',700,'"JetBrains Mono"');ctx.restore()}
+    function badge(t,x,y,color=C.brand,size=10){ctx.font=`600 ${size}px ${handFont('"Patrick Hand"')}`;const w=ctx.measureText(t).width+18,h=size+14;rr(x,y,w,h,h/2,color+'12',color+'35');text(t,x+w/2,y+h/2,size,color,'center',600,'"Patrick Hand"');return w}
+    function labelChip(t,x,y,color=C.ink,size=10,align='right'){ctx.font=`700 ${size}px ${handFont('"Patrick Hand"')}`;const w=ctx.measureText(t).width+14,h=size+10,left=align==='right'?x-w:align==='center'?x-w/2:x;rr(left,y-h/2,w,h,5,'#fff',color+'35');text(t,align==='right'?x-7:align==='center'?x:left+7,y,size,color,align,700,'"Patrick Hand"');return w}
+    function arrow(x1,y1,x2,y2,color=C.brand,width=2,alpha=1){ctx.save();ctx.globalAlpha=alpha;line(x1,y1,x2,y2,color,width);const a=Math.atan2(y2-y1,x2-x1);for(let pass=0;pass<2;pass++){ctx.beginPath();ctx.moveTo(x2+inkNoise(.75),y2+inkNoise(.75));ctx.lineTo(x2-8*Math.cos(a-.45)+inkNoise(1.1),y2-8*Math.sin(a-.45)+inkNoise(1.1));ctx.lineTo(x2-8*Math.cos(a+.45)+inkNoise(1.1),y2-8*Math.sin(a+.45)+inkNoise(1.1));ctx.closePath();ctx.fillStyle=color;ctx.fill()}ctx.restore()}
+    function node(x,y,r,label,fill=C.surface,stroke=C.brand,muted=false){ctx.save();ctx.globalAlpha=muted?.28:1;inkCirclePath(ctx,x,y,r,Math.max(14,Math.min(28,Math.round(r*2.7))));ctx.fillStyle=fill;ctx.fill();ctx.strokeStyle=stroke;ctx.lineWidth=muted?1:2;ctx.stroke();inkCirclePath(ctx,x+.7,y-.45,r,Math.max(14,Math.min(28,Math.round(r*2.7))));ctx.globalAlpha=.35;ctx.lineWidth=.7;ctx.stroke();ctx.globalAlpha=muted?.28:1;if(label!==undefined)text(String(label),x,y,Math.max(9,r*.6),stroke,'center',700,'"JetBrains Mono"');ctx.restore()}
     function panelTitle(title,x,y,w,code){text(title,x+14,y+18,cw<500?11:13,C.ink,'left',700);if(code)text(code,x+w-22,y+18,cw<500?8:10,C.muted,'right',600,'"JetBrains Mono"')}
     function networkLayout(task='binary'){
       const pad=Math.max(34,cw*.06),top=Math.max(52,ch*.09),bottom=Math.max(58,ch*.12);
@@ -559,7 +695,7 @@ prediction = Pass</div>
         const off=((a.index*7+b.index*11+i*5)%9)-4;
         const color=back?C.red:(off>0?C.brand:C.blue);
         line(a.x+16,a.y,b.x-16,b.y,color,Math.abs(off)>2?1.2:.7,[]);ctx.globalAlpha=1;
-        if(pulses){const raw=((time*.00035)+(a.index*.13+b.index*.09+i*.17));const phase=((raw%1)+1)%1;const px=(a.x+16)+(b.x-a.x-32)*phase,py=a.y+(b.y-a.y)*phase;ctx.beginPath();ctx.arc(px,py,3,0,Math.PI*2);ctx.fillStyle=color;ctx.fill()}
+        if(pulses){const raw=((time*.00035)+(a.index*.13+b.index*.09+i*.17));const phase=((raw%1)+1)%1;const px=(a.x+16)+(b.x-a.x-32)*phase,py=a.y+(b.y-a.y)*phase;inkCirclePath(ctx,px,py,3,12);ctx.fillStyle=color;ctx.fill()}
       }
     }
     function drawNetwork({focusLayer=-1,back=false,pulses=false,time=0,dropout=false,task='binary'}={}){
@@ -567,16 +703,42 @@ prediction = Pass</div>
       const labels=['Inputs','Hidden 1','Hidden 2','Output'];
       layers.forEach((layer,i)=>{text(labels[i],layer[0].x,28,cw<500?9:11,i===focusLayer?C.brand:C.muted,'center',700,'"JetBrains Mono"');layer.forEach((n,j)=>{const off=dropout&&i>0&&i<3&&((j+i*2)%5)/5<state.dropout;node(n.x,n.y,15,i===0?['x₁','x₂','x₃'][j]:(i===3?(task==='multiclass'?['A','B','C'][j]:(task==='regression'?'ŷ':'p')):''),off?'#f3f4f6':(i===focusLayer?C.soft:C.surface),off?'#cbd5e1':(i===focusLayer?C.brand:C.blue),off)});});return layers;
     }
-    function clear(){ctx.clearRect(0,0,cw,ch);ctx.fillStyle='#fbfbfe';ctx.fillRect(0,0,cw,ch);ctx.strokeStyle='rgba(99,102,241,.055)';ctx.lineWidth=1;for(let x=28;x<cw;x+=36)line(x,0,x,ch,'rgba(99,102,241,.05)');for(let y=28;y<ch;y+=36)line(0,y,cw,y,'rgba(99,102,241,.05)')}
-    function smallDataCard(x,y,w,label,value,color){rr(x,y,w,44,10,'#fff',C.line);text(label,x+12,y+14,9,C.muted,'left',600,'"JetBrains Mono"');text(value,x+12,y+30,14,color,'left',700,'"JetBrains Mono"')}
+    function clear(){
+      ctx.clearRect(0,0,cw,ch);ctx.fillStyle='#fbf6e9';ctx.fillRect(0,0,cw,ch);
+      const xs=[.09,.24,.41,.59,.77,.92],ys=[.10,.27,.45,.64,.81,.94];
+      xs.forEach((t,i)=>line(cw*t+inkNoise(2.2),0,cw*t+inkNoise(2.2),ch,'rgba(88,83,72,.10)',.72,[2,11]));
+      ys.forEach((t,i)=>line(0,ch*t+inkNoise(2.2),cw,ch*t+inkNoise(2.2),'rgba(88,83,72,.10)',.72,[2,11]));
+    }
+    function smallDataCard(x,y,w,label,value,color){
+      // Stage 01 is a row of notebook evidence, not a software card grid.
+      // Keep the original footprint while replacing the rectangle with two
+      // loose pencil rules and a small marker stroke under the observed label.
+      ctx.save();
+      line(x+3,y+5,x+w-7,y+5,color,.9);
+      line(x+3,y+40,x+w-8,y+40,'rgba(88,83,72,.34)',.72);
+      line(x+4,y+8,x+4,y+36,color,.82);
+      text(label,x+12,y+16,9,C.muted,'left',600,'"Patrick Hand"');
+      text(value,x+12,y+32,14,color,'left',700,'"Patrick Hand"');
+      line(x+11,y+36,x+12+Math.max(18,ctx.measureText(value).width),y+36,color,1.8);
+      ctx.restore();
+    }
+    function stage1Paper(x,y,w,h,fill,stroke,key){
+      ctx.save();
+      inkRectPath(ctx,x,y,w,h,5);ctx.fillStyle=fill;ctx.globalAlpha=.13;ctx.fill();
+      ctx.save();inkRectPath(ctx,x+.5,y+.4,w-1,h-1,5);ctx.clip();ctx.globalAlpha=.24;ctx.strokeStyle=stroke;ctx.lineWidth=.72;
+      for(let q=-h;q<w+h;q+=9){ctx.beginPath();ctx.moveTo(x+q,y+h);ctx.lineTo(x+q+h,y);ctx.stroke()}
+      ctx.restore();
+      ctx.globalAlpha=.86;ctx.strokeStyle=stroke;ctx.lineWidth=1.55;inkRectPath(ctx,x,y,w,h,5);ctx.stroke();
+      ctx.globalAlpha=.42;ctx.lineWidth=.76;inkRectPath(ctx,x+1.1,y-.7,w+.4,h,5);ctx.stroke();ctx.restore();
+    }
     function drawStage1(t){
       if(cw<500){
         const left=18,mid=cw*.50,right=cw-18;[['student 01','pass',C.green],['student 02','fail',C.red],['student 03','pass',C.green]].forEach((r,i)=>smallDataCard(left,42+i*60,92,r[0],r[1],r[2]));
-        arrow(left+100,ch*.48,mid-54,ch*.48,C.brand,1.7);rr(mid-48,74,96,118,18,C.soft,'rgba(99,102,241,.35)');text('LEARN',mid,108,15,C.brand2,'center',800,'"JetBrains Mono"');wrap('adjust weights from examples',mid,130,76,14,10,C.muted,500,'center');arrow(mid+54,ch*.48,right-76,ch*.48,C.brand,1.7);rr(right-70,92,62,80,14,'#fff',C.line);text('0.82',right-39,120,18,C.brand2,'center',800,'"JetBrains Mono"');text('score',right-39,146,9,C.muted,'center',600,'"JetBrains Mono"');return;
+        arrow(left+100,ch*.48,mid-54,ch*.48,C.brand,1.7);stage1Paper(mid-48,74,96,118,C.soft,'rgba(99,102,241,.62)','stage1-learn-mobile');text('LEARN',mid,108,15,C.brand2,'center',800,'"Patrick Hand"');wrap('adjust weights from examples',mid,130,76,14,10,C.muted,500,'center');arrow(mid+54,ch*.48,right-76,ch*.48,C.brand,1.7);stage1Paper(right-70,92,62,80,'#fff','rgba(88,83,72,.62)','stage1-score-mobile');text('0.82',right-39,120,18,C.brand2,'center',800,'"Patrick Hand"');text('score',right-39,146,9,C.muted,'center',600,'"Patrick Hand"');return;
       }
       const left=36,mid=cw*.46,right=cw-36;
       for(let i=0;i<5;i++){const y=80+i*58;smallDataCard(left,y,130,['student 01','student 02','student 03','student 04','student 05'][i],["pass","fail","pass","fail","pass"][i],i%2?C.red:C.green)}
-      arrow(left+142,ch*.5,mid-80,ch*.5,C.brand,2);rr(mid-70,ch*.5-70,140,140,22,C.soft,'rgba(99,102,241,.35)');text('LEARN',mid,ch*.5-10,18,C.brand2,'center',800,'"JetBrains Mono"');wrap('adjust internal weights from examples',mid,ch*.5+18,110,15,11,C.muted,500,'center');arrow(mid+80,ch*.5,right-120,ch*.5,C.brand,2);rr(right-110,ch*.5-48,95,96,16,'#fff',C.line);text('0.82',right-62,ch*.5-7,24,C.brand2,'center',800,'"JetBrains Mono"');text('pass score',right-62,ch*.5+22,10,C.muted,'center',600,'"JetBrains Mono"')
+      arrow(left+142,ch*.5,mid-80,ch*.5,C.brand,2);stage1Paper(mid-70,ch*.5-70,140,140,C.soft,'rgba(99,102,241,.62)','stage1-learn');text('LEARN',mid,ch*.5-10,18,C.brand2,'center',800,'"Patrick Hand"');wrap('adjust internal weights from examples',mid,ch*.5+18,110,15,11,C.muted,500,'center');arrow(mid+80,ch*.5,right-120,ch*.5,C.brand,2);stage1Paper(right-110,ch*.5-48,95,96,'#fff','rgba(88,83,72,.62)','stage1-score');text('0.82',right-62,ch*.5-7,24,C.brand2,'center',800,'"Patrick Hand"');text('pass score',right-62,ch*.5+22,10,C.muted,'center',600,'"Patrick Hand"')
     }
     function drawStage2(){
       const rows=cw<500?[['8','7','90%','PASS'],['2','4','40%','FAIL'],['5','6','70%','PASS']]:[['8','7','90%','PASS'],['2','4','40%','FAIL'],['5','6','70%','PASS'],['1','3','30%','FAIL']];const x=cw<500?18:30,y=cw<500?34:55,w=cw-(cw<500?36:60),rowH=cw<500?38:42;rr(x,y,w,rowH*(rows.length+1),14,'#fff',C.line);const cols=[.08,.31,.54,.77];['STUDY','SLEEP','ATTEND','LABEL'].forEach((h,i)=>text(h,x+w*cols[i],y+rowH/2,cw<500?8:9,C.muted,'center',700,'"JetBrains Mono"'));line(x,y+rowH,x+w,y+rowH,C.line);rows.forEach((r,ri)=>{r.forEach((v,i)=>text(v,x+w*cols[i],y+rowH*(ri+1)+rowH/2,cw<500?10:12,i===3?(v==='PASS'?C.green:C.red):C.ink,'center',i===3?700:500,'"JetBrains Mono"'));if(ri<rows.length-1)line(x,y+rowH*(ri+2),x+w,y+rowH*(ri+2),C.line)});if(cw>=500){badge('FEATURES',x+12,y+rowH*(rows.length+1)+18,C.blue);badge('LABEL',x+102,y+rowH*(rows.length+1)+18,C.green)}
@@ -607,7 +769,7 @@ prediction = Pass</div>
       const weights=[[.72,-.18,.31,.84],[.22,.91,-.46,.37],[.86,.14,.68,-.52]],learn=reducedMotion?1:Math.min(1,(t-startTime)/2300);
       text('CLICK A FEATURE',left,24,narrow?8:10,C.muted,'center',700,'"JetBrains Mono"');text('LEARNED HIDDEN SENSITIVITIES',right,24,narrow?8:10,C.brand2,'center',700,'"JetBrains Mono"');
       inputs.forEach((a,i)=>hidden.forEach((b,j)=>{const active=i===selected,w=weights[i][j],col=w<0?C.amber:C.brand;ctx.save();ctx.globalAlpha=active?.92:.14;line(a.x+14,a.y,b.x-16,b.y,active?col:C.line,active?(1+Math.abs(w)*3*learn):.7);ctx.restore();if(active&&learn>.35){const px=a.x+(b.x-a.x)*.53,py=a.y+(b.y-a.y)*.53;badge(`${w>0?'+':''}${(w*learn).toFixed(2)}`,px-24,py-20,col,narrow?7:9)}}));
-      inputs.forEach((a,i)=>{node(a.x,a.y,narrow?11:15,i===selected?'✓':'',i===selected?C.soft:'#fff',i===selected?C.brand:C.blue);text(a.name.toUpperCase(),a.x-(narrow?18:24),a.y,narrow?8:10,i===selected?C.brand2:C.muted,'right',700,'"JetBrains Mono"')});
+      inputs.forEach((a,i)=>{node(a.x,a.y,narrow?11:15,'',i===selected?C.soft:'#fff',i===selected?C.brand:C.blue);if(i===selected)handCheck(a.x,a.y,narrow?9:12,C.brand2);text(a.name.toUpperCase(),a.x-(narrow?18:24),a.y,narrow?8:10,i===selected?C.brand2:C.muted,'right',700,'"JetBrains Mono"')});
       const sensitivity=weights[selected].map(w=>w<-.35?'negative sensitivity':w>.75?'strong sensitivity':w>.35?'medium sensitivity':'weak sensitivity');hidden.forEach((n,j)=>{const intensity=.4+.6*Math.abs(weights[selected][j])*learn;ctx.save();ctx.globalAlpha=.45+.55*learn;node(n.x,n.y,narrow?11:16,'',C.soft,weights[selected][j]<0?C.amber:C.brand);ctx.restore();if(!narrow){line(n.x+22,n.y,n.x+22+62*intensity,n.y,weights[selected][j]<0?C.amber:C.brand,5);text(sensitivity[j],n.x+92,n.y,10,C.muted,'left',600,'"JetBrains Mono"')}});
       text(`${state.selectedFeature}: four learned sensitivities · no roles assigned`,cw/2,ch-25,narrow?8:11,C.brand2,'center',750,'"JetBrains Mono"');
     }
@@ -621,8 +783,8 @@ prediction = Pass</div>
       const focusTop=!state.reluEnabled,focusBottom=state.reluEnabled;
       const drawBoundary=(x,y,w,h,bent,color)=>{
         rr(x,y,w,h,7,'#fbfbfd',C.line);const gx=x+9,gy=y+6,gw=w-18,gh=h-12;line(gx,gy+gh,gx+gw,gy+gh,C.line);line(gx,gy,gx,gy+gh,C.line);
-        const pts=bent?[[.07,.78],[.34,.48],[.58,.62],[.91,.20]]:[[.07,.79],[.91,.21]];ctx.beginPath();pts.forEach((p,i)=>{const px=gx+gw*p[0],py=gy+gh*p[1];if(!i)ctx.moveTo(px,py);else ctx.lineTo(px,py)});ctx.strokeStyle=color;ctx.lineWidth=narrow?2.2:3;ctx.stroke();
-        if(bent)pts.slice(1,-1).forEach(p=>{ctx.beginPath();ctx.arc(gx+gw*p[0],gy+gh*p[1],narrow?2:3,0,Math.PI*2);ctx.fillStyle=color;ctx.fill()});
+        const pts=bent?[[.07,.78],[.34,.48],[.58,.62],[.91,.20]]:[[.07,.79],[.91,.21]];ctx.beginPath();pts.forEach((p,i)=>{const px=gx+gw*p[0]+inkNoise(.45),py=gy+gh*p[1]+inkNoise(.45);if(!i)ctx.moveTo(px,py);else ctx.lineTo(px,py)});ctx.strokeStyle=color;ctx.lineWidth=narrow?2.2:3;ctx.lineCap='round';ctx.lineJoin='round';ctx.stroke();
+        if(bent)pts.slice(1,-1).forEach(p=>{inkCirclePath(ctx,gx+gw*p[0],gy+gh*p[1],narrow?2:3,12);ctx.fillStyle=color;ctx.fill()});
       };
       const drawNeuron=(x,y,label,value,color,active=true)=>{
         const r=narrow?8:17;node(x,y,r,label,active?C.soft:'#fff',color);text(value,x,y+r+(narrow?7:13),narrow?5:9,color,'center',750,'"JetBrains Mono"');
@@ -697,7 +859,7 @@ prediction = Pass</div>
       const x=pad,y=stepY+stepH+(narrow?9:12),w=cw-pad*2,h=ch-y-(narrow?12:18);rr(x,y,w,h,14,'#fff',C.line);panelTitle('GRADIENT DESCENT ON ONE WEIGHT',x,y,w,`${state.learningMode} · η ${state.learningRate.toFixed(2)}`);
       const ax=x+(narrow?38:52),ay=y+(narrow?70:76),aw=w-(narrow?54:74),ah=h-(narrow?120:136),plotMin=-.30,plotMax=1.30,yMax=1.45;chartAxes(ax,ay,aw,ah,'Weight w','Loss L(w)');
       const lossAt=v=>.10+2*Math.pow(v-.50,2),gradientAt=v=>4*(v-.50),toPoint=v=>({x:ax+aw*(v-plotMin)/(plotMax-plotMin),y:ay+ah-Math.min(yMax,lossAt(v))*ah/yMax});
-      ctx.beginPath();for(let q=0;q<=180;q++){const v=plotMin+(plotMax-plotMin)*q/180,p=toPoint(v);if(!q)ctx.moveTo(p.x,p.y);else ctx.lineTo(p.x,p.y)}ctx.strokeStyle=C.brand;ctx.lineWidth=2.6;ctx.stroke();
+      ctx.beginPath();for(let q=0;q<=180;q++){const v=plotMin+(plotMax-plotMin)*q/180,p=toPoint(v);const px=p.x+inkNoise(.34),py=p.y+inkNoise(.34);if(!q)ctx.moveTo(px,py);else ctx.lineTo(px,py)}ctx.strokeStyle=C.brand;ctx.lineWidth=2.6;ctx.lineCap='round';ctx.lineJoin='round';ctx.stroke();
       const current=Math.max(0,Math.min(1,state.weight)),gradient=gradientAt(current),nextRaw=current-state.learningRate*gradient,a=toPoint(current),b=toPoint(Math.max(plotMin,Math.min(plotMax,nextRaw)));
       const statGap=narrow?4:6,statX=x+10,statY=y+34,statW=(w-20-statGap*2)/3,statH=narrow?26:30,stats=[['CURRENT',`wₜ ${current.toFixed(2)}`,C.amber],['LOCAL GRADIENT',`${gradient>=0?'+':''}${gradient.toFixed(2)}`,C.brand],['NEXT',`wₜ₊₁ ${nextRaw.toFixed(2)}`,state.learningMode==='large'?C.red:C.green]];stats.forEach((s,i)=>{const sx=statX+i*(statW+statGap);rr(sx,statY,statW,statH,7,s[2]+'0A',s[2]+'35');text(s[0],sx+8,statY+9,narrow?6:8,C.muted,'left',700,'"JetBrains Mono"');text(s[1],sx+statW-8,statY+statH-9,narrow?8:10,s[2],'right',800,'"JetBrains Mono"')});
       const minimum=toPoint(.50);node(minimum.x,minimum.y,narrow?4:5,'',C.green,C.green);text('minimum',minimum.x,minimum.y+18,narrow?7:9,C.green,'center',700,'"JetBrains Mono"');
@@ -715,12 +877,12 @@ prediction = Pass</div>
     function drawStage12(){
       const narrow=cw<500,pad=narrow?16:28,gap=narrow?8:12,topY=narrow?16:26,topH=narrow?112:138,leftW=(cw-pad*2-gap)/2,rightX=pad+leftW+gap;
       rr(pad,topY,leftW,topH,12,'#fff',C.line);panelTitle('LOSS LANDSCAPE',pad,topY,leftW,narrow?'':'local ≠ global');
-      const ax=pad+20,ay=topY+42,aw=leftW-40,ah=topH-58;ctx.beginPath();for(let q=0;q<=100;q++){const p=q/100,v=.2+.38*Math.pow(Math.sin(p*Math.PI*2.1),2)+.18*p,xx=ax+aw*p,yy=ay+ah*v;if(!q)ctx.moveTo(xx,yy);else ctx.lineTo(xx,yy)}ctx.strokeStyle=C.brand;ctx.lineWidth=2;ctx.stroke();node(ax+aw*.28,ay+ah*.31,5,'',C.amber,C.amber);node(ax+aw*.72,ay+ah*.22,5,'',C.green,C.green);text('local',ax+aw*.28,ay+ah*.31-13,narrow?7:8,C.amber,'center',700,'"JetBrains Mono"');text('global',ax+aw*.72,ay+ah*.22-13,narrow?7:8,C.green,'center',700,'"JetBrains Mono"');
+      const ax=pad+20,ay=topY+42,aw=leftW-40,ah=topH-58;ctx.beginPath();for(let q=0;q<=100;q++){const p=q/100,v=.2+.38*Math.pow(Math.sin(p*Math.PI*2.1),2)+.18*p,xx=ax+aw*p+inkNoise(.3),yy=ay+ah*v+inkNoise(.3);if(!q)ctx.moveTo(xx,yy);else ctx.lineTo(xx,yy)}ctx.strokeStyle=C.brand;ctx.lineWidth=2;ctx.lineCap='round';ctx.lineJoin='round';ctx.stroke();node(ax+aw*.28,ay+ah*.31,5,'',C.amber,C.amber);node(ax+aw*.72,ay+ah*.22,5,'',C.green,C.green);text('local',ax+aw*.28,ay+ah*.31-13,narrow?7:8,C.amber,'center',700,'"JetBrains Mono"');text('global',ax+aw*.72,ay+ah*.22-13,narrow?7:8,C.green,'center',700,'"JetBrains Mono"');
       rr(rightX,topY,leftW,topH,12,C.soft,'rgba(99,102,241,.3)');panelTitle('DROPOUT',rightX,topY,leftW,`${Math.round(state.dropout*100)}% off`);
       const pts=[[.18,.52],[.50,.31],[.50,.54],[.50,.77],[.82,.44],[.82,.68]];pts.forEach((p,i)=>{const off=i>0&&i<4&&((i*29)%100)<state.dropout*100;node(rightX+leftW*p[0],topY+topH*p[1],narrow?5:7,'',off?'#f3f4f6':C.surface,off?'#cbd5e1':(i>3?C.green:C.blue),off)});text('regularize reliance',rightX+leftW/2,topY+topH-13,narrow?7:9,C.brand2,'center',650,'"JetBrains Mono"');
       const x=pad,y=topY+topH+gap,w=cw-pad*2,h=ch-y-(narrow?14:22);rr(x,y,w,h,14,'#fff',C.line);panelTitle('TRAINING VS VALIDATION LOSS',x,y,w,'keep lowest validation loss');const cx=x+(narrow?40:54),cy=y+42,caw=w-(narrow?56:78),cah=h-(narrow?74:88);chartAxes(cx,cy,caw,cah,'Training epoch','Loss');
-      const curve=(color,validation)=>{ctx.beginPath();for(let q=0;q<=100;q++){const p=q/100,loss=validation?.80*Math.exp(-p*4.2)+.15+Math.max(0,p-.54)*.95:.92*Math.exp(-p*3.1)+.05,xx=cx+caw*p,yy=cy+cah-Math.min(1,loss)*cah;if(!q)ctx.moveTo(xx,yy);else ctx.lineTo(xx,yy)}ctx.strokeStyle=color;ctx.lineWidth=2.4;ctx.stroke()};curve(C.brand,false);curve(C.amber,true);
-      const keepP=.54,keepX=cx+caw*keepP,keepLoss=.80*Math.exp(-keepP*4.2)+.15,keepY=cy+cah-Math.min(1,keepLoss)*cah;line(keepX,cy,keepX,cy+cah,C.green,1.5,[4,4]);node(keepX,keepY,6,'',C.green,C.green);const keepLabel='KEEP THIS MODEL';ctx.font=`600 ${narrow?8:10}px "JetBrains Mono"`;const keepBadgeW=ctx.measureText(keepLabel).width+18;badge(keepLabel,Math.max(x+8,keepX-keepBadgeW-10),cy+6,C.green,narrow?8:10);const overX=cx+caw*.73;line(overX,cy,overX,cy+cah,C.red,1,[4,4]);text('validation rising',overX+6,cy+18,narrow?8:10,C.red,'left',700,'"JetBrains Mono"');const trainEnd=.92*Math.exp(-3.1)+.05,valEnd=.80*Math.exp(-4.2)+.15+.46*.95;labelChip('training loss',cx+caw-6,cy+cah-Math.min(1,trainEnd)*cah-22,C.brand,narrow?8:10,'right');labelChip('validation loss',cx+caw-6,cy+cah-Math.min(1,valEnd)*cah-22,C.amber,narrow?8:10,'right')
+      const curve=(color,validation)=>{ctx.beginPath();for(let q=0;q<=100;q++){const p=q/100,loss=validation?.80*Math.exp(-p*4.2)+.15+Math.max(0,p-.54)*.95:.92*Math.exp(-p*3.1)+.05,xx=cx+caw*p+inkNoise(.3),yy=cy+cah-Math.min(1,loss)*cah+inkNoise(.3);if(!q)ctx.moveTo(xx,yy);else ctx.lineTo(xx,yy)}ctx.strokeStyle=color;ctx.lineWidth=2.4;ctx.lineCap='round';ctx.lineJoin='round';ctx.stroke()};curve(C.brand,false);curve(C.amber,true);
+      const keepP=.54,keepX=cx+caw*keepP,keepLoss=.80*Math.exp(-keepP*4.2)+.15,keepY=cy+cah-Math.min(1,keepLoss)*cah;line(keepX,cy,keepX,cy+cah,C.green,1.5,[4,4]);node(keepX,keepY,6,'',C.green,C.green);const keepLabel='KEEP THIS MODEL';ctx.font=`600 ${narrow?8:10}px "Patrick Hand"`;const keepBadgeW=ctx.measureText(keepLabel).width+18;badge(keepLabel,Math.max(x+8,keepX-keepBadgeW-10),cy+6,C.green,narrow?8:10);const overX=cx+caw*.73;line(overX,cy,overX,cy+cah,C.red,1,[4,4]);text('validation rising',overX+6,cy+18,narrow?8:10,C.red,'left',700,'"Patrick Hand"');const trainEnd=.92*Math.exp(-3.1)+.05,valEnd=.80*Math.exp(-4.2)+.15+.46*.95;labelChip('training loss',cx+caw-6,cy+cah-Math.min(1,trainEnd)*cah-22,C.brand,narrow?8:10,'right');labelChip('validation loss',cx+caw-6,cy+cah-Math.min(1,valEnd)*cah-22,C.amber,narrow?8:10,'right')
     }
     function drawStage13(){drawNetwork({focusLayer:3,task:state.task});const outputs=state.task==='binary'?['1 output','sigmoid']:state.task==='multiclass'?['3 outputs','softmax']:['1 number','linear output'];rr(28,ch-82,cw-56,54,12,C.paper,C.line);text(outputs[0],42,ch-55,cw<500?11:13,C.ink,'left',700,'"JetBrains Mono"');text(outputs[1],cw-62,ch-55,cw<500?11:13,C.brand2,'right',700,'"JetBrains Mono"')}
     function thresholdResults(){
@@ -745,13 +907,13 @@ prediction = Pass</div>
       const r=thresholdResults(),narrow=cw<500,pad=narrow?14:24,x=pad,y=narrow?14:24,w=cw-pad*2,tableH=Math.min(ch*(narrow?.58:.57),narrow?198:286),rowH=(tableH-34)/8,students=[...r.students].sort(state.errorSort==='threshold'?(a,b)=>Math.abs(a.score-state.threshold)-Math.abs(b.score-state.threshold):(a,b)=>b.score-a.score);
       rr(x,y,w,tableH,12,'#fff',C.line);panelTitle('STUDENT PREDICTIONS',x,y,w,`threshold ${state.threshold.toFixed(2)} · sort ${state.errorSort}`);
       const cols=[.04,.20,.36,.51,.68];['STUDENT','SCORE','ACTUAL','PREDICTED','OUTCOME'].forEach((v,i)=>text(v,x+w*cols[i],y+30,narrow?7:9,C.muted,'left',700,'"JetBrains Mono"'));
-      students.forEach((s,i)=>{const yy=y+34+i*rowH,pred=s.pred?'Pass':'Fail',actual=s.actual?'Pass':'Fail',outcome=s.pred&&s.actual?'True positive':s.pred&&!s.actual?'False positive':!s.pred&&s.actual?'False negative':'True negative',col=outcome==='False positive'?C.amber:outcome==='False negative'?C.red:outcome==='True positive'?C.green:C.blue,fill=outcome.startsWith('False')?col+'12':i%2?'#fbfbfd':'#fff';ctx.fillStyle=fill;ctx.fillRect(x+1,yy,w-2,rowH);line(x,yy+rowH,x+w,yy+rowH,C.line,.6);text(s.name,x+w*cols[0],yy+rowH/2,narrow?8:10,C.ink,'left',700);text(s.score.toFixed(2),x+w*cols[1],yy+rowH/2,narrow?8:10,C.brand2,'left',700,'"JetBrains Mono"');text(actual,x+w*cols[2],yy+rowH/2,narrow?8:10,C.muted,'left',600);text(pred,x+w*cols[3],yy+rowH/2,narrow?8:10,C.ink,'left',650);text(outcome,x+w*cols[4],yy+rowH/2,narrow?7:9,col,'left',750,'"JetBrains Mono"')});
+      students.forEach((s,i)=>{const yy=y+34+i*rowH,pred=s.pred?'Pass':'Fail',actual=s.actual?'Pass':'Fail',outcome=s.pred&&s.actual?'True positive':s.pred&&!s.actual?'False positive':!s.pred&&s.actual?'False negative':'True negative',col=outcome==='False positive'?C.amber:outcome==='False negative'?C.red:outcome==='True positive'?C.green:C.blue,fill=outcome.startsWith('False')?col+'12':i%2?'#fbfbfd':'#fff';inkRectPath(ctx,x+1,yy,w-2,rowH,1);ctx.fillStyle=fill;ctx.fill();line(x,yy+rowH,x+w,yy+rowH,C.line,.6);text(s.name,x+w*cols[0],yy+rowH/2,narrow?8:10,C.ink,'left',700);text(s.score.toFixed(2),x+w*cols[1],yy+rowH/2,narrow?8:10,C.brand2,'left',700,'"JetBrains Mono"');text(actual,x+w*cols[2],yy+rowH/2,narrow?8:10,C.muted,'left',600);text(pred,x+w*cols[3],yy+rowH/2,narrow?8:10,C.ink,'left',650);text(outcome,x+w*cols[4],yy+rowH/2,narrow?7:9,col,'left',750,'"JetBrains Mono"')});
       const gy=y+tableH+(narrow?7:10),gh=ch-gy-(narrow?12:18),gap=narrow?7:10,matrixW=w*(narrow?.62:.58);rr(x,gy,matrixW,gh,12,'#fff',C.line);panelTitle('FULLY LABELED CONFUSION MATRIX',x,gy,matrixW,'');
       const vals=[['True positive',r.tp,C.green],['False positive',r.fp,C.amber],['False negative',r.fn,C.red],['True negative',r.tn,C.blue]],cellGap=5,cellW=(matrixW-24-cellGap)/2,cellH=(gh-42-cellGap)/2;vals.forEach((v,i)=>{const cx=x+10+(i%2)*(cellW+cellGap),cy=gy+32+Math.floor(i/2)*(cellH+cellGap);rr(cx,cy,cellW,cellH,7,v[2]+'0D',v[2]+'40');wrap(v[0],cx+cellW/2,cy+6,cellW-8,narrow?7:10,narrow?6:9,v[2],700,'center');text(String(v[1]),cx+cellW/2,cy+cellH-18,narrow?18:28,v[2],'center',800,'"JetBrains Mono"')});
       const mx=x+matrixW+gap,mw=w-matrixW-gap;rr(mx,gy,mw,gh,12,C.soft,'rgba(99,102,241,.3)');panelTitle('METRICS',mx,gy,mw,'');[['Precision',r.precision],['Recall',r.recall],['F1 score',r.f1]].forEach((v,i)=>{const yy=gy+42+i*(gh-48)/3;text(v[0],mx+10,yy,narrow?9:11,C.muted,'left',700,'"JetBrains Mono"');text(v[1].toFixed(2),mx+mw-(narrow?18:24),yy,narrow?14:18,C.brand2,'right',800,'"JetBrains Mono"')});
     }
     function drawStage16(){
-      const narrow=cw<500,y=narrow?64:ch*.43,items=narrow?[['DATA',C.blue],['PREP',C.cyan],['MODEL',C.brand],['APP',C.green],['WATCH',C.amber]]:[['NEW DATA',C.blue],['PREPROCESS',C.cyan],['SAVED MODEL',C.brand],['APP / API',C.green],['MONITOR',C.amber]],g=narrow?5:10,w=(cw-(narrow?36:56)-g*4)/5,start=narrow?18:28;items.forEach((it,i)=>{const x=start+i*(w+g);rr(x,y-(narrow?28:45),w,narrow?56:90,12,i===2?C.soft:'#fff',i===2?'rgba(99,102,241,.35)':C.line);text(it[0],x+w/2,y,narrow?9:10,it[1],'center',750,'"JetBrains Mono"');if(i<4)arrow(x+w+1,y,x+w+g-1,y,C.brand,1)});const px=narrow?18:32,py=narrow?128:ch*.68,pw=cw-(narrow?36:64),ph=ch-py-(narrow?18:ch*.10);rr(px,py,pw,ph,12,'#fff',C.line);panelTitle(narrow?'PERFORMANCE':'PERFORMANCE OVER TIME',px,py,pw,narrow?'':'watch for drift');const ax=px+26,ay=py+36,aw=pw-48,ah=ph-50;chartAxes(ax,ay,aw,ah);ctx.beginPath();for(let q=0;q<=60;q++){const p=q/60,v=.84-.08*p-.18*Math.max(0,p-.58)+Math.sin(p*10)*.012,xx=ax+aw*p,yy=ay+ah*(1-v);if(!q)ctx.moveTo(xx,yy);else ctx.lineTo(xx,yy)}ctx.strokeStyle=C.amber;ctx.lineWidth=2;ctx.stroke();
+      const narrow=cw<500,y=narrow?64:ch*.43,items=narrow?[['DATA',C.blue],['PREP',C.cyan],['MODEL',C.brand],['APP',C.green],['WATCH',C.amber]]:[['NEW DATA',C.blue],['PREPROCESS',C.cyan],['SAVED MODEL',C.brand],['APP / API',C.green],['MONITOR',C.amber]],g=narrow?5:10,w=(cw-(narrow?36:56)-g*4)/5,start=narrow?18:28;items.forEach((it,i)=>{const x=start+i*(w+g);rr(x,y-(narrow?28:45),w,narrow?56:90,12,i===2?C.soft:'#fff',i===2?'rgba(99,102,241,.35)':C.line);text(it[0],x+w/2,y,narrow?9:10,it[1],'center',750,'"JetBrains Mono"');if(i<4)arrow(x+w+1,y,x+w+g-1,y,C.brand,1)});const px=narrow?18:32,py=narrow?128:ch*.68,pw=cw-(narrow?36:64),ph=ch-py-(narrow?18:ch*.10);rr(px,py,pw,ph,12,'#fff',C.line);panelTitle(narrow?'PERFORMANCE':'PERFORMANCE OVER TIME',px,py,pw,narrow?'':'watch for drift');const ax=px+26,ay=py+36,aw=pw-48,ah=ph-50;chartAxes(ax,ay,aw,ah);ctx.beginPath();for(let q=0;q<=60;q++){const p=q/60,v=.84-.08*p-.18*Math.max(0,p-.58)+Math.sin(p*10)*.012,xx=ax+aw*p+inkNoise(.3),yy=ay+ah*(1-v)+inkNoise(.3);if(!q)ctx.moveTo(xx,yy);else ctx.lineTo(xx,yy)}ctx.strokeStyle=C.amber;ctx.lineWidth=2;ctx.lineCap='round';ctx.lineJoin='round';ctx.stroke();
     }
     function drawStage17(){
       if(cw<500){drawCompactNetwork(62,ch-60);badge('CNN',18,14,C.blue);badge('RNN',72,14,C.cyan);badge('TRANSFORMER',126,14,C.brand);const labs=[['RAW','clues'],['PATTERN','edges'],['CONTEXT','meaning'],['OUTPUT','answer']],gap=6,w=(cw-36-gap*3)/4,y=ch-50;labs.forEach((v,i)=>{const x=18+i*(w+gap);rr(x,y,w,36,8,i===3?C.soft:'#fff',C.line);text(v[0],x+w/2,y+13,8,i===3?C.brand2:C.ink,'center',700,'"JetBrains Mono"');text(v[1],x+w/2,y+26,7,C.muted,'center',500,'"JetBrains Mono"')});return}const layers=drawNetwork();const names=[['raw clues','hours · words · pixels'],['simple patterns','edges · phrases'],['combined patterns','shapes · context'],['task output','class · number']];layers.forEach((l,i)=>{const x=l[0].x-58,y=ch-72;rr(x,y,116,48,10,i===3?C.soft:'#fff',C.line);text(names[i][0],x+58,y+16,11,i===3?C.brand2:C.ink,'center',700,'"JetBrains Mono"');text(names[i][1],x+58,y+33,9,C.muted,'center',500,'"JetBrains Mono"')});badge('CNN',28,44,C.blue);badge('RNN',85,44,C.cyan);badge('TRANSFORMER',141,44,C.brand)
@@ -762,21 +924,49 @@ prediction = Pass</div>
       $('#toyScore').textContent=state.toyScore.toFixed(2);const pass=state.toyScore>=state.threshold;$('#toyDecision').textContent=pass?'Pass':'Fail';const d=Math.abs(state.toyScore-state.threshold);$('#toyConfidence').textContent=d>.25?'High':d>.1?'Moderate':'Low';
     }
     function drawStage18(){
-      const layers=drawNetwork({focusLayer:3});const vals=[state.study/12,(state.sleep-3)/7,(state.attendance-20)/80];layers[0].forEach((n,i)=>{text(vals[i].toFixed(2),n.x,n.y+29,10,C.muted,'center',600,'"JetBrains Mono"')});const out=layers[3][0];ctx.beginPath();ctx.arc(out.x,out.y,25,0,Math.PI*2);ctx.strokeStyle=state.toyScore>=state.threshold?C.green:C.red;ctx.lineWidth=5;ctx.stroke();rr(cw-160,ch-88,132,60,12,state.toyScore>=state.threshold?'#ecfdf5':'#fef2f2',state.toyScore>=state.threshold?C.green:C.red);text(state.toyScore.toFixed(2),cw-94,ch-64,21,state.toyScore>=state.threshold?C.green:C.red,'center',800,'"JetBrains Mono"');text(state.toyScore>=state.threshold?'PASS':'FAIL',cw-94,ch-43,10,C.muted,'center',700,'"JetBrains Mono"')
+      const layers=drawNetwork({focusLayer:3});const vals=[state.study/12,(state.sleep-3)/7,(state.attendance-20)/80];layers[0].forEach((n,i)=>{text(vals[i].toFixed(2),n.x,n.y+29,10,C.muted,'center',600,'"JetBrains Mono"')});const out=layers[3][0];inkCirclePath(ctx,out.x,out.y,25,24);ctx.strokeStyle=state.toyScore>=state.threshold?C.green:C.red;ctx.lineWidth=5;ctx.stroke();rr(cw-160,ch-88,132,60,12,state.toyScore>=state.threshold?'#ecfdf5':'#fef2f2',state.toyScore>=state.threshold?C.green:C.red);text(state.toyScore.toFixed(2),cw-94,ch-64,21,state.toyScore>=state.threshold?C.green:C.red,'center',800,'"JetBrains Mono"');text(state.toyScore>=state.threshold?'PASS':'FAIL',cw-94,ch-43,10,C.muted,'center',700,'"JetBrains Mono"')
     }
     function drawStage19(t){
       const narrow=cw<500,steps=[['DATA','batch'],['FORWARD','prediction'],['LOSS','objective'],['BACKPROP','gradients only'],['OPTIMIZER','apply step'],['UPDATED','new weights'],['REPEAT','next batch']],active=Math.floor(((t-startTime)/900)%steps.length),cx=cw/2,cy=ch*.50,rx=cw*(narrow?.28:.29),ry=ch*(narrow?.30:.32),positions=steps.map((_,i)=>{const a=-Math.PI/2+i*Math.PI*2/steps.length;return{x:cx+Math.cos(a)*rx,y:cy+Math.sin(a)*ry,a}});
       text('ONE FULL TRAINING CYCLE',cx,24,narrow?10:13,C.muted,'center',750,'"JetBrains Mono"');
       positions.forEach((p,i)=>{const next=positions[(i+1)%positions.length],on=i===active;arrow(p.x+Math.cos(p.a)*-2,p.y+Math.sin(p.a)*-2,next.x,next.y,on?C.brand:C.line,on?2.4:1,.82);node(p.x,p.y,on?(narrow?15:20):(narrow?11:15),String(i+1).padStart(2,'0'),on?C.soft:'#fff',on?C.brand2:C.blue);const ox=Math.cos(p.a)*(narrow?23:32),oy=Math.sin(p.a)*(narrow?26:42),align=Math.cos(p.a)>.25?'left':Math.cos(p.a)<-.25?'right':'center';text(steps[i][0],p.x+ox,p.y+oy,narrow?8:11,on?C.brand2:C.ink,align,800,'"JetBrains Mono"');if(!narrow)text(steps[i][1],p.x+ox,p.y+oy+14,10,C.muted,align,550)});
-      rr(cx-(narrow?74:105),cy-(narrow?35:45),narrow?148:210,narrow?70:90,15,C.soft,'rgba(99,102,241,.3)');text(steps[active][0],cx,cy-12,narrow?13:18,C.brand2,'center',800,'"JetBrains Mono"');text(steps[active][1],cx,cy+13,narrow?9:12,C.muted,'center',650,'"JetBrains Mono"');text('updated weights change the next prediction',cx,ch-24,narrow?8:11,C.green,'center',700,'"JetBrains Mono"');
+      markerPanel(cx-(narrow?74:105),cy-(narrow?35:45),narrow?148:210,narrow?70:90,15,C.soft,'rgba(99,102,241,.3)');text(steps[active][0],cx,cy-12,narrow?13:18,C.brand2,'center',800,'"JetBrains Mono"');text(steps[active][1],cx,cy+13,narrow?9:12,C.muted,'center',650,'"JetBrains Mono"');text('updated weights change the next prediction',cx,ch-24,narrow?8:11,C.green,'center',700,'"JetBrains Mono"');
     }
-    function draw(time=performance.now()){if(!cw||!ch)return;clear();switch(state.active){case 1:drawStage1(time);break;case 2:drawStage2();break;case 3:drawStage3();break;case 4:drawStage4(time);break;case 5:drawStage5(time);break;case 6:drawStage6();break;case 7:drawStage7(time);break;case 8:drawStage8();break;case 9:drawStage9(time);break;case 10:drawStage10(time);break;case 11:drawStage11(time);break;case 12:drawStage12();break;case 13:drawStage13();break;case 14:drawStage14();break;case 15:drawStage15();break;case 16:drawStage16();break;case 17:drawStage17();break;case 18:drawStage18();break;case 19:drawStage19(time);break;default:drawStage1(time)}}
+    function draw(time=performance.now()){if(!cw||!ch)return;inkCounter=0;clear();switch(state.active){case 1:drawStage1(time);break;case 2:drawStage2();break;case 3:drawStage3();break;case 4:drawStage4(time);break;case 5:drawStage5(time);break;case 6:drawStage6();break;case 7:drawStage7(time);break;case 8:drawStage8();break;case 9:drawStage9(time);break;case 10:drawStage10(time);break;case 11:drawStage11(time);break;case 12:drawStage12();break;case 13:drawStage13();break;case 14:drawStage14();break;case 15:drawStage15();break;case 16:drawStage16();break;case 17:drawStage17();break;case 18:drawStage18();break;case 19:drawStage19(time);break;default:drawStage1(time)}}
     function needsAnimation(){return [4,5,7,9,10,11,19].includes(state.active)&&!reducedMotion}
     function loop(t){draw(t);animationId=needsAnimation()?requestAnimationFrame(loop):0}
     function restartAnimation(){if(animationId)cancelAnimationFrame(animationId);animationId=0;startTime=performance.now();if(state.active===10){state.optimElapsed=0;state.optimPaused=false;const pause=$('#optimPause');if(pause){pause.textContent='Pause';pause.setAttribute('aria-pressed','false')}}if(needsAnimation())animationId=requestAnimationFrame(loop);else draw()}
 
+    // Hero marks are deliberately built from open pen rings and short dry-brush
+    // strokes.  A translucent filled halo reads as a software glow, so nodes
+    // get two imperfect outlines and a few visible marker passes instead.
+    function heroInkRing(x,y,r,color,key,alpha=.38){
+      heroCtx.save();heroCtx.strokeStyle=color;heroCtx.lineWidth=1.15;heroCtx.lineCap='round';heroCtx.lineJoin='round';heroCtx.globalAlpha=alpha;
+      for(let pass=0;pass<2;pass++){
+        heroCtx.beginPath();
+        for(let i=0;i<=24;i++){
+          const a=i/24*Math.PI*2,rr=r*(1+(Math.sin((i+1)*(pass+2)*1.73+key)*.035)+inkNoise(.08));
+          const px=x+Math.cos(a)*rr+inkNoise(.7),py=y+Math.sin(a)*rr+inkNoise(.7);
+          if(!i)heroCtx.moveTo(px,py);else heroCtx.lineTo(px,py);
+        }
+        heroCtx.stroke();
+      }
+      heroCtx.restore();
+    }
+    function heroDryDab(x,y,r,color,key,alpha=.32){
+      heroCtx.save();heroCtx.strokeStyle=color;heroCtx.lineCap='round';heroCtx.lineJoin='round';heroCtx.globalAlpha=alpha;
+      for(let k=0;k<4;k++){
+        const a=(Math.sin(key*1.37+k*2.11)+1)*Math.PI,reach=r*(.72+(k%2)*.2),ox=inkNoise(r*.28),oy=inkNoise(r*.28);
+        heroCtx.lineWidth=.9+(k%2)*.45;heroCtx.beginPath();
+        heroCtx.moveTo(x+ox-Math.cos(a)*reach*.58,y+oy-Math.sin(a)*reach*.58);
+        heroCtx.lineTo(x+ox+Math.cos(a)*reach*.58,y+oy+Math.sin(a)*reach*.58);heroCtx.stroke();
+      }
+      heroCtx.restore();
+    }
+
     function drawHero(t){
       const r=heroCanvas.getBoundingClientRect(),w=r.width,h=r.height;if(!w||!h)return;
+      inkCounter=0;
       heroCtx.clearRect(0,0,w,h);
       const count=w<620?20:30,range=Math.min(205,Math.max(142,w*.14));
       const points=Array.from({length:count},(_,i)=>{
@@ -788,18 +978,19 @@ prediction = Pass</div>
         const a=points[i],b=points[j],d=Math.hypot(a.x-b.x,a.y-b.y);
         if(d<range){
           const strength=1-d/range;
-          heroCtx.beginPath();heroCtx.moveTo(a.x,a.y);heroCtx.lineTo(b.x,b.y);
-          heroCtx.strokeStyle=`rgba(99,102,241,${.13+strength*.28})`;heroCtx.lineWidth=.8+strength*.9;heroCtx.stroke();
+          inkLine(heroCtx,a.x,a.y,b.x,b.y,`rgba(53,111,174,${.24+strength*.34})`,1.05+strength*1.05);
           if(!reducedMotion&&(i*7+j)%19===0){
             const travel=(t*.00016+(i+j)*.11)%1,sx=a.x+(b.x-a.x)*travel,sy=a.y+(b.y-a.y)*travel;
-            heroCtx.beginPath();heroCtx.arc(sx,sy,1.8+strength,0,Math.PI*2);heroCtx.fillStyle='rgba(79,70,229,.72)';heroCtx.fill();
+            heroDryDab(sx,sy,2.8+strength*1.4,'rgba(79,70,229,.9)',i*37+j,.65);
           }
         }
       }
       points.forEach((p,i)=>{
         const pulse=reducedMotion?0:(Math.sin(t*.002+i)*.5+.5);
-        heroCtx.beginPath();heroCtx.arc(p.x,p.y,p.r+5+pulse*4,0,Math.PI*2);heroCtx.fillStyle=`rgba(99,102,241,${.035+pulse*.035})`;heroCtx.fill();
-        heroCtx.beginPath();heroCtx.arc(p.x,p.y,p.r,0,Math.PI*2);heroCtx.fillStyle=i%4===0?'rgba(79,70,229,.82)':'rgba(99,102,241,.62)';heroCtx.fill();
+        const nodeColor=i%4===0?'rgba(79,70,229,.9)':'rgba(53,111,174,.82)';
+        heroInkRing(p.x,p.y,p.r+2.5+pulse*1.5,nodeColor,`node-${i}`,.42);
+        heroDryDab(p.x,p.y,p.r+.9,nodeColor,i*13+7,.34);
+        inkCirclePath(heroCtx,p.x,p.y,p.r,14);heroCtx.fillStyle=i%4===0?'rgba(79,70,229,.82)':'rgba(53,111,174,.68)';heroCtx.fill();
       });
       if(!reducedMotion&&window.scrollY<h*.9)heroId=requestAnimationFrame(drawHero)
     }

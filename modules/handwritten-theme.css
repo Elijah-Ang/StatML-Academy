@@ -1,0 +1,830 @@
+@import url('https://fonts.googleapis.com/css2?family=Kalam:wght@400;700&family=Patrick+Hand&display=swap');
+
+/*
+ * Handwritten rendering layer.
+ *
+ * This file is deliberately presentation-only. It must not choose a new
+ * layout, reorder content, portal a visual, compress a hero, or resize a
+ * stage. Every module's original CSS remains authoritative for geometry and
+ * responsive behavior; these rules only change the medium, ink, type, and
+ * control surfaces.
+ */
+:root {
+  --hw-paper: #fbf4e2;
+  --hw-paper-deep: #f2e5c8;
+  --hw-card: rgba(255, 252, 242, .78);
+  --hw-card-strong: rgba(255, 253, 245, .9);
+  --hw-ink: #202421;
+  --hw-muted: #4f5a51;
+  --hw-faint: #7f887d;
+  --hw-line: rgba(88, 83, 72, .56);
+  --hw-line-soft: rgba(88, 83, 72, .24);
+  --hw-blue: #2869ad;
+  --hw-blue-soft: #e6f0f8;
+  --hw-green: #4f956b;
+  --hw-green-soft: #e8f3e8;
+  --hw-purple: #7960ae;
+  --hw-purple-soft: #f0eafb;
+  --hw-yellow: #f1d477;
+  --hw-yellow-soft: #fff3bf;
+  --hw-red: #c85e58;
+  --hw-red-soft: #fde9de;
+  --hw-shadow: none;
+  --hw-hand: "Patrick Hand", "Kalam", "Marker Felt", "Chalkboard SE", "Comic Sans MS", "Segoe Print", cursive;
+  --hw-mono: "Kalam", "Patrick Hand", "Marker Felt", "Segoe Print", cursive;
+  --hw-ruled-border: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' preserveAspectRatio='none'%3E%3Cg fill='none' stroke='%23584f45' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath opacity='.48' stroke-width='.82' d='M1.1 1.25C3.7.72 8.1 1.52 10.9 1.02M10.86 1.08c.44 3.1-.32 6.9.08 9.86M10.92 10.91c-3.04.38-7.15-.35-9.88.08M1.08 10.92c-.4-3.2.35-6.94.02-9.82'/%3E%3Cpath opacity='.22' stroke-width='.58' d='M1.25 1.02c3.05.34 6.62-.2 9.62.18M10.98 1.2c-.28 3.3.3 6.38-.18 9.67M10.78 11.02c-2.8-.35-6.82.24-9.66-.12M.98 10.82c.32-3.18-.22-6.55.2-9.72'/%3E%3C/g%3E%3C/svg%3E");
+  --hw-check-off: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cg fill='%23fffaf0' stroke='%23584f45' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath stroke-width='1.45' d='M2.1 2.5c3.4-.7 7.5.2 11.4-.3.5 3.8-.3 7.4.3 11.1-3.8.5-7.8-.3-11.3.3-.4-3.5.3-7.7-.4-11.1Z'/%3E%3Cpath opacity='.3' fill='none' stroke-width='.65' d='M2.5 2.1c3.2.5 7.3-.3 11 .3M13.4 2.6c-.3 3.3.4 7-.2 10.5'/%3E%3C/g%3E%3C/svg%3E");
+  --hw-check-on: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cg fill='%23fff3bf' stroke='%23584f45' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath stroke-width='1.45' d='M2.1 2.5c3.4-.7 7.5.2 11.4-.3.5 3.8-.3 7.4.3 11.1-3.8.5-7.8-.3-11.3.3-.4-3.5.3-7.7-.4-11.1Z'/%3E%3Cpath fill='none' stroke='%232869ad' stroke-width='2' d='m4.1 8.1 2.5 2.6c1.6-2.2 3.1-4.2 5.6-6.2'/%3E%3Cpath opacity='.28' fill='none' stroke='%232869ad' stroke-width='.7' d='m4.4 7.5 2.1 2.2c1.9-2.6 3.8-4.3 5.4-5.7'/%3E%3C/g%3E%3C/svg%3E");
+  --hw-radio-off: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cg fill='%23fffaf0' stroke='%23584f45'%3E%3Cpath stroke-width='1.45' d='M8 1.8c3.5.1 6 2.7 6.1 6.1.2 3.6-2.9 6.4-6.2 6.2-3.5 0-6.2-2.5-6-6.1-.1-3.4 2.7-6.1 6.1-6.2Z'/%3E%3Cpath opacity='.25' fill='none' stroke-width='.65' d='M8.2 2.3c3.1-.1 5.4 2.5 5.5 5.5.2 3.1-2.4 5.6-5.6 5.7'/%3E%3C/g%3E%3C/svg%3E");
+  --hw-radio-on: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cg stroke='%23584f45'%3E%3Cpath fill='%23fffaf0' stroke-width='1.45' d='M8 1.8c3.5.1 6 2.7 6.1 6.1.2 3.6-2.9 6.4-6.2 6.2-3.5 0-6.2-2.5-6-6.1-.1-3.4 2.7-6.1 6.1-6.2Z'/%3E%3Cpath fill='%232869ad' stroke='%232869ad' stroke-width='.8' d='M8.1 4.8c2-.1 3.3 1.4 3.2 3.3.1 1.8-1.5 3.2-3.3 3.1-1.9.1-3.3-1.4-3.2-3.2-.1-1.8 1.5-3.3 3.3-3.2Z'/%3E%3Cpath opacity='.32' fill='none' stroke='%23fffaf0' stroke-width='.65' d='M6.5 6.3c1-.7 2.4-.7 3.2.2'/%3E%3C/g%3E%3C/svg%3E");
+}
+
+html { background: var(--hw-paper) !important; color-scheme: light; }
+
+body {
+  color: var(--hw-ink) !important;
+  background-color: var(--hw-paper) !important;
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180' viewBox='0 0 180 180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.72' numOctaves='4' seed='31' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.055'/%3E%3C/svg%3E"),
+    repeating-linear-gradient(0deg, transparent 0 31px, rgba(70, 121, 159, .045) 31px 32px),
+    radial-gradient(rgba(94, 82, 58, .075) .45px, transparent .65px) !important;
+  background-size: 180px 180px, auto, 8px 8px !important;
+  font-family: var(--hw-hand) !important;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* The standardized modules ship higher-specificity font declarations in
+   their page-local CSS. Reassert the handwritten face without changing any
+   box-model, grid, position, or responsive rule. */
+body.hw-handwritten.statml-standardized,
+body.hw-handwritten.statml-standardized p,
+body.hw-handwritten.statml-standardized li,
+body.hw-handwritten.statml-standardized label,
+body.hw-handwritten.statml-standardized legend,
+body.hw-handwritten.statml-standardized summary,
+body.hw-handwritten.statml-standardized button,
+body.hw-handwritten.statml-standardized select,
+body.hw-handwritten.statml-standardized input,
+body.hw-handwritten.statml-standardized textarea,
+body.hw-handwritten.statml-standardized th,
+body.hw-handwritten.statml-standardized td,
+body.hw-handwritten.statml-standardized caption,
+body.hw-handwritten.statml-standardized .statml-brand-link,
+body.hw-handwritten.statml-standardized .statml-nav-topic,
+body.hw-handwritten.statml-standardized .statml-hero p,
+body.hw-handwritten.statml-standardized .statml-hero span,
+body.hw-handwritten.statml-standardized .hero-subtitle,
+body.hw-handwritten.statml-standardized .hero-note,
+body.hw-handwritten.statml-standardized .hero-badge,
+body.hw-handwritten.statml-standardized .topic-badge,
+body.hw-handwritten.statml-standardized .statml-overview-item,
+body.hw-handwritten.statml-standardized .stage-label,
+body.hw-handwritten.statml-standardized .content-kicker,
+body.hw-handwritten.statml-standardized .metric-label,
+body.hw-handwritten.statml-standardized .visual-kicker,
+body.hw-handwritten.statml-standardized .visual-title,
+body.hw-handwritten.statml-standardized .visual-foot {
+  font-family: var(--hw-hand) !important;
+}
+
+body a { color: var(--hw-blue); text-decoration-thickness: 1.5px; text-underline-offset: 3px; }
+body a:hover { color: #174f89; }
+body ::selection { color: var(--hw-ink); background: rgba(241, 212, 119, .62); }
+body :focus-visible { outline: 3px solid rgba(40, 105, 173, .5) !important; outline-offset: 3px !important; }
+
+body h1,
+body h2,
+body h3,
+body h4,
+body h5,
+body h6,
+body .hero h1,
+body .statml-hero h1,
+body .hero-section h1,
+body .section h2,
+body .stage h2,
+body .statml-stage h2,
+body .stage-section h2,
+body .chapter h2,
+body .story-section h2 {
+  color: var(--hw-ink) !important;
+  font-family: var(--hw-hand) !important;
+  font-weight: 400 !important;
+  letter-spacing: .005em !important;
+  text-shadow: none !important;
+}
+
+body p,
+body li,
+body label,
+body legend,
+body summary,
+body .eyebrow,
+body .stage-label,
+body .stage-num,
+body .content-kicker,
+body .stage-kicker,
+body .card-title,
+body .metric-label,
+body .metric .lbl,
+body .plain-translation,
+body .statml-nav-topic,
+body .statml-nav-meta,
+body .nav-topic,
+body .nav-meta,
+body button,
+body select,
+body input,
+body textarea,
+body th,
+body td,
+body caption { font-family: var(--hw-hand) !important; }
+
+/* A few standardized pages and their inline renderers put the old UI face on
+   wrapper elements rather than on the text node itself.  Inheritance alone
+   therefore leaves those visible descendants in Inter/JetBrains Mono.  Keep
+   this as a typography-only presentation rule: it changes no display,
+   dimensions, positioning, content, or renderer ownership. */
+body.hw-handwritten * { font-family: var(--hw-hand) !important; }
+/* Standardized page-local rules commonly use two class selectors (for
+   example `.statml-stage .step-label`). Include the page marker in the
+   ancestor selector so this presentation layer wins those same-importance
+   declarations without touching their other properties. */
+body.hw-handwritten.statml-standardized * { font-family: var(--hw-hand) !important; }
+
+body code,
+body pre,
+body kbd,
+body .mono,
+body .font-mono,
+body .font-mono-ui,
+body .code-block,
+body .statml-nav-meta { font-family: var(--hw-hand) !important; }
+
+/* Equations in the references are written by the same hand as the prose;
+   mathematical notation should not fall back to a typeset UI face. */
+body .math,
+body .math-block,
+body .formula,
+body .formula-block,
+body .formula-box,
+body .math-text,
+body .derivation-step,
+body .metric-value,
+body .metric-val,
+body .control-val,
+body .slider-readout,
+body .katex,
+body .katex * { font-family: var(--hw-hand) !important; }
+body.hw-handwritten .statml-stage .math,
+body.hw-handwritten .statml-stage .math-block,
+body.hw-handwritten .statml-stage .formula,
+body.hw-handwritten .statml-stage .formula-block,
+body.hw-handwritten .statml-stage .formula-box,
+body.hw-handwritten .statml-stage .math-text,
+body.hw-handwritten .statml-stage .derivation-step,
+body.hw-handwritten .statml-stage :is(.metric-value,.metric-val,.val,.value,.control-val,.slider-readout,.s-val,.k-val),
+body.hw-handwritten .statml-stage .katex,
+body.hw-handwritten .statml-stage .katex * { font-family: var(--hw-hand) !important; }
+
+/* Existing hero geometry remains untouched; only its medium and ink change. */
+body .hero,
+body .statml-hero,
+body .hero-section,
+body header#hero {
+  color: var(--hw-ink) !important;
+  background-color: var(--hw-paper) !important;
+  background-image: none !important;
+  border-color: var(--hw-line-soft) !important;
+}
+body .hero h1,
+body .statml-hero h1,
+body .hero-section h1 {
+  color: var(--hw-ink) !important;
+  background: none !important;
+  -webkit-background-clip: initial !important;
+  background-clip: initial !important;
+  -webkit-text-fill-color: var(--hw-ink) !important;
+  text-shadow: none !important;
+}
+body .hero p,
+body .hero .hero-subtitle,
+body .hero .subtitle,
+body .hero-section p,
+body .statml-hero p,
+body .statml-hero .hero-subtitle,
+body .statml-hero .subtitle { color: var(--hw-muted) !important; }
+body .eyebrow,
+body .hero-badge,
+body .topic-badge,
+body .content-kicker,
+body .stage-label,
+body .stage-num,
+body .stage-kicker { color: var(--hw-blue) !important; }
+
+/* Existing navigation keeps its box model and position. */
+body .statml-site-nav,
+body .site-nav,
+body .topbar,
+body .top-nav,
+body header nav {
+  color: var(--hw-ink) !important;
+  background-color: rgba(251, 244, 226, .94) !important;
+  background-image: none !important;
+  border-color: var(--hw-line-soft) !important;
+  box-shadow: 0 1px 0 rgba(41, 50, 41, .08) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+body .statml-brand-mark,
+body .brand-mark,
+body .home,
+body .statml-brand-link,
+body .brand-link { color: var(--hw-ink) !important; }
+
+/* Surfaces keep their original dimensions and display modes. */
+body .stage,
+body .statml-stage,
+body .stage-section,
+body .section,
+body .story-section,
+body .chapter,
+body .glass-card,
+body .card,
+body .quiz-card,
+body .control-card,
+body .interactive,
+body .panel,
+body .map,
+body .lesson-map,
+body .compare-grid > div,
+body .procedural-step,
+body .explain-block,
+body .statml-prereq,
+body .statml-deepening,
+body .statml-takeaways {
+  color: var(--hw-ink) !important;
+  background-color: rgba(255, 252, 242, .72) !important;
+  background-image: none !important;
+  border-color: var(--hw-line-soft) !important;
+  box-shadow: var(--hw-shadow) !important;
+}
+body .glass-card,
+body .card,
+body .quiz-card,
+body .control-card,
+body .interactive,
+body .panel,
+body .map,
+body .lesson-map,
+body .compare-grid > div,
+body .procedural-step,
+body .explain-block,
+body .statml-prereq,
+body .statml-deepening,
+body .statml-takeaways {
+  border-width: 1px !important;
+  border-radius: 5px 7px 4px 6px !important;
+}
+body .stage h2,
+body .statml-stage h2,
+body .stage-section h2,
+body .section h2,
+body .story-section h2,
+body .chapter h2 {
+  text-decoration-color: var(--hw-blue);
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: .18em;
+}
+
+body .callout,
+body .insight-box,
+body .insight,
+body .warning-note,
+body .report,
+body .plain-translation,
+body .statml-prereq,
+body .statml-deepening,
+body .statml-takeaways {
+  color: var(--hw-ink) !important;
+  border-color: var(--hw-line-soft) !important;
+  box-shadow: var(--hw-shadow) !important;
+}
+body .callout { background-color: var(--hw-yellow-soft) !important; }
+body .report,
+body .statml-takeaways { background-color: var(--hw-green-soft) !important; }
+body .warning-note { background-color: var(--hw-red-soft) !important; }
+
+/* Module renderers replace the original visible charts at their source. */
+body.hw-handwritten canvas { filter: none !important; }
+body.hw-handwritten svg.hw-ink-svg:not(.hw-rough-frame):not(.hw-ink-filter-bank):not([data-no-ink-filter]) {
+  filter: url(#hw-ink-distort) !important;
+}
+body.hw-handwritten .chart,
+body.hw-handwritten .viz,
+body.hw-handwritten .visual-panel,
+body.hw-handwritten .viz-panel,
+body.hw-handwritten .chart-card,
+body.hw-handwritten .figure-card,
+body.hw-handwritten .statml-visual,
+body.hw-handwritten .statml-visual-card,
+body.hw-handwritten .visual-topbar,
+body.hw-handwritten .canvas-wrap,
+body.hw-handwritten .visual-foot {
+  background-color: rgba(255, 253, 245, .62) !important;
+  background-image: none !important;
+  color: var(--hw-ink) !important;
+  border-color: var(--hw-line-soft) !important;
+  box-shadow: var(--hw-shadow) !important;
+}
+body.hw-handwritten .chart,
+body.hw-handwritten .viz,
+body.hw-handwritten .visual-panel,
+body.hw-handwritten .viz-panel,
+body.hw-handwritten .chart-card,
+body.hw-handwritten .figure-card,
+body.hw-handwritten .statml-visual,
+body.hw-handwritten .statml-visual-card,
+body.hw-handwritten .canvas-wrap {
+  border-width: 1px !important;
+  border-radius: 4px 6px 5px 3px !important;
+}
+
+body.hw-handwritten table {
+  border-color: var(--hw-line-soft) !important;
+  background-color: rgba(255, 253, 245, .7) !important;
+}
+body.hw-handwritten th,
+body.hw-handwritten td { border-color: var(--hw-line-soft) !important; color: var(--hw-ink) !important; }
+body.hw-handwritten th {
+  background: rgba(241, 212, 119, .16) !important;
+  font-weight: 400 !important;
+}
+
+body.hw-handwritten button,
+body.hw-handwritten .btn,
+body.hw-handwritten select,
+body.hw-handwritten input:not([type="range"]):not([type="checkbox"]):not([type="radio"]),
+body.hw-handwritten .quiz-option,
+body.hw-handwritten .scenario-options button,
+body.hw-handwritten .control button {
+  border-color: var(--hw-line-soft) !important;
+  background-color: rgba(248, 243, 230, .82) !important;
+  background-image: none !important;
+  color: var(--hw-ink) !important;
+  box-shadow: var(--hw-shadow) !important;
+  border-width: 1px !important;
+  border-radius: 4px 6px 3px 5px !important;
+}
+body.hw-handwritten .scenario-options button[aria-pressed="true"] { background-color: var(--hw-green-soft) !important; border-color: var(--hw-green) !important; }
+body.hw-handwritten .quiz-option.incorrect { background-color: var(--hw-red-soft) !important; border-color: var(--hw-red) !important; }
+body.hw-handwritten button[aria-pressed="true"],
+body.hw-handwritten button[aria-current="step"],
+body.hw-handwritten .btn.active,
+body.hw-handwritten .btn-primary {
+  background-color: var(--hw-blue-soft) !important;
+  border-color: rgba(40, 105, 173, .64) !important;
+  color: #174f89 !important;
+}
+
+body.hw-handwritten input[type="range"]::-webkit-slider-runnable-track { border-color: var(--hw-line-soft); background: #dbe8ed; }
+body.hw-handwritten input[type="range"]::-webkit-slider-thumb { border-color: var(--hw-line-soft); background: var(--hw-yellow); }
+body.hw-handwritten input[type="range"]::-moz-range-track { border-color: var(--hw-line-soft); background: #dbe8ed; }
+body.hw-handwritten input[type="range"]::-moz-range-thumb { border-color: var(--hw-line-soft); background: var(--hw-yellow); }
+
+body.hw-handwritten .bg-stone-800,
+body.hw-handwritten .bg-stone-900,
+body.hw-handwritten .bg-gray-800,
+body.hw-handwritten .bg-gray-900,
+body.hw-handwritten .bg-slate-800,
+body.hw-handwritten .bg-slate-900,
+body.hw-handwritten .bg-zinc-800,
+body.hw-handwritten .bg-zinc-900,
+body.hw-handwritten .bg-neutral-800,
+body.hw-handwritten .bg-neutral-900 {
+  background-color: var(--hw-card-strong) !important;
+  color: var(--hw-ink) !important;
+  border-color: var(--hw-line-soft) !important;
+  box-shadow: var(--hw-shadow) !important;
+}
+body.hw-handwritten .bg-stone-800 .text-white,
+body.hw-handwritten .bg-stone-800 .text-stone-100,
+body.hw-handwritten .bg-stone-800 .text-stone-200,
+body.hw-handwritten .bg-stone-800 .text-stone-300,
+body.hw-handwritten .bg-gray-800 .text-white,
+body.hw-handwritten .bg-gray-900 .text-white,
+body.hw-handwritten .bg-slate-800 .text-white,
+body.hw-handwritten .bg-zinc-800 .text-white,
+body.hw-handwritten .bg-neutral-800 .text-white { color: var(--hw-ink) !important; }
+
+body.hw-handwritten .premise {
+  background-color: var(--hw-paper-deep) !important;
+  color: var(--hw-ink) !important;
+  border-color: var(--hw-line-soft) !important;
+}
+body.hw-handwritten .premise h2,
+body.hw-handwritten .premise strong { color: var(--hw-ink) !important; }
+body.hw-handwritten .premise-copy p { color: var(--hw-muted) !important; }
+body.hw-handwritten .premise .eyebrow { color: var(--hw-blue) !important; }
+body.hw-handwritten .tooltip-card,
+body.hw-handwritten .dot-tooltip,
+body.hw-handwritten .cell-tooltip,
+body.hw-handwritten .stage-dot-tooltip,
+body.hw-handwritten .metric-badge,
+body.hw-handwritten .m-margin {
+  background-color: var(--hw-yellow-soft) !important;
+  color: var(--hw-ink) !important;
+  border-color: var(--hw-line-soft) !important;
+  box-shadow: var(--hw-shadow) !important;
+  font-family: var(--hw-hand) !important;
+}
+body.hw-handwritten .terminal-card,
+body.hw-handwritten .terminal-header,
+body.hw-handwritten .terminal-body {
+  background-color: var(--hw-card-strong) !important;
+  background-image: none !important;
+  color: var(--hw-ink) !important;
+  border-color: var(--hw-line-soft) !important;
+  box-shadow: var(--hw-shadow) !important;
+}
+
+/* Stage-rail labels are navigation aids, but they must look like loose
+   marker notes rather than black application tooltips. Geometry, opacity and
+   hover/focus behaviour remain owned by each module. */
+body.hw-handwritten :is(.stage-dot-tooltip,.statml-stage-button span) {
+  color: #174f89 !important;
+  background-color: #f1d477 !important;
+  background-image:
+    repeating-linear-gradient(176deg, rgba(151, 107, 14, .1) 0 1px, transparent 1px 5px),
+    linear-gradient(179deg, transparent 8%, rgba(255, 235, 143, .88) 8% 91%, transparent 91%) !important;
+  border-color: transparent !important;
+  border-radius: 0 !important;
+  clip-path: polygon(1% 9%, 98.5% 1%, 100% 88%, 3% 100%) !important;
+  box-shadow: 1px 2px 0 rgba(88, 83, 72, .13) !important;
+  text-shadow: none !important;
+}
+
+/* Small authored symbols use the same pen as the surrounding copy instead of
+   relying on an OS emoji/symbol font. Page-local variants may add colour, but
+   the shared geometry and stroke treatment keep these consistent. */
+body.hw-handwritten .hw-inline-doodle {
+  display: inline-block;
+  width: 1.08em;
+  height: 1.08em;
+  margin-inline: .045em;
+  vertical-align: -.17em;
+  color: currentColor;
+  line-height: 1;
+  transform: rotate(var(--hw-tilt, 0deg));
+}
+body.hw-handwritten .hw-inline-doodle svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+body.hw-handwritten .hw-inline-doodle :is(path,circle,ellipse,line,polyline,rect) {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.15;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+}
+
+/* Stage labels can contain an inline SVG doodle in place of an authored emoji.
+   The legacy tooltip selector targets every descendant span, so without this
+   reset the doodle itself becomes a second absolutely positioned tooltip and
+   splits/clips the label. Keep the outer note untouched and return only the
+   nested doodle to normal inline flow. */
+body.hw-handwritten .statml-stage-button span.hw-inline-doodle {
+  display: inline-block !important;
+  position: relative !important;
+  inset: auto !important;
+  width: 1.08em !important;
+  max-width: none !important;
+  height: 1.08em !important;
+  margin-inline: .045em !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-image: none !important;
+  border-radius: 0 !important;
+  color: currentColor !important;
+  background: none !important;
+  box-shadow: none !important;
+  clip-path: none !important;
+  opacity: 1 !important;
+  pointer-events: none !important;
+  line-height: 1 !important;
+  vertical-align: -.17em !important;
+  transform: rotate(var(--hw-tilt, 0deg)) !important;
+}
+
+/* Strip page-local glass/gloss layers from UI shells. Authored material
+   textures (sticky paper, tape, marker strokes, crayon hatching) are declared
+   later and therefore remain the only visible background-image layers. */
+body.hw-handwritten :is(
+  .glass-card,.card,.quiz-card,.control-card,.panel,.map,.lesson-map,
+  .metric,.metric-card,.question-card,.formula,.formula-block,.math-block,
+  .insight-box,.insight,.callout,.warning-note,.report,.plain-translation,
+  .takeaway,.statml-prereq,.statml-deepening,.statml-takeaways,
+  .visual-panel,.viz-panel,.chart-card,.figure-card,.statml-visual-card,
+  .visual-head,.visual-topbar,.visual-foot,.control-panel,.procedural-step,
+  .explain-block,.quiz-option,.feedback,.static-answer,.live-calc,
+  .terminal-card,.terminal-header,.terminal-body,.mini-table,.data-table,
+  .statml-overview,.statml-overview-item,.statml-stage-rail
+) { background-image: none !important; }
+
+/*
+ * Material construction layer
+ * ---------------------------
+ * A handwriting font is not enough: perfect radii, immaculate pills and
+ * machine-straight frames still read as software.  The bootstrap decorates
+ * existing elements with these presentation-only hooks.  Their dimensions,
+ * order, content and event ownership remain unchanged.
+ */
+body.hw-handwritten .hw-rough-surface.hw-rough-surface {
+  border-color: transparent !important;
+  box-shadow: 2px 3px 0 rgba(76, 65, 50, .055) !important;
+}
+body.hw-handwritten .hw-frame-relative { position: relative !important; }
+
+body.hw-handwritten .hw-rough-frame {
+  position: absolute !important;
+  inset: 0 !important;
+  z-index: 12 !important;
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  max-width: none !important;
+  overflow: visible !important;
+  pointer-events: none !important;
+  color: var(--hw-line) !important;
+  filter: none !important;
+}
+body.hw-handwritten .hw-rough-frame path {
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+}
+
+body.hw-handwritten .hw-sticky-material {
+  background-color: #fff1b8 !important;
+  background-image:
+    repeating-linear-gradient(176deg, rgba(223, 178, 45, .07) 0 2px, transparent 2px 7px),
+    radial-gradient(circle at 14% 18%, rgba(255,255,255,.42), transparent 46%) !important;
+  clip-path: polygon(.35% 1%, 99.25% .15%, 99.85% 98.7%, .15% 99.6%);
+}
+body.hw-handwritten .hw-sticky-material:nth-of-type(even) {
+  clip-path: polygon(.2% .3%, 99.65% 1%, 99.35% 99.5%, .45% 98.9%);
+}
+body.hw-handwritten .hw-tape {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  z-index: 14;
+  width: clamp(36px, 18%, 82px);
+  height: 13px;
+  pointer-events: none;
+  opacity: .48;
+  background:
+    repeating-linear-gradient(87deg, rgba(135,105,68,.11) 0 1px, transparent 1px 4px),
+    rgba(221, 199, 151, .72);
+  clip-path: polygon(2% 20%, 98% 0, 95% 92%, 0 100%);
+  transform: translate(-50%, -38%) rotate(-1.8deg);
+}
+body.hw-handwritten .hw-sticky-material:nth-of-type(even) > .hw-tape {
+  transform: translate(-50%, -34%) rotate(2.1deg);
+}
+
+/* Marker strokes replace software pills and status chips. */
+body.hw-handwritten .hw-marker-label,
+body.hw-handwritten :is(.pill,.chip,.tag,.badge,.topic-badge,.hero-badge,.hotspot-tag) {
+  position: relative !important;
+  isolation: isolate;
+  border-color: transparent !important;
+  border-radius: 3px 6px 2px 5px / 4px 2px 6px 3px !important;
+  box-shadow: none !important;
+  background-color: transparent !important;
+  background-image:
+    linear-gradient(177deg, transparent 20%, rgba(241, 212, 119, .22) 20% 35%, rgba(241, 212, 119, .54) 35% 78%, transparent 78%),
+    linear-gradient(181deg, transparent 34%, rgba(241, 212, 119, .25) 34% 83%, transparent 83%) !important;
+}
+body.hw-handwritten :is(.pill,.chip,.tag,.badge,.topic-badge,.hero-badge,.hotspot-tag):nth-of-type(even) {
+  background-image:
+    linear-gradient(182deg, transparent 23%, rgba(241, 212, 119, .5) 23% 76%, transparent 76%),
+    linear-gradient(175deg, transparent 38%, rgba(241, 212, 119, .22) 38% 84%, transparent 84%) !important;
+}
+body.hw-handwritten :is(.pill.positive,.chip.success,.tag.success,.badge.success,.success.hw-marker-label) {
+  color: #286b43 !important;
+  background-image:
+    linear-gradient(178deg, transparent 18%, rgba(104, 181, 113, .18) 18% 34%, rgba(104, 181, 113, .48) 34% 80%, transparent 80%),
+    linear-gradient(182deg, transparent 42%, rgba(104, 181, 113, .2) 42% 86%, transparent 86%) !important;
+}
+body.hw-handwritten :is(.pill.negative,.chip.danger,.tag.danger,.badge.danger,.danger.hw-marker-label,.error.hw-marker-label) {
+  color: #9f403b !important;
+  background-image:
+    linear-gradient(176deg, transparent 19%, rgba(224, 112, 102, .18) 19% 35%, rgba(224, 112, 102, .43) 35% 80%, transparent 80%),
+    linear-gradient(181deg, transparent 43%, rgba(224, 112, 102, .2) 43% 85%, transparent 85%) !important;
+}
+
+/* Headings and stage/meta labels should read like notebook annotations. */
+body.hw-handwritten :is(.stage-label,.stage-kicker,.content-kicker,.statml-content-kicker,.metric-label,.lbl,.tt-label,.eyebrow) {
+  letter-spacing: .025em !important;
+  font-variant: normal !important;
+}
+body.hw-handwritten :is(.stage-label,.stage-kicker,.content-kicker,.statml-content-kicker)::before {
+  height: 4px !important;
+  border: 0 !important;
+  border-radius: 60% 40% 52% 48% !important;
+  background: rgba(40, 105, 173, .66) !important;
+  clip-path: polygon(0 36%, 28% 9%, 69% 28%, 100% 3%, 97% 78%, 59% 62%, 21% 94%, 2% 70%);
+  transform: rotate(-1.5deg);
+}
+body.hw-handwritten :is(h1,h2).hw-ink-heading {
+  position: relative !important;
+  isolation: isolate;
+}
+body.hw-handwritten .hw-heading-stroke {
+  position: absolute;
+  left: 0;
+  bottom: -.09em;
+  display: block;
+  width: min(11rem, 72%);
+  height: 5px;
+  z-index: -1;
+  pointer-events: none;
+  opacity: .58;
+  background: var(--hw-blue);
+  clip-path: polygon(0 42%, 15% 18%, 36% 39%, 54% 8%, 74% 34%, 100% 13%, 98% 71%, 76% 58%, 54% 84%, 33% 61%, 12% 91%, 1% 70%);
+  transform: rotate(-.35deg);
+}
+
+/* Hand-made controls: ink outlines, crayon fills, irregular knobs. */
+body.hw-handwritten :is(
+  button:not(.statml-stage-button):not(.stage-dot):not(.dot):not(.progress-dot):not(.step-dot):not(.status-dot),
+  .btn,select,input:not([type="range"]):not([type="checkbox"]):not([type="radio"]),textarea,
+  .quiz-option,.scenario-options button,.control button
+) {
+  /* Keep the original border width in the box model, but let a two-pass
+     pencil image paint the edge. Merely varying border-radius still leaves
+     a recognisably software-perfect control, especially on wide buttons. */
+  border-radius: 0 !important;
+  border-style: solid !important;
+  border-color: transparent !important;
+  border-image-source: var(--hw-ruled-border) !important;
+  border-image-slice: 3 !important;
+  border-image-width: 1 !important;
+  border-image-outset: 0 !important;
+  border-image-repeat: stretch !important;
+  box-shadow: 1px 2px 0 rgba(75, 68, 58, .08) !important;
+}
+body.hw-handwritten select {
+  -webkit-appearance: none !important;
+  appearance: none !important;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 18 12'%3E%3Cg fill='none' stroke='%233d403b' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath stroke-width='1.7' d='M2.1 2.4c2.4 1.7 4.4 4.1 6.8 6.7 2.1-2.2 4.3-4.8 6.8-7'/%3E%3Cpath opacity='.28' stroke-width='.8' d='M2.5 1.8c2 2.4 4.4 4.4 6.3 7.7 2.8-2.7 4.5-5.1 6.5-7.8'/%3E%3C/g%3E%3C/svg%3E") !important;
+  background-repeat: no-repeat !important;
+  background-position: right .62em center !important;
+  background-size: .82em .58em !important;
+}
+body.hw-handwritten input[type="range"] {
+  -webkit-appearance: none !important;
+  appearance: none !important;
+  background: transparent !important;
+  accent-color: var(--hw-blue);
+  filter: none !important;
+}
+body.hw-handwritten input[type="range"]::-webkit-slider-runnable-track {
+  height: 8px;
+  border: 1px solid rgba(75,68,58,.52);
+  border-radius: 5px 3px 6px 4px / 3px 6px 4px 5px;
+  background:
+    repeating-linear-gradient(167deg, rgba(40,105,173,.18) 0 2px, transparent 2px 5px),
+    #e5edf0;
+}
+body.hw-handwritten input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 18px;
+  height: 17px;
+  margin-top: -5px;
+  border: 1.5px solid rgba(57,53,47,.72);
+  border-radius: 54% 46% 49% 51% / 45% 55% 47% 53%;
+  background:
+    repeating-linear-gradient(151deg, rgba(157,112,12,.18) 0 1px, transparent 1px 4px),
+    var(--hw-yellow);
+  box-shadow: 1px 1px 0 rgba(57,53,47,.18);
+}
+body.hw-handwritten input[type="checkbox"],
+body.hw-handwritten input[type="radio"] {
+  -webkit-appearance: none !important;
+  appearance: none !important;
+  display: inline-block;
+  inline-size: 1em;
+  block-size: 1em;
+  min-inline-size: 1em;
+  padding: 0 !important;
+  border: 0 !important;
+  accent-color: var(--hw-blue);
+  background-color: transparent !important;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
+  background-size: contain !important;
+  box-shadow: none !important;
+  vertical-align: -.12em;
+}
+body.hw-handwritten input[type="checkbox"] { background-image: var(--hw-check-off) !important; }
+body.hw-handwritten input[type="checkbox"]:checked { background-image: var(--hw-check-on) !important; }
+body.hw-handwritten input[type="radio"] { background-image: var(--hw-radio-off) !important; }
+body.hw-handwritten input[type="radio"]:checked { background-image: var(--hw-radio-on) !important; }
+
+/* Progress and meter fills use visible marker hatching, not glossy gradients. */
+body.hw-handwritten :is(.progress,.progress-track,.progress-bar-wrap,.statml-progress-track) {
+  border-radius: 5px 3px 6px 4px / 4px 6px 3px 5px !important;
+  border-color: rgba(75,68,58,.48) !important;
+  background-color: rgba(255,253,245,.74) !important;
+}
+body.hw-handwritten :is(.progress-bar,.progress-fill,.statml-progress-fill,#progress-bar) {
+  border-radius: 4px 2px 5px 3px / 3px 5px 2px 4px !important;
+  background-color: var(--hw-blue) !important;
+  background-image: repeating-linear-gradient(162deg, rgba(255,255,255,.26) 0 2px, transparent 2px 6px) !important;
+  box-shadow: none !important;
+}
+
+/* Tables retain their exact semantic grid and border widths, but the paint is
+   an irregular two-pass pencil rule instead of a mechanically dashed CSS
+   line. Foundation canvases own their separate table renderer. */
+body.hw-handwritten:not(.hw-foundation-module) table {
+  border-style: solid !important;
+  border-color: transparent !important;
+  border-image-source: var(--hw-ruled-border) !important;
+  border-image-slice: 3 !important;
+  border-image-width: 1 !important;
+  border-image-outset: 0 !important;
+  border-image-repeat: stretch !important;
+  box-shadow: 1px 2px 0 rgba(75,68,58,.05) !important;
+}
+body.hw-handwritten:not(.hw-foundation-module) :is(th,td) {
+  border-style: solid !important;
+  border-width: 0 1px 1px 0 !important;
+  border-color: transparent !important;
+  border-image-source: var(--hw-ruled-border) !important;
+  border-image-slice: 3 !important;
+  border-image-width: 1 !important;
+  border-image-outset: 0 !important;
+  border-image-repeat: stretch !important;
+}
+body.hw-handwritten tr:nth-child(even) :is(th,td) { transform: translateY(.15px); }
+
+/* Perfect software circles are replaced by individual-looking ink marks. */
+body.hw-handwritten :is(.dot,.legend-dot,.legend-ring,.stage-dot,.progress-dot,.step-dot,.status-dot,.swatch,.statml-overview-number,.step-number,.statml-stage-button) {
+  border-radius: 54% 46% 52% 48% / 47% 53% 45% 55% !important;
+  box-shadow: inset 1px 0 rgba(255,255,255,.28), 1px 1px 0 rgba(65,58,50,.12) !important;
+}
+body.hw-handwritten :is(.dot,.legend-dot,.legend-ring,.stage-dot,.progress-dot,.step-dot,.status-dot,.swatch,.statml-overview-number,.step-number,.statml-stage-button):nth-of-type(even) {
+  border-radius: 47% 53% 45% 55% / 55% 45% 53% 47% !important;
+  transform: rotate(4deg);
+}
+
+/* Explicit opt-in marker used by authored visual renderers. */
+body.hw-handwritten [data-visual-language="paper-and-ink"] { filter: none !important; }
+
+body.hw-simple-regression .mini-plot {
+  background-color: var(--hw-paper) !important;
+  border-color: var(--hw-line-soft) !important;
+  box-shadow: none !important;
+}
+
+/* Foundation pages own their material edges in foundation-module.css. The
+   shared layer intentionally does not flatten those authored paper surfaces. */
+body.hw-simple-regression #progress-bar,
+body.hw-simple-regression .progress-bar {
+  background: var(--hw-blue) !important;
+}
+body.hw-simple-regression .statml-stage-rail {
+  background: rgba(251, 244, 226, .94) !important;
+  border-color: var(--hw-line-soft) !important;
+  border-radius: 4px !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+body.hw-simple-regression .statml-stage-button {
+  background: var(--hw-paper) !important;
+  border-color: var(--hw-line) !important;
+  box-shadow: none !important;
+}
+body.hw-simple-regression .statml-stage-button[aria-current="step"] {
+  background: var(--hw-yellow) !important;
+  border-color: var(--hw-ink) !important;
+  box-shadow: none !important;
+}
+body.hw-simple-regression .statml-stage-button span {
+  background: var(--hw-paper) !important;
+  color: var(--hw-ink) !important;
+  border: 1px solid var(--hw-line-soft) !important;
+  border-radius: 3px !important;
+  box-shadow: none !important;
+}

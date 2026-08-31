@@ -935,6 +935,222 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
 </style>
 
     <link rel="stylesheet" href="academic-rigor.css">
+    <link rel="stylesheet" href="handwritten-theme.css?v=20260826-handwritten-final-2">
+    <script src="handwritten-theme.js?v=20260826-handwritten-final-2" defer></script>
+    <style id="polynomial-regression-handwritten-shell">
+        body.hw-handwritten .hero-badge,
+        body.hw-handwritten .topic-badge,
+        body.hw-handwritten .statml-hero .hero-badge {
+            border: 0 !important; border-radius: 3px 5px 2px 4px !important;
+            background: linear-gradient(transparent 38%, rgba(241,212,119,.58) 38%, rgba(241,212,119,.58) 88%, transparent 88%) !important;
+            box-shadow: none !important;
+        }
+        body.hw-handwritten .statml-overview { border: 1px solid rgba(88,83,72,.28) !important; border-radius: 5px 8px 4px 7px !important; background: rgba(255,253,245,.78) !important; box-shadow: none !important; }
+        body.hw-handwritten .statml-overview-item { border-radius: 3px 5px 2px 4px !important; background: rgba(255,252,242,.32) !important; box-shadow: none !important; }
+        body.hw-handwritten .statml-overview-number { border: 1px solid rgba(40,105,173,.38) !important; border-radius: 2px 4px 2px 3px !important; background: rgba(230,240,248,.7) !important; box-shadow: none !important; }
+        body.hw-handwritten :is(.pill,.tag,.badge,.metric-badge,.feature-pill,.transform-bridge-badge) { border: 0 !important; border-radius: 2px 4px 2px 3px !important; background: linear-gradient(transparent 34%, rgba(241,212,119,.48) 34%, rgba(241,212,119,.48) 90%, transparent 90%) !important; box-shadow: none !important; }
+        body.hw-handwritten .statml-stage-rail { border-radius: 4px 6px 3px 5px !important; background-color: rgba(255,252,242,.82) !important; background-image: repeating-linear-gradient(176deg, rgba(223,178,45,.04) 0 2px, transparent 2px 8px), radial-gradient(circle at 14% 18%, rgba(255,255,255,.3), transparent 46%) !important; box-shadow: none !important; }
+        body.hw-handwritten .statml-stage-button { border-radius: 42% 58% 47% 53% !important; box-shadow: none !important; }
+        body.hw-handwritten .statml-stage-button[aria-current="step"] { background: var(--hw-yellow) !important; border-color: var(--hw-ink) !important; box-shadow: none !important; }
+        body.hw-handwritten .statml-stage-button span { border-radius: 3px 5px 2px 4px !important; background: var(--hw-yellow-soft) !important; color: var(--hw-ink) !important; box-shadow: none !important; }
+        body.hw-handwritten input[type="range"] { appearance: none !important; height: 7px !important; border: 0 !important; border-radius: 3px 5px 2px 4px !important; background: repeating-linear-gradient(167deg, rgba(40,105,173,.18) 0 2px, rgba(255,252,242,.72) 2px 6px) !important; box-shadow: 1px 1px 0 rgba(75,68,58,.12) !important; }
+        body.hw-handwritten input[type="range"]::-webkit-slider-thumb { appearance: none; width: 18px; height: 18px; border: 1px solid rgba(75,68,58,.52); border-radius: 42% 58% 47% 53%; background: var(--hw-yellow); box-shadow: 1px 2px 0 rgba(75,68,58,.16); transform: rotate(-3deg); }
+        body.hw-handwritten input[type="range"]::-moz-range-thumb { width: 18px; height: 18px; border: 1px solid rgba(75,68,58,.52); border-radius: 42% 58% 47% 53%; background: var(--hw-yellow); box-shadow: 1px 2px 0 rgba(75,68,58,.16); }
+        body.hw-handwritten.statml-standardized :is(.statml-overview,.statml-overview-item,.glass-card,.card,.metric-card,.control-panel,.controls,.quiz-card,.worked-example-widget,.formula-block,.math-block,.formula,.software-output,.model-report-block,.limitation-card,.playground-summary-card,.decision-card,.interactive,.panel,.chart-card,.figure-card,.visual-panel,.viz-panel,.canvas-container,.canvas-wrap,.viz-stage,.status-strip) { border: 1px solid rgba(88,83,72,.42) !important; border-radius: 5px 8px 4px 7px !important; background-color: rgba(255,252,242,.82) !important; background-image: repeating-linear-gradient(176deg, rgba(223,178,45,.035) 0 2px, transparent 2px 8px), radial-gradient(circle at 14% 18%, rgba(255,255,255,.25), transparent 46%) !important; box-shadow: 1px 2px 0 rgba(76,65,50,.10) !important; backdrop-filter: none !important; }
+        body.hw-handwritten.statml-standardized :is(.insight-box,.callout,.insight,.takeaway,.teaching-note,.look-here,.breakdown,.warning-note,.report,.plain-translation,.statml-takeaways) { border: 1px solid rgba(157,112,12,.34) !important; border-left: 4px solid var(--hw-blue) !important; border-radius: 2px 5px 3px 6px !important; background-color: #fff1b8 !important; background-image: repeating-linear-gradient(176deg, rgba(223,178,45,.07) 0 2px, transparent 2px 7px), radial-gradient(circle at 14% 18%, rgba(255,255,255,.42), transparent 46%) !important; box-shadow: 2px 3px 0 rgba(76,65,50,.14) !important; }
+        body.hw-handwritten.statml-standardized :is(.warning-note,.is-alert) { border-left-color: var(--hw-red) !important; background-color: var(--hw-red-soft) !important; background-image: repeating-linear-gradient(176deg, rgba(200,94,88,.055) 0 2px, transparent 2px 7px), radial-gradient(circle at 14% 18%, rgba(255,255,255,.34), transparent 46%) !important; }
+        body.hw-handwritten.statml-standardized :is(.report,.statml-takeaways) { border-left-color: var(--hw-green) !important; background-color: var(--hw-green-soft) !important; }
+        body.hw-handwritten.statml-standardized :is(button,.btn,.interactive-btn,.control-btn,select,input[type="text"],input[type="number"],textarea,.quiz-option,.scenario-options button,.control button) { border: 1px solid rgba(75,68,58,.52) !important; border-radius: 7px 4px 8px 5px !important; background-color: rgba(248,243,230,.88) !important; background-image: repeating-linear-gradient(167deg, rgba(40,105,173,.035) 0 2px, transparent 2px 6px) !important; box-shadow: 1px 2px 0 rgba(75,68,58,.08) !important; }
+        body.hw-handwritten.statml-standardized table { border-color: rgba(75,68,58,.5) !important; border-radius: 5px 8px 4px 7px !important; background-color: rgba(255,253,245,.70) !important; box-shadow: 1px 2px 0 rgba(75,68,58,.05) !important; }
+        body.hw-handwritten.statml-standardized :is(th,td) { border-color: rgba(75,68,58,.42) !important; border-style: dashed !important; }
+        body.hw-handwritten.statml-standardized th { background: rgba(241,212,119,.16) !important; }
+        body.hw-handwritten.statml-standardized :is(.statml-stage-button,.stage-dot) { min-height: 0 !important; width: 9px !important; height: 9px !important; padding: 0 !important; border-radius: 42% 58% 47% 53% !important; background: var(--hw-paper) !important; background-image: none !important; box-shadow: none !important; }
+        body.hw-handwritten.statml-standardized :is(.statml-stage-button,.stage-dot)[aria-current="step"], body.hw-handwritten.statml-standardized :is(.statml-stage-button,.stage-dot).active { background: var(--hw-yellow) !important; border-color: var(--hw-ink) !important; }
+        body.hw-handwritten.statml-standardized button.statml-stage-button, body.hw-handwritten.statml-standardized button.stage-dot { min-height: 0 !important; width: 9px !important; height: 9px !important; padding: 0 !important; border-radius: 42% 58% 47% 53% !important; background: var(--hw-paper) !important; background-image: none !important; box-shadow: none !important; }
+        body.hw-handwritten.statml-standardized button.statml-stage-button[aria-current="step"], body.hw-handwritten.statml-standardized button.stage-dot.active { background: var(--hw-yellow) !important; border-color: var(--hw-ink) !important; }
+    </style>
+    <style id="polynomial-regression-handwritten-cue-finish">
+        body.hw-handwritten .statml-hero :is(.scroll-cue,.scroll-hint,.scroll-indicator,.hero-scroll) {
+            position: static !important;
+            inset: auto !important;
+            align-self: center !important;
+            display: inline-flex !important;
+            width: auto !important;
+            max-width: calc(100% - 2rem) !important;
+            margin: .65rem auto 0 !important;
+            padding: 0 !important;
+            border: 0 !important;
+            border-radius: 0 !important;
+            background: transparent !important;
+            background-image: none !important;
+            box-shadow: none !important;
+            clip-path: none !important;
+            transform: none !important;
+            animation: none !important;
+            text-decoration-line: underline !important;
+            text-decoration-style: wavy !important;
+            text-decoration-color: rgba(40,105,173,.55) !important;
+            text-decoration-thickness: 1px !important;
+            text-underline-offset: 4px !important;
+        }
+    </style>
+    <style id="polynomial-regression-handwritten-visual-surface-finish">
+        body.hw-handwritten.statml-standardized .statml-visual {
+            background-color: var(--hw-paper) !important;
+            background-image: none !important;
+            border-color: transparent !important;
+        }
+        body.hw-handwritten.statml-standardized .viz-dashboard,
+        body.hw-handwritten.statml-standardized .canvas-container {
+            background-color: var(--hw-paper) !important;
+            background-image: repeating-linear-gradient(176deg, rgba(223,178,45,.045) 0 2px, transparent 2px 8px) !important;
+            border: 0 !important;
+            border-radius: 0 !important;
+            box-shadow: none !important;
+        }
+        body.hw-handwritten.statml-standardized .viz-dashboard,
+        body.hw-handwritten.statml-standardized .canvas-container { position: relative !important; }
+        body.hw-handwritten.statml-standardized .viz-dashboard::before,
+        body.hw-handwritten.statml-standardized .viz-dashboard::after,
+        body.hw-handwritten.statml-standardized .canvas-container::before,
+        body.hw-handwritten.statml-standardized .canvas-container::after {
+            content: "";
+            position: absolute;
+            inset: 2px 3px 3px 2px;
+            z-index: 3;
+            pointer-events: none;
+            border: 1px solid rgba(88,83,72,.54);
+            border-radius: 3px 6px 4px 5px;
+            transform: rotate(-.14deg);
+        }
+        body.hw-handwritten.statml-standardized .viz-dashboard::after,
+        body.hw-handwritten.statml-standardized .canvas-container::after {
+            inset: 4px 1px 1px 4px;
+            opacity: .3;
+            border-color: rgba(88,83,72,.72);
+            border-radius: 5px 3px 6px 4px;
+            transform: rotate(.17deg);
+        }
+        body.hw-handwritten.statml-standardized .shape-control,
+        body.hw-handwritten.statml-standardized .dash-equation,
+        body.hw-handwritten.statml-standardized .math-overlay {
+            background-color: rgba(255,253,245,.68) !important;
+            background-image: repeating-linear-gradient(176deg, rgba(223,178,45,.05) 0 2px, transparent 2px 8px) !important;
+            border-color: rgba(88,83,72,.36) !important;
+            border-radius: 3px 5px 2px 4px !important;
+            box-shadow: none !important;
+            backdrop-filter: none !important;
+        }
+    </style>
+    <style id="polynomial-regression-handwritten-open-dashboard">
+        /* The dashboard is a paper margin for the plot, not a software card. */
+        body.hw-handwritten.statml-standardized .viz-dashboard,
+        body.hw-handwritten.statml-standardized .canvas-container {
+            border: 0 !important;
+            border-radius: 0 !important;
+            box-shadow: none !important;
+            background-color: var(--hw-paper) !important;
+            background-image: repeating-linear-gradient(176deg, rgba(223,178,45,.035) 0 2px, transparent 2px 8px) !important;
+        }
+        body.hw-handwritten.statml-standardized .viz-dashboard::before,
+        body.hw-handwritten.statml-standardized .viz-dashboard::after,
+        body.hw-handwritten.statml-standardized .canvas-container::before,
+        body.hw-handwritten.statml-standardized .canvas-container::after { content: none !important; display: none !important; }
+        body.hw-handwritten.statml-standardized .shape-control {
+            position: relative !important;
+            border: 0 !important;
+            border-radius: 0 !important;
+            background: transparent !important;
+            background-image: none !important;
+            box-shadow: none !important;
+            padding: .35rem .15rem .55rem !important;
+        }
+        body.hw-handwritten.statml-standardized .shape-control::after {
+            content: "" !important;
+            position: absolute !important;
+            left: 0 !important;
+            right: 3% !important;
+            bottom: .2rem !important;
+            height: 3px !important;
+            background: repeating-linear-gradient(177deg, transparent 0 3px, rgba(40,105,173,.52) 3px 4px, transparent 4px 6px) !important;
+            transform: rotate(-.35deg) !important;
+            pointer-events: none !important;
+        }
+        body.hw-handwritten.statml-standardized .shape-control .dash-select,
+        body.hw-handwritten.statml-standardized #shape-select {
+            min-width: 0 !important;
+            border: 0 !important;
+            border-bottom: 1px solid rgba(75,68,58,.62) !important;
+            border-radius: 0 !important;
+            background: transparent !important;
+            background-image: none !important;
+            box-shadow: none !important;
+            padding: .08rem 1.15rem .05rem .1rem !important;
+            text-decoration-line: underline !important;
+            text-decoration-style: wavy !important;
+            text-decoration-color: rgba(40,105,173,.42) !important;
+            text-underline-offset: 3px !important;
+        }
+        body.hw-handwritten.statml-standardized #eq-text {
+            position: relative !important;
+            border: 0 !important;
+            border-radius: 0 !important;
+            background: linear-gradient(transparent 50%, rgba(241,212,119,.48) 50%, rgba(241,212,119,.48) 84%, transparent 84%) !important;
+            background-repeat: no-repeat !important;
+            background-size: 76% 100% !important;
+            background-position: center !important;
+            box-shadow: none !important;
+            padding: .55rem .2rem .75rem !important;
+        }
+        body.hw-handwritten.statml-standardized #eq-text::after {
+            content: "" !important;
+            position: absolute !important;
+            left: 22% !important;
+            right: 22% !important;
+            bottom: .25rem !important;
+            border-bottom: 1px solid rgba(88,83,72,.56) !important;
+            transform: rotate(-.4deg) !important;
+            pointer-events: none !important;
+        }
+        /* Patrick Hand packs the dashboard labels more tightly than the
+           baseline UI face.  Preserve the original dashboard footprint so
+           the sticky plot stays vertically centred instead of rising ~30px
+           toward the top of the visual column. */
+        @media (min-width: 901px) {
+            body.hw-handwritten.statml-standardized #main-dashboard {
+                min-height: 231px !important;
+            }
+        }
+    </style>
+<style id="polynomial-regression-handwritten-geometry-calibration">
+@media (min-width: 901px) {
+  body.hw-handwritten.statml-standardized [data-stage="1"]{min-height:844px !important}
+  body.hw-handwritten.statml-standardized [data-stage="2"]{min-height:662.4px !important}
+  body.hw-handwritten.statml-standardized [data-stage="3"]{min-height:718px !important}
+  body.hw-handwritten.statml-standardized [data-stage="4"]{min-height:693px !important}
+  body.hw-handwritten.statml-standardized [data-stage="5"]{min-height:667px !important}
+  body.hw-handwritten.statml-standardized [data-stage="6"]{min-height:767px !important}
+  body.hw-handwritten.statml-standardized [data-stage="7"]{min-height:885px !important}
+  body.hw-handwritten.statml-standardized [data-stage="8"]{min-height:2081px !important}
+  body.hw-handwritten.statml-standardized .canvas-container {
+    box-sizing: border-box !important;
+    flex: 0 0 auto !important;
+    min-height: 0 !important;
+    height: calc(100svh - 336.625px) !important;
+    border: 1px solid transparent !important;
+  }
+}
+@media (min-width: 360px) and (max-width: 900px) {
+  body.hw-handwritten.statml-standardized [data-stage="1"]{min-height:884px !important}
+  body.hw-handwritten.statml-standardized [data-stage="2"]{min-height:661px !important}
+  body.hw-handwritten.statml-standardized [data-stage="3"]{min-height:734px !important}
+  body.hw-handwritten.statml-standardized [data-stage="4"]{min-height:709px !important}
+  body.hw-handwritten.statml-standardized [data-stage="5"]{min-height:709px !important}
+  body.hw-handwritten.statml-standardized [data-stage="6"]{min-height:753px !important}
+  body.hw-handwritten.statml-standardized [data-stage="7"]{min-height:924px !important}
+  body.hw-handwritten.statml-standardized [data-stage="8"]{min-height:2384px !important}
+}
+</style>
 </head>
 <body>
 <nav class="statml-site-nav" aria-label="StatML Academy navigation">
@@ -977,7 +1193,7 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
                 </div>
                 <p style="margin-top: 0.5rem; font-size: 1rem; color: var(--text-dim);">Let's see what happens if we force a straight line anyway.</p>
                 <div class="look-here">
-                    <div class="look-here-arrow">➔</div>
+                    <div class="look-here-arrow"><span class="hw-inline-doodle" aria-hidden="true"><svg viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M1 6.2C3.5 5.8 6.2 6.4 10 6"></path><path d="M7.1 3.3L10.5 6L7.2 8.9"></path><path d="M7.3 3.8L10.1 6.2L7.5 8.5"></path></svg></span><span hidden>&#10132;</span></div>
                     <div class="look-here-text">Look at the black dots on the chart. Notice how they structurally form a curved shape rather than a straight path.</div>
                 </div>
             </div>
@@ -1000,7 +1216,7 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
                 </div>
                 <p style="margin-top: 0.5rem; font-size: 1rem; color: var(--text-dim);">We need to give the math the flexibility to bend.</p>
                 <div class="look-here">
-                    <div class="look-here-arrow">➔</div>
+                    <div class="look-here-arrow"><span class="hw-inline-doodle" aria-hidden="true"><svg viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M1 6.2C3.5 5.8 6.2 6.4 10 6"></path><path d="M7.1 3.3L10.5 6L7.2 8.9"></path><path d="M7.3 3.8L10.1 6.2L7.5 8.5"></path></svg></span><span hidden>&#10132;</span></div>
                     <div class="look-here-text">See the rigid blue line on the chart and the simple equation in the dashboard.</div>
                 </div>
             </div>
@@ -1023,7 +1239,7 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
                 </div>
                 <p style="margin-top: 0.5rem; font-size: 1rem; color: var(--text-dim);">Now the model has more ingredients to build with.</p>
                 <div class="look-here">
-                    <div class="look-here-arrow">➔</div>
+                    <div class="look-here-arrow"><span class="hw-inline-doodle" aria-hidden="true"><svg viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M1 6.2C3.5 5.8 6.2 6.4 10 6"></path><path d="M7.1 3.3L10.5 6L7.2 8.9"></path><path d="M7.3 3.8L10.1 6.2L7.5 8.5"></path></svg></span><span hidden>&#10132;</span></div>
                     <div class="look-here-text">Check the Design Matrix overlay. The model now sees the squared input as just another normal feature to learn from.</div>
                 </div>
             </div>
@@ -1046,7 +1262,7 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
                 </div>
                 <p style="margin-top: 0.5rem; font-size: 1rem; color: var(--text-dim);">Let's check how close our curve actually gets to the data.</p>
                 <div class="look-here">
-                    <div class="look-here-arrow">➔</div>
+                    <div class="look-here-arrow"><span class="hw-inline-doodle" aria-hidden="true"><svg viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M1 6.2C3.5 5.8 6.2 6.4 10 6"></path><path d="M7.1 3.3L10.5 6L7.2 8.9"></path><path d="M7.3 3.8L10.1 6.2L7.5 8.5"></path></svg></span><span hidden>&#10132;</span></div>
                     <div class="look-here-text">Look at the Weights overlay and the new equation in the dashboard. The curve now gracefully follows the data points.</div>
                 </div>
             </div>
@@ -1069,7 +1285,7 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
                 </div>
                 <p style="margin-top: 0.5rem; font-size: 1rem; color: var(--text-dim);">Let's see what happens if we add too many curves.</p>
                 <div class="look-here">
-                    <div class="look-here-arrow">➔</div>
+                    <div class="look-here-arrow"><span class="hw-inline-doodle" aria-hidden="true"><svg viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M1 6.2C3.5 5.8 6.2 6.4 10 6"></path><path d="M7.1 3.3L10.5 6L7.2 8.9"></path><path d="M7.3 3.8L10.1 6.2L7.5 8.5"></path></svg></span><span hidden>&#10132;</span></div>
                     <div class="look-here-text">See the dashed red lines and the Residual Plot. The Train MSE above scores how well the model fits the data it saw.</div>
                 </div>
             </div>
@@ -1092,7 +1308,7 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
                 </div>
                 <p style="margin-top: 0.5rem; font-size: 1rem; color: var(--text-dim);">We need to find the balance between too simple and too complex.</p>
                 <div class="look-here">
-                    <div class="look-here-arrow">➔</div>
+                    <div class="look-here-arrow"><span class="hw-inline-doodle" aria-hidden="true"><svg viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M1 6.2C3.5 5.8 6.2 6.4 10 6"></path><path d="M7.1 3.3L10.5 6L7.2 8.9"></path><path d="M7.3 3.8L10.1 6.2L7.5 8.5"></path></svg></span><span hidden>&#10132;</span></div>
                     <div class="look-here-text">Look at the validation curve. Training error drops, but validation error rises. The gold dots are validation observations used to choose degree; the final test set remains untouched.</div>
                 </div>
             </div>
@@ -1115,7 +1331,7 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
                 </div>
                 <p style="margin-top: 0.5rem; font-size: 1rem; color: var(--text-dim);">Play with the controls until you find the perfect balance.</p>
                 <div class="look-here">
-                    <div class="look-here-arrow">➔</div>
+                    <div class="look-here-arrow"><span class="hw-inline-doodle" aria-hidden="true"><svg viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M1 6.2C3.5 5.8 6.2 6.4 10 6"></path><path d="M7.1 3.3L10.5 6L7.2 8.9"></path><path d="M7.3 3.8L10.1 6.2L7.5 8.5"></path></svg></span><span hidden>&#10132;</span></div>
                     <div class="look-here-text">Change the dataset shape, then use the slider to explore. Find the simplest near-best point on the validation curve before validation error rises.</div>
                 </div>
                 
@@ -1157,7 +1373,7 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
                 </div>
                 <p style="margin-top: 0.5rem; font-size: 1rem; color: var(--text-dim);">This final equation is now ready for the real world.</p>
                 <div class="look-here">
-                    <div class="look-here-arrow">➔</div>
+                    <div class="look-here-arrow"><span class="hw-inline-doodle" aria-hidden="true"><svg viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M1 6.2C3.5 5.8 6.2 6.4 10 6"></path><path d="M7.1 3.3L10.5 6L7.2 8.9"></path><path d="M7.3 3.8L10.1 6.2L7.5 8.5"></path></svg></span><span hidden>&#10132;</span></div>
                     <div class="look-here-text">Review the Model Deployed card below the chart for your final, validated results.</div>
                 </div>
                 <div class="insight-box"><p><strong>Final workflow:</strong> fit candidate degrees on training data, choose the degree by validation or cross-validation error, lock the basis and preprocessing, refit using the chosen setup, and evaluate once on the untouched test set. Inspect residual form, unequal variance and influential points. High-degree polynomials can oscillate near boundaries and are especially unsafe for extrapolation; centring, scaling, or orthogonal bases can improve numerical stability.</p></div>
@@ -1485,6 +1701,14 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
         function mapX(x) { return padding.left + ((x - xMin) / (xMax - xMin)) * (width - padding.left - padding.right); }
         function mapY(y) { return height - padding.bottom - ((y - yMin) / (yMax - yMin)) * (height - padding.top - padding.bottom); }
 
+        const polyInk = { paper: '#fbf4e2', line: '#596259', text: '#252822', muted: '#697269', blue: '#2869ad', green: '#4f956b', purple: '#7960ae', orange: '#d89439', red: '#c85e58', neutral: '#cdbf9f' };
+        function polyRandom(seed) { if (window.StatMLInk?.inkRandom) return window.StatMLInk.inkRandom(seed); let s = 2166136261 >>> 0; for (const ch of String(seed)) { s ^= ch.charCodeAt(0); s = Math.imul(s, 16777619) >>> 0; } return () => { s = (Math.imul(s, 1664525) + 1013904223) >>> 0; return s / 4294967296; }; }
+        function polyText(s, x, y, color = polyInk.text, size = 12, align = 'left', alpha = 1, weight = 400) { ctx.save(); ctx.globalAlpha = alpha; ctx.fillStyle = color; ctx.font = `${weight} ${size}px "Patrick Hand", "Kalam", "Chalkboard SE", cursive`; ctx.textAlign = align; ctx.textBaseline = 'alphabetic'; ctx.fillText(s, x, y); ctx.restore(); }
+        function polyLine(points, { color = polyInk.line, width = 1.2, dash = [], alpha = 1, seed = 'poly-line' } = {}) { const r = polyRandom(seed), rough = points.map((p, i) => i === 0 || i === points.length - 1 ? p : [p[0] + (r() - .5) * 3.2, p[1] + (r() - .5) * 3.2]); const pts = points.length === 2 ? [rough[0], [(points[0][0] + points[1][0]) / 2 + (r() - .5) * 4.2, (points[0][1] + points[1][1]) / 2 + (r() - .5) * 4.2], rough[1]] : rough; const r2 = polyRandom(`${seed}:second`), second = pts.map((p, i) => i === 0 || i === pts.length - 1 ? p : [p[0] + (r2() - .5) * 3.1, p[1] + (r2() - .5) * 3.1]); ctx.save(); ctx.strokeStyle = color; ctx.lineCap = 'round'; ctx.lineJoin = 'round'; ctx.setLineDash(dash); ctx.globalAlpha = alpha * .52; ctx.lineWidth = Math.max(.65, width * .58); ctx.beginPath(); second.forEach((p, i) => i ? ctx.lineTo(p[0], p[1]) : ctx.moveTo(p[0], p[1])); ctx.stroke(); ctx.globalAlpha = alpha * .84; ctx.lineWidth = width; ctx.beginPath(); pts.forEach((p, i) => i ? ctx.lineTo(p[0], p[1]) : ctx.moveTo(p[0], p[1])); ctx.stroke(); ctx.restore(); }
+        function polyDot(x, y, radius, { color = polyInk.blue, alpha = 1, seed = 'poly-dot', outline = null } = {}) { const r = polyRandom(seed), pts = [], n = 13; for (let i = 0; i < n; i++) { const a = i / n * Math.PI * 2, rr = radius + (r() - .5) * Math.min(2.8, radius * .4); pts.push([x + Math.cos(a) * rr, y + Math.sin(a) * rr]); } const r2 = polyRandom(`${seed}:second`), second = pts.map(p => [p[0] + (r2() - .5) * 2.6, p[1] + (r2() - .5) * 2.6]); ctx.save(); ctx.globalAlpha = alpha; ctx.fillStyle = color; ctx.strokeStyle = outline || color; ctx.lineWidth = .8; ctx.beginPath(); pts.forEach((p, i) => i ? ctx.lineTo(p[0], p[1]) : ctx.moveTo(p[0], p[1])); ctx.closePath(); ctx.fill(); ctx.globalAlpha = alpha * .7; ctx.lineWidth = 1.05; ctx.beginPath(); second.forEach((p, i) => i ? ctx.lineTo(p[0], p[1]) : ctx.moveTo(p[0], p[1])); ctx.closePath(); ctx.stroke(); ctx.globalAlpha = alpha * .9; ctx.lineWidth = .7; ctx.beginPath(); pts.forEach((p, i) => i ? ctx.lineTo(p[0], p[1]) : ctx.moveTo(p[0], p[1])); ctx.closePath(); ctx.stroke(); ctx.restore(); }
+        function polyRect(x, y, w, h, { fill = null, stroke = polyInk.line, alpha = 1, seed = 'poly-rect' } = {}) { const r = polyRandom(seed), pts = [[x, y], [x + w, y + (r() - .5) * 1.3], [x + w + (r() - .5) * 1.3, y + h], [x + (r() - .5) * 1.3, y + h]]; ctx.save(); ctx.globalAlpha = alpha; ctx.beginPath(); pts.forEach((p, i) => i ? ctx.lineTo(p[0], p[1]) : ctx.moveTo(p[0], p[1])); ctx.closePath(); if (fill) { ctx.fillStyle = fill; ctx.fill(); } if (stroke) { ctx.strokeStyle = stroke; ctx.lineWidth = 1.05; ctx.stroke(); } ctx.restore(); }
+        function polyClear() { ctx.save(); ctx.globalAlpha = 1; ctx.clearRect(0, 0, width, height); ctx.fillStyle = polyInk.paper; ctx.fillRect(0, 0, width, height); ctx.globalAlpha = .12; for (let y = 18; y < height; y += 28) polyLine([[8, y], [width - 8, y]], { color: polyInk.neutral, width: .45, seed: `poly:paper:${y}` }); ctx.restore(); }
+
         function updateTargetCurve() {
             let degree = 1;
             targetCurveOpacity = 1;
@@ -1578,7 +1802,7 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
             }
         }
 
-        function drawGrid() {
+        function drawGridLegacy() {
             ctx.beginPath();
             ctx.strokeStyle = uiColors.border;
             ctx.lineWidth = 1;
@@ -1605,7 +1829,7 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
 
             // Labels
             ctx.fillStyle = uiColors.textMuted;
-            ctx.font = '12px Inter';
+            ctx.font = '12px "Patrick Hand", "Kalam", "Chalkboard SE", cursive';
             ctx.textAlign = 'center';
             ctx.fillText('Input (x)', width/2, height - 15);
             
@@ -1616,7 +1840,7 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
             ctx.restore();
         }
 
-        function drawPointsAndResiduals() {
+        function drawPointsAndResidualsLegacy() {
             if(window.drawResidualLines && currentCurveOpacity > 0.5) {
                 ctx.lineWidth = 1;
                 ctx.setLineDash([3, 3]);
@@ -1666,7 +1890,7 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
             }
         }
 
-        function drawCurve() {
+        function drawCurveLegacy() {
             if (currentCurveOpacity < 0.01) return;
 
             ctx.beginPath();
@@ -1699,7 +1923,7 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
         }
 
         // --- INSETS ---
-        function drawResidualPlotInset() {
+        function drawResidualPlotInsetLegacy() {
             if(!window.drawResidualPlotFlag) return;
             
             const insetW = 180;
@@ -1714,11 +1938,11 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
             ctx.strokeRect(insetX, insetY, insetW, insetH);
             
             ctx.fillStyle = uiColors.accentDark;
-            ctx.font = 'bold 11px Inter';
+            ctx.font = '700 11px "Patrick Hand", "Kalam", "Chalkboard SE", cursive';
             ctx.textAlign = 'left';
             ctx.fillText('Residual Plot', insetX + 10, insetY + 16);
             ctx.fillStyle = uiColors.textMuted;
-            ctx.font = '9px Inter';
+            ctx.font = '9px "Patrick Hand", "Kalam", "Chalkboard SE", cursive';
             ctx.fillText('Ideal: Random noise near zero', insetX + 10, insetY + 28);
 
             let zeroY = insetY + (insetH / 2) + 10;
@@ -1744,7 +1968,7 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
             }
         }
 
-        function drawValidationInset() {
+        function drawValidationInsetLegacy() {
             if(!window.drawValidationCurveFlag) return; 
             
             const insetW = 160;
@@ -1759,11 +1983,11 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
             ctx.strokeRect(insetX, insetY, insetW, insetH);
             
             ctx.fillStyle = uiColors.train;
-            ctx.font = 'bold 11px Inter';
+            ctx.font = '700 11px "Patrick Hand", "Kalam", "Chalkboard SE", cursive';
             ctx.textAlign = 'left';
             ctx.fillText('Validation Curve', insetX + 10, insetY + 16);
 
-            ctx.font = '9px Inter';
+            ctx.font = '9px "Patrick Hand", "Kalam", "Chalkboard SE", cursive';
             ctx.fillStyle = uiColors.train;
             ctx.fillText('Train', insetX + 10, insetY + 28);
             ctx.fillStyle = uiColors.test;
@@ -1799,13 +2023,56 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
             ctx.setLineDash([]);
         }
 
+        function drawGrid() {
+            for (let i = 1; i <= 11; i++) polyLine([[mapX(i), padding.top], [mapX(i), height - padding.bottom]], { color: polyInk.neutral, width: .65, alpha: .55, seed: `poly:grid:x:${i}` });
+            for (let i = 20; i <= 140; i += 20) polyLine([[padding.left, mapY(i)], [width - padding.right, mapY(i)]], { color: polyInk.neutral, width: .65, alpha: .55, seed: `poly:grid:y:${i}` });
+            polyLine([[padding.left, padding.top], [padding.left, height - padding.bottom], [width - padding.right, height - padding.bottom]], { color: polyInk.line, width: 1.3, seed: 'poly:axes' });
+            polyText('Input (x)', width / 2, height - 15, polyInk.muted, 13, 'center');
+            ctx.save(); ctx.translate(20, height / 2); ctx.rotate(-Math.PI / 2); polyText('Response (y)', 0, 0, polyInk.muted, 13, 'center'); ctx.restore();
+        }
+
+        function drawPointsAndResiduals() {
+            if (window.drawResidualLines && currentCurveOpacity > .5) {
+                trainData.forEach((pt, i) => polyLine([[mapX(pt.x), mapY(pt.y)], [mapX(pt.x), mapY(evalPoly(pt.x, currentCoeffs))]], { color: polyInk.red, width: .9, dash: [3, 3], alpha: .45, seed: `poly:residual:train:${i}` }));
+                if (window.drawTestPoints) testData.forEach((pt, i) => polyLine([[mapX(pt.x), mapY(pt.y)], [mapX(pt.x), mapY(evalPoly(pt.x, currentCoeffs))]], { color: polyInk.orange, width: .9, dash: [3, 3], alpha: .55, seed: `poly:residual:test:${i}` }));
+            }
+            trainData.forEach((pt, i) => polyDot(mapX(pt.x), mapY(pt.y), 3, { color: polyInk.line, alpha: .78, seed: `poly:train:${i}` }));
+            if (window.drawTestPoints) testData.forEach((pt, i) => { polyDot(mapX(pt.x), mapY(pt.y), 4, { color: polyInk.paper, outline: polyInk.orange, alpha: .95, seed: `poly:test:${i}` }); });
+        }
+
+        function drawCurve() {
+            if (currentCurveOpacity < .01) return;
+            const pts = [], color = currentStage === 6 || (currentStage >= 7 && interactiveDegree > bestDegree + 2) ? polyInk.red : polyInk.purple;
+            for (let i = 0; i < resolution; i++) { const cx = mapX(xCoords[i]), cy = mapY(currentCurveY[i]); if (cy < -1000 || cy > height + 1000) continue; pts.push([cx, cy]); }
+            polyLine(pts, { color, width: 2.8, alpha: currentCurveOpacity, seed: 'poly:curve' });
+        }
+
+        function drawResidualPlotInset() {
+            if (!window.drawResidualPlotFlag) return;
+            const insetW = 180, insetH = 110, insetX = width - padding.right - insetW - 10, insetY = padding.top + 10;
+            polyRect(insetX, insetY, insetW, insetH, { fill: 'rgba(255,253,245,.9)', stroke: polyInk.neutral, seed: 'poly:residual-card' });
+            polyText('Residual Plot', insetX + 10, insetY + 16, polyInk.purple, 12, 'left', 1, 700); polyText('Ideal: Random noise near zero', insetX + 10, insetY + 28, polyInk.muted, 10);
+            const zeroY = insetY + insetH / 2 + 10; polyLine([[insetX + 10, zeroY], [insetX + insetW - 10, zeroY]], { color: polyInk.muted, width: .9, dash: [2, 2], seed: 'poly:residual-zero' });
+            trainData.forEach((pt, i) => { const res = pt.y - evalPoly(pt.x, currentCoeffs); let px = insetX + 10 + ((pt.x - xMin) / (xMax - xMin)) * (insetW - 20), py = zeroY - (res / 40) * (insetH / 2 - 20); py = Math.max(insetY + 35, Math.min(insetY + insetH - 5, py)); polyDot(px, py, 2, { color: polyInk.red, alpha: .72, seed: `poly:residual-dot:${i}` }); });
+        }
+
+        function drawValidationInset() {
+            if (!window.drawValidationCurveFlag) return;
+            const insetW = 160, insetH = 100, insetX = width - padding.right - insetW - 10, insetY = padding.top + 10;
+            polyRect(insetX, insetY, insetW, insetH, { fill: 'rgba(255,253,245,.9)', stroke: polyInk.neutral, seed: 'poly:validation-card' });
+            polyText('Validation Curve', insetX + 10, insetY + 16, polyInk.line, 12, 'left', 1, 700); polyText('Train', insetX + 10, insetY + 28, polyInk.line, 10); polyText('Test', insetX + 40, insetY + 28, polyInk.orange, 10);
+            const plotLine = (isTest, color, seed) => { const pts = []; for (let d = 1; d <= 9; d++) { const err = isTest ? validationCache[d].test : validationCache[d].train; pts.push([insetX + 15 + ((d - 1) / 8) * (insetW - 30), insetY + insetH - 10 - Math.min(err / 400, 1) * (insetH - 45)]); } polyLine(pts, { color, width: 1.8, seed }); };
+            plotLine(false, polyInk.line, 'poly:validation:train'); plotLine(true, polyInk.orange, 'poly:validation:test');
+            const curD = currentStage >= 7 ? interactiveDegree : 9, px = insetX + 15 + ((curD - 1) / 8) * (insetW - 30); polyLine([[px, insetY + 35], [px, insetY + insetH - 10]], { color: polyInk.purple, width: .9, dash: [2, 2], seed: 'poly:validation-current' });
+        }
+
         function renderLoop() {
             currentCurveOpacity += (targetCurveOpacity - currentCurveOpacity) * 0.1;
             for(let i=0; i<resolution; i++) {
                 currentCurveY[i] += (targetCurveY[i] - currentCurveY[i]) * 0.15;
             }
 
-            ctx.clearRect(0, 0, width, height);
+            polyClear();
             drawGrid();
             drawCurve();
             drawPointsAndResiduals();
@@ -1845,10 +2112,8 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
                 if(p.y < 0) p.y = heroCanvas.height;
                 if(p.y > heroCanvas.height) p.y = 0;
                 
-                hCtx.beginPath();
-                hCtx.arc(p.x, p.y, p.r, 0, Math.PI*2);
-                hCtx.fillStyle = 'rgba(99, 102, 241, 0.2)';
-                hCtx.fill();
+                hCtx.save(); hCtx.globalAlpha = .45; hCtx.fillStyle = 'rgba(40,105,173,.22)'; hCtx.beginPath();
+                hCtx.moveTo(p.x + p.r, p.y); hCtx.quadraticCurveTo(p.x + p.r * .6, p.y + p.r, p.x - p.r * .6, p.y + p.r * .5); hCtx.quadraticCurveTo(p.x - p.r, p.y - p.r * .5, p.x + p.r, p.y); hCtx.fill(); hCtx.restore();
             }
             requestAnimationFrame(animateHero);
         }
@@ -1948,7 +2213,9 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
   if (badge) badge.textContent = META.badge;
 
   const stageEls = $$('[data-stage]').filter(el => Number(el.dataset.stage) > 0).sort((a,b) => Number(a.dataset.stage)-Number(b.dataset.stage));
-  const emojiRE = /[\p{Extended_Pictographic}️]/gu;
+  // Inline tokens are converted to local ink doodles after the runtime has
+  // built the stage rail; do not delete their semantic positions here.
+  const emojiRE = /$^/gu;
   stageEls.forEach((stage, index) => {
     stage.classList.add('statml-stage');
     const n = Number(stage.dataset.stage);
@@ -2032,5 +2299,37 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
 
 <script src="core-modules.js"></script>
 <script src="academic-rigor.js"></script>
+<style id="inline-ink-doodle-style">
+.hw-inline-doodle{display:inline-block;width:1.08em;height:1.08em;margin-inline:.045em;vertical-align:-.17em;line-height:1;position:relative;transform:rotate(var(--hw-tilt,0deg));color:currentColor}
+.hw-inline-doodle svg{display:block;width:100%;height:100%;overflow:visible}
+.hw-inline-doodle path,.hw-inline-doodle circle,.hw-inline-doodle ellipse,.hw-inline-doodle line,.hw-inline-doodle polyline,.hw-inline-doodle rect{fill:none;stroke:currentColor;stroke-width:1.15;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke}
+.hw-inline-doodle .ink-fill{fill:currentColor;fill-opacity:.16}
+.hw-inline-doodle .ink-warm{stroke:#b55a52}.hw-inline-doodle .ink-orange{stroke:#d97706}.hw-inline-doodle .ink-green{stroke:#2d7a4b}.hw-inline-doodle .ink-red{stroke:#b84b47}
+</style>
+<script id="inline-ink-doodle-runtime">
+(()=>{const re=/(\p{Extended_Pictographic}(?:\uFE0F)?)/gu,kind=Object.create(null);
+[['👀','eyes'],['▶','play'],['⏸','pause'],['⚠️','warn'],['⚠','warn'],['❌','cross'],['📖','book'],['💡','bulb'],['🍎','apple'],['🍊','orange'],['★','star'],['✅','check'],['🧠','brain'],['💪','muscle'],['🍦','ice'],['🤔','think'],['📌','pin'],['📏','ruler'],['🚧','barrier'],['✨','spark'],['📐','angle'],['🛠️','tools'],['🛠','tools'],['📋','clipbd'],['⚙️','gear'],['⚙','gear'],['🚦','traffic'],['🔍','magnify'],['📊','chart'],['👉','point'],['🔔','bell'],['📎','clip'],['🎲','dice'],['🌟','sun'],['🍬','candy'],['🔬','scope'],['🎉','party'],['🟢','green'],['🔵','blue'],['🟠','orangeDot'],['🔴','red'],['🔢','numbers'],['🔥','fire']].forEach(a=>kind[a[0].replace(/\uFE0F/g,'')]=a[1]);
+const shape={
+eyes:'<path d="M1 6Q3 2 5.8 6Q3 10 1 6"/><path d="M6.2 6Q9 2 11 6Q9 10 6.2 6"/><ellipse cx="3.5" cy="6" rx=".7" ry="1.1"/><ellipse cx="8.5" cy="6" rx=".7" ry="1.1"/>',
+play:'<path class="ink-fill" d="M2 1.5L10 5.8L2.1 10Q1.4 10 1.5 9Z"/>',pause:'<path d="M3 2L3.1 10"/><path d="M8.6 2.1L8.5 9.8"/>',
+warn:'<path class="ink-fill" d="M6 1L11 10L1 10Z"/><path d="M6 3.6L6.2 7.2"/><circle cx="6.15" cy="8.6" r=".45"/>',
+cross:'<path d="M2 2L10 10"/><path d="M10 2L2 10"/>',book:'<path d="M1.3 2Q3.6 1.3 5.9 3V10Q3.5 8.5 1.3 9Z"/><path d="M10.7 2Q8.4 1.3 6.1 3V10Q8.5 8.5 10.7 9Z"/><path d="M2.3 4Q4 3.8 5.5 4.8M9.7 4Q8 3.8 6.5 4.8"/>',
+bulb:'<path class="ink-fill" d="M3 6Q2.8 3 6 1.7Q9.2 3 8.8 6Q8 7.5 7 7.8H4.8Q3.8 7.2 3 6Z"/><path d="M4.7 8.4L7.3 8.3M5.1 9.5L6.9 9.4"/>',
+apple:'<path class="ink-fill ink-warm" d="M2.1 4.4Q3.5 2.9 5.6 3.8Q7.7 2.9 9.5 4.5Q10 7.6 7.3 10Q6 10.8 5.5 9.8Q4.6 10.8 3.3 10Q1.1 7.7 2.1 4.4Z"/><path d="M5.7 3.6Q5.5 1.7 7.2 .9Q8.5 .7 8.9 1.2Q7.9 2.7 5.7 3.6Z"/>',
+orange:'<path class="ink-fill ink-orange" d="M6 1.9Q9.8 1.8 10 6Q9.7 9.8 6 10Q2.2 9.8 2 6Q2.2 2.1 6 1.9Z"/><path d="M5.8 1.9Q6.1 1.1 7.4 1.2M4.1 4.4Q5.6 3.8 7.5 4.2"/>',
+star:'<path class="ink-fill" d="M6 1.1L7.1 4.2L10.3 4.2L7.8 6.1L8.8 9.6L6 7.5L3.1 9.6L4.1 6.2L1.6 4.2L4.9 4.1Z"/>',
+check:'<path d="M1.6 6.2L4.5 9.1L10.4 2.8"/>',brain:'<path class="ink-fill" d="M4 10Q1.8 9 2.4 7.2Q.9 5.4 2.4 4.2Q1.7 2.3 3.6 1.8Q5 .4 6 1.7Q7.3 .4 8.6 1.9Q10.4 2.5 9.5 4.1Q11 5.7 9.5 7.2Q10 9.2 7.9 9.8Z"/><path d="M5.8 1.9Q4.8 3 5.9 4Q4.7 5.2 5.9 6Q4.9 7.1 5.8 8.8M3 4.2Q4 4.1 4.4 5M7 3Q8.2 3.2 8.1 4.4M7 7Q8.2 6.9 8.8 7.7"/>',
+muscle:'<path class="ink-fill ink-green" d="M1.7 9Q1.9 6.5 3.5 5.2Q4.8 5.4 5.1 3.6Q5.8 1.7 7.5 2.1Q8.8 2.9 7.9 5Q9.8 4.8 10.2 6.4Q10.2 8.8 7.6 9.8Z"/><path d="M4.6 5.2Q5.8 6.1 7.2 5.1"/>',
+generic:'<path d="M1.5 6Q3 2.4 6 3.2Q8.8 1.7 10.5 5.5Q9 8.8 6.2 8Q3.3 10 1.5 6Z"/><path d="M3 6.4Q6 4.4 9 6.3"/>'
+};
+const aliases={ice:'bulb',think:'generic',pin:'generic',ruler:'ruler',barrier:'generic',spark:'star',angle:'angle',tools:'generic',clipbd:'clip',gear:'generic',traffic:'generic',magnify:'generic',chart:'generic',point:'generic',bell:'generic',clip:'generic',dice:'generic',sun:'star',candy:'generic',scope:'generic',party:'star',green:'generic',blue:'generic',orangeDot:'orange',red:'generic',numbers:'generic',fire:'spark'};
+const labels={'👀':'look here','▶':'play','⏸':'pause','⚠':'warning','❌':'not correct','📖':'book','💡':'idea','🍎':'apple','🍊':'orange','★':'query point','✅':'correct','🧠':'concept','💪':'strength','🍦':'ice cream','🤔':'thinking','📌':'note','📏':'ruler','🚧':'boundary','✨':'sparkle','📐':'angle','🛠':'tools','📋':'clipboard','⚙':'settings','🚦':'decision threshold','🔍':'inspect','📊':'chart','👉':'pointer','🔔':'bell','📎':'paper clip','🎲':'random','🌟':'highlight','🍬':'sigmoid','🔬':'experiment','🎉':'celebration','🟢':'correct','🔵':'training','🟠':'test','🔴':'incorrect','🔢':'numbers','🔥':'important'};
+let serial=0;
+function doodle(t){const n=t.replace(/\uFE0F/g,''),s=document.createElement('span'),k=kind[n]||'generic';s.className='hw-inline-doodle';s.dataset.hwSymbol=t;s.dataset.hwKind=k;s.setAttribute('role','img');s.setAttribute('aria-label',labels[n]||'hand-drawn symbol');s.style.setProperty('--hw-tilt',(((serial++%5)-2)*.65)+'deg');s.innerHTML='<svg viewBox="0 0 12 12" aria-hidden="true" focusable="false">'+(shape[aliases[k]||k]||shape.generic)+'</svg>';return s}
+function scan(root){const w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT),nodes=[];let n;while(n=w.nextNode()){if(!n.nodeValue||n.parentElement.closest('script,style,.hw-inline-doodle'))continue;re.lastIndex=0;if(re.test(n.nodeValue))nodes.push(n)}nodes.forEach(node=>{const v=node.nodeValue;re.lastIndex=0;let at=0,m,frag=document.createDocumentFragment();while((m=re.exec(v))){if(m.index>at)frag.appendChild(document.createTextNode(v.slice(at,m.index)));frag.appendChild(doodle(m[1]));at=m.index+m[1].length}if(at<v.length)frag.appendChild(document.createTextNode(v.slice(at)));node.parentNode.replaceChild(frag,node)})}
+function cleanDoodleLabels(){document.querySelectorAll('.statml-stage-button[aria-label]').forEach(btn=>{const v=btn.getAttribute('aria-label')||'';btn.setAttribute('aria-label',v.replace(re,m=>labels[m.replace(/\uFE0F/g,'')]||'hand-drawn symbol'))})}
+scan(document.body);cleanDoodleLabels();let queued=false;new MutationObserver(()=>{if(queued)return;queued=true;queueMicrotask(()=>{queued=false;scan(document.body);cleanDoodleLabels()})}).observe(document.body,{subtree:true,childList:true});
+})();
+</script>
 </body>
 </html>
