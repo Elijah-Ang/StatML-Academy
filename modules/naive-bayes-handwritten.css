@@ -1,0 +1,940 @@
+/* Naive Bayes field notebook
+   This final cascade deliberately removes the reference module's polished
+   product-UI finish. Every surface is treated as paper, ink, pencil, tape,
+   or marker so the lesson belongs to StatML Academy's hand-made system. */
+
+:root {
+  --paper: #fbf4e2;
+  --paper-deep: #f5e9ce;
+  --surface: #fffaf0;
+  --ink: #263238;
+  --muted: #5d6466;
+  --soft: #77766f;
+  --line: rgba(45, 68, 79, .28);
+  --line-strong: rgba(38, 50, 56, .58);
+  --indigo: #2869ad;
+  --deep-indigo: #1d568f;
+  --blue: #2869ad;
+  --red: #c64b4b;
+  --green: #4f8a62;
+  --amber: #c58b2a;
+  --narrative: minmax(0, .82fr);
+  --visual: minmax(0, 1.18fr);
+  --serif: 'Kalam', 'Patrick Hand', cursive;
+  --sans: 'Patrick Hand', 'Comic Sans MS', cursive;
+  --mono: 'Patrick Hand', 'Comic Sans MS', cursive;
+}
+
+html {
+  overflow-x: clip;
+  background: #fbf4e2;
+}
+
+body.naive-bayes-evidence {
+  overflow-x: clip;
+  color: var(--ink);
+  font-family: 'Patrick Hand', 'Comic Sans MS', cursive !important;
+  font-size: 18px;
+  letter-spacing: .012em;
+  -webkit-font-smoothing: antialiased;
+  background-color: #fbf4e2 !important;
+  background-image:
+    radial-gradient(circle at 17% 8%, rgba(67, 54, 35, .055) 0 1px, transparent 1.4px),
+    radial-gradient(circle at 74% 42%, rgba(67, 54, 35, .04) 0 1px, transparent 1.5px),
+    repeating-linear-gradient(to bottom, transparent 0 31px, rgba(40, 105, 173, .11) 31px 32px) !important;
+  background-size: 27px 31px, 41px 37px, 100% 32px !important;
+}
+
+body.naive-bayes-evidence *,
+body.naive-bayes-evidence button,
+body.naive-bayes-evidence input {
+  font-family: inherit;
+}
+
+body.naive-bayes-evidence .mono,
+body.naive-bayes-evidence .progress-label,
+body.naive-bayes-evidence .stage-kicker,
+body.naive-bayes-evidence .micro-label,
+body.naive-bayes-evidence .scene-heading,
+body.naive-bayes-evidence .vertical-label,
+body.naive-bayes-evidence .matrix-title,
+body.naive-bayes-evidence .rail-kicker {
+  font-family: 'Patrick Hand', 'Comic Sans MS', cursive;
+  letter-spacing: .035em;
+}
+
+body.naive-bayes-evidence .eyebrow,
+body.naive-bayes-evidence .stage-nav-kicker,
+body.naive-bayes-evidence .kicker,
+body.naive-bayes-evidence .stage-kicker,
+body.naive-bayes-evidence .micro-label,
+body.naive-bayes-evidence .scene-heading,
+body.naive-bayes-evidence .vertical-label,
+body.naive-bayes-evidence .matrix-title,
+body.naive-bayes-evidence .site-footer,
+body.naive-bayes-evidence .rail-kicker {
+  text-transform: none;
+  letter-spacing: .045em;
+}
+
+body.naive-bayes-evidence svg:not(.hw-rough-frame):not(.hw-ink-filter-bank) {
+  overflow: visible;
+  filter: url(#hw-ink-distort);
+}
+
+body.naive-bayes-evidence svg path,
+body.naive-bayes-evidence svg line,
+body.naive-bayes-evidence svg circle {
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* torn-paper navigation */
+body.naive-bayes-evidence .topbar {
+  height: 78px;
+  gap: 18px;
+  padding: 0 32px;
+  border: 0;
+  border-bottom: 2px solid rgba(38, 50, 56, .62) !important;
+  background: rgba(251, 244, 226, .97) !important;
+  backdrop-filter: none !important;
+  box-shadow: 0 3px 0 rgba(40, 105, 173, .12), 0 5px 9px rgba(76, 59, 36, .08) !important;
+}
+
+body.naive-bayes-evidence .topbar::after {
+  content: '';
+  position: absolute;
+  left: 1%;
+  right: 1.5%;
+  bottom: -5px;
+  height: 3px;
+  border-bottom: 1px dashed rgba(38, 50, 56, .34);
+  transform: rotate(-.08deg);
+  pointer-events: none;
+}
+
+body.naive-bayes-evidence .wordmark {
+  gap: 9px;
+  transform: rotate(-1deg);
+}
+
+body.naive-bayes-evidence .wordmark strong {
+  font-family: 'Kalam', 'Patrick Hand', cursive;
+  font-size: 17px;
+  letter-spacing: .04em;
+}
+
+body.naive-bayes-evidence .wordmark small {
+  font-size: 12px;
+  letter-spacing: .06em;
+}
+
+body.naive-bayes-evidence .wordmark-mark {
+  align-items: center;
+  gap: 1px;
+  transform: rotate(-5deg);
+}
+
+body.naive-bayes-evidence .wordmark-mark i {
+  width: 4px;
+  border-radius: 50% 45% 42% 48%;
+  transform: rotate(2deg);
+}
+
+body.naive-bayes-evidence .wordmark-mark i:nth-child(2) { transform: rotate(-3deg); }
+body.naive-bayes-evidence .wordmark-mark i:nth-child(3) { transform: rotate(4deg); }
+
+body.naive-bayes-evidence .topbar-meta {
+  gap: 10px;
+  font-size: 14px;
+}
+
+body.naive-bayes-evidence .statml-nav-topic {
+  min-width: 0;
+  max-width: 150px;
+  overflow: hidden;
+  color: var(--ink);
+  font-family: 'Kalam', 'Patrick Hand', cursive;
+  font-size: 16px;
+  font-weight: 700;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  transform: rotate(-.5deg);
+}
+
+body.naive-bayes-evidence .statml-nav-meta {
+  flex: 0 0 auto;
+  padding: 3px 10px 2px;
+  color: #7d5114;
+  background: rgba(244, 198, 74, .32);
+  border: 1px solid rgba(125, 81, 20, .35);
+  transform: rotate(1.2deg);
+  font-size: 14px;
+  line-height: 1.1;
+}
+
+body.naive-bayes-evidence .statml-core-sequence {
+  margin-left: 0 !important;
+  gap: .38rem !important;
+  font-size: 18px !important;
+}
+
+body.naive-bayes-evidence .statml-core-sequence a {
+  display: grid;
+  place-items: center;
+  width: 29px;
+  height: 27px;
+  border: 1.6px solid currentColor;
+  border-radius: 48% 43% 46% 41%;
+  text-decoration: none;
+  transform: rotate(-2deg);
+}
+
+body.naive-bayes-evidence .statml-core-sequence a + a { transform: rotate(2deg); }
+
+body.naive-bayes-evidence .menu-toggle {
+  padding: 5px 9px 4px;
+  border: 1.5px solid var(--ink);
+  border-radius: 3px 7px 4px 6px;
+  font-size: 14px;
+  letter-spacing: .03em;
+  text-transform: none;
+  transform: rotate(-1deg);
+}
+
+/* stage list resembles a margin index written beside the notebook */
+body.naive-bayes-evidence .stage-nav {
+  width: 158px;
+  padding: 15px 13px 14px;
+  background: rgba(255, 250, 240, .8);
+  border: 1.5px solid rgba(38, 50, 56, .36);
+  border-radius: 4px 9px 3px 7px;
+  box-shadow: 3px 4px 0 rgba(38, 50, 56, .08);
+  transform: translateY(-42%) rotate(-.45deg);
+}
+
+body.naive-bayes-evidence .stage-nav::before {
+  content: '';
+  position: absolute;
+  width: 46px;
+  height: 13px;
+  left: 50%;
+  top: -8px;
+  background: rgba(219, 190, 127, .52);
+  transform: translateX(-50%) rotate(2deg);
+}
+
+body.naive-bayes-evidence .stage-nav-kicker {
+  margin-bottom: 11px;
+  color: var(--ink);
+  font-size: 12px;
+}
+
+body.naive-bayes-evidence .stage-nav ol { gap: 4px; }
+
+body.naive-bayes-evidence .stage-nav a {
+  grid-template-columns: 24px 1fr;
+  font-size: 13px;
+  line-height: 1.05;
+}
+
+body.naive-bayes-evidence .stage-nav a span { font-size: 12px; }
+
+body.naive-bayes-evidence .stage-nav a.is-active {
+  color: var(--ink);
+  background: linear-gradient(transparent 54%, rgba(244, 198, 74, .55) 54% 88%, transparent 88%);
+  transform: translateX(4px) rotate(-.5deg);
+}
+
+/* opening page */
+body.naive-bayes-evidence .hero {
+  padding-top: 150px;
+  overflow: visible;
+}
+
+body.naive-bayes-evidence .hero::before {
+  inset: 78px 0 0;
+  background-image:
+    linear-gradient(90deg, transparent 0 58px, rgba(198, 75, 75, .18) 58px 60px, transparent 60px),
+    repeating-linear-gradient(to bottom, transparent 0 31px, rgba(40, 105, 173, .1) 31px 32px);
+  background-size: 100% 100%, 100% 32px;
+  mask-image: none;
+}
+
+body.naive-bayes-evidence .kicker {
+  color: var(--red);
+  font-size: 15px;
+  transform: rotate(-.4deg);
+}
+
+body.naive-bayes-evidence .kicker-line,
+body.naive-bayes-evidence .caption-rule,
+body.naive-bayes-evidence .closing-rule,
+body.naive-bayes-evidence .topbar-divider {
+  height: 2px;
+  background: currentColor;
+  border-radius: 47%;
+  transform: rotate(-2deg);
+}
+
+body.naive-bayes-evidence .hero h1,
+body.naive-bayes-evidence .chapter h2 {
+  color: var(--ink);
+  font-family: 'Kalam', 'Patrick Hand', cursive !important;
+  font-weight: 700 !important;
+  letter-spacing: -.035em !important;
+}
+
+body.naive-bayes-evidence .hero h1 {
+  font-size: clamp(63px, 7vw, 112px);
+  line-height: .92;
+  transform: rotate(-.65deg);
+}
+
+body.naive-bayes-evidence .hero h1 em {
+  color: var(--blue);
+  font-family: inherit;
+  font-weight: 700;
+  letter-spacing: -.035em;
+  -webkit-text-fill-color: var(--blue) !important;
+  background: linear-gradient(transparent 70%, rgba(96, 176, 219, .34) 70% 91%, transparent 91%);
+}
+
+body.naive-bayes-evidence .hero-deck,
+body.naive-bayes-evidence .chapter p {
+  color: #4f5658;
+  font-size: 18px;
+  line-height: 1.55;
+}
+
+body.naive-bayes-evidence .hero-note {
+  color: var(--muted);
+  font-size: 14px;
+}
+
+body.naive-bayes-evidence .note-dot,
+body.naive-bayes-evidence .email-ping,
+body.naive-bayes-evidence .signal-spark,
+body.naive-bayes-evidence .verdict-dot {
+  border-radius: 45% 55% 48% 53%;
+  box-shadow: none;
+}
+
+body.naive-bayes-evidence .scroll-cue {
+  padding: 6px 11px 6px 4px;
+  color: var(--ink);
+  transform: rotate(-1deg);
+}
+
+body.naive-bayes-evidence .scroll-cue-label {
+  font-size: 14px;
+  letter-spacing: .03em;
+  text-transform: none;
+}
+
+body.naive-bayes-evidence .scroll-cue-arrow {
+  width: 38px;
+  height: 35px;
+  border: 2px solid currentColor;
+  border-radius: 48% 42% 52% 45%;
+  background: rgba(255, 250, 240, .72);
+}
+
+body.naive-bayes-evidence .hero-sky {
+  background: none;
+  filter: none;
+}
+
+body.naive-bayes-evidence .orbit {
+  border: 2px dashed rgba(40, 105, 173, .34);
+  border-radius: 47% 53% 49% 51%;
+}
+
+body.naive-bayes-evidence .orbit-two { border-color: rgba(198, 75, 75, .28); }
+
+body.naive-bayes-evidence .email-hero-card,
+body.naive-bayes-evidence .class-lens {
+  background: #fffaf0;
+  border: 2px solid rgba(38, 50, 56, .72);
+  border-radius: 3px 8px 4px 6px;
+  box-shadow: 6px 7px 0 rgba(38, 50, 56, .10);
+  backdrop-filter: none;
+  clip-path: polygon(.6% 1%, 99.3% .3%, 99.8% 98.7%, 1.1% 99.6%);
+}
+
+body.naive-bayes-evidence .email-hero-card::before {
+  content: '';
+  position: absolute;
+  top: -7px;
+  left: 38%;
+  width: 68px;
+  height: 16px;
+  background: rgba(219, 190, 127, .58);
+  transform: rotate(-2deg);
+}
+
+body.naive-bayes-evidence .email-subject {
+  font-family: 'Kalam', 'Patrick Hand', cursive;
+  font-size: 33px;
+  letter-spacing: -.02em;
+}
+
+body.naive-bayes-evidence .email-subject span { font-family: inherit; }
+
+body.naive-bayes-evidence .email-words span,
+body.naive-bayes-evidence .naive-chip-row span {
+  color: #8e3030;
+  background: linear-gradient(transparent 10%, rgba(244, 154, 154, .42) 10% 86%, transparent 86%);
+  border-radius: 2px 5px 2px 4px;
+  font-size: 14px;
+  transform: rotate(-1deg);
+}
+
+body.naive-bayes-evidence .email-words span:nth-child(even),
+body.naive-bayes-evidence .naive-chip-row span:nth-child(even) { transform: rotate(1.4deg); }
+
+body.naive-bayes-evidence .class-lens { box-shadow: 4px 5px 0 rgba(38, 50, 56, .08); }
+
+body.naive-bayes-evidence .lens-orbit,
+body.naive-bayes-evidence .lens-orbit::after,
+body.naive-bayes-evidence .annotation-pin,
+body.naive-bayes-evidence .legend-swatch,
+body.naive-bayes-evidence .score-dot,
+body.naive-bayes-evidence .curve-dot {
+  border-radius: 44% 56% 47% 52%;
+}
+
+body.naive-bayes-evidence .hero-caption,
+body.naive-bayes-evidence .closing-line,
+body.naive-bayes-evidence .scene-annotation {
+  font-family: 'Kalam', 'Patrick Hand', cursive;
+  color: var(--muted);
+}
+
+/* notebook lesson layout */
+body.naive-bayes-evidence .lesson-shell {
+  grid-template-columns: var(--narrative) var(--visual);
+}
+
+body.naive-bayes-evidence .chapter {
+  position: relative;
+  margin: 4vh 0;
+  padding-left: 23px;
+  background: transparent !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
+}
+
+body.naive-bayes-evidence .chapter::before {
+  content: '';
+  position: absolute;
+  left: 2px;
+  top: 17%;
+  bottom: 17%;
+  width: 2px;
+  background: rgba(198, 75, 75, .32);
+  transform: rotate(.35deg);
+}
+
+body.naive-bayes-evidence .stage-kicker {
+  color: var(--blue);
+  font-size: 15px;
+  font-weight: 700;
+}
+
+body.naive-bayes-evidence .stage-kicker span {
+  color: var(--red);
+  font-size: 17px;
+}
+
+body.naive-bayes-evidence .chapter h2 {
+  font-size: clamp(38px, 3.5vw, 62px);
+  line-height: 1.01;
+}
+
+body.naive-bayes-evidence .chapter h2 .hw-heading-stroke,
+body.naive-bayes-evidence .hero h1 .hw-heading-stroke {
+  opacity: .72;
+}
+
+body.naive-bayes-evidence .chapter p strong {
+  color: var(--ink);
+  background: linear-gradient(transparent 66%, rgba(244, 198, 74, .40) 66% 91%, transparent 91%);
+}
+
+body.naive-bayes-evidence .chapter p em { font-family: 'Kalam', 'Patrick Hand', cursive; }
+
+body.naive-bayes-evidence .formula-inline,
+body.naive-bayes-evidence .formula-strip,
+body.naive-bayes-evidence .type-summary,
+body.naive-bayes-evidence .score-readout,
+body.naive-bayes-evidence .continuous-note span,
+body.naive-bayes-evidence .fold-caption,
+body.naive-bayes-evidence .metric-caption,
+body.naive-bayes-evidence .insight-note {
+  font-size: 15px;
+}
+
+body.naive-bayes-evidence .formula-strip,
+body.naive-bayes-evidence .type-summary,
+body.naive-bayes-evidence .score-readout,
+body.naive-bayes-evidence .continuous-note span,
+body.naive-bayes-evidence .stability-switch,
+body.naive-bayes-evidence .fold-buttons,
+body.naive-bayes-evidence .metric-switch {
+  border: 2px solid rgba(38, 50, 56, .58);
+  border-radius: 4px 8px 3px 7px;
+  background: rgba(255, 250, 240, .88);
+  box-shadow: 3px 4px 0 rgba(38, 50, 56, .08);
+  clip-path: polygon(.4% .7%, 99.4% .1%, 99.8% 98.8%, .8% 99.5%);
+}
+
+body.naive-bayes-evidence .formula-strip {
+  border-left: 5px solid var(--blue);
+  color: var(--deep-indigo);
+}
+
+body.naive-bayes-evidence .insight-note {
+  position: relative;
+  padding: 16px 15px 13px;
+  border: 1.5px solid rgba(38, 50, 56, .45);
+  background: rgba(255, 249, 225, .9);
+  transform: rotate(-.7deg);
+}
+
+body.naive-bayes-evidence .insight-note::before {
+  content: '';
+  position: absolute;
+  top: -8px;
+  right: 22px;
+  width: 52px;
+  height: 15px;
+  background: rgba(219, 190, 127, .54);
+  transform: rotate(4deg);
+}
+
+body.naive-bayes-evidence .insight-index {
+  border-radius: 48% 42% 51% 45%;
+  transform: rotate(-7deg);
+}
+
+body.naive-bayes-evidence .text-button,
+body.naive-bayes-evidence .reset-button,
+body.naive-bayes-evidence .back-to-top {
+  padding: 5px 9px 3px;
+  border: 1.7px solid var(--blue);
+  border-radius: 3px 7px 4px 6px;
+  background: rgba(255, 250, 240, .72);
+  color: var(--deep-indigo);
+  font-size: 15px;
+  transform: rotate(-.6deg);
+}
+
+body.naive-bayes-evidence .score-readout {
+  color: var(--ink);
+  background: rgba(213, 229, 244, .76);
+  transform: rotate(.5deg);
+}
+
+body.naive-bayes-evidence .score-readout span:first-child,
+body.naive-bayes-evidence .score-readout span:last-child { color: var(--muted); }
+body.naive-bayes-evidence .score-readout strong { color: #963b3b; }
+
+body.naive-bayes-evidence .stability-switch button,
+body.naive-bayes-evidence .fold-buttons button,
+body.naive-bayes-evidence .metric-switch button {
+  min-width: 38px;
+  border-color: rgba(38, 50, 56, .32);
+  color: var(--muted);
+  font-size: 14px;
+}
+
+body.naive-bayes-evidence button.is-selected,
+body.naive-bayes-evidence .model-choice.is-selected {
+  color: var(--ink) !important;
+  background: linear-gradient(transparent 4%, rgba(244, 198, 74, .48) 4% 92%, transparent 92%) !important;
+  box-shadow: inset 0 -2px 0 rgba(125, 81, 20, .2);
+}
+
+/* the live illustration is a taped sketchbook page */
+body.naive-bayes-evidence .visual-stage {
+  background-color: #f8efd9;
+  background-image:
+    linear-gradient(90deg, transparent 0 44px, rgba(198, 75, 75, .16) 44px 46px, transparent 46px),
+    repeating-linear-gradient(to bottom, transparent 0 27px, rgba(40, 105, 173, .105) 27px 28px),
+    radial-gradient(circle at 22% 35%, rgba(84, 66, 38, .04) 0 1px, transparent 1.3px);
+  background-size: 100% 100%, 100% 28px, 33px 31px;
+  border: 2px solid rgba(38, 50, 56, .68);
+  border-radius: 5px 11px 4px 8px;
+  box-shadow: 7px 8px 0 rgba(38, 50, 56, .10);
+  clip-path: polygon(.35% .4%, 99.5% .15%, 99.85% 99.2%, .55% 99.75%);
+}
+
+body.naive-bayes-evidence .visual-stage::before {
+  opacity: 1;
+  background: none;
+  border: 1px dashed rgba(38, 50, 56, .20);
+  inset: 8px 7px 7px 9px;
+  transform: rotate(.08deg);
+}
+
+body.naive-bayes-evidence .visual-stage::after {
+  content: '';
+  position: absolute;
+  z-index: 30;
+  top: -4px;
+  left: 44%;
+  width: 78px;
+  height: 17px;
+  background: rgba(219, 190, 127, .58);
+  transform: rotate(-2deg);
+  pointer-events: none;
+}
+
+body.naive-bayes-evidence .stage-rail { border-bottom: 1px dashed rgba(38, 50, 56, .3); padding-bottom: 6px; }
+body.naive-bayes-evidence .rail-kicker,
+body.naive-bayes-evidence .rail-name { color: var(--ink); font-size: 12px; }
+body.naive-bayes-evidence .rail-line { height: 4px; background: rgba(40, 105, 173, .15); transform: rotate(-.5deg); }
+body.naive-bayes-evidence .rail-line i { background: var(--red); border-radius: 50%; }
+
+body.naive-bayes-evidence .scene::after { display: none; }
+body.naive-bayes-evidence .scene-heading { color: var(--muted); font-size: 13px; transform: rotate(-.5deg); }
+body.naive-bayes-evidence .scene-number { font-size: 15px; }
+body.naive-bayes-evidence .scene-annotation { font-size: 15px; transform: rotate(-1deg); }
+
+/* remove software-perfect finish from every teaching object */
+body.naive-bayes-evidence :is(
+  .ledger-wrap, .email-note-card, .feature-rack, .target-lock, .paper-stack,
+  .split-branch, .split-seal, .model-choice, .model-specimen, .prior-column,
+  .likelihood-column, .learn-equation, .score-email, .score-compare,
+  .winner-stamp, .height-readout, .zero-card, .zero-result, .smoothing-band,
+  .log-chain, .log-result, .fold-block, .final-train-path, .matrix-cell,
+  .metric-readout, .ribbon-node, .four-ideas > div, .synthesis-verdict
+) {
+  border: 1.7px solid rgba(38, 50, 56, .56);
+  border-radius: 3px 8px 4px 7px;
+  background-color: rgba(255, 250, 240, .91);
+  box-shadow: 3px 4px 0 rgba(38, 50, 56, .075);
+  clip-path: polygon(.5% .7%, 99.3% .2%, 99.8% 98.8%, .8% 99.5%);
+}
+
+body.naive-bayes-evidence :is(.ledger-wrap, .email-note-card, .paper-stack, .zero-card, .metric-readout:nth-child(2), .four-ideas > div:nth-child(odd)) { transform: rotate(-.7deg); }
+body.naive-bayes-evidence :is(.feature-rack, .target-lock, .split-branch, .model-specimen, .zero-result, .metric-readout:nth-child(3), .four-ideas > div:nth-child(even)) { transform: rotate(.7deg); }
+
+body.naive-bayes-evidence .ledger-row,
+body.naive-bayes-evidence .feature-row,
+body.naive-bayes-evidence .note-card-tags,
+body.naive-bayes-evidence .score-total {
+  border-color: rgba(40, 105, 173, .22);
+  border-style: dashed;
+}
+
+body.naive-bayes-evidence .ledger-row,
+body.naive-bayes-evidence .ledger-title,
+body.naive-bayes-evidence .feature-row,
+body.naive-bayes-evidence .model-choice,
+body.naive-bayes-evidence .likelihood-row,
+body.naive-bayes-evidence .score-class,
+body.naive-bayes-evidence .fold-block,
+body.naive-bayes-evidence .matrix-grid,
+body.naive-bayes-evidence .four-ideas {
+  font-family: 'Patrick Hand', 'Comic Sans MS', cursive;
+}
+
+body.naive-bayes-evidence .ledger-row { font-size: 13px; }
+body.naive-bayes-evidence .ledger-head { font-size: 11px; }
+body.naive-bayes-evidence .ledger-foot-copy,
+body.naive-bayes-evidence .note-card-body { font-family: 'Kalam', 'Patrick Hand', cursive; }
+
+body.naive-bayes-evidence .model-choice,
+body.naive-bayes-evidence .evidence-toggle,
+body.naive-bayes-evidence .fold-block { cursor: pointer; }
+
+body.naive-bayes-evidence .model-choice { background: rgba(255, 250, 240, .84); }
+body.naive-bayes-evidence .model-choice:nth-child(odd) { transform: rotate(-.5deg); }
+body.naive-bayes-evidence .model-choice:nth-child(even) { transform: rotate(.6deg); }
+
+body.naive-bayes-evidence .model-specimen {
+  color: var(--ink);
+  background: rgba(213, 229, 244, .72);
+}
+
+body.naive-bayes-evidence .specimen-label,
+body.naive-bayes-evidence .specimen-foot { color: var(--muted); }
+body.naive-bayes-evidence .specimen-main { color: #963b3b; }
+
+body.naive-bayes-evidence .target-lock,
+body.naive-bayes-evidence .learn-equation,
+body.naive-bayes-evidence .log-result {
+  color: var(--ink);
+  background: rgba(213, 229, 244, .82);
+}
+
+body.naive-bayes-evidence .target-lock small,
+body.naive-bayes-evidence .log-result span { color: var(--muted); }
+body.naive-bayes-evidence .learn-equation b,
+body.naive-bayes-evidence .log-result strong { color: #963b3b; }
+body.naive-bayes-evidence .learn-equation strong { color: var(--deep-indigo); }
+
+body.naive-bayes-evidence .specimen-spark {
+  right: 8px;
+  bottom: 7px;
+  width: 118px;
+  height: 78px;
+  display: grid;
+  place-items: center;
+  border: 0;
+  border-bottom: 3px solid rgba(40, 105, 173, .55);
+  border-radius: 0;
+  transform: rotate(-3deg);
+}
+
+body.naive-bayes-evidence .specimen-spark::before {
+  content: '0   1';
+  position: static;
+  border: 0;
+  color: var(--blue);
+  font-size: 28px;
+  line-height: 1;
+}
+
+body.naive-bayes-evidence .specimen-spark::after {
+  content: '✓   ✓';
+  position: absolute;
+  inset: auto 4px 2px;
+  border: 0;
+  color: var(--red);
+  font-size: 18px;
+  letter-spacing: 1.4em;
+}
+
+body.naive-bayes-evidence .model-specimen[data-specimen='count'] .specimen-spark::before { content: '||||  ||'; letter-spacing: .05em; }
+body.naive-bayes-evidence .model-specimen[data-specimen='count'] .specimen-spark::after { content: '3 + 2'; letter-spacing: .12em; }
+body.naive-bayes-evidence .model-specimen[data-specimen='category'] .specimen-spark::before { content: 'A   B   C'; font-size: 22px; }
+body.naive-bayes-evidence .model-specimen[data-specimen='category'] .specimen-spark::after { content: '↳ choose one'; letter-spacing: .03em; }
+body.naive-bayes-evidence .model-specimen[data-specimen='curve'] .specimen-spark::before { content: '∿'; font-size: 66px; transform: rotate(-5deg); }
+body.naive-bayes-evidence .model-specimen[data-specimen='curve'] .specimen-spark::after { content: 'typical?'; letter-spacing: .03em; }
+
+body.naive-bayes-evidence .model-glyph,
+body.naive-bayes-evidence .feature-bit,
+body.naive-bayes-evidence .toggle-box {
+  border: 1.5px solid currentColor;
+  border-radius: 4px 8px 3px 6px;
+  background: transparent;
+  transform: rotate(-2deg);
+}
+
+body.naive-bayes-evidence .toggle-box::after { border-radius: 50%; }
+
+body.naive-bayes-evidence .jar {
+  border: 2px solid rgba(38, 50, 56, .58);
+  border-radius: 3px 4px 11px 9px;
+  background: rgba(255, 250, 240, .82);
+  transform: rotate(-1deg);
+}
+
+body.naive-bayes-evidence .jar:nth-child(even) { transform: rotate(1deg); }
+body.naive-bayes-evidence .jar-fill,
+body.naive-bayes-evidence .likelihood-row i b,
+body.naive-bayes-evidence .score-track i { opacity: .72; filter: saturate(.8); }
+
+body.naive-bayes-evidence .score-track,
+body.naive-bayes-evidence .feature-meter {
+  height: 7px;
+  border: 1px solid rgba(38, 50, 56, .35);
+  background: transparent;
+  transform: rotate(-.35deg);
+}
+
+body.naive-bayes-evidence .winner-stamp,
+body.naive-bayes-evidence .split-seal,
+body.naive-bayes-evidence .zero-result {
+  border-radius: 46% 54% 48% 52%;
+  outline: 1px dashed rgba(38, 50, 56, .36);
+  outline-offset: 4px;
+  transform: rotate(-4deg);
+}
+
+body.naive-bayes-evidence input[type='range'] {
+  accent-color: var(--blue);
+  filter: url(#hw-ink-distort);
+}
+
+body.naive-bayes-evidence .bell-chart path[fill^='url'] { opacity: .45; }
+body.naive-bayes-evidence .bell-chart path[stroke] { stroke-width: 3; }
+body.naive-bayes-evidence .bell-chart path[fill='url(#curveAFill)'] { fill: rgba(198, 75, 75, .18); }
+body.naive-bayes-evidence .bell-chart path[fill='url(#curveBFill)'] { fill: rgba(40, 105, 173, .18); }
+body.naive-bayes-evidence .naive-map .naive-path {
+  stroke: var(--red) !important;
+  stroke-width: 3;
+}
+body.naive-bayes-evidence .naive-map .naive-path:nth-of-type(even) { stroke: var(--blue) !important; }
+body.naive-bayes-evidence .naive-map .correlation-path { stroke-width: 3; }
+
+body.naive-bayes-evidence .scene-naive .correlation-path {
+  opacity: 0;
+  transition: opacity .25s ease;
+}
+
+body.naive-bayes-evidence .scene-naive.is-correlation .correlation-path { opacity: 1; }
+body.naive-bayes-evidence .scene-naive.is-correlation .naive-path { opacity: .28; }
+body.naive-bayes-evidence .scene-naive.is-correlation .naive-chip-row span {
+  color: #7d5114;
+  background: linear-gradient(transparent 10%, rgba(244, 198, 74, .48) 10% 86%, transparent 86%);
+}
+
+body.naive-bayes-evidence .matrix-cell.is-focus {
+  background: rgba(244, 154, 154, .36);
+  outline: 3px solid rgba(198, 75, 75, .46);
+  outline-offset: -6px;
+  transform: rotate(-1deg);
+}
+
+body.naive-bayes-evidence .height-readout,
+body.naive-bayes-evidence .height-readout strong,
+body.naive-bayes-evidence .height-readout span,
+body.naive-bayes-evidence .fold-block.is-validation,
+body.naive-bayes-evidence .fold-block.is-validation span,
+body.naive-bayes-evidence .fold-block.is-validation small {
+  color: var(--ink);
+}
+
+body.naive-bayes-evidence .fold-block.is-validation {
+  background: rgba(244, 198, 74, .42);
+  border-color: rgba(125, 81, 20, .56);
+}
+
+body.naive-bayes-evidence .ribbon-node,
+body.naive-bayes-evidence .four-ideas > div { border-width: 1.5px 1.5px 3px; }
+
+body.naive-bayes-evidence .synthesis-ribbon > i {
+  height: 2px;
+  background: var(--ink);
+  transform: rotate(-3deg);
+}
+
+body.naive-bayes-evidence .synthesis-verdict {
+  color: var(--ink);
+  background: rgba(213, 229, 244, .82);
+  transform: rotate(.4deg);
+}
+
+body.naive-bayes-evidence .synthesis-verdict .mono { color: var(--deep-indigo); }
+body.naive-bayes-evidence .synthesis-verdict strong { color: #963b3b; }
+
+body.naive-bayes-evidence .site-footer {
+  position: relative;
+  color: var(--muted);
+  font-size: 13px;
+  border-top: 2px solid rgba(38, 50, 56, .5);
+  background: rgba(251, 244, 226, .76);
+}
+
+body.naive-bayes-evidence .site-footer::before {
+  content: '';
+  position: absolute;
+  left: 2%;
+  right: 3%;
+  top: -5px;
+  border-top: 1px dashed rgba(38, 50, 56, .3);
+  transform: rotate(.08deg);
+}
+
+body.naive-bayes-evidence :focus-visible {
+  outline: 2px dashed var(--blue);
+  outline-offset: 4px;
+}
+
+/* Reference laptop QA found horizontal overflow at 1024px. These columns are
+   now allowed to shrink to zero and every visual remains inside its page. */
+@media (max-width: 1180px) and (min-width: 901px) {
+  body.naive-bayes-evidence .hero,
+  body.naive-bayes-evidence .lesson-shell {
+    padding-left: 12vw;
+    padding-right: 3vw;
+  }
+
+  body.naive-bayes-evidence .lesson-shell {
+    grid-template-columns: minmax(0, .84fr) minmax(0, 1.16fr);
+    gap: 3vw;
+  }
+
+  body.naive-bayes-evidence .stage-nav { left: 8px; width: 116px; padding-inline: 9px; }
+  body.naive-bayes-evidence .stage-nav a { font-size: 11px; gap: 3px; }
+  body.naive-bayes-evidence .stage-nav-kicker { font-size: 10px; }
+  body.naive-bayes-evidence .chapter { padding-left: 14px; }
+  body.naive-bayes-evidence .chapter p { font-size: 16px; }
+}
+
+@media (max-width: 900px) {
+  body.naive-bayes-evidence .topbar { height: 72px; padding: 0 17px; gap: 10px; }
+  body.naive-bayes-evidence .statml-nav-meta { display: none; }
+  body.naive-bayes-evidence .stage-nav {
+    right: 17px;
+    top: 72px;
+    width: min(310px, calc(100vw - 34px));
+    transform: translateY(-10px) rotate(-.5deg);
+    background: #fffaf0;
+  }
+  body.naive-bayes-evidence .stage-nav ol {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 16px;
+  }
+  body.naive-bayes-evidence .stage-nav a {
+    grid-template-columns: 22px minmax(0, 1fr);
+    font-size: 12px;
+    white-space: nowrap;
+  }
+  body.naive-bayes-evidence .stage-nav.is-open { transform: translateY(0) rotate(-.5deg); }
+  body.naive-bayes-evidence .hero { overflow: hidden; }
+  body.naive-bayes-evidence .lesson-shell { grid-template-columns: 1fr; }
+  body.naive-bayes-evidence .chapter { margin-block: 0; }
+}
+
+@media (max-width: 900px) and (min-width: 621px) {
+  body.naive-bayes-evidence .lesson-shell {
+    grid-template-columns: minmax(0, .86fr) minmax(0, 1.14fr);
+    gap: 20px;
+  }
+  body.naive-bayes-evidence .visual-stage { top: 86px; }
+  body.naive-bayes-evidence .chapter h2 { font-size: clamp(34px, 4.5vw, 48px); }
+}
+
+@media (max-width: 620px) {
+  body.naive-bayes-evidence { font-size: 16px; }
+  body.naive-bayes-evidence .topbar { height: 66px; }
+  body.naive-bayes-evidence .topbar-meta { margin-right: 5px; }
+  body.naive-bayes-evidence .statml-nav-topic { display: none; }
+  body.naive-bayes-evidence .progress-label { font-size: 12px; }
+  body.naive-bayes-evidence .statml-core-sequence a { width: 25px; height: 24px; }
+  body.naive-bayes-evidence .wordmark > span:last-child { display: none; }
+  body.naive-bayes-evidence .hero { padding-top: 108px; }
+  body.naive-bayes-evidence .hero h1 { font-size: clamp(55px, 16vw, 82px); }
+  body.naive-bayes-evidence .hero-deck,
+  body.naive-bayes-evidence .chapter p { font-size: 16px; }
+  body.naive-bayes-evidence .visual-column { top: 66px; }
+  body.naive-bayes-evidence .visual-stage { box-shadow: 5px 6px 0 rgba(38, 50, 56, .12); }
+  body.naive-bayes-evidence .chapter { padding-left: 15px; }
+  body.naive-bayes-evidence .chapter h2 { font-size: 40px; }
+  body.naive-bayes-evidence .ledger-row { font-size: 8px; }
+  body.naive-bayes-evidence .ledger-head { font-size: 7px; }
+  body.naive-bayes-evidence .email-words span,
+  body.naive-bayes-evidence .naive-chip-row span { font-size: 9px; }
+  body.naive-bayes-evidence .scene-heading { font-size: 9px; }
+  body.naive-bayes-evidence .formula-strip,
+  body.naive-bayes-evidence .type-summary,
+  body.naive-bayes-evidence .score-readout,
+  body.naive-bayes-evidence .continuous-note span { font-size: 11px; }
+  body.naive-bayes-evidence .site-footer { font-size: 10px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body.naive-bayes-evidence .stage-nav,
+  body.naive-bayes-evidence .email-hero-card,
+  body.naive-bayes-evidence .model-choice,
+  body.naive-bayes-evidence .chapter h2 { transform: none; }
+}
+
+@media (max-width: 380px) {
+  body.naive-bayes-evidence .visual-stage { height: 300px; min-height: 300px; }
+}

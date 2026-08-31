@@ -3,1982 +3,355 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="A scroll-driven, interactive visual lesson explaining Naive Bayes through an animal-classification story.">
-  <meta name="theme-color" content="#f7f7f4">
-  <title>Naive Bayes — An Interactive Visual Lesson</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --paper: #f7f7f4;
-      --paper-2: #f0efeb;
-      --ink: #1f2937;
-      --dim: #4b5563;
-      --muted: #6b7280;
-      --line: #e7e5e4;
-      --surface: #ffffff;
-      --indigo: #6366f1;
-      --indigo-dark: #4f46e5;
-      --rabbit: #6366f1;
-      --dog: #d97706;
-      --cat: #0f8a72;
-      --coral: #dc5d5d;
-      --shadow: 0 14px 34px rgba(15,23,42,.07);
-      --mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
-      --sans: "Inter", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-    }
-
-    * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; scroll-padding-top: 68px; }
-    body {
-      margin: 0;
-      color: var(--ink);
-      background:
-        radial-gradient(circle at 10% 20%, rgba(99,102,241,.045), transparent 28rem),
-        var(--paper);
-      font-family: var(--sans);
-      line-height: 1.65;
-      text-rendering: optimizeLegibility;
-      -webkit-font-smoothing: antialiased;
-      overflow-x: hidden;
-    }
-
-    button, input { font: inherit; }
-    button:focus-visible, input:focus-visible, a:focus-visible {
-      outline: 3px solid rgba(99,102,241,.34);
-      outline-offset: 3px;
-    }
-
-    .progress-track {
-      position: fixed;
-      inset: 0 0 auto 0;
-      height: 4px;
-      background: rgba(255,255,255,.52);
-      z-index: 100;
-    }
-    .progress-bar {
-      width: 0;
-      height: 100%;
-      background: linear-gradient(90deg, var(--indigo), #9a75e8, var(--cat));
-      transform-origin: left;
-      box-shadow: 0 0 14px rgba(99,102,241,.22);
-    }
-
-    .statml-site-nav {
-      position: fixed;
-      inset: 4px 0 auto;
-      height: 54px;
-      z-index: 1100;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-      padding: 0 24px;
-      background: rgba(247,247,244,.84);
-      border-bottom: 1px solid rgba(231,229,228,.85);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-    }
-    .statml-site-nav a { color: inherit; text-decoration: none; }
-    .statml-brand-link { display: inline-flex; align-items: center; gap: 10px; font-size: .84rem; font-weight: 700; letter-spacing: -.01em; white-space: nowrap; }
-    .statml-brand-mark { width: 24px; height: 24px; display: grid; place-items: center; border: 1px solid var(--line); border-radius: 7px; background: var(--surface); color: var(--indigo-dark); font-family: var(--mono); font-size: .72rem; box-shadow: 0 2px 8px rgba(15,23,42,.045); }
-    .statml-nav-topic { min-width: 0; color: var(--dim); font-size: .79rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .statml-nav-meta { color: var(--muted); font-family: var(--mono); font-size: .68rem; letter-spacing: .08em; white-space: nowrap; }
-
-    .hero {
-      position: relative;
-      min-height: 100svh;
-      display: grid;
-      place-items: center;
-      overflow: hidden;
-      padding: 7.5rem 2rem 5rem;
-      isolation: isolate;
-    }
-    #heroCanvas {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      z-index: -2;
-    }
-    .hero::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      z-index: -1;
-      background: linear-gradient(180deg, rgba(247,247,244,.15), rgba(247,247,244,.78) 78%, var(--paper));
-    }
-    .hero-inner {
-      width: min(920px, 100%);
-      text-align: center;
-    }
-    .topic-badge, .stage-kicker {
-      display: inline-flex;
-      align-items: center;
-      gap: .6rem;
-      color: var(--indigo-dark);
-      font-size: .72rem;
-      line-height: 1;
-      font-weight: 800;
-      letter-spacing: .14em;
-      text-transform: uppercase;
-    }
-    .topic-badge {
-      padding: .7rem 1rem;
-      border: 1px solid rgba(99,102,241,.2);
-      border-radius: 999px;
-      background: rgba(255,255,255,.64);
-      box-shadow: 0 8px 30px rgba(99,102,241,.07);
-      backdrop-filter: blur(10px);
-    }
-    .topic-badge::before {
-      content: "";
-      width: .48rem;
-      height: .48rem;
-      border-radius: 50%;
-      background: var(--indigo);
-      box-shadow: 0 0 0 5px rgba(99,102,241,.1);
-    }
-    h1 {
-      margin: 1.8rem auto 1.3rem;
-      max-width: 880px;
-      font-size: clamp(2.8rem, 6.5vw, 5rem);
-      font-weight: 700;
-      line-height: 1.04;
-      letter-spacing: -.045em;
-      background: linear-gradient(128deg, #202836 10%, #3d405a 48%, var(--indigo-dark) 86%);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-    }
-    .hero-lede {
-      width: min(670px, 100%);
-      margin: 0 auto;
-      color: var(--dim);
-      font-size: clamp(1.05rem, 2vw, 1.3rem);
-      line-height: 1.65;
-    }
-    .hero-note {
-      width: fit-content;
-      margin: 1.7rem auto 0;
-      padding: .65rem .9rem;
-      color: var(--muted);
-      font-family: var(--mono);
-      font-size: .75rem;
-      border-top: 1px solid var(--line);
-    }
-    .scroll-cue {
-      position: absolute;
-      left: 50%;
-      bottom: 1.8rem;
-      display: grid;
-      justify-items: center;
-      gap: .55rem;
-      color: var(--muted);
-      font-size: .68rem;
-      font-weight: 800;
-      letter-spacing: .13em;
-      text-transform: uppercase;
-      transform: translateX(-50%);
-    }
-    .scroll-cue span:last-child {
-      width: 1px;
-      height: 2.2rem;
-      background: linear-gradient(var(--indigo), transparent);
-      animation: breathe 1.9s ease-in-out infinite;
-    }
-    @keyframes breathe { 50% { transform: scaleY(.58); opacity: .45; } }
-
-    .lesson-grid {
-      display: grid;
-      grid-template-columns: minmax(0, 45%) minmax(0, 55%);
-      max-width: 1400px;
-      margin: 0 auto;
-      align-items: start;
-    }
-    .story {
-      position: relative;
-      z-index: 2;
-      min-width: 0;
-      padding: 0 4rem 10vh;
-    }
-    .chapter {
-      min-height: 92svh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      padding: 5rem 0;
-      scroll-margin-top: 62px;
-      border-bottom: 1px solid rgba(231,229,228,.72);
-      opacity: 1;
-      transform: none;
-    }
-    .chapter:last-child { border-bottom: 0; }
-    .chapter-inner { width: min(650px, 100%); margin: 0 auto; }
-    .stage-kicker {
-      display: flex;
-      align-items: center;
-      gap: .6rem;
-      margin: 0 0 .9rem;
-      color: var(--indigo);
-      font-family: var(--mono);
-      font-size: .68rem;
-      font-weight: 700;
-      letter-spacing: .11em;
-      text-transform: uppercase;
-    }
-    .stage-kicker::before {
-      content: "";
-      width: 22px;
-      height: 1px;
-      background: var(--indigo);
-      opacity: .75;
-      flex: 0 0 auto;
-    }
-    h2 {
-      margin: 0 0 1.25rem;
-      max-width: 610px;
-      font-size: clamp(1.75rem, 3vw, 2.15rem);
-      font-weight: 700;
-      line-height: 1.18;
-      letter-spacing: -.028em;
-    }
-    .chapter p {
-      margin: .6rem 0 1rem;
-      color: var(--dim);
-      font-size: 1rem;
-      line-height: 1.7;
-    }
-    .chapter strong { color: var(--ink); }
-
-    .card, .formula, .insight {
-      margin: 1rem 0;
-      border: 1px solid var(--line);
-      border-radius: 12px;
-      background: var(--surface);
-    }
-    .card {
-      padding: 1.1rem 1.2rem;
-      box-shadow: 0 2px 8px rgba(15,23,42,.045);
-    }
-    .card-title {
-      margin-bottom: .8rem;
-      color: var(--muted);
-      font-size: .68rem;
-      font-weight: 800;
-      letter-spacing: .12em;
-      text-transform: uppercase;
-    }
-    .formula {
-      overflow-x: auto;
-      padding: 1rem 1.1rem;
-      color: var(--ink);
-      background: var(--paper-2);
-      border-color: var(--line);
-      border-left: 3px solid var(--indigo);
-      font-family: var(--mono);
-      font-size: .9rem;
-      line-height: 1.65;
-      white-space: nowrap;
-    }
-    .stage6-formula {
-      white-space: normal;
-      line-height: 1.55;
-    }
-    .insight {
-      padding: .9rem 1rem;
-      border: 1px solid rgba(99,102,241,.18);
-      border-left: 4px solid var(--indigo);
-      border-radius: 0 8px 8px 0;
-      color: var(--dim);
-      font-size: .88rem;
-      line-height: 1.55;
-      background: rgba(238,242,255,.68);
-      box-shadow: none;
-    }
-    .insight strong { color: var(--indigo-dark); }
-    .pill-row { display: flex; flex-wrap: wrap; gap: .45rem; }
-    .pill {
-      display: inline-flex;
-      align-items: center;
-      gap: .4rem;
-      padding: .38rem .65rem;
-      color: var(--dim);
-      background: #f7f7f5;
-      border: 1px solid var(--line);
-      border-radius: 999px;
-      font-size: .72rem;
-      font-weight: 750;
-    }
-    .pill .dot { width: .5rem; height: .5rem; border-radius: 50%; }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: .73rem;
-    }
-    th {
-      padding: .55rem .45rem;
-      color: var(--muted);
-      font-size: .62rem;
-      letter-spacing: .06em;
-      text-align: left;
-      text-transform: uppercase;
-      border-bottom: 1px solid var(--line);
-    }
-    td {
-      padding: .58rem .45rem;
-      color: var(--dim);
-      border-bottom: 1px solid #efeeea;
-    }
-    tbody tr:last-child td { border-bottom: 0; }
-    td.mono { font-family: var(--mono); }
-
-    .metric-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: .55rem;
-    }
-    .metric {
-      min-width: 0;
-      padding: .8rem;
-      border: 1px solid var(--line);
-      border-radius: 12px;
-      background: #fff;
-    }
-    .metric-value {
-      overflow: hidden;
-      color: var(--ink);
-      font-family: var(--mono);
-      font-size: clamp(1rem, 2vw, 1.35rem);
-      font-weight: 800;
-      text-overflow: ellipsis;
-    }
-    .metric-label {
-      margin-top: .3rem;
-      color: var(--muted);
-      font-size: .58rem;
-      font-weight: 800;
-      letter-spacing: .08em;
-      text-transform: uppercase;
-    }
-
-    .choice-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: .55rem;
-    }
-    .choice, .toggle {
-      cursor: pointer;
-      border: 1px solid var(--line);
-      background: #fff;
-      color: var(--dim);
-      transition: .2s ease;
-    }
-    .choice {
-      padding: .75rem;
-      border-radius: 12px;
-      text-align: left;
-    }
-    .choice:hover, .choice.active, .toggle:hover, .toggle.active {
-      color: var(--indigo-dark);
-      border-color: rgba(99,102,241,.45);
-      background: rgba(99,102,241,.06);
-    }
-    .choice strong { display: block; margin-bottom: .2rem; font-size: .78rem; }
-    .choice span { font-size: .67rem; color: var(--muted); }
-
-    .control-line {
-      display: grid;
-      grid-template-columns: auto 1fr auto;
-      align-items: center;
-      gap: .8rem;
-    }
-    .control-line label {
-      color: var(--dim);
-      font-size: .76rem;
-      font-weight: 700;
-    }
-    input[type="range"] {
-      width: 100%;
-      accent-color: var(--indigo);
-    }
-    .readout {
-      min-width: 3.8rem;
-      padding: .35rem .5rem;
-      text-align: center;
-      color: var(--indigo-dark);
-      background: #f0f0fb;
-      border-radius: 8px;
-      font-family: var(--mono);
-      font-size: .72rem;
-      font-weight: 800;
-    }
-
-    .feature-controls { display: grid; gap: .55rem; }
-    .feature-control {
-      display: grid;
-      grid-template-columns: 1fr auto;
-      align-items: center;
-      gap: .75rem;
-    }
-    .feature-control > span { color: var(--dim); font-size: .78rem; font-weight: 700; }
-    .toggle-group { display: flex; gap: .25rem; }
-    .toggle {
-      min-width: 3rem;
-      padding: .4rem .55rem;
-      border-radius: 9px;
-      font-size: .68rem;
-      font-weight: 800;
-    }
-
-    .mini-pipeline {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: .35rem;
-      align-items: stretch;
-    }
-    .pipe-step {
-      position: relative;
-      padding: .7rem .45rem;
-      text-align: center;
-      color: var(--dim);
-      background: #f8f8f6;
-      border: 1px solid var(--line);
-      border-radius: 10px;
-      font-size: .64rem;
-      font-weight: 750;
-      line-height: 1.35;
-    }
-    .pipe-step:not(:last-child)::after {
-      content: "→";
-      position: absolute;
-      right: -.42rem;
-      top: 50%;
-      z-index: 2;
-      color: var(--indigo);
-      transform: translateY(-50%);
-    }
-
-    .visual-shell {
-      position: sticky;
-      top: 0;
-      height: 100svh;
-      min-height: 560px;
-      padding: 4.2rem 1.6rem 1.4rem;
-      background: var(--paper);
-      border-left: 1px solid rgba(231,229,228,.72);
-    }
-    .visual-card {
-      position: relative;
-      height: 100%;
-      overflow: hidden;
-      border: 1px solid rgba(215,214,208,.9);
-      border-radius: 16px;
-      background: rgba(255,255,255,.82);
-      box-shadow: var(--shadow);
-      backdrop-filter: blur(8px);
-    }
-    #mainCanvas { display: block; width: 100%; height: 100%; }
-    .canvas-top {
-      position: absolute;
-      top: 1.1rem;
-      left: 1.15rem;
-      right: 1.15rem;
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: 1rem;
-      pointer-events: none;
-    }
-    .canvas-eyebrow {
-      color: var(--muted);
-      font-family: var(--mono);
-      font-size: .6rem;
-      font-weight: 600;
-      letter-spacing: .12em;
-      text-transform: uppercase;
-    }
-    .canvas-title {
-      margin-top: .34rem;
-      font-size: .88rem;
-      font-weight: 700;
-      font-weight: 800;
-      letter-spacing: -.02em;
-    }
-    .live-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: .42rem;
-      padding: .55rem .75rem;
-      color: var(--dim);
-      background: rgba(255,255,255,.84);
-      border: 1px solid var(--line);
-      border-radius: 999px;
-      font-family: var(--mono);
-      font-size: .72rem;
-      white-space: nowrap;
-    }
-    .live-badge::before {
-      content: "";
-      width: .42rem;
-      height: .42rem;
-      border-radius: 50%;
-      background: var(--indigo);
-      box-shadow: 0 0 0 4px rgba(99,102,241,.1);
-    }
-    .canvas-caption {
-      position: absolute;
-      left: 1.15rem;
-      right: 1.15rem;
-      bottom: 1.15rem;
-      min-height: 4.65rem;
-      padding: .85rem 1rem;
-      color: var(--dim);
-      background: rgba(255,255,255,.83);
-      border: 1px solid rgba(226,225,220,.92);
-      border-radius: 14px;
-      font-size: .82rem;
-      line-height: 1.52;
-      backdrop-filter: blur(10px);
-      pointer-events: none;
-    }
-    .canvas-caption strong {
-      display: block;
-      margin-bottom: .12rem;
-      color: var(--ink);
-      font-size: .72rem;
-      letter-spacing: .035em;
-      text-transform: uppercase;
-    }
-
-    .stage-dots {
-      position: fixed;
-      z-index: 20;
-      right: 14px;
-      top: 50%;
-      display: grid;
-      gap: 7px;
-      padding: 10px 8px;
-      border: 1px solid rgba(231,229,228,.92);
-      border-radius: 999px;
-      background: rgba(255,255,255,.78);
-      box-shadow: 0 2px 8px rgba(15,23,42,.045);
-      backdrop-filter: blur(10px);
-      transform: translateY(-50%);
-    }
-    .stage-dot {
-      width: 9px;
-      height: 9px;
-      padding: 0;
-      border: 1px solid #cbd5e1;
-      border-radius: 50%;
-      background: #e5e7eb;
-      cursor: pointer;
-      transition: .2s ease;
-    }
-    .stage-dot.active {
-      border-color: var(--indigo);
-      background: var(--indigo);
-      box-shadow: 0 0 0 4px rgba(99,102,241,.12);
-      transform: scale(1.05);
-    }
-
-    .statml-module-footer {
-      border-top: 1px solid var(--line);
-      background: var(--paper-2);
-      padding: 2.2rem 1.5rem 2.8rem;
-    }
-    .statml-footer-inner {
-      width: min(1100px, 100%);
-      margin: 0 auto;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-    .statml-footer-home {
-      color: var(--muted);
-      font-family: var(--mono);
-      font-size: .7rem;
-      text-decoration: none;
-      text-transform: uppercase;
-      letter-spacing: .08em;
-    }
-
-    .sr-only {
-      position: absolute;
-      width: 1px;
-      height: 1px;
-      padding: 0;
-      margin: -1px;
-      overflow: hidden;
-      clip: rect(0,0,0,0);
-      white-space: nowrap;
-      border: 0;
-    }
-
-    @media (max-width: 900px) {
-      .statml-site-nav { height: 50px; padding: 0 14px; }
-      .statml-brand-link { font-size: .78rem; }
-      .statml-nav-meta { font-size: .6rem; }
-      .statml-nav-topic { font-size: .72rem; }
-      .stage-dots { display: none; }
-      .lesson-grid { display: flex; flex-direction: column; }
-      .story, .chapter, .chapter-inner { width: 100%; min-width: 0; }
-      .visual-shell {
-        order: -1;
-        z-index: 10;
-        height: 50svh;
-        min-height: 320px;
-        padding: 3.6rem .8rem .7rem;
-        border-left: 0;
-        border-bottom: 1px solid var(--line);
-      }
-      .visual-card { border-radius: 18px; }
-      .story { padding: 0 1.35rem 4rem; }
-      .card { min-width: 0; overflow-x: auto; }
-      .chapter {
-        min-height: auto;
-        padding: 3.4rem 0;
-      }
-      .canvas-top { top: .9rem; left: .95rem; right: .95rem; }
-      .canvas-caption {
-        left: .7rem;
-        right: .7rem;
-        bottom: .7rem;
-        min-height: 4.35rem;
-        padding: .6rem .75rem;
-        font-size: .68rem;
-        line-height: 1.42;
-      }
-      .canvas-caption strong { font-size: .6rem; }
-      .hero { padding-inline: 1.1rem; }
-      .hero-note { font-size: .66rem; }
-      .statml-brand-link span:last-child { display: none; }
-    }
-
-    @media (max-width: 520px) {
-      .metric-grid { grid-template-columns: 1fr 1fr; }
-      .metric:last-child { grid-column: 1 / -1; }
-      .choice-grid { grid-template-columns: 1fr; }
-      .mini-pipeline { grid-template-columns: repeat(2, 1fr); }
-      .pipe-step:nth-child(2)::after { display: none; }
-      .chapter p { font-size: .94rem; }
-      .visual-shell { height: 48svh; min-height: 320px; }
-      .live-badge { display: none; }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      html { scroll-behavior: auto; }
-      *, *::before, *::after { animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition-duration: .001ms !important; }
-    }
-  </style>
+  <meta name="description" content="A visual, interactive introduction to Naive Bayes classification using a spam-filtering example.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%231f2937'/%3E%3Cpath d='M8 24V16h4v8H8Zm6 0V10h4v14h-4Zm6 0V6h4v18h-4Z' fill='%23fca5a5'/%3E%3C/svg%3E">
+  <title>Naive Bayes, in evidence | StatML Academy</title>
+  <link rel="stylesheet" href="academic-rigor.css">
+  <link rel="stylesheet" href="naive-bayes.css">
+  <link rel="stylesheet" href="handwritten-theme.css">
+  <link rel="stylesheet" href="naive-bayes-handwritten.css">
 </head>
-<body>
-  <div class="progress-track" aria-hidden="true"><div class="progress-bar" id="progressBar"></div></div>
-  <nav class="statml-site-nav" aria-label="StatML Academy navigation">
-    <a class="statml-brand-link" href="../index.html"><span class="statml-brand-mark">S</span><span>StatML Academy</span></a>
-    <span class="statml-nav-topic">Naive Bayes</span>
-    <span class="statml-nav-meta">concept module</span>
-  </nav>
+<body class="naive-bayes-evidence">
+  <a class="skip-link" href="#lesson">Skip to lesson</a>
 
-  <header class="hero" id="top">
-    <canvas id="heroCanvas" aria-hidden="true"></canvas>
-    <div class="hero-inner">
-      <div class="topic-badge">Machine learning, made visible</div>
-      <h1>Naive<br>Bayes</h1>
-      <p class="hero-lede">A careful counting machine that starts with what is common, checks how well each clue fits, and chooses the most likely answer.</p>
-      <div class="hero-note">One animal mystery · three detectives · every calculation exposed</div>
+  <header class="topbar statml-site-nav" aria-label="Lesson controls">
+    <a class="wordmark" href="../index.html" aria-label="StatML Academy home">
+      <span class="wordmark-mark" aria-hidden="true"><i></i><i></i><i></i></span>
+      <span><strong>STATML</strong><small>ACADEMY</small></span>
+    </a>
+    <div class="topbar-meta">
+      <span class="statml-nav-topic">Naive Bayes</span>
+      <span class="eyebrow">A visual field guide</span>
+      <span class="topbar-divider" aria-hidden="true"></span>
+      <span class="progress-label"><span id="progressCurrent">01</span><span class="progress-slash">/</span><span id="progressTotal">13</span></span>
     </div>
-    <div class="scroll-cue" aria-hidden="true"><span>Scroll to investigate</span><span></span></div>
+    <span class="statml-nav-meta">concept module</span>
+    <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="stageNav">Stages <span aria-hidden="true">+</span></button>
   </header>
 
-  <nav class="stage-dots" id="stageDots" aria-label="Lesson chapters"></nav>
+  <nav class="stage-nav" id="stageNav" aria-label="Lesson stages">
+    <p class="stage-nav-kicker">Move through the evidence</p>
+    <ol>
+      <li><a href="#stage-0" data-nav-stage="0"><span>01</span>Premise</a></li>
+      <li><a href="#stage-1" data-nav-stage="1"><span>02</span>Observe</a></li>
+      <li><a href="#stage-2" data-nav-stage="2"><span>03</span>Frame</a></li>
+      <li><a href="#stage-3" data-nav-stage="3"><span>04</span>Split</a></li>
+      <li><a href="#stage-4" data-nav-stage="4"><span>05</span>Choose</a></li>
+      <li><a href="#stage-5" data-nav-stage="5"><span>06</span>Learn</a></li>
+      <li><a href="#stage-6" data-nav-stage="6"><span>07</span>Assume</a></li>
+      <li><a href="#stage-7" data-nav-stage="7"><span>08</span>Score</a></li>
+      <li><a href="#stage-8" data-nav-stage="8"><span>09</span>Continuous</a></li>
+      <li><a href="#stage-9" data-nav-stage="9"><span>10</span>Stabilise</a></li>
+      <li><a href="#stage-10" data-nav-stage="10"><span>11</span>Validate</a></li>
+      <li><a href="#stage-11" data-nav-stage="11"><span>12</span>Evaluate</a></li>
+      <li><a href="#stage-12" data-nav-stage="12"><span>13</span>Remember</a></li>
+    </ol>
+  </nav>
 
-  <main class="lesson-grid">
-    <article class="story" id="story">
-      <section class="chapter active" data-stage="1" id="stage-1">
-        <div class="chapter-inner">
-          <div class="stage-kicker">Stage 01 · The mystery</div>
-          <h2>Turn a question into classes and clues.</h2>
-          <p>Our job is precise: given an animal’s features, predict whether it is a <strong>rabbit, dog, or cat</strong>. Those possible answers are the classes.</p>
-          <p>The clues are the features: long ears, barking, and liking carrots. Features go in; one target prediction comes out.</p>
-          <div class="card">
-            <div class="card-title">Six tiny training examples</div>
-            <table>
-              <thead><tr><th>Animal</th><th>Ears</th><th>Barks</th><th>Carrots</th><th>Class</th></tr></thead>
-              <tbody>
-                <tr><td>Animal 1</td><td>Yes</td><td>No</td><td>Yes</td><td>Rabbit</td></tr>
-                <tr><td>Animal 2</td><td>Yes</td><td>No</td><td>Yes</td><td>Rabbit</td></tr>
-                <tr><td>Animal 3</td><td>No</td><td>Yes</td><td>No</td><td>Dog</td></tr>
-                <tr><td>Animal 4</td><td>No</td><td>Yes</td><td>No</td><td>Dog</td></tr>
-                <tr><td>Animal 5</td><td>No</td><td>No</td><td>No</td><td>Cat</td></tr>
-                <tr><td>Animal 6</td><td>No</td><td>No</td><td>No</td><td>Cat</td></tr>
-              </tbody>
-            </table>
-          </div>
-          <div class="insight"><strong>Target ≠ feature.</strong> “What animal?” is the answer to learn. “Does it bark?” is evidence used to get there.</div>
-        </div>
-      </section>
-
-      <section class="chapter" data-stage="2" id="stage-2">
-        <div class="chapter-inner">
-          <div class="stage-kicker">Stage 02 · Make data trustworthy</div>
-          <h2>Clean the clues before counting them.</h2>
-          <p>Real records arrive with <strong>Rabbit</strong>, <strong>rabbit</strong>, <strong>rabit</strong>, missing cells, impossible values, and accidental duplicates. A model does not infer what a human meant; it learns the mess literally.</p>
-          <p>Standardize labels, investigate duplicates, handle missing values deliberately, and correct wrong target labels. Then encode yes/no features as 1/0.</p>
-          <div class="card">
-            <div class="card-title">A small cleaning pass</div>
-            <table>
-              <thead><tr><th>Raw</th><th>Decision</th><th>Prepared</th></tr></thead>
-              <tbody>
-                <tr><td class="mono">RABIT</td><td>Correct label</td><td class="mono">Rabbit</td></tr>
-                <tr><td class="mono">longg</td><td>Standardize</td><td class="mono">long → 1</td></tr>
-                <tr><td class="mono">?</td><td>Mark explicitly</td><td class="mono">Unknown</td></tr>
-              </tbody>
-            </table>
-          </div>
-          <div class="insight"><strong>Leakage warning:</strong> split first, then learn cleaning rules from training data only. The test set must stay genuinely unseen.</div>
-        </div>
-      </section>
-
-      <section class="chapter" data-stage="3" id="stage-3">
-        <div class="chapter-inner">
-          <div class="stage-kicker">Stage 03 · Prepare the experiment</div>
-          <h2>Choose the version that matches the data.</h2>
-          <p>Naive Bayes is a family. Binary clues fit <strong>Bernoulli</strong>; counts fit <strong>Multinomial</strong>; continuous measurements fit <strong>Gaussian</strong>; category-valued clues fit <strong>Categorical</strong>.</p>
-          <p>Then use a stratified train/test split so each class keeps roughly the same share in both groups.</p>
-          <p>Features can also be mixed. In that case, give each column the likelihood that matches its own type, then multiply those feature-specific terms into the class score.</p>
-          <div class="card">
-            <div class="card-title">Inspect the family</div>
-            <div class="choice-grid" id="modelChoices">
-              <button class="choice active" data-model="Bernoulli"><strong>Bernoulli</strong><span>Yes / no clues</span></button>
-              <button class="choice" data-model="Multinomial"><strong>Multinomial</strong><span>Counts, often words</span></button>
-              <button class="choice" data-model="Gaussian"><strong>Gaussian</strong><span>Continuous numbers</span></button>
-              <button class="choice" data-model="Categorical"><strong>Categorical</strong><span>Named categories</span></button>
-            </div>
-          </div>
-          <div class="card">
-            <div class="card-title">A mixed-feature schema</div>
-            <table>
-              <thead><tr><th>Feature</th><th>Likelihood</th><th>What training learns</th></tr></thead>
-              <tbody>
-                <tr><td class="mono">long_ears</td><td>Bernoulli</td><td>yes/no probability</td></tr>
-                <tr><td class="mono">weight</td><td>Gaussian</td><td>mean + variance</td></tr>
-                <tr><td class="mono">color</td><td>Categorical</td><td>probability per category</td></tr>
-              </tbody>
-            </table>
-          </div>
-          <div class="insight"><strong>Implementation caveat:</strong> many standard estimators apply one family to every column. Mixed data may need a hybrid/custom Naive Bayes model, or careful transformations such as binning continuous values—with some information loss.</div>
-        </div>
-      </section>
-
-      <section class="chapter" data-stage="4" id="stage-4">
-        <div class="chapter-inner">
-          <div class="stage-kicker">Stage 04 · Starting beliefs</div>
-          <h2>First, count how common each answer is.</h2>
-          <p>Before seeing a single clue, the model learns each class’s <strong>prior probability</strong>. Imagine 100 training animals: 50 rabbits, 30 dogs, and 20 cats.</p>
-          <div class="formula">P(class) = examples in class ÷ all examples</div>
-          <div class="card">
-            <div class="metric-grid">
-              <div class="metric"><div class="metric-value" style="color:var(--rabbit)">0.50</div><div class="metric-label">Rabbit prior</div></div>
-              <div class="metric"><div class="metric-value" style="color:var(--dog)">0.30</div><div class="metric-label">Dog prior</div></div>
-              <div class="metric"><div class="metric-value" style="color:var(--cat)">0.20</div><div class="metric-label">Cat prior</div></div>
-            </div>
-          </div>
-          <div class="insight">Priors are the starting line—not the finish. Strong evidence can overcome a class that begins less common.</div>
-        </div>
-      </section>
-
-      <section class="chapter" data-stage="5" id="stage-5">
-        <div class="chapter-inner">
-          <div class="stage-kicker">Stage 05 · Learn the clues</div>
-          <h2>Ask how often each clue appears inside each class.</h2>
-          <p>These within-class probabilities are the <strong>likelihoods</strong>. Among known rabbits, perhaps 90% have long ears. Among dogs, perhaps only 10% do.</p>
-          <div class="formula">P(long ears | Rabbit) = 45 ÷ 50 = 0.90</div>
-          <div class="card">
-            <div class="card-title">Learned likelihoods</div>
-            <table>
-              <thead><tr><th>Clue = yes</th><th>Rabbit</th><th>Dog</th><th>Cat</th></tr></thead>
-              <tbody>
-                <tr><td>Long ears</td><td class="mono">.90</td><td class="mono">.10</td><td class="mono">.10</td></tr>
-                <tr><td>Barks</td><td class="mono">.02</td><td class="mono">.95</td><td class="mono">.01</td></tr>
-                <tr><td>Likes carrots</td><td class="mono">.80</td><td class="mono">.05</td><td class="mono">.10</td></tr>
-              </tbody>
-            </table>
-          </div>
-          <div class="insight">Long ears and carrots support Rabbit. Barking strongly supports Dog. The model’s “knowledge” is mainly this table plus the priors.</div>
-        </div>
-      </section>
-
-      <section class="chapter" data-stage="6" id="stage-6">
-        <div class="chapter-inner">
-          <div class="stage-kicker">Stage 06 · The rule</div>
-          <h2>Start, match, multiply.</h2>
-          <p>Read the visual from top to bottom. Each vertical lane is one candidate class—Rabbit, Dog, or Cat. The <strong>prior</strong> under its name is that class’s starting chance.</p>
-          <p>For this new animal, <strong>✓ means the clue is present</strong> and <strong>– means it is absent</strong>. The query card above the lanes repeats those clues. Each lane then asks: “How likely would I be to see this exact clue bundle for my class?”</p>
-          <p>Each bar is the probability of one observed clue inside the lane’s class. The bottom line multiplies the prior and all three clue matches.</p>
-          <div class="formula stage6-formula">lane score = prior × P(long ears | class) × P(no bark | class) × P(carrots | class)</div>
-          <div class="card">
-            <div class="mini-pipeline">
-              <div class="pipe-step">Read the lane’s<br>prior</div>
-              <div class="pipe-step">Read its<br>three bars</div>
-              <div class="pipe-step">Multiply that<br>lane’s values</div>
-              <div class="pipe-step">Compare<br>lane scores</div>
-            </div>
-          </div>
-          <div class="insight"><strong>What to look for:</strong> Rabbit’s lane has large values for all three clues, so its bottom product is largest. These are raw scores; they become estimated probabilities only after all three lanes are normalized together.</div>
-        </div>
-      </section>
-
-      <section class="chapter" data-stage="7" id="stage-7">
-        <div class="chapter-inner">
-          <div class="stage-kicker">Stage 07 · The “naive” leap</div>
-          <h2>Pretend the clues are independent.</h2>
-          <p>Once the class is known, the model acts as if long ears, barking, and carrot preference are separate clues. In reality, features can be connected—like height and weight, or the words “New” and “York.”</p>
-          <p>That assumption is often false. Yet it makes training extremely fast and can work surprisingly well, especially for text and smaller datasets.</p>
-          <div class="card">
-            <div class="card-title">What the model deliberately ignores</div>
-            <div class="pill-row">
-              <span class="pill">ear ↔ diet relationship</span>
-              <span class="pill">sound ↔ body relationship</span>
-              <span class="pill">clue interactions</span>
-            </div>
-          </div>
-          <div class="insight"><strong>Useful does not mean literally true.</strong> A simplifying assumption may still rank the correct class highest.</div>
-        </div>
-      </section>
-
-      <section class="chapter" data-stage="8" id="stage-8">
-        <div class="chapter-inner">
-          <div class="stage-kicker">Stage 08 · A full prediction</div>
-          <h2>Let the three detectives race.</h2>
-          <p>A new animal has <strong>long ears</strong>, <strong>does not bark</strong>, and <strong>likes carrots</strong>. Each class begins with its prior and multiplies the three matching likelihoods.</p>
-          <div class="card">
-            <div class="card-title">Unnormalized scores</div>
-            <div class="metric-grid">
-              <div class="metric"><div class="metric-value" style="color:var(--rabbit)">.3528</div><div class="metric-label">Rabbit</div></div>
-              <div class="metric"><div class="metric-value" style="color:var(--dog)">.000075</div><div class="metric-label">Dog</div></div>
-              <div class="metric"><div class="metric-value" style="color:var(--cat)">.00198</div><div class="metric-label">Cat</div></div>
-            </div>
-          </div>
-          <div class="formula">Rabbit: .50 × .90 × .98 × .80 = .3528</div>
-          <div class="insight">Normalize the three scores and Rabbit receives about <strong>99.42%</strong>. Treat that confidence cautiously: the independence assumption can make probabilities overconfident.</div>
-        </div>
-      </section>
-
-      <section class="chapter" data-stage="9" id="stage-9">
-        <div class="chapter-inner">
-          <div class="stage-kicker">Stage 09 · Evaluation</div>
-          <h2>Hide the answers and test what generalizes.</h2>
-          <p>Give the untouched test set to the fitted model, record each prediction, then compare it with the true class. A <strong>confusion matrix</strong> shows which classes are being confused.</p>
-          <div class="card">
-            <div class="card-title">Illustrative 24-animal test run</div>
-            <table>
-              <thead><tr><th>Actual ↓ / predicted →</th><th>Rabbit</th><th>Dog</th><th>Cat</th></tr></thead>
-              <tbody>
-                <tr><td>Rabbit</td><td class="mono">7</td><td class="mono">0</td><td class="mono">1</td></tr>
-                <tr><td>Dog</td><td class="mono">0</td><td class="mono">7</td><td class="mono">1</td></tr>
-                <tr><td>Cat</td><td class="mono">1</td><td class="mono">1</td><td class="mono">6</td></tr>
-              </tbody>
-            </table>
-          </div>
-          <div class="insight">This matrix is a teaching example, not a measured result from the six-row toy dataset. Real evaluation requires genuinely held-out observations.</div>
-        </div>
-      </section>
-
-      <section class="chapter" data-stage="10" id="stage-10">
-        <div class="chapter-inner">
-          <div class="stage-kicker">Stage 10 · Read the right score</div>
-          <h2>Accuracy can flatter a lazy model.</h2>
-          <p>If 99% of emails are legitimate, predicting “not spam” every time earns 99% accuracy—and catches no spam. Use metrics that match the cost of mistakes.</p>
-          <div class="card">
-            <div class="card-title">Three questions, three metrics</div>
-            <table>
-              <tbody>
-                <tr><td><strong>Accuracy</strong></td><td>How many predictions were correct?</td></tr>
-                <tr><td><strong>Precision</strong></td><td>When we flagged positive, how often were we right?</td></tr>
-                <tr><td><strong>Recall</strong></td><td>How many real positives did we find?</td></tr>
-                <tr><td><strong>F1</strong></td><td>How well do precision and recall balance?</td></tr>
-              </tbody>
-            </table>
-          </div>
-          <div class="formula">F1 = 2 × (precision × recall) ÷ (precision + recall)</div>
-          <div class="insight">Lowering a binary decision threshold usually raises recall and false positives. Raising it usually raises precision and false negatives.</div>
-        </div>
-      </section>
-
-      <section class="chapter" data-stage="11" id="stage-11">
-        <div class="chapter-inner">
-          <div class="stage-kicker">Stage 11 · Tune honestly</div>
-          <h2>Validate choices without peeking.</h2>
-          <p>One split can be lucky. In five-fold cross-validation, every fold takes one turn as the validation group. Average the results and inspect how much they vary.</p>
-          <p>Use those folds to compare model type, smoothing <strong>alpha</strong>, feature representation, and the metric that matters. Never use the final test set to choose them.</p>
-          <div class="card">
-            <div class="card-title">Example validation accuracies</div>
-            <div class="metric-grid">
-              <div class="metric"><div class="metric-value">86%</div><div class="metric-label">Fold 1</div></div>
-              <div class="metric"><div class="metric-value">88%</div><div class="metric-label">Fold 2</div></div>
-              <div class="metric"><div class="metric-value">85%</div><div class="metric-label">Fold 3</div></div>
-            </div>
-            <div class="formula">five-fold average = (86 + 88 + 85 + 87 + 89) ÷ 5 = 87%</div>
-          </div>
-          <div class="insight"><strong>Order matters:</strong> split → learn preprocessing on training folds → validate → choose → evaluate once on untouched test data.</div>
-        </div>
-      </section>
-
-      <section class="chapter" data-stage="13" id="stage-13">
-        <div class="chapter-inner">
-          <div class="stage-kicker">Stage 13 · Playground</div>
-          <h2>Change the clues. Watch the evidence move.</h2>
-          <p>Use the learned priors and likelihoods from our worked example. Every toggle changes the matching probabilities, recomputes all three scores, and normalizes them.</p>
-          <div class="card">
-            <div class="card-title">Describe a new animal</div>
-            <div class="feature-controls">
-              <div class="feature-control"><span>Long ears</span><div class="toggle-group"><button class="toggle active" aria-label="Long ears: yes" aria-pressed="true" data-feature="ears" data-value="yes">Yes</button><button class="toggle" aria-label="Long ears: no" aria-pressed="false" data-feature="ears" data-value="no">No</button></div></div>
-              <div class="feature-control"><span>Barks</span><div class="toggle-group"><button class="toggle" aria-label="Barks: yes" aria-pressed="false" data-feature="barks" data-value="yes">Yes</button><button class="toggle active" aria-label="Barks: no" aria-pressed="true" data-feature="barks" data-value="no">No</button></div></div>
-              <div class="feature-control"><span>Likes carrots</span><div class="toggle-group"><button class="toggle active" aria-label="Likes carrots: yes" aria-pressed="true" data-feature="carrots" data-value="yes">Yes</button><button class="toggle" aria-label="Likes carrots: no" aria-pressed="false" data-feature="carrots" data-value="no">No</button></div></div>
-            </div>
-          </div>
-          <div class="card" aria-live="polite">
-            <div class="card-title">Live result</div>
-            <div class="metric-grid">
-              <div class="metric"><div class="metric-value" id="playWinner">Rabbit</div><div class="metric-label">Prediction</div></div>
-              <div class="metric"><div class="metric-value" id="playConfidence">99.42%</div><div class="metric-label">Top estimate</div></div>
-              <div class="metric"><div class="metric-value" id="playRunner">Cat</div><div class="metric-label">Runner-up</div></div>
-            </div>
-          </div>
-          <div class="insight">These are model estimates from the illustrative likelihood table—not guarantees about real animals.</div>
-        </div>
-      </section>
-
-      <section class="chapter" data-stage="14" id="stage-14">
-        <div class="chapter-inner">
-          <div class="stage-kicker">Stage 14 · Worked example</div>
-          <h2>One measurement can support two classes.</h2>
-          <p>A new insect has antennae <strong>3 units long</strong>. Both Grasshoppers and Katydids can have that length, so the measurement does not identify the class by itself.</p>
-          <p>Instead, read the height of each class’s antenna-length distribution at 3. In the lecture example, the relative heights are <strong>10 for Grasshopper</strong> and <strong>2 for Katydid</strong>. The taller curve says that this measurement is more typical of a Grasshopper.</p>
-          <div class="formula stage6-formula">Grasshopper: 10 ÷ (10 + 2) = 0.833<br>Katydid: 2 ÷ (10 + 2) = 0.167</div>
-          <div class="card">
-            <div class="card-title">Read the visual in four moves</div>
-            <div class="mini-pipeline">
-              <div class="pipe-step">Place the new value</div>
-              <div class="pipe-step">Read both heights</div>
-              <div class="pipe-step">Normalize 10 and 2</div>
-              <div class="pipe-step">Choose Grasshopper</div>
-            </div>
-          </div>
-          <div class="insight"><strong>Why the curves overlap:</strong> real classes share possible values. Naive Bayes compares how plausible the observed value is under each class; it does not require a perfect boundary.</div>
-        </div>
-      </section>
-
-      <section class="chapter" data-stage="15" id="stage-15">
-        <div class="chapter-inner">
-          <div class="stage-kicker">Stage 15 · Mixed evidence</div>
-          <h2>Categories and numbers can vote together.</h2>
-          <p>Now predict whether golf will be played on a new day: <strong>Sunny</strong>, temperature <strong>66</strong>, humidity <strong>90</strong>, and <strong>Windy</strong>.</p>
-          <p>Outlook and Windy use counted category probabilities. Temperature and humidity are continuous, so each class uses a Gaussian curve to turn the observed number into a density. Every feature contributes one class-specific term.</p>
-          <div class="card">
-            <div class="card-title">Which implementation handles each column?</div>
-            <table>
-              <thead><tr><th>Feature</th><th>Observed</th><th>Likelihood</th></tr></thead>
-              <tbody>
-                <tr><td>Outlook</td><td>Sunny</td><td>Categorical</td></tr>
-                <tr><td>Temperature</td><td class="mono">66</td><td>Gaussian</td></tr>
-                <tr><td>Humidity</td><td class="mono">90</td><td>Gaussian</td></tr>
-                <tr><td>Windy</td><td>True</td><td>Categorical</td></tr>
-              </tbody>
-            </table>
-          </div>
-          <div class="formula stage6-formula">Yes: 2/9 × .0340 × .0221 × 3/9 × 9/14 = .000036<br>No: 3/5 × .0221 × .0381 × 3/5 × 5/14 = .000108</div>
-          <div class="insight"><strong>Prediction: No.</strong> The raw “No” score is three times the “Yes” score. Normalizing the pair gives 75% versus 25% for this fitted example.</div>
-        </div>
-      </section>
-
-    </article>
-
-    <aside class="visual-shell" aria-label="Persistent Naive Bayes evidence visualization">
-      <div class="visual-card">
-        <canvas id="mainCanvas" role="img" aria-label="An evolving evidence board comparing Rabbit, Dog, and Cat scores across the lesson."></canvas>
-        <div class="canvas-top">
-          <div><div class="canvas-eyebrow" id="canvasEyebrow">Evidence desk · 01</div><div class="canvas-title" id="canvasTitle">The animal mystery</div></div>
-          <div class="live-badge" id="liveBadge">3 classes · 3 clues</div>
-        </div>
-        <div class="canvas-caption" id="canvasCaption"><strong>Why this view matters</strong>Each row connects observed clues to a known answer. Naive Bayes learns by counting those connections, then reuses the resulting patterns for a new animal.</div>
+  <main id="top">
+    <section class="hero stage-section" id="stage-0" data-stage="0" aria-labelledby="hero-title">
+      <div class="hero-copy">
+        <p class="kicker"><span class="kicker-line"></span>Machine learning / classification</p>
+        <h1 id="hero-title">Naive Bayes,<br><em>in evidence.</em></h1>
+        <p class="hero-deck">A small, fast way to turn separate clues into a class prediction—by remembering what was common, then updating that belief when new evidence arrives.</p>
+        <div class="hero-note"><span class="note-dot" aria-hidden="true"></span><span>Beginner-friendly · one spam filter, one continuous-data detour</span></div>
+        <a class="scroll-cue" href="#stage-1"><span class="scroll-cue-label">Scroll to inspect the case</span><span class="scroll-cue-arrow" aria-hidden="true">↓</span></a>
       </div>
-    </aside>
+      <div class="hero-visual" aria-label="An email is examined by two class lenses: spam and not spam.">
+        <div class="hero-sky" aria-hidden="true"></div>
+        <div class="orbit orbit-one" aria-hidden="true"></div>
+        <div class="orbit orbit-two" aria-hidden="true"></div>
+        <div class="signal-spark spark-one" aria-hidden="true"></div>
+        <div class="signal-spark spark-two" aria-hidden="true"></div>
+        <div class="email-hero-card">
+          <div class="email-hero-top"><span class="micro-label">INCOMING / 08:14</span><span class="email-ping" aria-hidden="true"></span></div>
+          <div class="email-subject">You are a winner.<br><span>Claim your free prize.</span></div>
+          <div class="email-words"><span>free</span><span>winner</span><span>prize</span></div>
+          <div class="email-hero-foot"><span>new observation</span><span class="mono">x = [1, 1, 1]</span></div>
+        </div>
+        <div class="class-lens lens-spam"><span class="lens-orbit" aria-hidden="true"></span><span class="lens-title">SPAM</span><span class="lens-caption">evidence fits</span></div>
+        <div class="class-lens lens-safe"><span class="lens-orbit" aria-hidden="true"></span><span class="lens-title">NOT SPAM</span><span class="lens-caption">evidence fits less</span></div>
+        <svg class="hero-threads" viewBox="0 0 720 680" fill="none" aria-hidden="true">
+          <path d="M365 280 C282 242 194 222 116 196" stroke="rgba(220,38,38,.5)" stroke-width="1.5" stroke-dasharray="3 8"/>
+          <path d="M365 310 C445 278 540 258 622 232" stroke="rgba(37,99,235,.44)" stroke-width="1.5" stroke-dasharray="3 8"/>
+          <path d="M365 335 C292 390 205 433 126 485" stroke="rgba(99,102,241,.36)" stroke-width="1.5" stroke-dasharray="3 8"/>
+          <circle cx="365" cy="280" r="3" fill="#dc2626"/><circle cx="365" cy="310" r="3" fill="#2563eb"/><circle cx="365" cy="335" r="3" fill="#6366f1"/>
+        </svg>
+        <div class="hero-caption"><span class="caption-rule"></span><span>One observation.<br>Two competing explanations.</span></div>
+      </div>
+    </section>
+
+    <section class="lesson-shell" id="lesson" aria-label="Naive Bayes lesson">
+      <div class="narrative">
+        <section class="chapter stage-section is-active" id="stage-1" data-stage="1" aria-labelledby="stage-1-title">
+          <p class="stage-kicker"><span>02</span>Observe the case</p>
+          <h2 id="stage-1-title">Start with a pile of labeled emails.</h2>
+          <p>Naive Bayes learns from examples where the answer is already known. In this miniature dataset, each row is an email, three clues are recorded, and the final column says whether the message was spam.</p>
+          <p>The model does not understand the sentence the way a person does. It sees a structured record: <strong>free?</strong> <strong>winner?</strong> <strong>meeting?</strong> and a class label.</p>
+          <div class="insight-note"><span class="insight-index">A</span><span><strong>Start with the past.</strong> The model’s evidence comes from what happened in earlier examples.</span></div>
+        </section>
+
+        <section class="chapter stage-section" id="stage-2" data-stage="2" aria-labelledby="stage-2-title">
+          <p class="stage-kicker"><span>03</span>Frame the question</p>
+          <h2 id="stage-2-title">Separate the target from the clues.</h2>
+          <p>The thing we want to predict is the <strong>target variable</strong>, <span class="formula-inline">Y</span>. Everything else becomes a <strong>feature</strong>, <span class="formula-inline">X</span>—a measurable clue the model can use.</p>
+          <p>For text, the original sentence is transformed into a vector of usable values. A word being present can become <span class="mono">1</span>; absent can become <span class="mono">0</span>.</p>
+          <div class="formula-strip"><span class="mono">X₁ = contains “free”</span><span class="formula-arrow">→</span><span class="mono">[1, 0, 1, 0]</span></div>
+        </section>
+
+        <section class="chapter stage-section" id="stage-3" data-stage="3" aria-labelledby="stage-3-title">
+          <p class="stage-kicker"><span>04</span>Protect the test</p>
+          <h2 id="stage-3-title">Keep the final exam hidden.</h2>
+          <p>Before learning anything, divide the dataset. The training set teaches the model. The test set stays untouched until the end, so the final score tells us how the model handles examples it has not memorised.</p>
+          <p>A common starting point is around <strong>80% training</strong> and <strong>20% test</strong>. Peeking at the test set early gives an overly optimistic picture.</p>
+          <div class="mini-legend"><span><i class="legend-swatch train"></i>train = learn</span><span><i class="legend-swatch test"></i>test = untouched</span></div>
+        </section>
+
+        <section class="chapter stage-section" id="stage-4" data-stage="4" aria-labelledby="stage-4-title">
+          <p class="stage-kicker"><span>05</span>Match the evidence</p>
+          <h2 id="stage-4-title">Choose the version that fits the feature.</h2>
+          <p>“Naive Bayes” is a family of models. The prediction logic stays recognisable, but the likelihood calculation changes with the kind of feature you have.</p>
+          <p class="interactive-prompt">Tap a model type to see what it expects.</p>
+          <div class="type-summary" id="typeSummary" aria-live="polite"><span class="summary-label">Selected</span><strong>Bernoulli</strong><span>yes / no features</span></div>
+        </section>
+
+        <section class="chapter stage-section" id="stage-5" data-stage="5" aria-labelledby="stage-5-title">
+          <p class="stage-kicker"><span>06</span>Learn the starting belief</p>
+          <h2 id="stage-5-title">Count what each class tends to contain.</h2>
+          <p>Training is mostly about learning probabilities from the training data. First comes the <strong>prior</strong>: how common is each class before we inspect the new email?</p>
+          <p>Then come the <strong>likelihoods</strong>: inside each class, how often did each clue appear? In a count-based model, this is a probability table made from the data.</p>
+          <div class="formula-strip formula-stack"><span class="mono">P(Spam) = 40 / 100 = 0.40</span><span class="mono">P(Free | Spam) = 30 / 40 = 0.75</span></div>
+        </section>
+
+        <section class="chapter stage-section" id="stage-6" data-stage="6" aria-labelledby="stage-6-title">
+          <p class="stage-kicker"><span>07</span>Make the naive move</p>
+          <h2 id="stage-6-title">Pretend the clues can speak separately.</h2>
+          <p>Real words can be related. “Free” and “winner” may travel together. Naive Bayes deliberately ignores that relationship <em>once the class is known</em>.</p>
+          <p>This conditional-independence assumption is the shortcut: each feature contributes a separate piece of evidence, so the pieces can be multiplied together.</p>
+          <button class="text-button" type="button" id="assumptionToggle" aria-pressed="false">Show what the shortcut ignores <span aria-hidden="true">↗</span></button>
+        </section>
+
+        <section class="chapter stage-section" id="stage-7" data-stage="7" aria-labelledby="stage-7-title">
+          <p class="stage-kicker"><span>08</span>Score a new observation</p>
+          <h2 id="stage-7-title">Prior × evidence = a class score.</h2>
+          <p>Our new email contains “free” and “winner”. The model asks the same question twice: how well would this evidence fit <strong>Spam</strong>? How well would it fit <strong>Not Spam</strong>?</p>
+          <p>Use the switches to add or remove a clue. The bars and the normalised posterior update immediately.</p>
+          <div class="score-readout" aria-live="polite"><span>Current prediction</span><strong id="predictionLabel">Spam</strong><span id="predictionConfidence">98.4% posterior</span></div>
+          <button class="reset-button" type="button" id="resetEvidence">Reset evidence</button>
+        </section>
+
+        <section class="chapter stage-section" id="stage-8" data-stage="8" aria-labelledby="stage-8-title">
+          <p class="stage-kicker"><span>09</span>Change the kind of feature</p>
+          <h2 id="stage-8-title">Numbers need a different likelihood.</h2>
+          <p>For a height, age, or temperature, counting exact matches is not useful. Nobody may be exactly <span class="mono">169 cm</span>, but that height can still be typical of a class.</p>
+          <p><strong>Gaussian Naive Bayes</strong> learns a mean and a spread for each class, then asks how normal the new number looks under each bell-shaped distribution.</p>
+          <div class="continuous-note"><span class="mono">Class A ≈ 168 cm</span><span class="mono">Class B ≈ 181 cm</span></div>
+        </section>
+
+        <section class="chapter stage-section" id="stage-9" data-stage="9" aria-labelledby="stage-9-title">
+          <p class="stage-kicker"><span>10</span>Keep the arithmetic stable</p>
+          <h2 id="stage-9-title">Two small engineering fixes.</h2>
+          <p>If a feature was never seen in a class, its count can produce a likelihood of zero. One zero would erase the whole product. <strong>Laplace smoothing</strong> adds a small artificial count so “unseen” does not mean “impossible”.</p>
+          <p>With hundreds of features, multiplying tiny numbers can underflow. Implementations use <strong>log probabilities</strong>: multiplication becomes addition, while the class ranking stays the same.</p>
+          <div class="stability-switch" role="group" aria-label="Arithmetic view"><button type="button" class="is-selected" data-stability="smooth" aria-pressed="true">Smoothing</button><button type="button" data-stability="logs" aria-pressed="false">Log space</button></div>
+        </section>
+
+        <section class="chapter stage-section" id="stage-10" data-stage="10" aria-labelledby="stage-10-title">
+          <p class="stage-kicker"><span>11</span>Develop honestly</p>
+          <h2 id="stage-10-title">Use folds while you build.</h2>
+          <p>Do not keep checking the final test set while tuning the model. Instead, rotate through the training set with <strong>5-fold cross-validation</strong>: four folds train, one fold validates, then the validating fold moves.</p>
+          <p>After choosing the model, train once more on <strong>all training data</strong>. Only then do you test on the untouched 20%.</p>
+          <div class="fold-caption" id="foldCaption" aria-live="polite">Round 1 · Fold 1 validates</div>
+          <div class="fold-buttons" role="group" aria-label="Choose validation round"><button type="button" class="is-selected" data-fold="1" aria-pressed="true">1</button><button type="button" data-fold="2" aria-pressed="false">2</button><button type="button" data-fold="3" aria-pressed="false">3</button><button type="button" data-fold="4" aria-pressed="false">4</button><button type="button" data-fold="5" aria-pressed="false">5</button></div>
+        </section>
+
+        <section class="chapter stage-section" id="stage-11" data-stage="11" aria-labelledby="stage-11-title">
+          <p class="stage-kicker"><span>12</span>Read the result</p>
+          <h2 id="stage-11-title">A prediction is a decision with consequences.</h2>
+          <p>Accuracy is not the only question. Precision asks whether predicted spam really was spam. Recall asks how much of the real spam the model caught. F1 balances the two.</p>
+          <p>In a spam filter, a false positive can bury an important email. The metric that matters most depends on the cost of being wrong.</p>
+          <div class="metric-switch" role="group" aria-label="Choose the error to prioritise"><button type="button" class="is-selected" data-priority="precision" aria-pressed="true">Protect inbox</button><button type="button" data-priority="recall" aria-pressed="false">Catch more spam</button></div>
+          <div class="metric-caption" id="metricCaption" aria-live="polite">Precision focus · keep false positives visible.</div>
+        </section>
+
+        <section class="chapter stage-section final-chapter" id="stage-12" data-stage="12" aria-labelledby="stage-12-title">
+          <p class="stage-kicker"><span>13</span>Keep the mental model</p>
+          <h2 id="stage-12-title">Prior → likelihoods → posterior.</h2>
+          <p>Naive Bayes is a detective with a disciplined shortcut: start with what was common, score how each clue fits each class, combine the evidence, then choose the most probable explanation.</p>
+          <p>Remember four words: <strong>prior</strong>, <strong>likelihood</strong>, <strong>naive assumption</strong>, and <strong>posterior</strong>.</p>
+          <div class="closing-line"><span class="closing-rule"></span><span>What I believed before + what the evidence says = what I believe now.</span></div>
+          <a class="back-to-top" href="#top">Return to the opening scene ↑</a>
+        </section>
+      </div>
+
+      <aside class="visual-column" aria-label="Interactive visual stage">
+        <div class="visual-stage" id="visualStage">
+          <div class="stage-rail"><span class="rail-kicker">LIVE STAGE</span><span class="rail-name" id="railName">Observe</span><span class="rail-line"><i id="railFill"></i></span></div>
+
+          <div class="scene scene-observe is-visible" data-scene="1" aria-label="A labeled training dataset of six emails.">
+            <div class="scene-heading"><span class="scene-number">02</span><span>the evidence ledger</span></div>
+            <div class="ledger-wrap">
+              <div class="ledger-title"><span>miniature inbox / training examples</span><span class="mono">n = 6</span></div>
+              <div class="ledger-table" role="table" aria-label="Six labeled email examples">
+                <div class="ledger-row ledger-head" role="row"><span role="columnheader">email</span><span role="columnheader">free</span><span role="columnheader">winner</span><span role="columnheader">meeting</span><span role="columnheader">class</span></div>
+                <div class="ledger-row" role="row"><span role="cell">01</span><span role="cell" class="yes">yes</span><span role="cell" class="yes">yes</span><span role="cell">—</span><span role="cell" class="class-spam">spam</span></div>
+                <div class="ledger-row" role="row"><span role="cell">02</span><span role="cell" class="yes">yes</span><span role="cell">—</span><span role="cell">—</span><span role="cell" class="class-spam">spam</span></div>
+                <div class="ledger-row" role="row"><span role="cell">03</span><span role="cell">—</span><span role="cell" class="yes">yes</span><span role="cell">—</span><span role="cell" class="class-spam">spam</span></div>
+                <div class="ledger-row" role="row"><span role="cell">04</span><span role="cell">—</span><span role="cell">—</span><span role="cell" class="yes">yes</span><span role="cell" class="class-safe">not spam</span></div>
+                <div class="ledger-row" role="row"><span role="cell">05</span><span role="cell">—</span><span role="cell">—</span><span role="cell" class="yes">yes</span><span role="cell" class="class-safe">not spam</span></div>
+                <div class="ledger-row" role="row"><span role="cell">06</span><span role="cell">—</span><span role="cell">—</span><span role="cell">—</span><span role="cell" class="class-safe">not spam</span></div>
+              </div>
+              <div class="ledger-foot"><span class="count-stamp stamp-spam"><b>3</b><small>spam</small></span><span class="count-stamp stamp-safe"><b>3</b><small>not spam</small></span><span class="ledger-arrow" aria-hidden="true">→</span><span class="ledger-foot-copy">the model begins<br>with examples, not rules</span></div>
+            </div>
+            <div class="scene-annotation annotation-observe"><span class="annotation-pin"></span><span>labels are the<br>answers we already know</span></div>
+          </div>
+
+          <div class="scene scene-frame" data-scene="2" aria-label="An email becomes a feature vector while the target stays separate.">
+            <div class="scene-heading"><span class="scene-number">03</span><span>from language to features</span></div>
+            <div class="frame-scene">
+              <div class="email-note-card">
+                <div class="note-card-top"><span class="micro-label">subject / new message</span><span class="note-pin" aria-hidden="true"></span></div>
+                <div class="note-card-body">Congratulations!<br><strong>You are a winner.</strong><br>Claim your <strong>free</strong> prize.</div>
+                <div class="note-card-tags"><span>raw sentence</span><span class="mono">y = ?</span></div>
+              </div>
+              <div class="feature-rack">
+                <div class="rack-label">feature vector <span class="mono">x</span></div>
+                <div class="feature-row"><span class="feature-key">free?</span><span class="feature-bit bit-on">1</span><span class="feature-meter"><i style="width:86%"></i></span></div>
+                <div class="feature-row"><span class="feature-key">winner?</span><span class="feature-bit bit-on">1</span><span class="feature-meter"><i style="width:72%"></i></span></div>
+                <div class="feature-row"><span class="feature-key">meeting?</span><span class="feature-bit bit-off">0</span><span class="feature-meter"><i style="width:20%"></i></span></div>
+                <div class="feature-row"><span class="feature-key">prize?</span><span class="feature-bit bit-on">1</span><span class="feature-meter"><i style="width:64%"></i></span></div>
+              </div>
+              <svg class="frame-connector" viewBox="0 0 620 330" fill="none" aria-hidden="true"><path d="M250 160 C322 108 331 90 384 76" stroke="#6366f1" stroke-width="1.5" stroke-dasharray="3 7"/><path d="M250 190 C320 182 333 175 384 170" stroke="#6366f1" stroke-width="1.5" stroke-dasharray="3 7"/><path d="M250 220 C318 254 334 268 384 262" stroke="#6366f1" stroke-width="1.5" stroke-dasharray="3 7"/><circle cx="250" cy="160" r="3" fill="#dc2626"/><circle cx="250" cy="190" r="3" fill="#dc2626"/><circle cx="250" cy="220" r="3" fill="#dc2626"/></svg>
+              <div class="target-lock"><span class="lock-shape" aria-hidden="true"></span><span><small>target</small><strong>Spam / not spam</strong></span></div>
+            </div>
+            <div class="scene-annotation annotation-frame"><span class="annotation-pin"></span><span>the sentence is transformed;<br>the target stays separate</span></div>
+          </div>
+
+          <div class="scene scene-split" data-scene="3" aria-label="The dataset is split into 80 percent training and 20 percent test.">
+            <div class="scene-heading"><span class="scene-number">04</span><span>the held-out exam</span></div>
+            <div class="split-scene">
+              <div class="paper-stack stack-all"><div class="paper-label">entire dataset <span class="mono">100%</span></div><div class="paper-lines"></div></div>
+              <div class="split-fork" aria-hidden="true"><span></span><span></span></div>
+              <div class="split-branch branch-train"><div class="branch-percent">80<span>%</span></div><div class="branch-copy"><strong>training data</strong><span>teach the model</span></div><div class="branch-strips"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div>
+              <div class="split-branch branch-test"><div class="branch-percent">20<span>%</span></div><div class="branch-copy"><strong>test data</strong><span>leave untouched</span></div><div class="branch-strips"><i></i><i></i></div></div>
+              <div class="split-seal"><span>do not peek</span><b>final exam</b></div>
+            </div>
+            <div class="scene-annotation annotation-split"><span class="annotation-pin"></span><span>a clean test means<br>an honest ending</span></div>
+          </div>
+
+          <div class="scene scene-models" data-scene="4" aria-label="Four Naive Bayes variants: Bernoulli, Multinomial, Categorical, and Gaussian.">
+            <div class="scene-heading"><span class="scene-number">05</span><span>choose your lens</span></div>
+            <div class="model-board">
+              <div class="model-intro"><span class="mono">same question</span><strong>different kind<br>of evidence</strong></div>
+              <div class="model-selector" role="group" aria-label="Naive Bayes model types">
+                <button class="model-choice is-selected" type="button" data-model="bernoulli" aria-pressed="true"><span class="model-glyph glyph-binary">01</span><span><b>Bernoulli</b><small>yes / no</small></span></button>
+                <button class="model-choice" type="button" data-model="multinomial" aria-pressed="false"><span class="model-glyph glyph-count">123</span><span><b>Multinomial</b><small>word counts</small></span></button>
+                <button class="model-choice" type="button" data-model="categorical" aria-pressed="false"><span class="model-glyph glyph-category">A·B</span><span><b>Categorical</b><small>named groups</small></span></button>
+                <button class="model-choice" type="button" data-model="gaussian" aria-pressed="false"><span class="model-glyph glyph-curve">∿</span><span><b>Gaussian</b><small>measurements</small></span></button>
+              </div>
+              <div class="model-specimen" id="modelSpecimen"><div class="specimen-label">the email case</div><div class="specimen-main" id="specimenMain">free? → yes</div><div class="specimen-foot" id="specimenFoot">a binary feature</div><div class="specimen-spark" id="specimenSpark"></div></div>
+            </div>
+            <div class="scene-annotation annotation-models"><span class="annotation-pin"></span><span id="modelAnnotation" aria-live="polite">Bernoulli counts presence or absence.</span></div>
+          </div>
+
+          <div class="scene scene-learn" data-scene="5" aria-label="Class priors and likelihoods become probability bars.">
+            <div class="scene-heading"><span class="scene-number">06</span><span>build a probability table</span></div>
+            <div class="learn-scene">
+              <div class="prior-column"><div class="vertical-label">PRIOR / BEFORE EVIDENCE</div><div class="jar-row"><div class="jar jar-spam"><span class="jar-fill" style="height:40%"></span><b>40%</b></div><div><strong>Spam</strong><small>40 of 100</small></div></div><div class="jar-row"><div class="jar jar-safe"><span class="jar-fill" style="height:60%"></span><b>60%</b></div><div><strong>Not Spam</strong><small>60 of 100</small></div></div></div>
+              <div class="learn-divider" aria-hidden="true"><span></span><span></span><span></span></div>
+              <div class="likelihood-column"><div class="vertical-label">LIKELIHOOD / INSIDE EACH CLASS</div><div class="likelihood-row"><span>free</span><i><b style="width:75%"></b></i><em>0.75</em><i class="safe-bar"><b style="width:10%"></b></i><em>0.10</em></div><div class="likelihood-row"><span>winner</span><i><b style="width:60%"></b></i><em>0.60</em><i class="safe-bar"><b style="width:5%"></b></i><em>0.05</em></div><div class="likelihood-row"><span>meeting</span><i><b style="width:5%"></b></i><em>0.05</em><i class="safe-bar"><b style="width:50%"></b></i><em>0.50</em></div><div class="likelihood-legend"><span><i class="dot dot-spam"></i>spam</span><span><i class="dot dot-safe"></i>not spam</span></div></div>
+            </div>
+            <div class="learn-equation"><span class="mono">P(Class)</span><b>×</b><span class="mono">P(feature | Class)</span><b>→</b><strong>score</strong></div>
+            <div class="scene-annotation annotation-learn"><span class="annotation-pin"></span><span>count first, then turn<br>the counts into evidence</span></div>
+          </div>
+
+          <div class="scene scene-naive" data-scene="6" aria-label="Three feature clues feed a class through separate paths, illustrating conditional independence.">
+            <div class="scene-heading"><span class="scene-number">07</span><span>the shortcut inside the name</span></div>
+            <div class="naive-scene">
+              <div class="naive-copy"><span class="mono">given the class</span><strong id="naiveModeLabel">treat each clue<br>as separate evidence</strong><div class="naive-chip-row"><span>free</span><span>winner</span><span>prize</span></div></div>
+              <svg class="naive-map" viewBox="0 0 550 330" fill="none" role="img" aria-label="Feature paths converge on the Spam class">
+                <defs><linearGradient id="naiveGradient" x1="0" x2="1"><stop stop-color="#dc2626"/><stop offset="1" stop-color="#6366f1"/></linearGradient></defs>
+                <path class="naive-path path-free" d="M80 80 C205 80 248 135 384 160" stroke="url(#naiveGradient)" stroke-width="2" stroke-dasharray="5 9"/>
+                <path class="naive-path path-winner" d="M80 164 C200 164 262 164 384 164" stroke="url(#naiveGradient)" stroke-width="2" stroke-dasharray="5 9"/>
+                <path class="naive-path path-prize" d="M80 248 C205 248 248 195 384 170" stroke="url(#naiveGradient)" stroke-width="2" stroke-dasharray="5 9"/>
+                <circle class="naive-node node-free" cx="80" cy="80" r="23"/><circle class="naive-node node-winner" cx="80" cy="164" r="23"/><circle class="naive-node node-prize" cx="80" cy="248" r="23"/>
+                <circle class="class-target" cx="420" cy="165" r="48"/><circle class="class-target-inner" cx="420" cy="165" r="35"/>
+                <text x="80" y="84" text-anchor="middle" class="svg-label">free</text><text x="80" y="168" text-anchor="middle" class="svg-label">winner</text><text x="80" y="252" text-anchor="middle" class="svg-label">prize</text><text x="420" y="161" text-anchor="middle" class="svg-label svg-label-light">SPAM</text><text x="420" y="179" text-anchor="middle" class="svg-small svg-small-light">class</text>
+                <path class="correlation-path" d="M102 80 C118 123 118 206 102 248" stroke="#d97706" stroke-width="2" stroke-dasharray="3 7" opacity="0"/><path class="correlation-path" d="M103 164 L126 164" stroke="#d97706" stroke-width="2" stroke-dasharray="3 7" opacity="0"/>
+              </svg>
+            </div>
+            <div class="naive-foot"><span class="mono">P(free, winner, prize | Spam)</span><strong>=</strong><span class="mono">P(free | Spam) × P(winner | Spam) × P(prize | Spam)</span></div>
+            <div class="scene-annotation annotation-naive"><span class="annotation-pin"></span><span id="naiveAnnotation">not “features are unrelated” — just a useful approximation</span></div>
+          </div>
+
+          <div class="scene scene-score" data-scene="7" aria-label="An interactive Naive Bayes score calculator for the new email.">
+            <div class="scene-heading"><span class="scene-number">08</span><span>the verdict is a comparison</span></div>
+            <div class="score-scene">
+              <div class="score-email"><div class="micro-label">new observation</div><strong>“You are a winner.<br>Claim your free prize.”</strong><div class="score-feature-list"><label class="evidence-toggle"><input type="checkbox" data-score-feature="free" checked><span class="toggle-box" aria-hidden="true"></span><span>free</span><em>0.75 / 0.10</em></label><label class="evidence-toggle"><input type="checkbox" data-score-feature="winner" checked><span class="toggle-box" aria-hidden="true"></span><span>winner</span><em>0.60 / 0.05</em></label><label class="evidence-toggle optional"><input type="checkbox" data-score-feature="meeting"><span class="toggle-box" aria-hidden="true"></span><span>meeting</span><em>0.05 / 0.50</em></label></div></div>
+              <div class="score-compare"><div class="score-line"><div class="score-class"><span class="score-dot spam"></span><b>Spam</b><em id="spamScoreText">0.180</em></div><div class="score-track"><i id="spamScoreBar" style="width:98.4%"></i></div></div><div class="score-line"><div class="score-class"><span class="score-dot safe"></span><b>Not Spam</b><em id="safeScoreText">0.003</em></div><div class="score-track safe-track"><i id="safeScoreBar" style="width:1.6%"></i></div></div><div class="score-total"><span>normalised posterior</span><strong id="posteriorFormula">0.180 ÷ 0.183 = 0.984</strong></div></div>
+              <div class="winner-stamp"><span>higher score</span><strong id="winnerStamp">SPAM</strong><small id="winnerStampNote">98.4% likely</small></div>
+            </div>
+            <div class="scene-annotation annotation-score"><span class="annotation-pin"></span><span>the larger score wins;<br>the sum becomes 100%</span></div>
+          </div>
+
+          <div class="scene scene-gaussian" data-scene="8" aria-label="Interactive Gaussian Naive Bayes illustration with bell curves for two classes and a movable height observation.">
+            <div class="scene-heading"><span class="scene-number">09</span><span>when the clue is continuous</span></div>
+            <div class="gaussian-scene">
+              <div class="curve-label curve-a"><span class="curve-dot"></span><strong>Class A</strong><small>mean ≈ 168 cm</small></div>
+              <div class="curve-label curve-b"><span class="curve-dot"></span><strong>Class B</strong><small>mean ≈ 181 cm</small></div>
+              <svg class="bell-chart" viewBox="0 0 630 320" fill="none" role="img" aria-label="Two bell-shaped distributions with means around 168 and 181 centimetres">
+                <defs><linearGradient id="curveAFill" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#dc2626" stop-opacity=".2"/><stop offset="1" stop-color="#dc2626" stop-opacity="0"/></linearGradient><linearGradient id="curveBFill" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#2563eb" stop-opacity=".2"/><stop offset="1" stop-color="#2563eb" stop-opacity="0"/></linearGradient></defs>
+                <path d="M46 260 C105 258 116 245 137 198 C158 150 181 125 213 123 C246 121 271 150 287 198 C302 242 319 258 363 260 Z" fill="url(#curveAFill)"/>
+                <path d="M46 260 C105 258 116 245 137 198 C158 150 181 125 213 123 C246 121 271 150 287 198 C302 242 319 258 363 260" stroke="#dc2626" stroke-width="2"/>
+                <path d="M282 260 C337 258 347 246 369 198 C390 150 413 125 445 123 C478 121 503 150 519 198 C534 242 549 258 599 260 Z" fill="url(#curveBFill)"/>
+                <path d="M282 260 C337 258 347 246 369 198 C390 150 413 125 445 123 C478 121 503 150 519 198 C534 242 549 258 599 260" stroke="#2563eb" stroke-width="2"/>
+                <line x1="46" y1="260" x2="599" y2="260" stroke="#a8a29e" stroke-width="1"/><line x1="213" y1="118" x2="213" y2="260" stroke="#dc2626" stroke-opacity=".5" stroke-dasharray="3 6"/><line x1="445" y1="118" x2="445" y2="260" stroke="#2563eb" stroke-opacity=".5" stroke-dasharray="3 6"/>
+                <g class="axis-labels"><text x="105" y="285">160</text><text x="205" y="285">168</text><text x="296" y="285">176</text><text x="385" y="285">181</text><text x="478" y="285">187</text></g>
+                <line id="heightGuide" x1="223" y1="72" x2="223" y2="260" stroke="#1f2937" stroke-width="1.5" stroke-dasharray="4 5"/><circle id="heightPoint" cx="223" cy="135" r="6" fill="#1f2937" stroke="#f7f7f4" stroke-width="3"/>
+              </svg>
+              <div class="height-readout"><span class="mono">new height</span><strong><span id="heightValue">169</span> cm</strong><span id="heightInterpretation" aria-live="polite">closer to Class A</span></div>
+              <label class="range-wrap" for="heightSlider"><span>160</span><input id="heightSlider" type="range" min="160" max="187" value="169" step="1" aria-label="New person's height in centimetres"><span>187</span></label>
+              <p class="gaussian-disclaimer">Illustrative equal-spread curves. A real model learns the mean and standard deviation from its training data.</p>
+            </div>
+            <div class="scene-annotation annotation-gaussian"><span class="annotation-pin"></span><span>not “exactly seen before” —<br>“typical for this class”</span></div>
+          </div>
+
+          <div class="scene scene-stability" data-scene="9" aria-label="Laplace smoothing prevents a zero feature from destroying the score, and log probabilities make tiny products stable.">
+            <div class="scene-heading"><span class="scene-number">10</span><span>two small repairs</span></div>
+            <div class="stability-scene">
+              <div class="stability-visual stability-smooth is-active" data-stability-panel="smooth"><div class="zero-card"><span class="mono">bitcoin</span><strong>0 occurrences</strong><small>in spam examples</small></div><div class="zero-arrow">×</div><div class="zero-result danger"><b>0</b><span>entire score erased</span></div><div class="smoothing-band"><span>Laplace adds a tiny count</span><strong>0 → 0.02</strong><span>unseen ≠ impossible</span></div></div>
+              <div class="stability-visual stability-logs" data-stability-panel="logs"><div class="log-chain"><span>0.01</span><b>×</b><span>0.03</span><b>×</b><span>0.04</span><b>×</b><span>…</span></div><div class="log-arrow">same ranking, safer arithmetic ↘</div><div class="log-result"><span class="mono">log(0.01) + log(0.03) + log(0.04) + …</span><strong>−294.1</strong></div><div class="smoothing-band log-band"><span>multiplication</span><strong>→ addition</strong><span>tiny numbers stay readable</span></div></div>
+              <div class="stability-caption" id="stabilityCaption" aria-live="polite">Smoothing keeps a single unseen clue from becoming a veto.</div>
+            </div>
+            <div class="scene-annotation annotation-stability"><span class="annotation-pin"></span><span>libraries handle these<br>numerical details for you</span></div>
+          </div>
+
+          <div class="scene scene-validate" data-scene="10" aria-label="Five fold cross-validation: one fold validates while four train, rotating through the training set.">
+            <div class="scene-heading"><span class="scene-number">11</span><span>practice on the training set</span></div>
+            <div class="validate-scene"><div class="validate-copy"><span class="mono">5-fold cross-validation</span><strong>rotate the<br>checking point</strong><p>Four folds train.<br>One fold validates.</p></div><div class="fold-ribbon" role="img" aria-label="Five validation folds"><div class="fold-block is-validation" data-fold-block="1"><span>01</span><small>validate</small></div><div class="fold-block" data-fold-block="2"><span>02</span><small>train</small></div><div class="fold-block" data-fold-block="3"><span>03</span><small>train</small></div><div class="fold-block" data-fold-block="4"><span>04</span><small>train</small></div><div class="fold-block" data-fold-block="5"><span>05</span><small>train</small></div></div><div class="round-label" id="roundLabel" aria-live="polite">round 1</div><div class="final-train-path"><span>after choosing settings</span><strong>train final model on all training data → test once</strong></div></div>
+            <div class="scene-annotation annotation-validate"><span class="annotation-pin"></span><span>validation is rehearsal;<br>the test is the final exam</span></div>
+          </div>
+
+          <div class="scene scene-evaluate" data-scene="11" aria-label="A confusion matrix shows true and false positives and negatives, with a choice between precision and recall.">
+            <div class="scene-heading"><span class="scene-number">12</span><span>read the cost of being wrong</span></div>
+            <div class="evaluate-scene"><div class="matrix-title"><span>confusion matrix</span><span class="mono">predicted →</span></div><div class="matrix-grid"><div class="matrix-corner"></div><div class="matrix-head">spam</div><div class="matrix-head">not spam</div><div class="matrix-side">actual<br>spam</div><div class="matrix-cell cell-tp"><strong>TP</strong><small>caught it</small></div><div class="matrix-cell cell-fn"><strong>FN</strong><small>missed it</small></div><div class="matrix-side">actual<br>not spam</div><div class="matrix-cell cell-fp is-focus"><strong>FP</strong><small>buried a good mail</small></div><div class="matrix-cell cell-tn"><strong>TN</strong><small>left it alone</small></div></div><div class="metric-rail"><div class="metric-readout"><span>precision</span><strong>“when I say spam, am I right?”</strong></div><div class="metric-readout"><span>recall</span><strong>“how much real spam did I catch?”</strong></div><div class="metric-readout"><span>F1</span><strong>balance between the two</strong></div></div></div>
+            <div class="scene-annotation annotation-evaluate"><span class="annotation-pin"></span><span id="evaluateAnnotation">protecting the inbox highlights<br>the false-positive cell</span></div>
+          </div>
+
+          <div class="scene scene-synthesis" data-scene="12" aria-label="The complete Naive Bayes pipeline from raw data to a posterior prediction.">
+            <div class="scene-heading"><span class="scene-number">13</span><span>the durable mental model</span></div>
+            <div class="synthesis-scene"><div class="synthesis-ribbon"><span class="ribbon-node node-data"><b>raw</b><small>data</small></span><i></i><span class="ribbon-node node-clean"><b>clean</b><small>features</small></span><i></i><span class="ribbon-node node-learn"><b>learn</b><small>priors + likelihoods</small></span><i></i><span class="ribbon-node node-score"><b>score</b><small>each class</small></span><i></i><span class="ribbon-node node-test"><b>test</b><small>honestly</small></span></div><div class="four-ideas"><div><span>01</span><strong>prior</strong><small>what was common?</small></div><div><span>02</span><strong>likelihood</strong><small>what fits the clue?</small></div><div><span>03</span><strong>naive</strong><small>separate the evidence</small></div><div><span>04</span><strong>posterior</strong><small>what wins now?</small></div></div><div class="synthesis-verdict"><span class="mono">[prior × evidence] →</span><strong>most probable class</strong><span class="verdict-dot"></span></div></div>
+            <div class="scene-annotation annotation-synthesis"><span class="annotation-pin"></span><span>the shortcut is small;<br>the mental model is durable</span></div>
+          </div>
+        </div>
+      </aside>
+    </section>
   </main>
 
-  <footer class="statml-module-footer"><div class="statml-footer-inner"><a class="statml-footer-home" href="../index.html">All modules</a></div></footer>
-
-  <script>
-    (() => {
-      "use strict";
-
-      const COLORS = {
-        ink: "#1f2937", dim: "#4b5563", muted: "#747b87", line: "#e2e1dc",
-        indigo: "#6366f1", rabbit: "#6366f1", dog: "#d97706", cat: "#0f8a72",
-        coral: "#dc5d5d", pale: "#f7f7f4", panel: "#ffffff"
-      };
-
-      const stageMeta = [
-        null,
-        ["The animal mystery", "Why this view matters", "Each row connects observed clues to a known answer. Naive Bayes learns by counting those connections, then reuses the resulting patterns for a new animal."],
-        ["From mess to features", "Why cleaning comes first", "Counts only mean what we think they mean when labels and values are consistent. Cleaning turns human mess into stable evidence the model can compare."],
-        ["A fair learning setup", "How the setup protects us", "Feature types can be mixed when each column gets the right likelihood. Stratification keeps every class represented, while a sealed test group checks whether learning transfers."],
-        ["Prior probability jars", "How priors shape the start", "The jars encode how common each class was before any clues arrived. They set the starting odds, but strong feature evidence can still overturn them."],
-        ["Likelihood fingerprints", "How a clue gains meaning", "A clue matters through its frequency inside each class. Long ears support Rabbit because 0.90 is much larger there than the corresponding Dog or Cat value."],
-        ["The scoring machine", "How the new animal is tested", "The mystery-animal card supplies one clue bundle. Arrows carry that same bundle into each class lane, where the prior and three clue matches become a score."],
-        ["The naive assumption", "How the visual splits the evidence", "The observed animal is split into three clue cards. Each class checks each card separately, then multiplies those separate likelihoods—a shortcut that avoids estimating every possible interaction."],
-        ["A prediction race", "How Rabbit wins this case", "Rabbit combines a strong prior with three strong clue matches. Dog and Cat receive much smaller products, so normalization assigns Rabbit almost all of the model’s probability."],
-        ["Held-out evaluation", "How to read the matrix", "Diagonal cells are correct predictions; off-diagonal cells reveal specific confusions. Testing unseen cases asks whether the learned counts generalize instead of merely being remembered."],
-        ["Metrics with meaning", "Why one score is not enough", "Accuracy summarizes all decisions, while precision and recall expose different error costs. The right metric depends on which real-world mistake matters more."],
-        ["Cross-validation", "How tuning stays honest", "Every fold gets one turn as unseen validation data. Averaging those turns reduces luck, while the final test set remains sealed for one last unbiased check."],
-        null,
-        ["Live evidence playground", "How to experiment", "Change one clue at a time and watch every likelihood, product, and winner respond. This reveals which evidence is decisive and which clues barely move the result."],
-        ["Overlapping antenna distributions", "How a continuous value becomes evidence", "At antenna length 3, read the height of both class curves. Relative heights 10 and 2 normalize to 83.3% Grasshopper and 16.7% Katydid."],
-        ["A mixed-feature weather prediction", "How different likelihoods combine", "Categorical probabilities handle Sunny and Windy; Gaussian densities handle temperature and humidity. Their products make No three times as plausible as Yes in this example."]
-      ];
-
-      const priors = { Rabbit: .50, Dog: .30, Cat: .20 };
-      const classColors = { Rabbit: COLORS.rabbit, Dog: COLORS.dog, Cat: COLORS.cat };
-      const likelihoods = {
-        ears: { Rabbit: .90, Dog: .10, Cat: .10 },
-        barks: { Rabbit: .02, Dog: .95, Cat: .01 },
-        carrots: { Rabbit: .80, Dog: .05, Cat: .10 }
-      };
-      const state = {
-        stage: 1,
-        model: "Bernoulli",
-        features: { ears: true, barks: false, carrots: true },
-        transitionStart: performance.now()
-      };
-
-      const qs = (s, root = document) => root.querySelector(s);
-      const qsa = (s, root = document) => [...root.querySelectorAll(s)];
-      const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
-      const lerp = (a, b, t) => a + (b - a) * t;
-      const ease = t => 1 - Math.pow(1 - clamp(t, 0, 1), 3);
-
-      const mainCanvas = qs("#mainCanvas");
-      const ctx = mainCanvas.getContext("2d");
-      const heroCanvas = qs("#heroCanvas");
-      const hctx = heroCanvas.getContext("2d");
-      let cw = 0, ch = 0, dpr = 1;
-      let heroW = 0, heroH = 0, heroDpr = 1;
-      let mainRaf = 0;
-
-      function roundedRect(c, x, y, w, h, r) {
-        const rr = Math.min(r, w / 2, h / 2);
-        c.beginPath();
-        c.roundRect(x, y, w, h, rr);
-      }
-      function text(c, value, x, y, size = 12, color = COLORS.ink, align = "left", weight = 600, mono = false) {
-        const visualScale = ch < 520 ? 1.08 : 1.17;
-        const scaledSize = size * visualScale;
-        c.fillStyle = color;
-        c.font = `${weight} ${scaledSize}px ${mono ? '"SFMono-Regular", Consolas, monospace' : 'Inter, system-ui, sans-serif'}`;
-        c.textAlign = align;
-        c.textBaseline = "middle";
-        c.fillText(value, x, y);
-      }
-      function line(c, x1, y1, x2, y2, color = COLORS.line, width = 1, dash = []) {
-        c.save();
-        c.beginPath();
-        c.setLineDash(dash);
-        c.moveTo(x1, y1);
-        c.lineTo(x2, y2);
-        c.strokeStyle = color;
-        c.lineWidth = width;
-        c.stroke();
-        c.restore();
-      }
-      function chip(c, label, x, y, color, filled = false) {
-        const fs = clamp(cw * .0155, 10, 13.5);
-        c.font = `750 ${fs}px Inter, system-ui, sans-serif`;
-        const w = c.measureText(label).width + 22;
-        roundedRect(c, x, y, w, 28, 14);
-        c.fillStyle = filled ? color : "#fff";
-        c.strokeStyle = filled ? color : COLORS.line;
-        c.lineWidth = 1;
-        c.fill();
-        c.stroke();
-        text(c, label, x + w / 2, y + 14, fs, filled ? "#fff" : color, "center", 750);
-        return w;
-      }
-
-      function resizeMain() {
-        const r = mainCanvas.getBoundingClientRect();
-        dpr = Math.min(window.devicePixelRatio || 1, 2);
-        cw = Math.max(1, r.width);
-        ch = Math.max(1, r.height);
-        mainCanvas.width = Math.round(cw * dpr);
-        mainCanvas.height = Math.round(ch * dpr);
-        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-        requestMainRender();
-      }
-
-      function resizeHero() {
-        const r = heroCanvas.getBoundingClientRect();
-        heroDpr = Math.min(window.devicePixelRatio || 1, 2);
-        heroW = Math.max(1, r.width);
-        heroH = Math.max(1, r.height);
-        heroCanvas.width = Math.round(heroW * heroDpr);
-        heroCanvas.height = Math.round(heroH * heroDpr);
-        hctx.setTransform(heroDpr, 0, 0, heroDpr, 0, 0);
-      }
-
-      function probabilityScores(features = state.features) {
-        const scores = {};
-        ["Rabbit", "Dog", "Cat"].forEach(cls => {
-          let score = priors[cls];
-          Object.entries(features).forEach(([feature, yes]) => {
-            const pYes = likelihoods[feature][cls];
-            score *= yes ? pYes : (1 - pYes);
-          });
-          scores[cls] = score;
-        });
-        const total = Object.values(scores).reduce((a, b) => a + b, 0);
-        const normalized = Object.fromEntries(Object.entries(scores).map(([k, v]) => [k, v / total]));
-        return { scores, normalized, total };
-      }
-
-      function drawDeskBase(stage, t) {
-        ctx.clearRect(0, 0, cw, ch);
-        const compact = ch < 520;
-        const top = Math.max(compact ? 76 : 88, ch * (compact ? .16 : .11));
-        const captionHeight = qs("#canvasCaption")?.getBoundingClientRect().height || (compact ? 74 : 88);
-        const bottom = ch - captionHeight - (compact ? 22 : 30);
-        const left = cw * .045;
-        const right = cw * .955;
-        const usableH = bottom - top;
-
-        ctx.fillStyle = "#fbfbf9";
-        ctx.fillRect(0, 0, cw, ch);
-        for (let x = left; x <= right; x += 42) line(ctx, x, top, x, bottom, "rgba(31,41,55,.025)");
-        for (let y = top; y <= bottom; y += 42) line(ctx, left, y, right, y, "rgba(31,41,55,.025)");
-
-        roundedRect(ctx, left, top, right - left, usableH, 18);
-        ctx.fillStyle = "rgba(247,247,244,.82)";
-        ctx.fill();
-        ctx.strokeStyle = COLORS.line;
-        ctx.stroke();
-        return { top, bottom, left, right, w: right - left, h: usableH };
-      }
-
-      function drawAnimalIcon(x, y, kind, scale = 1, color = COLORS.ink, alpha = 1) {
-        ctx.save();
-        ctx.globalAlpha = alpha;
-        ctx.translate(x, y);
-        ctx.scale(scale, scale);
-        ctx.strokeStyle = color;
-        ctx.fillStyle = "#fff";
-        ctx.lineWidth = 2;
-        if (kind === "Rabbit") {
-          roundedRect(ctx, -15, -10, 30, 26, 12); ctx.fill(); ctx.stroke();
-          ctx.beginPath(); ctx.ellipse(-7, -22, 5, 14, -.18, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
-          ctx.beginPath(); ctx.ellipse(7, -22, 5, 14, .18, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
-        } else if (kind === "Dog") {
-          roundedRect(ctx, -16, -11, 32, 27, 11); ctx.fill(); ctx.stroke();
-          ctx.beginPath(); ctx.moveTo(-13, -5); ctx.lineTo(-24, -16); ctx.lineTo(-19, 2); ctx.closePath(); ctx.fill(); ctx.stroke();
-          ctx.beginPath(); ctx.moveTo(13, -5); ctx.lineTo(24, -16); ctx.lineTo(19, 2); ctx.closePath(); ctx.fill(); ctx.stroke();
-        } else {
-          roundedRect(ctx, -15, -10, 30, 26, 12); ctx.fill(); ctx.stroke();
-          ctx.beginPath(); ctx.moveTo(-13, -7); ctx.lineTo(-9, -23); ctx.lineTo(-1, -11); ctx.closePath(); ctx.fill(); ctx.stroke();
-          ctx.beginPath(); ctx.moveTo(13, -7); ctx.lineTo(9, -23); ctx.lineTo(1, -11); ctx.closePath(); ctx.fill(); ctx.stroke();
-        }
-        ctx.fillStyle = color;
-        ctx.beginPath(); ctx.arc(-5, 1, 1.8, 0, Math.PI * 2); ctx.arc(5, 1, 1.8, 0, Math.PI * 2); ctx.fill();
-        ctx.restore();
-      }
-
-      function drawClueIcon(x, y, kind, scale = 1, color = COLORS.ink, muted = false) {
-        if (kind === "ears") {
-          drawAnimalIcon(x, y, "Rabbit", scale, color);
-          return;
-        }
-        ctx.save();
-        ctx.translate(x, y);
-        ctx.scale(scale, scale);
-        ctx.strokeStyle = color;
-        ctx.fillStyle = "#fff";
-        ctx.lineWidth = 2;
-        if (kind === "bark") {
-          ctx.beginPath();
-          ctx.moveTo(-18, -7); ctx.lineTo(-9, -7); ctx.lineTo(2, -15); ctx.lineTo(2, 15); ctx.lineTo(-9, 7); ctx.lineTo(-18, 7); ctx.closePath();
-          ctx.fill(); ctx.stroke();
-          if (muted) {
-            ctx.beginPath(); ctx.moveTo(10, -9); ctx.lineTo(21, 9); ctx.moveTo(21, -9); ctx.lineTo(10, 9); ctx.stroke();
-          } else {
-            ctx.beginPath(); ctx.arc(3, 0, 12, -.65, .65); ctx.stroke();
-            ctx.beginPath(); ctx.arc(3, 0, 18, -.58, .58); ctx.stroke();
-          }
-        } else {
-          ctx.rotate(-.34);
-          ctx.beginPath();
-          ctx.moveTo(-8, -14); ctx.lineTo(10, 11); ctx.quadraticCurveTo(2, 17, -8, -14); ctx.closePath();
-          ctx.fill(); ctx.stroke();
-          ctx.beginPath(); ctx.moveTo(-7, -14); ctx.lineTo(-12, -23); ctx.moveTo(-4, -14); ctx.lineTo(-3, -25); ctx.moveTo(-1, -12); ctx.lineTo(6, -20); ctx.stroke();
-        }
-        ctx.restore();
-      }
-
-      function drawMysteryIcon(x, y, scale = 1, color = COLORS.indigo, questionSize = 16) {
-        ctx.save();
-        ctx.translate(x, y);
-        ctx.scale(scale, scale);
-        ctx.strokeStyle = color;
-        ctx.fillStyle = "#fff";
-        ctx.lineWidth = 2;
-        roundedRect(ctx, -17, -8, 34, 25, 12); ctx.fill(); ctx.stroke();
-        ctx.beginPath(); ctx.moveTo(-12, -7); ctx.lineTo(-7, -22); ctx.lineTo(-1, -10); ctx.closePath(); ctx.fill(); ctx.stroke();
-        ctx.beginPath(); ctx.moveTo(12, -7); ctx.lineTo(7, -22); ctx.lineTo(1, -10); ctx.closePath(); ctx.fill(); ctx.stroke();
-        text(ctx, "?", 0, 3, questionSize, color, "center", 850, true);
-        ctx.restore();
-      }
-
-      function drawArrow(ctx2, x1, y1, x2, y2, color = COLORS.indigo, width = 1.2, head = 5, dash = []) {
-        line(ctx2, x1, y1, x2, y2, color, width, dash);
-        const angle = Math.atan2(y2 - y1, x2 - x1);
-        ctx2.save();
-        ctx2.beginPath();
-        ctx2.moveTo(x2, y2);
-        ctx2.lineTo(x2 - head * Math.cos(angle - .52), y2 - head * Math.sin(angle - .52));
-        ctx2.lineTo(x2 - head * Math.cos(angle + .52), y2 - head * Math.sin(angle + .52));
-        ctx2.closePath();
-        ctx2.fillStyle = color;
-        ctx2.fill();
-        ctx2.restore();
-      }
-
-      function drawClassLanes(box, reveal = 1, scores = null, queryLayout = false) {
-        const classes = ["Rabbit", "Dog", "Cat"];
-        const compact = ch < 520;
-        const laneGap = box.w * .025;
-        const laneW = (box.w - laneGap * 4) / 3;
-        const laneY = box.top + box.h * (queryLayout ? (compact ? .28 : .22) : (compact ? .06 : .12));
-        const laneH = box.h * (queryLayout ? (compact ? .67 : .68) : (compact ? .88 : .78));
-        classes.forEach((cls, i) => {
-          const x = box.left + laneGap + i * (laneW + laneGap);
-          const color = classColors[cls];
-          ctx.save();
-          ctx.globalAlpha = reveal;
-          roundedRect(ctx, x, laneY, laneW, laneH, 16);
-          ctx.fillStyle = "#fff";
-          ctx.fill();
-          ctx.strokeStyle = `${color}33`;
-          ctx.lineWidth = 1.2;
-          ctx.stroke();
-          drawAnimalIcon(x + laneW / 2, laneY + (compact ? 18 : 64), cls, compact ? .30 : clamp(laneW / 138, .75, 1.1), color);
-          text(ctx, cls, x + laneW / 2, laneY + (compact ? 40 : 108), compact ? 8.5 : clamp(laneW * .092, 12, 17), color, "center", 800);
-          if (!compact) text(ctx, `prior ${priors[cls].toFixed(2)}`, x + laneW / 2, laneY + 132, clamp(laneW * .06, 9, 11), COLORS.muted, "center", 650, true);
-          if (scores) {
-            const max = Math.max(...Object.values(scores));
-            const value = scores[cls];
-            const barW = laneW - 28;
-            const barY = laneY + laneH - (compact ? 22 : 43);
-            roundedRect(ctx, x + 14, barY, barW, compact ? 5 : 9, 5);
-            ctx.fillStyle = "#eeeee9";
-            ctx.fill();
-            roundedRect(ctx, x + 14, barY, Math.max(3, barW * value / max), compact ? 5 : 9, 5);
-            ctx.fillStyle = color;
-            ctx.fill();
-            if (!compact) text(ctx, value < .001 ? value.toExponential(1) : value.toFixed(4), x + laneW / 2, barY + 22, clamp(laneW * .058, 8, 10), color, "center", 800, true);
-          }
-          ctx.restore();
-        });
-        return { laneW, laneGap, laneY, laneH, compact };
-      }
-
-      function drawStage1(box, t) {
-        const compact = ch < 520;
-        text(ctx, "RAW OBSERVATIONS", box.left + 22, box.top + 28, 10.5, COLORS.muted, "left", 800);
-        const rows = [
-          ["Rabbit", true, false, true], ["Rabbit", true, false, true],
-          ["Dog", false, true, false], ["Dog", false, true, false],
-          ["Cat", false, false, false], ["Cat", false, false, false]
-        ];
-        const cols = Math.min(3, rows.length);
-        const gap = compact ? 7 : clamp(box.h * .05, 18, 38);
-        const cardW = (box.w - 44 - gap * (cols - 1)) / cols;
-        const cardH = compact ? 57 : clamp(box.h * .36, 150, 300);
-        rows.forEach((row, i) => {
-          const x = box.left + 22 + (i % cols) * (cardW + gap);
-          const y = box.top + (compact ? 40 : box.h * .08) + Math.floor(i / cols) * (cardH + gap);
-          const color = classColors[row[0]];
-          ctx.save();
-          ctx.globalAlpha = ease(clamp(t * 1.3 - i * .08, 0, 1));
-          roundedRect(ctx, x, y, cardW, cardH, 13);
-          ctx.fillStyle = "#fff"; ctx.fill();
-          ctx.strokeStyle = `${color}40`; ctx.stroke();
-          drawAnimalIcon(x + cardW * .22, y + (compact ? cardH * .42 : cardH * .48), row[0], compact ? .30 : clamp(cardH / 310, .58, .84), color);
-          text(ctx, row[0], x + cardW * .42, y + (compact ? 14 : cardH * .30), compact ? clamp(cardW * .09, 7, 12) : clamp(cardW * .095, 13, 21), color, "left", 800);
-          const marks = [`ears ${row[1] ? "✓" : "–"}`, `bark ${row[2] ? "✓" : "–"}`, `carrot ${row[3] ? "✓" : "–"}`];
-          marks.forEach((m, j) => text(ctx, m, x + cardW * .42, y + (compact ? 29 : cardH * .48) + j * (compact ? 10 : clamp(cardH * .14, 22, 34)), compact ? clamp(cardW * .062, 6, 9) : clamp(cardW * .066, 9, 13), COLORS.dim, "left", 650, true));
-          ctx.restore();
-        });
-        const y = box.bottom - (compact ? 11 : 42);
-        line(ctx, box.left + 28, y, box.right - 28, y, "rgba(99,102,241,.25)", 2);
-        text(ctx, "features in", box.left + 30, y - (compact ? 7 : 13), compact ? 6 : 9, COLORS.indigo, "left", 800);
-        text(ctx, "one class out", box.right - 30, y - (compact ? 7 : 13), compact ? 6 : 9, COLORS.indigo, "right", 800);
-      }
-
-      function drawStage2(box, t) {
-        const compact = ch < 520;
-        const steps = [
-          ["RABIT", "Rabbit", "label"],
-          ["longg", "1", "feature"],
-          ["?", "Unknown", "missing"],
-          ["700 legs", "review", "invalid"]
-        ];
-        text(ctx, "CLEANING CONVEYOR", box.left + 22, box.top + 28, 10, COLORS.muted, "left", 800);
-        const midY = box.top + box.h * (compact ? .43 : .48);
-        line(ctx, box.left + 34, midY, box.right - 34, midY, COLORS.line, 3);
-        steps.forEach((s, i) => {
-          const x = lerp(box.left + box.w * .13, box.right - box.w * .13, i / 3);
-          const w = compact ? clamp(box.w * .16, 58, 68) : clamp(box.w * .16, 70, 120);
-          const topH = compact ? 34 : 50;
-          const topY = midY - (compact ? 48 : 70);
-          roundedRect(ctx, x - w / 2, topY, w, topH, 11);
-          ctx.fillStyle = "#fff"; ctx.fill(); ctx.strokeStyle = COLORS.coral + "55"; ctx.stroke();
-          text(ctx, s[0], x, topY + topH / 2, compact ? 6.2 : clamp(w * .09, 8, 11), COLORS.coral, "center", 750, true);
-          ctx.beginPath(); ctx.moveTo(x, midY - (compact ? 11 : 15)); ctx.lineTo(x, midY + (compact ? 7 : 13)); ctx.strokeStyle = COLORS.indigo; ctx.stroke();
-          ctx.beginPath(); ctx.moveTo(x - 4, midY + (compact ? 2 : 7)); ctx.lineTo(x, midY + (compact ? 7 : 13)); ctx.lineTo(x + 4, midY + (compact ? 2 : 7)); ctx.stroke();
-          const bottomY = midY + (compact ? 11 : 18);
-          const bottomH = compact ? 38 : 55;
-          roundedRect(ctx, x - w / 2, bottomY, w, bottomH, 11);
-          ctx.fillStyle = "rgba(15,138,114,.06)"; ctx.fill(); ctx.strokeStyle = COLORS.cat + "55"; ctx.stroke();
-          text(ctx, s[1], x, bottomY + (compact ? 14 : 24), compact ? 6.2 : clamp(w * .09, 8, 11), COLORS.cat, "center", 800, true);
-          text(ctx, s[2], x, bottomY + (compact ? 28 : 42), compact ? 5.2 : 7, COLORS.muted, "center", 750);
-        });
-        const progressY = box.bottom - (compact ? 25 : 52);
-        const progressH = compact ? 14 : 28;
-        roundedRect(ctx, box.left + 22, progressY, box.w - 44, progressH, 14);
-        ctx.fillStyle = "rgba(99,102,241,.08)"; ctx.fill();
-        const fill = (box.w - 44) * ease(t);
-        roundedRect(ctx, box.left + 22, progressY, fill, progressH, 14);
-        ctx.fillStyle = "rgba(99,102,241,.2)"; ctx.fill();
-        text(ctx, compact ? "clean → count" : "consistent values → trustworthy counts", box.left + box.w / 2, progressY + progressH / 2, compact ? 5.8 : 9, COLORS.indigo, "center", 800);
-      }
-
-      function drawStage3(box, t) {
-        const compact = ch < 520;
-        text(ctx, "MODEL FAMILY + STRATIFIED SPLIT", box.left + 22, box.top + 28, 10, COLORS.muted, "left", 800);
-        const models = [
-          ["Bernoulli", "0 / 1"], ["Multinomial", "counts"], ["Gaussian", "numbers"], ["Categorical", "labels"]
-        ];
-        const gap = compact ? 6 : 10, w = (box.w - 44 - gap * 3) / 4;
-        models.forEach((m, i) => {
-          const x = box.left + 22 + i * (w + gap), y = box.top + (compact ? 40 : 55);
-          const active = state.model === m[0];
-          const cardH = compact ? 38 : 62;
-          roundedRect(ctx, x, y, w, cardH, 12);
-          ctx.fillStyle = active ? "rgba(99,102,241,.09)" : "#fff"; ctx.fill();
-          ctx.strokeStyle = active ? COLORS.indigo : COLORS.line; ctx.lineWidth = active ? 1.6 : 1; ctx.stroke();
-          text(ctx, m[0], x + w / 2, y + (compact ? 13 : 23), compact ? 5.4 : clamp(w * .10, 7, 10), active ? COLORS.indigo : COLORS.ink, "center", 800);
-          text(ctx, m[1], x + w / 2, y + (compact ? 27 : 43), compact ? 4.8 : clamp(w * .08, 7, 9), COLORS.muted, "center", 650, true);
-        });
-        const x0 = box.left + box.w * .12, x1 = box.right - box.w * .12;
-        const y = compact ? box.top + 87 : box.top + box.h * .45;
-        const h = compact ? Math.max(56, box.bottom - y - 8) : box.h * .25;
-        roundedRect(ctx, x0, y, (x1 - x0) * .78, h, 14); ctx.fillStyle = "rgba(99,102,241,.09)"; ctx.fill(); ctx.strokeStyle = COLORS.indigo + "66"; ctx.stroke();
-        roundedRect(ctx, x0 + (x1 - x0) * .80, y, (x1 - x0) * .20, h, 14); ctx.fillStyle = "rgba(15,138,114,.09)"; ctx.fill(); ctx.strokeStyle = COLORS.cat + "66"; ctx.stroke();
-        text(ctx, "80% TRAIN", x0 + (x1 - x0) * .39, y + (compact ? 12 : 22), compact ? 6 : 10, COLORS.indigo, "center", 800);
-        text(ctx, "20% TEST", x0 + (x1 - x0) * .90, y + (compact ? 12 : 22), compact ? 6 : 10, COLORS.cat, "center", 800);
-        const shares = [["Rabbit", .5], ["Dog", .3], ["Cat", .2]];
-        shares.forEach((s, i) => {
-          const yy = y + (compact ? 29 + i * 11 : 48 + i * 24);
-          const col = classColors[s[0]];
-          text(ctx, s[0], x0 + 8, yy, compact ? 4.8 : 8, col, "left", 750);
-          const labelOffset = compact ? 39 : 67;
-          line(ctx, x0 + labelOffset, yy, x0 + labelOffset + (x1 - x0) * .52 * s[1], yy, col, compact ? 4 : 7);
-          line(ctx, x0 + (x1 - x0) * .82, yy, x0 + (x1 - x0) * (.82 + .13 * s[1]), yy, col, 7);
-        });
-        if (!compact) text(ctx, "same class proportions on both sides", box.left + box.w / 2, box.bottom - 36, 9, COLORS.muted, "center", 700);
-      }
-
-      function drawStage4(box, t) {
-        const lanes = drawClassLanes(box, 1);
-        ["Rabbit", "Dog", "Cat"].forEach((cls, i) => {
-          const laneX = box.left + lanes.laneGap + i * (lanes.laneW + lanes.laneGap);
-          const jarX = laneX + lanes.laneW * .18, jarY = lanes.laneY + lanes.laneH * .40;
-          const jarW = lanes.laneW * .64, jarH = lanes.laneH * .32;
-          roundedRect(ctx, jarX, jarY, jarW, jarH, 10);
-          ctx.strokeStyle = `${classColors[cls]}77`; ctx.lineWidth = 1.5; ctx.stroke();
-          const fillH = jarH * priors[cls] * ease(t);
-          roundedRect(ctx, jarX + 4, jarY + jarH - fillH - 4, jarW - 8, fillH, 7);
-          ctx.fillStyle = `${classColors[cls]}24`; ctx.fill();
-          for (let d = 0; d < Math.round(priors[cls] * 20); d++) {
-            const px = jarX + 10 + ((d * 17) % Math.max(12, jarW - 20));
-            const py = jarY + jarH - 10 - Math.floor(d / Math.max(1, Math.floor((jarW - 20) / 17))) * 12;
-            ctx.beginPath(); ctx.arc(px, py, 3, 0, Math.PI * 2); ctx.fillStyle = classColors[cls]; ctx.fill();
-          }
-          text(ctx, `${Math.round(priors[cls] * 100)} tickets`, laneX + lanes.laneW / 2, jarY + jarH + 18, 9, COLORS.muted, "center", 650, true);
-        });
-      }
-
-      function drawLikelihoodBars(box, scores = null, query = null, t = 1, queryLayout = false) {
-        const lanes = drawClassLanes(box, 1, scores, queryLayout);
-        const features = [["ears", "LONG EARS"], ["barks", "BARKS"], ["carrots", "CARROTS"]];
-        ["Rabbit", "Dog", "Cat"].forEach((cls, i) => {
-          const laneX = box.left + lanes.laneGap + i * (lanes.laneW + lanes.laneGap);
-          const startY = lanes.compact ? lanes.laneY + 52 : lanes.laneY + lanes.laneH * (queryLayout ? .45 : .37);
-          const rowStep = lanes.compact ? clamp((lanes.laneH - 78) / 3, 23, 30) : clamp(lanes.laneH * .105, 34, 48);
-          features.forEach((f, j) => {
-            const pYes = likelihoods[f[0]][cls];
-            const observedYes = query ? query[f[0]] : true;
-            const p = observedYes ? pYes : (1 - pYes);
-            const y = startY + j * rowStep;
-            text(ctx, query ? `${f[1]} ${observedYes ? "✓" : "–"}` : f[1], laneX + 10, y, lanes.compact ? 5.5 : clamp(lanes.laneW * .052, 7, 9), COLORS.muted, "left", 750);
-            const bx = laneX + 14, by = y + 12, bw = lanes.laneW - 28;
-            roundedRect(ctx, bx, by, bw, lanes.compact ? 4 : 7, 4); ctx.fillStyle = "#efefe9"; ctx.fill();
-            roundedRect(ctx, bx, by, Math.max(2, bw * p * ease(t)), lanes.compact ? 4 : 7, 4); ctx.fillStyle = classColors[cls]; ctx.fill();
-            text(ctx, p.toFixed(2), laneX + lanes.laneW - 10, y, lanes.compact ? 5.5 : clamp(lanes.laneW * .052, 7, 9), classColors[cls], "right", 800, true);
-          });
-        });
-        return lanes;
-      }
-
-      function drawStage5(box, t) { drawLikelihoodBars(box, null, null, t); }
-
-      function drawStage6(box, t) {
-        const query = { ears: true, barks: false, carrots: true };
-        const lanes = drawLikelihoodBars(box, null, query, t, true);
-        const qCompact = lanes.compact;
-        const qx = box.left + box.w * (qCompact ? .09 : .16);
-        const qy = box.top + (qCompact ? 4 : 8);
-        const qw = box.w * (qCompact ? .82 : .68);
-        const qh = qCompact ? 38 : 58;
-        roundedRect(ctx, qx, qy, qw, qh, qCompact ? 10 : 14);
-        ctx.fillStyle = "#fff";
-        ctx.fill();
-        ctx.strokeStyle = `${COLORS.indigo}55`;
-        ctx.lineWidth = qCompact ? 1 : 1.2;
-        ctx.stroke();
-        drawMysteryIcon(qx + (qCompact ? 20 : 30), qy + qh / 2, qCompact ? .40 : .58, COLORS.indigo, qCompact ? 10 : 17);
-        text(ctx, "NEW MYSTERY ANIMAL", qx + (qCompact ? 38 : 56), qy + (qCompact ? 11 : 16), qCompact ? 6 : 8, COLORS.indigo, "left", 800);
-        text(ctx, "long ears ✓   barks –   carrots ✓", qx + (qCompact ? 38 : 56), qy + (qCompact ? 26 : 39), qCompact ? 6 : 9, COLORS.dim, "left", 750, true);
-        const arrowStartY = qy + qh;
-        const arrowEndY = lanes.laneY - (qCompact ? 5 : 8);
-        ["Rabbit", "Dog", "Cat"].forEach((cls, i) => {
-          const laneX = box.left + lanes.laneGap + i * (lanes.laneW + lanes.laneGap);
-          const targetX = laneX + lanes.laneW / 2;
-          const startX = qx + qw * (.20 + i * .30);
-          drawArrow(ctx, startX, arrowStartY + 2, targetX, arrowEndY, `${COLORS.indigo}88`, qCompact ? 1 : 1.4, qCompact ? 4 : 6);
-        });
-        ["Rabbit", "Dog", "Cat"].forEach((cls, i) => {
-          const laneX = box.left + lanes.laneGap + i * (lanes.laneW + lanes.laneGap);
-          const y = lanes.laneY + lanes.laneH - (lanes.compact ? 19 : 66);
-          const values = [
-            priors[cls],
-            likelihoods.ears[cls],
-            1 - likelihoods.barks[cls],
-            likelihoods.carrots[cls]
-          ];
-          text(ctx, lanes.compact ? "prior × 3 clues" : values.map(v => v.toFixed(2)).join(" × "), laneX + lanes.laneW / 2, y, lanes.compact ? 5.8 : clamp(lanes.laneW * .052, 7, 9), classColors[cls], "center", 800, true);
-          if (!lanes.compact) text(ctx, "bottom product = raw score", laneX + lanes.laneW / 2, y + 20, clamp(lanes.laneW * .047, 7, 8), COLORS.muted, "center", 650);
-        });
-      }
-
-      function drawStage7(box, t) {
-        const compact = ch < 520;
-        const alpha = ease(t);
-        const frameLeft = box.left + 22;
-        const frameRight = box.right - 22;
-        const frameW = frameRight - frameLeft;
-        const topY = box.top + (compact ? 5 : 10);
-        const topH = compact ? 58 : clamp(box.h * .24, 112, 148);
-        const topBottom = topY + topH;
-        const clueY = box.top + box.h * (compact ? .46 : .48);
-        const clueH = compact ? clamp(box.h * .31, 68, 92) : clamp(box.h * .36, 178, 246);
-        const stripH = compact ? 25 : 43;
-        const stripY = box.bottom - stripH - (compact ? 6 : 12);
-        const gap = compact ? 8 : clamp(box.w * .035, 22, 38);
-        const cardW = (frameW - gap * 2) / 3;
-        const items = [
-          { kind: "ears", label: "Long ears", short: "ears", value: "YES", color: COLORS.rabbit },
-          { kind: "bark", label: "Barks", short: "barks", value: "NO", color: COLORS.dog, muted: true },
-          { kind: "carrots", label: "Likes carrots", short: "carrots", value: "YES", color: COLORS.cat }
-        ];
-
-        ctx.save();
-        ctx.globalAlpha = alpha;
-
-        roundedRect(ctx, frameLeft, topY, frameW, topH, compact ? 11 : 15);
-        ctx.fillStyle = "#fff"; ctx.fill();
-        ctx.strokeStyle = COLORS.line; ctx.lineWidth = 1.1; ctx.stroke();
-        text(ctx, compact ? "OBSERVED CLUES" : "WE OBSERVE AN ANIMAL WITH THESE CLUES:", frameLeft + (compact ? 12 : 24), topY + (compact ? 11 : 24), compact ? 6.2 : 10, COLORS.dim, "left", 800);
-        items.forEach((item, i) => {
-          const cx = frameLeft + cardW * (i + .5) + gap * i;
-          if (compact) {
-            drawClueIcon(cx, topY + 29, item.kind, item.kind === "ears" ? .27 : .42, item.color, item.muted);
-            text(ctx, `${item.short}:`, cx - 3, topY + 47, 5.5, COLORS.dim, "right", 700);
-            text(ctx, item.value, cx + 3, topY + 47, 5.5, item.color, "left", 850);
-          } else {
-            const iconX = cx - 58;
-            drawClueIcon(iconX, topY + topH * .63, item.kind, item.kind === "ears" ? .60 : .55, item.color, item.muted);
-            text(ctx, `${item.label}:`, iconX + 30, topY + topH * .63, 10, COLORS.dim, "left", 650);
-            text(ctx, item.value, iconX + 30 + (item.label === "Likes carrots" ? 83 : item.label === "Long ears" ? 62 : 42), topY + topH * .63, 10, item.color, "left", 850);
-          }
-        });
-
-        const explanationY = topBottom + (compact ? 12 : 30);
-        text(ctx, compact ? "ASSUME INDEPENDENCE" : "ASSUME THE CLUES ARE INDEPENDENT.", box.left + box.w / 2, explanationY, compact ? 6.8 : 10, COLORS.indigo, "center", 800);
-        text(ctx, compact ? "TREAT EACH CLUE SEPARATELY" : "TREAT EACH CLUE SEPARATELY.", box.left + box.w / 2, explanationY + (compact ? 11 : 20), compact ? 6.8 : 10, COLORS.dim, "center", 700);
-
-        const centers = items.map((_, i) => frameLeft + cardW * (i + .5) + gap * i);
-        const trunkY = clueY - (compact ? 12 : 38);
-        line(ctx, centers[0], trunkY, centers[2], trunkY, "rgba(107,114,128,.42)", compact ? 1 : 1.2, [4, 5]);
-        centers.forEach(cx => drawArrow(ctx, cx, trunkY, cx, clueY - 7, "rgba(107,114,128,.55)", compact ? 1 : 1.2, compact ? 4 : 5, [4, 5]));
-
-        items.forEach((item, i) => {
-          const x = frameLeft + i * (cardW + gap);
-          roundedRect(ctx, x, clueY, cardW, clueH, compact ? 11 : 16);
-          ctx.fillStyle = "#fff"; ctx.fill();
-          ctx.strokeStyle = `${item.color}66`; ctx.lineWidth = compact ? 1 : 1.3; ctx.stroke();
-          const tagW = compact ? 40 : 72;
-          const tagH = compact ? 17 : 28;
-          roundedRect(ctx, x + (cardW - tagW) / 2, clueY + (compact ? 8 : 18), tagW, tagH, tagH / 2);
-          ctx.fillStyle = `${item.color}16`; ctx.fill();
-          text(ctx, `CLUE ${i + 1}`, x + cardW / 2, clueY + (compact ? 16.5 : 32), compact ? 5.4 : 8.5, item.color, "center", 800);
-          drawClueIcon(x + cardW / 2, clueY + clueH * .49, item.kind, item.kind === "ears" ? (compact ? .30 : .72) : (compact ? .47 : .66), item.color, false);
-          const labelY = clueY + clueH * (compact ? .80 : .79);
-          const labelSize = compact ? 5.6 : 10;
-          const label = compact ? item.short : item.label;
-          text(ctx, `${label}:`, x + cardW / 2 - 2, labelY, labelSize, COLORS.dim, "right", 650);
-          text(ctx, item.value, x + cardW / 2 + 2, labelY, labelSize, item.color, "left", 850);
-        });
-
-        roundedRect(ctx, frameLeft, stripY, frameW, stripH, compact ? 10 : 14);
-        ctx.fillStyle = "rgba(255,255,255,.82)"; ctx.fill();
-        ctx.strokeStyle = COLORS.line; ctx.lineWidth = 1; ctx.stroke();
-        const iconScale = compact ? .22 : .42;
-        const iconsX = frameLeft + (compact ? 20 : 58);
-        const iconY = stripY + stripH / 2;
-        drawAnimalIcon(iconsX, iconY, "Rabbit", iconScale, COLORS.rabbit);
-        drawAnimalIcon(iconsX + (compact ? 16 : 27), iconY, "Dog", iconScale, COLORS.dog);
-        drawAnimalIcon(iconsX + (compact ? 32 : 54), iconY, "Cat", iconScale, COLORS.cat);
-        text(ctx, compact ? "each class checks each clue" : "Each class is checked against each clue separately.", iconsX + (compact ? 49 : 84), iconY, compact ? 5.8 : 9.5, COLORS.dim, "left", 700);
-        ctx.restore();
-      }
-
-      function drawStage9(box, t) {
-        const query = { ears: true, barks: false, carrots: true };
-        const result = probabilityScores(query);
-        const lanes = drawLikelihoodBars(box, result.scores, query, t);
-        const winner = "Rabbit";
-        const laneX = box.left + lanes.laneGap;
-        ctx.save();
-        ctx.globalAlpha = .16 + .1 * Math.sin(performance.now() / 240);
-        roundedRect(ctx, laneX - 4, lanes.laneY - 4, lanes.laneW + 8, lanes.laneH + 8, 19);
-        ctx.strokeStyle = COLORS.rabbit; ctx.lineWidth = 4; ctx.stroke();
-        ctx.restore();
-        const pct = result.normalized[winner] * 100;
-        if (!lanes.compact) chip(ctx, `${winner.toUpperCase()} ${pct.toFixed(2)}%`, laneX + lanes.laneW / 2 - 58, lanes.laneY + lanes.laneH - 24, COLORS.rabbit, true);
-      }
-
-      function drawMatrix(box, metricMode = false) {
-        const compact = ch < 520;
-        text(ctx, metricMode ? "ERROR COSTS" : "ILLUSTRATIVE CONFUSION MATRIX", box.left + 22, box.top + (compact ? 17 : 28), compact ? 6.5 : 10, COLORS.muted, "left", 800);
-        if (metricMode) {
-          const items = [
-            ["Accuracy", "all correct", ".83", COLORS.indigo],
-            ["Precision", "false alarms", "TP/(TP+FP)", COLORS.dog],
-            ["Recall", "missed cases", "TP/(TP+FN)", COLORS.cat],
-            ["F1", "balance", "2PR/(P+R)", COLORS.coral]
-          ];
-          const gap = compact ? 7 : 12;
-          const w = (box.w - 44 - gap) / 2;
-          const h = compact ? (box.h - 47 - gap) / 2 : (box.h - 100 - gap) / 2;
-          items.forEach((it, i) => {
-            const x = box.left + 22 + (i % 2) * (w + gap), y = box.top + (compact ? 38 : 52) + Math.floor(i / 2) * (h + gap);
-            roundedRect(ctx, x, y, w, h, 15); ctx.fillStyle = "#fff"; ctx.fill(); ctx.strokeStyle = `${it[3]}44`; ctx.stroke();
-            text(ctx, it[0], x + (compact ? 10 : 16), y + (compact ? 13 : 22), compact ? 6.5 : 11, it[3], "left", 800);
-            text(ctx, it[2], x + (compact ? 10 : 16), y + h * (compact ? .66 : .56), compact ? clamp(w * .08, 8, 11) : clamp(w * .11, 13, 22), it[3], "left", 850, true);
-            if (!compact) text(ctx, it[1], x + 16, y + h - 20, 8, COLORS.muted, "left", 650);
-          });
-          return;
-        }
-        const labels = ["Rabbit", "Dog", "Cat"];
-        const values = [[7,0,1],[0,7,1],[1,1,6]];
-        const size = compact ? Math.min(box.w * .18, (box.h - 58) / 3, 40) : Math.min(box.w * .16, box.h * .17, 98);
-        const gridW = size * 3;
-        const sx = box.left + (box.w - gridW) / 2;
-        const sy = compact ? box.top + 45 : box.top + box.h * .25;
-        labels.forEach((l, i) => {
-          text(ctx, l, sx + i * size + size / 2, sy - (compact ? 9 : 20), compact ? 5.8 : clamp(size * .11, 8, 11), classColors[l], "center", 750);
-          text(ctx, l, sx - (compact ? 7 : 12), sy + i * size + size / 2, compact ? 5.8 : clamp(size * .11, 8, 11), classColors[l], "right", 750);
-        });
-        values.forEach((row, r) => row.forEach((v, c) => {
-          const x = sx + c * size, y = sy + r * size;
-          roundedRect(ctx, x + 3, y + 3, size - 6, size - 6, 10);
-          const diag = r === c;
-          ctx.fillStyle = diag ? `${classColors[labels[r]]}20` : (v ? "rgba(220,93,93,.10)" : "#fff");
-          ctx.fill(); ctx.strokeStyle = diag ? `${classColors[labels[r]]}55` : COLORS.line; ctx.stroke();
-          text(ctx, String(v), x + size / 2, y + size / 2, compact ? clamp(size * .32, 11, 17) : clamp(size * .26, 15, 26), diag ? classColors[labels[r]] : (v ? COLORS.coral : COLORS.muted), "center", 850, true);
-        }));
-        if (!compact) {
-          text(ctx, "actual classes ↓", sx - 8, sy + gridW + 28, 8, COLORS.muted, "left", 700);
-          text(ctx, "predicted classes →", sx + gridW, sy + gridW + 28, 8, COLORS.muted, "right", 700);
-        }
-      }
-
-      function drawStage12(box, t) {
-        const compact = ch < 520;
-        text(ctx, "FIVE-FOLD CROSS-VALIDATION", box.left + 22, box.top + 28, 10, COLORS.muted, "left", 800);
-        const vals = [86,88,85,87,89], gap = 9;
-        const w = (box.w - 44 - gap * 4) / 5, top = box.top + (compact ? 45 : 66), h = box.h * (compact ? .50 : .48);
-        const cycle = (performance.now() / 1450) % vals.length;
-        const activeFold = Math.floor(cycle);
-        const pulse = .08 + .05 * Math.sin((cycle % 1) * Math.PI);
-        vals.forEach((v, i) => {
-          const x = box.left + 22 + i * (w + gap);
-          const active = i === activeFold;
-          roundedRect(ctx, x, top, w, h, 12); ctx.fillStyle = active ? `rgba(99,102,241,${pulse})` : "#fff"; ctx.fill(); ctx.strokeStyle = active ? COLORS.indigo : COLORS.line; ctx.lineWidth = active ? 1.8 : 1; ctx.stroke();
-          text(ctx, `FOLD ${i+1}`, x + w/2, top + 24, clamp(w * .11, 7, 10), active ? COLORS.indigo : COLORS.muted, "center", 800);
-          if (!compact) {
-            for (let j = 0; j < 5; j++) {
-              const yy = top + 49 + j * clamp((h - 70)/5, 15, 28);
-              roundedRect(ctx, x + 11, yy, w - 22, 10, 5);
-              ctx.fillStyle = j === i ? (active ? "rgba(15,138,114,.30)" : "rgba(15,138,114,.16)") : "rgba(99,102,241,.16)"; ctx.fill();
-            }
-          } else {
-            roundedRect(ctx, x + w*.38, top + 40, w*.24, h - 60, 5);
-            ctx.fillStyle = active ? "rgba(15,138,114,.30)" : "rgba(99,102,241,.18)"; ctx.fill();
-          }
-          text(ctx, `${v}%`, x + w/2, top + h - 18, clamp(w * .15, 9, 14), active ? COLORS.indigo : COLORS.ink, "center", 850, true);
-        });
-        line(ctx, box.left + box.w * .16, box.bottom - 64, box.right - box.w * .16, box.bottom - 64, COLORS.indigo, 2);
-        text(ctx, compact ? `fold ${activeFold + 1} validates · 4 folds train` : `fold ${activeFold + 1} validates now · 4 folds train · average 87%`, box.left + box.w / 2, box.bottom - 40, compact ? 5.8 : 9, COLORS.indigo, "center", 800, true);
-      }
-
-      function drawStage14(box, t) {
-        const result = probabilityScores();
-        const lanes = drawLikelihoodBars(box, result.scores, state.features, t);
-        const ranking = Object.entries(result.normalized).sort((a,b) => b[1]-a[1]);
-        const [winner, probability] = ranking[0];
-        const wi = ["Rabbit","Dog","Cat"].indexOf(winner);
-        const laneX = box.left + lanes.laneGap + wi * (lanes.laneW + lanes.laneGap);
-        ctx.save();
-        ctx.globalAlpha = .18;
-        roundedRect(ctx, laneX - 4, lanes.laneY - 4, lanes.laneW + 8, lanes.laneH + 8, 19);
-        ctx.strokeStyle = classColors[winner]; ctx.lineWidth = 4; ctx.stroke();
-        ctx.restore();
-        if (!lanes.compact) chip(ctx, `${winner.toUpperCase()} ${(probability*100).toFixed(1)}%`, laneX + lanes.laneW/2 - clamp(lanes.laneW*.36, 38, 62), lanes.laneY + lanes.laneH - 25, classColors[winner], true);
-      }
-
-      function drawInsectExample(box, t) {
-        const compact = ch < 520 || cw < 620;
-        const reveal = ease(t);
-        const pad = compact ? 16 : 28;
-        const x0 = box.left + pad;
-        const x1 = box.right - pad;
-        const queryH = compact ? 46 : 82;
-        const queryY = box.top + (compact ? 6 : 20);
-        const chartTop = queryY + queryH + (compact ? 12 : 54);
-        const chartBottom = box.bottom - (compact ? 58 : 138);
-        const chartH = Math.max(compact ? 50 : 90, chartBottom - chartTop);
-        const axisY = chartBottom;
-        const domainX = value => lerp(x0 + (compact ? 16 : 30), x1 - (compact ? 16 : 30), value / 8);
-        const densityY = (value, mean, sigma, amplitude) => {
-          const g = Math.exp(-.5 * Math.pow((value - mean) / sigma, 2));
-          return axisY - g * chartH * amplitude;
-        };
-        const drawCurve = (mean, sigma, amplitude, color) => {
-          ctx.beginPath();
-          for (let i = 0; i <= 120; i++) {
-            const value = i / 120 * 8;
-            const px = domainX(value);
-            const py = densityY(value, mean, sigma, amplitude);
-            if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
-          }
-          ctx.strokeStyle = color;
-          ctx.lineWidth = compact ? 3 : 4.5;
-          ctx.lineCap = "round";
-          ctx.stroke();
-        };
-
-        ctx.save();
-        ctx.globalAlpha = reveal;
-        roundedRect(ctx, x0, queryY, x1 - x0, queryH, compact ? 12 : 16);
-        ctx.fillStyle = "#fff"; ctx.fill();
-        ctx.strokeStyle = COLORS.line; ctx.lineWidth = 1.1; ctx.stroke();
-        drawMysteryIcon(x0 + (compact ? 24 : 44), queryY + queryH / 2, compact ? .42 : .66, COLORS.indigo, compact ? 11 : 16);
-        text(ctx, compact ? "NEW INSECT" : "NEW INSECT TO CLASSIFY", x0 + (compact ? 47 : 82), queryY + queryH * .34, compact ? 6.2 : 9, COLORS.muted, "left", 800);
-        text(ctx, "antennae length = 3", x0 + (compact ? 47 : 82), queryY + queryH * .67, compact ? 7.5 : 12, COLORS.ink, "left", 800, true);
-
-        line(ctx, domainX(0), axisY, domainX(8), axisY, COLORS.muted, 1.2);
-        drawCurve(3.05, 1.02, .92, COLORS.indigo);
-        drawCurve(1.65, 1.02, .82, COLORS.coral);
-
-        const queryX = domainX(3);
-        const grassY = densityY(3, 3.05, 1.02, .92);
-        const katyY = densityY(3, 1.65, 1.02, .82);
-        line(ctx, queryX, chartTop - (compact ? 5 : 12), queryX, axisY + (compact ? 14 : 22), COLORS.ink, compact ? 1.2 : 1.7, [5, 5]);
-        ctx.fillStyle = COLORS.indigo; ctx.beginPath(); ctx.arc(queryX, grassY, compact ? 4 : 6, 0, Math.PI * 2); ctx.fill();
-        ctx.fillStyle = COLORS.coral; ctx.beginPath(); ctx.arc(queryX, katyY, compact ? 4 : 6, 0, Math.PI * 2); ctx.fill();
-        line(ctx, queryX, grassY, x1 - (compact ? 42 : 78), grassY, `${COLORS.indigo}88`, 1, [4, 4]);
-        line(ctx, queryX, katyY, x1 - (compact ? 42 : 78), katyY, `${COLORS.coral}88`, 1, [4, 4]);
-        text(ctx, "10", x1 - (compact ? 31 : 58), grassY, compact ? 7 : 11, COLORS.indigo, "center", 850, true);
-        text(ctx, "2", x1 - (compact ? 31 : 58), katyY, compact ? 7 : 11, COLORS.coral, "center", 850, true);
-        text(ctx, "3", queryX, axisY + (compact ? 26 : 36), compact ? 7.5 : 11, COLORS.ink, "center", 850, true);
-
-        const labelY = compact ? chartTop + 8 : chartTop + 4;
-        chip(ctx, "GRASSHOPPER", x0 + (compact ? 3 : 18), labelY, COLORS.indigo, true);
-        chip(ctx, "KATYDID", x0 + (compact ? 111 : 166), labelY, COLORS.coral, true);
-
-        const resultY = box.bottom - (compact ? 27 : 58);
-        const gap = compact ? 8 : 14;
-        const resultW = (x1 - x0 - gap) / 2;
-        [
-          ["GRASSHOPPER", "83.3%", COLORS.indigo],
-          ["KATYDID", "16.7%", COLORS.coral]
-        ].forEach((item, i) => {
-          const rx = x0 + i * (resultW + gap);
-          roundedRect(ctx, rx, resultY - (compact ? 27 : 42), resultW, compact ? 54 : 74, compact ? 11 : 14);
-          ctx.fillStyle = `${item[2]}10`; ctx.fill();
-          ctx.strokeStyle = `${item[2]}55`; ctx.stroke();
-          text(ctx, item[0], rx + (compact ? 10 : 16), resultY - (compact ? 10 : 15), compact ? 5.4 : 8, item[2], "left", 850);
-          text(ctx, item[1], rx + resultW - (compact ? 10 : 16), resultY + (compact ? 8 : 13), compact ? 11 : 17, item[2], "right", 850, true);
-        });
-        ctx.restore();
-      }
-
-      function drawWeatherExample(box, t) {
-        const compact = ch < 520 || cw < 620;
-        const reveal = ease(t);
-        const pad = compact ? 16 : 26;
-        const left = box.left + pad;
-        const right = box.right - pad;
-        const queryY = box.top + (compact ? 10 : 18);
-        const queryH = compact ? 58 : 90;
-        const columns = [
-          ["OUTLOOK", "Sunny", "category"],
-          ["TEMP.", "66", "Gaussian"],
-          ["HUMIDITY", "90", "Gaussian"],
-          ["WINDY", "True", "category"]
-        ];
-        ctx.save();
-        ctx.globalAlpha = reveal;
-        roundedRect(ctx, left, queryY, right - left, queryH, compact ? 12 : 16);
-        ctx.fillStyle = "#fff"; ctx.fill(); ctx.strokeStyle = COLORS.line; ctx.stroke();
-        const colW = (right - left) / 4;
-        columns.forEach((column, i) => {
-          const cx = left + colW * (i + .5);
-          if (i) line(ctx, left + colW * i, queryY + 12, left + colW * i, queryY + queryH - 12, COLORS.line);
-          text(ctx, column[0], cx, queryY + queryH * .25, compact ? 5.1 : 7.5, COLORS.muted, "center", 850);
-          text(ctx, column[1], cx, queryY + queryH * .53, compact ? 8 : 12, COLORS.ink, "center", 800, column[1] !== "Sunny" && column[1] !== "True");
-          text(ctx, column[2], cx, queryY + queryH * .79, compact ? 4.8 : 7, i === 1 || i === 2 ? COLORS.indigo : COLORS.cat, "center", 750);
-        });
-
-        if (compact) {
-          const cardY = queryY + queryH + 8;
-          const gap = 7;
-          const cardW = (right - left - gap) / 2;
-          [
-            ["PLAY: YES", ".000036", "25%", COLORS.cat],
-            ["PLAY: NO", ".000108", "75%", COLORS.coral]
-          ].forEach((item, i) => {
-            const x = left + i * (cardW + gap);
-            roundedRect(ctx, x, cardY, cardW, 40, 10);
-            ctx.fillStyle = `${item[3]}0D`; ctx.fill();
-            ctx.strokeStyle = `${item[3]}66`; ctx.stroke();
-            text(ctx, item[0], x + 9, cardY + 11, 5.2, item[3], "left", 850);
-            text(ctx, item[2], x + cardW - 9, cardY + 11, 6.5, item[3], "right", 850, true);
-            text(ctx, "raw score", x + 9, cardY + 29, 4.7, COLORS.muted, "left", 750);
-            text(ctx, item[1], x + cardW - 9, cardY + 29, 5.7, item[3], "right", 850, true);
-          });
-          text(ctx, "CATEGORY × GAUSSIAN × GAUSSIAN × CATEGORY × PRIOR", (left + right) / 2, cardY + 51, 4.5, COLORS.muted, "center", 800, true);
-          const resultY = box.bottom - 28;
-          roundedRect(ctx, left, resultY, right - left, 24, 9);
-          ctx.fillStyle = `${COLORS.coral}0E`; ctx.fill();
-          ctx.strokeStyle = `${COLORS.coral}66`; ctx.stroke();
-          text(ctx, "PREDICTION", left + 9, resultY + 12, 5, COLORS.muted, "left", 850);
-          text(ctx, "DO NOT PLAY", right - 9, resultY + 12, 7.2, COLORS.coral, "right", 850);
-          ctx.restore();
-          return;
-        }
-
-        const cardsY = queryY + queryH + (compact ? 18 : 38);
-        const cardGap = compact ? 9 : 16;
-        const cardW = (right - left - cardGap) / 2;
-        const cardH = box.bottom - cardsY - (compact ? 64 : 112);
-        const scores = [
-          {
-            label: "PLAY: YES", color: COLORS.cat, score: ".000036", pct: "25%",
-            terms: [["Sunny", "2/9"], ["Temp 66", ".0340"], ["Humidity 90", ".0221"], ["Windy", "3/9"], ["Prior", "9/14"]]
-          },
-          {
-            label: "PLAY: NO", color: COLORS.coral, score: ".000108", pct: "75%",
-            terms: [["Sunny", "3/5"], ["Temp 66", ".0221"], ["Humidity 90", ".0381"], ["Windy", "3/5"], ["Prior", "5/14"]]
-          }
-        ];
-        scores.forEach((score, i) => {
-          const x = left + i * (cardW + cardGap);
-          roundedRect(ctx, x, cardsY, cardW, cardH, compact ? 12 : 16);
-          ctx.fillStyle = "#fff"; ctx.fill();
-          ctx.strokeStyle = `${score.color}${i ? "88" : "44"}`; ctx.lineWidth = i ? 1.8 : 1.1; ctx.stroke();
-          text(ctx, score.label, x + (compact ? 10 : 16), cardsY + (compact ? 15 : 24), compact ? 6.2 : 9, score.color, "left", 850);
-          text(ctx, score.pct, x + cardW - (compact ? 10 : 16), cardsY + (compact ? 15 : 24), compact ? 8.5 : 13, score.color, "right", 850, true);
-          const rowStart = cardsY + (compact ? 34 : 55);
-          const rowGap = compact ? Math.max(14, (cardH - 67) / 5) : Math.max(24, (cardH - 104) / 5);
-          score.terms.forEach((term, j) => {
-            const y = rowStart + j * rowGap;
-            if (j) line(ctx, x + (compact ? 9 : 14), y - rowGap / 2, x + cardW - (compact ? 9 : 14), y - rowGap / 2, COLORS.line);
-            text(ctx, term[0], x + (compact ? 10 : 16), y, compact ? 5.3 : 8, COLORS.dim, "left", 700);
-            text(ctx, term[1], x + cardW - (compact ? 10 : 16), y, compact ? 5.5 : 8.5, score.color, "right", 800, true);
-          });
-          const scoreY = cardsY + cardH - (compact ? 15 : 25);
-          text(ctx, "RAW SCORE", x + (compact ? 10 : 16), scoreY, compact ? 5.1 : 7.5, COLORS.muted, "left", 850);
-          text(ctx, score.score, x + cardW - (compact ? 10 : 16), scoreY, compact ? 6.5 : 10, score.color, "right", 850, true);
-        });
-
-        const resultY = box.bottom - (compact ? 45 : 73);
-        roundedRect(ctx, left, resultY, right - left, compact ? 37 : 58, compact ? 11 : 14);
-        ctx.fillStyle = `${COLORS.coral}0E`; ctx.fill();
-        ctx.strokeStyle = `${COLORS.coral}66`; ctx.stroke();
-        text(ctx, compact ? "PREDICTION" : "FINAL PREDICTION", left + (compact ? 12 : 18), resultY + (compact ? 18.5 : 29), compact ? 5.8 : 8.5, COLORS.muted, "left", 850);
-        text(ctx, "DO NOT PLAY", right - (compact ? 12 : 18), resultY + (compact ? 18.5 : 29), compact ? 9 : 15, COLORS.coral, "right", 850);
-        ctx.restore();
-      }
-
-      function renderMain(now = performance.now()) {
-        mainRaf = 0;
-        if (!cw || !ch) return;
-        const t = ease((now - state.transitionStart) / 520);
-        const box = drawDeskBase(state.stage, t);
-        switch (state.stage) {
-          case 1: drawStage1(box, t); break;
-          case 2: drawStage2(box, t); break;
-          case 3: drawStage3(box, t); break;
-          case 4: drawStage4(box, t); break;
-          case 5: drawStage5(box, t); break;
-          case 6: drawStage6(box, t); break;
-          case 7: drawStage7(box, t); break;
-          case 8: drawStage9(box, t); break;
-          case 9: drawMatrix(box, false); break;
-          case 10: drawMatrix(box, true); break;
-          case 11: drawStage12(box, t); break;
-          case 13: drawStage14(box, t); break;
-          case 14: drawInsectExample(box, t); break;
-          case 15: drawWeatherExample(box, t); break;
-        }
-        if (t < .999 || state.stage === 8 || state.stage === 11) mainRaf = requestAnimationFrame(renderMain);
-      }
-
-      function requestMainRender() {
-        if (!mainRaf) mainRaf = requestAnimationFrame(renderMain);
-      }
-
-      function setStage(stage) {
-        if (stage === state.stage) return;
-        state.stage = stage;
-        state.transitionStart = performance.now();
-        qsa(".chapter").forEach(el => el.classList.toggle("active", Number(el.dataset.stage) === stage));
-        qsa(".stage-dot").forEach(el => el.classList.toggle("active", Number(el.dataset.stage) === stage));
-        const meta = stageMeta[stage];
-        qs("#canvasEyebrow").textContent = `Evidence desk · ${String(stage).padStart(2,"0")}`;
-        qs("#canvasTitle").textContent = meta[0];
-        qs("#canvasCaption").innerHTML = `<strong>${meta[1]}</strong> ${meta[2]}`;
-        mainCanvas.setAttribute("aria-label", `${meta[0]}. ${meta[1]}. ${meta[2]}`);
-        const badge = stage === 13 ? "interactive · live" : stage === 14 ? "2 classes · 1 measure" : stage === 15 ? "2 classes · 4 features" : stage === 3 ? `${state.model} selected` : "3 classes · 3 clues";
-        qs("#liveBadge").textContent = badge;
-        requestMainRender();
-      }
-
-      function updatePlayground() {
-        const result = probabilityScores();
-        const ranking = Object.entries(result.normalized).sort((a,b) => b[1]-a[1]);
-        qs("#playWinner").textContent = ranking[0][0];
-        qs("#playWinner").style.color = classColors[ranking[0][0]];
-        qs("#playConfidence").textContent = `${(ranking[0][1] * 100).toFixed(2)}%`;
-        qs("#playRunner").textContent = ranking[1][0];
-        if (state.stage === 13) {
-          state.transitionStart = performance.now() - 400;
-          requestMainRender();
-        }
-      }
-
-      function buildDots() {
-        const nav = qs("#stageDots");
-        qsa(".chapter").forEach((section, i) => {
-          const stage = Number(section.dataset.stage);
-          const b = document.createElement("button");
-          b.className = `stage-dot${i === 0 ? " active" : ""}`;
-          b.dataset.stage = String(stage);
-          b.setAttribute("aria-label", `Go to stage ${stage}: ${stageMeta[stage][0]}`);
-          b.addEventListener("click", () => section.scrollIntoView({ behavior: "smooth", block: "center" }));
-          nav.appendChild(b);
-        });
-      }
-
-      function setupObservers() {
-        const observer = new IntersectionObserver(entries => {
-          const visible = entries.filter(e => e.isIntersecting).sort((a,b) => b.intersectionRatio - a.intersectionRatio);
-          if (visible[0]) setStage(Number(visible[0].target.dataset.stage));
-        }, { threshold: [0.28, .42, .58], rootMargin: "-8% 0px -8% 0px" });
-        qsa(".chapter").forEach(section => observer.observe(section));
-      }
-
-      function updateProgress() {
-        const max = document.documentElement.scrollHeight - innerHeight;
-        const progress = max > 0 ? clamp(scrollY / max, 0, 1) : 0;
-        qs("#progressBar").style.width = `${progress * 100}%`;
-      }
-
-      const ambient = Array.from({length: 38}, (_, i) => ({
-        x: (i * 0.6180339) % 1,
-        y: (i * 0.4142135 + .11) % 1,
-        r: 3 + (i % 5) * 1.5,
-        phase: i * .71,
-        cls: i % 3
-      }));
-      function drawHero(time) {
-        hctx.clearRect(0,0,heroW,heroH);
-        const colors = [COLORS.rabbit, COLORS.dog, COLORS.cat];
-        ambient.forEach((p, i) => {
-          const x = p.x * heroW + Math.sin(time/1800 + p.phase) * 15;
-          const y = p.y * heroH + Math.cos(time/2200 + p.phase) * 12;
-          hctx.beginPath(); hctx.arc(x,y,p.r,0,Math.PI*2);
-          hctx.fillStyle = colors[p.cls] + "24"; hctx.fill();
-          if (i % 4 === 0) {
-            const q = ambient[(i + 7) % ambient.length];
-            line(hctx, x, y, q.x*heroW, q.y*heroH, colors[p.cls] + "16", 1);
-          }
-        });
-        if (!matchMedia("(prefers-reduced-motion: reduce)").matches) requestAnimationFrame(drawHero);
-      }
-
-      buildDots();
-      setupObservers();
-      resizeMain();
-      resizeHero();
-      updatePlayground();
-      updateProgress();
-      requestAnimationFrame(drawHero);
-
-      addEventListener("resize", () => { resizeMain(); resizeHero(); updateProgress(); }, { passive: true });
-      addEventListener("scroll", updateProgress, { passive: true });
-
-      qsa(".choice").forEach(button => button.addEventListener("click", () => {
-        state.model = button.dataset.model;
-        qsa(".choice").forEach(b => b.classList.toggle("active", b === button));
-        qs("#liveBadge").textContent = `${state.model} selected`;
-        requestMainRender();
-      }));
-      qsa(".toggle").forEach(button => button.addEventListener("click", () => {
-        const feature = button.dataset.feature;
-        const yes = button.dataset.value === "yes";
-        state.features[feature] = yes;
-        qsa(`.toggle[data-feature="${feature}"]`).forEach(b => {
-          const selected = b === button;
-          b.classList.toggle("active", selected);
-          b.setAttribute("aria-pressed", String(selected));
-        });
-        updatePlayground();
-      }));
-    })();
-  </script>
+  <footer class="site-footer statml-module-footer"><span>STATML ACADEMY / CONCEPT MODULE</span><span>Naive Bayes, in evidence</span><a href="#top" aria-label="Return to the top">↑</a></footer>
+  <script src="core-modules.js" defer></script>
+  <script src="academic-rigor.js" defer></script>
+  <script src="handwritten-theme.js" defer></script>
+  <script src="naive-bayes.js" defer></script>
 </body>
 </html>
