@@ -1,0 +1,5 @@
+Use case: precise-object-edit
+Asset type: Deep Learning educational module background plate
+Primary request: Remove only the isolated vertical green crayon swatch along the far right edge and the isolated horizontal coral/orange crayon swatch in the lower-right margin. Reconstruct those two areas as the same warm cream fibrous notebook paper texture surrounding them.
+Input image: ch08-training-chart-material-v1.png is the edit target; preserve everything else exactly.
+Constraints: keep the full 3:2 composition, central hand-penciled graph grid, faint axes and grid geometry, top-left pale blue crayon swatch, warm paper color, paper grain, lighting, line weight, and all spacing unchanged. Do not add any text, symbols, borders, marks, shadows, or new objects. Change only the two specified green and coral/orange swatches. No watermark.

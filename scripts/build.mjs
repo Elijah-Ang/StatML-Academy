@@ -7,7 +7,7 @@ import { CORE_MODULES, coreNavLabel } from './core-modules.mjs';
 const root = resolve(import.meta.dirname, '..');
 const dist = join(root, 'dist');
 const validateOnly = process.argv.includes('--validate-only');
-const sources = ['index.html', 'modules'];
+const sources = ['index.html', 'modules', 'assets'];
 const originalModules = CORE_MODULES.map(module=>module.slug);
 const foundationModules = Object.keys(foundationLessons);
 const banned = [

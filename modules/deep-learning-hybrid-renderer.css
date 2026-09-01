@@ -1,0 +1,631 @@
+/* Deep Learning hybrid-v2 compositor.
+ *
+ * Each chapter has one opaque raster plate and one live SVG layer.  The plate
+ * supplies paper, tape, and the quiet underdrawing; the SVG owns labels,
+ * values, arrows, selections, and other state.  This file is deliberately
+ * local to the module: no masks, global filters, sticky art, or running
+ * vibration/animation are introduced here.
+ */
+
+html[data-deep-learning-renderer="v2"] .visual-stage {
+  position: sticky !important;
+  top: 68px !important;
+  height: calc(100vh - 88px) !important;
+  min-height: 560px !important;
+  overflow: hidden !important;
+  background: #fbf6e9 !important;
+  box-shadow: 0 14px 34px rgba(76, 65, 50, .08) !important;
+}
+
+html[data-deep-learning-renderer="v2"] .visual-stage .canvas-wrap {
+  position: relative !important;
+  min-height: 0 !important;
+  height: auto !important;
+  aspect-ratio: 1000 / 666;
+  /* The shell's middle grid track is taller than a 3:2 board at desktop
+     widths.  Center the board in that track so the unused paper lane is
+     shared above and below the artboard instead of collecting beneath it.
+     The board keeps its authored aspect ratio and the caption/header tracks
+     remain untouched. */
+  align-self: center !important;
+  overflow: hidden !important;
+  isolation: isolate;
+  background: #fbf6e9 !important;
+}
+
+html[data-deep-learning-renderer="v2"] .visual-stage .canvas-wrap::before,
+html[data-deep-learning-renderer="v2"] .visual-stage .canvas-wrap::after {
+  content: none !important;
+  display: none !important;
+}
+
+/* The bundled painter is guarded at its My component seam.  Keep any stale
+   canvas node inert if a cached React tree briefly leaves one behind. */
+html[data-deep-learning-renderer="v2"] .visual-stage .canvas-wrap > canvas {
+  display: none !important;
+}
+
+html[data-deep-learning-renderer="v2"] .deep-hybrid-wrap,
+html[data-deep-learning-renderer="v2"] .deep-hybrid-host {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+}
+
+html[data-deep-learning-renderer="v2"] .deep-hybrid-host {
+  overflow: hidden;
+  isolation: isolate;
+  aspect-ratio: 1000 / 666;
+  background: #fbf6e9;
+}
+
+/* Plate and live SVG are siblings inside this one frame.  Centering and
+   scene-scale transforms land here once, so the raster underdrawing and
+   live ink always move together. */
+html[data-deep-learning-renderer="v2"] .deep-hybrid-scene-frame {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+  transform-origin: 0 0;
+}
+
+html[data-deep-learning-renderer="v2"] .deep-hybrid-plate,
+html[data-deep-learning-renderer="v2"] .deep-hybrid-live {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  aspect-ratio: 1000 / 666;
+}
+
+html[data-deep-learning-renderer="v2"] .deep-hybrid-plate {
+  z-index: 0;
+  background: #fbf6e9;
+  pointer-events: none;
+}
+
+html[data-deep-learning-renderer="v2"] .deep-hybrid-plate image {
+  display: block;
+  pointer-events: none;
+}
+
+html[data-deep-learning-renderer="v2"] .deep-hybrid-live {
+  z-index: 1;
+  color: #2c2926;
+  pointer-events: none;
+  overflow: hidden;
+  text-rendering: optimizeLegibility;
+  shape-rendering: geometricPrecision;
+}
+
+html[data-deep-learning-renderer="v2"] .deep-hybrid-live .deep-live-text,
+html[data-deep-learning-renderer="v2"] .deep-hybrid-live .deep-live-mark,
+html[data-deep-learning-renderer="v2"] .deep-hybrid-live .deep-live-dot {
+  vector-effect: non-scaling-stroke;
+}
+
+html[data-deep-learning-renderer="v2"] .deep-hybrid-live .deep-live-text {
+  paint-order: stroke fill;
+}
+
+/* Class names are shared across the three prediction rows.  Keep them as
+   neutral graphite ink and give the live glyphs a warm-paper halo so they
+   remain legible over the tinted circles at both board scales. */
+html[data-deep-learning-renderer="v2"] .deep-hybrid-live .deep-common-label {
+  fill: #2c2926 !important;
+  stroke: #fbf6e9 !important;
+  stroke-width: 2.8px !important;
+  stroke-linejoin: round !important;
+  paint-order: stroke fill !important;
+}
+
+/* The small narrative probability example is a teaching readout, not a
+   footnote.  Keep rows, values, and bars in a readable 14–16px / 9–11px
+   range without changing its existing grid or hit-area contract. */
+html[data-deep-learning-renderer="v2"] body.hw-handwritten .narrative .micro-example > div {
+  min-height: 32px !important;
+  font-size: 15px !important;
+}
+
+html[data-deep-learning-renderer="v2"] body.hw-handwritten .narrative .micro-example > div > span {
+  color: #292724 !important;
+  font-size: 15px !important;
+}
+
+html[data-deep-learning-renderer="v2"] body.hw-handwritten .narrative .micro-example b {
+  height: 10px !important;
+}
+
+/* The chapter-specific lesson selector wins over the material stylesheet's
+   compact default bar height.  Keep this at the requested 9–11px band while
+   leaving the example's row hit area and layout unchanged. */
+html[data-deep-learning-renderer="v2"] body.hw-handwritten .narrative .lesson-step[data-step="0"] .micro-example > div > b {
+  height: 10px !important;
+}
+
+html[data-deep-learning-renderer="v2"] body.hw-handwritten .narrative .micro-example code {
+  color: #2869ad !important;
+  font-size: 14px !important;
+}
+
+/* Live state is animated only after a semantic chapter/control event.  The
+   renderer uses WAAPI when available and the class rules below as its finite
+   fallback; nothing here runs on an idle loop. */
+html[data-deep-learning-renderer="v2"] .deep-hybrid-live [data-layer="live-state"].deep-motion-pending [data-motion-active="true"] {
+  opacity: 0;
+}
+
+html[data-deep-learning-renderer="v2"] .deep-hybrid-live [data-layer="live-state"].deep-motion-pending path[data-motion="draw"][data-motion-active="true"],
+html[data-deep-learning-renderer="v2"] .deep-hybrid-live [data-layer="live-state"].deep-motion-run path[data-motion="draw"][data-motion-active="true"] {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+}
+
+html[data-deep-learning-renderer="v2"] .deep-hybrid-live [data-layer="live-state"].deep-motion-run [data-motion-active="true"] {
+  animation-duration: 520ms;
+  animation-delay: var(--deep-motion-delay, 0ms);
+  animation-timing-function: cubic-bezier(.22, 1, .36, 1);
+  animation-fill-mode: both;
+  will-change: transform, opacity;
+}
+
+html[data-deep-learning-renderer="v2"] .deep-hybrid-live [data-layer="live-state"].deep-motion-run [data-motion="draw"][data-motion-active="true"] {
+  animation-name: deep-live-draw;
+}
+
+html[data-deep-learning-renderer="v2"] .deep-hybrid-live [data-layer="live-state"].deep-motion-run [data-motion="enter"][data-motion-active="true"] {
+  animation-name: deep-live-enter;
+}
+
+html[data-deep-learning-renderer="v2"] .deep-hybrid-live [data-layer="live-state"].deep-motion-run [data-motion="pulse"][data-motion-active="true"] {
+  animation-name: deep-live-pulse;
+  animation-duration: 420ms;
+}
+
+html[data-deep-learning-renderer="v2"] .deep-hybrid-live [data-layer="live-state"].deep-motion-run [data-motion="travel"][data-motion-active="true"] {
+  animation-name: deep-live-travel;
+}
+
+@keyframes deep-live-draw {
+  from { opacity: 0; stroke-dashoffset: 1; }
+  to { opacity: 1; stroke-dashoffset: 0; }
+}
+
+@keyframes deep-live-enter {
+  from { opacity: 0; transform: translateY(5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes deep-live-pulse {
+  0% { opacity: 0; transform: scale(.97); }
+  68% { opacity: 1; transform: scale(1.025); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+@keyframes deep-live-travel {
+  from { opacity: 1; transform: var(--deep-motion-from-transform, translate(0, 0)); }
+  to { opacity: 1; transform: translate(0, 0); }
+}
+
+html[data-deep-learning-renderer="v2"] .deep-hybrid-live .deep-live-underline,
+html[data-deep-learning-renderer="v2"] .deep-hybrid-live .deep-live-tag-rule,
+html[data-deep-learning-renderer="v2"] .deep-hybrid-live .deep-live-note-rule {
+  opacity: .52;
+}
+
+html[data-deep-learning-renderer="v2"] .deep-hybrid-live [data-layer="focus"] {
+  pointer-events: none;
+}
+
+/* The existing hero is part of the module shell, but its default signal
+   labels breathe and its scroll cue sweeps.  Keep the authored geometry
+   while freezing those decorative pieces for a stable source render. */
+html[data-deep-learning-renderer="v2"] .hero::before,
+html[data-deep-learning-renderer="v2"] .hero::after {
+  content: none !important;
+  display: none !important;
+  background: none !important;
+  background-image: none !important;
+}
+
+html[data-deep-learning-renderer="v2"] .hero-orbit {
+  width: clamp(220px, 25vw, 360px) !important;
+  height: clamp(220px, 25vw, 360px) !important;
+  right: clamp(72px, 8vw, 124px) !important;
+  top: 50% !important;
+  z-index: 0 !important;
+  border: 1.6px solid rgba(53, 111, 174, .46) !important;
+  border-radius: 50% !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  pointer-events: none !important;
+  animation: none !important;
+  transform: translateY(-50%) rotate(-16deg) !important;
+}
+
+html[data-deep-learning-renderer="v2"] .hero-orbit.orbit-two {
+  width: clamp(148px, 15vw, 214px) !important;
+  height: clamp(148px, 15vw, 214px) !important;
+  right: clamp(122px, 11.5vw, 176px) !important;
+  border-color: rgba(200, 94, 88, .17) !important;
+  opacity: .42 !important;
+  transform: translateY(-50%) rotate(18deg) !important;
+}
+
+html[data-deep-learning-renderer="v2"] .hero-signal {
+  right: clamp(72px, 8vw, 124px) !important;
+  top: 50% !important;
+  width: clamp(220px, 25vw, 360px) !important;
+  height: clamp(220px, 25vw, 360px) !important;
+  z-index: 1 !important;
+  opacity: 1 !important;
+  transform: translateY(-50%) !important;
+  pointer-events: none !important;
+  animation: none !important;
+}
+
+html[data-deep-learning-renderer="v2"] .hero-signal::before {
+  content: none !important;
+  display: none !important;
+}
+
+html[data-deep-learning-renderer="v2"] .hero-signal::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 13px;
+  height: 13px;
+  border: 1.4px solid rgba(53, 111, 174, .68);
+  border-radius: 50%;
+  background: #fbf6e9;
+  box-shadow: 0 0 0 4px rgba(53, 111, 174, .08);
+  transform: translate(-50%, -50%);
+}
+
+html[data-deep-learning-renderer="v2"] .hero-signal span {
+  left: auto !important;
+  top: auto !important;
+  right: auto !important;
+  bottom: auto !important;
+  z-index: 2 !important;
+  display: block !important;
+  width: max-content !important;
+  max-width: none !important;
+  padding: 5px 8px !important;
+  border: 1px solid rgba(88, 83, 72, .3) !important;
+  border-radius: 4px 7px 3px 6px !important;
+  background: rgba(251, 246, 233, .94) !important;
+  background-image: none !important;
+  color: #356fae !important;
+  box-shadow: 1px 2px 0 rgba(88, 83, 72, .08) !important;
+  font: 650 10px/1.2 "Kalam", "Patrick Hand", cursive !important;
+  letter-spacing: .08em !important;
+  text-transform: uppercase;
+  white-space: nowrap;
+  backdrop-filter: none !important;
+  animation: none !important;
+  transition: none !important;
+}
+
+html[data-deep-learning-renderer="v2"] .hero-signal span:nth-child(1) {
+  left: 0 !important;
+  top: 50% !important;
+  color: #356fae !important;
+  transform: translateY(-50%) rotate(-3deg) !important;
+}
+
+html[data-deep-learning-renderer="v2"] .hero-signal span:nth-child(2) {
+  left: 50% !important;
+  top: 0 !important;
+  color: #7960ae !important;
+  transform: translateX(-50%) rotate(2deg) !important;
+}
+
+html[data-deep-learning-renderer="v2"] .hero-signal span:nth-child(3) {
+  right: 0 !important;
+  top: 50% !important;
+  color: #c85e58 !important;
+  transform: translateY(-50%) rotate(3deg) !important;
+}
+
+html[data-deep-learning-renderer="v2"] .hero-signal span:nth-child(4) {
+  left: 50% !important;
+  bottom: 0 !important;
+  color: #4f956b !important;
+  transform: translateX(-50%) rotate(-2deg) !important;
+}
+
+html[data-deep-learning-renderer="v2"] .scroll-cue {
+  position: absolute !important;
+  top: auto !important;
+  left: auto !important;
+  right: max(7vw, 64px) !important;
+  bottom: 55px !important;
+  z-index: 3 !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+  width: max-content !important;
+  max-width: calc(100% - 2 * max(7vw, 64px)) !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  color: #2c2926 !important;
+  font: 650 10px/1.2 "Kalam", "Patrick Hand", cursive !important;
+  letter-spacing: .08em !important;
+  white-space: nowrap !important;
+  transform: none !important;
+  animation: none !important;
+  transition: none !important;
+}
+
+html[data-deep-learning-renderer="v2"] .scroll-line {
+  flex: 0 0 58px !important;
+  width: 58px !important;
+  height: 2px !important;
+  overflow: hidden !important;
+  background: rgba(44, 41, 38, .62) !important;
+  box-shadow: none !important;
+}
+
+html[data-deep-learning-renderer="v2"] .scroll-line::after {
+  background: #356fae !important;
+  animation: none !important;
+  transform: none !important;
+}
+
+@media (max-width: 820px) {
+  /* Reserve the notch/safe-area band for the fixed topbar and carry the same
+     offset into chapter anchor positioning.  The fallback is zero on normal
+     browser captures, so the existing compact rhythm is preserved. */
+  html[data-deep-learning-renderer="v2"] .topbar {
+    top: 0 !important;
+    height: calc(50px + env(safe-area-inset-top, 0px)) !important;
+    padding-top: env(safe-area-inset-top, 0px) !important;
+  }
+
+  html[data-deep-learning-renderer="v2"] .hero {
+    padding-top: calc(104px + env(safe-area-inset-top, 0px)) !important;
+  }
+
+  html[data-deep-learning-renderer="v2"] .lesson-step {
+    scroll-margin-top: calc(74px + env(safe-area-inset-top, 0px)) !important;
+  }
+
+  /* Mobile reading is article-local.  The shared stage is intentionally
+     removed from the flow so each chapter carries its own nearby scene. */
+  html[data-deep-learning-renderer="v2"] .visual-stage {
+    display: none !important;
+  }
+
+  html[data-deep-learning-renderer="v2"] .story-shell {
+    grid-template-areas: "narrative" !important;
+  }
+
+  html[data-deep-learning-renderer="v2"] .lesson-step > .deep-mobile-scene.deep-hybrid-wrap {
+    position: relative !important;
+    inset: auto !important;
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1000 / 666;
+    min-height: 0;
+    max-height: none;
+    margin: 28px 0 34px;
+    overflow: hidden;
+    background: #fbf6e9;
+    isolation: isolate;
+    /* The narrative's left guide/padding leaves the inline board's center
+       about 12px right of the phone viewport.  Recenter the complete board
+       without widening it, so neither edge can overflow a narrow handset. */
+    transform: translateX(-12px);
+  }
+
+  html[data-deep-learning-renderer="v2"] .deep-mobile-scene .deep-hybrid-host {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    aspect-ratio: 1000 / 666;
+  }
+
+  html[data-deep-learning-renderer="v2"] .deep-mobile-scene .deep-hybrid-live {
+    overflow: hidden;
+    aspect-ratio: 1000 / 666;
+  }
+
+  html[data-deep-learning-renderer="v2"] .visual-stage {
+    position: relative !important;
+    top: auto !important;
+    height: auto !important;
+    min-height: 0 !important;
+    margin: 28px 0 34px !important;
+    box-shadow: none !important;
+    overflow: hidden !important;
+  }
+
+  html[data-deep-learning-renderer="v2"] .visual-stage .canvas-wrap {
+    height: clamp(300px, 82vw, 340px) !important;
+    min-height: 300px !important;
+  }
+
+  html[data-deep-learning-renderer="v2"] .visual-caption {
+    min-height: 104px;
+  }
+
+  html[data-deep-learning-renderer="v2"] .lesson-step {
+    scroll-margin-top: 74px;
+  }
+
+  html[data-deep-learning-renderer="v2"] .hero-orbit {
+    width: clamp(174px, 49vw, 238px) !important;
+    height: clamp(174px, 49vw, 238px) !important;
+    right: clamp(18px, 5vw, 38px) !important;
+    top: 67% !important;
+  }
+
+  html[data-deep-learning-renderer="v2"] .hero-orbit.orbit-two {
+    width: clamp(116px, 32vw, 164px) !important;
+    height: clamp(116px, 32vw, 164px) !important;
+    right: clamp(56px, 15vw, 98px) !important;
+    top: 67% !important;
+  }
+
+  html[data-deep-learning-renderer="v2"] .hero-signal {
+    right: clamp(18px, 5vw, 38px) !important;
+    top: 67% !important;
+    width: clamp(174px, 49vw, 238px) !important;
+    height: clamp(174px, 49vw, 238px) !important;
+  }
+
+  html[data-deep-learning-renderer="v2"] .hero-signal span {
+    padding: 4px 6px !important;
+    font-size: 9px !important;
+  }
+
+  html[data-deep-learning-renderer="v2"] .scroll-cue {
+    right: 18px !important;
+    bottom: 26px !important;
+    max-width: calc(100% - 36px) !important;
+    gap: 10px !important;
+    font-size: 9px !important;
+  }
+
+  html[data-deep-learning-renderer="v2"] .scroll-line {
+    flex-basis: 48px !important;
+    width: 48px !important;
+  }
+}
+
+@media (max-width: 520px) {
+  html[data-deep-learning-renderer="v2"] .visual-stage .canvas-wrap {
+    height: clamp(300px, 82vw, 340px) !important;
+  }
+
+  html[data-deep-learning-renderer="v2"] .deep-hybrid-live {
+    text-rendering: geometricPrecision;
+  }
+
+  /* The 3:2 mobile board stays at the plate's native aspect ratio.  Scale by
+     semantic role and scene instead of applying one oversized floor to every
+     glyph.  Explicit mobileCap values from the renderer win for tight lanes. */
+  html[data-deep-learning-renderer="v2"] .deep-mobile-scene .deep-hybrid-live .deep-live-text {
+    font-size: var(--deep-live-size, 20px) !important;
+  }
+
+  html[data-deep-learning-renderer="v2"] .deep-mobile-scene .deep-hybrid-host .deep-live-label {
+    font-size: clamp(24px, calc(var(--deep-live-size, 20px) * 1.5), var(--deep-live-mobile-cap, var(--deep-scene-mobile-cap, 35px))) !important;
+  }
+
+  html[data-deep-learning-renderer="v2"] .deep-mobile-scene .deep-hybrid-host .deep-live-utility {
+    font-size: clamp(20px, calc(var(--deep-live-size, 20px) * 1.4), var(--deep-live-mobile-cap, var(--deep-scene-mobile-cap, 34px))) !important;
+  }
+
+  html[data-deep-learning-renderer="v2"] .deep-mobile-scene .deep-hybrid-host .deep-live-value {
+    font-size: clamp(24px, calc(var(--deep-live-size, 20px) * 1.5), var(--deep-live-mobile-cap, var(--deep-scene-mobile-cap, 38px))) !important;
+  }
+
+  html[data-deep-learning-renderer="v2"] .deep-mobile-scene .deep-hybrid-host .deep-common-label {
+    font-size: clamp(30px, calc(var(--deep-live-size, 20px) * 2.1), var(--deep-live-mobile-cap, 36px)) !important;
+  }
+
+  html[data-deep-learning-renderer="v2"] .deep-mobile-scene .deep-hybrid-host .deep-live-note {
+    font-size: clamp(21px, calc(var(--deep-live-size, 20px) * 1.35), var(--deep-live-mobile-cap, 30px)) !important;
+  }
+
+  /* Route sublabels are a distinct semantic tier: they need enough ink to
+     read on a phone, but stay below the route names and use the extra row
+     spacing authored in the mobile release layout. */
+  html[data-deep-learning-renderer="v2"] .deep-mobile-scene .deep-hybrid-host .deep-live-route-sub {
+    font-size: clamp(24px, calc(var(--deep-live-size, 20px) * 1.6), var(--deep-live-mobile-cap, 27px)) !important;
+  }
+
+  /* Mobile readability is semantic rather than a blanket SVG scale.  These
+     tiers reserve the 12px-ish screen floor for the labels that carry the
+     lesson, while the scene-specific caps and reflowed coordinates keep long
+     annotations inside their lanes.  Ch03/Ch08 retain their existing
+     authored typography. */
+  html[data-deep-learning-renderer="v2"] .deep-mobile-scene .deep-hybrid-host[data-chapter="1"] .deep-mobile-primary {
+    font-size: clamp(36px, calc(var(--deep-live-size, 20px) * 2.55), var(--deep-live-mobile-cap, 44px)) !important;
+  }
+
+  html[data-deep-learning-renderer="v2"] .deep-mobile-scene .deep-hybrid-host[data-chapter="1"] .deep-mobile-metric {
+    font-size: clamp(42px, calc(var(--deep-live-size, 20px) * 1.9), var(--deep-live-mobile-cap, 46px)) !important;
+  }
+
+  html[data-deep-learning-renderer="v2"] .deep-mobile-scene .deep-hybrid-host[data-chapter="2"] .deep-mobile-primary {
+    font-size: clamp(34px, calc(var(--deep-live-size, 20px) * 1.65), var(--deep-live-mobile-cap, 38px)) !important;
+  }
+
+  html[data-deep-learning-renderer="v2"] .deep-mobile-scene .deep-hybrid-host[data-chapter="2"] .deep-mobile-secondary {
+    font-size: clamp(32px, calc(var(--deep-live-size, 20px) * 1.6), var(--deep-live-mobile-cap, 36px)) !important;
+  }
+
+  html[data-deep-learning-renderer="v2"] .deep-mobile-scene .deep-hybrid-host[data-chapter="4"] .deep-mobile-primary {
+    font-size: clamp(38px, calc(var(--deep-live-size, 20px) * 1.72), var(--deep-live-mobile-cap, 44px)) !important;
+  }
+
+  html[data-deep-learning-renderer="v2"] .deep-mobile-scene .deep-hybrid-host[data-chapter="9"] .deep-mobile-primary {
+    font-size: clamp(38px, calc(var(--deep-live-size, 20px) * 1.76), var(--deep-live-mobile-cap, 44px)) !important;
+  }
+
+  html[data-deep-learning-renderer="v2"] .deep-mobile-scene .deep-hybrid-host[data-chapter="12"] .deep-mobile-primary {
+    font-size: clamp(36px, calc(var(--deep-live-size, 20px) * 1.8), var(--deep-live-mobile-cap, 42px)) !important;
+  }
+
+  html[data-deep-learning-renderer="v2"] .deep-mobile-scene .deep-hybrid-host[data-chapter="12"] .deep-mobile-secondary {
+    font-size: clamp(30px, calc(var(--deep-live-size, 20px) * 1.6), var(--deep-live-mobile-cap, 34px)) !important;
+  }
+
+  html[data-deep-learning-renderer="v2"] .deep-mobile-scene .deep-hybrid-host[data-chapter="12"] .deep-live-route-step {
+    font-size: clamp(40px, calc(var(--deep-live-size, 20px) * 2.5), var(--deep-live-mobile-cap, 44px)) !important;
+  }
+
+  /* Route sublabels are supporting copy.  Give them a clean baseline gap
+     beneath the larger route names instead of letting the two SVG rows touch
+     at phone scale. */
+  html[data-deep-learning-renderer="v2"] .deep-mobile-scene .deep-hybrid-host[data-chapter="12"] .deep-live-route-sub {
+    font-size: clamp(26px, calc(var(--deep-live-size, 20px) * 1.5), var(--deep-live-mobile-cap, 30px)) !important;
+  }
+
+  /* Scene-level ceilings keep the long annotation lanes conservative while
+     allowing the deliberately denser split/chart scenes to breathe. */
+  html[data-deep-learning-renderer="v2"] .deep-mobile-scene .deep-hybrid-host[data-chapter="1"] { --deep-scene-mobile-cap: 38px; }
+  html[data-deep-learning-renderer="v2"] .deep-mobile-scene .deep-hybrid-host[data-chapter="2"] { --deep-scene-mobile-cap: 34px; }
+  html[data-deep-learning-renderer="v2"] .deep-mobile-scene .deep-hybrid-host[data-chapter="4"] { --deep-scene-mobile-cap: 35px; }
+  html[data-deep-learning-renderer="v2"] .deep-mobile-scene .deep-hybrid-host[data-chapter="9"] { --deep-scene-mobile-cap: 35px; }
+  html[data-deep-learning-renderer="v2"] .deep-mobile-scene .deep-hybrid-host[data-chapter="12"] { --deep-scene-mobile-cap: 34px; }
+
+  /* Preserve the deliberately larger split and training-curve labels while
+     still routing them through semantic caps rather than a blanket floor. */
+  html[data-deep-learning-renderer="v2"] .deep-mobile-scene .deep-hybrid-host[data-chapter="3"],
+  html[data-deep-learning-renderer="v2"] .deep-mobile-scene .deep-hybrid-host[data-chapter="8"] {
+    --deep-scene-mobile-cap: 42px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-deep-learning-renderer="v2"] .deep-hybrid-live [data-motion-active="true"],
+  html[data-deep-learning-renderer="v2"] .hero-orbit,
+  html[data-deep-learning-renderer="v2"] .hero-signal,
+  html[data-deep-learning-renderer="v2"] .hero-signal span,
+  html[data-deep-learning-renderer="v2"] .scroll-cue,
+  html[data-deep-learning-renderer="v2"] .scroll-line::after {
+    animation: none !important;
+    transition: none !important;
+    will-change: auto !important;
+  }
+  html[data-deep-learning-renderer="v2"] .deep-hybrid-live [data-motion="draw"][data-motion-active="true"] {
+    stroke-dashoffset: 0 !important;
+  }
+}

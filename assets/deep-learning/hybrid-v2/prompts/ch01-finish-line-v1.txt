@@ -1,0 +1,18 @@
+Use case: scientific-educational
+Asset type: Deep Learning chapter 1 hybrid interactive scene artwork, landscape 3:2
+Input images: Images 1–4 are style references only; do not copy their layouts, brands, text, browser chrome, or exact diagrams.
+Primary request: create a genuinely hand-drawn, text-free educational illustration layer for the concept “one cat photograph becomes a class-probability distribution.” This will sit beneath live HTML/canvas labels, values, bars, arrows, and interactions.
+Scene/backdrop: warm cream notebook paper with very faint pencil ruling and subtle real paper grain.
+Subject: on the left, a modest hand-sketched cat portrait inside an imperfect taped paper-photo frame; in the middle, generous empty paper space for a live coded arrow; on the right, a quiet torn-paper output area with three empty horizontal marker tracks and no labels or values.
+Style/medium: convincingly made by one person using black fineliner, pencil, blue marker, green marker, coral marker, and translucent beige tape; uneven pressure, slight wobble, tiny ink pooling, dry-marker streaks, imperfect cut edges, subtle graphite construction marks.
+Composition/framing: restrained landscape teaching diagram, left-to-right reading order, large clean margins; cat tile about 30% width, center corridor about 18%, output paper about 40%; nothing clipped.
+Color palette: warm cream paper, near-black ink, structural blue, selected green, one quiet coral accent.
+Materials/textures: authentic fibrous paper, translucent tape, waxy marker grain, pencil smudges.
+Constraints: absolutely no words, letters, numbers, equations, axes, legends, UI controls, browser chrome, logos, watermarks, perfect rounded cards, smooth vector gradients, glossy digital shadows, or clean app-interface styling. The three output tracks must remain empty so code can draw changing probabilities. Keep the artwork subordinate to dynamic overlays and preserve generous negative space.
+
+Generation mode: built-in ImageGen.
+Style references:
+- /Users/elijahang/Downloads/ChatGPT Image Aug 23, 2026, 07_11_55 PM (4).png
+- /Users/elijahang/Downloads/ChatGPT Image Aug 23, 2026, 07_11_53 PM (1).png
+- /Users/elijahang/Downloads/ChatGPT Image Aug 23, 2026, 07_11_54 PM (2).png
+- /Users/elijahang/Downloads/ChatGPT Image Aug 23, 2026, 07_11_55 PM (3).png

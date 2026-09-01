@@ -1,0 +1,20 @@
+Use case: scientific-educational
+Asset type: Deep Learning Chapter 6 hybrid interactive scene artwork, opaque 3:2 paper plate
+Input images: Images 1–4 are supplied StatSketch/StatML style references only; use them for the material and drawing style, never copy their layout, text, browser chrome, brands, or diagrams.
+Primary request: Create a calm, tactile hand-made underdrawing for a live lesson about depth building features. The artwork is an opaque uniform warm-paper plate underneath live SVG/code labels, arrows, layer names, and a final class result. It must provide real tracing-paper, pencil, marker, tape, and paper material without baking semantic text or changing data.
+Scene/backdrop: genuinely uniform warm cream #FBF6E9 notebook paper with sparse faint horizontal pencil rules and subtle fibrous paper grain. No transparency checkerboard, no gray squares, no digital panel.
+Subject: four separate translucent tracing-paper sheets laid out left-to-right with generous space between them. Each sheet has an imperfect pencil/ink edge and a progressively composed abstract hand-drawn mark only: first tiny pixel-like dots, second a few short edge strokes, third repeated texture dashes, fourth a simple abstract part silhouette. Use a couple of small blank masking-tape strips attached to the sheets as physical material. Keep all four sheets individually crop-able and separated; do not stack or overlap them. Leave a large clean lane below/right for live class output.
+Style/medium: Use the supplied StatSketch/StatML reference images only as a material and drawing-style reference, not as a layout reference. Same single human artist across the set: dark brown-black felt-tip and graphite pencil contours with slight double-stroke registration, blue/green/coral/amber marker accents, restrained lavender, translucent highlighter bleed, uneven hand-cut edges, subtle tape fiber and pencil construction marks. Sparse, careful, notebook study sheet, not a polished network icon or dashboard.
+Composition/framing: landscape 3:2, four separated horizontal tracing sheets, each modest in scale with breathing room; no outer border, no rounded CSS card, no drop shadow. Keep a blank lower lane and margins for live layer labels, directional arrows, final DOG result, and reveal marker. No connecting arrows are drawn in the plate.
+Lighting/mood: flat warm paper study-sheet light, focused and quiet.
+Color palette: warm cream #FBF6E9, graphite ink, blue structural accent, green positive, coral secondary, amber caution, restrained lavender.
+Materials/textures: translucent tracing paper with soft paper edges, dry marker streaks, graphite smudge, tiny registration marks, attached masking tape, static only.
+Text (verbatim): ""
+Constraints: static supporting underdrawing only; every layer name, tab, arrow, class result, selection, and animation remains live code. Do not duplicate live geometry. Background intentionally opaque uniform #FBF6E9; no component touches another. Keep blank lanes clearly usable at phone scale.
+Avoid: checkerboard transparency, fake alpha grid, gray-and-white squares, words, letters, numbers, pseudo-writing, mathematical symbols, equations, labels, captions, axes, legends, percentages, controls, buttons, browser chrome, logos, stock icons, perfect vector cards, hard digital borders, glossy gradients, 3D rendering, heavy hatch/noise, giant opaque overlapping sheets, unexplained decorative shapes, baked-in arrows, connectors, class badges, UI, hidden semantic state, or any text-like mark.
+Generation mode: built-in ImageGen.
+Style references:
+- /Users/elijahang/Downloads/ChatGPT Image Aug 23, 2026, 07_11_55 PM (4).png
+- /Users/elijahang/Downloads/ChatGPT Image Aug 23, 2026, 07_11_53 PM (1).png
+- /Users/elijahang/Downloads/ChatGPT Image Aug 23, 2026, 07_11_54 PM (2).png
+- /Users/elijahang/Downloads/ChatGPT Image Aug 23, 2026, 07_11_55 PM (3).png
