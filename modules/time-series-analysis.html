@@ -1037,14 +1037,14 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
             <div class="stage" data-stage="4">
                 <div class="stage-label">Stage 04</div>
                 <h2>The Assumption of Stationarity</h2>
-                <p>Many advanced statistical models require a series to be <strong>stationary</strong> before forecasting. A stationary series has statistical properties that do not change over time.</p>
+                <p>Many advanced statistical models require a series to be <strong>stationary</strong> before forecasting. For weak stationarity, the mean and finite variance are constant, and autocovariance depends only on lag, not calendar time.</p>
                 
                 <div class="card">
                     <div class="card-title">Stationarity Conditions</div>
                     <ul style="padding-left: 1.5rem; font-size: 0.95rem; color: var(--text-dim);">
                         <li style="margin-bottom: 0.5rem;"><strong>Constant Mean:</strong> The average does not drift up or down.</li>
                         <li style="margin-bottom: 0.5rem;"><strong>Constant Variance:</strong> The spread (volatility) stays consistent.</li>
-                        <li><strong>Constant Covariance:</strong> The relationship between past and present doesn't shift.</li>
+                        <li><strong>Lag-dependent Autocovariance:</strong> Covariance between observations depends on how far apart they are, not when they occur.</li>
                     </ul>
                 </div>
                 <p>Watch the <strong>rolling moving average</strong> on the plot. If it climbs or falls significantly, the mean is not constant. This series violates the assumptions of basic autoregressive modeling and requires transformation.</p>
@@ -1068,7 +1068,7 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
                 <div class="formula-block">
                     Y'<sub>t</sub> = Y<sub>t</sub> - Y<sub>t-1</sub>
                 </div>
-                <p>Differencing removes the trend, shifting the mean down to a stable baseline, making the series often closer to stationarity.</p>
+                <p>Differencing can remove or reduce certain trends and help achieve stationarity. Check the transformed series: one difference does not guarantee stationarity.</p>
                 
                 <div class="metric-grid">
                     <div class="metric-card">

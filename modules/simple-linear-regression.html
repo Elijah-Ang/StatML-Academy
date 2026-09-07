@@ -920,7 +920,7 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
                 <div class="stage-label">Stage 02</div>
                 <h2>Make Your Guess</h2>
                 <p>We want to predict scores for any amount of study time. Our model will be a straight line: <span class="math-text">ŷ = b₀ + b₁x</span></p>
-                <p>Before we use math to find the <em>perfect</em> line, try to fit it yourself. Adjust the sliders to move your <strong style="color: var(--user-color);">amber line</strong> through the points.</p>
+                <p>Before we use math to find the <em>least-squares fitted</em> line, try to fit it yourself. Adjust the sliders to move your <strong style="color: var(--user-color);">amber line</strong> through the points.</p>
                 
                 <div class="glass-card">
                     <div class="control-group">
@@ -1022,14 +1022,14 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
                     <strong>Special case:</strong> All x-values are identical, so there is no left-to-right spread to learn from. The simulator falls back to a flat line at the average score instead of a meaningful fitted relationship.
                 </div>
                 
-                <p>Notice the <strong style="color: #16a34a;">green dot</strong> on the canvas? That is the mean point (x̄, ȳ). The perfect regression line <em>always</em> passes exactly through the average of x and the average of y.</p>
+                <p>Notice the <strong style="color: #16a34a;">green dot</strong> on the canvas? That is the mean point (x̄, ȳ). The least-squares fitted line with an intercept <em>always</em> passes exactly through the average of x and the average of y.</p>
             </section>
 
             <!-- Stage 6: The Final Line -->
             <section class="stage-section" data-stage="6">
                 <div class="stage-label">Stage 06</div>
                 <h2>The Optimal Line</h2>
-                <p>The math has spoken. The canvas has automatically shifted to the statistically perfect line, shrinking the error boxes to their mathematical limit.</p>
+                <p>The math has spoken. The canvas has automatically shifted to the least-squares fitted line, shrinking the error boxes to their mathematical limit.</p>
                 
                 <div class="metric-grid">
                     <div class="metric-card">
@@ -1076,8 +1076,8 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
                 <p>How much can we trust this line? We grade the model using your live data:</p>
                 
                 <div class="glass-card">
-                    <p><strong>R² (Proportion of Variance Explained): <span id="stat-r2" style="color:var(--accent-dark); font-family:var(--font-mono); font-weight:bold;">0.00</span></strong><br>
-                    R² tells us what percentage of the variance in test scores is explained by study hours. 1.0 is perfect. We compare our line's errors (SSE) against the errors of just guessing the flat average (SST).</p>
+                    <p><strong>R² (Proportion of Variation Accounted For): <span id="stat-r2" style="color:var(--accent-dark); font-family:var(--font-mono); font-weight:bold;">0.00</span></strong><br>
+                    R² tells us what proportion of the observed variation in test scores is accounted for by the fitted model using study hours; it does not establish causation. 1.0 means zero residual error on these data. We compare our line's errors (SSE) against the errors of just guessing the flat average (SST).</p>
                     <div style="font-family: var(--font-mono); font-size: 0.8rem; margin: 10px 0; padding: 5px; background: #f3f4f6; text-align: center; border-radius: 4px;">R² = 1 - (SSE / SST)</div>
                 </div>
 
@@ -1127,7 +1127,7 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
                         <li style="margin-bottom: 0.25rem;"><strong>SST</strong> is the "baseline total spread" (if we just guessed the average).</li>
                         <li><strong>SSE</strong> is how much error our fitted model still has.</li>
                     </ul>
-                    <p style="font-size: 0.9rem; margin-bottom: 0;">R² tells us what percentage of the original chaos (SST) our model explains or eliminates. 1.0 is perfect.</p>
+                    <p style="font-size: 0.9rem; margin-bottom: 0;">R² tells us what proportion of the original variation (SST) our fitted model accounts for. 1.0 means zero residual error on these data.</p>
                     
                     <hr style="border: 0; border-top: 1px solid var(--border); margin: 1.5rem 0;">
                     <p style="font-size: 0.9rem; margin-bottom: 0;"><strong>RSE (Residual Standard Error): <span id="stat-rse" style="color:var(--accent-dark); font-family:var(--font-mono); font-weight:bold;">0.00</span></strong><br>
@@ -1144,7 +1144,7 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
             <section class="stage-section" data-stage="8">
                 <div class="stage-label">Stage 08</div>
                 <h2>Interactive Playground</h2>
-                <p>Let's pit your custom manual line against the statistically perfect line.</p>
+                <p>Let's pit your custom manual line against the least-squares fitted line.</p>
                 
                 <div class="comparison-grid">
                     <div class="comp-card comp-user">

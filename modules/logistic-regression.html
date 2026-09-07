@@ -806,7 +806,7 @@ z = 0 → probability exactly 0.5</div>
 <section class="section" data-stage="4" id="sec-4">
   <div class="stage-num">Stage 04</div>
   <h2>Weighted Clues 🧠</h2>
-  <p>How do we construct the score <strong>z</strong>? Think of our features (Temperature, Sunny, Weekend) as clues. The model assigns a <strong>weight</strong> to each clue depending on its relative importance:</p>
+  <p>How do we construct the score <strong>z</strong>? Think of our features (Temperature, Sunny, Weekend) as clues. Each <strong>weight</strong> describes the change in log-odds for a one-unit increase in that feature, holding the other modeled predictors fixed:</p>
   <p>• A <strong>positive weight</strong> pushes the score toward "Buy" (y = 1).<br>
   • A <strong>negative weight</strong> pushes the score toward "Don't Buy" (y = 0).<br>
   • The <strong>final raw score z</strong> is the total combined push from all clues. The Sigmoid then turns this raw score into a clean final probability.</p>
@@ -831,7 +831,7 @@ z = 0 → probability exactly 0.5</div>
   <!-- FIX 4: TYPO CORRECTED -->
   <p><strong>b₀</strong> = bias (baseline push) · <strong>b₁, b₂, b₃</strong> = individual clue pushes</p>
 
-  <p style="margin-top: 14px;"><strong>Standardized temperature</strong> means we convert raw temperature values into a scaled version with a mean of 0 and standard deviation of 1. This keeps large temperature numbers from overpowering the smaller binary (0/1) features like Sunny and Weekend, helping gradient descent behave more smoothly during training.</p>
+  <p style="margin-top: 14px;"><strong>Standardized temperature</strong> means we convert raw temperature values into a scaled version with a mean of 0 and standard deviation of 1. Scaling mainly helps optimisation run smoothly and makes regularisation penalties more comparable across features. Large raw values do not inherently overpower the final fitted model: coefficients account for feature units.</p>
 
   <!-- LIVE SCORE BUILDER -->
   <div class="glass-card" id="liveScoreCard">

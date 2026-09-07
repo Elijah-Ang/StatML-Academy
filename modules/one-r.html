@@ -1380,41 +1380,41 @@ body:is(.hw-handwritten,.statml-standardized) :is(.legend,.legend-card,.viz-lege
           <p>Compute the chosen metric for each fold. Then summarize the stability.</p>
           <div class="cv-stability-layout">
             <div class="card">
-              <div class="card-title">CV stability % (coefficient of variation)</div>
-              <p>Measures how much the metric varies across folds relative to its average.</p>
-              <pre class="cv-code"><code>cv_stability_percent =
-    scores.std()
-    / scores.mean()
-    * 100</code></pre>
-              <p class="cv-formula-note">Lower percentages mean more consistent performance from fold to fold.</p>
+              <div class="card-title">Fold-score distribution</div>
+              <p>Report individual fold scores and, when useful, repeat cross-validation with different splits.</p>
+              <pre class="cv-code"><code>fold_scores = scores
+mean = scores.mean()
+sd = scores.std(ddof=1)
+range_ = (scores.min(), scores.max())</code></pre>
+              <p class="cv-formula-note">Fold scores share overlapping training data; their spread is not a confidence interval for generalisation performance.</p>
             </div>
             <div class="card">
               <div class="card-title">Report all three (recommended)</div>
               <p>Always look at these together for the full picture.</p>
               <ul class="cv-report-list">
                 <li><strong>Mean (μ):</strong> average performance across folds</li>
-                <li><strong>Standard deviation (σ):</strong> spread of performance</li>
-                <li><strong>CV stability %:</strong> relative variation (lower is better)</li>
+                <li><strong>Sample SD:</strong> spread of performance</li>
+                <li><strong>Score distribution:</strong> individual fold or repeated-CV scores</li>
               </ul>
               <p style="margin:0.65rem 0 0;">Also check the <strong>min–max range</strong> across folds.</p>
             </div>
           </div>
 
-          <div class="cv-section-heading"><span>3</span><strong>Interpret stability (rule of thumb)</strong></div>
-          <p>Use these as rough guides, not strict rules. Consider dataset size, domain, and the impact of errors.</p>
+          <div class="cv-section-heading"><span>3</span><strong>Interpret stability in context</strong></div>
+          <p>There are no universal percentage bands or automatic proceed/stop rules. Consider dataset size, class balance, the metric, domain, and the impact of errors.</p>
           <div class="cv-stability-table">
             <table aria-label="Cross-validation stability interpretation">
-              <thead><tr><th>CV stability %</th><th>Interpretation</th><th>What it means</th></tr></thead>
+              <thead><tr><th>Report</th><th>Interpretation</th><th>What it means</th></tr></thead>
               <tbody>
-                <tr><td>&lt;10%</td><td>Very stable</td><td>Very consistent across folds. Safe to proceed.</td></tr>
-                <tr><td>10–20%</td><td>Good</td><td>Generally consistent. Proceed with confidence.</td></tr>
-                <tr><td>20–30%</td><td>Acceptable</td><td>Moderate variation. Still acceptable, but monitor.</td></tr>
-                <tr><td>30–40%</td><td>Investigate</td><td>High variation. Investigate causes before proceeding.</td></tr>
-                <tr><td>&gt;40%</td><td>Potentially unstable</td><td>Unstable across folds. Do not proceed yet.</td></tr>
+                <tr><td>Fold scores</td><td>Distribution</td><td>Inspect the full spread, including unusually low scores.</td></tr>
+                <tr><td>Mean</td><td>Average</td><td>Compare with a relevant baseline on the same splits.</td></tr>
+                <tr><td>SD and range</td><td>Spread</td><td>Judge variation against the metric and consequences of errors.</td></tr>
+                <tr><td>Repeated CV</td><td>Split sensitivity</td><td>Report scores across repeats; investigate changes across splits.</td></tr>
+                <tr><td>Intervals</td><td>Uncertainty</td><td>State the method and account for dependence between CV scores.</td></tr>
               </tbody>
             </table>
           </div>
-          <div class="cv-why-note"><strong>Why this works:</strong> CV Stability % = (SD / Mean) × 100. Lower % means the metric changes little across folds relative to its average.</div>
+          <div class="cv-why-note"><strong>Read together:</strong> Mean, SD, range, and the score distribution describe these splits. Consistency alone does not establish useful performance or justify deployment.</div>
         </div>
       </section>
 
@@ -1565,18 +1565,18 @@ body:is(.hw-handwritten,.statml-standardized) :is(.legend,.legend-card,.viz-lege
       const CV_METRICS = {
         accuracy: {
           label: "Overall accuracy", shortLabel: "Overall", mean: 0.804, sd: 0.011,
-          stability: 1.37, min: 0.79, max: 0.82, range: 0.03,
-          explanation: "Overall correctness is very consistent across folds."
+          min: 0.79, max: 0.82, range: 0.03,
+          explanation: "Accuracy spans 0.79–0.82 here. Compare with a baseline and the cost of errors."
         },
         precision: {
           label: "Precision", shortLabel: "Precision", mean: 0.826, sd: 0.011,
-          stability: 1.33, min: 0.81, max: 0.84, range: 0.03,
-          explanation: "The reliability of Yes predictions is consistent across folds."
+          min: 0.81, max: 0.84, range: 0.03,
+          explanation: "Precision spans 0.81–0.84 here. Check class balance and repeat-split sensitivity."
         },
         recall: {
-          label: "Recall", shortLabel: "Recall", mean: 0.790, sd: 0.015,
-          stability: 1.90, min: 0.77, max: 0.81, range: 0.04,
-          explanation: "The capture rate for actual Yes cases is consistent across folds."
+          label: "Recall", shortLabel: "Recall", mean: 0.790, sd: 0.016,
+          min: 0.77, max: 0.81, range: 0.04,
+          explanation: "Recall spans 0.77–0.81 here. Judge the missed-case cost in context."
         }
       };
 
@@ -1590,7 +1590,7 @@ body:is(.hw-handwritten,.statml-standardized) :is(.legend,.legend-card,.viz-lege
         7:  { feature: "Outlook",     error: "3 / 14",  outcome: "Cloudy → Yes" },
         8:  { feature: "One only",    error: "blind spot", outcome: "No interactions" },
         9:  { feature: "Re-selected", error: "held out", outcome: "Train → test" },
-        10: { feature: "Recall",     error: "1.90%",   outcome: "Proceed" },
+        10: { feature: "Recall",     error: "SD 0.016", outcome: "Review context" },
         11: { feature: "Model ladder", error: "varies",   outcome: "Baseline first" },
         12: { feature: "Outlook",     error: "3 / 14",  outcome: "Sunny → No" }
       };
@@ -2368,15 +2368,7 @@ body:is(.hw-handwritten,.statml-standardized) :is(.legend,.legend-card,.viz-lege
         const contentW = cssWidth - margin * 2;
         const metricKey = state.cvMetric;
         const metric = CV_METRICS[metricKey];
-        const assessment = metric.stability < 10
-          ? { label: "Very stable", threshold: "<10%", decision: "PROCEED", color: palette.green }
-          : metric.stability < 20
-            ? { label: "Good", threshold: "10–20%", decision: "PROCEED", color: palette.blue }
-            : metric.stability < 30
-              ? { label: "Acceptable", threshold: "20–30%", decision: "MONITOR", color: palette.amber }
-              : metric.stability < 40
-                ? { label: "Investigate", threshold: "30–40%", decision: "INVESTIGATE", color: palette.amber }
-                : { label: "Potentially unstable", threshold: ">40%", decision: "PAUSE", color: palette.coral };
+        const assessment = { label: "Read in context", decision: "CONTEXT", color: palette.green };
         const titleSize = compact ? 7 : 11;
         text(`EXAMPLE: 5-FOLD CROSS-VALIDATION RESULTS (USING ${metric.label.toUpperCase()})`, margin, compact ? 23 : 30, { size: titleSize, weight: 800, color: palette.accentDark, mono: true });
 
@@ -2401,7 +2393,7 @@ body:is(.hw-handwritten,.statml-standardized) :is(.legend,.legend-card,.viz-lege
           text(row.fold, margin + 8, y + rowH / 2 + 1, { size: compact ? 6 : 9, weight: 800, color: palette.ink2, baseline: "middle", mono: true });
           ["recall", "precision", "accuracy"].forEach((key, i) => text(row[key].toFixed(2), colX[i + 1] + contentW * colRatios[i + 1] / 2, y + rowH / 2 + 1, { size: compact ? 6 : 9, weight: i + 1 === selectedColumn ? 800 : 700, color: i + 1 === selectedColumn ? palette.accentDark : palette.ink2, align: "center", baseline: "middle", mono: true }));
         });
-        text(`Selected metric: ${metric.label}. The summary and stability decision update with this choice.`, margin, tableY + tableH + (compact ? 13 : 21), { size: compact ? 6 : 9, color: palette.ink2 });
+        text(`Selected metric: ${metric.label}. The score summary updates with this choice.`, margin, tableY + tableH + (compact ? 13 : 21), { size: compact ? 6 : 9, color: palette.ink2 });
 
         const summaryY = tableY + tableH + (tiny ? 22 : compact ? 28 : 39);
         const summaryH = tiny ? 82 : compact ? 118 : 200;
@@ -2412,8 +2404,8 @@ body:is(.hw-handwritten,.statml-standardized) :is(.legend,.legend-card,.viz-lege
         text("STABILITY INTERPRETATION", splitX + 10, summaryY + (compact ? 16 : 24), { size: compact ? 6 : 10, weight: 800, color: palette.accentDark, mono: true });
         const statRows = [
           { symbol: "μ", label: "Mean (μ)", value: metric.mean.toFixed(3), detail: "", color: palette.accentDark },
-          { symbol: "σ", label: "Standard Deviation (σ)", value: metric.sd.toFixed(3), detail: "", color: palette.green },
-          { symbol: "CV", label: "CV Stability %", value: `${metric.stability.toFixed(2)}%`, detail: `(${metric.sd.toFixed(3)} / ${metric.mean.toFixed(3)} × 100)`, color: palette.amber },
+          { symbol: "σ", label: "Sample SD", value: metric.sd.toFixed(3), detail: "", color: palette.green },
+          { symbol: "n", label: "Fold scores", value: "5 folds", detail: "See every score above", color: palette.amber },
           { symbol: "—", label: "Min – Max Range", value: `${metric.min.toFixed(2)} – ${metric.max.toFixed(2)}`, detail: `(Range = ${metric.range.toFixed(2)})`, color: "#7c3aed" }
         ];
         const statStart = summaryY + (tiny ? 28 : compact ? 34 : 53);
@@ -2423,32 +2415,31 @@ body:is(.hw-handwritten,.statml-standardized) :is(.legend,.legend-card,.viz-lege
           if (i > 0) line(margin + 10, y - statRowH / 2, splitX - 10, y - statRowH / 2, palette.line);
           circle(margin + (compact ? 20 : 23), y, compact ? 7 : 13, row.color);
           text(row.symbol, margin + (compact ? 20 : 23), y + 1, { size: compact ? 5 : 9, weight: 800, color: "#fff", align: "center", baseline: "middle", mono: true });
-          text(row.label, margin + (compact ? 38 : 45), y + 1, { size: compact ? 6 : 11, weight: 600, color: row.label === "CV Stability %" ? palette.amber : palette.ink2, baseline: "middle" });
+          text(row.label, margin + (compact ? 38 : 45), y + 1, { size: compact ? 6 : 11, weight: 600, color: row.label === "Fold scores" ? palette.amber : palette.ink2, baseline: "middle" });
           text(row.value, splitX - 14, y + (row.detail && !compact ? -5 : 1), { size: compact ? 6 : 12, weight: 800, color: row.color, align: "right", baseline: "middle", mono: true });
           if (row.detail && !compact) text(row.detail, splitX - 14, y + 11, { size: 8, weight: 600, color: palette.muted, align: "right", baseline: "middle", mono: true });
         });
         const stableX = splitX + 16;
         const stableY = summaryY + (tiny ? 39 : compact ? 49 : 75);
         circle(stableX + (compact ? 17 : 28), stableY, compact ? 16 : 28, "#fff", assessment.color, compact ? 1.5 : 2.5);
-        if (assessment.decision === "PROCEED") handCheck(stableX + (compact ? 17 : 28), stableY + 1, compact ? 15 : 27, assessment.color);
-        else text("!", stableX + (compact ? 17 : 28), stableY + 1, { size: compact ? 15 : 27, weight: 800, color: assessment.color, align: "center", baseline: "middle" });
+        text("i", stableX + (compact ? 17 : 28), stableY + 1, { size: compact ? 15 : 27, weight: 800, color: assessment.color, align: "center", baseline: "middle" });
         text(assessment.label, stableX + (compact ? 42 : 66), stableY - (compact ? 6 : 17), { size: compact ? 7 : 12, weight: 800, color: assessment.color, baseline: "middle" });
-        text(`${metric.label}: ${metric.stability.toFixed(2)}% (${assessment.threshold})`, stableX + (compact ? 42 : 66), stableY + (compact ? 9 : 4), { size: compact ? 6 : 9, color: palette.ink2, baseline: "middle" });
+        text(`Mean ${metric.mean.toFixed(3)} · SD ${metric.sd.toFixed(3)}`, stableX + (compact ? 42 : 66), stableY + (compact ? 9 : 4), { size: compact ? 6 : 9, color: palette.ink2, baseline: "middle" });
         wrapText(metric.explanation, stableX + (compact ? 42 : 66), stableY + (compact ? 22 : 21), contentW * 0.38 - (compact ? 52 : 76), compact ? 10 : 14, { size: compact ? 5.5 : 8.5, color: palette.ink2 });
         const decisionY = summaryY + summaryH - (compact ? 27 : 42);
         roundRect(splitX + 10, decisionY, contentW * 0.4 - 20, compact ? 20 : 31, 8, "#f0fdf4", "#a7e4bd");
-        text(`Decision: ${assessment.decision}`, splitX + 20, decisionY + (compact ? 10 : 16), { size: compact ? 6 : 10, weight: 800, color: assessment.color, baseline: "middle", mono: true });
+        text(`Review: ${assessment.decision}`, splitX + 20, decisionY + (compact ? 10 : 16), { size: compact ? 6 : 10, weight: 800, color: assessment.color, baseline: "middle", mono: true });
 
         const nextY = summaryY + summaryH + (tiny ? 10 : compact ? 14 : 24);
         const nextH = tiny ? 50 : compact ? 88 : 210;
-        text("WHAT TO DO NEXT IF STABILITY IS NOT GOOD", margin, nextY, { size: compact ? 6.5 : 12, weight: 800, color: palette.accentDark, mono: true });
+        text("HOW TO INVESTIGATE SCORE VARIATION", margin, nextY, { size: compact ? 6.5 : 12, weight: 800, color: palette.accentDark, mono: true });
         const cardY = nextY + (compact ? 10 : 20);
         const cardGap = compact ? 7 : 12;
         const cardW = (contentW - cardGap) / 2;
         roundRect(margin, cardY, cardW, nextH, compact ? 9 : 12, "#fffbeb", "#f6c95d");
         roundRect(margin + cardW + cardGap, cardY, cardW, nextH, compact ? 9 : 12, "#fff7f7", "#f3aaaa");
-        text("IF INVESTIGATE (20–40%)", margin + 13, cardY + (compact ? 13 : 27), { size: compact ? 5.8 : 11, weight: 800, color: palette.amber, mono: true });
-        text("IF POTENTIALLY UNSTABLE (>40%)", margin + cardW + cardGap + 13, cardY + (compact ? 13 : 27), { size: compact ? 5.8 : 11, weight: 800, color: palette.coral, mono: true });
+        text("CHECK POSSIBLE CAUSES", margin + 13, cardY + (compact ? 13 : 27), { size: compact ? 5.8 : 11, weight: 800, color: palette.amber, mono: true });
+        text("IF SPLIT SENSITIVITY MATTERS", margin + cardW + cardGap + 13, cardY + (compact ? 13 : 27), { size: compact ? 5.8 : 11, weight: 800, color: palette.coral, mono: true });
         const investigate = ["Check class imbalance in each fold.", "Try different features / feature engineering.", "Look for outliers or data issues.", "Adjust threshold or re-run CV."];
         const unstable = ["High sensitivity to data splits.", "Collect more data, especially minority class.", "Simplify the model.", "Use repeated stratified k-fold CV."];
         const drawBulletList = (items, x, y, width, color) => items.forEach((item, i) => wrapText(`• ${item}`, x, y + i * (compact ? 12 : 32), width, compact ? 10 : 21, { size: compact ? 6 : 11.5, weight: 600, color }));
@@ -2607,13 +2598,7 @@ body:is(.hw-handwritten,.statml-standardized) :is(.legend,.legend-card,.viz-lege
         if (!CV_METRICS[metricKey]) return;
         state.cvMetric = metricKey;
         const metric = CV_METRICS[metricKey];
-        const outcome = metric.stability < 20
-          ? "Proceed"
-          : metric.stability < 30
-            ? "Monitor"
-            : metric.stability < 40
-              ? "Investigate"
-              : "Pause";
+        const outcome = "Review context";
 
         document.querySelectorAll("[data-cv-metric]").forEach(button => {
           const active = button.dataset.cvMetric === metricKey;
@@ -2623,13 +2608,13 @@ body:is(.hw-handwritten,.statml-standardized) :is(.legend,.legend-card,.viz-lege
 
         stageMeta[10] = {
           feature: metric.shortLabel,
-          error: `${metric.stability.toFixed(2)}%`,
+          error: `SD ${metric.sd.toFixed(3)}`,
           outcome
         };
 
         if (state.stage === 10) {
           footerFeature.textContent = metric.shortLabel;
-          footerError.textContent = `${metric.stability.toFixed(2)}%`;
+          footerError.textContent = `SD ${metric.sd.toFixed(3)}`;
           footerOutcome.textContent = outcome;
           draw();
         }

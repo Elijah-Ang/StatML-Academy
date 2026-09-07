@@ -1265,7 +1265,7 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
                 <div class="step-label">Stage 06</div>
                 <h2 class="text-3xl font-bold mb-4">Degrees of Freedom</h2>
                 <p class="mb-4 text-stone-700 leading-relaxed font-serif">
-                    Before we can calculate our true variance (Mean Squares) for the F-statistic, we need to divide our Sum of Squares by our <strong>Degrees of Freedom (df)</strong>. 
+                    Before we can calculate our variance estimates (Mean Squares) for the F-statistic, we need to divide our Sum of Squares by our <strong>Degrees of Freedom (df)</strong>.
                 </p>
                 <div class="bg-blue-50 p-5 rounded-lg border border-blue-100 mb-6">
                     <p class="text-sm text-blue-900 font-serif leading-relaxed">
@@ -1295,7 +1295,7 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
                 <div class="step-label">Stage 07</div>
                 <h2 class="text-3xl font-bold mb-4">A Worked Example</h2>
                 <p class="mb-4 text-stone-700 leading-relaxed font-serif">
-                    Let’s bring this together using the data currently on display. We divide our raw distances (Sum of Squares, SS) by our degrees of freedom to get the Mean Squares (MS), which act as our final variance values.
+                    Let’s bring this together using the data currently on display. We divide our sums of squared deviations (Sum of Squares, SS) by our degrees of freedom to get the Mean Squares (MS), which are variance quantities used in F = MS_between / MS_within. Under the null hypothesis and standard ANOVA assumptions, both estimate the same error variance.
                 </p>
                 <div class="space-y-4 my-6">
                     <div class="p-5 bg-white border border-stone-200 rounded-xl shadow-sm">
@@ -1344,13 +1344,13 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
                     <div class="relative z-10">
                         <p class="text-sm font-bold text-indigo-900 mb-3">Eta-Squared ($\eta^2$)</p>
                         <p class="text-sm text-stone-700 font-serif mb-4 leading-relaxed">
-                            Eta-squared shows the <em>proportion</em> of the total variation in scores that is directly associated with the teaching method. We calculate it using the Sum of Squares from the table:
+                            Eta-squared shows the <em>proportion</em> of the total variation in scores that is associated with differences between teaching-method groups, without establishing causation. We calculate it using the Sum of Squares from the table:
                         </p>
                         <div class="bg-white py-3 rounded-lg border border-indigo-100 font-mono-ui text-indigo-800 mb-4 inline-block px-6">
                             <span id="live-eta-calc-text" class="text-base">$\eta^2 = \frac{SS_{between}}{SS_{total}} = \frac{3456}{3852} = 0.90$</span>
                         </div>
                         <p id="eta-interpretation" class="text-sm text-indigo-900 font-medium">
-                            About 90% of the variance is explained by the group differences.
+                            About 90% of the variation is associated with the group differences; this does not establish causation.
                         </p>
                     </div>
                 </div>
@@ -1611,10 +1611,10 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
                                     <th class="p-4 hover-cell">Source <div class="tooltip-card font-normal">Where is the variance coming from? The model (Between) or the residuals (Within)?</div></th>
                                     <th class="p-4 hover-cell font-mono-ui">SS <div class="tooltip-card font-normal"><strong>Sum of Squares:</strong> The total squared distance of data points from means.</div></th>
                                     <th class="p-4 hover-cell font-mono-ui">df <div class="tooltip-card font-normal"><strong>Degrees of Freedom:</strong> The number of values free to vary. (Groups - 1) for Between. (Total N - Groups) for Within.</div></th>
-                                    <th class="p-4 hover-cell font-mono-ui">MS <div class="tooltip-card font-normal"><strong>Mean Square (Variance):</strong> SS divided by df. The average squared deviation.</div></th>
+                                    <th class="p-4 hover-cell font-mono-ui">MS <div class="tooltip-card font-normal"><strong>Mean Square (Variance Quantity):</strong> SS divided by df. A variance estimate used in the F-ratio.</div></th>
                                     <th class="p-4 hover-cell font-mono-ui">F <div class="tooltip-card font-normal"><strong>F-Ratio:</strong> MS(Between) / MS(Within). The ratio of Signal to Noise.</div></th>
                                     <th class="p-4 hover-cell font-mono-ui">p-value <div class="tooltip-card font-normal">Probability of observing this F-ratio (or larger) if the null hypothesis were true.</div></th>
-                                    <th class="p-4 hover-cell font-mono-ui eta-col text-indigo-700">η² <div class="tooltip-card font-normal text-stone-800"><strong>Eta-squared (η²):</strong> The proportion of total variance explained by this factor.</div></th>
+                                    <th class="p-4 hover-cell font-mono-ui eta-col text-indigo-700">η² <div class="tooltip-card font-normal text-stone-800"><strong>Eta-squared (η²):</strong> The proportion of total variation associated with this factor; not a causal claim.</div></th>
                                 </tr>
                             </thead>
                             <tbody class="text-sm">
@@ -2043,7 +2043,7 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
             if (window.renderMathInElement) {
                 renderMathInElement(document.getElementById('live-eta-calc-text'), { delimiters: [{left: '$', right: '$', display: false}] });
             }
-            document.getElementById('eta-interpretation').innerHTML = `About ${(etaSq * 100).toFixed(1)}% of the variance is explained by the group differences.`;
+            document.getElementById('eta-interpretation').innerHTML = `About ${(etaSq * 100).toFixed(1)}% of the variation is associated with the group differences; this does not establish causation.`;
 
             document.getElementById('anova-ss-within').textContent = formatNumber(stats.ssWithin);
             document.getElementById('anova-df-within').textContent = `${stats.dfWithin}`;

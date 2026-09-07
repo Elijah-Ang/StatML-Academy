@@ -1017,7 +1017,7 @@ body:is(.hw-handwritten,.statml-standardized) :is(.legend,.legend-card,.viz-lege
                     This logic applies to <em>each</em> predictor's coefficient: <strong>&beta;<sub>1</sub></strong> is the estimated association with Study while Sleep and Practice are held fixed, <strong>&beta;<sub>2</sub></strong> is the estimated association with Sleep while Study and Practice are held fixed, and <strong>&beta;<sub>3</sub></strong> is the estimated association with Practice while Study and Sleep are held fixed. These are not automatically causal effects.
                 </p>
                 <p class="text-textDim leading-relaxed">
-                    The model does not literally freeze variables in real life—rather, it does this <em>mathematically</em> to estimate each variable's <strong>unique contribution</strong>.
+                    The model does not literally freeze variables in real life—rather, it does this <em>mathematically</em> to estimate each variable's <strong>conditional association holding other modeled predictors fixed</strong>.
                 </p>
 
                 <div class="glass-card">
@@ -1096,8 +1096,8 @@ body:is(.hw-handwritten,.statml-standardized) :is(.legend,.legend-card,.viz-lege
 
                 <div class="insight-box mt-4">
                     <strong>The Power of "Holding Constant"</strong><br>
-                    Multiple regression isolates a variable's <em>unique</em> contribution, which can reveal when a variable only looked important because it moved together with another predictor. If we put both Ice Cream and Temperature into the model, the model essentially compares days with the <em>same temperature</em>. Holding temperature constant, changing ice cream sales alone has almost zero unique effect on shark attacks.<br><br>
-                    If a coefficient shrinks close to zero after the other predictors are included, that suggests it has little <em>unique</em> relationship with the predicted outcome (y) after accounting for the others. This does <em>not</em> prove the variable has no real-world effect at all, only that it adds little unique information within this specific model.
+                    Multiple regression estimates a variable's <em>conditional association holding other modeled predictors fixed</em>, which can reveal when a variable only looked important because it moved together with another predictor. If we put both Ice Cream and Temperature into the model, the model essentially compares days with the <em>same temperature</em>. Holding temperature constant, ice cream sales have almost zero conditional association with shark attacks in this example.<br><br>
+                    If a coefficient shrinks close to zero after the other predictors are included, that suggests it has little <em>conditional</em> association with the predicted outcome (y) after accounting for the others. This does <em>not</em> prove the variable has no real-world effect at all, only that its estimated conditional association is small within this specific model.
                 </div>
                 <p class="text-xs text-textMuted mt-4">
                     <em>Note: A larger coefficient doesn't always mean a "more important" predictor, as they depend on the unit of measurement.</em>
@@ -1112,7 +1112,7 @@ body:is(.hw-handwritten,.statml-standardized) :is(.legend,.legend-card,.viz-lege
                     How do we know if our team of variables is actually good? <strong>R&sup2;</strong> tells us what percentage of the variance we explained.
                 </p>
                 <p class="text-textDim mb-4 leading-relaxed">
-                    But raw R&sup2; has a flaw: it almost never goes down when you add predictors. Adding <em>any</em> variable—even "Student's Shoe Size"—will mathematically force raw R&sup2; to increase, tricking you into thinking the model is better.
+                    For least-squares models with an intercept fitted to the same training observations, adding predictors makes training R&sup2; <em>stay the same or increase</em>. Even "Student's Shoe Size" may increase it, without improving predictions on new data.
                 </p>
                 
                 <div class="formula-block mb-4">
@@ -1124,7 +1124,7 @@ body:is(.hw-handwritten,.statml-standardized) :is(.legend,.legend-card,.viz-lege
                     In the formula, <code class="bg-gray-100 px-1 rounded text-sm text-textMain border border-borderLight">n</code> is the number of observations and <code class="bg-gray-100 px-1 rounded text-sm text-textMain border border-borderLight">p</code> is the number of predictors.
                 </p>
                 <p class="text-textDim leading-relaxed">
-                    Every new predictor (<code class="bg-gray-100 px-1 rounded text-sm text-textMain border border-borderLight">p</code>) uses up flexibility and increases the penalty. A new variable should only stay if it improves the model enough to justify its cost. A useless variable will cause Adjusted R&sup2; to stay flat or drop!
+                    Every new predictor (<code class="bg-gray-100 px-1 rounded text-sm text-textMain border border-borderLight">p</code>) uses up flexibility and increases the penalty. Adjusted R&sup2; can rise or fall, even for an irrelevant variable in a particular sample. It is a descriptive aid, not an automatic feature-retention rule: consider validation performance, the modeling goal, and subject knowledge.
                 </p>
             </section>
 

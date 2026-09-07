@@ -1084,9 +1084,9 @@ It also tilts to avoid the direction of maximum within-class spread.</div>
 
   <div class="glass-card" style="border-left:4px solid var(--apple)">
     <h3>What are priors (π_k)?</h3>
-    <p style="font-size:0.88rem">The <strong>prior probability (π_k)</strong> represents how common a class is in our training data.
+    <p style="font-size:0.88rem">The <strong>prior probability (π_k)</strong> represents the class probability before observing its features. Priors may be estimated from training prevalence or specified externally.
       <br>&bull; If apples and oranges are equally common, priors are equal (50% each).
-      <br>&bull; If we have 90% apples in training, the apple score gets a prior boost, shifting the boundary slightly to favor Apple predictions.
+      <br>&bull; If we estimate priors from 90% apples in training, the apple score gets a prior boost, shifting the boundary slightly to favor Apple predictions.
     </p>
   </div>
 
@@ -1246,7 +1246,7 @@ Predict class k with the highest δ_k(x)</div>
     <p style="font-size:0.88rem;margin-bottom:10px">If LDA doesn't fit, consider these standard alternatives:</p>
     <div style="font-size:0.85rem;display:flex;flex-direction:column;gap:8px">
       <div><svg class="hw-doodle" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><use href="#lda-target"></use></svg> <strong>QDA (Quadratic Discriminant Analysis):</strong> Excellent if class spreads are highly unequal.</div>
-      <div><svg class="hw-doodle" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><use href="#lda-chart"></use></svg> <strong>Logistic Regression:</strong> Better if you need direct probabilities and fewer statistical assumptions.</div>
+      <div><svg class="hw-doodle" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><use href="#lda-chart"></use></svg> <strong>Logistic Regression:</strong> Also estimates class probabilities, but avoids LDA’s Gaussian class-conditional and shared-covariance assumptions.</div>
       <div><svg class="hw-doodle" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><use href="#lda-tree"></use></svg> <strong>KNN or Decision Trees:</strong> Great for highly complex, non-linear boundaries.</div>
     </div>
   </div>
@@ -1348,7 +1348,7 @@ const outputExplainers = {
   priors: {
     title: "Class priors (π_k)",
     body: `
-      Priors tell you how common each class is in the training data before looking at features.
+      Priors give class probabilities before looking at features, estimated from training prevalence or specified externally.
       If Apple = 0.50 and Orange = 0.50, neither class gets a starting advantage.
       If Apple were much more common, LDA would be slightly more willing to predict Apple.
     `,

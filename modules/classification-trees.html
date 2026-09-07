@@ -1012,7 +1012,7 @@ Gini = 1 - [ P(Apple)² + P(Orange)² ]
       <div><span style="display:inline-block; width:12px; height:3px; background:var(--orange); vertical-align:middle; margin-right:4px"></span> Validation Accuracy</div>
     </div>
     <p style="font-size:0.85rem; color:var(--text-dim)">
-      <svg class="hw-doodle" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><use href="#ct-trophy"></use></svg> <strong>Optimal Max Depth:</strong> <span id="bestDepthValue" style="font-weight:700; color:var(--accent)">Depth 3</span>
+      <svg class="hw-doodle" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><use href="#ct-trophy"></use></svg> <strong>Validation-selected Depth:</strong> <span id="bestDepthValue" style="font-weight:700; color:var(--accent)">Depth 3</span>
     </p>
   </div>
 
@@ -1158,7 +1158,7 @@ Gini = 1 - [ P(Apple)² + P(Orange)² ]
           <td><strong>Logistic Regression</strong></td>
           <td>Smooth Linear</td>
           <td>Medium (Weights)</td>
-          <td>Linear associations, computing well-calibrated odds.</td>
+          <td>Linear associations with log-odds; estimated probabilities may need calibration.</td>
         </tr>
         <tr>
           <td><strong>K-Nearest Neighbors (KNN)</strong></td>

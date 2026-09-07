@@ -128,7 +128,7 @@
           <p class="stage-kicker"><span>07</span>Make the naive move</p>
           <h2 id="stage-6-title">Pretend the clues can speak separately.</h2>
           <p>Real words can be related. “Free” and “winner” may travel together. Naive Bayes deliberately ignores that relationship <em>once the class is known</em>.</p>
-          <p>This conditional-independence assumption is the shortcut: each feature contributes a separate piece of evidence, so the pieces can be multiplied together.</p>
+          <p>This conditional-independence assumption is the shortcut: each feature contributes a separate piece of evidence, so the pieces can be multiplied together. When this assumption is strongly violated, posterior probabilities may be overconfident or poorly calibrated.</p>
           <button class="text-button" type="button" id="assumptionToggle" aria-pressed="false">Show what the shortcut ignores <span aria-hidden="true">↗</span></button>
         </section>
 
@@ -152,7 +152,7 @@
         <section class="chapter stage-section" id="stage-9" data-stage="9" aria-labelledby="stage-9-title">
           <p class="stage-kicker"><span>10</span>Keep the arithmetic stable</p>
           <h2 id="stage-9-title">Two small engineering fixes.</h2>
-          <p>If a feature was never seen in a class, its count can produce a likelihood of zero. One zero would erase the whole product. <strong>Laplace smoothing</strong> adds a small artificial count so “unseen” does not mean “impossible”.</p>
+          <p>If a feature was never seen in a class, its count can produce a likelihood of zero. One zero would erase the whole product. <strong>Laplace smoothing</strong> adds a small artificial count so “unseen” does not mean “impossible”. This applies to discrete/count variants, not Gaussian Naive Bayes.</p>
           <p>With hundreds of features, multiplying tiny numbers can underflow. Implementations use <strong>log probabilities</strong>: multiplication becomes addition, while the class ranking stays the same.</p>
           <div class="stability-switch" role="group" aria-label="Arithmetic view"><button type="button" class="is-selected" data-stability="smooth" aria-pressed="true">Smoothing</button><button type="button" data-stability="logs" aria-pressed="false">Log space</button></div>
         </section>

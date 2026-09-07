@@ -1688,7 +1688,7 @@ body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
                     </div>
 
                     <p style="font-size: 0.9rem; color: var(--text-dim); margin-top: 1rem;">
-                        Tiny expected counts can make the mathematical Chi-Square approximation highly unreliable. If this happens, researchers usually use Yates' continuity correction or switch to Fisher's Exact Test.
+                        Tiny expected counts can make the Chi-Square approximation unreliable. Yates' continuity correction applies specifically to 2×2 tables and does not guarantee a reliable approximation for very sparse data. Fisher's Exact Test is mainly used for small or sparse 2×2 tables; larger sparse tables may need other exact or Monte Carlo alternatives.
                     </p>
                 </div>
 

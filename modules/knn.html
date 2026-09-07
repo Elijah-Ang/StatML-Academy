@@ -993,7 +993,7 @@ d = √0.0125<br>
   <!-- Who chooses K? -->
   <div class="glass-card">
     <h3>Who Chooses K?</h3>
-    <p style="font-size: 0.88rem;"><strong>K</strong> is a <strong>hyperparameter</strong>. In machine learning, a hyperparameter is a setting chosen by the human designer <em>before</em> the model starts predicting, rather than learned automatically from training data.</p>
+    <p style="font-size: 0.88rem;"><strong>K</strong> is a <strong>hyperparameter</strong>. In machine learning, a hyperparameter is a setting <em>selected</em> using validation data or cross-validation, rather than a coefficient fitted directly during training.</p>
 
     <p style="font-size: 0.88rem; margin-top: 8px;"><strong>The Trade-Off:</strong></p>
     <ul style="font-size: 0.85rem; margin-left: 20px; color: var(--text-dim); margin-bottom: 12px;">
@@ -1051,7 +1051,7 @@ d = √0.0125<br>
     <p style="font-size: 0.88rem; margin-bottom: 12px;"><strong>Who decides the value of K in K-Nearest Neighbors?</strong></p>
     <div class="quiz-options">
       <button class="quiz-option" data-correct="false">The KNN algorithm automatically discovers the best K during training.</button>
-      <button class="quiz-option" data-correct="true">The human designer chooses K as a hyperparameter before run time.</button>
+      <button class="quiz-option" data-correct="true">K is a hyperparameter chosen using validation or cross-validation.</button>
       <button class="quiz-option" data-correct="false">The query points themselves decide based on how far away they are.</button>
     </div>
     <div class="quiz-feedback"></div>
@@ -1093,7 +1093,7 @@ d = √0.0125<br>
     <p style="font-size: 0.88rem;">In standard KNN, each neighbor inside the K-limit gets exactly <strong>one equal vote</strong>. The category with the highest vote count wins the prediction.</p>
 
     <div class="insight-box" style="border-left-color: var(--orange); background: rgba(217,119,6,0.03);">
-      <p style="font-size: 0.85rem; color: var(--text);">⚠️ <strong>Note: Vote share is not probability!</strong> If K=3 and Apples win 2-1, this does <strong>not</strong> mean the fruit has a 66.7% probability of being an Apple. It only means 2 of the 3 nearest examples in our training memory were apples. Do not confuse vote tally with actual likelihood!</p>
+      <p style="font-size: 0.85rem; color: var(--text);">⚠️ <strong>Note: Vote share estimates probability.</strong> If K=3 and Apples win 2-1, the neighbor class proportion gives a <strong>local class-probability estimate</strong> of 66.7%. This estimate may be noisy or poorly calibrated, especially with small K; it is not a guaranteed probability for this fruit.</p>
     </div>
 
     <h4 style="font-weight:600; margin-bottom: 6px; font-size:0.88rem; color: var(--accent2);">Why odd numbers for K?</h4>
@@ -1340,7 +1340,7 @@ d = √0.0125<br>
       <li><strong>Feature Scaling:</strong> Fit an appropriate scaling transformation using the training data when feature units or magnitudes would otherwise dominate the distance calculation. Standardisation, min-max scaling, robust scaling and domain-specific transformations are all possible choices; apply the fitted transformation unchanged to validation and test data.</li>
       <li><strong>Mystery Input:</strong> Introduce an unknown query point <span class="hw-inline-doodle" aria-hidden="true"><svg viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M6 1.1L7.2 4.2L10.5 4.2L7.8 6.1L8.9 9.6L6 7.5L3.1 9.6L4.2 6.2L1.5 4.2L4.9 4.1Z"></path><path d="M6 1.5L7.4 4.5L10 4.4L7.5 6.2L8.5 9.1L6 7.2L3.5 9.1L4.4 6.2L2 4.4L4.8 4.4Z"></path></svg></span><span hidden>(&#9733;)</span> on the plot.</li>
       <li><strong>Distance Measuring:</strong> Run Euclidean distance against all stored training examples.</li>
-      <li><strong>Hyperparameter K:</strong> Choose K (the count of voting neighbors).</li>
+      <li><strong>Hyperparameter K:</strong> Choose K (the count of voting neighbors) using validation or cross-validation.</li>
       <li><strong>Locate Neighbors:</strong> Gather the K nearest samples.</li>
       <li><strong>Tally Votes:</strong> Perform a democratic, equal-weight majority vote.</li>
       <li><strong>Predict:</strong> Assign the winning class to the unknown query point.</li>
@@ -1985,7 +1985,7 @@ function renderScaled(){
 
         // Human chosen hyperparameter labels
         if (canShowDetailedLabels()) {
-        inkTokenLabel('💡','K is a human-chosen hyperparameter',plotInnerX+15,plotInnerY+25,'bold 11px Patrick Hand,"Kalam","Chalkboard SE",cursive',COLORS.accent,'left','stage6-bulb');
+        inkTokenLabel('💡','K is chosen using validation or CV',plotInnerX+15,plotInnerY+25,'bold 11px Patrick Hand,"Kalam","Chalkboard SE",cursive',COLORS.accent,'left','stage6-bulb');
           inkText(`K = ${activeK} neighbors allowed to vote`,plotInnerX+15,plotInnerY+42,'500 11px Patrick Hand,sans-serif',COLORS.text,'left');
         } else {
           inkText(`K = ${activeK} neighbors chosen by human`,plotInnerX+12,plotInnerY+20,'bold 10px Patrick Hand,sans-serif',COLORS.accent,'left');
