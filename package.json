@@ -5,7 +5,10 @@
   "scripts": {
     "build": "node scripts/build.mjs",
     "test": "node scripts/build.mjs --validate-only && node scripts/test-logistic-browser.mjs",
-    "test:browser": "node scripts/test-logistic-browser.mjs"
+    "test:browser": "node scripts/test-logistic-browser.mjs",
+    "test:paper": "node scripts/test-paper-notes-browser.mjs",
+    "test:sketch": "node scripts/test-study-sketch-browser.mjs",
+    "test:mobile": "node scripts/test-mobile-browser.mjs && node scripts/test-mobile-navigation.mjs"
   },
   "devDependencies": {
     "playwright": "^1.61.1"

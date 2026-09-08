@@ -836,8 +836,11 @@
       }
     }
   </style>
+  <link rel="stylesheet" href="modules/handwritten-theme.css?v=20260908-paper-notes">
+  <link rel="stylesheet" href="assets/paper-home.css?v=20260908">
+  <script src="modules/handwritten-theme.js?v=20260908-paper-notes" defer></script>
 </head>
-<body>
+<body class="paper-home">
   <a class="skip-link" href="#universe-map">Skip to curriculum universe</a>
 
   <header class="site-header" id="site-header">
@@ -1172,6 +1175,19 @@
       moduleLayer.appendChild(node);
     });
 
+    // Existing companion lessons were absent from the mobile curriculum map.
+    const mobileCompanions = [
+      ['probability-sampling', 'Probability & Sampling Distributions', 'stats-nonexp', 'bias-variance'],
+      ['confidence-hypothesis-testing', 'Confidence Intervals & Hypothesis Testing', 'stats-nonexp', 'correlation'],
+      ['experimental-design', 'Experimental Design', 'stats-exp', 'anova'],
+      ['regression-diagnostics', 'Regression Diagnostics', 'ml-continuous', 'linear-regression'],
+      ['random-forest', 'Random Forest', 'ml-flexible', 'classification-tree'],
+      ['gradient-boosting', 'Gradient Boosting', 'ml-flexible', 'regression-tree'],
+      ['imbalanced-classification', 'Imbalanced Classification', 'ml-classification', 'logistic'],
+      ['evaluation-metrics', 'Evaluation Metrics', 'evaluation', 'model-selection'],
+      ['data-leakage-pipelines', 'Data Leakage & Pipelines', 'evaluation', 'hierarchical'],
+      ['missing-data-encoding', 'Missing Data & Encoding', 'evaluation', 'chi-square']
+    ].map(([id, title, groupKey, icon]) => ({id, title, groupKey, icon, path:`modules/${id}.html`, size:68, x:0, y:0, accent:'#527b91'}));
     const mobileRoot = document.getElementById('mobile-universe');
     groupDefinitions.forEach(system => {
       const region = document.createElement('section');
@@ -1179,7 +1195,7 @@
       region.id = system.id;
       region.innerHTML = `<div class="mobile-region-head"><span class="chapter-pill">${system.chapter}</span><h2>${system.title}</h2><p>${system.subtitle}</p></div>`;
       system.groups.forEach(group => {
-        const members = displayModules.filter(mod => mod.groupKey === group.key);
+        const members = [...displayModules, ...mobileCompanions].filter(mod => mod.groupKey === group.key);
         const subgroup = document.createElement('div');
         subgroup.className = 'mobile-group';
         subgroup.style.setProperty('--group-accent', group.accent);
@@ -1207,5 +1223,6 @@
       mobileButton.setAttribute('aria-label', 'Open navigation');
     }));
   </script>
+  <script src="assets/mobile-universe.js?v=20260908"></script>
 </body>
 </html>

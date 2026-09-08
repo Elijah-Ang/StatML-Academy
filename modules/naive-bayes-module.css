@@ -1,0 +1,314 @@
+/* Same reading spine, top navigation and sticky-board proportions as the
+   core modules. The email example and twelve lesson sections are retained. */
+* {
+  box-sizing: border-box;
+}
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 68px;
+}
+body {
+  margin: 0;
+  font-size: 18px;
+  line-height: 1.7;
+  color: #29352f;
+}
+a {
+  color: inherit;
+}
+button,
+input {
+  font: inherit;
+}
+button {
+  cursor: pointer;
+}
+.skip-link {
+  position: fixed;
+  top: -70px;
+  left: 12px;
+  z-index: 100;
+  padding: 8px;
+  background: #fffbef;
+}
+.skip-link:focus {
+  top: 70px;
+}
+.statml-site-nav {
+  position: fixed;
+  inset: 0 0 auto;
+  height: 60px;
+  z-index: 60;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 0 25px;
+  border-bottom: 1px solid #cabf9c;
+  background: #f8f1df;
+}
+.statml-brand-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  font-size: 16px;
+}
+.statml-brand-mark {
+  border: 1px solid #cabf9c;
+  padding: 0 8px;
+}
+.statml-nav-topic {
+  margin-left: auto;
+  font-size: 14px;
+}
+.statml-nav-meta {
+  font-size: 12px;
+}
+.hero {
+  max-width: 1440px;
+  margin: auto;
+  padding: 130px 80px 75px;
+  text-align: center;
+  border-bottom: 1px solid #b4a58355;
+  min-height: 420px;
+}
+.hero-copy {
+  max-width: 840px;
+  margin: auto;
+}
+.hero h1 {
+  font-size: clamp(3rem, 6vw, 5rem);
+  line-height: 1.1;
+  margin: 22px 0;
+}
+.hero-deck {
+  font-size: 20px;
+  max-width: 730px;
+  margin: auto;
+}
+.kicker {
+  color: #285f91;
+  font-size: 14px;
+}
+.hero-note {
+  font-size: 15px;
+  color: #526055;
+}
+.scroll-cue {
+  display: inline-flex;
+  gap: 16px;
+  font-size: 15px;
+  margin-top: 12px;
+}
+.hero .hw-heading-stroke {
+  left: 50% !important;
+  translate: -50%;
+}
+.statml-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 46%) minmax(0, 54%);
+  max-width: 1600px;
+  margin: auto;
+  align-items: start;
+}
+.statml-narrative {
+  min-width: 0;
+  padding: 0 4rem 6rem;
+}
+.statml-stage {
+  min-height: 90svh;
+  padding: 5rem 0;
+  scroll-margin-top: 62px;
+  border-bottom: 1px solid #ab997d40;
+}
+.statml-stage h2 {
+  font-size: clamp(1.75rem, 2.4vw, 2.4rem);
+  line-height: 1.25;
+  margin: 14px 0 26px;
+}
+.stage-kicker {
+  font-size: 13px;
+  color: #285f91;
+  display: flex;
+  gap: 12px;
+}
+.statml-stage p {
+  margin: 0 0 1.4rem;
+}
+.statml-stage strong {
+  font-weight: 700;
+}
+.statml-visual {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  padding: 80px 26px 28px;
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  overflow: hidden;
+  background: #f8f1df;
+}
+.statml-visual-card {
+  width: 100%;
+  height: 100%;
+  max-height: 820px;
+  min-height: 0;
+}
+.button-row,
+.fold-buttons,
+.metric-switch,
+.stability-switch {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 18px 0;
+}
+button {
+  padding: 6px 12px;
+  min-height: 38px;
+}
+.formula-strip,
+.continuous-note {
+  padding: 18px 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  border-block: 1px dashed #96876b88;
+}
+.formula-stack {
+  display: grid;
+}
+.insight-note,
+.scale-note,
+.closing-line {
+  padding: 15px 18px;
+  border-left: 2px solid #a6493d;
+  background: #f4e7b980;
+  margin: 24px 0;
+  display: flex;
+  gap: 12px;
+}
+.insight-index {
+  color: #a6493d;
+}
+.type-summary,
+.score-readout {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: 22px 0;
+  color: #285f91;
+}
+.type-summary .summary-label,
+.score-readout > span:first-child {
+  color: #526055;
+}
+.mini-legend {
+  display: flex;
+  gap: 20px;
+  font-size: 15px;
+}
+.height-control {
+  display: grid;
+  gap: 8px;
+  margin: 20px 0;
+}
+.height-control input {
+  width: 100%;
+}
+.statml-stage-rail {
+  position: fixed;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: grid;
+  gap: 8px;
+  z-index: 55;
+  padding: 9px;
+  background: #fffbef;
+}
+.statml-stage-button {
+  width: 10px;
+  min-height: 10px;
+  height: 10px;
+  padding: 0;
+  border: 1px solid #928261;
+  border-radius: 50%;
+  position: relative;
+}
+.statml-stage-button[aria-current="step"] {
+  background: #c7a751;
+}
+.statml-stage-button span {
+  display: none;
+  position: absolute;
+  right: 18px;
+  top: -9px;
+  width: max-content;
+  max-width: 250px;
+  background: #f4e4a9;
+  padding: 3px 9px;
+  font-size: 14px;
+}
+.statml-stage-button:hover span,
+.statml-stage-button:focus-visible span {
+  display: block;
+}
+.site-footer {
+  padding: 25px;
+  display: flex;
+  gap: 25px;
+  justify-content: space-between;
+  font-size: 13px;
+  border-top: 1px solid #ab997d40;
+}
+@media (max-width: 900px) {
+  .hero {
+    padding: 100px 24px 50px;
+    min-height: 360px;
+  }
+  .hero-deck {
+    font-size: 18px;
+  }
+  .statml-layout {
+    display: flex;
+    flex-direction: column;
+  }
+  .statml-narrative {
+    width: 100%;
+    padding: 0 24px 60px;
+    order: 2;
+  }
+  .statml-visual {
+    order: 1;
+    width: 100%;
+    height: 50svh;
+    min-height: 320px;
+    padding: 62px 12px 12px;
+    z-index: 45;
+  }
+  .statml-stage {
+    min-height: 75svh;
+    padding: 55px 0;
+  }
+  .statml-stage-rail {
+    display: none;
+  }
+  .statml-site-nav {
+    padding: 0 15px;
+    gap: 10px;
+  }
+  .statml-brand-link {
+    font-size: 13px;
+  }
+  .statml-nav-meta {
+    font-size: 10px;
+  }
+  .site-footer {
+    flex-wrap: wrap;
+  }
+  .statml-stage h2 {
+    font-size: 29px;
+  }
+}

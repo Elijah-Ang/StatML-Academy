@@ -1,0 +1,203 @@
+/* Rich illustrations keep the existing two-column reading spine. */
+html[data-deep-learning-renderer="v3"] .deep-rich-board .sketch-heading {
+  padding: 12px 20px 5px;
+  gap: 10px;
+}
+html[data-deep-learning-renderer="v3"] .deep-rich-board .sketch-heading h3 {
+  font-size: 22px !important;
+  flex: 1;
+}
+html[data-deep-learning-renderer="v3"] .deep-rich-board .deep-inspect {
+  flex-shrink: 0;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  padding: 4px 2px;
+  font-size: 14px;
+  color: #285f91;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  cursor: pointer;
+}
+.deep-scene-tools {
+  display: flex;
+  justify-content: center;
+  gap: 7px;
+  flex-wrap: wrap;
+  padding: 4px 12px 8px;
+  flex: 0 0 auto;
+}
+.deep-scene-tools[hidden] {
+  display: none;
+}
+html body.paper-notes .deep-scene-tools button {
+  font-size: 15px;
+  line-height: 1.3;
+  min-height: 32px;
+  padding: 5px 10px;
+  background: #fffbef !important;
+  color: #285f91 !important;
+  cursor: pointer;
+}
+html body.paper-notes .deep-scene-tools button[aria-pressed="true"] {
+  color: #a6493d !important;
+  background: #f4e7bf !important;
+  border-bottom: 2px solid #a6493d !important;
+}
+html[data-deep-learning-renderer="v3"] .deep-rich-board .sketch-caption {
+  font-size: 16px !important;
+  min-height: 54px;
+  padding: 8px 20px 12px;
+}
+html[data-deep-learning-renderer="v3"] .deep-rich-board .sketch-art {
+  padding: 0 6px;
+}
+html[data-deep-learning-renderer="v3"]
+  body.paper-notes
+  .nesting.deep-scope-sketch {
+  display: block !important;
+  position: relative !important;
+  width: 100% !important;
+  max-width: 840px;
+  margin: 35px auto !important;
+  padding: 0 !important;
+  height: auto !important;
+  min-height: 0 !important;
+  background: none !important;
+  border: none !important;
+  overflow: visible !important;
+}
+.deep-scope-sketch svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 640/440;
+}
+html body.paper-notes .deep-scope-sketch svg text {
+  font-family: "Patrick Hand", cursive !important;
+  text-transform: none !important;
+  letter-spacing: 0.01em !important;
+}
+.deep-zoom-dialog {
+  max-width: 1100px;
+  width: calc(100vw - 32px);
+  max-height: calc(100svh - 32px);
+  padding: 0;
+  border: 1px solid #96876b;
+  background: #fffbef;
+  color: #29352f;
+  overflow: auto;
+  overscroll-behavior: contain;
+  box-shadow: 0 15px 60px #34281866;
+}
+.deep-zoom-dialog::backdrop {
+  background: #382c226b;
+  backdrop-filter: blur(3px);
+}
+.deep-zoom-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  position: sticky;
+  top: 0;
+  padding: 12px 18px;
+  background: #f8f1df;
+  z-index: 5;
+  border-bottom: 1px dashed #a99b7e;
+}
+.deep-zoom-header span {
+  margin-right: auto;
+  font-size: 20px;
+}
+.deep-zoom-header button {
+  font: inherit;
+  cursor: pointer;
+}
+html body.paper-notes .deep-zoom-dialog .deep-expanded-content {
+  display: block;
+  overflow: visible;
+  height: auto;
+  min-width: 640px;
+}
+.deep-zoom-dialog .sketch-art {
+  height: auto;
+  display: block;
+}
+.deep-zoom-dialog .sketch-art svg {
+  width: 100%;
+  height: auto;
+  max-height: none;
+}
+.deep-zoom-dialog.is-fit .deep-expanded-content {
+  min-width: 0 !important;
+}
+@media (min-width: 901px) {
+  html[data-deep-learning-renderer="v3"] .visual-stage {
+    height: calc(100svh - 155px) !important;
+    top: 85px !important;
+    margin-top: 28px !important;
+  }
+}
+@media (max-width: 900px) {
+  html[data-deep-learning-renderer="v3"] .deep-rich-board .sketch-heading {
+    padding: 7px 12px 2px;
+  }
+  html[data-deep-learning-renderer="v3"] .deep-rich-board .sketch-heading h3 {
+    font-size: 17px !important;
+  }
+  html[data-deep-learning-renderer="v3"] .deep-rich-board .deep-inspect {
+    font-size: 12px;
+  }
+  .deep-scene-tools {
+    padding: 3px 8px;
+    gap: 5px;
+  }
+  html body.paper-notes .deep-scene-tools button {
+    font-size: 12px;
+    min-height: 28px;
+    padding: 3px 7px;
+  }
+  html[data-deep-learning-renderer="v3"] .deep-rich-board .sketch-caption {
+    font-size: 12px !important;
+    min-height: 0;
+    padding: 5px 12px 8px;
+  }
+  .deep-zoom-dialog {
+    width: calc(100vw - 16px);
+    max-width: none;
+    max-height: calc(100svh - 16px);
+  }
+  .deep-zoom-header {
+    padding: 8px;
+    gap: 8px;
+  }
+  .deep-zoom-header span {
+    font-size: 15px;
+  }
+  .deep-zoom-header button {
+    font-size: 13px;
+  }
+}
+
+html[data-deep-learning-renderer="v3"] .deep-rich-board .sketch-heading h3 {
+  min-width: 0;
+  white-space: normal;
+  overflow-wrap: break-word;
+}
+.deep-zoom-header {
+  left: 0;
+  width: 100%;
+  box-sizing: border-box;
+}
+.deep-zoom-hint {
+  display: none;
+}
+@media (max-width: 900px) {
+  .deep-zoom-hint {
+    display: block;
+    font-size: 13px;
+    padding: 6px 12px;
+    margin: 0;
+    color: #526055;
+  }
+}

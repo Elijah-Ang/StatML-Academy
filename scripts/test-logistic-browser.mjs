@@ -1,5 +1,6 @@
 import { createServer } from 'node:http';
 import { readFile, stat } from 'node:fs/promises';
+import { existsSync } from 'node:fs';
 import { extname, join, normalize, resolve } from 'node:path';
 import { chromium } from 'playwright';
 
@@ -21,7 +22,7 @@ const server=createServer(async(request,response)=>{
 
 await new Promise(resolveListen=>server.listen(0,'127.0.0.1',resolveListen));
 const address=server.address();
-const browser=await chromium.launch({headless:true});
+const browser=await chromium.launch({headless:true, ...(!existsSync(chromium.executablePath()) ? {channel:"chrome"} : {})});
 const page=await browser.newPage({viewport:{width:1280,height:900}});
 const pageErrors=[];
 page.on('pageerror',error=>pageErrors.push(error.message));

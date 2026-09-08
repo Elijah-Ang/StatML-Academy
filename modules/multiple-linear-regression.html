@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <script src="mobile-reading.js?v=20260908"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="An interactive StatML Academy lesson on Multiple Linear Regression. Learn through guided stages, live visualisations, worked examples, and interpretation.">
@@ -1397,24 +1398,36 @@ body:is(.hw-handwritten,.statml-standardized) :is(.legend,.legend-card,.viz-lege
             context.restore();
         }
         function inkFillRect(context, x, y, w, h, fill, radius = 1.5) {
+            // Keep the data geometry; lay down a light wash, then visible pen hatching.
+            const pens = {'#3b82f6':'#285f91','#10b981':'#487459','#8b5cf6':'#795885','#4f46e5':'#555380','#94a3b8':'#7c8178'};
+            const color = pens[fill] || fill;
+            context.save();
             inkRectPath(context, x, y, w, h, radius);
-            context.fillStyle = fill;
+            context.fillStyle = color;
+            context.globalAlpha *= .13;
             context.fill();
+            context.restore();
             if (w > 18 && h > 12) {
                 context.save();
-                inkRectPath(context, x + .35, y + .25, Math.max(1, w - .7), Math.max(1, h - .5), radius);
+                inkRectPath(context, x, y, w, h, radius);
                 context.clip();
-                context.globalAlpha = .16;
-                context.strokeStyle = fill;
-                context.lineWidth = .7;
-                for (let q = -h; q < w + h; q += 9) {
+                context.globalAlpha *= .65;
+                context.strokeStyle = color;
+                context.lineWidth = 1.05;
+                for (let q = -h; q < w + h; q += 6) {
                     context.beginPath();
                     context.moveTo(x + q, y + h);
-                    context.lineTo(x + q + h, y);
+                    context.quadraticCurveTo(x + q + h * .5 + Math.sin(q) * 1.5, y + h * .5, x + q + h, y);
                     context.stroke();
                 }
                 context.restore();
             }
+            context.save();
+            inkRectPath(context, x, y, w, h, radius);
+            context.strokeStyle = color;
+            context.lineWidth = 1.3;
+            context.stroke();
+            context.restore();
         }
 
         // --- MATH & PROJECTION ---
@@ -2096,7 +2109,7 @@ body:is(.hw-handwritten,.statml-standardized) :is(.legend,.legend-card,.viz-lege
             }
         }
 
-        const observer = new IntersectionObserver((entries) => {
+        const observer = new StatMLStageObserver((entries) => {
             entries.forEach(entry => { if (entry.isIntersecting) setStage(parseInt(entry.target.getAttribute('data-stage'))); });
         }, { root: null, threshold: 0.45 });
 
@@ -2210,7 +2223,7 @@ body:is(.hw-handwritten,.statml-standardized) :is(.legend,.legend-card,.viz-lege
     railButtons.forEach((b,i)=> i===idx ? b.setAttribute('aria-current','step') : b.removeAttribute('aria-current'));
   };
   if (stageEls.length) activate(stageEls[0]);
-  const observer=new IntersectionObserver(entries=>{
+  const observer=new StatMLStageObserver(entries=>{
     const visible=entries.filter(e=>e.isIntersecting).sort((a,b)=>b.intersectionRatio-a.intersectionRatio)[0];
     if (visible) activate(visible.target);
   },{rootMargin:'-25% 0px -45% 0px',threshold:[0,.15,.35,.6]});

@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <script src="mobile-reading.js?v=20260908"></script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content="A scroll-driven visual lesson on One-R: the simplest serious classification baseline." />
@@ -2578,7 +2579,7 @@ range_ = (scores.min(), scores.max())</code></pre>
       }
 
       function setupObserver() {
-        const observer = new IntersectionObserver(entries => {
+        const observer = new StatMLStageObserver(entries => {
           const visible = entries
             .filter(e => e.isIntersecting)
             .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
@@ -2735,7 +2736,7 @@ range_ = (scores.min(), scores.max())</code></pre>
   const activate = stage => { const index = stageEls.indexOf(stage); railButtons.forEach((button,i) => i === index ? button.setAttribute('aria-current','step') : button.removeAttribute('aria-current')); };
   if (stageEls.length) activate(stageEls[0]);
   if ('IntersectionObserver' in window) {
-    const observer = new IntersectionObserver(entries => { const visible = entries.filter(entry => entry.isIntersecting).sort((a,b) => b.intersectionRatio - a.intersectionRatio)[0]; if (visible) activate(visible.target); }, {rootMargin:'-25% 0px -45% 0px',threshold:[0,.15,.35,.6]});
+    const observer = new StatMLStageObserver(entries => { const visible = entries.filter(entry => entry.isIntersecting).sort((a,b) => b.intersectionRatio - a.intersectionRatio)[0]; if (visible) activate(visible.target); }, {rootMargin:'-25% 0px -45% 0px',threshold:[0,.15,.35,.6]});
     stageEls.forEach(stage => observer.observe(stage));
   }
 })();

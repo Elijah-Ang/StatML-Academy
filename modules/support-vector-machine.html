@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <script src="mobile-reading.js?v=20260908"></script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content="An interactive visual lesson on support vector machines, margins, support vectors, slack, kernels, validation, and calibration." />
@@ -2332,7 +2333,7 @@ body.statml-standardized > .stage-dots { display:none !important; }
         let stageSyncFrame=0;
         const syncStageFromScroll=()=>{
           stageSyncFrame=0;
-          const anchor=window.innerHeight*.42;
+          const anchor=window.statmlReadingLine(.42);
           let stage=Number(sections[0]?.dataset.stage||1);
           for(const section of sections){
             if(section.getBoundingClientRect().top<=anchor)stage=Number(section.dataset.stage);
@@ -2482,7 +2483,7 @@ body.statml-standardized > .stage-dots { display:none !important; }
     let railFrame = 0;
     const syncRail = () => {
       railFrame = 0;
-      const anchor = window.innerHeight * .42;
+      const anchor = window.statmlReadingLine(.42);
       let current = stageEls[0];
       for (const stage of stageEls) {
         if (stage.getBoundingClientRect().top <= anchor) current = stage;

@@ -10,7 +10,7 @@
   const link = document.querySelector('link[href*="handwritten-theme.css"]');
   if (link?.parentNode) link.parentNode.appendChild(link);
   const body = document.body;
-  body?.classList.add('hw-handwritten');
+  body?.classList.add('hw-handwritten', 'paper-notes');
   /* Page markers are presentation hooks only. The renderer and DOM remain
      the sole owners of geometry, content, stages, and responsive placement. */
   if (body?.querySelector('.interactive[data-interactive="testing"]') && !body.querySelector('#regCanvas')) {
@@ -105,7 +105,7 @@
   const surfaceSelector = [
     '.statml-site-nav', '.site-nav', '.topbar', '.top-nav', '.statml-module-footer',
     '.statml-brand-mark', '.brand-mark', '.stage-dots', '.objective', '.scope-note',
-    '.glass-card', '.card', '.quiz-card', '.control-card', '.interactive',
+    '.glass-card', '.card', 'div.bg-white', '.quiz-card', '.control-card', '.interactive',
     '.panel', '.map', '.lesson-map', '.metric', '.metric-card', '.question-card',
     '.formula', '.formula-block', '.math-block', '.insight-box', '.insight',
     '.callout', '.warning-note', '.report', '.plain-translation', '.takeaway',
@@ -113,7 +113,7 @@
     '.viz-panel', '.chart-card', '.figure-card', '.statml-visual-card',
     '.control-panel', '.procedural-step', '.explain-block', '.quiz-option',
     '.feedback', '.static-answer', '.live-calc', '.terminal-card', '.mini-table',
-    '.data-table', '.statml-overview', '.statml-overview-item', '.statml-stage-rail',
+    '.data-table', '.statml-rigor-panel', '.statml-overview', '.statml-overview-item', '.statml-stage-rail',
     '.visual-head', '.visual-foot', '.outcomes > span', '.pathway > div'
   ].join(',');
   const stickySelector = [
@@ -205,6 +205,10 @@
       collect(markerSelector).forEach(el => el.classList.add('hw-marker-label'));
       collect('h1,h2').forEach(addHeadingStroke);
     }
+    collect('.statml-visual').forEach(el => {
+      // CSS only centers row-based boards; stacked controls retain their flow.
+      el.classList.toggle('paper-visual-row', getComputedStyle(el).flexDirection === 'row');
+    });
     collect('svg:not(.hw-rough-frame):not(.hw-ink-filter-bank)').forEach(svg => {
       const rect = svg.getBoundingClientRect();
       if (rect.width > 0 && rect.height > 0 && rect.width <= 128 && rect.height <= 128) svg.classList.add('hw-ink-svg');

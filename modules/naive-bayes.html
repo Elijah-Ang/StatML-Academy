@@ -1,89 +1,38 @@
 <!doctype html>
 <html lang="en">
 <head>
+  <script src="mobile-reading.js?v=20260908"></script>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="A visual, interactive introduction to Naive Bayes classification using a spam-filtering example.">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%231f2937'/%3E%3Cpath d='M8 24V16h4v8H8Zm6 0V10h4v14h-4Zm6 0V6h4v18h-4Z' fill='%23fca5a5'/%3E%3C/svg%3E">
-  <title>Naive Bayes, in evidence | StatML Academy</title>
+  <title>Naive Bayes | StatML Academy</title>
   <link rel="stylesheet" href="academic-rigor.css">
-  <link rel="stylesheet" href="naive-bayes.css">
+  <link rel="stylesheet" href="naive-bayes-module.css">
   <link rel="stylesheet" href="handwritten-theme.css">
-  <link rel="stylesheet" href="naive-bayes-handwritten.css">
+  <link rel="stylesheet" href="study-sketch.css">
 </head>
-<body class="naive-bayes-evidence">
+<body class="sketch-bayes statml-standardized">
   <a class="skip-link" href="#lesson">Skip to lesson</a>
 
-  <header class="topbar statml-site-nav" aria-label="Lesson controls">
-    <a class="wordmark" href="../index.html" aria-label="StatML Academy home">
-      <span class="wordmark-mark" aria-hidden="true"><i></i><i></i><i></i></span>
-      <span><strong>STATML</strong><small>ACADEMY</small></span>
-    </a>
-    <div class="topbar-meta">
-      <span class="statml-nav-topic">Naive Bayes</span>
-      <span class="eyebrow">A visual field guide</span>
-      <span class="topbar-divider" aria-hidden="true"></span>
-      <span class="progress-label"><span id="progressCurrent">01</span><span class="progress-slash">/</span><span id="progressTotal">13</span></span>
-    </div>
-    <span class="statml-nav-meta">concept module</span>
-    <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="stageNav">Stages <span aria-hidden="true">+</span></button>
-  </header>
-
-  <nav class="stage-nav" id="stageNav" aria-label="Lesson stages">
-    <p class="stage-nav-kicker">Move through the evidence</p>
-    <ol>
-      <li><a href="#stage-0" data-nav-stage="0"><span>01</span>Premise</a></li>
-      <li><a href="#stage-1" data-nav-stage="1"><span>02</span>Observe</a></li>
-      <li><a href="#stage-2" data-nav-stage="2"><span>03</span>Frame</a></li>
-      <li><a href="#stage-3" data-nav-stage="3"><span>04</span>Split</a></li>
-      <li><a href="#stage-4" data-nav-stage="4"><span>05</span>Choose</a></li>
-      <li><a href="#stage-5" data-nav-stage="5"><span>06</span>Learn</a></li>
-      <li><a href="#stage-6" data-nav-stage="6"><span>07</span>Assume</a></li>
-      <li><a href="#stage-7" data-nav-stage="7"><span>08</span>Score</a></li>
-      <li><a href="#stage-8" data-nav-stage="8"><span>09</span>Continuous</a></li>
-      <li><a href="#stage-9" data-nav-stage="9"><span>10</span>Stabilise</a></li>
-      <li><a href="#stage-10" data-nav-stage="10"><span>11</span>Validate</a></li>
-      <li><a href="#stage-11" data-nav-stage="11"><span>12</span>Evaluate</a></li>
-      <li><a href="#stage-12" data-nav-stage="12"><span>13</span>Remember</a></li>
-    </ol>
+  <nav class="statml-site-nav" aria-label="Module navigation">
+    <a class="statml-brand-link" href="../index.html"><span class="statml-brand-mark">S</span> StatML Academy</a>
+    <span class="statml-nav-topic">Naive Bayes</span><span class="statml-nav-meta">concept module</span>
   </nav>
-
   <main id="top">
     <section class="hero stage-section" id="stage-0" data-stage="0" aria-labelledby="hero-title">
       <div class="hero-copy">
         <p class="kicker"><span class="kicker-line"></span>Machine learning / classification</p>
-        <h1 id="hero-title">Naive Bayes,<br><em>in evidence.</em></h1>
+        <h1 id="hero-title">Naive Bayes</h1>
         <p class="hero-deck">A small, fast way to turn separate clues into a class prediction—by remembering what was common, then updating that belief when new evidence arrives.</p>
-        <div class="hero-note"><span class="note-dot" aria-hidden="true"></span><span>Beginner-friendly · one spam filter, one continuous-data detour</span></div>
-        <a class="scroll-cue" href="#stage-1"><span class="scroll-cue-label">Scroll to inspect the case</span><span class="scroll-cue-arrow" aria-hidden="true">↓</span></a>
-      </div>
-      <div class="hero-visual" aria-label="An email is examined by two class lenses: spam and not spam.">
-        <div class="hero-sky" aria-hidden="true"></div>
-        <div class="orbit orbit-one" aria-hidden="true"></div>
-        <div class="orbit orbit-two" aria-hidden="true"></div>
-        <div class="signal-spark spark-one" aria-hidden="true"></div>
-        <div class="signal-spark spark-two" aria-hidden="true"></div>
-        <div class="email-hero-card">
-          <div class="email-hero-top"><span class="micro-label">INCOMING / 08:14</span><span class="email-ping" aria-hidden="true"></span></div>
-          <div class="email-subject">You are a winner.<br><span>Claim your free prize.</span></div>
-          <div class="email-words"><span>free</span><span>winner</span><span>prize</span></div>
-          <div class="email-hero-foot"><span>new observation</span><span class="mono">x = [1, 1, 1]</span></div>
-        </div>
-        <div class="class-lens lens-spam"><span class="lens-orbit" aria-hidden="true"></span><span class="lens-title">SPAM</span><span class="lens-caption">evidence fits</span></div>
-        <div class="class-lens lens-safe"><span class="lens-orbit" aria-hidden="true"></span><span class="lens-title">NOT SPAM</span><span class="lens-caption">evidence fits less</span></div>
-        <svg class="hero-threads" viewBox="0 0 720 680" fill="none" aria-hidden="true">
-          <path d="M365 280 C282 242 194 222 116 196" stroke="rgba(220,38,38,.5)" stroke-width="1.5" stroke-dasharray="3 8"/>
-          <path d="M365 310 C445 278 540 258 622 232" stroke="rgba(37,99,235,.44)" stroke-width="1.5" stroke-dasharray="3 8"/>
-          <path d="M365 335 C292 390 205 433 126 485" stroke="rgba(99,102,241,.36)" stroke-width="1.5" stroke-dasharray="3 8"/>
-          <circle cx="365" cy="280" r="3" fill="#dc2626"/><circle cx="365" cy="310" r="3" fill="#2563eb"/><circle cx="365" cy="335" r="3" fill="#6366f1"/>
-        </svg>
-        <div class="hero-caption"><span class="caption-rule"></span><span>One observation.<br>Two competing explanations.</span></div>
+
+        <a class="scroll-cue" href="#stage-1"><span class="scroll-cue-label">Scroll to explore</span><span class="scroll-cue-arrow" aria-hidden="true">↓</span></a>
       </div>
     </section>
 
-    <section class="lesson-shell" id="lesson" aria-label="Naive Bayes lesson">
-      <div class="narrative">
-        <section class="chapter stage-section is-active" id="stage-1" data-stage="1" aria-labelledby="stage-1-title">
+    <section class="lesson-shell statml-layout" id="lesson" aria-label="Naive Bayes lesson">
+      <div class="narrative statml-narrative">
+        <section class="chapter stage-section statml-stage is-active" id="stage-1" data-stage="1" aria-labelledby="stage-1-title">
           <p class="stage-kicker"><span>02</span>Observe the case</p>
           <h2 id="stage-1-title">Start with a pile of labeled emails.</h2>
           <p>Naive Bayes learns from examples where the answer is already known. In this miniature dataset, each row is an email, three clues are recorded, and the final column says whether the message was spam.</p>
@@ -91,7 +40,7 @@
           <div class="insight-note"><span class="insight-index">A</span><span><strong>Start with the past.</strong> The model’s evidence comes from what happened in earlier examples.</span></div>
         </section>
 
-        <section class="chapter stage-section" id="stage-2" data-stage="2" aria-labelledby="stage-2-title">
+        <section class="chapter stage-section statml-stage" id="stage-2" data-stage="2" aria-labelledby="stage-2-title">
           <p class="stage-kicker"><span>03</span>Frame the question</p>
           <h2 id="stage-2-title">Separate the target from the clues.</h2>
           <p>The thing we want to predict is the <strong>target variable</strong>, <span class="formula-inline">Y</span>. Everything else becomes a <strong>feature</strong>, <span class="formula-inline">X</span>—a measurable clue the model can use.</p>
@@ -99,7 +48,7 @@
           <div class="formula-strip"><span class="mono">X₁ = contains “free”</span><span class="formula-arrow">→</span><span class="mono">[1, 0, 1, 0]</span></div>
         </section>
 
-        <section class="chapter stage-section" id="stage-3" data-stage="3" aria-labelledby="stage-3-title">
+        <section class="chapter stage-section statml-stage" id="stage-3" data-stage="3" aria-labelledby="stage-3-title">
           <p class="stage-kicker"><span>04</span>Protect the test</p>
           <h2 id="stage-3-title">Keep the final exam hidden.</h2>
           <p>Before learning anything, divide the dataset. The training set teaches the model. The test set stays untouched until the end, so the final score tells us how the model handles examples it has not memorised.</p>
@@ -107,15 +56,16 @@
           <div class="mini-legend"><span><i class="legend-swatch train"></i>train = learn</span><span><i class="legend-swatch test"></i>test = untouched</span></div>
         </section>
 
-        <section class="chapter stage-section" id="stage-4" data-stage="4" aria-labelledby="stage-4-title">
+        <section class="chapter stage-section statml-stage" id="stage-4" data-stage="4" aria-labelledby="stage-4-title">
           <p class="stage-kicker"><span>05</span>Match the evidence</p>
           <h2 id="stage-4-title">Choose the version that fits the feature.</h2>
           <p>“Naive Bayes” is a family of models. The prediction logic stays recognisable, but the likelihood calculation changes with the kind of feature you have.</p>
           <p class="interactive-prompt">Tap a model type to see what it expects.</p>
+          <div class="button-row" role="group" aria-label="Naive Bayes variant"><button type="button" data-model="bernoulli" aria-pressed="true">Bernoulli</button><button type="button" data-model="multinomial" aria-pressed="false">Multinomial</button><button type="button" data-model="categorical" aria-pressed="false">Categorical</button><button type="button" data-model="gaussian" aria-pressed="false">Gaussian</button></div>
           <div class="type-summary" id="typeSummary" aria-live="polite"><span class="summary-label">Selected</span><strong>Bernoulli</strong><span>yes / no features</span></div>
         </section>
 
-        <section class="chapter stage-section" id="stage-5" data-stage="5" aria-labelledby="stage-5-title">
+        <section class="chapter stage-section statml-stage" id="stage-5" data-stage="5" aria-labelledby="stage-5-title">
           <p class="stage-kicker"><span>06</span>Learn the starting belief</p>
           <h2 id="stage-5-title">Count what each class tends to contain.</h2>
           <p>Training is mostly about learning probabilities from the training data. First comes the <strong>prior</strong>: how common is each class before we inspect the new email?</p>
@@ -124,7 +74,7 @@
           <div class="formula-strip formula-stack"><span class="mono">P(Spam) = 40 / 100 = 0.40</span><span class="mono">P(Free | Spam) = 30 / 40 = 0.75</span></div>
         </section>
 
-        <section class="chapter stage-section" id="stage-6" data-stage="6" aria-labelledby="stage-6-title">
+        <section class="chapter stage-section statml-stage" id="stage-6" data-stage="6" aria-labelledby="stage-6-title">
           <p class="stage-kicker"><span>07</span>Make the naive move</p>
           <h2 id="stage-6-title">Pretend the clues can speak separately.</h2>
           <p>Real words can be related. “Free” and “winner” may travel together. Naive Bayes deliberately ignores that relationship <em>once the class is known</em>.</p>
@@ -132,24 +82,25 @@
           <button class="text-button" type="button" id="assumptionToggle" aria-pressed="false">Show what the shortcut ignores <span aria-hidden="true">↗</span></button>
         </section>
 
-        <section class="chapter stage-section" id="stage-7" data-stage="7" aria-labelledby="stage-7-title">
+        <section class="chapter stage-section statml-stage" id="stage-7" data-stage="7" aria-labelledby="stage-7-title">
           <p class="stage-kicker"><span>08</span>Score a new observation</p>
           <h2 id="stage-7-title">Prior × evidence = a class score.</h2>
           <p>Our new email contains “free” and “winner”. The model asks the same question twice: how well would this evidence fit <strong>Spam</strong>? How well would it fit <strong>Not Spam</strong>?</p>
-          <p>Use the switches to add or remove a clue. The bars and the normalised posterior update immediately.</p>
+          <p>Tap the clues on the diagram to include or ignore them. The class scores and normalised posterior update immediately; ignoring a clue is different from observing that it is absent.</p>
           <div class="score-readout" aria-live="polite"><span>Current prediction</span><strong id="predictionLabel">Spam</strong><span id="predictionConfidence">98.4% posterior</span></div>
           <button class="reset-button" type="button" id="resetEvidence">Reset evidence</button>
         </section>
 
-        <section class="chapter stage-section" id="stage-8" data-stage="8" aria-labelledby="stage-8-title">
+        <section class="chapter stage-section statml-stage" id="stage-8" data-stage="8" aria-labelledby="stage-8-title">
           <p class="stage-kicker"><span>09</span>Change the kind of feature</p>
           <h2 id="stage-8-title">Numbers need a different likelihood.</h2>
           <p>For a height, age, or temperature, counting exact matches is not useful. Nobody may be exactly <span class="mono">169 cm</span>, but that height can still be typical of a class.</p>
           <p><strong>Gaussian Naive Bayes</strong> learns a mean and a spread for each class, then asks how normal the new number looks under each bell-shaped distribution.</p>
+          <label class="height-control">Observation height: <output id="heightReadout">169 cm</output><input id="heightSlider" type="range" min="160" max="187" value="169" aria-label="Observation height in centimetres"></label>
           <div class="continuous-note"><span class="mono">Class A ≈ 168 cm</span><span class="mono">Class B ≈ 181 cm</span></div>
         </section>
 
-        <section class="chapter stage-section" id="stage-9" data-stage="9" aria-labelledby="stage-9-title">
+        <section class="chapter stage-section statml-stage" id="stage-9" data-stage="9" aria-labelledby="stage-9-title">
           <p class="stage-kicker"><span>10</span>Keep the arithmetic stable</p>
           <h2 id="stage-9-title">Two small engineering fixes.</h2>
           <p>If a feature was never seen in a class, its count can produce a likelihood of zero. One zero would erase the whole product. <strong>Laplace smoothing</strong> adds a small artificial count so “unseen” does not mean “impossible”. This applies to discrete/count variants, not Gaussian Naive Bayes.</p>
@@ -157,7 +108,7 @@
           <div class="stability-switch" role="group" aria-label="Arithmetic view"><button type="button" class="is-selected" data-stability="smooth" aria-pressed="true">Smoothing</button><button type="button" data-stability="logs" aria-pressed="false">Log space</button></div>
         </section>
 
-        <section class="chapter stage-section" id="stage-10" data-stage="10" aria-labelledby="stage-10-title">
+        <section class="chapter stage-section statml-stage" id="stage-10" data-stage="10" aria-labelledby="stage-10-title">
           <p class="stage-kicker"><span>11</span>Develop honestly</p>
           <h2 id="stage-10-title">Use folds while you build.</h2>
           <p>Do not keep checking the final test set while tuning the model. Instead, rotate through the training set with <strong>5-fold cross-validation</strong>: four folds train, one fold validates, then the validating fold moves.</p>
@@ -166,7 +117,7 @@
           <div class="fold-buttons" role="group" aria-label="Choose validation round"><button type="button" class="is-selected" data-fold="1" aria-pressed="true">1</button><button type="button" data-fold="2" aria-pressed="false">2</button><button type="button" data-fold="3" aria-pressed="false">3</button><button type="button" data-fold="4" aria-pressed="false">4</button><button type="button" data-fold="5" aria-pressed="false">5</button></div>
         </section>
 
-        <section class="chapter stage-section" id="stage-11" data-stage="11" aria-labelledby="stage-11-title">
+        <section class="chapter stage-section statml-stage" id="stage-11" data-stage="11" aria-labelledby="stage-11-title">
           <p class="stage-kicker"><span>12</span>Read the result</p>
           <h2 id="stage-11-title">A prediction is a decision with consequences.</h2>
           <p>Accuracy is not the only question. Precision asks whether predicted spam really was spam. Recall asks how much of the real spam the model caught. F1 balances the two.</p>
@@ -175,7 +126,7 @@
           <div class="metric-caption" id="metricCaption" aria-live="polite">Precision focus · keep false positives visible.</div>
         </section>
 
-        <section class="chapter stage-section final-chapter" id="stage-12" data-stage="12" aria-labelledby="stage-12-title">
+        <section class="chapter stage-section statml-stage final-chapter" id="stage-12" data-stage="12" aria-labelledby="stage-12-title">
           <p class="stage-kicker"><span>13</span>Keep the mental model</p>
           <h2 id="stage-12-title">Prior → likelihoods → posterior.</h2>
           <p>Naive Bayes is a detective with a disciplined shortcut: start with what was common, score how each clue fits each class, combine the evidence, then choose the most probable explanation.</p>
@@ -185,174 +136,19 @@
         </section>
       </div>
 
-      <aside class="visual-column" aria-label="Interactive visual stage">
-        <div class="visual-stage" id="visualStage">
-          <div class="stage-rail"><span class="rail-kicker">LIVE STAGE</span><span class="rail-name" id="railName">Observe</span><span class="rail-line"><i id="railFill"></i></span></div>
-
-          <div class="scene scene-observe is-visible" data-scene="1" aria-label="A labeled training dataset of six emails.">
-            <div class="scene-heading"><span class="scene-number">02</span><span>the evidence ledger</span></div>
-            <div class="ledger-wrap">
-              <div class="ledger-title"><span>miniature inbox / training examples</span><span class="mono">n = 6</span></div>
-              <div class="ledger-table" role="table" aria-label="Six labeled email examples">
-                <div class="ledger-row ledger-head" role="row"><span role="columnheader">email</span><span role="columnheader">free</span><span role="columnheader">winner</span><span role="columnheader">meeting</span><span role="columnheader">class</span></div>
-                <div class="ledger-row" role="row" tabindex="0" data-ledger-row="free + winner → spam" aria-label="Inspect email 1: free and winner, classified as spam"><span role="cell">01</span><span role="cell" class="yes">yes</span><span role="cell" class="yes">yes</span><span role="cell">—</span><span role="cell" class="class-spam">spam</span></div>
-                <div class="ledger-row" role="row" tabindex="0" data-ledger-row="free → spam" aria-label="Inspect email 2: free, classified as spam"><span role="cell">02</span><span role="cell" class="yes">yes</span><span role="cell">—</span><span role="cell">—</span><span role="cell" class="class-spam">spam</span></div>
-                <div class="ledger-row" role="row" tabindex="0" data-ledger-row="winner → spam" aria-label="Inspect email 3: winner, classified as spam"><span role="cell">03</span><span role="cell">—</span><span role="cell" class="yes">yes</span><span role="cell">—</span><span role="cell" class="class-spam">spam</span></div>
-                <div class="ledger-row" role="row" tabindex="0" data-ledger-row="meeting → not spam" aria-label="Inspect email 4: meeting, classified as not spam"><span role="cell">04</span><span role="cell">—</span><span role="cell">—</span><span role="cell" class="yes">yes</span><span role="cell" class="class-safe">not spam</span></div>
-                <div class="ledger-row" role="row" tabindex="0" data-ledger-row="meeting → not spam" aria-label="Inspect email 5: meeting, classified as not spam"><span role="cell">05</span><span role="cell">—</span><span role="cell">—</span><span role="cell" class="yes">yes</span><span role="cell" class="class-safe">not spam</span></div>
-                <div class="ledger-row" role="row" tabindex="0" data-ledger-row="no recorded clue → not spam" aria-label="Inspect email 6: no recorded clue, classified as not spam"><span role="cell">06</span><span role="cell">—</span><span role="cell">—</span><span role="cell">—</span><span role="cell" class="class-safe">not spam</span></div>
-              </div>
-              <div class="ledger-foot"><span class="count-stamp stamp-spam"><b>3</b><small>spam</small></span><span class="count-stamp stamp-safe"><b>3</b><small>not spam</small></span><span class="ledger-arrow" aria-hidden="true">→</span><span class="ledger-foot-copy">the model begins<br>with examples, not rules</span></div>
-            </div>
-            <div class="scene-annotation annotation-observe"><span class="annotation-pin"></span><span id="ledgerDetail" aria-live="polite">tap a row to inspect<br>its clue → label pattern</span></div>
-          </div>
-
-          <div class="scene scene-frame" data-scene="2" aria-label="An email becomes a feature vector while the target stays separate.">
-            <div class="scene-heading"><span class="scene-number">03</span><span>from language to features</span></div>
-            <div class="frame-scene">
-              <div class="email-note-card">
-                <div class="note-card-top"><span class="micro-label">subject / new message</span><span class="note-pin" aria-hidden="true"></span></div>
-                <div class="note-card-body">Congratulations!<br><strong>You are a winner.</strong><br>Claim your <strong>free</strong> prize.</div>
-                <div class="note-card-tags"><span>raw sentence</span><span class="mono">y = ?</span></div>
-              </div>
-              <div class="feature-rack">
-                <div class="rack-label">feature vector <span class="mono">x</span></div>
-                <div class="feature-row"><span class="feature-key">free?</span><span class="feature-bit bit-on">1</span><span class="feature-meter"><i style="width:86%"></i></span></div>
-                <div class="feature-row"><span class="feature-key">winner?</span><span class="feature-bit bit-on">1</span><span class="feature-meter"><i style="width:72%"></i></span></div>
-                <div class="feature-row"><span class="feature-key">meeting?</span><span class="feature-bit bit-off">0</span><span class="feature-meter"><i style="width:20%"></i></span></div>
-                <div class="feature-row"><span class="feature-key">prize?</span><span class="feature-bit bit-on">1</span><span class="feature-meter"><i style="width:64%"></i></span></div>
-              </div>
-              <svg class="frame-connector" viewBox="0 0 620 330" fill="none" aria-hidden="true"><path d="M250 160 C322 108 331 90 384 76" stroke="#6366f1" stroke-width="1.5" stroke-dasharray="3 7"/><path d="M250 190 C320 182 333 175 384 170" stroke="#6366f1" stroke-width="1.5" stroke-dasharray="3 7"/><path d="M250 220 C318 254 334 268 384 262" stroke="#6366f1" stroke-width="1.5" stroke-dasharray="3 7"/><circle cx="250" cy="160" r="3" fill="#dc2626"/><circle cx="250" cy="190" r="3" fill="#dc2626"/><circle cx="250" cy="220" r="3" fill="#dc2626"/></svg>
-              <div class="target-lock"><span class="lock-shape" aria-hidden="true"></span><span><small>target</small><strong>Spam / not spam</strong></span></div>
-            </div>
-            <div class="scene-annotation annotation-frame"><span class="annotation-pin"></span><span>the sentence is transformed;<br>the target stays separate</span></div>
-          </div>
-
-          <div class="scene scene-split" data-scene="3" aria-label="The dataset is split into 80 percent training and 20 percent test.">
-            <div class="scene-heading"><span class="scene-number">04</span><span>the held-out exam</span></div>
-            <div class="split-scene">
-              <div class="paper-stack stack-all"><div class="paper-label">entire dataset <span class="mono">100%</span></div><div class="paper-lines"></div></div>
-              <div class="split-fork" aria-hidden="true"><span></span><span></span></div>
-              <div class="split-branch branch-train" role="button" tabindex="0" data-split-part="train" aria-pressed="false"><div class="branch-percent">80<span>%</span></div><div class="branch-copy"><strong>training data</strong><span>teach the model</span></div><div class="branch-strips"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div>
-              <div class="split-branch branch-test" role="button" tabindex="0" data-split-part="test" aria-pressed="false"><div class="branch-percent">20<span>%</span></div><div class="branch-copy"><strong>test data</strong><span>leave untouched</span></div><div class="branch-strips"><i></i><i></i></div></div>
-              <div class="split-seal"><span>do not peek</span><b>final exam</b></div>
-            </div>
-            <div class="scene-annotation annotation-split"><span class="annotation-pin"></span><span id="splitDetail" aria-live="polite">tap either pile to see<br>what it is allowed to do</span></div>
-          </div>
-
-          <div class="scene scene-models" data-scene="4" aria-label="Four Naive Bayes variants: Bernoulli, Multinomial, Categorical, and Gaussian.">
-            <div class="scene-heading"><span class="scene-number">05</span><span>choose your lens</span></div>
-            <div class="model-board">
-              <div class="model-intro"><span class="mono">same question</span><strong>different kind<br>of evidence</strong></div>
-              <div class="model-selector" role="group" aria-label="Naive Bayes model types">
-                <button class="model-choice is-selected" type="button" data-model="bernoulli" aria-pressed="true"><span class="model-glyph glyph-binary">01</span><span><b>Bernoulli</b><small>yes / no</small></span></button>
-                <button class="model-choice" type="button" data-model="multinomial" aria-pressed="false"><span class="model-glyph glyph-count">123</span><span><b>Multinomial</b><small>word counts</small></span></button>
-                <button class="model-choice" type="button" data-model="categorical" aria-pressed="false"><span class="model-glyph glyph-category">A·B</span><span><b>Categorical</b><small>named groups</small></span></button>
-                <button class="model-choice" type="button" data-model="gaussian" aria-pressed="false"><span class="model-glyph glyph-curve">∿</span><span><b>Gaussian</b><small>measurements</small></span></button>
-              </div>
-              <div class="model-specimen" id="modelSpecimen"><div class="specimen-label">the email case</div><div class="specimen-main" id="specimenMain">free? → yes</div><div class="specimen-foot" id="specimenFoot">a binary feature</div><div class="specimen-spark" id="specimenSpark"></div></div>
-            </div>
-            <div class="scene-annotation annotation-models"><span class="annotation-pin"></span><span id="modelAnnotation" aria-live="polite">Bernoulli counts presence or absence.</span></div>
-          </div>
-
-          <div class="scene scene-learn" data-scene="5" aria-label="Class priors and likelihoods become probability bars.">
-            <div class="scene-heading"><span class="scene-number">06</span><span>build a probability table</span></div>
-            <div class="learn-scene">
-              <div class="prior-column"><div class="vertical-label">PRIOR / LARGER 100-EMAIL EXAMPLE</div><div class="jar-row"><div class="jar jar-spam"><span class="jar-fill" style="height:40%"></span><b>40%</b></div><div><strong>Spam</strong><small>40 of 100</small></div></div><div class="jar-row"><div class="jar jar-safe"><span class="jar-fill" style="height:60%"></span><b>60%</b></div><div><strong>Not Spam</strong><small>60 of 100</small></div></div></div>
-              <div class="learn-divider" aria-hidden="true"><span></span><span></span><span></span></div>
-              <div class="likelihood-column"><div class="vertical-label">LIKELIHOOD / INSIDE EACH CLASS</div><div class="likelihood-row" role="button" tabindex="0" data-likelihood="free" data-spam="0.75" data-safe="0.10"><span>free</span><i><b style="width:75%"></b></i><em>0.75</em><i class="safe-bar"><b style="width:10%"></b></i><em>0.10</em></div><div class="likelihood-row" role="button" tabindex="0" data-likelihood="winner" data-spam="0.60" data-safe="0.05"><span>winner</span><i><b style="width:60%"></b></i><em>0.60</em><i class="safe-bar"><b style="width:5%"></b></i><em>0.05</em></div><div class="likelihood-row" role="button" tabindex="0" data-likelihood="meeting" data-spam="0.05" data-safe="0.50"><span>meeting</span><i><b style="width:5%"></b></i><em>0.05</em><i class="safe-bar"><b style="width:50%"></b></i><em>0.50</em></div><div class="likelihood-legend"><span><i class="dot dot-spam"></i>spam</span><span><i class="dot dot-safe"></i>not spam</span></div></div>
-            </div>
-            <div class="learn-equation" id="learnEquation" aria-live="polite"><span class="mono">P(Class)</span><b>×</b><span class="mono">P(feature | Class)</span><b>→</b><strong>score</strong></div>
-            <div class="scene-annotation annotation-learn"><span class="annotation-pin"></span><span id="likelihoodDetail" aria-live="polite">tap a clue to compare<br>its class likelihoods</span></div>
-          </div>
-
-          <div class="scene scene-naive" data-scene="6" aria-label="Three feature clues feed a class through separate paths, illustrating conditional independence.">
-            <div class="scene-heading"><span class="scene-number">07</span><span>the shortcut inside the name</span></div>
-            <div class="naive-scene">
-              <div class="naive-copy"><span class="mono">given the class</span><strong id="naiveModeLabel">treat each clue<br>as separate evidence</strong><div class="naive-chip-row"><span>free</span><span>winner</span><span>prize</span></div></div>
-              <svg class="naive-map" viewBox="0 0 550 330" fill="none" role="img" aria-label="Feature paths converge on the Spam class">
-                <defs><linearGradient id="naiveGradient" x1="0" x2="1"><stop stop-color="#dc2626"/><stop offset="1" stop-color="#6366f1"/></linearGradient></defs>
-                <path class="naive-path path-free" d="M80 80 C205 80 248 135 384 160" stroke="url(#naiveGradient)" stroke-width="2" stroke-dasharray="5 9"/>
-                <path class="naive-path path-winner" d="M80 164 C200 164 262 164 384 164" stroke="url(#naiveGradient)" stroke-width="2" stroke-dasharray="5 9"/>
-                <path class="naive-path path-prize" d="M80 248 C205 248 248 195 384 170" stroke="url(#naiveGradient)" stroke-width="2" stroke-dasharray="5 9"/>
-                <circle class="naive-node node-free" cx="80" cy="80" r="23"/><circle class="naive-node node-winner" cx="80" cy="164" r="23"/><circle class="naive-node node-prize" cx="80" cy="248" r="23"/>
-                <circle class="class-target" cx="420" cy="165" r="48"/><circle class="class-target-inner" cx="420" cy="165" r="35"/>
-                <text x="80" y="84" text-anchor="middle" class="svg-label">free</text><text x="80" y="168" text-anchor="middle" class="svg-label">winner</text><text x="80" y="252" text-anchor="middle" class="svg-label">prize</text><text x="420" y="161" text-anchor="middle" class="svg-label svg-label-light">SPAM</text><text x="420" y="179" text-anchor="middle" class="svg-small svg-small-light">class</text>
-                <path class="correlation-path" d="M102 80 C118 123 118 206 102 248" stroke="#d97706" stroke-width="2" stroke-dasharray="3 7" opacity="0"/><path class="correlation-path" d="M103 164 L126 164" stroke="#d97706" stroke-width="2" stroke-dasharray="3 7" opacity="0"/>
-              </svg>
-            </div>
-            <div class="naive-foot"><span class="mono">P(free, winner, prize | Spam)</span><strong>=</strong><span class="mono">P(free | Spam) × P(winner | Spam) × P(prize | Spam)</span></div>
-            <div class="scene-annotation annotation-naive"><span class="annotation-pin"></span><span id="naiveAnnotation">not “features are unrelated” — just a useful approximation</span></div>
-          </div>
-
-          <div class="scene scene-score" data-scene="7" aria-label="An interactive Naive Bayes score calculator for the new email.">
-            <div class="scene-heading"><span class="scene-number">08</span><span>the verdict is a comparison</span></div>
-            <div class="score-scene">
-              <div class="score-email"><div class="micro-label">new observation</div><strong>“You are a winner.<br>Claim your free prize.”</strong><div class="score-likelihood-key">likelihood shown as Spam / Not Spam</div><div class="score-feature-list"><label class="evidence-toggle"><input type="checkbox" data-score-feature="free" checked><span class="toggle-box" aria-hidden="true"></span><span>free</span><em>0.75 / 0.10</em></label><label class="evidence-toggle"><input type="checkbox" data-score-feature="winner" checked><span class="toggle-box" aria-hidden="true"></span><span>winner</span><em>0.60 / 0.05</em></label><label class="evidence-toggle optional"><input type="checkbox" data-score-feature="meeting"><span class="toggle-box" aria-hidden="true"></span><span>meeting</span><em>0.05 / 0.50</em></label></div></div>
-              <div class="score-compare"><div class="score-axis-note">number = raw score · marker length = posterior share</div><div class="score-line"><div class="score-class"><span class="score-dot spam"></span><b>Spam</b><em id="spamScoreText">0.180</em></div><div class="score-track"><i id="spamScoreBar" style="width:98.4%"></i></div></div><div class="score-line"><div class="score-class"><span class="score-dot safe"></span><b>Not Spam</b><em id="safeScoreText">0.003</em></div><div class="score-track safe-track"><i id="safeScoreBar" style="width:1.6%"></i></div></div><div class="score-total"><span>normalised posterior</span><strong id="posteriorFormula">0.180 ÷ 0.183 = 0.984</strong></div></div>
-              <div class="winner-stamp"><span>higher score</span><strong id="winnerStamp">SPAM</strong><small id="winnerStampNote">98.4% likely</small></div>
-            </div>
-            <div class="scene-annotation annotation-score"><span class="annotation-pin"></span><span>the larger score wins;<br>the sum becomes 100%</span></div>
-          </div>
-
-          <div class="scene scene-gaussian" data-scene="8" aria-label="Interactive Gaussian Naive Bayes illustration with bell curves for two classes and a movable height observation.">
-            <div class="scene-heading"><span class="scene-number">09</span><span>when the clue is continuous</span></div>
-            <div class="gaussian-scene">
-              <div class="curve-label curve-a"><span class="curve-dot"></span><strong>Class A</strong><small>mean ≈ 168 cm</small></div>
-              <div class="curve-label curve-b"><span class="curve-dot"></span><strong>Class B</strong><small>mean ≈ 181 cm</small></div>
-              <svg class="bell-chart" viewBox="0 0 630 320" fill="none" role="img" aria-label="Two bell-shaped distributions with means around 168 and 181 centimetres">
-                <defs><linearGradient id="curveAFill" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#dc2626" stop-opacity=".2"/><stop offset="1" stop-color="#dc2626" stop-opacity="0"/></linearGradient><linearGradient id="curveBFill" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#2563eb" stop-opacity=".2"/><stop offset="1" stop-color="#2563eb" stop-opacity="0"/></linearGradient></defs>
-                <path id="curveAFillPath" d="" fill="url(#curveAFill)"/>
-                <path id="curveAStrokePath" d="" stroke="#dc2626" stroke-width="2"/>
-                <path id="curveBFillPath" d="" fill="url(#curveBFill)"/>
-                <path id="curveBStrokePath" d="" stroke="#2563eb" stroke-width="2"/>
-                <line x1="46" y1="260" x2="599" y2="260" stroke="#a8a29e" stroke-width="1"/><line id="meanALine" x1="210" y1="118" x2="210" y2="260" stroke="#dc2626" stroke-opacity=".5" stroke-dasharray="3 6"/><line id="meanBLine" x1="476" y1="118" x2="476" y2="260" stroke="#2563eb" stroke-opacity=".5" stroke-dasharray="3 6"/>
-                <g class="axis-labels"><text x="46" y="285">160</text><text x="210" y="285">168</text><text x="374" y="285">176</text><text x="476" y="285">181</text><text x="599" y="285">187</text></g>
-                <line id="heightGuide" x1="223" y1="72" x2="223" y2="260" stroke="#1f2937" stroke-width="1.5" stroke-dasharray="4 5"/><circle id="heightPoint" cx="223" cy="135" r="6" fill="#1f2937" stroke="#f7f7f4" stroke-width="3"/>
-              </svg>
-              <div class="height-readout"><span class="mono">new height</span><strong><span id="heightValue">169</span> cm</strong><span id="heightInterpretation" aria-live="polite">closer to Class A</span></div>
-              <label class="range-wrap" for="heightSlider"><span>160</span><input id="heightSlider" type="range" min="160" max="187" value="169" step="1" aria-label="New person's height in centimetres"><span>187</span></label>
-              <p class="gaussian-disclaimer">Illustrative equal-spread curves. A real model learns the mean and standard deviation from its training data.</p>
-            </div>
-            <div class="scene-annotation annotation-gaussian"><span class="annotation-pin"></span><span>not “exactly seen before” —<br>“typical for this class”</span></div>
-          </div>
-
-          <div class="scene scene-stability" data-scene="9" aria-label="Laplace smoothing prevents a zero feature from destroying the score, and log probabilities make tiny products stable.">
-            <div class="scene-heading"><span class="scene-number">10</span><span>two small repairs</span></div>
-            <div class="stability-scene">
-              <div class="stability-visual stability-smooth is-active" data-stability-panel="smooth"><div class="zero-card"><span class="mono">bitcoin</span><strong>0 occurrences</strong><small>in spam examples</small></div><div class="zero-arrow">×</div><div class="zero-result danger"><b>0</b><span>entire score erased</span></div><div class="smoothing-band"><span>Laplace adds a tiny count</span><strong>0 → 0.02</strong><span>unseen ≠ impossible</span></div></div>
-              <div class="stability-visual stability-logs" data-stability-panel="logs"><div class="log-chain"><span>0.01</span><b>×</b><span>0.03</span><b>×</b><span>0.04</span><b>×</b><span>…</span></div><div class="log-arrow">same ranking, safer arithmetic ↘</div><div class="log-result"><span class="mono">ln(0.01) + ln(0.03) + ln(0.04) + …</span><strong>−11.33 + …</strong></div><div class="smoothing-band log-band"><span>multiplication</span><strong>→ addition</strong><span>three shown terms sum to −11.33</span></div></div>
-              <div class="stability-caption" id="stabilityCaption" aria-live="polite">Smoothing keeps a single unseen clue from becoming a veto.</div>
-            </div>
-            <div class="scene-annotation annotation-stability"><span class="annotation-pin"></span><span>libraries handle these<br>numerical details for you</span></div>
-          </div>
-
-          <div class="scene scene-validate" data-scene="10" aria-label="Five fold cross-validation: one fold validates while four train, rotating through the training set.">
-            <div class="scene-heading"><span class="scene-number">11</span><span>practice on the training set</span></div>
-            <div class="validate-scene"><div class="validate-copy"><span class="mono">5-fold cross-validation</span><strong>rotate the<br>checking point</strong><p>Four folds train.<br>One fold validates.</p></div><div class="fold-ribbon" role="img" aria-label="Five validation folds"><div class="fold-block is-validation" data-fold-block="1"><span>01</span><small>validate</small></div><div class="fold-block" data-fold-block="2"><span>02</span><small>train</small></div><div class="fold-block" data-fold-block="3"><span>03</span><small>train</small></div><div class="fold-block" data-fold-block="4"><span>04</span><small>train</small></div><div class="fold-block" data-fold-block="5"><span>05</span><small>train</small></div></div><div class="round-label" id="roundLabel" aria-live="polite">round 1</div><div class="final-train-path"><span>after choosing settings</span><strong>train final model on all training data → test once</strong></div></div>
-            <div class="scene-annotation annotation-validate"><span class="annotation-pin"></span><span>validation is rehearsal;<br>the test is the final exam</span></div>
-          </div>
-
-          <div class="scene scene-evaluate" data-scene="11" aria-label="A confusion matrix shows true and false positives and negatives, with a choice between precision and recall.">
-            <div class="scene-heading"><span class="scene-number">12</span><span>read the cost of being wrong</span></div>
-            <div class="evaluate-scene"><div class="matrix-title"><span>confusion matrix · 100 emails</span><span class="mono">predicted →</span></div><div class="matrix-grid" role="img" aria-label="Example confusion matrix: 42 true positives, 8 false negatives, 3 false positives, and 47 true negatives"><div class="matrix-corner"></div><div class="matrix-head">spam</div><div class="matrix-head">not spam</div><div class="matrix-side">actual<br>spam</div><div class="matrix-cell cell-tp"><strong>TP</strong><b class="matrix-count">42</b><small>caught it</small></div><div class="matrix-cell cell-fn"><strong>FN</strong><b class="matrix-count">8</b><small>missed it</small></div><div class="matrix-side">actual<br>not spam</div><div class="matrix-cell cell-fp is-focus"><strong>FP</strong><b class="matrix-count">3</b><small>buried a good mail</small></div><div class="matrix-cell cell-tn"><strong>TN</strong><b class="matrix-count">47</b><small>left it alone</small></div></div><div class="metric-rail"><div class="metric-readout"><span>precision</span><strong>“when I say spam, am I right?”</strong><em>42 ÷ (42 + 3) = 93.3%</em></div><div class="metric-readout"><span>recall</span><strong>“how much real spam did I catch?”</strong><em>42 ÷ (42 + 8) = 84.0%</em></div><div class="metric-readout"><span>F1</span><strong>balance between the two</strong><em>2PR ÷ (P + R) = 88.4%</em></div></div></div>
-            <div class="scene-annotation annotation-evaluate"><span class="annotation-pin"></span><span id="evaluateAnnotation">protecting the inbox highlights<br>the false-positive cell</span></div>
-          </div>
-
-          <div class="scene scene-synthesis" data-scene="12" aria-label="The complete Naive Bayes pipeline from raw data to a posterior prediction.">
-            <div class="scene-heading"><span class="scene-number">13</span><span>the durable mental model</span></div>
-            <div class="synthesis-scene"><div class="synthesis-ribbon"><span class="ribbon-node node-data" role="button" tabindex="0" data-pipeline-note="Start with labelled examples from the real world."><b>raw</b><small>data</small></span><i></i><span class="ribbon-node node-clean" role="button" tabindex="0" data-pipeline-note="Turn each observation into consistent, measurable clues."><b>clean</b><small>features</small></span><i></i><span class="ribbon-node node-learn" role="button" tabindex="0" data-pipeline-note="Estimate priors and one likelihood per feature and class."><b>learn</b><small>priors + likelihoods</small></span><i></i><span class="ribbon-node node-score" role="button" tabindex="0" data-pipeline-note="Combine the prior with the new observation’s evidence."><b>score</b><small>each class</small></span><i></i><span class="ribbon-node node-test" role="button" tabindex="0" data-pipeline-note="Evaluate once on data that never influenced the model."><b>test</b><small>honestly</small></span></div><div class="four-ideas"><div><span>01</span><strong>prior</strong><small>what was common?</small></div><div><span>02</span><strong>likelihood</strong><small>what fits the clue?</small></div><div><span>03</span><strong>naive</strong><small>separate the evidence</small></div><div><span>04</span><strong>posterior</strong><small>what wins now?</small></div></div><div class="synthesis-verdict" id="synthesisVerdict" aria-live="polite"><span class="mono">[prior × evidence] →</span><strong>most probable class</strong><span class="verdict-dot"></span></div></div>
-            <div class="scene-annotation annotation-synthesis"><span class="annotation-pin"></span><span id="pipelineDetail" aria-live="polite">tap the pipeline to rehearse<br>what each step contributes</span></div>
-          </div>
-        </div>
+      <aside class="statml-visual" aria-label="Interactive Naive Bayes notes">
+        <div class="statml-visual-card" id="bayesSketch"></div>
       </aside>
     </section>
   </main>
 
+  <nav class="statml-stage-rail" id="bayesRail" aria-label="Lesson stages"></nav>
   <footer class="site-footer statml-module-footer"><span>STATML ACADEMY / CONCEPT MODULE</span><span>Naive Bayes, in evidence</span><a href="#top" aria-label="Return to the top">↑</a></footer>
   <script src="core-modules.js" defer></script>
   <script src="academic-rigor.js" defer></script>
   <script src="handwritten-theme.js" defer></script>
-  <script src="naive-bayes.js" defer></script>
+  <script src="study-sketch.js" defer></script>
+  <script src="bayes-sketch-scenes.js" defer></script>
+  <script src="bayes-sketch.js" defer></script>
 </body>
 </html>

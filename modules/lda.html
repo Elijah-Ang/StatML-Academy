@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <script src="mobile-reading.js?v=20260908"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Linear Discriminant Analysis (LDA) | StatML Academy</title>
@@ -2563,7 +2564,7 @@ function updateLegendUI(stage) {
 }
 
 function updateActiveStage() {
-  const markerY = window.innerHeight * 0.35;
+  const markerY = window.statmlReadingLine(0.35);
   let activeStage = currentStage || 0;
 
   sections.forEach(sec => {
@@ -2947,7 +2948,7 @@ window.addEventListener('load', () => {
     railButtons.forEach((b,i)=> i===idx ? b.setAttribute('aria-current','step') : b.removeAttribute('aria-current'));
   };
   if (stageEls.length) activate(stageEls[0]);
-  const observer=new IntersectionObserver(entries=>{
+  const observer=new StatMLStageObserver(entries=>{
     const visible=entries.filter(e=>e.isIntersecting).sort((a,b)=>b.intersectionRatio-a.intersectionRatio)[0];
     if (visible) activate(visible.target);
   },{rootMargin:'-25% 0px -45% 0px',threshold:[0,.15,.35,.6]});

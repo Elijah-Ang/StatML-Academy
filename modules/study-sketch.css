@@ -1,0 +1,257 @@
+/* One live paper sheet. Stroke geometry and hatch marks come from SVG. */
+html body.paper-notes .study-sketch-board {
+  --sketch-ink: #285f91;
+  width: 100%;
+  min-width: 0;
+  height: 100%;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: var(--note-fibre), #fffbef !important;
+  color: #29352f;
+  overflow: hidden;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+.study-sketch-board .sketch-heading {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  padding: 18px 24px 8px;
+  flex: 0 0 auto;
+}
+html body.paper-notes .sketch-heading h3 {
+  font-family: "Kalam", cursive !important;
+  font-size: 24px !important;
+  line-height: 1.25;
+  margin: 0 !important;
+  color: #285f91 !important;
+}
+.sketch-number {
+  color: #a6493d;
+  font-size: 21px;
+  border-bottom: 2px solid #a6493d;
+}
+.study-sketch-board .sketch-art {
+  width: 100%;
+  min-height: 0;
+  flex: 1;
+  display: grid;
+  place-items: center;
+}
+.study-sketch-board svg {
+  display: block;
+  width: 100%;
+  max-height: 100%;
+  height: 100%;
+  min-height: 0;
+  overflow: visible;
+  aspect-ratio: 640/440;
+}
+html body.paper-notes .study-sketch-board svg text {
+  font-family: "Patrick Hand", cursive !important;
+  letter-spacing: 0.01em;
+}
+.study-sketch-board .sketch-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  padding: 8px 12px;
+  flex-shrink: 0;
+  flex-wrap: wrap;
+}
+html body.paper-notes .sketch-controls button {
+  font-size: 15px;
+  min-height: 36px;
+  padding: 5px 12px;
+  background: #f6edcf !important;
+  color: #285f91 !important;
+  cursor: pointer;
+}
+.sketch-step {
+  font-size: 14px;
+  color: #736b58;
+}
+html body.paper-notes .sketch-caption {
+  margin: 0 !important;
+  padding: 8px 24px 18px;
+  min-height: 60px;
+  font-size: 17px !important;
+  line-height: 1.4 !important;
+  color: #526055 !important;
+  border-top: 1px dashed #a99b7e50;
+}
+.pen-action {
+  cursor: pointer;
+  outline: none;
+}
+.pen-action:focus-visible {
+  outline: 2px dashed #a6493d;
+  outline-offset: 5px;
+}
+.pen-action:hover text {
+  fill: #a6493d;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .study-sketch-board .pen-line {
+    animation: pen-appear 0.3s ease-out;
+  }
+  @keyframes pen-appear {
+    from {
+      opacity: 0.15;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+}
+@media (max-width: 900px) {
+  .study-sketch-board .sketch-heading {
+    padding: 8px 12px 2px;
+    gap: 8px;
+  }
+  html body.paper-notes .sketch-heading h3 {
+    font-size: 18px !important;
+  }
+  .sketch-number {
+    font-size: 16px;
+  }
+  .study-sketch-board .sketch-controls {
+    padding: 3px 6px;
+    gap: 5px;
+  }
+  html body.paper-notes .sketch-controls button {
+    font-size: 13px;
+    min-height: 30px;
+    padding: 3px 8px;
+  }
+  html body.paper-notes .sketch-caption {
+    padding: 5px 12px 8px;
+    font-size: 13px !important;
+    min-height: 42px;
+    line-height: 1.3 !important;
+  }
+}
+/* Superseded visual shells do not reserve duplicate header/footer space. */
+html[data-deep-learning-renderer="v3"] .visual-stage .canvas-wrap {
+  height: 100% !important;
+  min-height: 0 !important;
+  display: flex !important;
+  position: relative !important;
+}
+html[data-deep-learning-renderer="v3"] .visual-stage {
+  display: block !important;
+  background: #fffbef !important;
+}
+html[data-deep-learning-renderer="v3"] .visual-stage > :not(.canvas-wrap) {
+  display: none !important;
+}
+html[data-deep-learning-renderer="v3"] .visual-stage .canvas-wrap::before,
+html[data-deep-learning-renderer="v3"] .visual-stage .canvas-wrap::after {
+  display: none !important;
+}
+@media (max-width: 900px) {
+  html[data-deep-learning-renderer="v3"] .visual-stage {
+    position: sticky !important;
+    top: 56px !important;
+    height: calc(50svh - 56px) !important;
+    min-height: 300px !important;
+    margin: 0 !important;
+    z-index: 35 !important;
+    grid-area: visual !important;
+  }
+  html[data-deep-learning-renderer="v3"] .lesson-step {
+    scroll-margin-top: calc(50svh + 25px) !important;
+  }
+}
+
+.study-sketch-board .sketch-controls[hidden] {
+  display: none !important;
+}
+
+/* Keep the entire sheet, including its controls, within the reading viewport. */
+@media (min-width: 901px) {
+  body.sketch-bayes .statml-visual {
+    top: 60px;
+    height: calc(100svh - 60px);
+    padding: 20px 28px;
+  }
+  html body.sketch-bayes.paper-notes .study-sketch-board {
+    height: min(100%, calc(100svh - 220px));
+  }
+  html[data-deep-learning-renderer="v3"] .visual-stage {
+    height: calc(100svh - 220px) !important;
+    top: 110px !important;
+    margin-top: 55px !important;
+    border-radius: 2px 5px 1px 3px !important;
+  }
+  html[data-deep-learning-renderer="v3"] .visual-stage > .stage-header {
+    display: block !important;
+    position: fixed;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    padding: 9px;
+    border: 0;
+    background: #fffbef;
+    z-index: 50;
+  }
+  html[data-deep-learning-renderer="v3"] .stage-header > div {
+    display: none;
+  }
+  html[data-deep-learning-renderer="v3"] .chapter-dots {
+    display: grid;
+    gap: 8px;
+  }
+}
+html[data-deep-learning-renderer="v3"] .hero-orbit {
+  display: none !important;
+}
+html[data-deep-learning-renderer="v3"] .hero-signal {
+  inset: 18% 3% auto auto;
+  width: 40%;
+  height: auto;
+  transform: none;
+  background: none;
+}
+html[data-deep-learning-renderer="v3"] .hero-signal svg {
+  width: 100%;
+  height: auto;
+}
+html[data-deep-learning-renderer="v3"] .hero-signal svg text {
+  font-family: "Patrick Hand", cursive;
+}
+@media (max-width: 900px) {
+  html[data-deep-learning-renderer="v3"] .hero-signal {
+    display: none !important;
+  }
+}
+
+/* Remove the retired orbit artwork behind the newly drawn hero network. */
+html[data-deep-learning-renderer="v3"] body.paper-notes .hero::before,
+html[data-deep-learning-renderer="v3"] body.paper-notes .hero::after,
+html[data-deep-learning-renderer="v3"] body.paper-notes .hero-signal::before {
+  display: none !important;
+}
+html[data-deep-learning-renderer="v3"] body.paper-notes .chapter-dots button {
+  width: 10px;
+  height: 10px;
+  min-height: 0;
+  padding: 0;
+  border-radius: 50% !important;
+  border: 1px solid #96876b !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+html[data-deep-learning-renderer="v3"]
+  body.paper-notes
+  .chapter-dots
+  button.is-active {
+  background: #bd8747 !important;
+}
+html[data-deep-learning-renderer="v3"] .chapter-dots button .hw-rough-frame {
+  display: none;
+}

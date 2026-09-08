@@ -1,0 +1,130 @@
+html:has(body.paper-home) { overflow-x: clip; }
+/* The existing constellation, drawn as a notebook map. Positions, links,
+   mobile grouping and navigation remain owned by index.html. */
+html body.paper-notes.paper-home {
+  overflow-x: clip;
+  --sans: var(--hw-hand);
+  --serif: var(--hw-hand);
+  --mono: var(--hw-hand);
+}
+html body.paper-home .site-header { background: #f8f1dff5; }
+html body.paper-home :is(.brand,.desktop-nav a,.intro-copy,.region-heading p,.mobile-region-head p,.footer-inner) {
+  color: var(--hw-muted);
+}
+html body.paper-home .intro h1 {
+  font-size: clamp(2.6rem, 4.5vw, 4.4rem);
+  color: #294939 !important;
+}
+html body.paper-home.paper-notes .intro .hw-heading-stroke { left: 50%; transform: translateX(-50%) rotate(-.5deg); }
+html body.paper-home .intro-copy { font-size: 1.1rem; line-height: 1.65; }
+html body.paper-home :is(.chapter-pill,.group-code) {
+  background: #eddb9b85;
+  border-color: #9c793e66;
+  border-radius: 42% 6% 38% 7% / 8% 35% 8% 25%;
+  box-shadow: none;
+  color: #685627;
+  font-size: 11px;
+  letter-spacing: .07em;
+}
+html body.paper-home .region-heading h2 { color: var(--hw-blue) !important; font-size: 35px; }
+html body.paper-home.paper-notes :is(.region-heading,.group-heading) .hw-heading-stroke { display: none; }
+html body.paper-home .group-heading { font-size: 20px; }
+html body.paper-home :is(.region-halo,.system-core::before) { filter: none; opacity: .22; }
+html body.paper-home :is(.orbit,.region-outline) { stroke-opacity: .85; stroke-width: 1.5; }
+html body.paper-home .orbit.stats { stroke: #527b9b70; }
+html body.paper-home .orbit.classification { stroke: #80598670; }
+html body.paper-home .orbit.unsupervised { stroke: #42765b70; }
+html body.paper-home .module-node,
+html body.paper-home :is(.orbit,.route,.system-core)::before,
+html body.paper-home :is(.orbit,.route,.system-core)::after,
+html body.paper-home :is(.orbit,.route) { animation: none; }
+html body.paper-home .symbol-wrap {
+  filter: none !important;
+  color: color-mix(in srgb, var(--accent) 60%, #36573b);
+  isolation: isolate;
+}
+html body.paper-home .symbol-wrap::before {
+  animation: none;
+  border: 1.5px solid currentColor;
+  border-radius: 48% 52% 46% 54% / 55% 46% 54% 45%;
+  opacity: .55;
+  transform: rotate(-8deg);
+}
+html body.paper-home .symbol-wrap::after {
+  inset: -4px;
+  animation: none;
+  background: var(--note-fibre), repeating-linear-gradient(157deg, #89724a09 0 1px, transparent 1px 5px), #fff9e9;
+  box-shadow: 1px 3px 3px #75613b17;
+}
+html body.paper-home .module-label {
+  font-size: 16px;
+  font-weight: 400;
+  color: var(--hw-ink);
+  text-shadow: none;
+  background: #f8f1dfe8;
+}
+html body.paper-home .module-node a:hover .symbol-wrap,
+html body.paper-home .module-node a:focus-visible .symbol-wrap {
+  transform: translateY(-2px) rotate(-3deg) scale(1.06);
+}
+html body.paper-home .module-node a:hover .module-label {
+  background: linear-gradient(178deg, transparent 20%, #efd68180 21% 85%, transparent 86%);
+}
+html body.paper-home .system-core::before {
+  background: repeating-linear-gradient(145deg, #536f9633 0 1px, transparent 1px 4px), #b8c5d55c;
+  border: 1px solid #59749680;
+  box-shadow: none;
+  animation: none;
+}
+html body.paper-home :is(.peripheral-planet,.peripheral-sun,.peripheral-belt,.peripheral-galaxy) {
+  filter: none;
+  box-shadow: none;
+  opacity: .38;
+}
+html body.paper-home .peripheral-sun {
+  background: var(--note-fibre), repeating-linear-gradient(153deg, #ad7c4533 0 1px, transparent 1px 5px), #eed394;
+  border: 2px solid #af81547a;
+}
+html body.paper-home .peripheral-sun::before { box-shadow: none; border-color: #ab743e80; }
+html body.paper-home .mobile-node {
+  padding: 1.2rem .4rem .7rem;
+  background: var(--note-fibre), #fff9ec;
+  border: 1px solid #8b785d40;
+  border-radius: 3px 8px 4px 6px;
+  box-shadow: var(--note-lift);
+}
+html body.paper-home .mobile-node span:last-child { color: var(--hw-ink); font-size: 1rem; line-height: 1.3; }
+html body.paper-home .mobile-nodes { gap: 1rem; }
+html body.paper-home .mobile-group h3 { font-size: .9rem; letter-spacing: .03em; }
+html body.paper-home .desktop-nav a { font-size: .85rem; }
+@media (max-width: 640px) {
+  html body.paper-home .intro h1 { font-size: 2.6rem; }
+  html body.paper-home .intro-copy { font-size: 1rem; }
+}
+
+html body.paper-home.paper-notes .mobile-region-head .hw-heading-stroke { left: 50%; transform: translateX(-50%) rotate(-.5deg); width: 8rem; }
+
+/* A phone-sized sky and connected notebook constellation, without shrinking labels. */
+.mobile-sky { display: none; }
+@media (max-width: 1100px) {
+  html body.paper-home .mobile-sky { display: block; width: min(100%, 460px); margin: 0 auto 1rem; pointer-events: none; }
+  .mobile-sky svg { display: block; width: 100%; overflow: visible; }
+  .mobile-ufo { animation: mobile-ufo-float 7s ease-in-out infinite; }
+  .mobile-comet { animation: mobile-comet-glide 9s ease-in-out infinite; }
+  html body.paper-home .mobile-group { isolation: isolate; padding-bottom: 3.6rem; }
+  html body.paper-home .mobile-group::before { z-index: -2; inset: 2.5rem 2% 1rem; border-style: dashed; opacity: .8; transform: rotate(-4deg); }
+  .mobile-star-route { position: absolute; inset: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; color: var(--group-accent); }
+  .mobile-star-route path { fill: none; stroke: currentColor; stroke-width: 1.5; opacity: .55; stroke-dasharray: 4 5; }
+  .mobile-star-route circle { fill: currentColor; opacity: .75; }
+  html body.paper-home .mobile-nodes { gap: 1.5rem 1rem; }
+  html body.paper-home .mobile-node { background: transparent; border: 0; box-shadow: none; padding: .5rem .2rem; }
+  html body.paper-home .mobile-node:nth-child(even) { transform: translateY(28px); }
+  html body.paper-home .mobile-node > span:last-child { background: #f8f1dfee; border-radius: 4px; padding: 3px 5px; }
+  html body.paper-home .mobile-region { scroll-margin-top: 80px; }
+  html body.paper-home .mobile-node:focus-visible { outline-offset: 0 !important; }
+}
+@keyframes mobile-ufo-float { 50% { transform: translate(-6px, -5px) rotate(1deg); } }
+@keyframes mobile-comet-glide { 50% { transform: translate(32px, -9px); } }
+@media (max-width: 1100px) {
+  html body.paper-home .mobile-node:only-child { grid-column: 1 / -1; width: 60%; justify-self: center; }
+}

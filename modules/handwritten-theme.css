@@ -1,13 +1,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Kalam:wght@400;700&family=Patrick+Hand&display=swap');
+@import url('paper-notes.css?v=20260908');
 
 /*
  * Handwritten rendering layer.
  *
  * This file is deliberately presentation-only. It must not choose a new
  * layout, reorder content, portal a visual, compress a hero, or resize a
- * stage. Every module's original CSS remains authoritative for geometry and
- * responsive behavior; these rules only change the medium, ink, type, and
- * control surfaces.
+ * stage. The imported paper-notes finish adds bounded desktop alignment
+ * and reading-rhythm improvements; each module still owns its structure
+ * and responsive flow. Rules below paint ink, type, and control surfaces.
  */
 :root {
   --hw-paper: #fbf4e2;
