@@ -1,0 +1,20 @@
+Use case: scientific-educational
+Asset type: Deep Learning Chapter 8 hybrid interactive scene artwork, opaque 3:2 graph-paper material plate
+Input images: Images 1–4 are supplied StatSketch/StatML style references only; use them for the material and drawing style, never copy their layout, text, browser chrome, brands, or diagrams.
+Primary request: Create a calm physical notebook underdrawing for a live lesson where training and validation loss curves are drawn by code. The artwork must provide believable hand-ruled graph paper and a few restrained marker materials, while leaving a broad clean area for the live curves, axes, ticks, checkpoint, epoch marker, legend, and regime labels.
+Scene/backdrop: genuinely uniform warm cream #FBF6E9 paper plate with a sparse, faint irregular hand-ruled graph-paper grid. Use low-contrast pencil/blue-gray ruling only. No transparency checkerboard, no gray squares, no digital dashboard panel, and no hard outer frame.
+Subject: one modest blank graph-paper patch centered with generous blank margin. Add one separate imperfect blue pencil swash, one separate coral pencil swash, and one separate narrow green vertical marker strip near an edge, all isolated from one another and subordinate. The swashes must be blank accents only, not curves, arrows, axes, or semantic lines. Do not draw data curves, tick marks, axis arrows, labels, numbers, or legends; live code owns them. No component touches another.
+Style/medium: Use the supplied StatSketch/StatML reference images only as a material and drawing-style reference, not as a layout reference. Same single human artist: warm cream paper, graphite and dark brown-black ink, blue/green/coral/amber/lavender marker accents, slight double-stroke registration, translucent highlighter bleed, dry pencil/marker variation, tiny construction marks, uneven paper edges. Sparse, tactile, deliberate, physically assembled study sheet rather than a polished vector chart.
+Composition/framing: landscape 3:2, graph patch in a wide central/lower area with open blank lanes around it for live values and annotations. The marker strip sits at a side margin and must not resemble a bar chart. No sticky-note text, no UI card, no decorative noise.
+Lighting/mood: flat warm paper study-sheet light, focused and quiet.
+Color palette: warm cream #FBF6E9, low-contrast graphite/pencil ruling, blue structural accent, coral caution/error, green checkpoint accent, restrained amber/lavender.
+Materials/textures: fibrous paper, faint pencil grid, dry marker streaks, graphite smudges, subtle highlighter bleed, static texture.
+Text (verbatim): ""
+Constraints: opaque uniform #FBF6E9 background; static supporting underdrawing only. Exact training/validation curves, zones, epoch/checkpoint state, labels, legend, range-control response, and live values must remain code-owned. Keep a broad clean live-code lane. Do not bake semantic graph geometry.
+Avoid: checkerboard transparency, fake alpha grid, gray-and-white squares, words, letters, numbers, pseudo-writing, mathematical symbols, equations, labels, captions, axes, axis arrows, legends, percentages, controls, buttons, browser chrome, logos, stock icons, perfect vector chart, digital gradients, glossy 3D rendering, dense hatch noise, repeated scanlines, large marker bars, semantic curves, unexplained blobs, hard UI border, drop-shadow cards, baked-in interaction, hidden state, or any text-like mark.
+Generation mode: built-in ImageGen.
+Style references:
+- /Users/elijahang/Downloads/ChatGPT Image Aug 23, 2026, 07_11_55 PM (4).png
+- /Users/elijahang/Downloads/ChatGPT Image Aug 23, 2026, 07_11_53 PM (1).png
+- /Users/elijahang/Downloads/ChatGPT Image Aug 23, 2026, 07_11_54 PM (2).png
+- /Users/elijahang/Downloads/ChatGPT Image Aug 23, 2026, 07_11_55 PM (3).png

@@ -1,0 +1,377 @@
+- main:
+  - generic "StatML Academy navigation":
+    - link "Return to StatML Academy":
+      - /url: ../index.html
+      - text: S
+      - generic: StatML Academy
+    - generic: Deep Learning
+    - generic: concept module
+  - generic: data
+  - generic: features
+  - generic: prediction
+  - generic: feedback
+  - heading "Deep learning" [level=1]: Deep learning
+  - link "Begin the journey":
+    - /url: "#chapter-1"
+    - generic: Begin the journey
+  - region "A network sees examples, makes a guess, measures the mistake, adjusts itself, and repeats.":
+    - paragraph: The whole idea in one breath
+    - heading "A network sees examples, makes a guess, measures the mistake, adjusts itself, and repeats." [level=2]: A network sees examples, makes a guess, measures the mistake, adjusts itself, and repeats.
+    - paragraph:
+      - strong: "Why it works:"
+      - text: examples provide evidence, loss turns mistakes into a signal, and repeated updates make useful patterns easier for the network to recognise.
+    - paragraph:
+      - strong: "Why the wider system matters:"
+      - text: the correction loop cannot rescue a vague goal, biased data, leaked answers, a dishonest test, or a broken deployment pipeline.
+    - generic "Deep learning sits inside machine learning, which sits inside artificial intelligence":
+      - generic: Artificial intelligence
+      - generic: Machine learning
+      - generic: Deep learning
+  - region "Thirteen chapters of the deep learning journey":
+    - 'complementary "Visual for chapter 1: Define the finish line"':
+      - paragraph: Chapter 01 / 12
+      - heading "Define the finish line" [level=2]: Define the finish line
+      - navigation "Jump between chapters":
+        - 'button "Go to chapter 1: Define the finish line"'
+        - 'button "Go to chapter 2: Collect reality, not shortcuts"'
+        - 'button "Go to chapter 3: Split before you tune"'
+        - 'button "Go to chapter 4: Turn examples into tensors"'
+        - 'button "Go to chapter 5: Inside one neuron"'
+        - 'button "Go to chapter 6: Depth builds features"'
+        - 'button "Go to chapter 7: How learning happens"'
+        - 'button "Go to chapter 8: Learn patterns, not the answer sheet"'
+        - 'button "Go to chapter 9: Choose an architecture"'
+        - 'button "Go to chapter 10: Start from a pretrained model"'
+        - 'button "Go to chapter 11: Make an honest judgement"'
+        - 'button "Go to chapter 12: Ship the whole pipeline"'
+      - generic: Read the scene
+      - paragraph: One image becomes one probability distribution across the allowed classes. The scores add to 100%; the largest score chooses the label, but it does not prove the model is certain or correct.
+      - generic "What to notice":
+        - generic: input contract
+        - generic: probabilities
+        - generic: success metric
+    - article:
+      - generic: "01"
+      - paragraph: Frame the question
+      - heading "Define the finish line" [level=2]: Define the finish line
+      - paragraph: Deep learning starts with a decision, not a network. You first describe the real task in a way that can be demonstrated with examples and measured with evidence.
+      - generic: Why it matters
+      - paragraph: A vague goal such as “recognise animals” leaves too many questions unanswered. Should the model find every animal, draw a box around it, or choose one label? Clear boundaries determine the data you need, the output layer you build, and the mistakes you measure.
+      - generic: How it works
+      - list:
+        - generic: "1"
+        - paragraph: Write down one realistic input and the exact output you want back.
+        - generic: "2"
+        - paragraph: "Name the task: classification, regression, detection, segmentation, sequence prediction, or generation."
+        - generic: "3"
+        - paragraph: Choose success measures that reflect the real cost of mistakes—not simply the easiest score to calculate.
+      - paragraph:
+        - strong: "Picture it:"
+        - text: Imagine writing an exam rubric before teaching the course. The rubric decides what counts as a correct answer.
+      - paragraph: For our animal example, one image goes in and three probabilities come out. The largest probability becomes the predicted class.
+      - paragraph: Example output
+      - generic: cat
+      - code: "0.89"
+      - generic: dog
+      - code: "0.08"
+      - generic: rabbit
+      - code: "0.03"
+    - article:
+      - generic: "02"
+      - paragraph: Build the evidence
+      - heading "Collect reality, not shortcuts" [level=2]: Collect reality, not shortcuts
+      - paragraph: A dataset is the model’s entire experience of the world. It will use any regular pattern that helps, whether that pattern expresses the true idea or an accidental shortcut.
+      - generic: Why it matters
+      - paragraph: If every dog is photographed on grass and every cat is photographed on a sofa, “background” becomes an easier clue than “animal.” The model can score well in the lab and fail immediately in a real home, park, shelter, or veterinary clinic.
+      - generic: How it works
+      - list:
+        - generic: "1"
+        - paragraph: Collect variation in lighting, background, angle, distance, appearance, position, and image quality.
+        - generic: "2"
+        - paragraph: Inspect examples by class and source; look for rare classes, duplicate files, broken records, and inconsistent labels.
+        - generic: "3"
+        - paragraph: Ask what unrelated clue could reveal the answer. Then deliberately collect counterexamples that break that shortcut.
+      - paragraph:
+        - strong: "Picture it:"
+        - text: A child shown only red apples may decide that “apple” means “red.” Variation teaches which features stay true when the scenery changes.
+      - paragraph: More examples help only when they add useful coverage. Ten thousand copies of the same narrow situation are still narrow data.
+      - generic: Dataset lens
+      - strong: Representative variation
+      - button "Reveal the shortcut"
+    - article:
+      - generic: "03"
+      - paragraph: Protect the experiment
+      - heading "Split before you tune" [level=2]: Split before you tune
+      - paragraph: To know whether a model can handle new cases, some examples must remain outside the learning process. Each split has one job and should not quietly take on another.
+      - generic: Why it matters
+      - paragraph: When the model—or the people tuning it—repeatedly sees the final test answers, the score stops measuring generalisation. Duplicate images, the same patient in two splits, or future data leaking into the past can create confidence without real ability.
+      - generic: How it works
+      - list:
+        - generic: "1"
+        - paragraph: Use training data to update weights and validation data to compare choices, tune settings, and decide when to stop.
+        - generic: "2"
+        - paragraph: Seal the test set until the architecture and meaningful choices are fixed, then use it once for the final estimate.
+        - generic: "3"
+        - paragraph: Keep related people, videos, devices, or time periods together, and learn preprocessing statistics from training data only.
+      - paragraph:
+        - strong: "Picture it:"
+        - text: Training is the textbook, validation is the practice exam, and testing is the sealed final. Copying a question between them breaks the exam.
+      - paragraph: A 70/15/15 split is only an example. The important idea is separation; the right percentages depend on dataset size and structure.
+      - generic "Example dataset split":
+        - text: 70%
+        - generic: train
+        - text: 15%
+        - generic: validate
+        - text: 15%
+        - generic: test
+    - article:
+      - generic: "04"
+      - paragraph: Translate the world
+      - heading "Turn examples into tensors" [level=2]: Turn examples into tensors
+      - paragraph: "A network cannot receive “a dog,” “a sentence,” or “a melody” directly. It receives a tensor: an organised block of numbers whose shape preserves useful structure."
+      - generic: Why it matters
+      - paragraph: The representation determines what relationships are easy to learn. Images need nearby pixels to stay nearby, text needs token order, and audio needs precise changes through time. Preprocessing is therefore part of the model’s language, not mere housekeeping.
+      - generic: How it works
+      - list:
+        - generic: "1"
+        - paragraph: Images become rows and columns of pixel intensities, usually with red, green, and blue channels.
+        - generic: "2"
+        - paragraph: A tokeniser breaks text into reusable pieces—sometimes a whole word, punctuation mark, or word fragment. Each piece receives an integer ID from a fixed vocabulary.
+        - generic: "3"
+        - paragraph: An embedding table replaces each token ID with a learned vector. Audio is sampled into amplitude numbers; a spectrogram then summarises which frequencies are strong in each short time window.
+      - paragraph:
+        - strong: "Picture it:"
+        - text: Think of representation as translation. The language changes from pictures or words to numbers, but the useful grammar—space, order, or time—must survive.
+      - paragraph: The same resize, tokeniser, vocabulary, sample rate, and normalisation must be used during training and real use. Changing them changes what the numbers mean.
+      - generic "Choose a data type to see its tensor form":
+        - button "image" [pressed]
+        - button "text"
+        - button "audio"
+      - generic: Image · position becomes tensor shape
+      - list:
+        - generic: "1"
+        - paragraph: Resize or crop the image to a known height and width.
+        - generic: "2"
+        - paragraph: Turn each pixel channel into a number, often scaled to a small common range.
+        - generic: "3"
+        - paragraph: Keep the row, column, and colour-channel axes so nearby pixels remain neighbours.
+      - paragraph:
+        - strong: "Picture it:"
+        - text: "A 224 × 224 × 3 tensor is a numbered colour grid: height, width, and three colour channels."
+    - article:
+      - generic: "05"
+      - paragraph: Meet the smallest learner
+      - heading "Inside one neuron" [level=2]: Inside one neuron
+      - paragraph: One artificial neuron is a small decision-maker. It combines several signals into one new signal that later neurons can use.
+      - generic: Why it matters
+      - paragraph: The neuron matters because the whole network is built from this repeatable operation. The complexity comes from learning many useful combinations and stacking them, not from one magical component.
+      - generic: How it works
+      - list:
+        - generic: "1"
+        - paragraph: Multiply every input by a weight. A large positive weight strengthens a clue; a negative weight can argue against it.
+        - generic: "2"
+        - paragraph: Add a bias, which shifts how much total evidence is needed before the neuron responds.
+        - generic: "3"
+        - paragraph: Apply an activation such as ReLU. This non-linearity lets layers combine into curved, flexible decision boundaries.
+      - paragraph:
+        - strong: "Picture it:"
+        - text: Picture a sound-mixing desk. Each input has a volume slider, the bias sets the baseline, and the activation decides what signal leaves the desk.
+      - paragraph: "Weights and biases are parameters: numbers learned during training. Move the controls and watch the same evidence produce a different output."
+      - text: Ear-shape weight
+      - status "Ear-shape weight 1.2": "1.2"
+      - slider: "1.2"
+      - text: Fur-texture weight
+      - status "Fur-texture weight 0.6": "0.6"
+      - slider: "0.6"
+      - text: Background weight
+      - status "Background weight 0.2": "0.2"
+      - slider: "0.2"
+      - text: Bias
+      - status "Bias -0.2": "-0.2"
+      - slider: "-0.2"
+    - article:
+      - generic: "06"
+      - paragraph: Stack useful transformations
+      - heading "Depth builds features" [level=2]: Depth builds features
+      - paragraph: A deep network turns the same example into a sequence of increasingly useful descriptions. Each layer receives the previous layer’s features and composes them into larger ideas.
+      - generic: Why it matters
+      - paragraph: Raw pixels are a poor language for “dog.” Edges are more useful; groups of edges can describe fur or curves; those patterns can form ears, eyes, and snouts. Hierarchy lets the model reuse simple discoveries to build complex ones.
+      - generic: How it works
+      - list:
+        - generic: "1"
+        - paragraph: Early layers respond to local changes such as edges, colour transitions, or short sound patterns.
+        - generic: "2"
+        - paragraph: Middle layers combine repeated local clues into textures, shapes, or meaningful phrase fragments.
+        - generic: "3"
+        - paragraph: Later layers gather evidence across a wider area and make features useful for the final task.
+      - paragraph:
+        - strong: "Picture it:"
+        - text: It is like looking through a stack of tracing sheets. Each sheet redraws the scene using the patterns that matter at its level.
+      - paragraph: The feature names are a helpful simplification, not rules written by a programmer. Training discovers the filters that reduce the loss.
+    - article:
+      - generic: "07"
+      - paragraph: The correction cycle
+      - heading "How learning happens" [level=2]: How learning happens
+      - paragraph: Learning is a repeated correction loop. The network guesses, measures how wrong it was, works out which parameters influenced the mistake, and makes a small adjustment.
+      - generic: Why it matters
+      - paragraph: A loss number alone says only “this was wrong.” Backpropagation turns that complaint into useful directions for millions of parameters, allowing each one to change in proportion to its contribution.
+      - generic: How it works
+      - list:
+        - generic: "1"
+        - paragraph: Forward propagation moves a batch through the layers and produces predictions.
+        - generic: "2"
+        - paragraph: A loss function compares predictions with the correct answers; backpropagation calculates gradients from output to input.
+        - generic: "3"
+        - paragraph: An optimiser uses those gradients to update the weights. The learning rate controls how large each step is.
+      - paragraph:
+        - strong: "Picture it:"
+        - text: Imagine descending a foggy hill. The gradient tells you which way slopes downward; the learning rate decides whether you take careful steps or dangerous leaps.
+      - paragraph: One update teaches very little. Useful behaviour emerges from many batches of examples providing many small, partly noisy corrections.
+      - button "Run one learning step":
+        - text: Run one learning step
+        - generic: →
+      - text: Learning rate
+      - status "Learning rate 0.5": "0.5"
+      - slider: "0.5"
+    - article:
+      - generic: "08"
+      - paragraph: Train with discipline
+      - heading "Learn patterns, not the answer sheet" [level=2]: Learn patterns, not the answer sheet
+      - paragraph: Training must continue long enough to discover stable patterns, but not so blindly that the model memorises quirks of the training set.
+      - generic: Why it matters
+      - paragraph: "Training loss almost always rewards more training. Validation data asks the more important question: are these improvements useful on examples that did not update the weights?"
+      - generic: How it works
+      - list:
+        - generic: "1"
+        - paragraph: Train on small batches; one pass through every training example is an epoch. Switch to evaluation mode before validation.
+        - generic: "2"
+        - paragraph: Plot training and validation curves together. High values for both suggest underfitting; a widening gap suggests overfitting.
+        - generic: "3"
+        - paragraph: Use augmentation, weight decay, dropout, a simpler model, or early stopping—and save the best validation checkpoint.
+      - paragraph:
+        - strong: "Picture it:"
+        - text: One coach watches practice; another watches an unseen match. If practice keeps improving while match performance worsens, the player is learning the drill rather than the game.
+      - paragraph: Hyperparameters such as learning rate, batch size, depth, and dropout are chosen with validation evidence. They are not learned like ordinary weights.
+      - text: Move through training
+      - status "Move through training 12 underfit useful fit overfit": epoch 12
+      - slider: "12"
+      - generic: underfit
+      - generic: useful fit
+      - generic: overfit
+    - article:
+      - generic: "09"
+      - paragraph: Match shape to problem
+      - heading "Choose an architecture" [level=2]: Choose an architecture
+      - paragraph: An architecture is a set of useful assumptions about how information is organised. The right design makes important patterns easier and cheaper to learn.
+      - generic: Why it matters
+      - paragraph: Images contain many local patterns, not one universal feature. Sequences need memory or direct links across time. Architecture decides how information is shared, how far context can travel, and what the model can compute efficiently.
+      - generic: How it works
+      - list:
+        - generic: "1"
+        - paragraph: A CNN layer learns many filters. Every filter scans every image, producing its own feature map. Training changes the filter values; testing reuses the learned filters without inventing new ones.
+        - generic: "2"
+        - paragraph: An RNN reads one item at a time and updates a hidden state—a fixed-length vector that compresses what it has seen. That state can produce scores for the next word or another sequence output.
+        - generic: "3"
+        - paragraph: A Transformer creates a query, key, and value for every token. Query–key matches become attention weights, which gather useful values into context. Training rewards links that help reduce prediction error.
+      - paragraph:
+        - strong: "Picture it:"
+        - text: "Choose a tool shaped like the material: a movable stencil for space, a notebook passed through time, or a web of spotlights for attention."
+      - paragraph: Choose with evidence, not fashion. CNNs remain natural for spatial data. RNNs can suit compact streaming systems. Transformers usually handle long context and parallel training better, but standard attention can require much more memory as a sequence grows.
+      - group "Compare neural network architectures":
+        - button "CNN space" [pressed]:
+          - generic: CNN
+          - generic: space
+        - button "RNN sequence":
+          - generic: RNN
+          - generic: sequence
+        - button "TRANSFORMER attention":
+          - generic: TRANSFORMER
+          - generic: attention
+      - generic: CNN · a bank of reusable spatial detectors
+      - list:
+        - generic: "1"
+        - paragraph: A layer learns many filters—not only one. Early filters may respond to different edges, colours, or textures.
+        - generic: "2"
+        - paragraph: Every learned filter scans every training image and every test image. One filter produces one feature map showing where its pattern responded.
+        - generic: "3"
+        - paragraph: Training adjusts all filter values. At test time those values are frozen and reused; the model does not design a special filter for each new picture.
+        - generic: "4"
+        - paragraph: Later layers combine the stack of feature maps into more complex evidence such as curves, parts, or whole objects.
+      - paragraph:
+        - strong: "Picture it:"
+        - text: Picture a case of many reusable stencils. Every stencil is swept across every picture, producing its own map of matches.
+      - paragraph:
+        - strong: "When to choose it:"
+        - text: Choose a CNN when locality and spatial reuse matter—images, video frames, grids, or compact vision systems. CNN ideas are also often combined with attention.
+    - article:
+      - generic: "10"
+      - paragraph: Reuse useful experience
+      - heading "Start from a pretrained model" [level=2]: Start from a pretrained model
+      - paragraph: Transfer learning starts from a model that has already learned general patterns from a large dataset, then adapts that knowledge to your narrower task.
+      - generic: Why it matters
+      - paragraph: Training a large network from random weights can require enormous amounts of labelled data and computation. Useful early features—edges, textures, shapes, language patterns—often transfer between related tasks.
+      - generic: How it works
+      - list:
+        - generic: "1"
+        - paragraph: Replace the old output head with one that matches the new classes or target.
+        - generic: "2"
+        - paragraph: First freeze the pretrained backbone and train only the new head; this tests the existing features cheaply.
+        - generic: "3"
+        - paragraph: If needed, unfreeze some layers and fine-tune gently with a smaller learning rate so useful knowledge is not destroyed.
+      - paragraph:
+        - strong: "Picture it:"
+        - text: A trained carpenter does not relearn how to measure and cut wood for every new table. They reuse general craft and learn the new design.
+      - paragraph: Transfer works best when the earlier data and new task share useful structure. A model can also transfer unwanted biases, so evaluation still matters.
+    - article:
+      - generic: "11"
+      - paragraph: Earn confidence
+      - heading "Make an honest judgement" [level=2]: Make an honest judgement
+      - paragraph: Evaluation asks not only “how often is it right?” but “where, for whom, and with what confidence does it fail?” The final test set estimates performance on genuinely unseen data.
+      - generic: Why it matters
+      - paragraph: A model can reach 95% accuracy by always predicting the common class in an imbalanced dataset. In medicine, fraud, or safety, one missed positive can matter far more than one false alarm.
+      - generic: How it works
+      - list:
+        - generic: "1"
+        - paragraph: Evaluate the selected checkpoint once on the untouched test set and report class-level precision, recall, F1, and support.
+        - generic: "2"
+        - paragraph: Read the confusion matrix and inspect individual errors for bad labels, rare conditions, occlusion, or shortcut patterns.
+        - generic: "3"
+        - paragraph: Check calibration, uncertainty, and subgroup performance. Choose decision thresholds on validation data using real-world costs.
+      - paragraph:
+        - strong: "Picture it:"
+        - text: Accuracy is the final grade; the confusion matrix is the marked paper showing which questions were misunderstood.
+      - paragraph: Lower thresholds usually find more true positives but create more false alarms. Higher thresholds usually do the opposite.
+      - text: Decision threshold
+      - status "Decision threshold 0.5 find more balance fewer alarms": "0.50"
+      - slider: "0.5"
+      - generic: find more
+      - generic: balance
+      - generic: fewer alarms
+    - article:
+      - generic: "12"
+      - paragraph: Move beyond the notebook
+      - heading "Ship the whole pipeline" [level=2]: Ship the whole pipeline
+      - paragraph: A deployed model is not only a weights file. It is a complete, repeatable route from raw input to a decision that behaves the same way outside the training notebook.
+      - generic: Why it matters
+      - paragraph: A brilliant model can produce nonsense if the live system resizes differently, swaps class order, forgets normalisation, or leaves dropout active. Most production failures happen at the seams around the network.
+      - generic: How it works
+      - list:
+        - generic: "1"
+        - paragraph: Save the architecture, weights, class order, dimensions, normalisation, tokeniser, threshold, software versions, and configuration.
+        - generic: "2"
+        - paragraph: Validate the input, apply the same preprocessing, switch to evaluation mode, disable gradients, predict, and decode the result.
+        - generic: "3"
+        - paragraph: Test the complete pipeline in its target environment for latency, memory, privacy, energy use, throughput, and failure handling.
+      - paragraph:
+        - strong: "Picture it:"
+        - text: Treat deployment like sealing a recipe with its ingredients, measurements, oven settings, and serving rule—not saving only the cake tin.
+      - paragraph: The same pipeline may run on a phone, API, browser, hospital system, edge device, or cloud GPU. The constraints can change which model is best.
+      - generic "What travels with a deployed model":
+        - generic: model weights
+        - generic: preprocessing rules
+        - generic: class order
+        - generic: decision threshold
+        - generic: software versions
+        - generic: failure handling
+  - link "StatML Academy · All modules":
+    - /url: ../index.html

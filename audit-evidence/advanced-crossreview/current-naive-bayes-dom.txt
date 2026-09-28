@@ -1,0 +1,441 @@
+- navigation "StatML Academy navigation":
+  - link "S StatML Academy":
+    - /url: ../index.html
+    - text: S
+    - generic: StatML Academy
+  - generic: Naive Bayes
+  - 'link "Previous module: One-R"':
+    - /url: one-r.html
+    - text: ←
+  - 'link "Next module: K-Means Clustering"':
+    - /url: kmeans.html
+    - text: →
+  - generic: module 16/21
+- banner:
+  - generic: Machine learning, made visible
+  - heading "Naive Bayes" [level=1]:
+    - text: Naive
+    - text: Bayes
+  - paragraph: A careful counting machine that starts with what is common, checks how well each clue fits, and chooses the most likely answer.
+  - generic: One animal mystery · three detectives · every calculation exposed
+  - generic: Scroll to investigate
+- navigation "Lesson chapters":
+  - 'button "Go to stage 1: The animal mystery"'
+  - 'button "Go to stage 2: From mess to features"'
+  - 'button "Go to stage 3: A fair learning setup"'
+  - 'button "Go to stage 4: Prior probability jars"'
+  - 'button "Go to stage 5: Likelihood fingerprints"'
+  - 'button "Go to stage 6: The scoring machine"'
+  - 'button "Go to stage 7: The naive assumption"'
+  - 'button "Go to stage 8: A prediction race"'
+  - 'button "Go to stage 9: Held-out evaluation"'
+  - 'button "Go to stage 10: Metrics with meaning"'
+  - 'button "Go to stage 11: Cross-validation"'
+  - 'button "Go to stage 13: Live evidence playground"'
+  - 'button "Go to stage 14: Overlapping antenna distributions"'
+  - 'button "Go to stage 15: A mixed-feature weather prediction"'
+- main:
+  - article:
+    - generic: Stage 01 · The mystery
+    - heading "Turn a question into classes and clues." [level=2]: Turn a question into classes and clues.
+    - paragraph:
+      - text: "Our job is precise: given an animal’s features, predict whether it is a"
+      - strong: rabbit, dog, or cat
+      - text: . Those possible answers are the classes.
+    - paragraph: "The clues are the features: long ears, barking, and liking carrots. Features go in; one target prediction comes out."
+    - generic: Six tiny training examples
+    - table:
+      - rowgroup:
+        - row "Animal Ears Barks Carrots Class":
+          - columnheader "Animal"
+          - columnheader "Ears"
+          - columnheader "Barks"
+          - columnheader "Carrots"
+          - columnheader "Class"
+      - rowgroup:
+        - row "Animal 1 Yes No Yes Rabbit":
+          - cell "Animal 1"
+          - cell "Yes"
+          - cell "No"
+          - cell "Yes"
+          - cell "Rabbit"
+        - row "Animal 2 Yes No Yes Rabbit":
+          - cell "Animal 2"
+          - cell "Yes"
+          - cell "No"
+          - cell "Yes"
+          - cell "Rabbit"
+        - row "Animal 3 No Yes No Dog":
+          - cell "Animal 3"
+          - cell "No"
+          - cell "Yes"
+          - cell "No"
+          - cell "Dog"
+        - row "Animal 4 No Yes No Dog":
+          - cell "Animal 4"
+          - cell "No"
+          - cell "Yes"
+          - cell "No"
+          - cell "Dog"
+        - row "Animal 5 No No No Cat":
+          - cell "Animal 5"
+          - cell "No"
+          - cell "No"
+          - cell "No"
+          - cell "Cat"
+        - row "Animal 6 No No No Cat":
+          - cell "Animal 6"
+          - cell "No"
+          - cell "No"
+          - cell "No"
+          - cell "Cat"
+    - strong: Target ≠ feature.
+    - text: “What animal?” is the answer to learn. “Does it bark?” is evidence used to get there.
+    - generic: Stage 02 · Make data trustworthy
+    - heading "Clean the clues before counting them." [level=2]: Clean the clues before counting them.
+    - paragraph:
+      - text: Real records arrive with
+      - strong: Rabbit
+      - text: ","
+      - strong: rabbit
+      - text: ","
+      - strong: rabit
+      - text: ", missing cells, impossible values, and accidental duplicates. A model does not infer what a human meant; it learns the mess literally."
+    - paragraph: Standardize labels, investigate duplicates, handle missing values deliberately, and correct wrong target labels. Then encode yes/no features as 1/0.
+    - generic: A small cleaning pass
+    - table:
+      - rowgroup:
+        - row "Raw Decision Prepared":
+          - columnheader "Raw"
+          - columnheader "Decision"
+          - columnheader "Prepared"
+      - rowgroup:
+        - row "RABIT Correct label Rabbit":
+          - cell "RABIT"
+          - cell "Correct label"
+          - cell "Rabbit"
+        - row "longg Standardize long → 1":
+          - cell "longg"
+          - cell "Standardize"
+          - cell "long → 1"
+        - row "? Mark explicitly Unknown":
+          - cell "?"
+          - cell "Mark explicitly"
+          - cell "Unknown"
+    - strong: "Leakage warning:"
+    - text: split first, then learn cleaning rules from training data only. The test set must stay genuinely unseen.
+    - generic: Stage 03 · Prepare the experiment
+    - heading "Choose the version that matches the data." [level=2]: Choose the version that matches the data.
+    - paragraph:
+      - text: Naive Bayes is a family. Binary clues fit
+      - strong: Bernoulli
+      - text: ; counts fit
+      - strong: Multinomial
+      - text: ; continuous measurements fit
+      - strong: Gaussian
+      - text: ; category-valued clues fit
+      - strong: Categorical
+      - text: .
+    - paragraph: Then use a stratified train/test split so each class keeps roughly the same share in both groups.
+    - paragraph: Features can also be mixed. In that case, give each column the likelihood that matches its own type, then multiply those feature-specific terms into the class score.
+    - generic: Inspect the family
+    - button "Bernoulli Yes / no clues":
+      - strong: Bernoulli
+      - text: Yes / no clues
+    - button "Multinomial Counts, often words":
+      - strong: Multinomial
+      - text: Counts, often words
+    - button "Gaussian Continuous numbers":
+      - strong: Gaussian
+      - text: Continuous numbers
+    - button "Categorical Named categories":
+      - strong: Categorical
+      - text: Named categories
+    - generic: A mixed-feature schema
+    - table:
+      - rowgroup:
+        - row "Feature Likelihood What training learns":
+          - columnheader "Feature"
+          - columnheader "Likelihood"
+          - columnheader "What training learns"
+      - rowgroup:
+        - row "long_ears Bernoulli yes/no probability":
+          - cell "long_ears"
+          - cell "Bernoulli"
+          - cell "yes/no probability"
+        - row "weight Gaussian mean + variance":
+          - cell "weight"
+          - cell "Gaussian"
+          - cell "mean + variance"
+        - row "color Categorical probability per category":
+          - cell "color"
+          - cell "Categorical"
+          - cell "probability per category"
+    - strong: "Implementation caveat:"
+    - text: many standard estimators apply one family to every column. Mixed data may need a hybrid/custom Naive Bayes model, or careful transformations such as binning continuous values—with some information loss.
+    - generic: Stage 04 · Starting beliefs
+    - heading "First, count how common each answer is." [level=2]: First, count how common each answer is.
+    - paragraph:
+      - text: Before seeing a single clue, the model learns each class’s
+      - strong: prior probability
+      - text: ". Imagine 100 training animals: 50 rabbits, 30 dogs, and 20 cats."
+    - text: P(class) = examples in class ÷ all examples
+    - generic: "0.50"
+    - generic: Rabbit prior
+    - generic: "0.30"
+    - generic: Dog prior
+    - generic: "0.20"
+    - generic: Cat prior
+    - text: Priors are the starting line—not the finish. Strong evidence can overcome a class that begins less common.
+    - generic: Stage 05 · Learn the clues
+    - heading "Ask how often each clue appears inside each class." [level=2]: Ask how often each clue appears inside each class.
+    - paragraph:
+      - text: These within-class probabilities are the
+      - strong: likelihoods
+      - text: . Among known rabbits, perhaps 90% have long ears. Among dogs, perhaps only 10% do.
+    - text: P(long ears | Rabbit) = 45 ÷ 50 = 0.90
+    - generic: Learned likelihoods
+    - table:
+      - rowgroup:
+        - row "Clue = yes Rabbit Dog Cat":
+          - columnheader "Clue = yes"
+          - columnheader "Rabbit"
+          - columnheader "Dog"
+          - columnheader "Cat"
+      - rowgroup:
+        - row "Long ears .90 .10 .10":
+          - cell "Long ears"
+          - cell ".90"
+          - cell ".10"
+          - cell ".10"
+        - row "Barks .02 .95 .01":
+          - cell "Barks"
+          - cell ".02"
+          - cell ".95"
+          - cell ".01"
+        - row "Likes carrots .80 .05 .10":
+          - cell "Likes carrots"
+          - cell ".80"
+          - cell ".05"
+          - cell ".10"
+    - text: Long ears and carrots support Rabbit. Barking strongly supports Dog. The model’s “knowledge” is mainly this table plus the priors.
+    - generic: Stage 06 · The rule
+    - heading "Start, match, multiply." [level=2]: Start, match, multiply.
+    - paragraph:
+      - text: Read the visual from top to bottom. Each vertical lane is one candidate class—Rabbit, Dog, or Cat. The
+      - strong: prior
+      - text: under its name is that class’s starting chance.
+    - paragraph:
+      - text: For this new animal,
+      - strong: ✓ means the clue is present
+      - text: and
+      - strong: – means it is absent
+      - text: ". The query card above the lanes repeats those clues. Each lane then asks: “How likely would I be to see this exact clue bundle for my class?”"
+    - paragraph: Each bar is the probability of one observed clue inside the lane’s class. The bottom line multiplies the prior and all three clue matches.
+    - text: lane score = prior × P(long ears | class) × P(no bark | class) × P(carrots | class)
+    - text: Read the lane’s
+    - text: prior
+    - text: Read its
+    - text: three bars
+    - text: Multiply that
+    - text: lane’s values
+    - text: Compare
+    - text: lane scores
+    - strong: "What to look for:"
+    - text: Rabbit’s lane has large values for all three clues, so its bottom product is largest. These are raw scores; they become estimated probabilities only after all three lanes are normalized together.
+    - generic: Stage 07 · The “naive” leap
+    - heading "Pretend the clues are independent." [level=2]: Pretend the clues are independent.
+    - paragraph: Once the class is known, the model acts as if long ears, barking, and carrot preference are separate clues. In reality, features can be connected—like height and weight, or the words “New” and “York.”
+    - paragraph: That assumption is often false. Yet it makes training extremely fast and can work surprisingly well, especially for text and smaller datasets.
+    - generic: What the model deliberately ignores
+    - generic: ear ↔ diet relationship
+    - generic: sound ↔ body relationship
+    - generic: clue interactions
+    - strong: Useful does not mean literally true.
+    - text: A simplifying assumption may still rank the correct class highest.
+    - generic: Stage 08 · A full prediction
+    - heading "Let the three detectives race." [level=2]: Let the three detectives race.
+    - paragraph:
+      - text: A new animal has
+      - strong: long ears
+      - text: ","
+      - strong: does not bark
+      - text: ", and"
+      - strong: likes carrots
+      - text: . Each class begins with its prior and multiplies the three matching likelihoods.
+    - generic: Unnormalized scores
+    - generic: ".3528"
+    - generic: Rabbit
+    - generic: ".000075"
+    - generic: Dog
+    - generic: ".00198"
+    - generic: Cat
+    - text: "Rabbit: .50 × .90 × .98 × .80 = .3528"
+    - text: Normalize the three scores and Rabbit receives about
+    - strong: 99.42%
+    - text: ". Treat that confidence cautiously: the independence assumption can make probabilities overconfident."
+    - generic: Stage 09 · Evaluation
+    - heading "Hide the answers and test what generalizes." [level=2]: Hide the answers and test what generalizes.
+    - paragraph:
+      - text: Give the untouched test set to the fitted model, record each prediction, then compare it with the true class. A
+      - strong: confusion matrix
+      - text: shows which classes are being confused.
+    - generic: Illustrative 24-animal test run
+    - table:
+      - rowgroup:
+        - row "Actual ↓ / predicted → Rabbit Dog Cat":
+          - columnheader "Actual ↓ / predicted →"
+          - columnheader "Rabbit"
+          - columnheader "Dog"
+          - columnheader "Cat"
+      - rowgroup:
+        - row "Rabbit 7 0 1":
+          - cell "Rabbit"
+          - cell "7"
+          - cell "0"
+          - cell "1"
+        - row "Dog 0 7 1":
+          - cell "Dog"
+          - cell "0"
+          - cell "7"
+          - cell "1"
+        - row "Cat 1 1 6":
+          - cell "Cat"
+          - cell "1"
+          - cell "1"
+          - cell "6"
+    - text: This matrix is a teaching example, not a measured result from the six-row toy dataset. Real evaluation requires genuinely held-out observations.
+    - generic: Stage 10 · Read the right score
+    - heading "Accuracy can flatter a lazy model." [level=2]: Accuracy can flatter a lazy model.
+    - paragraph: If 99% of emails are legitimate, predicting “not spam” every time earns 99% accuracy—and catches no spam. Use metrics that match the cost of mistakes.
+    - generic: Three questions, three metrics
+    - table:
+      - rowgroup:
+        - row "Accuracy How many predictions were correct?":
+          - cell "Accuracy":
+            - strong: Accuracy
+          - cell "How many predictions were correct?"
+        - row "Precision When we flagged positive, how often were we right?":
+          - cell "Precision":
+            - strong: Precision
+          - cell "When we flagged positive, how often were we right?"
+        - row "Recall How many real positives did we find?":
+          - cell "Recall":
+            - strong: Recall
+          - cell "How many real positives did we find?"
+        - row "F1 How well do precision and recall balance?":
+          - cell "F1":
+            - strong: F1
+          - cell "How well do precision and recall balance?"
+    - text: F1 = 2 × (precision × recall) ÷ (precision + recall)
+    - text: Lowering a binary decision threshold usually raises recall and false positives. Raising it usually raises precision and false negatives.
+    - generic: Stage 11 · Tune honestly
+    - heading "Validate choices without peeking." [level=2]: Validate choices without peeking.
+    - paragraph: One split can be lucky. In five-fold cross-validation, every fold takes one turn as the validation group. Average the results and inspect how much they vary.
+    - paragraph:
+      - text: Use those folds to compare model type, smoothing
+      - strong: alpha
+      - text: ", feature representation, and the metric that matters. Never use the final test set to choose them."
+    - generic: Example validation accuracies
+    - generic: 86%
+    - generic: Fold 1
+    - generic: 88%
+    - generic: Fold 2
+    - generic: 85%
+    - generic: Fold 3
+    - text: five-fold average = (86 + 88 + 85 + 87 + 89) ÷ 5 = 87%
+    - strong: "Order matters:"
+    - text: split → learn preprocessing on training folds → validate → choose → evaluate once on untouched test data.
+    - generic: Stage 13 · Playground
+    - heading "Change the clues. Watch the evidence move." [level=2]: Change the clues. Watch the evidence move.
+    - paragraph: Use the learned priors and likelihoods from our worked example. Every toggle changes the matching probabilities, recomputes all three scores, and normalizes them.
+    - generic: Describe a new animal
+    - generic: Long ears
+    - 'button "Long ears: yes" [pressed]': "Yes"
+    - 'button "Long ears: no"': "No"
+    - generic: Barks
+    - 'button "Barks: yes"': "Yes"
+    - 'button "Barks: no" [pressed]': "No"
+    - generic: Likes carrots
+    - 'button "Likes carrots: yes" [pressed]': "Yes"
+    - 'button "Likes carrots: no"': "No"
+    - generic: Live result
+    - generic: Rabbit
+    - generic: Prediction
+    - generic: 99.42%
+    - generic: Top estimate
+    - generic: Cat
+    - generic: Runner-up
+    - text: These are model estimates from the illustrative likelihood table—not guarantees about real animals.
+    - generic: Stage 14 · Worked example
+    - heading "One measurement can support two classes." [level=2]: One measurement can support two classes.
+    - paragraph:
+      - text: A new insect has antennae
+      - strong: 3 units long
+      - text: . Both Grasshoppers and Katydids can have that length, so the measurement does not identify the class by itself.
+    - paragraph:
+      - text: Instead, read the height of each class’s antenna-length distribution at 3. In the lecture example, the relative heights are
+      - strong: 10 for Grasshopper
+      - text: and
+      - strong: 2 for Katydid
+      - text: . The taller curve says that this measurement is more typical of a Grasshopper.
+    - text: "Grasshopper: 10 ÷ (10 + 2) = 0.833"
+    - text: "Katydid: 2 ÷ (10 + 2) = 0.167"
+    - generic: Read the visual in four moves
+    - generic: Place the new value
+    - generic: Read both heights
+    - generic: Normalize 10 and 2
+    - generic: Choose Grasshopper
+    - strong: "Why the curves overlap:"
+    - text: real classes share possible values. Naive Bayes compares how plausible the observed value is under each class; it does not require a perfect boundary.
+    - generic: Stage 15 · Mixed evidence
+    - heading "Categories and numbers can vote together." [level=2]: Categories and numbers can vote together.
+    - paragraph:
+      - text: "Now predict whether golf will be played on a new day:"
+      - strong: Sunny
+      - text: ", temperature"
+      - strong: "66"
+      - text: ", humidity"
+      - strong: "90"
+      - text: ", and"
+      - strong: Windy
+      - text: .
+    - paragraph: Outlook and Windy use counted category probabilities. Temperature and humidity are continuous, so each class uses a Gaussian curve to turn the observed number into a density. Every feature contributes one class-specific term.
+    - generic: Which implementation handles each column?
+    - table:
+      - rowgroup:
+        - row "Feature Observed Likelihood":
+          - columnheader "Feature"
+          - columnheader "Observed"
+          - columnheader "Likelihood"
+      - rowgroup:
+        - row "Outlook Sunny Categorical":
+          - cell "Outlook"
+          - cell "Sunny"
+          - cell "Categorical"
+        - row "Temperature 66 Gaussian":
+          - cell "Temperature"
+          - cell "66"
+          - cell "Gaussian"
+        - row "Humidity 90 Gaussian":
+          - cell "Humidity"
+          - cell "90"
+          - cell "Gaussian"
+        - row "Windy True Categorical":
+          - cell "Windy"
+          - cell "True"
+          - cell "Categorical"
+    - text: "Yes: 2/9 × .0340 × .0221 × 3/9 × 9/14 = .000036"
+    - text: "No: 3/5 × .0221 × .0381 × 3/5 × 5/14 = .000108"
+    - strong: "Prediction: No."
+    - text: The raw “No” score is three times the “Yes” score. Normalizing the pair gives 75% versus 25% for this fitted example.
+  - complementary "Persistent Naive Bayes evidence visualization":
+    - img "An evolving evidence board comparing Rabbit, Dog, and Cat scores across the lesson."
+    - generic: Evidence desk · 01
+    - generic: The animal mystery
+    - generic: 3 classes · 3 clues
+    - strong: Why this view matters
+    - text: Each row connects observed clues to a known answer. Naive Bayes learns by counting those connections, then reuses the resulting patterns for a new animal.
+- contentinfo:
+  - link "All modules":
+    - /url: ../index.html

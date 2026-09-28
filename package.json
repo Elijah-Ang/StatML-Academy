@@ -4,11 +4,18 @@
   "type": "module",
   "scripts": {
     "build": "node scripts/build.mjs",
-    "test": "node scripts/build.mjs --validate-only && node scripts/test-logistic-browser.mjs",
+    "test": "node scripts/build.mjs --validate-only && node scripts/test-notebook-models.mjs && node scripts/test-science.mjs && node scripts/test-spatial-science.mjs && node scripts/test-notebook-browser.mjs && node scripts/test-expanded-browser.mjs && node scripts/test-logistic-browser.mjs && node scripts/test-notebook-interactions.mjs && node scripts/test-visual-teaching-browser.mjs && npm run test:stories",
     "test:browser": "node scripts/test-logistic-browser.mjs",
     "test:paper": "node scripts/test-paper-notes-browser.mjs",
     "test:sketch": "node scripts/test-study-sketch-browser.mjs",
-    "test:mobile": "node scripts/test-mobile-browser.mjs && node scripts/test-mobile-navigation.mjs"
+    "test:mobile": "node scripts/test-mobile-browser.mjs && node scripts/test-mobile-navigation.mjs",
+    "generate:pilots": "node scripts/generate-pilots.mjs",
+    "test:pilots": "node scripts/test-notebook-models.mjs && node scripts/test-notebook-browser.mjs",
+    "generate:notebooks": "node scripts/generate-notebooks.mjs",
+    "generate:all": "node scripts/generate-pilots.mjs && node scripts/generate-notebooks.mjs",
+    "test:rollout": "node scripts/test-science.mjs && node scripts/test-expanded-browser.mjs && node scripts/test-notebook-interactions.mjs",
+    "test:visual": "node scripts/test-spatial-science.mjs && node scripts/test-visual-teaching-browser.mjs",
+    "test:stories": "node scripts/test-vote-criteria.mjs && node scripts/test-vote-criteria-browser.mjs && node scripts/test-covariance-scenes.mjs && node scripts/test-statistics-stories.mjs && node scripts/test-visual-collisions.mjs"
   },
   "devDependencies": {
     "playwright": "^1.61.1"

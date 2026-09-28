@@ -1,0 +1,1128 @@
+[
+  {
+    "pageName": "classification-trees",
+    "navs": [
+      "0",
+      "1",
+      "2",
+      "3",
+      "4",
+      "5",
+      "6",
+      "7",
+      "8",
+      "9",
+      "10",
+      "11",
+      "12",
+      "13",
+      "14",
+      "15",
+      "Go to stage 1: The Raw Data",
+      "Go to stage 2: The Train / Test Split",
+      "Go to stage 3: The Root Node",
+      "Go to stage 4: Measuring Messiness",
+      "Go to stage 5: Testing Every Question",
+      "Go to stage 6: How the Tree Scores One Split",
+      "Go to stage 7: Recursive Splitting",
+      "Go to stage 8: The Decision Boundary",
+      "Go to stage 9: Depth Limiting vs. Post-Pruning",
+      "Go to stage 10: Choosing Tree Depth",
+      "Go to stage 11: Classifying Test Points",
+      "Go to stage 12: Performance Metrics",
+      "Go to stage 13: Reading Tree Output",
+      "Go to stage 14: Interactive Playground",
+      "Go to stage 15: Limitations & Model Choice"
+    ],
+    "sections": [
+      {
+        "id": "",
+        "stage": "0",
+        "title": ""
+      },
+      {
+        "id": "statml-stage-1",
+        "stage": "1",
+        "title": "The Raw Data"
+      },
+      {
+        "id": "statml-stage-2",
+        "stage": "2",
+        "title": "The Train / Test Split"
+      },
+      {
+        "id": "statml-stage-3",
+        "stage": "3",
+        "title": "The Root Node"
+      },
+      {
+        "id": "statml-stage-4",
+        "stage": "4",
+        "title": "Measuring Messiness"
+      },
+      {
+        "id": "statml-stage-5",
+        "stage": "5",
+        "title": "Testing Every Question"
+      },
+      {
+        "id": "statml-stage-6",
+        "stage": "6",
+        "title": "How the Tree Scores One Split"
+      },
+      {
+        "id": "statml-stage-7",
+        "stage": "7",
+        "title": "Recursive Splitting"
+      },
+      {
+        "id": "statml-stage-8",
+        "stage": "8",
+        "title": "The Decision Boundary"
+      },
+      {
+        "id": "statml-stage-9",
+        "stage": "9",
+        "title": "Depth Limiting vs. Post-Pruning"
+      },
+      {
+        "id": "statml-stage-10",
+        "stage": "10",
+        "title": "Choosing Tree Depth"
+      },
+      {
+        "id": "statml-stage-11",
+        "stage": "11",
+        "title": "Classifying Test Points"
+      },
+      {
+        "id": "statml-stage-12",
+        "stage": "12",
+        "title": "Performance Metrics"
+      },
+      {
+        "id": "statml-stage-13",
+        "stage": "13",
+        "title": "Reading Tree Output"
+      },
+      {
+        "id": "statml-stage-14",
+        "stage": "14",
+        "title": "Interactive Playground"
+      },
+      {
+        "id": "statml-stage-15",
+        "stage": "15",
+        "title": "Limitations & Model Choice"
+      }
+    ]
+  },
+  {
+    "pageName": "hierarchical-clustering",
+    "navs": [
+      "Go to stage 1: The Uncharted Planet",
+      "Go to stage 2: Measuring \"Close\"",
+      "Go to stage 3: The First Merge",
+      "Go to stage 4: Defining Group Distance (Linkage)",
+      "Go to stage 5: The Process in Motion",
+      "Go to stage 6: The Family Tree (Dendrogram)",
+      "Go to stage 7: Cutting the Tree",
+      "Go to stage 8: The Detective's Challenge",
+      "Go to stage 9: Synthesis & Recap"
+    ],
+    "sections": [
+      {
+        "id": "",
+        "stage": "0",
+        "title": ""
+      },
+      {
+        "id": "statml-stage-1",
+        "stage": "1",
+        "title": "The Uncharted Planet"
+      },
+      {
+        "id": "statml-stage-2",
+        "stage": "2",
+        "title": "Measuring \"Close\""
+      },
+      {
+        "id": "statml-stage-3",
+        "stage": "3",
+        "title": "The First Merge"
+      },
+      {
+        "id": "statml-stage-4",
+        "stage": "4",
+        "title": "Defining Group Distance (Linkage)"
+      },
+      {
+        "id": "statml-stage-5",
+        "stage": "5",
+        "title": "The Process in Motion"
+      },
+      {
+        "id": "statml-stage-6",
+        "stage": "6",
+        "title": "The Family Tree (Dendrogram)"
+      },
+      {
+        "id": "statml-stage-7",
+        "stage": "7",
+        "title": "Cutting the Tree"
+      },
+      {
+        "id": "statml-stage-8",
+        "stage": "8",
+        "title": "The Detective's Challenge"
+      },
+      {
+        "id": "statml-stage-9",
+        "stage": "9",
+        "title": "Synthesis & Recap"
+      }
+    ]
+  },
+  {
+    "pageName": "lda",
+    "navs": [
+      "Go to stage 1: The Raw Data",
+      "Go to stage 2: Choosing Good Features",
+      "Go to stage 3: Train / Test Split",
+      "Go to stage 4: Group by Class",
+      "Go to stage 5: Compute Class Means",
+      "Go to stage 6: Within-Class Scatter",
+      "Go to stage 7: The Shared Covariance Assumption",
+      "Go to stage 8: Between-Class Scatter",
+      "Go to stage 9: The Optimal Direction",
+      "Go to stage 10: The Decision Boundary",
+      "Go to stage 11: Classifying Test Points",
+      "Go to stage 12: Evaluating the Model",
+      "Go to stage 13: Reading LDA Output",
+      "Go to stage 14: Assumptions & Limitations",
+      "Go to stage 15: Interactive Playground"
+    ],
+    "sections": [
+      {
+        "id": "sec-0",
+        "stage": "0",
+        "title": ""
+      },
+      {
+        "id": "sec-1",
+        "stage": "1",
+        "title": "The Raw Data"
+      },
+      {
+        "id": "sec-2",
+        "stage": "2",
+        "title": "Choosing Good Features"
+      },
+      {
+        "id": "sec-3",
+        "stage": "3",
+        "title": "Train / Test Split"
+      },
+      {
+        "id": "sec-4",
+        "stage": "4",
+        "title": "Group by Class"
+      },
+      {
+        "id": "sec-5",
+        "stage": "5",
+        "title": "Compute Class Means"
+      },
+      {
+        "id": "sec-6",
+        "stage": "6",
+        "title": "Within-Class Scatter"
+      },
+      {
+        "id": "sec-7",
+        "stage": "7",
+        "title": "The Shared Covariance Assumption"
+      },
+      {
+        "id": "sec-8",
+        "stage": "8",
+        "title": "Between-Class Scatter"
+      },
+      {
+        "id": "sec-9",
+        "stage": "9",
+        "title": "The Optimal Direction"
+      },
+      {
+        "id": "sec-10",
+        "stage": "10",
+        "title": "The Decision Boundary"
+      },
+      {
+        "id": "sec-11",
+        "stage": "11",
+        "title": "Classifying Test Points"
+      },
+      {
+        "id": "sec-12",
+        "stage": "12",
+        "title": "Evaluating the Model"
+      },
+      {
+        "id": "sec-13",
+        "stage": "13",
+        "title": "Reading LDA Output"
+      },
+      {
+        "id": "sec-14",
+        "stage": "14",
+        "title": "Assumptions & Limitations"
+      },
+      {
+        "id": "sec-15",
+        "stage": "15",
+        "title": "Interactive Playground"
+      }
+    ]
+  },
+  {
+    "pageName": "qda",
+    "navs": [
+      "Go to stage 1: The Raw Data Cloud",
+      "Go to stage 2: Train / Test Split",
+      "Go to stage 3: The Straight-Line Trap (LDA)",
+      "Go to stage 4: Fitting QDA: What the Model Learns",
+      "Go to stage 5: Testing with Shape-Aware Distance",
+      "Go to stage 6: The Curved Boundary",
+      "Go to stage 7: Evaluating QDA on Unseen Data",
+      "Go to stage 8: Reading QDA Output",
+      "Go to stage 9: Regularization & Shape Playground",
+      "Go to stage 10: Assumptions, Complexity & Synthesis"
+    ],
+    "sections": [
+      {
+        "id": "statml-stage-1",
+        "stage": "1",
+        "title": "The Raw Data Cloud"
+      },
+      {
+        "id": "statml-stage-2",
+        "stage": "2",
+        "title": "Train / Test Split"
+      },
+      {
+        "id": "statml-stage-3",
+        "stage": "3",
+        "title": "The Straight-Line Trap (LDA)"
+      },
+      {
+        "id": "statml-stage-4",
+        "stage": "4",
+        "title": "Fitting QDA: What the Model Learns"
+      },
+      {
+        "id": "statml-stage-5",
+        "stage": "5",
+        "title": "Testing with Shape-Aware Distance"
+      },
+      {
+        "id": "statml-stage-6",
+        "stage": "6",
+        "title": "The Curved Boundary"
+      },
+      {
+        "id": "statml-stage-7",
+        "stage": "7",
+        "title": "Evaluating QDA on Unseen Data"
+      },
+      {
+        "id": "statml-stage-8",
+        "stage": "8",
+        "title": "Reading QDA Output"
+      },
+      {
+        "id": "statml-stage-9",
+        "stage": "9",
+        "title": "Regularization & Shape Playground"
+      },
+      {
+        "id": "statml-stage-10",
+        "stage": "10",
+        "title": "Assumptions, Complexity & Synthesis"
+      }
+    ]
+  },
+  {
+    "pageName": "model-selection",
+    "navs": [
+      "Go to stage 1: The Overfitting Trap",
+      "Go to stage 2: The n-p Puzzle",
+      "Go to stage 3: Picking the Best Team",
+      "Go to stage 4: The Scorecards",
+      "Go to stage 5: The Shrinking Trick",
+      "Go to stage 6: Ridge Regression (L2)",
+      "Go to stage 7: Lasso Regression (L1)",
+      "Go to stage 8: Finding the Sweet Spot",
+      "Go to stage 9: The \"Super-Variable\" Secret",
+      "Go to stage 10: Decision Helper",
+      "Go to stage 11: Common Mistakes",
+      "Go to stage 12: Final Synthesis"
+    ],
+    "sections": [
+      {
+        "id": "statml-stage-1",
+        "stage": "1",
+        "title": "The Overfitting Trap"
+      },
+      {
+        "id": "statml-stage-2",
+        "stage": "2",
+        "title": "The n-p Puzzle"
+      },
+      {
+        "id": "statml-stage-3",
+        "stage": "3",
+        "title": "Picking the Best Team"
+      },
+      {
+        "id": "statml-stage-4",
+        "stage": "4",
+        "title": "The Scorecards"
+      },
+      {
+        "id": "statml-stage-5",
+        "stage": "5",
+        "title": "The Shrinking Trick"
+      },
+      {
+        "id": "statml-stage-6",
+        "stage": "6",
+        "title": "Ridge Regression (L2)"
+      },
+      {
+        "id": "statml-stage-7",
+        "stage": "7",
+        "title": "Lasso Regression (L1)"
+      },
+      {
+        "id": "statml-stage-8",
+        "stage": "8",
+        "title": "Finding the Sweet Spot"
+      },
+      {
+        "id": "statml-stage-9",
+        "stage": "9",
+        "title": "The \"Super-Variable\" Secret"
+      },
+      {
+        "id": "statml-stage-10",
+        "stage": "10",
+        "title": "Decision Helper"
+      },
+      {
+        "id": "statml-stage-11",
+        "stage": "11",
+        "title": "Common Mistakes"
+      },
+      {
+        "id": "statml-stage-12",
+        "stage": "12",
+        "title": "Final Synthesis"
+      }
+    ]
+  },
+  {
+    "pageName": "support-vector-machine",
+    "navs": [
+      "Go to stage 1",
+      "Go to stage 2",
+      "Go to stage 3",
+      "Go to stage 4",
+      "Go to stage 5",
+      "Go to stage 6",
+      "Go to stage 7",
+      "Go to stage 8",
+      "Go to stage 9",
+      "Go to stage 10",
+      "Go to stage 11",
+      "Go to stage 12",
+      "Go to stage 13",
+      "Go to stage 14",
+      "Go to stage 1: Points, labels, and a decision boundary",
+      "Go to stage 2: Why not choose any separating line?",
+      "Go to stage 3: The margin is protected space",
+      "Go to stage 4: Support vectors are the points that matter most",
+      "Go to stage 5: Hard margins break when reality overlaps",
+      "Go to stage 6: C decides how expensive violations are",
+      "Go to stage 7: Scale features before comparing distances",
+      "Go to stage 8: Hinge loss ignores easy correct points",
+      "Go to stage 9: The decision score is not automatically a probability",
+      "Go to stage 10: A straight boundary cannot solve every pattern",
+      "Go to stage 11: The kernel trick avoids explicit feature explosion",
+      "Go to stage 12: Tune the whole pipeline inside cross-validation",
+      "Go to stage 13: Measure the errors the problem actually cares about",
+      "Go to stage 14: Change the knobs and watch the boundary answer back"
+    ],
+    "sections": [
+      {
+        "id": "stage-1",
+        "stage": "1",
+        "title": "Points, labels, and a decision boundary"
+      },
+      {
+        "id": "stage-2",
+        "stage": "2",
+        "title": "Why not choose any separating line?"
+      },
+      {
+        "id": "stage-3",
+        "stage": "3",
+        "title": "The margin is protected space"
+      },
+      {
+        "id": "stage-4",
+        "stage": "4",
+        "title": "Support vectors are the points that matter most"
+      },
+      {
+        "id": "stage-5",
+        "stage": "5",
+        "title": "Hard margins break when reality overlaps"
+      },
+      {
+        "id": "stage-6",
+        "stage": "6",
+        "title": "C decides how expensive violations are"
+      },
+      {
+        "id": "stage-7",
+        "stage": "7",
+        "title": "Scale features before comparing distances"
+      },
+      {
+        "id": "stage-8",
+        "stage": "8",
+        "title": "Hinge loss ignores easy correct points"
+      },
+      {
+        "id": "stage-9",
+        "stage": "9",
+        "title": "The decision score is not automatically a probability"
+      },
+      {
+        "id": "stage-10",
+        "stage": "10",
+        "title": "A straight boundary cannot solve every pattern"
+      },
+      {
+        "id": "stage-11",
+        "stage": "11",
+        "title": "The kernel trick avoids explicit feature explosion"
+      },
+      {
+        "id": "stage-12",
+        "stage": "12",
+        "title": "Tune the whole pipeline inside cross-validation"
+      },
+      {
+        "id": "stage-13",
+        "stage": "13",
+        "title": "Measure the errors the problem actually cares about"
+      },
+      {
+        "id": "stage-14",
+        "stage": "14",
+        "title": "Change the knobs and watch the boundary answer back"
+      }
+    ]
+  },
+  {
+    "pageName": "regression-trees",
+    "navs": [
+      "Go to stage 1: The Raw Target",
+      "Go to stage 2: From Dataset to Model",
+      "Go to stage 3: The Clumsy Guess",
+      "Go to stage 4: The First Split",
+      "Go to stage 5: The Error Engine (RSS)",
+      "Go to stage 6: Real Trees Check Many Questions",
+      "Go to stage 7: Recursive Splitting",
+      "Go to stage 8: The Anatomy of a Tree",
+      "Go to stage 9: The Overfitting Trap",
+      "Go to stage 10: Stopping Rules",
+      "Go to stage 11: Pruning: Let It Grow, Then Cut It Back",
+      "Go to stage 12: Trees vs. Lines",
+      "Go to stage 13: Interactive Playground",
+      "Go to stage 14: Sample Output: Reading the Tree Result",
+      "Go to stage 15: Reality Check: Limitations",
+      "Go to stage 16: Synthesis"
+    ],
+    "sections": [
+      {
+        "id": "statml-stage-1",
+        "stage": "1",
+        "title": "The Raw Target"
+      },
+      {
+        "id": "statml-stage-2",
+        "stage": "2",
+        "title": "From Dataset to Model"
+      },
+      {
+        "id": "statml-stage-3",
+        "stage": "3",
+        "title": "The Clumsy Guess"
+      },
+      {
+        "id": "statml-stage-4",
+        "stage": "4",
+        "title": "The First Split"
+      },
+      {
+        "id": "statml-stage-5",
+        "stage": "5",
+        "title": "The Error Engine (RSS)"
+      },
+      {
+        "id": "statml-stage-6",
+        "stage": "6",
+        "title": "Real Trees Check Many Questions"
+      },
+      {
+        "id": "statml-stage-7",
+        "stage": "7",
+        "title": "Recursive Splitting"
+      },
+      {
+        "id": "statml-stage-8",
+        "stage": "8",
+        "title": "The Anatomy of a Tree"
+      },
+      {
+        "id": "statml-stage-9",
+        "stage": "9",
+        "title": "The Overfitting Trap"
+      },
+      {
+        "id": "statml-stage-10",
+        "stage": "10",
+        "title": "Stopping Rules"
+      },
+      {
+        "id": "statml-stage-11",
+        "stage": "11",
+        "title": "Pruning: Let It Grow, Then Cut It Back"
+      },
+      {
+        "id": "statml-stage-12",
+        "stage": "12",
+        "title": "Trees vs. Lines"
+      },
+      {
+        "id": "statml-stage-13",
+        "stage": "13",
+        "title": "Interactive Playground"
+      },
+      {
+        "id": "statml-stage-14",
+        "stage": "14",
+        "title": "Sample Output: Reading the Tree Result"
+      },
+      {
+        "id": "statml-stage-15",
+        "stage": "15",
+        "title": "Reality Check: Limitations"
+      },
+      {
+        "id": "statml-stage-16",
+        "stage": "16",
+        "title": "Synthesis"
+      }
+    ]
+  },
+  {
+    "pageName": "deep-learning",
+    "navs": [
+      "Go to chapter 1: Define the finish line",
+      "Go to chapter 2: Collect reality, not shortcuts",
+      "Go to chapter 3: Split before you tune",
+      "Go to chapter 4: Turn examples into tensors",
+      "Go to chapter 5: Inside one neuron",
+      "Go to chapter 6: Depth builds features",
+      "Go to chapter 7: How learning happens",
+      "Go to chapter 8: Learn patterns, not the answer sheet",
+      "Go to chapter 9: Choose an architecture",
+      "Go to chapter 10: Start from a pretrained model",
+      "Go to chapter 11: Make an honest judgement",
+      "Go to chapter 12: Ship the whole pipeline"
+    ],
+    "sections": [
+      {
+        "id": "chapter-1",
+        "step": "0",
+        "title": "Define the finish line"
+      },
+      {
+        "id": "chapter-2",
+        "step": "1",
+        "title": "Collect reality, not shortcuts"
+      },
+      {
+        "id": "chapter-3",
+        "step": "2",
+        "title": "Split before you tune"
+      },
+      {
+        "id": "chapter-4",
+        "step": "3",
+        "title": "Turn examples into tensors"
+      },
+      {
+        "id": "chapter-5",
+        "step": "4",
+        "title": "Inside one neuron"
+      },
+      {
+        "id": "chapter-6",
+        "step": "5",
+        "title": "Depth builds features"
+      },
+      {
+        "id": "chapter-7",
+        "step": "6",
+        "title": "How learning happens"
+      },
+      {
+        "id": "chapter-8",
+        "step": "7",
+        "title": "Learn patterns, not the answer sheet"
+      },
+      {
+        "id": "chapter-9",
+        "step": "8",
+        "title": "Choose an architecture"
+      },
+      {
+        "id": "chapter-10",
+        "step": "9",
+        "title": "Start from a pretrained model"
+      },
+      {
+        "id": "chapter-11",
+        "step": "10",
+        "title": "Make an honest judgement"
+      },
+      {
+        "id": "chapter-12",
+        "step": "11",
+        "title": "Ship the whole pipeline"
+      }
+    ]
+  },
+  {
+    "pageName": "neural-networks",
+    "navs": [],
+    "sections": [
+      {
+        "id": "stage-1",
+        "stage": "1",
+        "title": "The whole idea: learn patterns from examples"
+      },
+      {
+        "id": "stage-2",
+        "stage": "2",
+        "title": "Data becomes features and labels"
+      },
+      {
+        "id": "stage-3",
+        "stage": "3",
+        "title": "Clean, encode, scale, then split"
+      },
+      {
+        "id": "stage-4",
+        "stage": "4",
+        "title": "A network is layers of tiny calculators"
+      },
+      {
+        "id": "stage-5",
+        "stage": "5",
+        "title": "One feature has a different weight into every hidden neuron"
+      },
+      {
+        "id": "stage-6",
+        "stage": "6",
+        "title": "Non-linearity lets stacked layers learn bends"
+      },
+      {
+        "id": "stage-7",
+        "stage": "7",
+        "title": "Forward propagation makes one pass-score prediction"
+      },
+      {
+        "id": "stage-8",
+        "stage": "8",
+        "title": "Loss measures how wrong the prediction was"
+      },
+      {
+        "id": "stage-9",
+        "stage": "9",
+        "title": "Backpropagation computes gradients—only gradients"
+      },
+      {
+        "id": "stage-10",
+        "stage": "10",
+        "title": "The optimizer takes iterative, local steps"
+      },
+      {
+        "id": "stage-11",
+        "stage": "11",
+        "title": "One update has a strict causal order"
+      },
+      {
+        "id": "stage-12",
+        "stage": "12",
+        "title": "Choose the model before validation gets worse"
+      },
+      {
+        "id": "stage-13",
+        "stage": "13",
+        "title": "Humans choose the architecture and hyperparameters"
+      },
+      {
+        "id": "stage-14",
+        "stage": "14",
+        "title": "The test set evaluates both scores and decisions"
+      },
+      {
+        "id": "stage-15",
+        "stage": "15",
+        "title": "Error analysis starts with individual students"
+      },
+      {
+        "id": "stage-16",
+        "stage": "16",
+        "title": "Saving, deployment, and monitoring finish the lifecycle"
+      },
+      {
+        "id": "stage-17",
+        "stage": "17",
+        "title": "Different network families organize information differently"
+      },
+      {
+        "id": "stage-18",
+        "stage": "18",
+        "title": "Try the tiny student-pass network"
+      },
+      {
+        "id": "stage-19",
+        "stage": "19",
+        "title": "One full training cycle"
+      }
+    ]
+  },
+  {
+    "pageName": "naive-bayes",
+    "navs": [
+      "Go to stage 1: The animal mystery",
+      "Go to stage 2: From mess to features",
+      "Go to stage 3: A fair learning setup",
+      "Go to stage 4: Prior probability jars",
+      "Go to stage 5: Likelihood fingerprints",
+      "Go to stage 6: The scoring machine",
+      "Go to stage 7: The naive assumption",
+      "Go to stage 8: A prediction race",
+      "Go to stage 9: Held-out evaluation",
+      "Go to stage 10: Metrics with meaning",
+      "Go to stage 11: Cross-validation",
+      "Go to stage 13: Live evidence playground",
+      "Go to stage 14: Overlapping antenna distributions",
+      "Go to stage 15: A mixed-feature weather prediction"
+    ],
+    "sections": [
+      {
+        "id": "",
+        "stage": "1",
+        "title": ""
+      },
+      {
+        "id": "",
+        "stage": "2",
+        "title": ""
+      },
+      {
+        "id": "",
+        "stage": "3",
+        "title": ""
+      },
+      {
+        "id": "",
+        "stage": "4",
+        "title": ""
+      },
+      {
+        "id": "",
+        "stage": "5",
+        "title": ""
+      },
+      {
+        "id": "",
+        "stage": "6",
+        "title": ""
+      },
+      {
+        "id": "",
+        "stage": "7",
+        "title": ""
+      },
+      {
+        "id": "",
+        "stage": "8",
+        "title": ""
+      },
+      {
+        "id": "",
+        "stage": "9",
+        "title": ""
+      },
+      {
+        "id": "",
+        "stage": "10",
+        "title": ""
+      },
+      {
+        "id": "",
+        "stage": "11",
+        "title": ""
+      },
+      {
+        "id": "",
+        "stage": "13",
+        "title": ""
+      },
+      {
+        "id": "",
+        "stage": "14",
+        "title": ""
+      },
+      {
+        "id": "",
+        "stage": "15",
+        "title": ""
+      },
+      {
+        "id": "stage-1",
+        "stage": "1",
+        "title": "Turn a question into classes and clues."
+      },
+      {
+        "id": "stage-2",
+        "stage": "2",
+        "title": "Clean the clues before counting them."
+      },
+      {
+        "id": "stage-3",
+        "stage": "3",
+        "title": "Choose the version that matches the data."
+      },
+      {
+        "id": "stage-4",
+        "stage": "4",
+        "title": "First, count how common each answer is."
+      },
+      {
+        "id": "stage-5",
+        "stage": "5",
+        "title": "Ask how often each clue appears inside each class."
+      },
+      {
+        "id": "stage-6",
+        "stage": "6",
+        "title": "Start, match, multiply."
+      },
+      {
+        "id": "stage-7",
+        "stage": "7",
+        "title": "Pretend the clues are independent."
+      },
+      {
+        "id": "stage-8",
+        "stage": "8",
+        "title": "Let the three detectives race."
+      },
+      {
+        "id": "stage-9",
+        "stage": "9",
+        "title": "Hide the answers and test what generalizes."
+      },
+      {
+        "id": "stage-10",
+        "stage": "10",
+        "title": "Accuracy can flatter a lazy model."
+      },
+      {
+        "id": "stage-11",
+        "stage": "11",
+        "title": "Validate choices without peeking."
+      },
+      {
+        "id": "stage-13",
+        "stage": "13",
+        "title": "Change the clues. Watch the evidence move."
+      },
+      {
+        "id": "stage-14",
+        "stage": "14",
+        "title": "One measurement can support two classes."
+      },
+      {
+        "id": "stage-15",
+        "stage": "15",
+        "title": "Categories and numbers can vote together."
+      }
+    ]
+  },
+  {
+    "pageName": "one-r",
+    "navs": [
+      "Go to stage 1: What problem is One-R solving?",
+      "Go to stage 2: First, make the lazy prediction.",
+      "Go to stage 3: Make a rule from one categorical feature.",
+      "Go to stage 4: Test every feature. Keep the lowest-error rule.",
+      "Go to stage 5: Turn numeric values into intervals.",
+      "Go to stage 6: Missing values and unseen categories are part of the model.",
+      "Go to stage 7: Prediction is deliberately cheap.",
+      "Go to stage 8: One feature cannot express an interaction.",
+      "Go to stage 9: Validate the whole learning process",
+      "Go to stage 10: Evaluate each fold. Decide what to do next.",
+      "Go to stage 11: Use simple models as diagnostic instruments.",
+      "Go to stage 12: Build the rule, then explain what it means."
+    ],
+    "sections": [
+      {
+        "id": "stage-1",
+        "stage": "1",
+        "title": "What problem is One-R solving?"
+      },
+      {
+        "id": "stage-2",
+        "stage": "2",
+        "title": "First, make the lazy prediction."
+      },
+      {
+        "id": "stage-3",
+        "stage": "3",
+        "title": "Make a rule from one categorical feature."
+      },
+      {
+        "id": "stage-4",
+        "stage": "4",
+        "title": "Test every feature. Keep the lowest-error rule."
+      },
+      {
+        "id": "stage-5",
+        "stage": "5",
+        "title": "Turn numeric values into intervals."
+      },
+      {
+        "id": "stage-6",
+        "stage": "6",
+        "title": "Missing values and unseen categories are part of the model."
+      },
+      {
+        "id": "stage-7",
+        "stage": "7",
+        "title": "Prediction is deliberately cheap."
+      },
+      {
+        "id": "stage-8",
+        "stage": "8",
+        "title": "One feature cannot express an interaction."
+      },
+      {
+        "id": "stage-9",
+        "stage": "9",
+        "title": "Validate the whole learning process"
+      },
+      {
+        "id": "stage-10",
+        "stage": "10",
+        "title": "Evaluate each fold. Decide what to do next."
+      },
+      {
+        "id": "stage-11",
+        "stage": "11",
+        "title": "Use simple models as diagnostic instruments."
+      },
+      {
+        "id": "stage-12",
+        "stage": "12",
+        "title": "Build the rule, then explain what it means."
+      }
+    ]
+  },
+  {
+    "pageName": "multiple-linear-regression",
+    "navs": [
+      "Go to stage 1: The Multi-Variable World",
+      "Go to stage 2: The Secret Recipe",
+      "Go to stage 3: Finding the Fit",
+      "Go to stage 4: The Least Squares Method",
+      "Go to stage 5: The Superpower: Holding Constant",
+      "Go to stage 6: Building the Prediction",
+      "Go to stage 7: The Spurious Trap",
+      "Go to stage 8: The Adjusted R² Penalty",
+      "Go to stage 9: Reading the Model Output"
+    ],
+    "sections": [
+      {
+        "id": "",
+        "stage": "0",
+        "title": ""
+      },
+      {
+        "id": "statml-stage-1",
+        "stage": "1",
+        "title": "The Multi-Variable World"
+      },
+      {
+        "id": "statml-stage-2",
+        "stage": "2",
+        "title": "The Secret Recipe"
+      },
+      {
+        "id": "statml-stage-3",
+        "stage": "3",
+        "title": "Finding the Fit"
+      },
+      {
+        "id": "statml-stage-4",
+        "stage": "4",
+        "title": "The Least Squares Method"
+      },
+      {
+        "id": "statml-stage-5",
+        "stage": "5",
+        "title": "The Superpower: Holding Constant"
+      },
+      {
+        "id": "statml-stage-6",
+        "stage": "6",
+        "title": "Building the Prediction"
+      },
+      {
+        "id": "statml-stage-7",
+        "stage": "7",
+        "title": "The Spurious Trap"
+      },
+      {
+        "id": "statml-stage-8",
+        "stage": "8",
+        "title": "The Adjusted R² Penalty"
+      },
+      {
+        "id": "statml-stage-9",
+        "stage": "9",
+        "title": "Reading the Model Output"
+      }
+    ]
+  }
+]

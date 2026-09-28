@@ -1,0 +1,24 @@
+{
+  "desktop": {
+    "bodyClass": "hw-handwritten",
+    "bodyFont": "\"Patrick Hand\", Kalam, \"Marker Felt\", \"Chalkboard SE\", \"Comic Sans MS\", \"Segoe Print\", cursive",
+    "canvases": 2,
+    "controls": 27,
+    "emoji": [],
+    "h1": "Deep learning",
+    "rough": 3,
+    "scrollHeight": 20101,
+    "stageCount": 13,
+    "url": "http://127.0.0.1:8765/modules/deep-learning.html"
+  },
+  "mobile": {
+    "bodyFont": "\"Patrick Hand\", Kalam, \"Marker Felt\", \"Chalkboard SE\", \"Comic Sans MS\", \"Segoe Print\", cursive",
+    "controls": 15,
+    "h1": "Deep learning",
+    "overflow": false,
+    "rough": 3,
+    "scrollHeight": 19861,
+    "stageCount": 13,
+    "url": "http://127.0.0.1:8765/modules/deep-learning.html"
+  }
+}

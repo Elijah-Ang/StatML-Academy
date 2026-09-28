@@ -1,0 +1,1691 @@
+{
+  "checks": 240,
+  "widths": [
+    1440,
+    430,
+    320
+  ],
+  "errors": [],
+  "stages": [
+    {
+      "slug": "multiple-linear-regression",
+      "width": 1440,
+      "stage": 1,
+      "scene": "fit",
+      "clipped": 0
+    },
+    {
+      "slug": "multiple-linear-regression",
+      "width": 1440,
+      "stage": 2,
+      "scene": "contributions",
+      "clipped": 0
+    },
+    {
+      "slug": "multiple-linear-regression",
+      "width": 1440,
+      "stage": 3,
+      "scene": "fit",
+      "clipped": 0
+    },
+    {
+      "slug": "multiple-linear-regression",
+      "width": 1440,
+      "stage": 4,
+      "scene": "fit",
+      "clipped": 0
+    },
+    {
+      "slug": "multiple-linear-regression",
+      "width": 1440,
+      "stage": 5,
+      "scene": "contributions",
+      "clipped": 0
+    },
+    {
+      "slug": "multiple-linear-regression",
+      "width": 1440,
+      "stage": 6,
+      "scene": "contributions",
+      "clipped": 0
+    },
+    {
+      "slug": "multiple-linear-regression",
+      "width": 1440,
+      "stage": 7,
+      "scene": "coefficients",
+      "clipped": 0
+    },
+    {
+      "slug": "multiple-linear-regression",
+      "width": 1440,
+      "stage": 8,
+      "scene": "scores",
+      "clipped": 0
+    },
+    {
+      "slug": "multiple-linear-regression",
+      "width": 1440,
+      "stage": 9,
+      "scene": "coefficients",
+      "clipped": 0
+    },
+    {
+      "slug": "regression-trees",
+      "width": 1440,
+      "stage": 1,
+      "scene": "fit",
+      "clipped": 0
+    },
+    {
+      "slug": "regression-trees",
+      "width": 1440,
+      "stage": 2,
+      "scene": "split",
+      "clipped": 0
+    },
+    {
+      "slug": "regression-trees",
+      "width": 1440,
+      "stage": 3,
+      "scene": "fit",
+      "clipped": 0
+    },
+    {
+      "slug": "regression-trees",
+      "width": 1440,
+      "stage": 4,
+      "scene": "tree",
+      "clipped": 0
+    },
+    {
+      "slug": "regression-trees",
+      "width": 1440,
+      "stage": 5,
+      "scene": "gain",
+      "clipped": 0
+    },
+    {
+      "slug": "regression-trees",
+      "width": 1440,
+      "stage": 6,
+      "scene": "gain",
+      "clipped": 0
+    },
+    {
+      "slug": "regression-trees",
+      "width": 1440,
+      "stage": 7,
+      "scene": "tree",
+      "clipped": 0
+    },
+    {
+      "slug": "regression-trees",
+      "width": 1440,
+      "stage": 8,
+      "scene": "tree",
+      "clipped": 0
+    },
+    {
+      "slug": "regression-trees",
+      "width": 1440,
+      "stage": 9,
+      "scene": "curve",
+      "clipped": 0
+    },
+    {
+      "slug": "regression-trees",
+      "width": 1440,
+      "stage": 10,
+      "scene": "tree",
+      "clipped": 0
+    },
+    {
+      "slug": "regression-trees",
+      "width": 1440,
+      "stage": 11,
+      "scene": "pruning",
+      "clipped": 0
+    },
+    {
+      "slug": "regression-trees",
+      "width": 1440,
+      "stage": 12,
+      "scene": "fit",
+      "clipped": 0
+    },
+    {
+      "slug": "regression-trees",
+      "width": 1440,
+      "stage": 13,
+      "scene": "fit",
+      "clipped": 0
+    },
+    {
+      "slug": "regression-trees",
+      "width": 1440,
+      "stage": 14,
+      "scene": "curve",
+      "clipped": 0
+    },
+    {
+      "slug": "regression-trees",
+      "width": 1440,
+      "stage": 15,
+      "scene": "fit",
+      "clipped": 0
+    },
+    {
+      "slug": "regression-trees",
+      "width": 1440,
+      "stage": 16,
+      "scene": "tree",
+      "clipped": 0
+    },
+    {
+      "slug": "classification-trees",
+      "width": 1440,
+      "stage": 1,
+      "scene": "boundary",
+      "clipped": 0
+    },
+    {
+      "slug": "classification-trees",
+      "width": 1440,
+      "stage": 2,
+      "scene": "split",
+      "clipped": 0
+    },
+    {
+      "slug": "classification-trees",
+      "width": 1440,
+      "stage": 3,
+      "scene": "tree",
+      "clipped": 0
+    },
+    {
+      "slug": "classification-trees",
+      "width": 1440,
+      "stage": 4,
+      "scene": "gain",
+      "clipped": 0
+    },
+    {
+      "slug": "classification-trees",
+      "width": 1440,
+      "stage": 5,
+      "scene": "gain",
+      "clipped": 0
+    },
+    {
+      "slug": "classification-trees",
+      "width": 1440,
+      "stage": 6,
+      "scene": "gain",
+      "clipped": 0
+    },
+    {
+      "slug": "classification-trees",
+      "width": 1440,
+      "stage": 7,
+      "scene": "tree",
+      "clipped": 0
+    },
+    {
+      "slug": "classification-trees",
+      "width": 1440,
+      "stage": 8,
+      "scene": "boundary",
+      "clipped": 0
+    },
+    {
+      "slug": "classification-trees",
+      "width": 1440,
+      "stage": 9,
+      "scene": "pruning",
+      "clipped": 0
+    },
+    {
+      "slug": "classification-trees",
+      "width": 1440,
+      "stage": 10,
+      "scene": "curve",
+      "clipped": 0
+    },
+    {
+      "slug": "classification-trees",
+      "width": 1440,
+      "stage": 11,
+      "scene": "tree",
+      "clipped": 0
+    },
+    {
+      "slug": "classification-trees",
+      "width": 1440,
+      "stage": 12,
+      "scene": "confusion",
+      "clipped": 0
+    },
+    {
+      "slug": "classification-trees",
+      "width": 1440,
+      "stage": 13,
+      "scene": "tree",
+      "clipped": 0
+    },
+    {
+      "slug": "classification-trees",
+      "width": 1440,
+      "stage": 14,
+      "scene": "boundary",
+      "clipped": 0
+    },
+    {
+      "slug": "classification-trees",
+      "width": 1440,
+      "stage": 15,
+      "scene": "boundary",
+      "clipped": 0
+    },
+    {
+      "slug": "random-forest",
+      "width": 1440,
+      "stage": 1,
+      "scene": "votes",
+      "clipped": 0
+    },
+    {
+      "slug": "random-forest",
+      "width": 1440,
+      "stage": 2,
+      "scene": "bootstrap",
+      "clipped": 0
+    },
+    {
+      "slug": "random-forest",
+      "width": 1440,
+      "stage": 3,
+      "scene": "votes",
+      "clipped": 0
+    },
+    {
+      "slug": "random-forest",
+      "width": 1440,
+      "stage": 4,
+      "scene": "votes",
+      "clipped": 0
+    },
+    {
+      "slug": "random-forest",
+      "width": 1440,
+      "stage": 5,
+      "scene": "oob",
+      "clipped": 0
+    },
+    {
+      "slug": "random-forest",
+      "width": 1440,
+      "stage": 6,
+      "scene": "votes",
+      "clipped": 0
+    },
+    {
+      "slug": "random-forest",
+      "width": 1440,
+      "stage": 7,
+      "scene": "curve",
+      "clipped": 0
+    },
+    {
+      "slug": "random-forest",
+      "width": 1440,
+      "stage": 8,
+      "scene": "votes",
+      "clipped": 0
+    },
+    {
+      "slug": "random-forest",
+      "width": 1440,
+      "stage": 9,
+      "scene": "oob",
+      "clipped": 0
+    },
+    {
+      "slug": "neural-networks",
+      "width": 1440,
+      "stage": 1,
+      "scene": "network",
+      "clipped": 0
+    },
+    {
+      "slug": "neural-networks",
+      "width": 1440,
+      "stage": 2,
+      "scene": "inputs",
+      "clipped": 0
+    },
+    {
+      "slug": "neural-networks",
+      "width": 1440,
+      "stage": 3,
+      "scene": "pipeline",
+      "clipped": 0
+    },
+    {
+      "slug": "neural-networks",
+      "width": 1440,
+      "stage": 4,
+      "scene": "neuron",
+      "clipped": 0
+    },
+    {
+      "slug": "neural-networks",
+      "width": 1440,
+      "stage": 5,
+      "scene": "neuron",
+      "clipped": 0
+    },
+    {
+      "slug": "neural-networks",
+      "width": 1440,
+      "stage": 6,
+      "scene": "activation",
+      "clipped": 0
+    },
+    {
+      "slug": "neural-networks",
+      "width": 1440,
+      "stage": 7,
+      "scene": "forward",
+      "clipped": 0
+    },
+    {
+      "slug": "neural-networks",
+      "width": 1440,
+      "stage": 8,
+      "scene": "loss",
+      "clipped": 0
+    },
+    {
+      "slug": "neural-networks",
+      "width": 1440,
+      "stage": 9,
+      "scene": "backward",
+      "clipped": 0
+    },
+    {
+      "slug": "neural-networks",
+      "width": 1440,
+      "stage": 10,
+      "scene": "update",
+      "clipped": 0
+    },
+    {
+      "slug": "neural-networks",
+      "width": 1440,
+      "stage": 11,
+      "scene": "cycle",
+      "clipped": 0
+    },
+    {
+      "slug": "neural-networks",
+      "width": 1440,
+      "stage": 12,
+      "scene": "training",
+      "clipped": 0
+    },
+    {
+      "slug": "neural-networks",
+      "width": 1440,
+      "stage": 13,
+      "scene": "settings",
+      "clipped": 0
+    },
+    {
+      "slug": "neural-networks",
+      "width": 1440,
+      "stage": 14,
+      "scene": "evaluation",
+      "clipped": 0
+    },
+    {
+      "slug": "neural-networks",
+      "width": 1440,
+      "stage": 15,
+      "scene": "errors",
+      "clipped": 0
+    },
+    {
+      "slug": "neural-networks",
+      "width": 1440,
+      "stage": 16,
+      "scene": "contract",
+      "clipped": 0
+    },
+    {
+      "slug": "neural-networks",
+      "width": 1440,
+      "stage": 17,
+      "scene": "architecture",
+      "clipped": 0
+    },
+    {
+      "slug": "neural-networks",
+      "width": 1440,
+      "stage": 18,
+      "scene": "network",
+      "clipped": 0
+    },
+    {
+      "slug": "neural-networks",
+      "width": 1440,
+      "stage": 19,
+      "scene": "cycle",
+      "clipped": 0
+    },
+    {
+      "slug": "deep-learning",
+      "width": 1440,
+      "stage": 1,
+      "scene": "task",
+      "clipped": 0
+    },
+    {
+      "slug": "deep-learning",
+      "width": 1440,
+      "stage": 2,
+      "scene": "shortcut",
+      "clipped": 0
+    },
+    {
+      "slug": "deep-learning",
+      "width": 1440,
+      "stage": 3,
+      "scene": "pipeline",
+      "clipped": 0
+    },
+    {
+      "slug": "deep-learning",
+      "width": 1440,
+      "stage": 4,
+      "scene": "tensor",
+      "clipped": 0
+    },
+    {
+      "slug": "deep-learning",
+      "width": 1440,
+      "stage": 5,
+      "scene": "neuron",
+      "clipped": 0
+    },
+    {
+      "slug": "deep-learning",
+      "width": 1440,
+      "stage": 6,
+      "scene": "hierarchy",
+      "clipped": 0
+    },
+    {
+      "slug": "deep-learning",
+      "width": 1440,
+      "stage": 7,
+      "scene": "cycle",
+      "clipped": 0
+    },
+    {
+      "slug": "deep-learning",
+      "width": 1440,
+      "stage": 8,
+      "scene": "regularization",
+      "clipped": 0
+    },
+    {
+      "slug": "deep-learning",
+      "width": 1440,
+      "stage": 9,
+      "scene": "architecture",
+      "clipped": 0
+    },
+    {
+      "slug": "deep-learning",
+      "width": 1440,
+      "stage": 10,
+      "scene": "transfer",
+      "clipped": 0
+    },
+    {
+      "slug": "deep-learning",
+      "width": 1440,
+      "stage": 11,
+      "scene": "evaluation",
+      "clipped": 0
+    },
+    {
+      "slug": "deep-learning",
+      "width": 1440,
+      "stage": 12,
+      "scene": "contract",
+      "clipped": 0
+    },
+    {
+      "slug": "multiple-linear-regression",
+      "width": 430,
+      "stage": 1,
+      "scene": "fit",
+      "clipped": 0
+    },
+    {
+      "slug": "multiple-linear-regression",
+      "width": 430,
+      "stage": 2,
+      "scene": "contributions",
+      "clipped": 0
+    },
+    {
+      "slug": "multiple-linear-regression",
+      "width": 430,
+      "stage": 3,
+      "scene": "fit",
+      "clipped": 0
+    },
+    {
+      "slug": "multiple-linear-regression",
+      "width": 430,
+      "stage": 4,
+      "scene": "fit",
+      "clipped": 0
+    },
+    {
+      "slug": "multiple-linear-regression",
+      "width": 430,
+      "stage": 5,
+      "scene": "contributions",
+      "clipped": 0
+    },
+    {
+      "slug": "multiple-linear-regression",
+      "width": 430,
+      "stage": 6,
+      "scene": "contributions",
+      "clipped": 0
+    },
+    {
+      "slug": "multiple-linear-regression",
+      "width": 430,
+      "stage": 7,
+      "scene": "coefficients",
+      "clipped": 0
+    },
+    {
+      "slug": "multiple-linear-regression",
+      "width": 430,
+      "stage": 8,
+      "scene": "scores",
+      "clipped": 0
+    },
+    {
+      "slug": "multiple-linear-regression",
+      "width": 430,
+      "stage": 9,
+      "scene": "coefficients",
+      "clipped": 0
+    },
+    {
+      "slug": "regression-trees",
+      "width": 430,
+      "stage": 1,
+      "scene": "fit",
+      "clipped": 0
+    },
+    {
+      "slug": "regression-trees",
+      "width": 430,
+      "stage": 2,
+      "scene": "split",
+      "clipped": 0
+    },
+    {
+      "slug": "regression-trees",
+      "width": 430,
+      "stage": 3,
+      "scene": "fit",
+      "clipped": 0
+    },
+    {
+      "slug": "regression-trees",
+      "width": 430,
+      "stage": 4,
+      "scene": "tree",
+      "clipped": 0
+    },
+    {
+      "slug": "regression-trees",
+      "width": 430,
+      "stage": 5,
+      "scene": "gain",
+      "clipped": 0
+    },
+    {
+      "slug": "regression-trees",
+      "width": 430,
+      "stage": 6,
+      "scene": "gain",
+      "clipped": 0
+    },
+    {
+      "slug": "regression-trees",
+      "width": 430,
+      "stage": 7,
+      "scene": "tree",
+      "clipped": 0
+    },
+    {
+      "slug": "regression-trees",
+      "width": 430,
+      "stage": 8,
+      "scene": "tree",
+      "clipped": 0
+    },
+    {
+      "slug": "regression-trees",
+      "width": 430,
+      "stage": 9,
+      "scene": "curve",
+      "clipped": 0
+    },
+    {
+      "slug": "regression-trees",
+      "width": 430,
+      "stage": 10,
+      "scene": "tree",
+      "clipped": 0
+    },
+    {
+      "slug": "regression-trees",
+      "width": 430,
+      "stage": 11,
+      "scene": "pruning",
+      "clipped": 0
+    },
+    {
+      "slug": "regression-trees",
+      "width": 430,
+      "stage": 12,
+      "scene": "fit",
+      "clipped": 0
+    },
+    {
+      "slug": "regression-trees",
+      "width": 430,
+      "stage": 13,
+      "scene": "fit",
+      "clipped": 0
+    },
+    {
+      "slug": "regression-trees",
+      "width": 430,
+      "stage": 14,
+      "scene": "curve",
+      "clipped": 0
+    },
+    {
+      "slug": "regression-trees",
+      "width": 430,
+      "stage": 15,
+      "scene": "fit",
+      "clipped": 0
+    },
+    {
+      "slug": "regression-trees",
+      "width": 430,
+      "stage": 16,
+      "scene": "tree",
+      "clipped": 0
+    },
+    {
+      "slug": "classification-trees",
+      "width": 430,
+      "stage": 1,
+      "scene": "boundary",
+      "clipped": 0
+    },
+    {
+      "slug": "classification-trees",
+      "width": 430,
+      "stage": 2,
+      "scene": "split",
+      "clipped": 0
+    },
+    {
+      "slug": "classification-trees",
+      "width": 430,
+      "stage": 3,
+      "scene": "tree",
+      "clipped": 0
+    },
+    {
+      "slug": "classification-trees",
+      "width": 430,
+      "stage": 4,
+      "scene": "gain",
+      "clipped": 0
+    },
+    {
+      "slug": "classification-trees",
+      "width": 430,
+      "stage": 5,
+      "scene": "gain",
+      "clipped": 0
+    },
+    {
+      "slug": "classification-trees",
+      "width": 430,
+      "stage": 6,
+      "scene": "gain",
+      "clipped": 0
+    },
+    {
+      "slug": "classification-trees",
+      "width": 430,
+      "stage": 7,
+      "scene": "tree",
+      "clipped": 0
+    },
+    {
+      "slug": "classification-trees",
+      "width": 430,
+      "stage": 8,
+      "scene": "boundary",
+      "clipped": 0
+    },
+    {
+      "slug": "classification-trees",
+      "width": 430,
+      "stage": 9,
+      "scene": "pruning",
+      "clipped": 0
+    },
+    {
+      "slug": "classification-trees",
+      "width": 430,
+      "stage": 10,
+      "scene": "curve",
+      "clipped": 0
+    },
+    {
+      "slug": "classification-trees",
+      "width": 430,
+      "stage": 11,
+      "scene": "tree",
+      "clipped": 0
+    },
+    {
+      "slug": "classification-trees",
+      "width": 430,
+      "stage": 12,
+      "scene": "confusion",
+      "clipped": 0
+    },
+    {
+      "slug": "classification-trees",
+      "width": 430,
+      "stage": 13,
+      "scene": "tree",
+      "clipped": 0
+    },
+    {
+      "slug": "classification-trees",
+      "width": 430,
+      "stage": 14,
+      "scene": "boundary",
+      "clipped": 0
+    },
+    {
+      "slug": "classification-trees",
+      "width": 430,
+      "stage": 15,
+      "scene": "boundary",
+      "clipped": 0
+    },
+    {
+      "slug": "random-forest",
+      "width": 430,
+      "stage": 1,
+      "scene": "votes",
+      "clipped": 0
+    },
+    {
+      "slug": "random-forest",
+      "width": 430,
+      "stage": 2,
+      "scene": "bootstrap",
+      "clipped": 0
+    },
+    {
+      "slug": "random-forest",
+      "width": 430,
+      "stage": 3,
+      "scene": "votes",
+      "clipped": 0
+    },
+    {
+      "slug": "random-forest",
+      "width": 430,
+      "stage": 4,
+      "scene": "votes",
+      "clipped": 0
+    },
+    {
+      "slug": "random-forest",
+      "width": 430,
+      "stage": 5,
+      "scene": "oob",
+      "clipped": 0
+    },
+    {
+      "slug": "random-forest",
+      "width": 430,
+      "stage": 6,
+      "scene": "votes",
+      "clipped": 0
+    },
+    {
+      "slug": "random-forest",
+      "width": 430,
+      "stage": 7,
+      "scene": "curve",
+      "clipped": 0
+    },
+    {
+      "slug": "random-forest",
+      "width": 430,
+      "stage": 8,
+      "scene": "votes",
+      "clipped": 0
+    },
+    {
+      "slug": "random-forest",
+      "width": 430,
+      "stage": 9,
+      "scene": "oob",
+      "clipped": 0
+    },
+    {
+      "slug": "neural-networks",
+      "width": 430,
+      "stage": 1,
+      "scene": "network",
+      "clipped": 0
+    },
+    {
+      "slug": "neural-networks",
+      "width": 430,
+      "stage": 2,
+      "scene": "inputs",
+      "clipped": 0
+    },
+    {
+      "slug": "neural-networks",
+      "width": 430,
+      "stage": 3,
+      "scene": "pipeline",
+      "clipped": 0
+    },
+    {
+      "slug": "neural-networks",
+      "width": 430,
+      "stage": 4,
+      "scene": "neuron",
+      "clipped": 0
+    },
+    {
+      "slug": "neural-networks",
+      "width": 430,
+      "stage": 5,
+      "scene": "neuron",
+      "clipped": 0
+    },
+    {
+      "slug": "neural-networks",
+      "width": 430,
+      "stage": 6,
+      "scene": "activation",
+      "clipped": 0
+    },
+    {
+      "slug": "neural-networks",
+      "width": 430,
+      "stage": 7,
+      "scene": "forward",
+      "clipped": 0
+    },
+    {
+      "slug": "neural-networks",
+      "width": 430,
+      "stage": 8,
+      "scene": "loss",
+      "clipped": 0
+    },
+    {
+      "slug": "neural-networks",
+      "width": 430,
+      "stage": 9,
+      "scene": "backward",
+      "clipped": 0
+    },
+    {
+      "slug": "neural-networks",
+      "width": 430,
+      "stage": 10,
+      "scene": "update",
+      "clipped": 0
+    },
+    {
+      "slug": "neural-networks",
+      "width": 430,
+      "stage": 11,
+      "scene": "cycle",
+      "clipped": 0
+    },
+    {
+      "slug": "neural-networks",
+      "width": 430,
+      "stage": 12,
+      "scene": "training",
+      "clipped": 0
+    },
+    {
+      "slug": "neural-networks",
+      "width": 430,
+      "stage": 13,
+      "scene": "settings",
+      "clipped": 0
+    },
+    {
+      "slug": "neural-networks",
+      "width": 430,
+      "stage": 14,
+      "scene": "evaluation",
+      "clipped": 0
+    },
+    {
+      "slug": "neural-networks",
+      "width": 430,
+      "stage": 15,
+      "scene": "errors",
+      "clipped": 0
+    },
+    {
+      "slug": "neural-networks",
+      "width": 430,
+      "stage": 16,
+      "scene": "contract",
+      "clipped": 0
+    },
+    {
+      "slug": "neural-networks",
+      "width": 430,
+      "stage": 17,
+      "scene": "architecture",
+      "clipped": 0
+    },
+    {
+      "slug": "neural-networks",
+      "width": 430,
+      "stage": 18,
+      "scene": "network",
+      "clipped": 0
+    },
+    {
+      "slug": "neural-networks",
+      "width": 430,
+      "stage": 19,
+      "scene": "cycle",
+      "clipped": 0
+    },
+    {
+      "slug": "deep-learning",
+      "width": 430,
+      "stage": 1,
+      "scene": "task",
+      "clipped": 0
+    },
+    {
+      "slug": "deep-learning",
+      "width": 430,
+      "stage": 2,
+      "scene": "shortcut",
+      "clipped": 0
+    },
+    {
+      "slug": "deep-learning",
+      "width": 430,
+      "stage": 3,
+      "scene": "pipeline",
+      "clipped": 0
+    },
+    {
+      "slug": "deep-learning",
+      "width": 430,
+      "stage": 4,
+      "scene": "tensor",
+      "clipped": 0
+    },
+    {
+      "slug": "deep-learning",
+      "width": 430,
+      "stage": 5,
+      "scene": "neuron",
+      "clipped": 0
+    },
+    {
+      "slug": "deep-learning",
+      "width": 430,
+      "stage": 6,
+      "scene": "hierarchy",
+      "clipped": 0
+    },
+    {
+      "slug": "deep-learning",
+      "width": 430,
+      "stage": 7,
+      "scene": "cycle",
+      "clipped": 0
+    },
+    {
+      "slug": "deep-learning",
+      "width": 430,
+      "stage": 8,
+      "scene": "regularization",
+      "clipped": 0
+    },
+    {
+      "slug": "deep-learning",
+      "width": 430,
+      "stage": 9,
+      "scene": "architecture",
+      "clipped": 0
+    },
+    {
+      "slug": "deep-learning",
+      "width": 430,
+      "stage": 10,
+      "scene": "transfer",
+      "clipped": 0
+    },
+    {
+      "slug": "deep-learning",
+      "width": 430,
+      "stage": 11,
+      "scene": "evaluation",
+      "clipped": 0
+    },
+    {
+      "slug": "deep-learning",
+      "width": 430,
+      "stage": 12,
+      "scene": "contract",
+      "clipped": 0
+    },
+    {
+      "slug": "multiple-linear-regression",
+      "width": 320,
+      "stage": 1,
+      "scene": "fit",
+      "clipped": 0
+    },
+    {
+      "slug": "multiple-linear-regression",
+      "width": 320,
+      "stage": 2,
+      "scene": "contributions",
+      "clipped": 0
+    },
+    {
+      "slug": "multiple-linear-regression",
+      "width": 320,
+      "stage": 3,
+      "scene": "fit",
+      "clipped": 0
+    },
+    {
+      "slug": "multiple-linear-regression",
+      "width": 320,
+      "stage": 4,
+      "scene": "fit",
+      "clipped": 0
+    },
+    {
+      "slug": "multiple-linear-regression",
+      "width": 320,
+      "stage": 5,
+      "scene": "contributions",
+      "clipped": 0
+    },
+    {
+      "slug": "multiple-linear-regression",
+      "width": 320,
+      "stage": 6,
+      "scene": "contributions",
+      "clipped": 0
+    },
+    {
+      "slug": "multiple-linear-regression",
+      "width": 320,
+      "stage": 7,
+      "scene": "coefficients",
+      "clipped": 0
+    },
+    {
+      "slug": "multiple-linear-regression",
+      "width": 320,
+      "stage": 8,
+      "scene": "scores",
+      "clipped": 0
+    },
+    {
+      "slug": "multiple-linear-regression",
+      "width": 320,
+      "stage": 9,
+      "scene": "coefficients",
+      "clipped": 0
+    },
+    {
+      "slug": "regression-trees",
+      "width": 320,
+      "stage": 1,
+      "scene": "fit",
+      "clipped": 0
+    },
+    {
+      "slug": "regression-trees",
+      "width": 320,
+      "stage": 2,
+      "scene": "split",
+      "clipped": 0
+    },
+    {
+      "slug": "regression-trees",
+      "width": 320,
+      "stage": 3,
+      "scene": "fit",
+      "clipped": 0
+    },
+    {
+      "slug": "regression-trees",
+      "width": 320,
+      "stage": 4,
+      "scene": "tree",
+      "clipped": 0
+    },
+    {
+      "slug": "regression-trees",
+      "width": 320,
+      "stage": 5,
+      "scene": "gain",
+      "clipped": 0
+    },
+    {
+      "slug": "regression-trees",
+      "width": 320,
+      "stage": 6,
+      "scene": "gain",
+      "clipped": 0
+    },
+    {
+      "slug": "regression-trees",
+      "width": 320,
+      "stage": 7,
+      "scene": "tree",
+      "clipped": 0
+    },
+    {
+      "slug": "regression-trees",
+      "width": 320,
+      "stage": 8,
+      "scene": "tree",
+      "clipped": 0
+    },
+    {
+      "slug": "regression-trees",
+      "width": 320,
+      "stage": 9,
+      "scene": "curve",
+      "clipped": 0
+    },
+    {
+      "slug": "regression-trees",
+      "width": 320,
+      "stage": 10,
+      "scene": "tree",
+      "clipped": 0
+    },
+    {
+      "slug": "regression-trees",
+      "width": 320,
+      "stage": 11,
+      "scene": "pruning",
+      "clipped": 0
+    },
+    {
+      "slug": "regression-trees",
+      "width": 320,
+      "stage": 12,
+      "scene": "fit",
+      "clipped": 0
+    },
+    {
+      "slug": "regression-trees",
+      "width": 320,
+      "stage": 13,
+      "scene": "fit",
+      "clipped": 0
+    },
+    {
+      "slug": "regression-trees",
+      "width": 320,
+      "stage": 14,
+      "scene": "curve",
+      "clipped": 0
+    },
+    {
+      "slug": "regression-trees",
+      "width": 320,
+      "stage": 15,
+      "scene": "fit",
+      "clipped": 0
+    },
+    {
+      "slug": "regression-trees",
+      "width": 320,
+      "stage": 16,
+      "scene": "tree",
+      "clipped": 0
+    },
+    {
+      "slug": "classification-trees",
+      "width": 320,
+      "stage": 1,
+      "scene": "boundary",
+      "clipped": 0
+    },
+    {
+      "slug": "classification-trees",
+      "width": 320,
+      "stage": 2,
+      "scene": "split",
+      "clipped": 0
+    },
+    {
+      "slug": "classification-trees",
+      "width": 320,
+      "stage": 3,
+      "scene": "tree",
+      "clipped": 0
+    },
+    {
+      "slug": "classification-trees",
+      "width": 320,
+      "stage": 4,
+      "scene": "gain",
+      "clipped": 0
+    },
+    {
+      "slug": "classification-trees",
+      "width": 320,
+      "stage": 5,
+      "scene": "gain",
+      "clipped": 0
+    },
+    {
+      "slug": "classification-trees",
+      "width": 320,
+      "stage": 6,
+      "scene": "gain",
+      "clipped": 0
+    },
+    {
+      "slug": "classification-trees",
+      "width": 320,
+      "stage": 7,
+      "scene": "tree",
+      "clipped": 0
+    },
+    {
+      "slug": "classification-trees",
+      "width": 320,
+      "stage": 8,
+      "scene": "boundary",
+      "clipped": 0
+    },
+    {
+      "slug": "classification-trees",
+      "width": 320,
+      "stage": 9,
+      "scene": "pruning",
+      "clipped": 0
+    },
+    {
+      "slug": "classification-trees",
+      "width": 320,
+      "stage": 10,
+      "scene": "curve",
+      "clipped": 0
+    },
+    {
+      "slug": "classification-trees",
+      "width": 320,
+      "stage": 11,
+      "scene": "tree",
+      "clipped": 0
+    },
+    {
+      "slug": "classification-trees",
+      "width": 320,
+      "stage": 12,
+      "scene": "confusion",
+      "clipped": 0
+    },
+    {
+      "slug": "classification-trees",
+      "width": 320,
+      "stage": 13,
+      "scene": "tree",
+      "clipped": 0
+    },
+    {
+      "slug": "classification-trees",
+      "width": 320,
+      "stage": 14,
+      "scene": "boundary",
+      "clipped": 0
+    },
+    {
+      "slug": "classification-trees",
+      "width": 320,
+      "stage": 15,
+      "scene": "boundary",
+      "clipped": 0
+    },
+    {
+      "slug": "random-forest",
+      "width": 320,
+      "stage": 1,
+      "scene": "votes",
+      "clipped": 0
+    },
+    {
+      "slug": "random-forest",
+      "width": 320,
+      "stage": 2,
+      "scene": "bootstrap",
+      "clipped": 0
+    },
+    {
+      "slug": "random-forest",
+      "width": 320,
+      "stage": 3,
+      "scene": "votes",
+      "clipped": 0
+    },
+    {
+      "slug": "random-forest",
+      "width": 320,
+      "stage": 4,
+      "scene": "votes",
+      "clipped": 0
+    },
+    {
+      "slug": "random-forest",
+      "width": 320,
+      "stage": 5,
+      "scene": "oob",
+      "clipped": 0
+    },
+    {
+      "slug": "random-forest",
+      "width": 320,
+      "stage": 6,
+      "scene": "votes",
+      "clipped": 0
+    },
+    {
+      "slug": "random-forest",
+      "width": 320,
+      "stage": 7,
+      "scene": "curve",
+      "clipped": 0
+    },
+    {
+      "slug": "random-forest",
+      "width": 320,
+      "stage": 8,
+      "scene": "votes",
+      "clipped": 0
+    },
+    {
+      "slug": "random-forest",
+      "width": 320,
+      "stage": 9,
+      "scene": "oob",
+      "clipped": 0
+    },
+    {
+      "slug": "neural-networks",
+      "width": 320,
+      "stage": 1,
+      "scene": "network",
+      "clipped": 0
+    },
+    {
+      "slug": "neural-networks",
+      "width": 320,
+      "stage": 2,
+      "scene": "inputs",
+      "clipped": 0
+    },
+    {
+      "slug": "neural-networks",
+      "width": 320,
+      "stage": 3,
+      "scene": "pipeline",
+      "clipped": 0
+    },
+    {
+      "slug": "neural-networks",
+      "width": 320,
+      "stage": 4,
+      "scene": "neuron",
+      "clipped": 0
+    },
+    {
+      "slug": "neural-networks",
+      "width": 320,
+      "stage": 5,
+      "scene": "neuron",
+      "clipped": 0
+    },
+    {
+      "slug": "neural-networks",
+      "width": 320,
+      "stage": 6,
+      "scene": "activation",
+      "clipped": 0
+    },
+    {
+      "slug": "neural-networks",
+      "width": 320,
+      "stage": 7,
+      "scene": "forward",
+      "clipped": 0
+    },
+    {
+      "slug": "neural-networks",
+      "width": 320,
+      "stage": 8,
+      "scene": "loss",
+      "clipped": 0
+    },
+    {
+      "slug": "neural-networks",
+      "width": 320,
+      "stage": 9,
+      "scene": "backward",
+      "clipped": 0
+    },
+    {
+      "slug": "neural-networks",
+      "width": 320,
+      "stage": 10,
+      "scene": "update",
+      "clipped": 0
+    },
+    {
+      "slug": "neural-networks",
+      "width": 320,
+      "stage": 11,
+      "scene": "cycle",
+      "clipped": 0
+    },
+    {
+      "slug": "neural-networks",
+      "width": 320,
+      "stage": 12,
+      "scene": "training",
+      "clipped": 0
+    },
+    {
+      "slug": "neural-networks",
+      "width": 320,
+      "stage": 13,
+      "scene": "settings",
+      "clipped": 0
+    },
+    {
+      "slug": "neural-networks",
+      "width": 320,
+      "stage": 14,
+      "scene": "evaluation",
+      "clipped": 0
+    },
+    {
+      "slug": "neural-networks",
+      "width": 320,
+      "stage": 15,
+      "scene": "errors",
+      "clipped": 0
+    },
+    {
+      "slug": "neural-networks",
+      "width": 320,
+      "stage": 16,
+      "scene": "contract",
+      "clipped": 0
+    },
+    {
+      "slug": "neural-networks",
+      "width": 320,
+      "stage": 17,
+      "scene": "architecture",
+      "clipped": 0
+    },
+    {
+      "slug": "neural-networks",
+      "width": 320,
+      "stage": 18,
+      "scene": "network",
+      "clipped": 0
+    },
+    {
+      "slug": "neural-networks",
+      "width": 320,
+      "stage": 19,
+      "scene": "cycle",
+      "clipped": 0
+    },
+    {
+      "slug": "deep-learning",
+      "width": 320,
+      "stage": 1,
+      "scene": "task",
+      "clipped": 0
+    },
+    {
+      "slug": "deep-learning",
+      "width": 320,
+      "stage": 2,
+      "scene": "shortcut",
+      "clipped": 0
+    },
+    {
+      "slug": "deep-learning",
+      "width": 320,
+      "stage": 3,
+      "scene": "pipeline",
+      "clipped": 0
+    },
+    {
+      "slug": "deep-learning",
+      "width": 320,
+      "stage": 4,
+      "scene": "tensor",
+      "clipped": 0
+    },
+    {
+      "slug": "deep-learning",
+      "width": 320,
+      "stage": 5,
+      "scene": "neuron",
+      "clipped": 0
+    },
+    {
+      "slug": "deep-learning",
+      "width": 320,
+      "stage": 6,
+      "scene": "hierarchy",
+      "clipped": 0
+    },
+    {
+      "slug": "deep-learning",
+      "width": 320,
+      "stage": 7,
+      "scene": "cycle",
+      "clipped": 0
+    },
+    {
+      "slug": "deep-learning",
+      "width": 320,
+      "stage": 8,
+      "scene": "regularization",
+      "clipped": 0
+    },
+    {
+      "slug": "deep-learning",
+      "width": 320,
+      "stage": 9,
+      "scene": "architecture",
+      "clipped": 0
+    },
+    {
+      "slug": "deep-learning",
+      "width": 320,
+      "stage": 10,
+      "scene": "transfer",
+      "clipped": 0
+    },
+    {
+      "slug": "deep-learning",
+      "width": 320,
+      "stage": 11,
+      "scene": "evaluation",
+      "clipped": 0
+    },
+    {
+      "slug": "deep-learning",
+      "width": 320,
+      "stage": 12,
+      "scene": "contract",
+      "clipped": 0
+    }
+  ]
+}

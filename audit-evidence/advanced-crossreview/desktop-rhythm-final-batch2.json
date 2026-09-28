@@ -1,0 +1,532 @@
+{
+  "regression-trees": {
+    "8765": {
+      "body": 18152.6875,
+      "scrollHeight": 18153,
+      "scrollWidth": 1280,
+      "selector": ".stage-section",
+      "stages": [
+        {
+          "height": 822.328125,
+          "stage": "1",
+          "top": 720
+        },
+        {
+          "height": 808.4375,
+          "stage": "2",
+          "top": 1542.328125
+        },
+        {
+          "height": 664.375,
+          "stage": "3",
+          "top": 2350.765625
+        },
+        {
+          "height": 662.375,
+          "stage": "4",
+          "top": 3015.140625
+        },
+        {
+          "height": 1023.625,
+          "stage": "5",
+          "top": 3677.515625
+        },
+        {
+          "height": 1075.71875,
+          "stage": "6",
+          "top": 4701.140625
+        },
+        {
+          "height": 662.375,
+          "stage": "7",
+          "top": 5776.859375
+        },
+        {
+          "height": 1039.46875,
+          "stage": "8",
+          "top": 6439.234375
+        },
+        {
+          "height": 953.578125,
+          "stage": "9",
+          "top": 7478.703125
+        },
+        {
+          "height": 2334.71875,
+          "stage": "10",
+          "top": 8432.28125
+        },
+        {
+          "height": 713.96875,
+          "stage": "11",
+          "top": 10767
+        },
+        {
+          "height": 666.921875,
+          "stage": "12",
+          "top": 11480.96875
+        },
+        {
+          "height": 662.375,
+          "stage": "13",
+          "top": 12147.890625
+        },
+        {
+          "height": 2280.96875,
+          "stage": "14",
+          "top": 12810.265625
+        },
+        {
+          "height": 1351.046875,
+          "stage": "15",
+          "top": 15091.234375
+        },
+        {
+          "height": 1538.9375,
+          "stage": "16",
+          "top": 16442.28125
+        }
+      ],
+      "url": "http://127.0.0.1:8765/modules/regression-trees.html?crossreview-final-rhythm=1787746600540"
+    },
+    "8766": {
+      "body": 18152.859375,
+      "scrollHeight": 18153,
+      "scrollWidth": 1280,
+      "selector": ".stage-section",
+      "stages": [
+        {
+          "height": 822.34375,
+          "stage": "1",
+          "top": 720
+        },
+        {
+          "height": 808.453125,
+          "stage": "2",
+          "top": 1542.34375
+        },
+        {
+          "height": 664.375,
+          "stage": "3",
+          "top": 2350.796875
+        },
+        {
+          "height": 662.390625,
+          "stage": "4",
+          "top": 3015.171875
+        },
+        {
+          "height": 1023.640625,
+          "stage": "5",
+          "top": 3677.5625
+        },
+        {
+          "height": 1075.734375,
+          "stage": "6",
+          "top": 4701.203125
+        },
+        {
+          "height": 662.390625,
+          "stage": "7",
+          "top": 5776.9375
+        },
+        {
+          "height": 1039.46875,
+          "stage": "8",
+          "top": 6439.328125
+        },
+        {
+          "height": 953.578125,
+          "stage": "9",
+          "top": 7478.796875
+        },
+        {
+          "height": 2334.734375,
+          "stage": "10",
+          "top": 8432.375
+        },
+        {
+          "height": 713.984375,
+          "stage": "11",
+          "top": 10767.109375
+        },
+        {
+          "height": 666.921875,
+          "stage": "12",
+          "top": 11481.09375
+        },
+        {
+          "height": 662.390625,
+          "stage": "13",
+          "top": 12148.015625
+        },
+        {
+          "height": 2280.984375,
+          "stage": "14",
+          "top": 12810.40625
+        },
+        {
+          "height": 1351.0625,
+          "stage": "15",
+          "top": 15091.390625
+        },
+        {
+          "height": 1538.9375,
+          "stage": "16",
+          "top": 16442.453125
+        }
+      ],
+      "url": "http://127.0.0.1:8766/modules/regression-trees.html?crossreview-final-rhythm=1787746596546"
+    }
+  },
+  "deep-learning": {
+    "8765": {
+      "body": 21789.3125,
+      "scrollHeight": 21789,
+      "scrollWidth": 1280,
+      "selector": ".lesson-step",
+      "stages": [
+        {
+          "height": 1600.6875,
+          "stage": "0",
+          "top": 1635.75
+        },
+        {
+          "height": 1562.625,
+          "stage": "1",
+          "top": 3236.4375
+        },
+        {
+          "height": 1564.015625,
+          "stage": "2",
+          "top": 4799.0625
+        },
+        {
+          "height": 1975.546875,
+          "stage": "3",
+          "top": 6363.078125
+        },
+        {
+          "height": 1707.15625,
+          "stage": "4",
+          "top": 8338.625
+        },
+        {
+          "height": 1434.15625,
+          "stage": "5",
+          "top": 10045.78125
+        },
+        {
+          "height": 1523.4375,
+          "stage": "6",
+          "top": 11479.9375
+        },
+        {
+          "height": 1655.359375,
+          "stage": "7",
+          "top": 13003.375
+        },
+        {
+          "height": 2278.375,
+          "stage": "8",
+          "top": 14658.734375
+        },
+        {
+          "height": 1479.40625,
+          "stage": "9",
+          "top": 16937.109375
+        },
+        {
+          "height": 1579.796875,
+          "stage": "10",
+          "top": 18416.515625
+        },
+        {
+          "height": 1624.015625,
+          "stage": "11",
+          "top": 19996.3125
+        }
+      ],
+      "url": "http://127.0.0.1:8765/modules/deep-learning.html?crossreview-final-rhythm=1787746605449"
+    },
+    "8766": {
+      "body": 21809.546875,
+      "scrollHeight": 21810,
+      "scrollWidth": 1280,
+      "selector": ".lesson-step",
+      "stages": [
+        {
+          "height": 1600.703125,
+          "stage": "0",
+          "top": 1656.875
+        },
+        {
+          "height": 1562.640625,
+          "stage": "1",
+          "top": 3257.578125
+        },
+        {
+          "height": 1564.03125,
+          "stage": "2",
+          "top": 4820.21875
+        },
+        {
+          "height": 1975.546875,
+          "stage": "3",
+          "top": 6384.25
+        },
+        {
+          "height": 1707.15625,
+          "stage": "4",
+          "top": 8359.796875
+        },
+        {
+          "height": 1434.15625,
+          "stage": "5",
+          "top": 10066.953125
+        },
+        {
+          "height": 1523.453125,
+          "stage": "6",
+          "top": 11501.109375
+        },
+        {
+          "height": 1655.359375,
+          "stage": "7",
+          "top": 13024.5625
+        },
+        {
+          "height": 2278.390625,
+          "stage": "8",
+          "top": 14679.921875
+        },
+        {
+          "height": 1479.421875,
+          "stage": "9",
+          "top": 16958.3125
+        },
+        {
+          "height": 1579.796875,
+          "stage": "10",
+          "top": 18437.734375
+        },
+        {
+          "height": 1624.03125,
+          "stage": "11",
+          "top": 20017.53125
+        }
+      ],
+      "url": "http://127.0.0.1:8766/modules/deep-learning.html?crossreview-final-rhythm=1787746602835"
+    }
+  },
+  "neural-networks": {
+    "8765": {
+      "body": 24462.59375,
+      "scrollHeight": 24463,
+      "scrollWidth": 1280,
+      "selector": "section[data-stage]",
+      "stages": [
+        {
+          "height": 1179.015625,
+          "stage": "1",
+          "top": 720
+        },
+        {
+          "height": 934.5,
+          "stage": "2",
+          "top": 1899.015625
+        },
+        {
+          "height": 1600.015625,
+          "stage": "3",
+          "top": 2833.515625
+        },
+        {
+          "height": 1309.625,
+          "stage": "4",
+          "top": 4433.53125
+        },
+        {
+          "height": 1165.015625,
+          "stage": "5",
+          "top": 5743.15625
+        },
+        {
+          "height": 1881.40625,
+          "stage": "6",
+          "top": 6908.171875
+        },
+        {
+          "height": 805.765625,
+          "stage": "7",
+          "top": 8789.578125
+        },
+        {
+          "height": 1114.046875,
+          "stage": "8",
+          "top": 9595.34375
+        },
+        {
+          "height": 810.109375,
+          "stage": "9",
+          "top": 10709.390625
+        },
+        {
+          "height": 1050.21875,
+          "stage": "10",
+          "top": 11519.5
+        },
+        {
+          "height": 987.6875,
+          "stage": "11",
+          "top": 12569.71875
+        },
+        {
+          "height": 1845.1875,
+          "stage": "12",
+          "top": 13557.40625
+        },
+        {
+          "height": 1689,
+          "stage": "13",
+          "top": 15402.59375
+        },
+        {
+          "height": 1364.765625,
+          "stage": "14",
+          "top": 17091.59375
+        },
+        {
+          "height": 1238.1875,
+          "stage": "15",
+          "top": 18456.359375
+        },
+        {
+          "height": 947.90625,
+          "stage": "16",
+          "top": 19694.546875
+        },
+        {
+          "height": 1497.015625,
+          "stage": "17",
+          "top": 20642.453125
+        },
+        {
+          "height": 889,
+          "stage": "18",
+          "top": 22139.46875
+        },
+        {
+          "height": 1362.125,
+          "stage": "19",
+          "top": 23028.46875
+        }
+      ],
+      "url": "http://127.0.0.1:8765/modules/neural-networks.html?crossreview-final-rhythm=1787746609772"
+    },
+    "8766": {
+      "body": 24462.703125,
+      "scrollHeight": 24463,
+      "scrollWidth": 1280,
+      "selector": "section[data-stage]",
+      "stages": [
+        {
+          "height": 1179.03125,
+          "stage": "1",
+          "top": 720
+        },
+        {
+          "height": 934.5,
+          "stage": "2",
+          "top": 1899.03125
+        },
+        {
+          "height": 1600.03125,
+          "stage": "3",
+          "top": 2833.53125
+        },
+        {
+          "height": 1309.625,
+          "stage": "4",
+          "top": 4433.5625
+        },
+        {
+          "height": 1165.03125,
+          "stage": "5",
+          "top": 5743.1875
+        },
+        {
+          "height": 1881.421875,
+          "stage": "6",
+          "top": 6908.21875
+        },
+        {
+          "height": 805.765625,
+          "stage": "7",
+          "top": 8789.640625
+        },
+        {
+          "height": 1114.046875,
+          "stage": "8",
+          "top": 9595.40625
+        },
+        {
+          "height": 810.109375,
+          "stage": "9",
+          "top": 10709.453125
+        },
+        {
+          "height": 1050.234375,
+          "stage": "10",
+          "top": 11519.5625
+        },
+        {
+          "height": 987.6875,
+          "stage": "11",
+          "top": 12569.796875
+        },
+        {
+          "height": 1845.1875,
+          "stage": "12",
+          "top": 13557.484375
+        },
+        {
+          "height": 1689,
+          "stage": "13",
+          "top": 15402.671875
+        },
+        {
+          "height": 1364.78125,
+          "stage": "14",
+          "top": 17091.671875
+        },
+        {
+          "height": 1238.1875,
+          "stage": "15",
+          "top": 18456.453125
+        },
+        {
+          "height": 947.90625,
+          "stage": "16",
+          "top": 19694.640625
+        },
+        {
+          "height": 1497.015625,
+          "stage": "17",
+          "top": 20642.546875
+        },
+        {
+          "height": 889,
+          "stage": "18",
+          "top": 22139.5625
+        },
+        {
+          "height": 1362.140625,
+          "stage": "19",
+          "top": 23028.5625
+        }
+      ],
+      "url": "http://127.0.0.1:8766/modules/neural-networks.html?crossreview-final-rhythm=1787746608345"
+    }
+  }
+}

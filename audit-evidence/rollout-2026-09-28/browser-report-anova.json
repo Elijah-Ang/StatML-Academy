@@ -1,0 +1,234 @@
+{
+  "checks": 32,
+  "widths": [
+    1440,
+    320
+  ],
+  "errors": [],
+  "stages": [
+    {
+      "slug": "anova",
+      "width": 1440,
+      "stage": 1,
+      "scene": "groups",
+      "clipped": 0
+    },
+    {
+      "slug": "anova",
+      "width": 1440,
+      "stage": 2,
+      "scene": "groups",
+      "clipped": 0
+    },
+    {
+      "slug": "anova",
+      "width": 1440,
+      "stage": 3,
+      "scene": "groups",
+      "clipped": 0
+    },
+    {
+      "slug": "anova",
+      "width": 1440,
+      "stage": 4,
+      "scene": "partition",
+      "clipped": 0
+    },
+    {
+      "slug": "anova",
+      "width": 1440,
+      "stage": 5,
+      "scene": "ratio",
+      "clipped": 0
+    },
+    {
+      "slug": "anova",
+      "width": 1440,
+      "stage": 6,
+      "scene": "partition",
+      "clipped": 0
+    },
+    {
+      "slug": "anova",
+      "width": 1440,
+      "stage": 7,
+      "scene": "ratio",
+      "clipped": 0
+    },
+    {
+      "slug": "anova",
+      "width": 1440,
+      "stage": 8,
+      "scene": "table",
+      "clipped": 0
+    },
+    {
+      "slug": "anova",
+      "width": 1440,
+      "stage": 9,
+      "scene": "ratio",
+      "clipped": 0
+    },
+    {
+      "slug": "anova",
+      "width": 1440,
+      "stage": 10,
+      "scene": "contrasts",
+      "clipped": 0
+    },
+    {
+      "slug": "anova",
+      "width": 1440,
+      "stage": 11,
+      "scene": "interaction",
+      "clipped": 0
+    },
+    {
+      "slug": "anova",
+      "width": 1440,
+      "stage": 12,
+      "scene": "interaction",
+      "clipped": 0
+    },
+    {
+      "slug": "anova",
+      "width": 1440,
+      "stage": 13,
+      "scene": "interaction",
+      "clipped": 0
+    },
+    {
+      "slug": "anova",
+      "width": 1440,
+      "stage": 14,
+      "scene": "partition",
+      "clipped": 0
+    },
+    {
+      "slug": "anova",
+      "width": 1440,
+      "stage": 15,
+      "scene": "table",
+      "clipped": 0
+    },
+    {
+      "slug": "anova",
+      "width": 1440,
+      "stage": 16,
+      "scene": "groups",
+      "clipped": 0
+    },
+    {
+      "slug": "anova",
+      "width": 320,
+      "stage": 1,
+      "scene": "groups",
+      "clipped": 0
+    },
+    {
+      "slug": "anova",
+      "width": 320,
+      "stage": 2,
+      "scene": "groups",
+      "clipped": 0
+    },
+    {
+      "slug": "anova",
+      "width": 320,
+      "stage": 3,
+      "scene": "groups",
+      "clipped": 0
+    },
+    {
+      "slug": "anova",
+      "width": 320,
+      "stage": 4,
+      "scene": "partition",
+      "clipped": 0
+    },
+    {
+      "slug": "anova",
+      "width": 320,
+      "stage": 5,
+      "scene": "ratio",
+      "clipped": 0
+    },
+    {
+      "slug": "anova",
+      "width": 320,
+      "stage": 6,
+      "scene": "partition",
+      "clipped": 0
+    },
+    {
+      "slug": "anova",
+      "width": 320,
+      "stage": 7,
+      "scene": "ratio",
+      "clipped": 0
+    },
+    {
+      "slug": "anova",
+      "width": 320,
+      "stage": 8,
+      "scene": "table",
+      "clipped": 0
+    },
+    {
+      "slug": "anova",
+      "width": 320,
+      "stage": 9,
+      "scene": "ratio",
+      "clipped": 0
+    },
+    {
+      "slug": "anova",
+      "width": 320,
+      "stage": 10,
+      "scene": "contrasts",
+      "clipped": 0
+    },
+    {
+      "slug": "anova",
+      "width": 320,
+      "stage": 11,
+      "scene": "interaction",
+      "clipped": 0
+    },
+    {
+      "slug": "anova",
+      "width": 320,
+      "stage": 12,
+      "scene": "interaction",
+      "clipped": 0
+    },
+    {
+      "slug": "anova",
+      "width": 320,
+      "stage": 13,
+      "scene": "interaction",
+      "clipped": 0
+    },
+    {
+      "slug": "anova",
+      "width": 320,
+      "stage": 14,
+      "scene": "partition",
+      "clipped": 0
+    },
+    {
+      "slug": "anova",
+      "width": 320,
+      "stage": 15,
+      "scene": "table",
+      "clipped": 0
+    },
+    {
+      "slug": "anova",
+      "width": 320,
+      "stage": 16,
+      "scene": "groups",
+      "clipped": 0
+    }
+  ]
+}

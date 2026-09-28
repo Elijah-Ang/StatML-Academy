@@ -1,0 +1,500 @@
+- navigation "StatML Academy navigation":
+  - link "S StatML Academy":
+    - /url: ../index.html
+    - text: S
+    - generic: StatML Academy
+  - generic: Model Selection & Regularization
+  - 'link "Previous module: Bias-Variance Trade-Off & Resampling Methods"':
+    - /url: bias-variance.html
+    - text: ←
+  - generic: module 21/21
+- banner:
+  - generic: Model Evaluation · Selection
+  - heading "Model Selection & Regularization" [level=1]: Model Selection & Regularization
+  - paragraph:
+    - text: A beginner-friendly guide to balancing complexity, solving the
+    - generic: "n"
+    - generic: −
+    - generic: p
+    - math:
+      - generic: "n"
+      - generic: −
+      - generic: p
+    - text: puzzle, and building predictors that actually work in the real world.
+  - generic "Lesson outcomes":
+    - generic: "1"
+    - generic: Compare subset selection and regularisation
+    - generic: "2"
+    - generic: Understand Ridge, Lasso, and tuning λ
+    - generic: "3"
+    - generic: Choose complexity using validation evidence
+  - generic: Scroll to begin
+- generic: Stage 01 · Build
+- heading "The Overfitting Trap" [level=2]: The Overfitting Trap
+- generic: Before you start
+- paragraph: Model selection is part of model fitting. Every candidate comparison must be contained inside the training or cross-validation process.
+- paragraph: Building a predictive model is tricky. It is tempting to include every available piece of data. We often assume that more clues guarantee better answers.
+- paragraph: However, adding too many variables introduces massive noise. This noise obscures the true relationship. The model ends up memorizing random accidents in the training data rather than learning the actual signal.
+- paragraph: "The Illusion of Accuracy: A highly complex model performs flawlessly on its \"homework\" (the training data). But it collapses in the real world on unseen data. This failure is called overfitting."
+- generic: Stage 02 · Understand
+- heading "The n-p Puzzle" [level=2]: The n-p Puzzle
+- paragraph:
+  - text: To build a reliable model, we must balance two things. First is the number of samples (
+  - generic: "n"
+  - math:
+    - generic: "n"
+  - text: ). Second is the number of variables or clues (
+  - generic: p
+  - math:
+    - generic: p
+  - text: ).
+- paragraph: "Think of this in three simple steps:"
+- list:
+  - listitem: "Step 1: You need enough examples to prove a real pattern exists."
+  - listitem: "Step 2: Every new variable adds a whole new dimension for the model to search."
+  - text: "Step 3: When"
+  - generic: p
+  - generic: ">"
+  - generic: "n"
+  - math:
+    - generic: p
+    - generic: ">"
+    - generic: "n"
+  - text: ", ordinary least squares has no unique coefficient solution unless constraints are imposed. Ridge, Lasso, or other regularisation can still support useful prediction, although instability and overfitting are serious concerns."
+- paragraph: At this point, the design matrix is rank deficient. Without additional constraints, many coefficient vectors may fit the training data equally well. This makes coefficient interpretation unstable and creates a high risk of overfitting. Useful prediction may still be possible with appropriate regularisation, feature structure and honest validation.
+- paragraph:
+  - strong: "Keep the ideas separate:"
+  - text: non-unique coefficients concern identifiability; interpolation means matching the observed training outcomes; overfitting is poor generalisation caused by learning sample-specific patterns; predictive performance must be measured on unseen data. Ridge, Lasso and Elastic Net impose different constraints that can produce estimable predictors, but they are not automatic cures.
+- generic: Stage 03 · Understand
+- heading "Picking the Best Team" [level=2]: Picking the Best Team
+- paragraph: One way to fix this is Subset Selection. This means literally picking a specific group of variables and throwing the rest out.
+- paragraph:
+  - generic: Forward
+  - text: Start empty. Add the single best predictor. Then add the next one that helps the most. Keep going.
+- separator
+- paragraph:
+  - generic: Backward
+  - text: Start with all variables. Find the weakest predictor and bench them. Repeat until only the best are left.
+- separator
+- paragraph:
+  - generic: Hybrid
+  - text: Add the best predictors one by one. But constantly re-evaluate. If an old predictor becomes redundant, remove it.
+- heading "Mini-Check" [level=4]
+- paragraph: Why don't we just test every single combination of variables?
+- button "It decreases accuracy."
+- button "It is computationally impossible. Just 40 predictors creates over a billion models."
+- generic: Stage 04 · Evaluate
+- heading "The Scorecards" [level=2]: The Scorecards
+- paragraph: As we add variables, the raw training error always goes down. The model looks better, even if it is just memorizing noise. To find the truly best model, we need scorecards.
+- paragraph: These scorecards punish us for adding unnecessary complexity.
+- generic: C
+- generic: p
+- math:
+  - generic: C
+  - generic: p
+- text: ", AIC, BIC"
+- generic: "Like a golf score: Lower is better. They measure Total Error + Complexity Penalty."
+- text: Adj.
+- generic: R
+- generic: "2"
+- math:
+  - generic: R
+  - generic: "2"
+- text: Higher is better. Adjusts the traditional
+- generic: R
+- generic: "2"
+- math:
+  - generic: R
+  - generic: "2"
+- text: relative to total variation and complexity.
+- generic: C
+- generic: p
+- generic: =
+- generic: "1"
+- generic: "n"
+- generic: (
+- generic: R
+- generic: S
+- generic: S
+- generic: +
+- generic: "2"
+- generic: p
+- generic: ^
+- generic: σ
+- generic: "2"
+- generic: )
+- math:
+  - generic: C
+  - generic: p
+  - generic: =
+  - generic: "1"
+  - generic: "n"
+  - generic: (
+  - generic: R
+  - generic: S
+  - generic: S
+  - generic: +
+  - generic: "2"
+  - generic: p
+  - generic: σ
+  - generic: ^
+  - generic: "2"
+  - generic: )
+- generic: A
+- generic: I
+- generic: C
+- generic: =
+- generic: "2"
+- generic: p
+- generic: "n"
+- generic: −
+- generic: "2"
+- generic: "n"
+- generic: l
+- generic: "n"
+- generic: (
+- generic: L
+- generic: )
+- math:
+  - generic: A
+  - generic: I
+  - generic: C
+  - generic: =
+  - generic: "2"
+  - generic: p
+  - generic: "n"
+  - generic: −
+  - generic: "2"
+  - generic: "n"
+  - generic: ln
+  - generic: ⁡
+  - generic: (
+  - generic: L
+  - generic: )
+- generic: B
+- generic: I
+- generic: C
+- generic: =
+- generic: −
+- generic: "2"
+- generic: l
+- generic: "n"
+- generic: (
+- generic: L
+- generic: )
+- generic: +
+- generic: p
+- generic: l
+- generic: "n"
+- generic: (
+- generic: "n"
+- generic: )
+- math:
+  - generic: B
+  - generic: I
+  - generic: C
+  - generic: =
+  - generic: −
+  - generic: "2"
+  - generic: ln
+  - generic: ⁡
+  - generic: (
+  - generic: L
+  - generic: )
+  - generic: +
+  - generic: p
+  - generic: ln
+  - generic: ⁡
+  - generic: (
+  - generic: "n"
+  - generic: )
+- generic: A
+- generic: d
+- generic: j
+- generic: .
+- generic: R
+- generic: "2"
+- generic: =
+- generic: "1"
+- generic: −
+- generic: R
+- generic: S
+- generic: S
+- generic: /
+- generic: (
+- generic: "n"
+- generic: −
+- generic: p
+- generic: −
+- generic: "1"
+- generic: )
+- generic: T
+- generic: S
+- generic: S
+- generic: /
+- generic: (
+- generic: "n"
+- generic: −
+- generic: "1"
+- generic: )
+- math:
+  - generic: Adj.
+  - generic: R
+  - generic: "2"
+  - generic: =
+  - generic: "1"
+  - generic: −
+  - generic: R
+  - generic: S
+  - generic: S
+  - generic: /
+  - generic: (
+  - generic: "n"
+  - generic: −
+  - generic: p
+  - generic: −
+  - generic: "1"
+  - generic: )
+  - generic: T
+  - generic: S
+  - generic: S
+  - generic: /
+  - generic: (
+  - generic: "n"
+  - generic: −
+  - generic: "1"
+  - generic: )
+- generic "Plain English Breakdown"
+- text: C p R S S − 2 l n ( L ) p l n ( n ) R 2
+- generic: Stage 05 · Understand
+- heading "The Shrinking Trick" [level=2]: The Shrinking Trick
+- paragraph: Subset selection is an "all-or-nothing" approach. A variable is either in or out. But what if we just made a weak variable's influence smaller?
+- paragraph:
+  - text: This is called Regularization. Imagine a soundboard where each slider controls a variable. Regularization turns down the volume on loud, messy variables. It shrinks their coefficients (
+  - generic: β
+  - math:
+    - generic: β
+  - text: ) toward zero using a tuning dial called
+  - generic: λ
+  - math:
+    - generic: λ
+  - text: (Lambda).
+- paragraph: "Crucial Step: Variables should be centered first, and usually standardized when their scales differ, to create a level playing field. Otherwise, a variable measured in huge numbers (like dollars) would face unfair shrinkage compared to a variable measured in small numbers (like years)."
+- heading "Mini-Check" [level=4]
+- paragraph: What is the main goal of Regularization?
+- button "To delete all the variables and start over."
+- button "To turn down the volume (shrink the coefficients) of noisy or less useful variables."
+- generic: Stage 06 · Build
+- heading "Ridge Regression (L2)" [level=2]: Ridge Regression (L2)
+- paragraph: Ridge regression acts like a "Gentle Parent." It looks at the noisy variables and says, "Everybody calm down a little."
+- text: "Minimize:"
+- generic: R
+- generic: S
+- generic: S
+- generic: +
+- generic: λ
+- generic: ∑
+- generic: β
+- generic: "2"
+- generic: j
+- math:
+  - generic: R
+  - generic: S
+  - generic: S
+  - generic: +
+  - generic: λ
+  - generic: ∑
+  - generic: β
+  - generic: j
+  - generic: "2"
+- generic "Plain English Breakdown"
+- text: R S S λ ∑ β 2 j
+- paragraph:
+  - text: "Watch this: Slide the"
+  - generic: λ
+  - math:
+    - generic: λ
+  - text: dial below. Notice how the colorful bars shrink together, but none of them vanish completely.
+- text: Ridge Penalty (
+- generic: λ
+- math:
+  - generic: λ
+- text: )
+- generic: "0"
+- slider "Interactive parameter 1": "0"
+- strong: "λ = 0:"
+- text: No penalty applied (Standard OLS).
+- generic: Stage 07 · Build
+- heading "Lasso Regression (L1)" [level=2]: Lasso Regression (L1)
+- paragraph: Lasso regression is the "Strict Parent." It looks at the variables and says, "Some of you are helping. Some of you are just standing here. Leave."
+- text: "Minimize:"
+- generic: R
+- generic: S
+- generic: S
+- generic: +
+- generic: λ
+- generic: ∑
+- generic: "|"
+- generic: β
+- generic: j
+- generic: "|"
+- math:
+  - generic: R
+  - generic: S
+  - generic: S
+  - generic: +
+  - generic: λ
+  - generic: ∑
+  - generic: "|"
+  - generic: β
+  - generic: j
+  - generic: "|"
+- generic "Plain English Breakdown"
+- text: ∑ | β j |
+- paragraph:
+  - text: "Watch this: Slide the"
+  - generic: λ
+  - math:
+    - generic: λ
+  - text: dial and observe coefficients reach zero. In real samples we do not know which variables are truly useless. With highly correlated predictors, Lasso may select one, discard another, and swap that choice after a small sample change.
+- paragraph:
+  - strong: Sparse does not mean causal or uniquely important.
+  - text: Lasso supports prediction and variable selection, but selection stability must be checked across resamples. Elastic Net combines L1 and L2 penalties and can behave more stably when predictors share signal.
+- text: Lasso Penalty (
+- generic: λ
+- math:
+  - generic: λ
+- text: )
+- generic: "0"
+- slider "Interactive parameter 2": "0"
+- strong: "λ = 0:"
+- text: No penalty applied (Standard OLS).
+- generic: Stage 08 · Understand
+- heading "Finding the Sweet Spot" [level=2]: Finding the Sweet Spot
+- paragraph:
+  - text: How do we know the right amount of shrinkage? We use K-Fold Cross-Validation to find the optimal
+  - generic: λ
+  - math:
+    - generic: λ
+  - text: dial setting.
+- paragraph:
+  - strong: Choose CV from the data structure.
+  - text: Use stratified folds for imbalanced classes, grouped folds for repeated subjects or organisations, time-series CV for ordered observations, repeated CV for stability, and nested CV when model selection and unbiased evaluation must both occur. Imputation, scaling, encoding, feature selection, PCA, outlier rules, oversampling and threshold tuning all belong inside the training folds.
+- paragraph: First, we divide our training data into chunks called "folds".
+- generic: Train
+- generic: Train
+- generic: Train
+- generic: Train
+- generic: Validate
+- paragraph: We train the model on four folds. We then validate it on the one held-out fold (highlighted above). We repeat this process, rotating which fold is held out, until every fold has been tested. Finally, we average the errors.
+- paragraph: Why average them? Averaging prevents a "lucky split." It stops us from accidentally choosing a model that just happened to get easy data during validation.
+- text: Sweep
+- generic: λ
+- math:
+  - generic: λ
+- text: to find Minimum Error
+- generic: "0"
+- slider "Interactive parameter 3": "0"
+- text: "Current λ:"
+- strong: "0"
+- text: "| CV Error:"
+- strong: ...
+- text: "| Too low! (Overfitting)"
+- generic: Stage 09 · Understand
+- heading "The \"Super-Variable\" Secret" [level=2]: The "Super-Variable" Secret
+- paragraph: If we have 100 highly correlated variables, they provide redundant information. Dimension Reduction allows us to "squish" them into a few super-variables called Principal Components.
+- heading "PCR" [level=3]
+- paragraph: Compress first, predict later. It squishes variables together without looking at what you are trying to predict.
+- heading "PLS" [level=3]
+- paragraph: Compress while paying attention. It squishes variables together by finding directions that best explain the target you want to predict.
+- paragraph: Think of PCR as combining 100 photos of a dog into a single "Super-Photo" of the whole dog. PLS knows you are trying to predict happiness, so it squishes the photos specifically to highlight the wagging tail.
+- generic: Stage 10 · Understand
+- heading "Decision Helper" [level=2]: Decision Helper
+- paragraph: "Select your goals to see which tool fits best (you can select multiple):"
+- button "I need to explain \"Why\""
+- button "I want fewer variables"
+- button "I only care about pure accuracy"
+- button "I have highly correlated variables"
+- paragraph:
+  - text: "Best match: Lasso & Best Subset Selection"
+  - generic: You prioritize explaining 'why' and keeping models simple.
+- generic: Recommended
+- heading "Lasso & Best Subset Selection" [level=3]
+- paragraph: Best for Interpretability & Simplicity. These methods drop variables entirely, leaving a clean, short list of the most important drivers. Essential in healthcare or finance where explaining the "why" matters.
+- heading "Ridge & PCR" [level=3]
+- paragraph: Best for Pure Prediction & Correlated Data. When you have many overlapping clues and prediction accuracy matters more than a simple explanation, keeping all variables with smaller, stable weights helps minimize error on new data.
+- generic: Stage 11 · Reflect
+- heading "Common Mistakes" [level=2]: Common Mistakes
+- paragraph: Even advanced statistical methods are not magic. Here is how to avoid common traps.
+- paragraph: Mistake 1
+- paragraph: Choosing a model based on training accuracy.
+- paragraph: Correct Practice
+- paragraph: Always compare and judge models based on cross-validation error. Training accuracy is always overly optimistic.
+- paragraph: Mistake 2
+- paragraph: Testing on the final test set multiple times.
+- paragraph: Correct Practice
+- paragraph: Lock the final test set in a vault. Use it only once at the very end to check your final model. If you use it to tweak parameters, it is no longer an honest test.
+- generic: Complete the picture
+- heading "Prefer the simplest near-best model" [level=3]
+- paragraph:
+  - text: Validation scores contain noise. The
+  - strong: one-standard-error rule
+  - text: chooses the simplest model whose performance is within one standard error of the best observed score.
+- paragraph: When comparing many pipelines, use nested cross-validation or a final untouched test set. Otherwise the “best” model may simply be the one that benefited most from repeated checking.
+- generic: Stage 12 · Reflect
+- heading "Final Synthesis" [level=2]: Final Synthesis
+- paragraph: We do not want a model that is too simple (underfitting). We do not want a model that is too dramatic (overfitting).
+- paragraph: By using Cross-Validation, we compare and validate models fairly. By applying Regularization or Subset Selection, we penalize messiness and force the model to focus only on what matters.
+- paragraph: The ultimate goal is Generalization. We want to build a model that stays trustworthy and useful when reality shows up and starts ruining everyone's assumptions.
+- heading "Final Check" [level=4]
+- paragraph: What is the ultimate goal of model selection and regularization?
+- button "To achieve 0% error on the training data."
+- 'button "Generalization: performing well on unseen real-world data."'
+- generic: Key takeaways
+- list:
+  - listitem: Regularisation controls variance by shrinking coefficients.
+  - listitem: Ridge keeps all predictors; Lasso can set some coefficients to zero.
+  - listitem: Tune the full modelling pipeline and favour stable, defensible complexity.
+- region "Practical method checklist":
+  - paragraph: Practical method checklist
+  - heading "Before you finish" [level=3]
+  - heading "Assumptions" [level=4]
+  - paragraph: Candidate models and resampling scheme match the data structure.
+  - heading "When the method fails" [level=4]
+  - paragraph: Repeated comparison, unstable selection, rank deficiency, and correlated predictors.
+  - heading "Validation and leakage" [level=4]
+  - paragraph: Use nested CV or a final untouched test for unbiased evaluation.
+  - heading "Interpretation cautions" [level=4]
+  - paragraph: Lasso selection is neither uniquely important nor causal.
+  - heading "What to report" [level=4]
+  - paragraph: Candidate set, full pipeline, selection rule, uncertainty, stability, and final performance.
+- region "Model Selection & Regularization interactive visualisation":
+  - generic: Loading...
+- contentinfo:
+  - link "All modules":
+    - /url: ../index.html
+- navigation "Lesson stages":
+  - 'button "Go to stage 1: The Overfitting Trap"':
+    - generic: 01 · The Overfitting Trap
+  - 'button "Go to stage 2: The n-p Puzzle"':
+    - generic: 02 · The n-p Puzzle
+  - 'button "Go to stage 3: Picking the Best Team"':
+    - generic: 03 · Picking the Best Team
+  - 'button "Go to stage 4: The Scorecards"':
+    - generic: 04 · The Scorecards
+  - 'button "Go to stage 5: The Shrinking Trick"':
+    - generic: 05 · The Shrinking Trick
+  - 'button "Go to stage 6: Ridge Regression (L2)"':
+    - generic: 06 · Ridge Regression (L2)
+  - 'button "Go to stage 7: Lasso Regression (L1)"':
+    - generic: 07 · Lasso Regression (L1)
+  - 'button "Go to stage 8: Finding the Sweet Spot"':
+    - generic: 08 · Finding the Sweet Spot
+  - 'button "Go to stage 9: The \"Super-Variable\" Secret"':
+    - generic: 09 · The "Super-Variable" Secret
+  - 'button "Go to stage 10: Decision Helper"':
+    - generic: 10 · Decision Helper
+  - 'button "Go to stage 11: Common Mistakes"':
+    - generic: 11 · Common Mistakes
+  - 'button "Go to stage 12: Final Synthesis"':
+    - generic: 12 · Final Synthesis

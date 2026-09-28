@@ -86,6 +86,7 @@ try {
                       (b) => b.getAttribute("aria-current") === "step",
                     ) === index
                   );
+                if (window.__notebook) return window.__notebook.stage === index;
                 if (window.__deepSketch)
                   return window.__deepSketch.board.index === index;
                 if (window.__bayesSketch)
@@ -128,6 +129,7 @@ try {
                 active: document.querySelector(
                   ".statml-stage.is-active,.statml-stage.active,.stage.active,.chapter.is-active",
                 )?.id,
+                notebook: window.__notebook?.stage,
                 deep: window.__deepSketch?.board.index,
                 bayes: window.__bayesSketch?.board.index,
               };
@@ -150,6 +152,7 @@ try {
               `${file} ${width} stage ${i + 1}: wrong active navigation (${s.rail})`,
             );
           if (
+            (s.notebook != null && s.notebook !== i) ||
             (s.deep != null && s.deep !== i) ||
             (s.bayes != null && s.bayes !== i)
           )

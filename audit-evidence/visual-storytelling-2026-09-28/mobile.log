@@ -1,0 +1,171 @@
+
+> test:mobile
+> node scripts/test-mobile-browser.mjs && node scripts/test-mobile-navigation.mjs
+
+430 anova.html 16 []
+320 anova.html 16 []
+360 anova.html 16 []
+390 anova.html 16 []
+430 bias-variance.html 12 []
+360 bias-variance.html 12 []
+320 bias-variance.html 12 []
+390 bias-variance.html 12 []
+360 chi-square.html 7 []
+430 chi-square.html 7 []
+320 chi-square.html 7 []
+390 chi-square.html 7 []
+320 classification-trees.html 15 []
+360 classification-trees.html 15 []
+430 classification-trees.html 15 []
+390 classification-trees.html 15 []
+430 confidence-hypothesis-testing.html 9 []
+320 confidence-hypothesis-testing.html 9 []
+360 confidence-hypothesis-testing.html 9 []
+390 confidence-hypothesis-testing.html 9 []
+430 correlation.html 10 []
+320 correlation.html 10 []
+360 correlation.html 10 []
+390 correlation.html 10 []
+320 data-leakage-pipelines.html 9 []
+430 data-leakage-pipelines.html 9 []
+360 data-leakage-pipelines.html 9 []
+390 data-leakage-pipelines.html 9 []
+430 deep-learning.html 12 []
+360 deep-learning.html 12 []
+320 deep-learning.html 12 []
+390 deep-learning.html 12 []
+360 evaluation-metrics.html 9 []
+430 evaluation-metrics.html 9 []
+320 evaluation-metrics.html 9 []
+390 evaluation-metrics.html 9 []
+360 experimental-design.html 9 []
+320 experimental-design.html 9 []
+430 experimental-design.html 9 []
+390 experimental-design.html 9 []
+430 gradient-boosting.html 9 []
+390 gradient-boosting.html 9 []
+320 gradient-boosting.html 9 []
+360 gradient-boosting.html 9 []
+430 hierarchical-clustering.html 9 []
+390 hierarchical-clustering.html 9 []
+320 hierarchical-clustering.html 9 []
+360 hierarchical-clustering.html 9 []
+430 imbalanced-classification.html 9 []
+390 imbalanced-classification.html 9 []
+320 imbalanced-classification.html 9 []
+360 imbalanced-classification.html 9 []
+430 kmeans.html 9 []
+390 kmeans.html 9 []
+360 kmeans.html 9 []
+320 kmeans.html 9 []
+430 knn.html 14 []
+390 knn.html 14 []
+360 knn.html 14 []
+320 knn.html 14 []
+430 lda.html 15 []
+390 lda.html 15 []
+360 lda.html 15 []
+320 lda.html 15 []
+430 logistic-regression.html 10 []
+390 logistic-regression.html 10 []
+320 logistic-regression.html 10 []
+360 logistic-regression.html 10 []
+430 missing-data-encoding.html 9 []
+390 missing-data-encoding.html 9 []
+320 missing-data-encoding.html 9 []
+360 missing-data-encoding.html 9 []
+430 model-selection.html 12 []
+390 model-selection.html 12 []
+360 model-selection.html 12 []
+320 model-selection.html 12 []
+430 multiple-linear-regression.html 9 []
+390 multiple-linear-regression.html 9 []
+360 multiple-linear-regression.html 9 []
+320 multiple-linear-regression.html 9 []
+430 naive-bayes.html 12 []
+390 naive-bayes.html 12 []
+320 naive-bayes.html 12 []
+360 naive-bayes.html 12 []
+430 neural-networks.html 19 []
+390 neural-networks.html 19 []
+320 neural-networks.html 19 []
+360 neural-networks.html 19 []
+430 one-r.html 12 []
+390 one-r.html 12 []
+360 one-r.html 12 []
+320 one-r.html 12 []
+430 pca.html 10 []
+390 pca.html 10 []
+360 pca.html 10 []
+320 pca.html 10 []
+430 polynomial-regression.html 8 []
+390 polynomial-regression.html 8 []
+320 polynomial-regression.html 8 []
+360 polynomial-regression.html 8 []
+430 probability-sampling.html 9 []
+390 probability-sampling.html 9 []
+320 probability-sampling.html 9 []
+360 probability-sampling.html 9 []
+430 qda.html 10 []
+390 qda.html 10 []
+360 qda.html 10 []
+320 qda.html 10 []
+430 random-forest.html 9 []
+390 random-forest.html 9 []
+360 random-forest.html 9 []
+320 random-forest.html 9 []
+430 regression-diagnostics.html 9 []
+390 regression-diagnostics.html 9 []
+360 regression-diagnostics.html 9 []
+320 regression-diagnostics.html 9 []
+430 regression-trees.html 16 []
+390 regression-trees.html 16 []
+320 regression-trees.html 16 []
+360 regression-trees.html 16 []
+430 simple-linear-regression.html 8 []
+390 simple-linear-regression.html 8 []
+320 simple-linear-regression.html 8 []
+360 simple-linear-regression.html 8 []
+430 support-vector-machine.html 14 []
+390 support-vector-machine.html 14 []
+320 support-vector-machine.html 14 []
+360 support-vector-machine.html 14 []
+430 time-series-analysis.html 10 []
+390 time-series-analysis.html 10 []
+360 time-series-analysis.html 10 []
+320 time-series-analysis.html 10 []
+Mobile checks passed: 132 module/viewport combinations, 1436 section visits, including reverse scrolling.
+Rotation checked anova.html
+Rotation checked bias-variance.html
+Rotation checked chi-square.html
+Rotation checked classification-trees.html
+Rotation checked confidence-hypothesis-testing.html
+Rotation checked correlation.html
+Rotation checked data-leakage-pipelines.html
+Rotation checked deep-learning.html
+Rotation checked evaluation-metrics.html
+Rotation checked experimental-design.html
+Rotation checked gradient-boosting.html
+Rotation checked hierarchical-clustering.html
+Rotation checked imbalanced-classification.html
+Rotation checked kmeans.html
+Rotation checked knn.html
+Rotation checked lda.html
+Rotation checked logistic-regression.html
+Rotation checked missing-data-encoding.html
+Rotation checked model-selection.html
+Rotation checked multiple-linear-regression.html
+Rotation checked naive-bayes.html
+Rotation checked neural-networks.html
+Rotation checked one-r.html
+Rotation checked pca.html
+Rotation checked polynomial-regression.html
+Rotation checked probability-sampling.html
+Rotation checked qda.html
+Rotation checked random-forest.html
+Rotation checked regression-diagnostics.html
+Rotation checked regression-trees.html
+Rotation checked simple-linear-regression.html
+Rotation checked support-vector-machine.html
+Rotation checked time-series-analysis.html
+Mobile constellation, all module links, menu navigation, and all 33 lesson rotations passed.

@@ -1,0 +1,578 @@
+{
+  "checks": 81,
+  "widths": [
+    1440,
+    430,
+    320
+  ],
+  "errors": [],
+  "stages": [
+    {
+      "slug": "data-leakage-pipelines",
+      "width": 1440,
+      "stage": 1,
+      "scene": "timing",
+      "clipped": 0
+    },
+    {
+      "slug": "data-leakage-pipelines",
+      "width": 1440,
+      "stage": 2,
+      "scene": "pipeline",
+      "clipped": 0
+    },
+    {
+      "slug": "data-leakage-pipelines",
+      "width": 1440,
+      "stage": 3,
+      "scene": "means",
+      "clipped": 0
+    },
+    {
+      "slug": "data-leakage-pipelines",
+      "width": 1440,
+      "stage": 4,
+      "scene": "leakage",
+      "clipped": 0
+    },
+    {
+      "slug": "data-leakage-pipelines",
+      "width": 1440,
+      "stage": 5,
+      "scene": "pipeline",
+      "clipped": 0
+    },
+    {
+      "slug": "data-leakage-pipelines",
+      "width": 1440,
+      "stage": 6,
+      "scene": "timing",
+      "clipped": 0
+    },
+    {
+      "slug": "data-leakage-pipelines",
+      "width": 1440,
+      "stage": 7,
+      "scene": "nested",
+      "clipped": 0
+    },
+    {
+      "slug": "data-leakage-pipelines",
+      "width": 1440,
+      "stage": 8,
+      "scene": "report",
+      "clipped": 0
+    },
+    {
+      "slug": "data-leakage-pipelines",
+      "width": 1440,
+      "stage": 9,
+      "scene": "leakage",
+      "clipped": 0
+    },
+    {
+      "slug": "missing-data-encoding",
+      "width": 1440,
+      "stage": 1,
+      "scene": "missing",
+      "clipped": 0
+    },
+    {
+      "slug": "missing-data-encoding",
+      "width": 1440,
+      "stage": 2,
+      "scene": "encoding",
+      "clipped": 0
+    },
+    {
+      "slug": "missing-data-encoding",
+      "width": 1440,
+      "stage": 3,
+      "scene": "means",
+      "clipped": 0
+    },
+    {
+      "slug": "missing-data-encoding",
+      "width": 1440,
+      "stage": 4,
+      "scene": "mechanism",
+      "clipped": 0
+    },
+    {
+      "slug": "missing-data-encoding",
+      "width": 1440,
+      "stage": 5,
+      "scene": "missing",
+      "clipped": 0
+    },
+    {
+      "slug": "missing-data-encoding",
+      "width": 1440,
+      "stage": 6,
+      "scene": "encoding",
+      "clipped": 0
+    },
+    {
+      "slug": "missing-data-encoding",
+      "width": 1440,
+      "stage": 7,
+      "scene": "pipeline",
+      "clipped": 0
+    },
+    {
+      "slug": "missing-data-encoding",
+      "width": 1440,
+      "stage": 8,
+      "scene": "report",
+      "clipped": 0
+    },
+    {
+      "slug": "missing-data-encoding",
+      "width": 1440,
+      "stage": 9,
+      "scene": "encoding",
+      "clipped": 0
+    },
+    {
+      "slug": "experimental-design",
+      "width": 1440,
+      "stage": 1,
+      "scene": "estimand",
+      "clipped": 0
+    },
+    {
+      "slug": "experimental-design",
+      "width": 1440,
+      "stage": 2,
+      "scene": "assignment",
+      "clipped": 0
+    },
+    {
+      "slug": "experimental-design",
+      "width": 1440,
+      "stage": 3,
+      "scene": "clusters",
+      "clipped": 0
+    },
+    {
+      "slug": "experimental-design",
+      "width": 1440,
+      "stage": 4,
+      "scene": "protocol",
+      "clipped": 0
+    },
+    {
+      "slug": "experimental-design",
+      "width": 1440,
+      "stage": 5,
+      "scene": "design-effect",
+      "clipped": 0
+    },
+    {
+      "slug": "experimental-design",
+      "width": 1440,
+      "stage": 6,
+      "scene": "threats",
+      "clipped": 0
+    },
+    {
+      "slug": "experimental-design",
+      "width": 1440,
+      "stage": 7,
+      "scene": "protocol",
+      "clipped": 0
+    },
+    {
+      "slug": "experimental-design",
+      "width": 1440,
+      "stage": 8,
+      "scene": "report",
+      "clipped": 0
+    },
+    {
+      "slug": "experimental-design",
+      "width": 1440,
+      "stage": 9,
+      "scene": "clusters",
+      "clipped": 0
+    },
+    {
+      "slug": "data-leakage-pipelines",
+      "width": 430,
+      "stage": 1,
+      "scene": "timing",
+      "clipped": 0
+    },
+    {
+      "slug": "data-leakage-pipelines",
+      "width": 430,
+      "stage": 2,
+      "scene": "pipeline",
+      "clipped": 0
+    },
+    {
+      "slug": "data-leakage-pipelines",
+      "width": 430,
+      "stage": 3,
+      "scene": "means",
+      "clipped": 0
+    },
+    {
+      "slug": "data-leakage-pipelines",
+      "width": 430,
+      "stage": 4,
+      "scene": "leakage",
+      "clipped": 0
+    },
+    {
+      "slug": "data-leakage-pipelines",
+      "width": 430,
+      "stage": 5,
+      "scene": "pipeline",
+      "clipped": 0
+    },
+    {
+      "slug": "data-leakage-pipelines",
+      "width": 430,
+      "stage": 6,
+      "scene": "timing",
+      "clipped": 0
+    },
+    {
+      "slug": "data-leakage-pipelines",
+      "width": 430,
+      "stage": 7,
+      "scene": "nested",
+      "clipped": 0
+    },
+    {
+      "slug": "data-leakage-pipelines",
+      "width": 430,
+      "stage": 8,
+      "scene": "report",
+      "clipped": 0
+    },
+    {
+      "slug": "data-leakage-pipelines",
+      "width": 430,
+      "stage": 9,
+      "scene": "leakage",
+      "clipped": 0
+    },
+    {
+      "slug": "missing-data-encoding",
+      "width": 430,
+      "stage": 1,
+      "scene": "missing",
+      "clipped": 0
+    },
+    {
+      "slug": "missing-data-encoding",
+      "width": 430,
+      "stage": 2,
+      "scene": "encoding",
+      "clipped": 0
+    },
+    {
+      "slug": "missing-data-encoding",
+      "width": 430,
+      "stage": 3,
+      "scene": "means",
+      "clipped": 0
+    },
+    {
+      "slug": "missing-data-encoding",
+      "width": 430,
+      "stage": 4,
+      "scene": "mechanism",
+      "clipped": 0
+    },
+    {
+      "slug": "missing-data-encoding",
+      "width": 430,
+      "stage": 5,
+      "scene": "missing",
+      "clipped": 0
+    },
+    {
+      "slug": "missing-data-encoding",
+      "width": 430,
+      "stage": 6,
+      "scene": "encoding",
+      "clipped": 0
+    },
+    {
+      "slug": "missing-data-encoding",
+      "width": 430,
+      "stage": 7,
+      "scene": "pipeline",
+      "clipped": 0
+    },
+    {
+      "slug": "missing-data-encoding",
+      "width": 430,
+      "stage": 8,
+      "scene": "report",
+      "clipped": 0
+    },
+    {
+      "slug": "missing-data-encoding",
+      "width": 430,
+      "stage": 9,
+      "scene": "encoding",
+      "clipped": 0
+    },
+    {
+      "slug": "experimental-design",
+      "width": 430,
+      "stage": 1,
+      "scene": "estimand",
+      "clipped": 0
+    },
+    {
+      "slug": "experimental-design",
+      "width": 430,
+      "stage": 2,
+      "scene": "assignment",
+      "clipped": 0
+    },
+    {
+      "slug": "experimental-design",
+      "width": 430,
+      "stage": 3,
+      "scene": "clusters",
+      "clipped": 0
+    },
+    {
+      "slug": "experimental-design",
+      "width": 430,
+      "stage": 4,
+      "scene": "protocol",
+      "clipped": 0
+    },
+    {
+      "slug": "experimental-design",
+      "width": 430,
+      "stage": 5,
+      "scene": "design-effect",
+      "clipped": 0
+    },
+    {
+      "slug": "experimental-design",
+      "width": 430,
+      "stage": 6,
+      "scene": "threats",
+      "clipped": 0
+    },
+    {
+      "slug": "experimental-design",
+      "width": 430,
+      "stage": 7,
+      "scene": "protocol",
+      "clipped": 0
+    },
+    {
+      "slug": "experimental-design",
+      "width": 430,
+      "stage": 8,
+      "scene": "report",
+      "clipped": 0
+    },
+    {
+      "slug": "experimental-design",
+      "width": 430,
+      "stage": 9,
+      "scene": "clusters",
+      "clipped": 0
+    },
+    {
+      "slug": "data-leakage-pipelines",
+      "width": 320,
+      "stage": 1,
+      "scene": "timing",
+      "clipped": 0
+    },
+    {
+      "slug": "data-leakage-pipelines",
+      "width": 320,
+      "stage": 2,
+      "scene": "pipeline",
+      "clipped": 0
+    },
+    {
+      "slug": "data-leakage-pipelines",
+      "width": 320,
+      "stage": 3,
+      "scene": "means",
+      "clipped": 0
+    },
+    {
+      "slug": "data-leakage-pipelines",
+      "width": 320,
+      "stage": 4,
+      "scene": "leakage",
+      "clipped": 0
+    },
+    {
+      "slug": "data-leakage-pipelines",
+      "width": 320,
+      "stage": 5,
+      "scene": "pipeline",
+      "clipped": 0
+    },
+    {
+      "slug": "data-leakage-pipelines",
+      "width": 320,
+      "stage": 6,
+      "scene": "timing",
+      "clipped": 0
+    },
+    {
+      "slug": "data-leakage-pipelines",
+      "width": 320,
+      "stage": 7,
+      "scene": "nested",
+      "clipped": 0
+    },
+    {
+      "slug": "data-leakage-pipelines",
+      "width": 320,
+      "stage": 8,
+      "scene": "report",
+      "clipped": 0
+    },
+    {
+      "slug": "data-leakage-pipelines",
+      "width": 320,
+      "stage": 9,
+      "scene": "leakage",
+      "clipped": 0
+    },
+    {
+      "slug": "missing-data-encoding",
+      "width": 320,
+      "stage": 1,
+      "scene": "missing",
+      "clipped": 0
+    },
+    {
+      "slug": "missing-data-encoding",
+      "width": 320,
+      "stage": 2,
+      "scene": "encoding",
+      "clipped": 0
+    },
+    {
+      "slug": "missing-data-encoding",
+      "width": 320,
+      "stage": 3,
+      "scene": "means",
+      "clipped": 0
+    },
+    {
+      "slug": "missing-data-encoding",
+      "width": 320,
+      "stage": 4,
+      "scene": "mechanism",
+      "clipped": 0
+    },
+    {
+      "slug": "missing-data-encoding",
+      "width": 320,
+      "stage": 5,
+      "scene": "missing",
+      "clipped": 0
+    },
+    {
+      "slug": "missing-data-encoding",
+      "width": 320,
+      "stage": 6,
+      "scene": "encoding",
+      "clipped": 0
+    },
+    {
+      "slug": "missing-data-encoding",
+      "width": 320,
+      "stage": 7,
+      "scene": "pipeline",
+      "clipped": 0
+    },
+    {
+      "slug": "missing-data-encoding",
+      "width": 320,
+      "stage": 8,
+      "scene": "report",
+      "clipped": 0
+    },
+    {
+      "slug": "missing-data-encoding",
+      "width": 320,
+      "stage": 9,
+      "scene": "encoding",
+      "clipped": 0
+    },
+    {
+      "slug": "experimental-design",
+      "width": 320,
+      "stage": 1,
+      "scene": "estimand",
+      "clipped": 0
+    },
+    {
+      "slug": "experimental-design",
+      "width": 320,
+      "stage": 2,
+      "scene": "assignment",
+      "clipped": 0
+    },
+    {
+      "slug": "experimental-design",
+      "width": 320,
+      "stage": 3,
+      "scene": "clusters",
+      "clipped": 0
+    },
+    {
+      "slug": "experimental-design",
+      "width": 320,
+      "stage": 4,
+      "scene": "protocol",
+      "clipped": 0
+    },
+    {
+      "slug": "experimental-design",
+      "width": 320,
+      "stage": 5,
+      "scene": "design-effect",
+      "clipped": 0
+    },
+    {
+      "slug": "experimental-design",
+      "width": 320,
+      "stage": 6,
+      "scene": "threats",
+      "clipped": 0
+    },
+    {
+      "slug": "experimental-design",
+      "width": 320,
+      "stage": 7,
+      "scene": "protocol",
+      "clipped": 0
+    },
+    {
+      "slug": "experimental-design",
+      "width": 320,
+      "stage": 8,
+      "scene": "report",
+      "clipped": 0
+    },
+    {
+      "slug": "experimental-design",
+      "width": 320,
+      "stage": 9,
+      "scene": "clusters",
+      "clipped": 0
+    }
+  ]
+}

@@ -1,0 +1,508 @@
+{
+  "classification-trees": {
+    "8765": {
+      "body": 23791.421875,
+      "scrollHeight": 23791,
+      "scrollWidth": 390,
+      "selector": "section[data-stage]",
+      "stages": [
+        {
+          "height": 844,
+          "stage": "0",
+          "top": 0
+        },
+        {
+          "height": 2028.796875,
+          "stage": "1",
+          "top": 1266
+        },
+        {
+          "height": 1244.9375,
+          "stage": "2",
+          "top": 3294.796875
+        },
+        {
+          "height": 629.90625,
+          "stage": "3",
+          "top": 4539.734375
+        },
+        {
+          "height": 1991.265625,
+          "stage": "4",
+          "top": 5169.640625
+        },
+        {
+          "height": 1176.859375,
+          "stage": "5",
+          "top": 7160.90625
+        },
+        {
+          "height": 1767.546875,
+          "stage": "6",
+          "top": 8337.765625
+        },
+        {
+          "height": 1553.90625,
+          "stage": "7",
+          "top": 10105.3125
+        },
+        {
+          "height": 1059.296875,
+          "stage": "8",
+          "top": 11659.21875
+        },
+        {
+          "height": 1569.375,
+          "stage": "9",
+          "top": 12718.515625
+        },
+        {
+          "height": 1126.046875,
+          "stage": "10",
+          "top": 14287.890625
+        },
+        {
+          "height": 1580.828125,
+          "stage": "11",
+          "top": 15413.9375
+        },
+        {
+          "height": 1547,
+          "stage": "12",
+          "top": 16994.765625
+        },
+        {
+          "height": 485.515625,
+          "stage": "13",
+          "top": 18541.765625
+        },
+        {
+          "height": 537.765625,
+          "stage": "14",
+          "top": 19027.28125
+        },
+        {
+          "height": 4062.90625,
+          "stage": "15",
+          "top": 19565.046875
+        }
+      ],
+      "url": "http://127.0.0.1:8765/modules/classification-trees.html?crossreview-final-mobile=1787747684173",
+      "viewport": {
+        "clientHeight": 844,
+        "clientWidth": 390,
+        "innerHeight": 844,
+        "innerWidth": 390
+      }
+    },
+    "8766": {
+      "body": 23782.828125,
+      "scrollHeight": 23783,
+      "scrollWidth": 566,
+      "selector": "section[data-stage]",
+      "stages": [
+        {
+          "height": 844,
+          "stage": "0",
+          "top": 0
+        },
+        {
+          "height": 2028.796875,
+          "stage": "1",
+          "top": 1266
+        },
+        {
+          "height": 1244.9375,
+          "stage": "2",
+          "top": 3294.796875
+        },
+        {
+          "height": 629.921875,
+          "stage": "3",
+          "top": 4539.734375
+        },
+        {
+          "height": 1991.265625,
+          "stage": "4",
+          "top": 5169.65625
+        },
+        {
+          "height": 1176.859375,
+          "stage": "5",
+          "top": 7160.921875
+        },
+        {
+          "height": 1767.546875,
+          "stage": "6",
+          "top": 8337.78125
+        },
+        {
+          "height": 1553.921875,
+          "stage": "7",
+          "top": 10105.328125
+        },
+        {
+          "height": 1059.3125,
+          "stage": "8",
+          "top": 11659.25
+        },
+        {
+          "height": 1569.390625,
+          "stage": "9",
+          "top": 12718.5625
+        },
+        {
+          "height": 1126.0625,
+          "stage": "10",
+          "top": 14287.953125
+        },
+        {
+          "height": 1572.125,
+          "stage": "11",
+          "top": 15414.015625
+        },
+        {
+          "height": 1547,
+          "stage": "12",
+          "top": 16986.140625
+        },
+        {
+          "height": 485.53125,
+          "stage": "13",
+          "top": 18533.140625
+        },
+        {
+          "height": 537.765625,
+          "stage": "14",
+          "top": 19018.671875
+        },
+        {
+          "height": 4062.921875,
+          "stage": "15",
+          "top": 19556.4375
+        }
+      ],
+      "url": "http://127.0.0.1:8766/modules/classification-trees.html?crossreview-final-mobile=1787747682254",
+      "viewport": {
+        "clientHeight": 844,
+        "clientWidth": 390,
+        "innerHeight": 844,
+        "innerWidth": 390
+      }
+    }
+  },
+  "hierarchical-clustering": {
+    "8765": {
+      "body": 12100.96875,
+      "scrollHeight": 12101,
+      "scrollWidth": 390,
+      "selector": "section[data-stage]",
+      "stages": [
+        {
+          "height": 1093.375,
+          "stage": "1",
+          "top": 1266
+        },
+        {
+          "height": 861.65625,
+          "stage": "2",
+          "top": 2359.375
+        },
+        {
+          "height": 673.765625,
+          "stage": "3",
+          "top": 3221.03125
+        },
+        {
+          "height": 2092.15625,
+          "stage": "4",
+          "top": 3894.796875
+        },
+        {
+          "height": 897.96875,
+          "stage": "5",
+          "top": 5986.953125
+        },
+        {
+          "height": 799.546875,
+          "stage": "6",
+          "top": 6884.921875
+        },
+        {
+          "height": 995.796875,
+          "stage": "7",
+          "top": 7684.46875
+        },
+        {
+          "height": 859.9375,
+          "stage": "8",
+          "top": 8680.265625
+        },
+        {
+          "height": 2397.296875,
+          "stage": "9",
+          "top": 9540.203125
+        }
+      ],
+      "url": "http://127.0.0.1:8765/modules/hierarchical-clustering.html?crossreview-final-mobile=1787747685611",
+      "viewport": {
+        "clientHeight": 844,
+        "clientWidth": 390,
+        "innerHeight": 844,
+        "innerWidth": 390
+      }
+    },
+    "8766": {
+      "body": 12101.03125,
+      "scrollHeight": 12101,
+      "scrollWidth": 390,
+      "selector": "section[data-stage]",
+      "stages": [
+        {
+          "height": 1093.390625,
+          "stage": "1",
+          "top": 1266
+        },
+        {
+          "height": 861.671875,
+          "stage": "2",
+          "top": 2359.390625
+        },
+        {
+          "height": 673.765625,
+          "stage": "3",
+          "top": 3221.0625
+        },
+        {
+          "height": 2092.15625,
+          "stage": "4",
+          "top": 3894.828125
+        },
+        {
+          "height": 897.96875,
+          "stage": "5",
+          "top": 5986.984375
+        },
+        {
+          "height": 799.546875,
+          "stage": "6",
+          "top": 6884.953125
+        },
+        {
+          "height": 995.796875,
+          "stage": "7",
+          "top": 7684.5
+        },
+        {
+          "height": 859.953125,
+          "stage": "8",
+          "top": 8680.296875
+        },
+        {
+          "height": 2397.3125,
+          "stage": "9",
+          "top": 9540.25
+        }
+      ],
+      "url": "http://127.0.0.1:8766/modules/hierarchical-clustering.html?crossreview-final-mobile=1787747684955",
+      "viewport": {
+        "clientHeight": 844,
+        "clientWidth": 390,
+        "innerHeight": 844,
+        "innerWidth": 390
+      }
+    }
+  },
+  "lda": {
+    "8765": {
+      "body": 26501.09375,
+      "scrollHeight": 26501,
+      "scrollWidth": 390,
+      "selector": "section[data-stage]",
+      "stages": [
+        {
+          "height": 926.015625,
+          "stage": "0",
+          "top": 0
+        },
+        {
+          "height": 3128.15625,
+          "stage": "1",
+          "top": 1348.015625
+        },
+        {
+          "height": 1003.078125,
+          "stage": "2",
+          "top": 4476.171875
+        },
+        {
+          "height": 1107.6875,
+          "stage": "3",
+          "top": 5479.25
+        },
+        {
+          "height": 827.546875,
+          "stage": "4",
+          "top": 6586.9375
+        },
+        {
+          "height": 1570.6875,
+          "stage": "5",
+          "top": 7414.484375
+        },
+        {
+          "height": 1917.078125,
+          "stage": "6",
+          "top": 8985.171875
+        },
+        {
+          "height": 1892.1875,
+          "stage": "7",
+          "top": 10902.25
+        },
+        {
+          "height": 1258.796875,
+          "stage": "8",
+          "top": 12794.4375
+        },
+        {
+          "height": 1280.046875,
+          "stage": "9",
+          "top": 14053.234375
+        },
+        {
+          "height": 2184.5,
+          "stage": "10",
+          "top": 15333.28125
+        },
+        {
+          "height": 1376.21875,
+          "stage": "11",
+          "top": 17517.78125
+        },
+        {
+          "height": 2149.265625,
+          "stage": "12",
+          "top": 18894
+        },
+        {
+          "height": 2276.375,
+          "stage": "13",
+          "top": 21043.265625
+        },
+        {
+          "height": 2102.1875,
+          "stage": "14",
+          "top": 23319.640625
+        },
+        {
+          "height": 915.796875,
+          "stage": "15",
+          "top": 25421.828125
+        }
+      ],
+      "url": "http://127.0.0.1:8765/modules/lda.html?crossreview-final-mobile=1787747687170",
+      "viewport": {
+        "clientHeight": 844,
+        "clientWidth": 390,
+        "innerHeight": 844,
+        "innerWidth": 390
+      }
+    },
+    "8766": {
+      "body": 26484.75,
+      "scrollHeight": 26485,
+      "scrollWidth": 390,
+      "selector": "section[data-stage]",
+      "stages": [
+        {
+          "height": 926.015625,
+          "stage": "0",
+          "top": 0
+        },
+        {
+          "height": 3111.734375,
+          "stage": "1",
+          "top": 1348.015625
+        },
+        {
+          "height": 1003.09375,
+          "stage": "2",
+          "top": 4459.75
+        },
+        {
+          "height": 1107.6875,
+          "stage": "3",
+          "top": 5462.84375
+        },
+        {
+          "height": 827.546875,
+          "stage": "4",
+          "top": 6570.53125
+        },
+        {
+          "height": 1570.6875,
+          "stage": "5",
+          "top": 7398.078125
+        },
+        {
+          "height": 1917.078125,
+          "stage": "6",
+          "top": 8968.765625
+        },
+        {
+          "height": 1892.1875,
+          "stage": "7",
+          "top": 10885.84375
+        },
+        {
+          "height": 1258.8125,
+          "stage": "8",
+          "top": 12778.03125
+        },
+        {
+          "height": 1280.0625,
+          "stage": "9",
+          "top": 14036.84375
+        },
+        {
+          "height": 2184.5,
+          "stage": "10",
+          "top": 15316.90625
+        },
+        {
+          "height": 1376.21875,
+          "stage": "11",
+          "top": 17501.40625
+        },
+        {
+          "height": 2149.265625,
+          "stage": "12",
+          "top": 18877.625
+        },
+        {
+          "height": 2276.390625,
+          "stage": "13",
+          "top": 21026.890625
+        },
+        {
+          "height": 2102.1875,
+          "stage": "14",
+          "top": 23303.28125
+        },
+        {
+          "height": 915.8125,
+          "stage": "15",
+          "top": 25405.46875
+        }
+      ],
+      "url": "http://127.0.0.1:8766/modules/lda.html?crossreview-final-mobile=1787747686224",
+      "viewport": {
+        "clientHeight": 844,
+        "clientWidth": 390,
+        "innerHeight": 844,
+        "innerWidth": 390
+      }
+    }
+  }
+}

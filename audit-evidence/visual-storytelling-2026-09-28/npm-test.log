@@ -1,0 +1,121 @@
+
+> test
+> node scripts/build.mjs --validate-only && node scripts/test-notebook-models.mjs && node scripts/test-science.mjs && node scripts/test-spatial-science.mjs && node scripts/test-notebook-browser.mjs && node scripts/test-expanded-browser.mjs && node scripts/test-logistic-browser.mjs && node scripts/test-notebook-interactions.mjs && node scripts/test-visual-teaching-browser.mjs && npm run test:stories
+
+Validated 34 pages with statistical-content and local-link checks.
+Notebook model checks passed: regression degeneracy, K-means snapshots/descent, Bayes evidence, fixed-score metrics, and read-only validation.
+Scientific model checks passed: independent SciPy/NumPy/SVC fixtures, split isolation, exact tree/ensemble receipts, neural finite-difference gradients, convolution, attention, and all 321 authored stages.
+Spatial science passed: region/prediction equivalence, midpoint search, exhaustive subtree pruning, independent OLS intervals, finite-difference loss landscapes, and bootstrap/OOB exclusions.
+Notebook browser checks passed: all 38 stages at 8 widths; arithmetic, edits, reversible clustering, Bayes evidence, threshold decisions, retained DOM/focus, mobile return, no-JS, reduced motion and idle frames.
+Extended notebook browser checks passed: 1605 stage/viewport combinations, all controls, no-JS, neural rewind, and locked final test.
+Logistic notebook stages and one-time locked final-test reveal passed.
+All 29 modules preserve scientific state, SVG identity, keyboard focus, mobile return, reduced motion, idle frames, and expanded-reference layout.
+Visual teaching checks passed: all 33 lessons follow reading; all 33 universe entries at six widths; spatial screenshots, no word-box flows in priority scenes, restricted-gradient rewind, real pruning and least squares.
+
+> test:stories
+> node scripts/test-vote-criteria.mjs && node scripts/test-vote-criteria-browser.mjs && node scripts/test-covariance-scenes.mjs && node scripts/test-statistics-stories.mjs && node scripts/test-visual-collisions.mjs
+
+Vote/criteria checks passed: all K neighbors, inverse-distance normalization, exact matches, hand-calculated OLS likelihood and parameter count.
+Browser vote/criteria checks passed: 36 vote cases across desktop/mobile widths, all neighbors visible, no label collisions, exact weights, no view selector, penalty-independent AIC/BIC.
+Covariance checks passed: 7020 contour identities, shared/fully pooled shape equality, 36 responsive scenes without label collisions.
+Statistical story checks passed: shared value scales, all sample values included, means confined to their band, exact coverage construction, separate prospective power, ANOVA decomposition, additive time components, boosting identity at four rounds. Desktop/phone screenshots saved.
+{"slug":"neural-networks","width":1440,"stages":19,"pairs":0,"clipped":0}
+{"slug":"neural-networks","width":430,"stages":19,"pairs":0,"clipped":0}
+{"slug":"neural-networks","width":320,"stages":19,"pairs":0,"clipped":0}
+{"slug":"deep-learning","width":1440,"stages":12,"pairs":0,"clipped":0}
+{"slug":"deep-learning","width":430,"stages":12,"pairs":0,"clipped":0}
+{"slug":"deep-learning","width":320,"stages":12,"pairs":0,"clipped":0}
+{"slug":"random-forest","width":1440,"stages":9,"pairs":0,"clipped":0}
+{"slug":"random-forest","width":430,"stages":9,"pairs":0,"clipped":0}
+{"slug":"random-forest","width":320,"stages":9,"pairs":0,"clipped":0}
+{"slug":"anova","width":1440,"stages":16,"pairs":0,"clipped":0}
+{"slug":"anova","width":430,"stages":16,"pairs":0,"clipped":0}
+{"slug":"anova","width":320,"stages":16,"pairs":0,"clipped":0}
+{"slug":"simple-linear-regression","width":1440,"stages":8,"pairs":0,"clipped":0}
+{"slug":"simple-linear-regression","width":430,"stages":8,"pairs":0,"clipped":0}
+{"slug":"simple-linear-regression","width":320,"stages":8,"pairs":0,"clipped":0}
+{"slug":"kmeans","width":1440,"stages":9,"pairs":0,"clipped":0}
+{"slug":"kmeans","width":430,"stages":9,"pairs":0,"clipped":0}
+{"slug":"kmeans","width":320,"stages":9,"pairs":0,"clipped":0}
+{"slug":"naive-bayes","width":1440,"stages":12,"pairs":0,"clipped":0}
+{"slug":"naive-bayes","width":430,"stages":12,"pairs":0,"clipped":0}
+{"slug":"naive-bayes","width":320,"stages":12,"pairs":0,"clipped":0}
+{"slug":"evaluation-metrics","width":1440,"stages":9,"pairs":0,"clipped":0}
+{"slug":"evaluation-metrics","width":430,"stages":9,"pairs":0,"clipped":0}
+{"slug":"evaluation-metrics","width":320,"stages":9,"pairs":0,"clipped":0}
+{"slug":"correlation","width":1440,"stages":10,"pairs":0,"clipped":0}
+{"slug":"correlation","width":430,"stages":10,"pairs":0,"clipped":0}
+{"slug":"correlation","width":320,"stages":10,"pairs":0,"clipped":0}
+{"slug":"chi-square","width":1440,"stages":7,"pairs":0,"clipped":0}
+{"slug":"chi-square","width":430,"stages":7,"pairs":0,"clipped":0}
+{"slug":"chi-square","width":320,"stages":7,"pairs":0,"clipped":0}
+{"slug":"time-series-analysis","width":1440,"stages":10,"pairs":0,"clipped":0}
+{"slug":"time-series-analysis","width":430,"stages":10,"pairs":0,"clipped":0}
+{"slug":"time-series-analysis","width":320,"stages":10,"pairs":0,"clipped":0}
+{"slug":"probability-sampling","width":1440,"stages":9,"pairs":0,"clipped":0}
+{"slug":"probability-sampling","width":430,"stages":9,"pairs":0,"clipped":0}
+{"slug":"probability-sampling","width":320,"stages":9,"pairs":0,"clipped":0}
+{"slug":"confidence-hypothesis-testing","width":1440,"stages":9,"pairs":0,"clipped":0}
+{"slug":"confidence-hypothesis-testing","width":430,"stages":9,"pairs":0,"clipped":0}
+{"slug":"confidence-hypothesis-testing","width":320,"stages":9,"pairs":0,"clipped":0}
+{"slug":"multiple-linear-regression","width":1440,"stages":9,"pairs":0,"clipped":0}
+{"slug":"multiple-linear-regression","width":430,"stages":9,"pairs":0,"clipped":0}
+{"slug":"multiple-linear-regression","width":320,"stages":9,"pairs":0,"clipped":0}
+{"slug":"polynomial-regression","width":1440,"stages":8,"pairs":0,"clipped":0}
+{"slug":"polynomial-regression","width":430,"stages":8,"pairs":0,"clipped":0}
+{"slug":"polynomial-regression","width":320,"stages":8,"pairs":0,"clipped":0}
+{"slug":"regression-diagnostics","width":1440,"stages":9,"pairs":0,"clipped":0}
+{"slug":"regression-diagnostics","width":430,"stages":9,"pairs":0,"clipped":0}
+{"slug":"regression-diagnostics","width":320,"stages":9,"pairs":0,"clipped":0}
+{"slug":"bias-variance","width":1440,"stages":12,"pairs":0,"clipped":0}
+{"slug":"bias-variance","width":430,"stages":12,"pairs":0,"clipped":0}
+{"slug":"bias-variance","width":320,"stages":12,"pairs":0,"clipped":0}
+{"slug":"model-selection","width":1440,"stages":12,"pairs":0,"clipped":0}
+{"slug":"model-selection","width":430,"stages":12,"pairs":0,"clipped":0}
+{"slug":"model-selection","width":320,"stages":12,"pairs":0,"clipped":0}
+{"slug":"logistic-regression","width":1440,"stages":10,"pairs":0,"clipped":0}
+{"slug":"logistic-regression","width":430,"stages":10,"pairs":0,"clipped":0}
+{"slug":"logistic-regression","width":320,"stages":10,"pairs":0,"clipped":0}
+{"slug":"knn","width":1440,"stages":14,"pairs":0,"clipped":0}
+{"slug":"knn","width":430,"stages":14,"pairs":0,"clipped":0}
+{"slug":"knn","width":320,"stages":14,"pairs":0,"clipped":0}
+{"slug":"lda","width":1440,"stages":15,"pairs":0,"clipped":0}
+{"slug":"lda","width":430,"stages":15,"pairs":0,"clipped":0}
+{"slug":"lda","width":320,"stages":15,"pairs":0,"clipped":0}
+{"slug":"qda","width":1440,"stages":10,"pairs":0,"clipped":0}
+{"slug":"qda","width":430,"stages":10,"pairs":0,"clipped":0}
+{"slug":"qda","width":320,"stages":10,"pairs":0,"clipped":0}
+{"slug":"support-vector-machine","width":1440,"stages":14,"pairs":0,"clipped":0}
+{"slug":"support-vector-machine","width":430,"stages":14,"pairs":0,"clipped":0}
+{"slug":"support-vector-machine","width":320,"stages":14,"pairs":0,"clipped":0}
+{"slug":"one-r","width":1440,"stages":12,"pairs":0,"clipped":0}
+{"slug":"one-r","width":430,"stages":12,"pairs":0,"clipped":0}
+{"slug":"one-r","width":320,"stages":12,"pairs":0,"clipped":0}
+{"slug":"imbalanced-classification","width":1440,"stages":9,"pairs":0,"clipped":0}
+{"slug":"imbalanced-classification","width":430,"stages":9,"pairs":0,"clipped":0}
+{"slug":"imbalanced-classification","width":320,"stages":9,"pairs":0,"clipped":0}
+{"slug":"regression-trees","width":1440,"stages":16,"pairs":0,"clipped":0}
+{"slug":"regression-trees","width":430,"stages":16,"pairs":0,"clipped":0}
+{"slug":"regression-trees","width":320,"stages":16,"pairs":0,"clipped":0}
+{"slug":"classification-trees","width":1440,"stages":15,"pairs":0,"clipped":0}
+{"slug":"classification-trees","width":430,"stages":15,"pairs":0,"clipped":0}
+{"slug":"classification-trees","width":320,"stages":15,"pairs":0,"clipped":0}
+{"slug":"gradient-boosting","width":1440,"stages":9,"pairs":0,"clipped":0}
+{"slug":"gradient-boosting","width":430,"stages":9,"pairs":0,"clipped":0}
+{"slug":"gradient-boosting","width":320,"stages":9,"pairs":0,"clipped":0}
+{"slug":"pca","width":1440,"stages":10,"pairs":0,"clipped":0}
+{"slug":"pca","width":430,"stages":10,"pairs":0,"clipped":0}
+{"slug":"pca","width":320,"stages":10,"pairs":0,"clipped":0}
+{"slug":"hierarchical-clustering","width":1440,"stages":9,"pairs":0,"clipped":0}
+{"slug":"hierarchical-clustering","width":430,"stages":9,"pairs":0,"clipped":0}
+{"slug":"hierarchical-clustering","width":320,"stages":9,"pairs":0,"clipped":0}
+{"slug":"data-leakage-pipelines","width":1440,"stages":9,"pairs":0,"clipped":0}
+{"slug":"data-leakage-pipelines","width":430,"stages":9,"pairs":0,"clipped":0}
+{"slug":"data-leakage-pipelines","width":320,"stages":9,"pairs":0,"clipped":0}
+{"slug":"missing-data-encoding","width":1440,"stages":9,"pairs":0,"clipped":0}
+{"slug":"missing-data-encoding","width":430,"stages":9,"pairs":0,"clipped":0}
+{"slug":"missing-data-encoding","width":320,"stages":9,"pairs":0,"clipped":0}
+{"slug":"experimental-design","width":1440,"stages":9,"pairs":0,"clipped":0}
+{"slug":"experimental-design","width":430,"stages":9,"pairs":0,"clipped":0}
+{"slug":"experimental-design","width":320,"stages":9,"pairs":0,"clipped":0}
+Passed 1077 scene/viewport checks: no intersecting text boxes or clipped labels.

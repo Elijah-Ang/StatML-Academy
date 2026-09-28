@@ -1,0 +1,173 @@
+{
+  "n": 14,
+  "results": [
+    {
+      "i": 0,
+      "label": "Go to stage 1: Points, labels, and a decision boundary",
+      "ok": true,
+      "st": {
+        "current": [
+          "stage-11"
+        ],
+        "title": "RBF similarity bends the boundary",
+        "y": 8068
+      }
+    },
+    {
+      "i": 1,
+      "label": "Go to stage 2: Why not choose any separating line?",
+      "ok": true,
+      "st": {
+        "current": [
+          "stage-2"
+        ],
+        "title": "Several separators, unequal safety",
+        "y": 1791
+      }
+    },
+    {
+      "i": 2,
+      "label": "Go to stage 3: The margin is protected space",
+      "ok": true,
+      "st": {
+        "current": [
+          "stage-3"
+        ],
+        "title": "Maximum-margin separator",
+        "y": 2014
+      }
+    },
+    {
+      "i": 3,
+      "label": "Go to stage 4: Support vectors are the points that matter most",
+      "ok": true,
+      "st": {
+        "current": [
+          "stage-4"
+        ],
+        "title": "Support vectors constrain the model",
+        "y": 2660
+      }
+    },
+    {
+      "i": 4,
+      "label": "Go to stage 5: Hard margins break when reality overlaps",
+      "ok": true,
+      "st": {
+        "current": [
+          "stage-5"
+        ],
+        "title": "Soft margin and slack",
+        "y": 3331
+      }
+    },
+    {
+      "i": 5,
+      "label": "Go to stage 6: C decides how expensive violations are",
+      "ok": true,
+      "st": {
+        "current": [
+          "stage-6"
+        ],
+        "title": "Violation cost controlled by C",
+        "y": 4058
+      }
+    },
+    {
+      "i": 6,
+      "label": "Go to stage 7: Scale features before comparing distances",
+      "ok": true,
+      "st": {
+        "current": [
+          "stage-7"
+        ],
+        "title": "The same rows under unequal scales",
+        "y": 4761
+      }
+    },
+    {
+      "i": 7,
+      "label": "Go to stage 8: Hinge loss ignores easy correct points",
+      "ok": true,
+      "st": {
+        "current": [
+          "stage-8"
+        ],
+        "title": "Hinge loss by signed margin",
+        "y": 5436
+      }
+    },
+    {
+      "i": 8,
+      "label": "Go to stage 9: The decision score is not automatically a probability",
+      "ok": true,
+      "st": {
+        "current": [
+          "stage-9"
+        ],
+        "title": "Decision score, not probability",
+        "y": 6129
+      }
+    },
+    {
+      "i": 9,
+      "label": "Go to stage 10: A straight boundary cannot solve every pattern",
+      "ok": true,
+      "st": {
+        "current": [
+          "stage-10"
+        ],
+        "title": "A pattern no straight line can solve",
+        "y": 6808
+      }
+    },
+    {
+      "i": 10,
+      "label": "Go to stage 11: The kernel trick avoids explicit feature explosion",
+      "ok": true,
+      "st": {
+        "current": [
+          "stage-11"
+        ],
+        "title": "RBF similarity bends the boundary",
+        "y": 7481
+      }
+    },
+    {
+      "i": 11,
+      "label": "Go to stage 12: Tune the whole pipeline inside cross-validation",
+      "ok": true,
+      "st": {
+        "current": [
+          "stage-12"
+        ],
+        "title": "Cross-validation without leakage",
+        "y": 8239
+      }
+    },
+    {
+      "i": 12,
+      "label": "Go to stage 13: Measure the errors the problem actually cares about",
+      "ok": true,
+      "st": {
+        "current": [
+          "stage-13"
+        ],
+        "title": "Read errors by class",
+        "y": 9022
+      }
+    },
+    {
+      "i": 13,
+      "label": "Go to stage 14: Change the knobs and watch the boundary answer back",
+      "ok": true,
+      "st": {
+        "current": [
+          "stage-14"
+        ],
+        "title": "Interactive SVM playground",
+        "y": 9878
+      }
+    }
+  ]
+}

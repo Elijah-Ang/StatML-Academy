@@ -1,0 +1,36 @@
+// Each instruction refers only to the visual and local controls in its section.
+export const workflowPrompts = {
+  "data-leakage-pipelines": [
+    "Switch feature availability. Watch an input measured before prediction enter the decision, while a later outcome is blocked by the time boundary.",
+    "Compare training-only fitting with the leaked option. Follow the 2 and 4 training tokens into the saved mean; the held-out 100 must not teach it.",
+    "Change which rows fit the mean. Compare the same three values before and after centering, and check the saved mean in the receipt.",
+    "Expose the leaked fit. Trace the red arrow across the holdout boundary and explain why the saved mean changes.",
+    "Step through splitting, fitting, saving and applying one transformation. Keep the mean fixed when held-out rows are transformed.",
+    "Move the candidate feature from before prediction to after the outcome. Explain why a safe transformation cannot repair an unavailable input.",
+    "Follow one row ID through the four inner folds. Green rows validate an inner choice; the six outer holdout rows remain outside every choice.",
+    "Inspect the saved mean, its contributing rows and the transformed held-out value. Report the fitting rule together with the result.",
+    "Compare the safe and leaked boundaries again. Name the held-out information that is allowed to be transformed but must not enter fitting.",
+  ],
+  "missing-data-encoding": [
+    "Change the missingness strength. Find each question mark, then check which saved mean supplies its replacement.",
+    "Compare one-hot with ordinal coding for the same categories. Check which representation introduces an order and how an unknown category is handled.",
+    "Compare training-only and leaked imputation. Keep the same missing entries and follow the change in their shared fill value.",
+    "Switch MCAR, MAR and MNAR. Compare which group or values tend to become hollow crossed marks. Their true positions are visible only because this is a simulation.",
+    "Increase missingness and inspect the remaining observations. Compare the fitted fill value with the known simulated reconstruction error.",
+    "Toggle the category representation. Explain why the numbers 0, 1 and 2 impose ordered distances while separate one-hot columns do not.",
+    "Follow the observed training dots into the saved mean. Step forward to apply that same value to missing entries, without learning from holdout.",
+    "Inspect the observed fit-row count, saved mean and explicit missingness assumption. Report the assumptions as well as the computed result.",
+    "Inspect the new purple category. Explain the saved unknown-category policy before applying an encoding to new observations.",
+  ],
+  "experimental-design": [
+    "Compare the two illustrated scenarios. One pupil can reveal only one potential outcome; explain why comparable groups are needed.",
+    "Randomize the school allocation again. Each whole building changes treatment together; pupils are not assigned independently.",
+    "Change the pupils per school. Count one dot per pupil and one roof per randomized unit; increasing pupils does not create more randomized schools.",
+    "Inspect the question marks for future outcomes. Specify the comparison and analysis before those outcomes are observed.",
+    "Change the assumed intraclass correlation. Compare the number of measured rows with approximate effective n, while retaining schools as the assignment unit.",
+    "Inspect the crossed pupils in the follow-up illustration. Explain how losing different people can select the observed sample; these are illustrative missing outcomes, not measured rates.",
+    "Follow the illustrated groups toward outcomes that are still unknown. Identify what the protocol must fix before measurement.",
+    "Randomize again and compare the actual school baseline scores. Read the difference between group means; it is baseline imbalance, not a treatment-effect estimate.",
+    "Change the school count and pupils per school. Distinguish the number of rows from the number of independently randomized groups.",
+  ],
+};

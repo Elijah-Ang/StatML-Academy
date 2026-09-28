@@ -1,0 +1,17 @@
+{
+  "picked": "C6",
+  "exactContributionSum": true,
+  "keyboardSelection": true,
+  "extreme": {
+    "z": 6.09510435606353,
+    "a": 6.09510435606353,
+    "cx": 558.9325853995979,
+    "cy": 111.00859106727937,
+    "left": 45,
+    "right": 605,
+    "top": 85,
+    "bottom": 221,
+    "xMax": "7"
+  },
+  "errors": []
+}

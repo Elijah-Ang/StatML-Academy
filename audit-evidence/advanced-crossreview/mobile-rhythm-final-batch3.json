@@ -1,0 +1,458 @@
+{
+  "naive-bayes": {
+    "8765": {
+      "body": 12780.40625,
+      "scrollHeight": 12780,
+      "scrollWidth": 390,
+      "selector": "section[data-stage]",
+      "stages": [
+        {
+          "height": 840.15625,
+          "stage": "1",
+          "top": 1249.109375
+        },
+        {
+          "height": 743.296875,
+          "stage": "2",
+          "top": 2089.265625
+        },
+        {
+          "height": 1290.890625,
+          "stage": "3",
+          "top": 2832.5625
+        },
+        {
+          "height": 688.1875,
+          "stage": "4",
+          "top": 4123.453125
+        },
+        {
+          "height": 746.140625,
+          "stage": "5",
+          "top": 4811.640625
+        },
+        {
+          "height": 883.328125,
+          "stage": "6",
+          "top": 5557.78125
+        },
+        {
+          "height": 679.984375,
+          "stage": "7",
+          "top": 6441.109375
+        },
+        {
+          "height": 707.703125,
+          "stage": "8",
+          "top": 7121.09375
+        },
+        {
+          "height": 672.375,
+          "stage": "9",
+          "top": 7828.796875
+        },
+        {
+          "height": 750,
+          "stage": "10",
+          "top": 8501.171875
+        },
+        {
+          "height": 816.4375,
+          "stage": "11",
+          "top": 9251.171875
+        },
+        {
+          "height": 844.828125,
+          "stage": "13",
+          "top": 10067.609375
+        },
+        {
+          "height": 804.921875,
+          "stage": "14",
+          "top": 10912.4375
+        },
+        {
+          "height": 899.578125,
+          "stage": "15",
+          "top": 11717.359375
+        }
+      ],
+      "url": "http://127.0.0.1:8765/modules/naive-bayes.html?crossreview-final-mobile=1787746840461",
+      "viewport": {
+        "clientHeight": 844,
+        "clientWidth": 390,
+        "innerHeight": 844,
+        "innerWidth": 390
+      }
+    },
+    "8766": {
+      "body": 13671.390625,
+      "scrollHeight": 13671,
+      "scrollWidth": 390,
+      "selector": "section[data-stage]",
+      "stages": [
+        {
+          "height": 869.546875,
+          "stage": "1",
+          "top": 1249.109375
+        },
+        {
+          "height": 804.265625,
+          "stage": "2",
+          "top": 2118.65625
+        },
+        {
+          "height": 1393.796875,
+          "stage": "3",
+          "top": 2922.921875
+        },
+        {
+          "height": 735.578125,
+          "stage": "4",
+          "top": 4316.71875
+        },
+        {
+          "height": 781.53125,
+          "stage": "5",
+          "top": 5052.296875
+        },
+        {
+          "height": 978.625,
+          "stage": "6",
+          "top": 5833.828125
+        },
+        {
+          "height": 727.375,
+          "stage": "7",
+          "top": 6812.453125
+        },
+        {
+          "height": 762.546875,
+          "stage": "8",
+          "top": 7539.828125
+        },
+        {
+          "height": 707.765625,
+          "stage": "9",
+          "top": 8302.375
+        },
+        {
+          "height": 802.140625,
+          "stage": "10",
+          "top": 9010.140625
+        },
+        {
+          "height": 900.625,
+          "stage": "11",
+          "top": 9812.28125
+        },
+        {
+          "height": 892.21875,
+          "stage": "13",
+          "top": 10712.90625
+        },
+        {
+          "height": 877.890625,
+          "stage": "14",
+          "top": 11605.125
+        },
+        {
+          "height": 1024.90625,
+          "stage": "15",
+          "top": 12483.015625
+        }
+      ],
+      "url": "http://127.0.0.1:8766/modules/naive-bayes.html?crossreview-final-mobile=1787746834992",
+      "viewport": {
+        "clientHeight": 844,
+        "clientWidth": 390,
+        "innerHeight": 844,
+        "innerWidth": 390
+      }
+    }
+  },
+  "one-r": {
+    "8765": {
+      "body": 14317.875,
+      "scrollHeight": 14318,
+      "scrollWidth": 390,
+      "selector": ".stage[data-stage]",
+      "stages": [
+        {
+          "height": 634.265625,
+          "stage": "1",
+          "top": 1266
+        },
+        {
+          "height": 708.484375,
+          "stage": "2",
+          "top": 1900.265625
+        },
+        {
+          "height": 946.28125,
+          "stage": "3",
+          "top": 2608.75
+        },
+        {
+          "height": 1008.375,
+          "stage": "4",
+          "top": 3555.03125
+        },
+        {
+          "height": 1067.640625,
+          "stage": "5",
+          "top": 4563.40625
+        },
+        {
+          "height": 995.546875,
+          "stage": "6",
+          "top": 5631.046875
+        },
+        {
+          "height": 845.75,
+          "stage": "7",
+          "top": 6626.59375
+        },
+        {
+          "height": 1001.765625,
+          "stage": "8",
+          "top": 7472.34375
+        },
+        {
+          "height": 950.25,
+          "stage": "9",
+          "top": 8474.109375
+        },
+        {
+          "height": 1990.9375,
+          "stage": "10",
+          "top": 9424.359375
+        },
+        {
+          "height": 1074.5,
+          "stage": "11",
+          "top": 11415.296875
+        },
+        {
+          "height": 1486.640625,
+          "stage": "12",
+          "top": 12489.796875
+        }
+      ],
+      "url": "http://127.0.0.1:8765/modules/one-r.html?crossreview-final-mobile=1787746844296",
+      "viewport": {
+        "clientHeight": 844,
+        "clientWidth": 390,
+        "innerHeight": 844,
+        "innerWidth": 390
+      }
+    },
+    "8766": {
+      "body": 15734.375,
+      "scrollHeight": 15734,
+      "scrollWidth": 390,
+      "selector": ".stage[data-stage]",
+      "stages": [
+        {
+          "height": 721.671875,
+          "stage": "1",
+          "top": 1266
+        },
+        {
+          "height": 894.8125,
+          "stage": "2",
+          "top": 1987.671875
+        },
+        {
+          "height": 1050.296875,
+          "stage": "3",
+          "top": 2882.484375
+        },
+        {
+          "height": 1037.234375,
+          "stage": "4",
+          "top": 3932.78125
+        },
+        {
+          "height": 1137.078125,
+          "stage": "5",
+          "top": 4970.015625
+        },
+        {
+          "height": 1110.140625,
+          "stage": "6",
+          "top": 6107.09375
+        },
+        {
+          "height": 917.984375,
+          "stage": "7",
+          "top": 7217.234375
+        },
+        {
+          "height": 1102.078125,
+          "stage": "8",
+          "top": 8135.21875
+        },
+        {
+          "height": 1041.734375,
+          "stage": "9",
+          "top": 9237.296875
+        },
+        {
+          "height": 2264.609375,
+          "stage": "10",
+          "top": 10279.03125
+        },
+        {
+          "height": 1191.359375,
+          "stage": "11",
+          "top": 12543.640625
+        },
+        {
+          "height": 1636.28125,
+          "stage": "12",
+          "top": 13735
+        }
+      ],
+      "url": "http://127.0.0.1:8766/modules/one-r.html?crossreview-final-mobile=1787746842391",
+      "viewport": {
+        "clientHeight": 844,
+        "clientWidth": 390,
+        "innerHeight": 844,
+        "innerWidth": 390
+      }
+    }
+  },
+  "multiple-linear-regression": {
+    "8765": {
+      "body": 10917.671875,
+      "scrollHeight": 10918,
+      "scrollWidth": 390,
+      "selector": "section[data-stage]",
+      "stages": [
+        {
+          "height": 844,
+          "stage": "0",
+          "top": 0
+        },
+        {
+          "height": 850.46875,
+          "stage": "1",
+          "top": 1266
+        },
+        {
+          "height": 706.40625,
+          "stage": "2",
+          "top": 2116.46875
+        },
+        {
+          "height": 850.015625,
+          "stage": "3",
+          "top": 2822.875
+        },
+        {
+          "height": 671.9375,
+          "stage": "4",
+          "top": 3672.890625
+        },
+        {
+          "height": 991.453125,
+          "stage": "5",
+          "top": 4344.828125
+        },
+        {
+          "height": 980.390625,
+          "stage": "6",
+          "top": 5336.28125
+        },
+        {
+          "height": 1085.71875,
+          "stage": "7",
+          "top": 6316.671875
+        },
+        {
+          "height": 694.34375,
+          "stage": "8",
+          "top": 7402.390625
+        },
+        {
+          "height": 2657.46875,
+          "stage": "9",
+          "top": 8096.734375
+        }
+      ],
+      "url": "http://127.0.0.1:8765/modules/multiple-linear-regression.html?crossreview-final-mobile=1787746850765",
+      "viewport": {
+        "clientHeight": 844,
+        "clientWidth": 390,
+        "innerHeight": 844,
+        "innerWidth": 390
+      }
+    },
+    "8766": {
+      "body": 12251.921875,
+      "scrollHeight": 12252,
+      "scrollWidth": 390,
+      "selector": "section[data-stage]",
+      "stages": [
+        {
+          "height": 844,
+          "stage": "0",
+          "top": 0
+        },
+        {
+          "height": 926.390625,
+          "stage": "1",
+          "top": 1266
+        },
+        {
+          "height": 800.78125,
+          "stage": "2",
+          "top": 2192.390625
+        },
+        {
+          "height": 929.578125,
+          "stage": "3",
+          "top": 2993.171875
+        },
+        {
+          "height": 784.421875,
+          "stage": "4",
+          "top": 3922.75
+        },
+        {
+          "height": 1149.15625,
+          "stage": "5",
+          "top": 4707.171875
+        },
+        {
+          "height": 1020.765625,
+          "stage": "6",
+          "top": 5856.328125
+        },
+        {
+          "height": 1267.59375,
+          "stage": "7",
+          "top": 6877.09375
+        },
+        {
+          "height": 826.859375,
+          "stage": "8",
+          "top": 8144.6875
+        },
+        {
+          "height": 3116.90625,
+          "stage": "9",
+          "top": 8971.546875
+        }
+      ],
+      "url": "http://127.0.0.1:8766/modules/multiple-linear-regression.html?crossreview-final-mobile=1787746845756",
+      "viewport": {
+        "clientHeight": 844,
+        "clientWidth": 390,
+        "innerHeight": 844,
+        "innerWidth": 390
+      }
+    }
+  }
+}

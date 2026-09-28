@@ -1,0 +1,11 @@
+
+> test
+> node scripts/build.mjs --validate-only && node scripts/test-notebook-models.mjs && node scripts/test-science.mjs && node scripts/test-notebook-browser.mjs && node scripts/test-expanded-browser.mjs && node scripts/test-logistic-browser.mjs && node scripts/test-notebook-interactions.mjs
+
+Validated 34 pages with statistical-content and local-link checks.
+Notebook model checks passed: regression degeneracy, K-means snapshots/descent, Bayes evidence, fixed-score metrics, and read-only validation.
+Scientific model checks passed: independent SciPy/NumPy/SVC fixtures, split isolation, exact tree/ensemble receipts, neural finite-difference gradients, convolution, attention, and all 321 authored stages.
+Notebook browser checks passed: all 38 stages at 8 widths; arithmetic, edits, reversible clustering, Bayes evidence, threshold decisions, retained DOM/focus, mobile return, no-JS, reduced motion and idle frames.
+Extended notebook browser checks passed: 1605 stage/viewport combinations, all controls, no-JS, neural rewind, and locked final test.
+Logistic notebook stages and one-time locked final-test reveal passed.
+All 29 modules preserve scientific state, SVG identity, keyboard focus, mobile return, reduced motion, idle frames, and expanded-reference layout.

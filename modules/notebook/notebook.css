@@ -1,0 +1,1045 @@
+@import url("https://fonts.googleapis.com/css2?family=Kalam:wght@400;700&family=Patrick+Hand&display=swap");
+:root {
+  color-scheme: light;
+  --paper: #faf7ef;
+  --card: #fffef9;
+  --ink: #303b38;
+  --muted: #646b64;
+  --line: #d9d9cb;
+  --blue: #356f9d;
+  --red: #b85a4f;
+  --green: #52836b;
+  --gold: #b28536;
+  --accent: var(--blue);
+  --hand: "Patrick Hand", "Chalkboard SE", "Segoe Print", cursive;
+  --heading: "Kalam", "Patrick Hand", cursive;
+  --numeric: ui-monospace, SFMono-Regular, Consolas, monospace;
+}
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font: 21px/1.5 var(--hand);
+}
+body[data-accent="green"] {
+  --accent: var(--green);
+}
+body[data-accent="red"] {
+  --accent: var(--red);
+}
+body[data-accent="gold"] {
+  --accent: #906b28;
+}
+button,
+input,
+select {
+  font: inherit;
+  color: inherit;
+}
+button,
+select {
+  min-height: 44px;
+}
+button {
+  cursor: pointer;
+  padding: 8px 15px;
+  border: 1px solid var(--line);
+  border-radius: 9px 7px 10px 6px;
+  background: var(--card);
+  transition:
+    background-color 160ms,
+    border-color 160ms,
+    box-shadow 160ms;
+}
+button:hover {
+  background: #f1f1e5;
+  border-color: #a4b3a8;
+}
+button:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+button.primary,
+button[aria-pressed="true"] {
+  background: var(--accent);
+  color: white;
+  border-color: var(--accent);
+}
+a {
+  color: var(--accent);
+  text-underline-offset: 4px;
+}
+a:hover {
+  text-decoration-thickness: 2px;
+}
+:focus-visible {
+  outline: 3px solid #d3a33e;
+  outline-offset: 4px;
+}
+[hidden] {
+  display: none !important;
+}
+h1,
+h2,
+h3,
+p {
+  margin: 0 0 0.7em;
+}
+h1,
+h2,
+h3 {
+  font-family: var(--heading);
+  line-height: 1.3;
+  font-weight: 700;
+}
+h1 {
+  font-size: clamp(37px, 4vw, 55px);
+  letter-spacing: -1px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 23px;
+}
+.skip-link {
+  position: fixed;
+  top: -100px;
+  z-index: 20;
+  background: white;
+  padding: 12px;
+}
+.skip-link:focus {
+  top: 0;
+}
+.statml-site-nav {
+  min-height: 61px;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding: 8px max(24px, calc((100vw - 1340px) / 2));
+  border-bottom: 1px solid var(--line);
+  font-size: 17px;
+}
+.statml-site-nav .brand {
+  font-weight: bold;
+  text-decoration: none;
+}
+.nav-title {
+  color: var(--muted);
+}
+.statml-nav-meta {
+  color: var(--muted);
+  font-size: 14px;
+  white-space: nowrap;
+}
+.statml-core-sequence a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  min-height: 44px;
+  text-decoration: none;
+  font-size: 22px;
+}
+.lesson-toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 8;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  height: 62px;
+  padding: 8px max(24px, calc((100vw - 1340px) / 2));
+  background: rgba(250, 247, 239, 0.97);
+  border-bottom: 1px solid var(--line);
+  font-size: 17px;
+}
+.lesson-toolbar select {
+  max-width: 480px;
+  width: 100%;
+  border: 0;
+  border-bottom: 1px dashed var(--line);
+  background: transparent;
+  padding: 6px 26px 6px 8px;
+}
+.lesson-toolbar label {
+  white-space: nowrap;
+  color: var(--muted);
+}
+.stage-progress {
+  margin-left: auto;
+  min-width: 52px;
+  text-align: right;
+}
+.notebook-layout {
+  max-width: 1340px;
+  margin: 0 auto;
+  padding: 40px 24px 70px;
+  display: grid;
+  grid-template-columns: minmax(0, 0.88fr) minmax(0, 1.12fr);
+  gap: 60px;
+  align-items: start;
+}
+.reading {
+  min-width: 0;
+}
+.hero {
+  padding: 15px 0 32px;
+}
+.eyebrow {
+  font-size: 13px;
+  letter-spacing: 1.6px;
+  color: var(--accent);
+  font-family: var(--numeric);
+  line-height: 1.65;
+}
+.intro {
+  font-size: 25px;
+  line-height: 1.5;
+}
+.pathway {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+  font-size: 17px;
+  margin: 22px 0;
+  padding: 18px 0;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+.pathway small {
+  display: block;
+  text-transform: uppercase;
+  font: 11px/1.6 var(--numeric);
+  letter-spacing: 1px;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+.reading-tip {
+  color: var(--muted);
+  font-size: 17px;
+}
+.stage {
+  scroll-margin-top: 88px;
+  padding: 30px 0 45px;
+  border-top: 1px solid var(--line);
+  min-height: 530px;
+}
+.stage-label {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 16px;
+  color: var(--muted);
+  margin-bottom: 20px;
+}
+.stage-label span {
+  display: grid;
+  place-items: center;
+  font: 15px var(--numeric);
+  width: 35px;
+  height: 34px;
+  border: 1px solid var(--line);
+  border-radius: 45% 50% 42% 49%;
+  color: var(--accent);
+}
+.stage.is-active .stage-label span {
+  background: #eee8cf;
+  border-color: #c6bf9e;
+}
+.answer {
+  font-size: 22px;
+}
+.sub-question {
+  font-size: 24px;
+  color: var(--accent);
+}
+.receipt {
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--accent);
+  border-radius: 3px 12px 8px 5px;
+  background: var(--card);
+  padding: 18px 19px;
+  margin: 24px 0;
+  font-size: 19px;
+  box-shadow: 0 2px 0 #35422f06;
+}
+.receipt > :last-child {
+  margin-bottom: 0;
+}
+.receipt-label {
+  color: var(--accent);
+  margin-bottom: 12px;
+  font-size: 16px;
+}
+.table-wrap {
+  max-width: 100%;
+  overflow-x: auto;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 17px;
+  text-align: left;
+}
+th,
+td {
+  padding: 10px 8px;
+  border-bottom: 1px solid #e4e4d8;
+  vertical-align: top;
+}
+th {
+  font-weight: normal;
+}
+thead th {
+  color: var(--muted);
+  font-size: 15px;
+}
+tbody tr:last-child > * {
+  border-bottom: 0;
+}
+tbody th {
+  color: var(--accent);
+}
+.formula {
+  font: 16px/1.7 var(--numeric);
+  background: #f0f3e9;
+  border-radius: 4px;
+  padding: 12px;
+  overflow-wrap: anywhere;
+  margin-bottom: 15px;
+}
+.cell-input {
+  width: 100%;
+  min-width: 44px;
+  max-width: 85px;
+  min-height: 44px;
+  padding: 5px 7px;
+  border: 1px solid var(--line);
+  border-radius: 5px;
+  background: #fffefa;
+  font-size: 18px;
+}
+.cell-input[aria-invalid="true"] {
+  border-color: var(--red);
+}
+.mini-note {
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--muted);
+  margin-top: 12px;
+}
+.caution {
+  padding: 12px;
+  border-left: 3px solid var(--gold);
+  background: #f7f0dc;
+  font-size: 18px;
+}
+.experiment {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 3px 0 20px;
+}
+.experiment .pencil {
+  font: 40px var(--heading);
+  color: var(--accent);
+}
+.experiment p {
+  font-size: 19px;
+  margin-top: 3px;
+  margin-bottom: 10px;
+}
+.experiment button {
+  font-size: 16px;
+  padding: 5px 13px;
+}
+summary {
+  cursor: pointer;
+  padding: 13px 5px;
+}
+details {
+  border-top: 1px dashed var(--line);
+  font-size: 19px;
+}
+details > div,
+details > p {
+  padding: 0 5px 14px;
+}
+details p {
+  line-height: 1.65;
+}
+.deeper summary {
+  color: var(--accent);
+}
+.check summary {
+  font-size: 18px;
+}
+.next-idea {
+  display: inline-block;
+  margin-top: 20px;
+  font-size: 17px;
+  text-decoration: none;
+}
+.lab-home {
+  position: sticky;
+  top: 84px;
+  min-width: 0;
+  padding-top: 6px;
+}
+.lab-panel {
+  background: var(--card);
+  border: 1px solid #cecfbf;
+  border-radius: 17px 9px 18px 10px;
+  padding: 23px;
+  box-shadow:
+    0 10px 35px #333c2110,
+    0 2px 0 #d5d5c970;
+  min-width: 0;
+}
+.lab-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+.lab-header h2 {
+  font-size: 26px;
+  margin: 3px 0 0;
+}
+.lab-header .eyebrow {
+  font-size: 11px;
+  margin: 0;
+}
+.icon-button {
+  font-size: 25px;
+  line-height: 1;
+  padding: 4px;
+  width: 44px;
+  flex-shrink: 0;
+  border-radius: 50%;
+}
+#lab-stage {
+  margin-left: 12px;
+}
+.plot {
+  position: relative;
+  width: 100%;
+  border-radius: 8px;
+  background-image: radial-gradient(#dde1d4 0.6px, transparent 0.6px);
+  background-size: 18px 18px;
+  overflow: hidden;
+}
+.plot svg {
+  width: 100%;
+  display: block;
+  touch-action: pan-y;
+  overflow: visible;
+}
+.plot svg text {
+  font-family: var(--hand);
+  font-size: 16px;
+  fill: var(--ink);
+}
+.plot svg .axis-label {
+  fill: var(--muted);
+  font-size: 14px;
+}
+.plot svg .data-label {
+  font: 12px var(--numeric);
+}
+.plot svg [role="button"] {
+  cursor: pointer;
+}
+.plot svg .point-halo {
+  fill: transparent;
+  stroke: transparent;
+  stroke-width: 1.5;
+}
+.lab-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  margin: 12px 0 16px;
+}
+.lab-stats div {
+  border-right: 1px solid var(--line);
+  padding-right: 5px;
+}
+.lab-stats div:last-child {
+  border: 0;
+}
+.lab-stats small {
+  display: block;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.3;
+}
+.lab-stats strong {
+  display: block;
+  font: 19px/1.8 var(--hand);
+  font-variant-numeric: tabular-nums;
+}
+.lab-controls {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px 20px;
+  margin: 8px 0;
+}
+.control {
+  min-width: 0;
+  font-size: 16px;
+}
+.control > span,
+.control label {
+  display: block;
+}
+.control .control-label {
+  display: flex;
+  gap: 8px;
+  justify-content: space-between;
+}
+.control output {
+  color: var(--accent);
+  font: 14px/1.5 var(--numeric);
+}
+input[type="range"] {
+  width: 100%;
+  height: 30px;
+  margin: 7px 0;
+  accent-color: var(--accent);
+  cursor: pointer;
+}
+select {
+  width: 100%;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 6px;
+  font-size: 16px;
+}
+input[type="checkbox"] {
+  accent-color: var(--accent);
+  width: 18px;
+  height: 18px;
+  vertical-align: middle;
+  margin-right: 8px;
+}
+.button-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  align-items: center;
+  margin: 8px 0;
+  font-size: 16px;
+}
+.button-row button {
+  flex: 1;
+  white-space: nowrap;
+}
+.legend {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin: 10px 0;
+  font-size: 15px;
+  color: var(--muted);
+}
+.legend span::before {
+  content: "";
+  display: inline-block;
+  width: 13px;
+  height: 3px;
+  margin-right: 6px;
+  background: var(--legend, var(--blue));
+  vertical-align: middle;
+}
+.legend .dot::before {
+  height: 8px;
+  width: 8px;
+  border-radius: 50%;
+  background: var(--ink);
+}
+.lab-caption {
+  font-size: 16px;
+  color: var(--muted);
+  margin: 12px 0 0;
+  line-height: 1.5;
+  border-top: 1px dashed var(--line);
+  padding-top: 12px;
+}
+.motion-status {
+  font-size: 13px;
+  color: var(--accent);
+  min-height: 18px;
+  margin: 3px 0 -4px;
+}
+.live-announcement {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
+.lab-notice {
+  font-size: 15px;
+  color: var(--accent);
+  margin: 8px 0;
+}
+.lab-options {
+  margin-top: 12px;
+  font-size: 16px;
+}
+.lab-options summary {
+  padding: 8px 0;
+}
+.lab-options > div {
+  padding: 0;
+}
+.evidence-controls {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+.evidence-controls .control {
+  font-size: 17px;
+}
+.evidence-controls select {
+  font-size: 15px;
+  padding: 6px 3px;
+}
+.fold-buttons {
+  display: flex;
+  gap: 8px;
+}
+.fold-buttons button {
+  flex: 1;
+  padding: 6px;
+}
+.inspection {
+  font-size: 15px;
+  padding: 10px 12px;
+  background: #f0f3e9;
+  border-radius: 5px;
+  margin: 10px 0;
+  min-height: 42px;
+}
+.question {
+  margin: 18px 0;
+}
+fieldset {
+  border: 0;
+  margin: 0;
+  padding: 0;
+  min-width: 0;
+}
+legend {
+  margin-bottom: 10px;
+  font-size: 19px;
+}
+.quiz-option {
+  display: block;
+  width: 100%;
+  text-align: left;
+  margin: 7px 0;
+  font-size: 17px;
+  white-space: normal;
+}
+.quiz-option[data-chosen="true"] {
+  border-color: var(--accent);
+  background: #edf2e7;
+}
+.feedback {
+  font-size: 17px;
+  margin: 8px 0;
+}
+.static-answer {
+  font-size: 17px;
+}
+.statml-rigor-panel {
+  padding: 20px 0;
+  margin-top: 22px;
+  background: none;
+  border: 0;
+  border-top: 1px solid var(--line);
+}
+.statml-rigor-panel h3 {
+  font-size: 24px;
+}
+.statml-rigor-grid {
+  display: block;
+}
+.statml-rigor-grid > div {
+  margin-bottom: 12px;
+}
+.statml-rigor-grid h4 {
+  font-size: 18px;
+  margin: 0;
+  font-weight: normal;
+  color: var(--accent);
+}
+.statml-rigor-grid p {
+  font-size: 17px;
+}
+.notebook-footer {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  max-width: 1340px;
+  margin: auto;
+  padding: 25px;
+  border-top: 1px solid var(--line);
+  font-size: 17px;
+}
+.mobile-lab-bar {
+  display: none;
+}
+.lab-dialog {
+  width: min(760px, calc(100vw - 20px));
+  max-height: 94dvh;
+  border: 1px solid var(--line);
+  border-radius: 15px;
+  padding: 0;
+  background: var(--paper);
+  color: var(--ink);
+}
+.lab-dialog::backdrop {
+  background: #20372f60;
+  backdrop-filter: blur(4px);
+}
+.dialog-header {
+  display: flex;
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  gap: 8px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px;
+  background: var(--paper);
+  font-size: 18px;
+}
+.dialog-header button {
+  font-size: 16px;
+}
+.dialog-body {
+  padding: 0 10px 12px;
+}
+.dialog-body .lab-panel {
+  box-shadow: none;
+}
+@media (min-width: 901px) and (max-height: 850px) {
+  .lab-home {
+    top: 75px;
+  }
+  .lab-panel {
+    padding: 16px;
+  }
+  .lab-header {
+    margin-bottom: 5px;
+  }
+  .lab-header h2 {
+    font-size: 24px;
+  }
+  .lab-caption {
+    margin-top: 8px;
+    padding-top: 8px;
+    font-size: 15px;
+  }
+  .lab-stats {
+    margin: 6px 0;
+  }
+}
+@media (max-width: 1100px) {
+  .notebook-layout {
+    gap: 30px;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+  .lab-panel {
+    padding: 18px;
+  }
+  .nav-title {
+    display: none;
+  }
+}
+@media (max-width: 900px) {
+  .statml-site-nav {
+    padding: 7px 16px;
+    gap: 8px;
+    font-size: 16px;
+    min-height: 56px;
+  }
+  .statml-nav-meta {
+    display: none;
+  }
+  .lesson-toolbar {
+    padding: 6px 16px;
+    gap: 6px;
+    height: 56px;
+  }
+  .lesson-toolbar label {
+    font-size: 15px;
+  }
+  .lesson-toolbar select {
+    font-size: 16px;
+    padding-left: 0;
+  }
+  .stage-progress {
+    font-size: 14px;
+    min-width: 44px;
+  }
+  .mobile-lab-bar {
+    position: sticky;
+    top: 56px;
+    z-index: 7;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 10px 16px;
+    background: #f1f2e7;
+    border-bottom: 1px solid #d5dacb;
+    min-height: 73px;
+  }
+  .mobile-lab-bar > span {
+    min-width: 0;
+    max-width: 60%;
+  }
+  .mobile-lab-bar small {
+    display: block;
+    font: 10px var(--numeric);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--muted);
+  }
+  .mobile-lab-bar strong {
+    display: block;
+    font-size: 15px;
+    font-weight: normal;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .mobile-lab-bar button {
+    font-size: 15px;
+    padding: 6px 10px;
+    flex-shrink: 0;
+  }
+  .notebook-layout {
+    display: block;
+    max-width: 700px;
+    padding: 15px 22px 40px;
+  }
+  .lab-home {
+    display: none;
+  }
+  .hero {
+    padding-top: 22px;
+  }
+  .hero h1 {
+    font-size: 42px;
+  }
+  .stage {
+    scroll-margin-top: 148px;
+    padding-top: 25px;
+    min-height: 0;
+    padding-bottom: 35px;
+  }
+  .answer {
+    font-size: 21px;
+  }
+  .notebook-footer {
+    flex-direction: column;
+  }
+  .lab-panel {
+    padding: 15px;
+  }
+  .lab-header h2 {
+    font-size: 24px;
+  }
+  .lab-controls {
+    gap: 8px 15px;
+  }
+  .lab-dialog {
+    font-size: 19px;
+  }
+  .lab-stats strong {
+    font-size: 18px;
+  }
+  .lab-caption {
+    font-size: 16px;
+  }
+  .evidence-controls {
+    gap: 7px;
+  }
+}
+@media (max-width: 360px) {
+  .notebook-layout {
+    padding: 10px 15px 35px;
+  }
+  h2 {
+    font-size: 27px;
+  }
+  .receipt {
+    padding: 14px 12px;
+  }
+  th,
+  td {
+    padding: 8px 4px;
+  }
+  .pathway {
+    grid-template-columns: 1fr;
+  }
+  .lab-panel {
+    padding: 10px;
+  }
+  .dialog-header strong {
+    font-size: 16px;
+  }
+  .evidence-controls {
+    grid-template-columns: 1fr 1fr;
+  }
+  .mobile-lab-bar {
+    padding: 8px 12px;
+    gap: 8px;
+  }
+  .lab-controls {
+    gap: 6px 10px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition: none !important;
+    animation: none !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+@media (min-width: 901px) {
+  .lab-home {
+    max-height: calc(100dvh - 96px);
+    overflow-y: auto;
+    scrollbar-width: thin;
+    padding: 6px 4px 5px;
+  }
+}
+
+/* Extended lessons use the same paper, type, surfaces and motion as the pilots. */
+.scene-kicker {
+  color: var(--muted);
+  font-size: 17px;
+  margin: 0 0 6px;
+}
+.lab-receipt {
+  margin-top: 16px;
+  font-size: 17px;
+}
+.lab-receipt table {
+  font-size: 16px;
+}
+.lab-receipt th {
+  width: 38%;
+  font-weight: 400;
+}
+.lab-receipt td {
+  overflow-wrap: anywhere;
+}
+.reference-reading {
+  margin-top: 24px;
+  padding-top: 18px;
+  border-top: 1px dashed var(--line);
+}
+.reference-reading h3,
+.reference-reading h4 {
+  margin-top: 22px;
+}
+.reference-label {
+  color: var(--muted);
+  font-size: 16px;
+}
+.reference-reading table {
+  width: 100%;
+  table-layout: fixed;
+  font-size: 17px;
+}
+.reference-reading td,
+.reference-reading th {
+  overflow-wrap: anywhere;
+}
+.reference-reading math {
+  font-family: math, "STIX Two Math", serif;
+  font-size: 0.93em;
+  max-width: 100%;
+  overflow-x: auto;
+}
+.reference-reading math[display="block"] {
+  display: block;
+  padding: 12px 0;
+}
+.legacy-anchor {
+  display: block;
+  scroll-margin-top: 170px;
+}
+.topic-directory {
+  max-width: 1300px;
+  margin: 0 auto 36px;
+  padding: 0 28px;
+}
+.topic-directory summary {
+  cursor: pointer;
+  color: var(--accent);
+}
+.topic-directory nav {
+  columns: 3 220px;
+  padding: 16px 0;
+}
+.topic-directory a {
+  display: block;
+  break-inside: avoid;
+  padding: 6px 0;
+  font-size: 18px;
+}
+[data-engine] .lab-stats strong {
+  font-size: 23px;
+}
+[data-engine] .lab-stats small {
+  overflow-wrap: anywhere;
+}
+@media (max-width: 600px) {
+  .reference-reading table {
+    font-size: 15px;
+  }
+  .lab-receipt table {
+    font-size: 15px;
+  }
+  .topic-directory {
+    padding: 0 18px;
+  }
+}
+[data-engine] .plot circle,
+[data-engine] .plot rect,
+[data-engine] .plot line,
+[data-engine] .plot path {
+  transition:
+    fill 160ms ease-out,
+    stroke 160ms ease-out,
+    opacity 160ms ease-out;
+}
+.reference-reading pre {
+  max-width: 100%;
+  overflow-x: auto;
+  padding: 12px;
+  background: #eeeee2;
+  border-radius: 6px;
+}
+.reference-reading code {
+  font: 14px/1.6 var(--numeric);
+}

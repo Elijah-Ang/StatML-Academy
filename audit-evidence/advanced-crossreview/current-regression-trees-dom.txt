@@ -1,0 +1,473 @@
+- navigation "StatML Academy navigation":
+  - link "S StatML Academy":
+    - /url: ../index.html
+    - text: S
+    - generic: StatML Academy
+  - generic: Regression Trees
+  - 'link "Previous module: Polynomial Regression"':
+    - /url: polynomial-regression.html
+    - text: ←
+  - 'link "Next module: Logistic Regression"':
+    - /url: logistic-regression.html
+    - text: →
+  - generic: module 08/21
+- generic: Machine Learning · Tree Models
+- heading "Regression Trees" [level=1]: Regression Trees
+- paragraph: A visual guide to predicting numbers through recursive logic, top-down optimization, and simple math.
+- generic "Lesson outcomes":
+  - generic: "1"
+  - generic: Partition predictor space into constant-value regions
+  - generic: "2"
+  - generic: Understand RSS-based splitting and pruning
+  - generic: "3"
+  - generic: Compare tree predictions with linear regression
+- generic: Scroll to begin ↓
+- article:
+  - generic: Stage 01 · Observe
+  - heading "The Raw Target" [level=2]: The Raw Target
+  - generic: Before you start
+  - paragraph: A regression tree predicts a number by averaging training outcomes within a terminal leaf. The fitted function is therefore piecewise constant.
+  - paragraph:
+    - text: A regression tree is a model that helps us predict a
+    - strong: number
+    - text: . Not a category like "cat or dog", but a continuous value like an exam score, temperature, or a house price.
+  - paragraph:
+    - text: Let's look at a small dataset of houses. We want to predict the
+    - generic: Price
+    - text: (in thousands) based entirely on the
+    - generic: Size
+    - text: of the house (in square meters).
+  - paragraph: Look at the canvas. The horizontal axis is Size (m²), and the vertical axis is Price (in thousands of dollars, or $k). Hover over the canvas to see active tooltips.
+- article:
+  - generic: Stage 02 · Understand
+  - heading "From Dataset to Model" [level=2]: From Dataset to Model
+  - paragraph: Before teaching an algorithm, we need a disciplined plan. A standard Machine Learning workflow protects us from creating models that look perfect on paper but fail in the real world.
+  - generic: "The ML Pipeline:"
+  - generic: Target y
+  - generic: The number we want to predict (e.g., Price).
+  - generic: Features X
+  - generic: The inputs we use (e.g., Size).
+  - generic: Data Split
+  - text: Divide points into
+  - strong: Training
+  - text: and
+  - strong: Validation
+  - text: sets.
+  - generic: Tune & Predict
+  - generic: Limit tree growth to generalize and make unseen predictions.
+  - strong: "Look at the canvas:"
+  - text: The data has been split. We use the 16
+  - strong: training houses
+  - text: to grow our tree, keeping 6
+  - strong: validation houses
+  - text: hidden to test general performance.
+- article:
+  - generic: Stage 03 · Understand
+  - heading "The Clumsy Guess" [level=2]: The Clumsy Guess
+  - paragraph:
+    - text: At the very start, the tree puts all houses in one big group (the
+    - strong: Root Node
+    - text: "). Before asking any questions, it asks:"
+    - emphasis: "\"If I had to guess one price for all houses, what should I use?\""
+  - paragraph:
+    - text: The standard answer is the
+    - strong: average
+    - text: . If we take all 16 training house prices and average them, we get exactly $483.1k.
+  - text: Root Prediction = Average(y) = 483.1
+  - paragraph:
+    - text: This is a clumsy guess. The red lines on the canvas show the
+    - strong: Residuals
+    - text: —the mathematical distance (errors) between our flat guess and reality.
+- article:
+  - generic: Stage 04 · Build
+  - heading "The First Split" [level=2]: The First Split
+  - paragraph:
+    - text: "Now the tree asks a question to divide the data:"
+    - emphasis: "\"Can I split the houses into 2 groups so the prices inside each group become more similar?\""
+  - paragraph:
+    - text: "It checks a \"cut point\". Based on the math, the best first rule is:"
+    - strong: Is Size ≤ 100?
+  - text: If
+  - strong: "Yes"
+  - text: ", go Left. If"
+  - strong: "No"
+  - text: ", go Right."
+  - paragraph:
+    - text: Now, instead of one average for everything, we have
+    - strong: two averages
+    - text: . A lower average ($363.3k) for smaller houses, and a higher average ($637.1k) for bigger houses.
+- article:
+  - generic: Stage 05 · Understand
+  - heading "The Error Engine (RSS)" [level=2]: The Error Engine (RSS)
+  - paragraph: How did it know to split exactly at 100? The algorithm is "Greedy". It tests candidate split points between sorted training values and chooses the one that leaves the least amount of mess.
+  - paragraph:
+    - text: It measures "mess" using the
+    - strong: Residual Sum of Squares (RSS)
+    - text: . It squares all the red error lines and adds them up. Lower RSS is always better.
+  - generic: Before vs After Split
+  - generic: 356,944
+  - generic: Root RSS
+  - generic: ...
+  - generic: Split RSS
+  - generic: ...
+  - generic: Reduction
+  - generic: "Test Threshold: Size ≤ 100 m²"
+  - slider "Interactive parameter 1": "100"
+  - generic: 61,744
+  - generic: Total RSS
+  - button "Snap to Minimum RSS"
+  - paragraph: Look at the mini-chart on the canvas. The true optimal split is the absolute bottom of that curve.
+- article:
+  - generic: Stage 06 · Observe
+  - heading "Real Trees Check Many Questions" [level=2]: Real Trees Check Many Questions
+  - paragraph: In real machine learning, a regression tree is not limited to checking just one feature. It considers multiple input variables simultaneously, checking every possible partition point across size, age, rooms, and locations.
+  - paragraph:
+    - text: The tree runs a
+    - strong: "\"Greedy Search\""
+    - text: ": it picks the single feature and threshold that yields the largest drop in RSS."
+  - paragraph: "Interactive: Click any candidate split to visualize its partition boundary and resulting RSS on the right."
+  - table:
+    - rowgroup:
+      - row "Feature Candidate Rule Post RSS Reduction":
+        - columnheader "Feature"
+        - columnheader "Candidate Rule"
+        - columnheader "Post RSS"
+        - columnheader "Reduction"
+    - rowgroup:
+      - row "Size Size ≤ 100 m² 61,743 +295,201":
+        - cell "Size"
+        - cell "Size ≤ 100 m²"
+        - cell "61,743"
+        - cell "+295,201"
+      - row "Rooms Rooms ≤ 3 74,300 +282,644":
+        - cell "Rooms"
+        - cell "Rooms ≤ 3"
+        - cell "74,300"
+        - cell "+282,644"
+      - row "MRT Dist Distance ≤ 2 km 82,000 +274,944":
+        - cell "MRT Dist"
+        - cell "Distance ≤ 2 km"
+        - cell "82,000"
+        - cell "+274,944"
+      - row "Age Age ≤ 15 years 90,500 +266,444":
+        - cell "Age"
+        - cell "Age ≤ 15 years"
+        - cell "90,500"
+        - cell "+266,444"
+  - paragraph: "Note: For teaching clarity, the extra feature splits here are illustrative. In a real dataset, the tree would calculate these RSS values from actual feature columns."
+  - strong: "Winning Split:"
+  - text: Size wins because partitioning by Size ≤ 100 m² leaves the least error (lowest post-split RSS) among all candidate features.
+- article:
+  - generic: Stage 07 · Build
+  - heading "Recursive Splitting" [level=2]: Recursive Splitting
+  - paragraph: After finding the best first split, the tree does the exact same thing inside each new group. It splits, then splits inside the split. Like cutting a cake into pieces, then cutting those pieces again.
+  - paragraph:
+    - text: This is called
+    - strong: Recursive Binary Splitting
+    - text: . With every split, the prediction line stops looking flat and starts looking like a set of stairs.
+  - 'button "Play: Grow Tree Sequentially"'
+  - paragraph: Watch the regions split and slide to form deeper nodes.
+- article:
+  - generic: Stage 08 · Understand
+  - heading "The Anatomy of a Tree" [level=2]: The Anatomy of a Tree
+  - paragraph: Even though we call it a tree, data scientists draw them upside down.
+  - list:
+    - strong: "Root Node:"
+    - text: The top, where all data starts.
+    - strong: "Internal Node:"
+    - text: A fork in the road where a decision is checked (e.g., Size ≤ 100).
+    - strong: "Terminal Node (Leaf):"
+    - text: The final box that gives the prediction number.
+  - strong: "Interactive:"
+  - text: Move your mouse over the canvas right now. The tree diagram will light up to trace the exact decision path for the region your cursor is in.
+- article:
+  - generic: Stage 09 · Build
+  - heading "The Overfitting Trap" [level=2]: The Overfitting Trap
+  - paragraph: What happens if we never tell the tree to stop? It will keep splitting until every single data point is alone in its own leaf, creating a zero-error fit on training data.
+  - paragraph:
+    - text: This creates a massive risk of
+    - strong: Overfitting
+    - text: —the model memorizes the random noise in our training set and fails to generalize to unseen houses.
+  - generic: Bias-Variance Tradeoff
+  - table:
+    - rowgroup:
+      - row "Tree Depth Bias Variance Description":
+        - columnheader "Tree Depth"
+        - columnheader "Bias"
+        - columnheader "Variance"
+        - columnheader "Description"
+    - rowgroup:
+      - row "Too Shallow High Low Underfits (Misses pattern)":
+        - cell "Too Shallow"
+        - cell "High"
+        - cell "Low"
+        - cell "Underfits (Misses pattern)"
+      - row "Balanced Medium Medium Best fit (Generalizes)":
+        - cell "Balanced"
+        - cell "Medium"
+        - cell "Medium"
+        - cell "Best fit (Generalizes)"
+      - row "Too Deep Low High Overfits (Memorizes noise)":
+        - cell "Too Deep"
+        - cell "Low"
+        - cell "High"
+        - cell "Overfits (Memorizes noise)"
+  - generic: Overfit Comparison
+  - generic: Depth 2
+  - generic: 4 Leaves · Simplified
+  - generic: Max Depth 10
+  - generic: "Actual Leaves: 16"
+  - paragraph:
+    - strong: "Note:"
+    - text: After every training point is isolated, extra allowed depth no longer changes the tree.
+- article:
+  - generic: Stage 10 · Understand
+  - heading "Stopping Rules" [level=2]: Stopping Rules
+  - paragraph:
+    - text: To prevent overfitting, we enforce
+    - strong: Stopping Rules
+    - text: (also known as pre-pruning). We restrict depth and control minimum partition requirements before splits can occur.
+  - generic: "Validation Metric:"
+  - button "RSS (Error Sum)"
+  - button "MAE (Mean Error)"
+  - button "RMSE (Typical Error)"
+  - generic: Metric Decoder
+  - generic: Error
+  - text: Actual price − predicted price.
+  - generic: RSS
+  - text: Σ(actual − predicted)²
+  - paragraph: Add up all squared errors. Excellent for comparing model error, though numbers become quite large due to squaring.
+  - generic: MAE
+  - text: average(|actual − predicted|)
+  - paragraph: Average absolute mistake. Easiest to explain because it matches the original unit ($k).
+  - generic: RMSE
+  - text: √average((actual − predicted)²)
+  - paragraph: Square root of average squared error. Expressed in original units ($k), but heavily punishes larger individual mistakes.
+  - strong: "Example:"
+  - text: If MAE = $30.0k, the model is off by about $30,000 on average. If RMSE = $33.0k, the typical error is about $33,000, with bigger mistakes punished more strongly.
+  - generic: Why compare Train vs Validation?
+  - text: •
+  - strong: Training Error
+  - text: tells us how well the tree fits the data it learned from.
+  - text: •
+  - strong: Validation Error
+  - text: tells us how well it performs on unseen, hidden houses.
+  - generic: • A deep tree can drive training error down to zero by memorizing noise, but will perform poorly on validation data.
+  - text: •
+  - strong: "Rule of thumb:"
+  - text: Always choose settings that minimize validation error. If two trees perform similarly, choose the simpler one!
+  - generic: "Max Depth: 2"
+  - slider "Interactive parameter 2": "2"
+  - generic: "Min Samples per Leaf: 1"
+  - slider "Interactive parameter 3": "1"
+  - generic: Total Leaf Nodes
+  - generic: "4"
+  - generic: ...
+  - generic: Train RSS
+  - generic: ...
+  - generic: Validation RSS
+  - generic: Current Decision Analysis
+  - paragraph: Evaluating current parameters...
+  - paragraph: The tuning curve changes max depth while holding leaf size fixed; the heatmap compares depth and leaf size together.
+  - text: How to Choose Stopping Rules
+  - list:
+    - strong: Do not choose
+    - text: the model based solely on the lowest training error.
+    - strong: Use validation error
+    - text: to estimate performance on unseen, real-world data.
+    - strong: Prefer lower validation error.
+    - text: Minimize this value to find the sweet spot.
+    - strong: If two settings perform similarly
+    - text: ", always pick the simpler tree (Occam's razor)."
+    - strong: "Use both rules together:"
+    - code: max_depth
+    - text: limits levels, while
+    - code: min_samples_leaf
+    - text: prevents tiny leaves that isolate individual outliers.
+  - paragraph: Notice that making the tree deeper eventually makes training error drop to 0, but the validation error starts increasing. That turning point is the sweet spot.
+- article:
+  - generic: Stage 11 · Build
+  - 'heading "Pruning: Let It Grow, Then Cut It Back" [level=2]': "Pruning: Let It Grow, Then Cut It Back"
+  - paragraph: Sometimes stopping early (pre-pruning) can be too short-sighted. It might stop before discovering splits that become useful in combination with other splits.
+  - paragraph:
+    - text: The alternative is
+    - strong: Post-Pruning
+    - text: ": We allow the tree to grow deep first, and then collapse weak, low-utility sub-branches back into parent leaf nodes using a complexity penalty called"
+    - code: ccp_alpha
+    - text: .
+  - button "Prune Weak Branches"
+  - paragraph: Look at the canvas to see the overgrown staircase collapse into a cleaner, stable staircase when pruned.
+- article:
+  - generic: Stage 12 · Understand
+  - heading "Trees vs. Lines" [level=2]: Trees vs. Lines
+  - paragraph: Linear regression fits a smooth, straight line. It assumes a constant rate of change. Regression trees carve the world into intervals and assign a flat average to each.
+  - checkbox "Show Tree Model (Indigo)" [checked]
+  - text: Show Tree Model (Indigo)
+  - checkbox "Show Linear Model (Green)" [checked]
+  - text: Show Linear Model (Green)
+  - checkbox "Show Tree Errors"
+  - text: Show Tree Errors
+  - checkbox "Show Linear Errors"
+  - text: Show Linear Errors
+  - paragraph: If the data has sudden thresholds or "if/then" behaviors, trees capture it naturally. If it's a smooth trend, lines win.
+- article:
+  - generic: Stage 13 · Explore
+  - heading "Interactive Playground" [level=2]: Interactive Playground
+  - paragraph: Let's put the model to work. The tree is currently trained at Depth 3.
+  - strong: Click anywhere on the canvas
+  - text: to place a new house. The tree will evaluate it and trace its path.
+  - generic: New House Size
+  - generic: "-- m²"
+  - generic: Predicted Price
+  - generic: "--"
+- article:
+  - generic: Stage 14 · Understand
+  - 'heading "Sample Output: Reading the Tree Result" [level=2]': "Sample Output: Reading the Tree Result"
+  - paragraph: After training the regression tree, we do not just look at the final prediction. We read the rules, follow the decision path, and check the validation metrics to see whether the model generalizes.
+  - generic: "Model Output Settings:"
+  - list:
+    - strong: "Model:"
+    - text: Regression Tree
+    - strong: "Target:"
+    - text: Price ($k)
+    - strong: "Feature used:"
+    - text: Size (m²)
+    - strong: "Max depth:"
+    - text: "3"
+    - strong: "Min samples per leaf:"
+    - text: "1"
+    - strong: "Leaf prediction rule:"
+    - text: Average price of training houses inside that leaf
+  - generic: Trained Regression Tree Output
+  - generic: "1. If Size ≤ 100: If Size ≤ 71.5: If Size ≤ 52.5 → Predict $290.0k Else → Predict $320.0k Else: If Size ≤ 84.0 → Predict $405.0k Else → Predict $460.0k 2. If Size > 100: If Size ≤ 124.0: If Size ≤ 117.5 → Predict $565.0k Else → Predict $620.0k Else: If Size ≤ 140.0 → Predict $645.0k Else → Predict $710.0k"
+  - generic: Interpretation Walkthrough
+  - strong: "Example house:"
+  - text: Size = 112 m²
+  - generic: "Step 1: Is Size ≤ 100? No → go right."
+  - generic: "Step 2: Is Size ≤ 124? Yes → go left."
+  - generic: "Step 3: Is Size ≤ 117.5? Yes → go left."
+  - generic: "Final leaf prediction: $565.0k"
+  - paragraph:
+    - strong: "Plain-English interpretation:"
+    - text: The model predicts about $565,000 because the 112 m² house lands in a leaf containing similar-sized training houses. The prediction is the average price of that leaf, not a guaranteed exact price.
+  - generic: Metric Interpretation
+  - generic: Training
+  - generic: "Train RSS: 1,750"
+  - generic: "Train MAE: $9.4k"
+  - generic: "Train RMSE: $10.5k"
+  - generic: Validation
+  - generic: "Val RSS: 6,550"
+  - generic: "Val MAE: $30.0k"
+  - generic: "Val RMSE: $33.0k"
+  - text: •
+  - strong: "RSS:"
+  - text: total squared error. Lower is better.
+  - text: •
+  - strong: "MAE:"
+  - text: average absolute mistake.
+  - text: •
+  - strong: "RMSE:"
+  - text: typical prediction mistake, with larger errors punished more heavily.
+  - strong: "Interpretation:"
+  - text: Validation RMSE = $33.0k means that on unseen validation houses, the model is typically off by around $33,000. This is more realistic than the training error because the validation houses were not used to grow the tree.
+  - text: "Common Mistake:"
+  - generic: "“Do not say: The model is always correct.”"
+  - generic: "Correct Interpretation:"
+  - generic: "“Say: The model gives an estimate based on the average price of similar training houses in the same leaf.”"
+- article:
+  - generic: Stage 15 · Reflect
+  - 'heading "Reality Check: Limitations" [level=2]': "Reality Check: Limitations"
+  - paragraph: While extremely powerful and explainable, single regression trees have key engineering limitations that you must look out for in practice.
+  - text: Poor Extrapolation
+  - generic: Trend Fail
+  - paragraph: Trees predict flat averages. If a house size is larger than any seen in training (e.g., 220 m²), the tree cannot continue a trend upward; it flatlines at the average of the largest leaf.
+  - text: Jagged Step Predictions
+  - generic: Staircase
+  - paragraph: Real-world factors often rise smoothly. Trees build staircases with sudden step jumps, struggling to cleanly represent smooth curves without huge depths.
+  - text: High Instability (Variance)
+  - generic: High Variance
+  - paragraph: A tiny shift in data (e.g., swapping one point's price) can completely re-arrange the root split boundary, producing a highly unstable prediction layout.
+  - text: Axis-Aligned Splits
+  - generic: Orthogonal
+  - paragraph: Basic trees split one feature at a time at right angles, making it difficult to capture diagonal correlations (like price dropping when size decreases and age increases simultaneously).
+  - text: Easy to Overfit
+  - generic: High Complexity
+  - paragraph: Without strict stopping rules or pruning, deep trees will easily grow until they isolate every single point, memorizing individual training points instead of discovering generalizable patterns.
+  - strong: "Interactive Demo:"
+  - text: Click any card above to see a live visual simulation of that limitation on the right canvas.
+- article:
+  - generic: Stage 16 · Reflect
+  - heading "Synthesis" [level=2]: Synthesis
+  - paragraph: "Let's review the final sequence to build and use a regression tree:"
+  - generic: "1."
+  - text: Put all training data in the
+  - strong: Root Node
+  - text: .
+  - generic: "2."
+  - generic: Test possible splits (greedy thresholds) across all available features.
+  - generic: "3."
+  - text: Pick the feature/split that results in the
+  - strong: lowest RSS
+  - text: .
+  - generic: "4."
+  - generic: Repeat the process recursively inside each new branch.
+  - generic: "5."
+  - generic: Use validation error to choose stopping rules or pruning, instead of trusting training error alone.
+  - generic: "6."
+  - text: Each final leaf predicts the
+  - strong: average target value
+  - text: inside that leaf.
+  - paragraph:
+    - text: While a single regression tree can be unstable on its own, this recursive logic is the fundamental building block for advanced modern algorithms like
+    - strong: Random Forests
+    - text: and
+    - strong: Gradient Boosting
+    - text: .
+  - strong: "Ensemble Learning:"
+  - text: Ensembles improve single trees by combining hundreds of them, smoothing out jagged steps and yielding highly stable predictions.
+  - generic: Complete the picture
+  - heading "Extrapolation and uncertainty" [level=3]
+  - paragraph: A regression tree cannot naturally extrapolate a trend beyond the training range. New extreme values usually inherit the prediction of the outermost leaf.
+  - paragraph: Single-tree predictions can be unstable. Ensembles such as random forests or gradient boosting reduce variance, while conformal or bootstrap methods can add uncertainty estimates when required.
+  - generic: Key takeaways
+  - list:
+    - listitem: Splits are chosen to reduce within-node squared error.
+    - listitem: Pruning trades a little training fit for better generalisation.
+    - listitem: Trees capture interactions and nonlinearities but predict in steps and extrapolate poorly.
+- region "Regression Trees interactive visualisation"
+- contentinfo:
+  - link "All modules":
+    - /url: ../index.html
+- navigation "Lesson stages":
+  - 'button "Go to stage 1: The Raw Target"':
+    - generic: 01 · The Raw Target
+  - 'button "Go to stage 2: From Dataset to Model"':
+    - generic: 02 · From Dataset to Model
+  - 'button "Go to stage 3: The Clumsy Guess"':
+    - generic: 03 · The Clumsy Guess
+  - 'button "Go to stage 4: The First Split"':
+    - generic: 04 · The First Split
+  - 'button "Go to stage 5: The Error Engine (RSS)"':
+    - generic: 05 · The Error Engine (RSS)
+  - 'button "Go to stage 6: Real Trees Check Many Questions"':
+    - generic: 06 · Real Trees Check Many Questions
+  - 'button "Go to stage 7: Recursive Splitting"':
+    - generic: 07 · Recursive Splitting
+  - 'button "Go to stage 8: The Anatomy of a Tree"':
+    - generic: 08 · The Anatomy of a Tree
+  - 'button "Go to stage 9: The Overfitting Trap"':
+    - generic: 09 · The Overfitting Trap
+  - 'button "Go to stage 10: Stopping Rules"':
+    - generic: 10 · Stopping Rules
+  - 'button "Go to stage 11: Pruning: Let It Grow, Then Cut It Back"':
+    - generic: "11 · Pruning: Let It Grow, Then Cut It Back"
+  - 'button "Go to stage 12: Trees vs. Lines"':
+    - generic: 12 · Trees vs. Lines
+  - 'button "Go to stage 13: Interactive Playground"':
+    - generic: 13 · Interactive Playground
+  - 'button "Go to stage 14: Sample Output: Reading the Tree Result"':
+    - generic: "14 · Sample Output: Reading the Tree Result"
+  - 'button "Go to stage 15: Reality Check: Limitations"':
+    - generic: "15 · Reality Check: Limitations"
+  - 'button "Go to stage 16: Synthesis"':
+    - generic: 16 · Synthesis

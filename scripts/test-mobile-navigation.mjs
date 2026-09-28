@@ -40,6 +40,7 @@ const page = await browser.newPage({
   deviceScaleFactor: 2,
 });
 const failures = [];
+await mkdir("/tmp/mobile-audit",{recursive:true});
 try {
   for (const viewport of [
     { width: 320, height: 740 },
@@ -144,36 +145,24 @@ try {
       });
     console.log("Rotation checked", file);
   }
-  // Exercise native touch controls inside the pinned sheets.
-  await page.setViewportSize({ width: 390, height: 844 });
-  await page.goto(base + "/modules/hierarchical-clustering.html");
-  await page
-    .locator(".statml-stage")
-    .filter({ has: page.locator("h2") })
-    .nth(4)
-    .evaluate((e) => e.scrollIntoView({ behavior: "instant" }));
-  await page.waitForTimeout(250);
-  const scrubber = page.locator("#merge-scrubber");
-  await scrubber.tap({ position: { x: 20, y: 18 } });
-  if (!(await scrubber.isVisible()))
-    failures.push("Merge scrubber inaccessible on touch");
-  await page.goto(base + "/modules/deep-learning.html?academy=1");
-  await page
-    .locator("#chapter-7")
-    .evaluate((e) => e.scrollIntoView({ behavior: "instant" }));
-  await page.waitForTimeout(250);
-  await page
-    .getByRole("button", { name: "Run one learning step", exact: true })
-    .tap();
-  await page.waitForTimeout(100);
-  if (
-    (await page.evaluate(() => window.__deepSketch.board.state.learnStep)) !== 1
-  )
-    failures.push("Deep Learning touch training step");
-  await page.getByRole("button", { name: "Enlarge the diagram", exact: true }).tap();
-  if (!(await page.locator("dialog[open]").count()))
-    failures.push("Touch enlargement did not open");
-  await page.getByRole("button", { name: "Close ×", exact: true }).tap();
+  // Exercise the same persistent native dialog and controls with touch.
+  await page.setViewportSize({width:390,height:844});
+  await page.goto(base+'/modules/hierarchical-clustering.html');
+  await page.waitForFunction(()=>!!window.__notebook);
+  await page.locator('[data-stage="5"]').evaluate(el=>el.scrollIntoView({behavior:'instant',block:'start'}));
+  await page.locator('[data-open-lab]').tap();
+  const scrubber=page.locator('#merge');
+  await scrubber.tap({position:{x:20,y:10}});
+  if(!await scrubber.isVisible())failures.push('Merge control inaccessible on touch');
+  await page.locator('[data-close-lab]').tap();
+  await page.goto(base+'/modules/deep-learning.html');
+  await page.waitForFunction(()=>!!window.__notebook);
+  await page.locator('[data-stage="7"]').evaluate(el=>el.scrollIntoView({behavior:'instant',block:'start'}));
+  await page.locator('[data-open-lab]').tap();
+  if(!await page.locator('dialog[open]').count())failures.push('Touch experiment did not open');
+  for(let i=0;i<3;i++)await page.locator('#cycle-next').tap();
+  if(await page.evaluate(()=>window.__notebook.controller.data.steps)!==1)failures.push('Deep learning touch update failed');
+  await page.locator('[data-close-lab]').tap();
   if (failures.length) {
     console.error(failures.join("\n"));
     throw Error(failures.join("\n"));

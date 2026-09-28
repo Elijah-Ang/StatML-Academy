@@ -1,0 +1,432 @@
+[
+  {
+    "pageName": "hierarchical-clustering",
+    "n": 9,
+    "results": [
+      {
+        "i": 0,
+        "label": "Go to stage 1: The Uncharted Planet",
+        "ok": true,
+        "st": {
+          "active": [
+            "statml-stage-1"
+          ],
+          "url": "http://127.0.0.1:8765/modules/hierarchical-clustering.html",
+          "visual": "",
+          "y": 590
+        }
+      },
+      {
+        "i": 1,
+        "label": "Go to stage 2: Measuring \"Close\"",
+        "ok": true,
+        "st": {
+          "active": [
+            "statml-stage-2"
+          ],
+          "url": "http://127.0.0.1:8765/modules/hierarchical-clustering.html",
+          "visual": "",
+          "y": 1507
+        }
+      },
+      {
+        "i": 2,
+        "label": "Go to stage 3: The First Merge",
+        "ok": true,
+        "st": {
+          "active": [
+            "statml-stage-3"
+          ],
+          "url": "http://127.0.0.1:8765/modules/hierarchical-clustering.html",
+          "visual": "",
+          "y": 2215
+        }
+      },
+      {
+        "i": 3,
+        "label": "Go to stage 4: Defining Group Distance (Linkage)",
+        "ok": true,
+        "st": {
+          "active": [
+            "statml-stage-3"
+          ],
+          "url": "http://127.0.0.1:8765/modules/hierarchical-clustering.html",
+          "visual": "",
+          "y": 2878
+        }
+      },
+      {
+        "i": 4,
+        "label": "Go to stage 5: The Process in Motion",
+        "ok": true,
+        "st": {
+          "active": [
+            "statml-stage-5"
+          ],
+          "url": "http://127.0.0.1:8765/modules/hierarchical-clustering.html",
+          "visual": "",
+          "y": 4346
+        }
+      },
+      {
+        "i": 5,
+        "label": "Go to stage 6: The Family Tree (Dendrogram)",
+        "ok": true,
+        "st": {
+          "active": [
+            "statml-stage-6"
+          ],
+          "url": "http://127.0.0.1:8765/modules/hierarchical-clustering.html",
+          "visual": "",
+          "y": 5223
+        }
+      },
+      {
+        "i": 6,
+        "label": "Go to stage 7: Cutting the Tree",
+        "ok": true,
+        "st": {
+          "active": [
+            "statml-stage-7"
+          ],
+          "url": "http://127.0.0.1:8765/modules/hierarchical-clustering.html",
+          "visual": "",
+          "y": 5890
+        }
+      },
+      {
+        "i": 7,
+        "label": "Go to stage 8: The Detective's Challenge",
+        "ok": true,
+        "st": {
+          "active": [
+            "statml-stage-8"
+          ],
+          "url": "http://127.0.0.1:8765/modules/hierarchical-clustering.html",
+          "visual": "",
+          "y": 6726
+        }
+      },
+      {
+        "i": 8,
+        "label": "Go to stage 9: Synthesis & Recap",
+        "ok": true,
+        "st": {
+          "active": [
+            "statml-stage-8"
+          ],
+          "url": "http://127.0.0.1:8765/modules/hierarchical-clustering.html",
+          "visual": "",
+          "y": 7462
+        }
+      }
+    ]
+  },
+  {
+    "pageName": "lda",
+    "n": 15,
+    "results": [
+      {
+        "i": 0,
+        "label": "Go to stage 1: The Raw Data",
+        "ok": true,
+        "st": {
+          "active": [],
+          "url": "http://127.0.0.1:8765/modules/lda.html",
+          "visual": "",
+          "y": 693
+        }
+      },
+      {
+        "i": 1,
+        "label": "Go to stage 2: Choosing Good Features",
+        "ok": true,
+        "st": {
+          "active": [],
+          "url": "http://127.0.0.1:8765/modules/lda.html",
+          "visual": "",
+          "y": 3111
+        }
+      },
+      {
+        "i": 2,
+        "label": "Go to stage 3: Train / Test Split",
+        "ok": true,
+        "st": {
+          "active": [],
+          "url": "http://127.0.0.1:8765/modules/lda.html",
+          "visual": "",
+          "y": 4411
+        }
+      },
+      {
+        "i": 3,
+        "label": "Go to stage 4: Group by Class",
+        "ok": true,
+        "st": {
+          "active": [],
+          "url": "http://127.0.0.1:8765/modules/lda.html",
+          "visual": "",
+          "y": 5392
+        }
+      },
+      {
+        "i": 4,
+        "label": "Go to stage 5: Compute Class Means",
+        "ok": true,
+        "st": {
+          "active": [],
+          "url": "http://127.0.0.1:8765/modules/lda.html",
+          "visual": "",
+          "y": 6170
+        }
+      },
+      {
+        "i": 5,
+        "label": "Go to stage 6: Within-Class Scatter",
+        "ok": true,
+        "st": {
+          "active": [],
+          "url": "http://127.0.0.1:8765/modules/lda.html",
+          "visual": "",
+          "y": 7491
+        }
+      },
+      {
+        "i": 6,
+        "label": "Go to stage 7: The Shared Covariance Assumption",
+        "ok": true,
+        "st": {
+          "active": [],
+          "url": "http://127.0.0.1:8765/modules/lda.html",
+          "visual": "",
+          "y": 8993
+        }
+      },
+      {
+        "i": 7,
+        "label": "Go to stage 8: Between-Class Scatter",
+        "ok": true,
+        "st": {
+          "active": [],
+          "url": "http://127.0.0.1:8765/modules/lda.html",
+          "visual": "",
+          "y": 10598
+        }
+      },
+      {
+        "i": 8,
+        "label": "Go to stage 9: The Optimal Direction",
+        "ok": true,
+        "st": {
+          "active": [],
+          "url": "http://127.0.0.1:8765/modules/lda.html",
+          "visual": "",
+          "y": 11804
+        }
+      },
+      {
+        "i": 9,
+        "label": "Go to stage 10: The Decision Boundary",
+        "ok": true,
+        "st": {
+          "active": [],
+          "url": "http://127.0.0.1:8765/modules/lda.html",
+          "visual": "",
+          "y": 12832
+        }
+      },
+      {
+        "i": 10,
+        "label": "Go to stage 11: Classifying Test Points",
+        "ok": true,
+        "st": {
+          "active": [],
+          "url": "http://127.0.0.1:8765/modules/lda.html",
+          "visual": "",
+          "y": 14503
+        }
+      },
+      {
+        "i": 11,
+        "label": "Go to stage 12: Evaluating the Model",
+        "ok": true,
+        "st": {
+          "active": [],
+          "url": "http://127.0.0.1:8765/modules/lda.html",
+          "visual": "",
+          "y": 15910
+        }
+      },
+      {
+        "i": 12,
+        "label": "Go to stage 13: Reading LDA Output",
+        "ok": true,
+        "st": {
+          "active": [],
+          "url": "http://127.0.0.1:8765/modules/lda.html",
+          "visual": "",
+          "y": 17571
+        }
+      },
+      {
+        "i": 13,
+        "label": "Go to stage 14: Assumptions & Limitations",
+        "ok": true,
+        "st": {
+          "active": [],
+          "url": "http://127.0.0.1:8765/modules/lda.html",
+          "visual": "",
+          "y": 19418
+        }
+      },
+      {
+        "i": 14,
+        "label": "Go to stage 15: Interactive Playground",
+        "ok": true,
+        "st": {
+          "active": [],
+          "url": "http://127.0.0.1:8765/modules/lda.html",
+          "visual": "",
+          "y": 20973
+        }
+      }
+    ]
+  },
+  {
+    "pageName": "qda",
+    "n": 10,
+    "results": [
+      {
+        "i": 0,
+        "label": "Go to stage 1: The Raw Data Cloud",
+        "ok": true,
+        "st": {
+          "active": [
+            "statml-stage-1"
+          ],
+          "url": "http://127.0.0.1:8765/modules/qda.html",
+          "visual": "",
+          "y": 590
+        }
+      },
+      {
+        "i": 1,
+        "label": "Go to stage 2: Train / Test Split",
+        "ok": true,
+        "st": {
+          "active": [
+            "statml-stage-2"
+          ],
+          "url": "http://127.0.0.1:8765/modules/qda.html",
+          "visual": "",
+          "y": 2317
+        }
+      },
+      {
+        "i": 2,
+        "label": "Go to stage 3: The Straight-Line Trap (LDA)",
+        "ok": true,
+        "st": {
+          "active": [
+            "statml-stage-3"
+          ],
+          "url": "http://127.0.0.1:8765/modules/qda.html",
+          "visual": "",
+          "y": 3627
+        }
+      },
+      {
+        "i": 3,
+        "label": "Go to stage 4: Fitting QDA: What the Model Learns",
+        "ok": true,
+        "st": {
+          "active": [
+            "statml-stage-4"
+          ],
+          "url": "http://127.0.0.1:8765/modules/qda.html",
+          "visual": "",
+          "y": 4558
+        }
+      },
+      {
+        "i": 4,
+        "label": "Go to stage 5: Testing with Shape-Aware Distance",
+        "ok": true,
+        "st": {
+          "active": [
+            "statml-stage-5"
+          ],
+          "url": "http://127.0.0.1:8765/modules/qda.html",
+          "visual": "",
+          "y": 6190
+        }
+      },
+      {
+        "i": 5,
+        "label": "Go to stage 6: The Curved Boundary",
+        "ok": true,
+        "st": {
+          "active": [
+            "statml-stage-6"
+          ],
+          "url": "http://127.0.0.1:8765/modules/qda.html",
+          "visual": "",
+          "y": 8090
+        }
+      },
+      {
+        "i": 6,
+        "label": "Go to stage 7: Evaluating QDA on Unseen Data",
+        "ok": true,
+        "st": {
+          "active": [
+            "statml-stage-7"
+          ],
+          "url": "http://127.0.0.1:8765/modules/qda.html",
+          "visual": "",
+          "y": 9259
+        }
+      },
+      {
+        "i": 7,
+        "label": "Go to stage 8: Reading QDA Output",
+        "ok": true,
+        "st": {
+          "active": [
+            "statml-stage-7"
+          ],
+          "url": "http://127.0.0.1:8765/modules/qda.html",
+          "visual": "",
+          "y": 11629
+        }
+      },
+      {
+        "i": 8,
+        "label": "Go to stage 9: Regularization & Shape Playground",
+        "ok": true,
+        "st": {
+          "active": [
+            "statml-stage-9"
+          ],
+          "url": "http://127.0.0.1:8765/modules/qda.html",
+          "visual": "",
+          "y": 13407
+        }
+      },
+      {
+        "i": 9,
+        "label": "Go to stage 10: Assumptions, Complexity & Synthesis",
+        "ok": true,
+        "st": {
+          "active": [
+            "statml-stage-10"
+          ],
+          "url": "http://127.0.0.1:8765/modules/qda.html",
+          "visual": "",
+          "y": 14972
+        }
+      }
+    ]
+  }
+]

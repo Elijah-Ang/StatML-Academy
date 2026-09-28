@@ -1,0 +1,263 @@
+[
+  {
+    "slug": "anova",
+    "preservedState": true,
+    "retainedSVG": true,
+    "focus": true,
+    "reducedMotion": true,
+    "idle": true,
+    "referenceOverflow": false
+  },
+  {
+    "slug": "correlation",
+    "preservedState": true,
+    "retainedSVG": true,
+    "focus": true,
+    "reducedMotion": true,
+    "idle": true,
+    "referenceOverflow": false
+  },
+  {
+    "slug": "chi-square",
+    "preservedState": true,
+    "retainedSVG": true,
+    "focus": true,
+    "reducedMotion": true,
+    "idle": true,
+    "referenceOverflow": false
+  },
+  {
+    "slug": "time-series-analysis",
+    "preservedState": true,
+    "retainedSVG": true,
+    "focus": true,
+    "reducedMotion": true,
+    "idle": true,
+    "referenceOverflow": false
+  },
+  {
+    "slug": "probability-sampling",
+    "preservedState": true,
+    "retainedSVG": true,
+    "focus": true,
+    "reducedMotion": true,
+    "idle": true,
+    "referenceOverflow": false
+  },
+  {
+    "slug": "confidence-hypothesis-testing",
+    "preservedState": true,
+    "retainedSVG": true,
+    "focus": true,
+    "reducedMotion": true,
+    "idle": true,
+    "referenceOverflow": false
+  },
+  {
+    "slug": "multiple-linear-regression",
+    "preservedState": true,
+    "retainedSVG": true,
+    "focus": true,
+    "reducedMotion": true,
+    "idle": true,
+    "referenceOverflow": false
+  },
+  {
+    "slug": "polynomial-regression",
+    "preservedState": true,
+    "retainedSVG": true,
+    "focus": true,
+    "reducedMotion": true,
+    "idle": true,
+    "referenceOverflow": false
+  },
+  {
+    "slug": "regression-diagnostics",
+    "preservedState": true,
+    "retainedSVG": true,
+    "focus": true,
+    "reducedMotion": true,
+    "idle": true,
+    "referenceOverflow": false
+  },
+  {
+    "slug": "bias-variance",
+    "preservedState": true,
+    "retainedSVG": true,
+    "focus": true,
+    "reducedMotion": true,
+    "idle": true,
+    "referenceOverflow": false
+  },
+  {
+    "slug": "model-selection",
+    "preservedState": true,
+    "retainedSVG": true,
+    "focus": true,
+    "reducedMotion": true,
+    "idle": true,
+    "referenceOverflow": false
+  },
+  {
+    "slug": "logistic-regression",
+    "preservedState": true,
+    "retainedSVG": true,
+    "focus": true,
+    "reducedMotion": true,
+    "idle": true,
+    "referenceOverflow": false
+  },
+  {
+    "slug": "knn",
+    "preservedState": true,
+    "retainedSVG": true,
+    "focus": true,
+    "reducedMotion": true,
+    "idle": true,
+    "referenceOverflow": false
+  },
+  {
+    "slug": "lda",
+    "preservedState": true,
+    "retainedSVG": true,
+    "focus": true,
+    "reducedMotion": true,
+    "idle": true,
+    "referenceOverflow": false
+  },
+  {
+    "slug": "qda",
+    "preservedState": true,
+    "retainedSVG": true,
+    "focus": true,
+    "reducedMotion": true,
+    "idle": true,
+    "referenceOverflow": false
+  },
+  {
+    "slug": "support-vector-machine",
+    "preservedState": true,
+    "retainedSVG": true,
+    "focus": true,
+    "reducedMotion": true,
+    "idle": true,
+    "referenceOverflow": false
+  },
+  {
+    "slug": "one-r",
+    "preservedState": true,
+    "retainedSVG": true,
+    "focus": true,
+    "reducedMotion": true,
+    "idle": true,
+    "referenceOverflow": false
+  },
+  {
+    "slug": "imbalanced-classification",
+    "preservedState": true,
+    "retainedSVG": true,
+    "focus": true,
+    "reducedMotion": true,
+    "idle": true,
+    "referenceOverflow": false
+  },
+  {
+    "slug": "regression-trees",
+    "preservedState": true,
+    "retainedSVG": true,
+    "focus": true,
+    "reducedMotion": true,
+    "idle": true,
+    "referenceOverflow": false
+  },
+  {
+    "slug": "classification-trees",
+    "preservedState": true,
+    "retainedSVG": true,
+    "focus": true,
+    "reducedMotion": true,
+    "idle": true,
+    "referenceOverflow": false
+  },
+  {
+    "slug": "random-forest",
+    "preservedState": true,
+    "retainedSVG": true,
+    "focus": true,
+    "reducedMotion": true,
+    "idle": true,
+    "referenceOverflow": false
+  },
+  {
+    "slug": "gradient-boosting",
+    "preservedState": true,
+    "retainedSVG": true,
+    "focus": true,
+    "reducedMotion": true,
+    "idle": true,
+    "referenceOverflow": false
+  },
+  {
+    "slug": "pca",
+    "preservedState": true,
+    "retainedSVG": true,
+    "focus": true,
+    "reducedMotion": true,
+    "idle": true,
+    "referenceOverflow": false
+  },
+  {
+    "slug": "hierarchical-clustering",
+    "preservedState": true,
+    "retainedSVG": true,
+    "focus": true,
+    "reducedMotion": true,
+    "idle": true,
+    "referenceOverflow": false
+  },
+  {
+    "slug": "neural-networks",
+    "preservedState": true,
+    "retainedSVG": true,
+    "focus": true,
+    "reducedMotion": true,
+    "idle": true,
+    "referenceOverflow": false
+  },
+  {
+    "slug": "deep-learning",
+    "preservedState": true,
+    "retainedSVG": true,
+    "focus": true,
+    "reducedMotion": true,
+    "idle": true,
+    "referenceOverflow": false
+  },
+  {
+    "slug": "data-leakage-pipelines",
+    "preservedState": true,
+    "retainedSVG": true,
+    "focus": true,
+    "reducedMotion": true,
+    "idle": true,
+    "referenceOverflow": false
+  },
+  {
+    "slug": "missing-data-encoding",
+    "preservedState": true,
+    "retainedSVG": true,
+    "focus": true,
+    "reducedMotion": true,
+    "idle": true,
+    "referenceOverflow": false
+  },
+  {
+    "slug": "experimental-design",
+    "preservedState": true,
+    "retainedSVG": true,
+    "focus": true,
+    "reducedMotion": true,
+    "idle": true,
+    "referenceOverflow": false
+  }
+]

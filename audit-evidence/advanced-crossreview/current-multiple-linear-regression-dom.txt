@@ -1,0 +1,319 @@
+- navigation "StatML Academy navigation":
+  - link "S StatML Academy":
+    - /url: ../index.html
+    - text: S
+    - generic: StatML Academy
+  - generic: Multiple Linear Regression
+  - 'link "Previous module: Simple Linear Regression"':
+    - /url: simple-linear-regression.html
+    - text: ←
+  - 'link "Next module: Polynomial Regression"':
+    - /url: polynomial-regression.html
+    - text: →
+  - generic: module 06/21
+- generic: Machine Learning · Regression
+- heading "Multiple Linear Regression" [level=1]:
+  - text: Multiple Linear
+  - text: Regression
+- paragraph:
+  - text: Moving beyond a single variable.
+  - text: Learn how multiple inputs combine to predict a single continuous outcome in the real world.
+- text: Scroll to begin
+- generic "Lesson outcomes":
+  - generic: "1"
+  - generic: Combine several predictors in one model
+  - generic: "2"
+  - generic: Interpret coefficients while holding others constant
+  - generic: "3"
+  - generic: Diagnose confounding, collinearity, and residual problems
+- generic: Stage 01 · Observe
+- heading "The Multi-Variable World" [level=2]: The Multi-Variable World
+- generic: Before you start
+- paragraph: Multiple regression extends simple regression by adding predictors. Each coefficient is conditional on the other variables included in the model.
+- paragraph:
+  - text: Life is messy. If we want to predict a student's
+  - strong: Test Score
+  - text: ", knowing how many hours they studied is helpful, but it's rarely the full story."
+- paragraph:
+  - text: What about how much sleep they got? What about the number of practice papers they completed? Multiple Linear Regression allows us to use
+  - emphasis: several clues together
+  - text: to predict one number.
+- heading "Our Data Universe" [level=3]
+- paragraph: "To the right, we plot a dataset of students in 3D space:"
+- list:
+  - listitem: "X-Axis: Hours Studied"
+  - listitem: "Z-Axis: Hours Slept"
+  - listitem: "Y-Axis (Height): Test Score"
+- generic: Stage 02 · Understand
+- heading "The Secret Recipe" [level=2]: The Secret Recipe
+- paragraph:
+  - text: In simple regression, we draw a line. But with three predictors—Study, Sleep, and Practice—we technically need a 4D space! Since we can't see 4D, we'll draw a
+  - strong: 3D plane
+  - text: as a visual stepping stone.
+- paragraph: "We'll plot Study and Sleep on the axes, and hold Practice temporarily constant at its average to visualize one slice of the full model. Think of the full equation like a cake recipe with multiple ingredients:"
+- text: y = β
+- subscript: "0"
+- text: + β
+- subscript: "1"
+- text: x
+- subscript: "1"
+- text: + β
+- subscript: "2"
+- text: x
+- subscript: "2"
+- text: + β
+- subscript: "3"
+- text: x
+- subscript: "3"
+- text: + ε
+- generic: The Target (y)
+- generic: Test Score
+- generic: The Predictors (x)
+- generic: Study, Sleep, Practice
+- generic: The Boosters (β)
+- generic: Coefficients
+- generic: The Messiness (ε)
+- generic: Unexplained Error
+- generic: Stage 03 · Build
+- heading "Finding the Fit" [level=2]: Finding the Fit
+- paragraph:
+  - text: We want our model to pass as closely to the actual student scores as possible. The distance between our prediction and the actual score is called a
+  - strong: Residual
+  - text: (the red dashed lines).
+- paragraph:
+  - text: Try adjusting the full set of coefficients manually. The indigo surface is the average-practice slice, while the hollow red markers show the
+  - emphasis: full
+  - text: three-variable prediction used for the residuals and SSE.
+- text: Base Score (β
+- subscript: "0"
+- text: )
+- generic: "0.0"
+- slider "Interactive parameter 1": "0"
+- text: Study Boost (β
+- subscript: "1"
+- text: )
+- generic: "0.0"
+- slider "Interactive parameter 2": "0"
+- text: Sleep Boost (β
+- subscript: "2"
+- text: )
+- generic: "0.0"
+- slider "Interactive parameter 3": "0"
+- text: Practice Boost (β
+- subscript: "3"
+- text: )
+- generic: "0.0"
+- slider "Interactive parameter 4": "0"
+- generic: Sum of Squared Errors (SSE)
+- generic: "55897"
+- generic: Stage 04 · Build
+- heading "The Least Squares Method" [level=2]: The Least Squares Method
+- paragraph: Instead of guessing, the computer uses matrix algebra to instantly derive the absolute lowest possible Sum of Squared Errors directly from the dataset.
+- paragraph: By minimizing the squared residuals across all 3 dimensions simultaneously, it settles perfectly into the optimal fit.
+- button "Snap to Optimal Fit"
+- strong: Why Square the Errors?
+- text: 1. It stops positive (+4) and negative (-4) misses from canceling out to zero.
+- text: 2. It heavily punishes huge misses (a miss of 10 costs 100 points), forcing the model to compromise evenly across all variables.
+- generic: Stage 05 · Understand
+- 'heading "The Superpower: Holding Constant" [level=2]': "The Superpower: Holding Constant"
+- paragraph:
+  - text: This is the most critical concept in multiple regression. What does a Study Boost (β
+  - subscript: "1"
+  - text: ) actually mean when we have an optimal fit?
+- paragraph:
+  - text: "It means: If a student studies one extra hour, their score increases by exactly that boost amount—"
+  - emphasis: assuming their sleep and practice papers stay exactly the same.
+- paragraph:
+  - text: This logic applies to
+  - emphasis: each
+  - text: "predictor's coefficient:"
+  - strong:
+    - text: β
+    - subscript: "1"
+  - text: is the estimated association with Study while Sleep and Practice are held fixed,
+  - strong:
+    - text: β
+    - subscript: "2"
+  - text: is the estimated association with Sleep while Study and Practice are held fixed, and
+  - strong:
+    - text: β
+    - subscript: "3"
+  - text: is the estimated association with Practice while Study and Sleep are held fixed. These are not automatically causal effects.
+- paragraph:
+  - text: The model does not literally freeze variables in real life—rather, it does this
+  - emphasis: mathematically
+  - text: to estimate each variable's
+  - strong: unique contribution
+  - text: .
+- paragraph:
+  - text: Notice the highlighted slice on the plane. We've locked "Sleep" at 6 hours (and Practice at its average). As we move purely along the Study axis, the score rises in a perfect straight line determined solely by β
+  - subscript: "1"
+  - text: .
+- text: Score = 0.0 +
+- strong: 0.0(Study)
+- text: + 0.0 (Sleep = 6.0, Practice = avg 2.3)
+- generic: Stage 06 · Understand
+- heading "Building the Prediction" [level=2]: Building the Prediction
+- paragraph:
+  - text: Now we transition away from the 3D plane. In multiple regression, the prediction is built from a
+  - strong: base intercept
+  - text: plus separate
+  - strong: contributions
+  - text: from each predictor.
+- paragraph: Each predictor adds or subtracts its own specific amount. The final score is simply the sum of all these individual parts. Because of how the model fits the data, each of these contributions is added while the other predictors are treated as fixed.
+- heading "Predicting a specific student" [level=3]
+- list:
+  - generic: Study
+  - generic: 4.0 hrs
+  - slider "Interactive parameter 5": "4"
+  - generic: Sleep
+  - generic: 7.5 hrs
+  - slider "Interactive parameter 6": "7.5"
+  - generic: Practice
+  - generic: 2 pps
+  - slider "Interactive parameter 7": "2"
+- generic: "How it stacks up:"
+- list:
+  - listitem: • Base Score = Starting point
+  - text: • Study Boost = β
+  - subscript: "1"
+  - text: × Study hours
+  - text: • Sleep Boost = β
+  - subscript: "2"
+  - text: × Sleep hours
+  - text: • Practice Boost = β
+  - subscript: "3"
+  - text: × Practice papers
+- generic: Final Score = Sum of all parts
+- generic: Stage 07 · Understand
+- heading "The Spurious Trap" [level=2]: The Spurious Trap
+- paragraph:
+  - text: If multiple variables just stack, why not run a simple regression for each variable separately? Because of
+  - strong: Spurious Correlations
+  - text: .
+- paragraph:
+  - text: Imagine we want to predict
+  - strong: Shark Attacks
+  - text: . If we run a simple model using
+  - strong: Ice Cream Sales
+  - text: ", the correlation is huge! It looks like ice cream causes shark attacks."
+- paragraph:
+  - text: "But the true driver is a lurking variable:"
+  - strong: High Temperature
+  - text: . Hot days cause both ice cream sales
+  - emphasis: and
+  - text: beach visits (which lead to shark attacks).
+- strong: The Power of "Holding Constant"
+- text: Multiple regression isolates a variable's
+- emphasis: unique
+- text: contribution, which can reveal when a variable only looked important because it moved together with another predictor. If we put both Ice Cream and Temperature into the model, the model essentially compares days with the
+- emphasis: same temperature
+- text: . Holding temperature constant, changing ice cream sales alone has almost zero unique effect on shark attacks.
+- text: If a coefficient shrinks close to zero after the other predictors are included, that suggests it has little
+- emphasis: unique
+- text: relationship with the predicted outcome (y) after accounting for the others. This does
+- emphasis: not
+- text: prove the variable has no real-world effect at all, only that it adds little unique information within this specific model.
+- paragraph:
+  - emphasis: "Note: A larger coefficient doesn't always mean a \"more important\" predictor, as they depend on the unit of measurement."
+- generic: Stage 08 · Reflect
+- heading "The Adjusted R² Penalty" [level=2]: The Adjusted R² Penalty
+- paragraph:
+  - text: How do we know if our team of variables is actually good?
+  - strong: R²
+  - text: tells us what percentage of the variance we explained.
+- paragraph:
+  - text: "But raw R² has a flaw: it almost never goes down when you add predictors. Adding"
+  - emphasis: any
+  - text: variable—even "Student's Shoe Size"—will mathematically force raw R² to increase, tricking you into thinking the model is better.
+- text: Adj R² = 1 - [ (1 - R²)(n - 1) / (n - p - 1) ]
+- paragraph:
+  - strong: Adjusted R²
+  - text: corrects for this by penalizing model complexity. In the formula,
+  - code: "n"
+  - text: is the number of observations and
+  - code: p
+  - text: is the number of predictors.
+- paragraph:
+  - text: Every new predictor (
+  - code: p
+  - text: ) uses up flexibility and increases the penalty. A new variable should only stay if it improves the model enough to justify its cost. A useless variable will cause Adjusted R² to stay flat or drop!
+- generic: Stage 09 · Evaluate
+- heading "Reading the Model Output" [level=2]: Reading the Model Output
+- paragraph: When a data analyst fits a multiple linear regression, they don't look at a 3D plot—they look at a summary table to evaluate the results.
+- list:
+  - generic: "Estimate:"
+  - text: The coefficient (β). How much the prediction changes for a one-unit increase in this predictor,
+  - emphasis: holding all other predictors constant
+  - text: .
+  - generic: "Std. Error:"
+  - generic: The uncertainty around the estimate. A smaller standard error means we are more confident in the coefficient.
+  - generic: "t value:"
+  - generic: The estimate divided by its standard error. A larger absolute value (typically > 2) indicates strong statistical evidence that the true effect is not zero.
+- paragraph: "Note: Each coefficient should be read as \"the change in predicted y for a one-unit increase in this predictor, holding the others constant.\" Because predictors can be measured in entirely different units, coefficients cannot be compared as pure \"importance scores\" unless the predictors are on comparable scales."
+- strong: Diagnostics belong with the output.
+- text: Inspect residual-versus-fitted, Q–Q, scale-location, leverage and influence plots. Use VIFs and coefficient intervals to diagnose multicollinearity; document categorical reference levels and interactions. Report confidence intervals for mean responses and wider prediction intervals for new observations. These coefficients are adjusted associations, not causal effects without a causal design.
+- text: Multiple linear regression is a powerful detective. It models additive effects, isolates individual drivers, and finds the mathematically optimal fit by minimizing squared errors.
+- generic: Complete the picture
+- heading "Diagnostics the fitted equation cannot show" [level=3]
+- paragraph:
+  - text: Before trusting coefficient estimates, inspect residual plots and influential observations. Check
+  - strong: multicollinearity
+  - text: because strongly overlapping predictors can make individual coefficients unstable even when overall prediction remains good.
+- paragraph: Interactions are needed when the association with one predictor changes across levels of another. Add them deliberately and interpret the combined terms rather than reading each coefficient in isolation.
+- generic: Key takeaways
+- list:
+  - listitem: Each coefficient describes a partial relationship while the other predictors are held constant.
+  - listitem: Adjusted R² penalises adding predictors that do not provide enough improvement.
+  - listitem: Prediction quality, residual diagnostics, collinearity, and subject-matter logic all matter.
+- region "Practical method checklist":
+  - paragraph: Practical method checklist
+  - heading "Before you finish" [level=3]
+  - heading "Assumptions" [level=4]
+  - paragraph: Correct form, independent errors, stable variance, and a defensible adjustment set.
+  - heading "When the method fails" [level=4]
+  - paragraph: Omitted variables, collinearity, interactions, nonlinearity, and influential cases.
+  - heading "Validation and leakage" [level=4]
+  - paragraph: Choose features and transformations within training folds.
+  - heading "Interpretation cautions" [level=4]
+  - paragraph: Coefficients are adjusted associations unless a causal design justifies more.
+  - heading "What to report" [level=4]
+  - paragraph: Reference levels, interactions, VIFs, intervals, diagnostics, and validation error.
+- region "Multiple Linear Regression interactive visualisation":
+  - generic: Study
+  - generic: Sleep
+  - generic: Score
+  - generic: "Indigo plane: average-practice slice"
+  - generic: "Hollow red markers: full-model predictions"
+  - generic: ŷ =
+  - generic: "0.0"
+  - generic: +
+  - generic: "0.0"
+  - generic: +
+  - generic: "0.0"
+  - generic: +
+  - generic: "0.0"
+  - generic: =
+  - generic: "0.0"
+- contentinfo:
+  - link "All modules":
+    - /url: ../index.html
+- navigation "Lesson stages":
+  - 'button "Go to stage 1: The Multi-Variable World"':
+    - generic: 01 · The Multi-Variable World
+  - 'button "Go to stage 2: The Secret Recipe"':
+    - generic: 02 · The Secret Recipe
+  - 'button "Go to stage 3: Finding the Fit"':
+    - generic: 03 · Finding the Fit
+  - 'button "Go to stage 4: The Least Squares Method"':
+    - generic: 04 · The Least Squares Method
+  - 'button "Go to stage 5: The Superpower: Holding Constant"':
+    - generic: "05 · The Superpower: Holding Constant"
+  - 'button "Go to stage 6: Building the Prediction"':
+    - generic: 06 · Building the Prediction
+  - 'button "Go to stage 7: The Spurious Trap"':
+    - generic: 07 · The Spurious Trap
+  - 'button "Go to stage 8: The Adjusted R² Penalty"':
+    - generic: 08 · The Adjusted R² Penalty
+  - 'button "Go to stage 9: Reading the Model Output"':
+    - generic: 09 · Reading the Model Output

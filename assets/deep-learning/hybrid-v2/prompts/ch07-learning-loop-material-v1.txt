@@ -1,0 +1,20 @@
+Use case: scientific-educational
+Asset type: Deep Learning Chapter 7 hybrid interactive scene artwork, opaque 3:2 paper plate
+Input images: Images 1–4 are supplied StatSketch/StatML style references only; use them for material and hand-drawing language, never copy their layout, text, browser chrome, brand, or diagrams.
+Primary request: Create the physical underdrawing for a live notebook lesson about the learning loop: forward, loss, backpropagation, and update. The plate must supply tactile paper scraps and marker material while live code supplies all labels, route arrows, step/loss values, and state changes.
+Scene/backdrop: genuinely uniform warm cream #FBF6E9 notebook paper with very sparse faint horizontal pencil rules and subtle static paper fiber. No transparency checkerboard, no gray squares, no digital UI panel.
+Subject: four separate small irregular notebook scraps arranged around the perimeter of a generous central blank paper area: one blue-tinted scrap, one coral-tinted scrap, one lavender-tinted scrap, and one amber-tinted scrap. Each scrap has a different imperfect hand-drawn edge, light pencil registration marks, and restrained marker bleed. Include one separate blank circular or softly torn center paper piece for the live loss note. Include four small blank arrowhead-like marker swashes only as isolated material accents, not a connected loop or meaningful direction. Keep every component distinct, separated, and crop-safe; no component touches another.
+Style/medium: Use the supplied StatSketch/StatML reference images only as a material and drawing-style reference, not as a layout reference. Same single human artist: dark brown-black felt-tip and graphite contours with slight double-stroke registration, blue/green/coral/amber/lavender marker accents, translucent highlighter bleed, uneven hand-cut paper edges, occasional blank masking tape, tiny pencil construction marks. Sparse, calm, physically assembled study notebook, not a polished app diagram.
+Composition/framing: landscape 3:2 plate, four separated corner scraps and one central blank paper piece, generous clear corridors between them for a live four-step loop. No outer border, no rounded dashboard cards, no shadows. Leave a clear lower/right lane for the step marker and live readout. Do not draw the loop route, connectors, arrows between scraps, or any text.
+Lighting/mood: flat warm paper study-sheet light, focused and quiet.
+Color palette: warm cream #FBF6E9, graphite ink, blue structural, green positive, coral error, amber caution, lavender secondary.
+Materials/textures: fibrous paper, dry marker streaks, graphite pencil smudges, slightly translucent scraps, uneven edges, attached blank tape fibers, all static.
+Text (verbatim): ""
+Constraints: opaque uniform #FBF6E9 background; underdrawing only. All FORWARD/LOSS/BACKPROP/UPDATE labels, route geometry, current loss, step, learning-rate response, event marker, and animation remain live code. Keep large blank lanes and no semantic marks baked into art.
+Avoid: checkerboard transparency, fake alpha grid, gray-and-white squares, words, letters, numbers, pseudo-writing, symbols, equations, labels, captions, axes, legends, percentages, controls, buttons, browser chrome, logos, stock icons, perfect vector cards, hard digital borders, glossy gradients, 3D rendering, dense hatch noise, giant overlapping scraps, detached unexplained blobs, baked-in loop, meaningful arrows, connectors, step badges, live values, UI, hidden semantic state, or text-like marks.
+Generation mode: built-in ImageGen.
+Style references:
+- /Users/elijahang/Downloads/ChatGPT Image Aug 23, 2026, 07_11_55 PM (4).png
+- /Users/elijahang/Downloads/ChatGPT Image Aug 23, 2026, 07_11_53 PM (1).png
+- /Users/elijahang/Downloads/ChatGPT Image Aug 23, 2026, 07_11_54 PM (2).png
+- /Users/elijahang/Downloads/ChatGPT Image Aug 23, 2026, 07_11_55 PM (3).png

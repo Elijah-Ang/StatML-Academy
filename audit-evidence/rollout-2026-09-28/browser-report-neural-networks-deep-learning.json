@@ -1,0 +1,662 @@
+{
+  "checks": 93,
+  "widths": [
+    1440,
+    390,
+    320
+  ],
+  "errors": [],
+  "stages": [
+    {
+      "slug": "neural-networks",
+      "width": 1440,
+      "stage": 1,
+      "scene": "network",
+      "clipped": 0
+    },
+    {
+      "slug": "neural-networks",
+      "width": 1440,
+      "stage": 2,
+      "scene": "inputs",
+      "clipped": 0
+    },
+    {
+      "slug": "neural-networks",
+      "width": 1440,
+      "stage": 3,
+      "scene": "pipeline",
+      "clipped": 0
+    },
+    {
+      "slug": "neural-networks",
+      "width": 1440,
+      "stage": 4,
+      "scene": "neuron",
+      "clipped": 0
+    },
+    {
+      "slug": "neural-networks",
+      "width": 1440,
+      "stage": 5,
+      "scene": "neuron",
+      "clipped": 0
+    },
+    {
+      "slug": "neural-networks",
+      "width": 1440,
+      "stage": 6,
+      "scene": "activation",
+      "clipped": 0
+    },
+    {
+      "slug": "neural-networks",
+      "width": 1440,
+      "stage": 7,
+      "scene": "forward",
+      "clipped": 0
+    },
+    {
+      "slug": "neural-networks",
+      "width": 1440,
+      "stage": 8,
+      "scene": "loss",
+      "clipped": 0
+    },
+    {
+      "slug": "neural-networks",
+      "width": 1440,
+      "stage": 9,
+      "scene": "backward",
+      "clipped": 0
+    },
+    {
+      "slug": "neural-networks",
+      "width": 1440,
+      "stage": 10,
+      "scene": "update",
+      "clipped": 0
+    },
+    {
+      "slug": "neural-networks",
+      "width": 1440,
+      "stage": 11,
+      "scene": "cycle",
+      "clipped": 0
+    },
+    {
+      "slug": "neural-networks",
+      "width": 1440,
+      "stage": 12,
+      "scene": "training",
+      "clipped": 0
+    },
+    {
+      "slug": "neural-networks",
+      "width": 1440,
+      "stage": 13,
+      "scene": "settings",
+      "clipped": 0
+    },
+    {
+      "slug": "neural-networks",
+      "width": 1440,
+      "stage": 14,
+      "scene": "evaluation",
+      "clipped": 0
+    },
+    {
+      "slug": "neural-networks",
+      "width": 1440,
+      "stage": 15,
+      "scene": "errors",
+      "clipped": 0
+    },
+    {
+      "slug": "neural-networks",
+      "width": 1440,
+      "stage": 16,
+      "scene": "contract",
+      "clipped": 0
+    },
+    {
+      "slug": "neural-networks",
+      "width": 1440,
+      "stage": 17,
+      "scene": "architecture",
+      "clipped": 0
+    },
+    {
+      "slug": "neural-networks",
+      "width": 1440,
+      "stage": 18,
+      "scene": "network",
+      "clipped": 0
+    },
+    {
+      "slug": "neural-networks",
+      "width": 1440,
+      "stage": 19,
+      "scene": "cycle",
+      "clipped": 0
+    },
+    {
+      "slug": "deep-learning",
+      "width": 1440,
+      "stage": 1,
+      "scene": "task",
+      "clipped": 0
+    },
+    {
+      "slug": "deep-learning",
+      "width": 1440,
+      "stage": 2,
+      "scene": "shortcut",
+      "clipped": 0
+    },
+    {
+      "slug": "deep-learning",
+      "width": 1440,
+      "stage": 3,
+      "scene": "pipeline",
+      "clipped": 0
+    },
+    {
+      "slug": "deep-learning",
+      "width": 1440,
+      "stage": 4,
+      "scene": "tensor",
+      "clipped": 0
+    },
+    {
+      "slug": "deep-learning",
+      "width": 1440,
+      "stage": 5,
+      "scene": "neuron",
+      "clipped": 0
+    },
+    {
+      "slug": "deep-learning",
+      "width": 1440,
+      "stage": 6,
+      "scene": "hierarchy",
+      "clipped": 0
+    },
+    {
+      "slug": "deep-learning",
+      "width": 1440,
+      "stage": 7,
+      "scene": "cycle",
+      "clipped": 0
+    },
+    {
+      "slug": "deep-learning",
+      "width": 1440,
+      "stage": 8,
+      "scene": "regularization",
+      "clipped": 0
+    },
+    {
+      "slug": "deep-learning",
+      "width": 1440,
+      "stage": 9,
+      "scene": "architecture",
+      "clipped": 0
+    },
+    {
+      "slug": "deep-learning",
+      "width": 1440,
+      "stage": 10,
+      "scene": "transfer",
+      "clipped": 0
+    },
+    {
+      "slug": "deep-learning",
+      "width": 1440,
+      "stage": 11,
+      "scene": "evaluation",
+      "clipped": 0
+    },
+    {
+      "slug": "deep-learning",
+      "width": 1440,
+      "stage": 12,
+      "scene": "contract",
+      "clipped": 0
+    },
+    {
+      "slug": "neural-networks",
+      "width": 390,
+      "stage": 1,
+      "scene": "network",
+      "clipped": 0
+    },
+    {
+      "slug": "neural-networks",
+      "width": 390,
+      "stage": 2,
+      "scene": "inputs",
+      "clipped": 0
+    },
+    {
+      "slug": "neural-networks",
+      "width": 390,
+      "stage": 3,
+      "scene": "pipeline",
+      "clipped": 0
+    },
+    {
+      "slug": "neural-networks",
+      "width": 390,
+      "stage": 4,
+      "scene": "neuron",
+      "clipped": 0
+    },
+    {
+      "slug": "neural-networks",
+      "width": 390,
+      "stage": 5,
+      "scene": "neuron",
+      "clipped": 0
+    },
+    {
+      "slug": "neural-networks",
+      "width": 390,
+      "stage": 6,
+      "scene": "activation",
+      "clipped": 0
+    },
+    {
+      "slug": "neural-networks",
+      "width": 390,
+      "stage": 7,
+      "scene": "forward",
+      "clipped": 0
+    },
+    {
+      "slug": "neural-networks",
+      "width": 390,
+      "stage": 8,
+      "scene": "loss",
+      "clipped": 0
+    },
+    {
+      "slug": "neural-networks",
+      "width": 390,
+      "stage": 9,
+      "scene": "backward",
+      "clipped": 0
+    },
+    {
+      "slug": "neural-networks",
+      "width": 390,
+      "stage": 10,
+      "scene": "update",
+      "clipped": 0
+    },
+    {
+      "slug": "neural-networks",
+      "width": 390,
+      "stage": 11,
+      "scene": "cycle",
+      "clipped": 0
+    },
+    {
+      "slug": "neural-networks",
+      "width": 390,
+      "stage": 12,
+      "scene": "training",
+      "clipped": 0
+    },
+    {
+      "slug": "neural-networks",
+      "width": 390,
+      "stage": 13,
+      "scene": "settings",
+      "clipped": 0
+    },
+    {
+      "slug": "neural-networks",
+      "width": 390,
+      "stage": 14,
+      "scene": "evaluation",
+      "clipped": 0
+    },
+    {
+      "slug": "neural-networks",
+      "width": 390,
+      "stage": 15,
+      "scene": "errors",
+      "clipped": 0
+    },
+    {
+      "slug": "neural-networks",
+      "width": 390,
+      "stage": 16,
+      "scene": "contract",
+      "clipped": 0
+    },
+    {
+      "slug": "neural-networks",
+      "width": 390,
+      "stage": 17,
+      "scene": "architecture",
+      "clipped": 0
+    },
+    {
+      "slug": "neural-networks",
+      "width": 390,
+      "stage": 18,
+      "scene": "network",
+      "clipped": 0
+    },
+    {
+      "slug": "neural-networks",
+      "width": 390,
+      "stage": 19,
+      "scene": "cycle",
+      "clipped": 0
+    },
+    {
+      "slug": "deep-learning",
+      "width": 390,
+      "stage": 1,
+      "scene": "task",
+      "clipped": 0
+    },
+    {
+      "slug": "deep-learning",
+      "width": 390,
+      "stage": 2,
+      "scene": "shortcut",
+      "clipped": 0
+    },
+    {
+      "slug": "deep-learning",
+      "width": 390,
+      "stage": 3,
+      "scene": "pipeline",
+      "clipped": 0
+    },
+    {
+      "slug": "deep-learning",
+      "width": 390,
+      "stage": 4,
+      "scene": "tensor",
+      "clipped": 0
+    },
+    {
+      "slug": "deep-learning",
+      "width": 390,
+      "stage": 5,
+      "scene": "neuron",
+      "clipped": 0
+    },
+    {
+      "slug": "deep-learning",
+      "width": 390,
+      "stage": 6,
+      "scene": "hierarchy",
+      "clipped": 0
+    },
+    {
+      "slug": "deep-learning",
+      "width": 390,
+      "stage": 7,
+      "scene": "cycle",
+      "clipped": 0
+    },
+    {
+      "slug": "deep-learning",
+      "width": 390,
+      "stage": 8,
+      "scene": "regularization",
+      "clipped": 0
+    },
+    {
+      "slug": "deep-learning",
+      "width": 390,
+      "stage": 9,
+      "scene": "architecture",
+      "clipped": 0
+    },
+    {
+      "slug": "deep-learning",
+      "width": 390,
+      "stage": 10,
+      "scene": "transfer",
+      "clipped": 0
+    },
+    {
+      "slug": "deep-learning",
+      "width": 390,
+      "stage": 11,
+      "scene": "evaluation",
+      "clipped": 0
+    },
+    {
+      "slug": "deep-learning",
+      "width": 390,
+      "stage": 12,
+      "scene": "contract",
+      "clipped": 0
+    },
+    {
+      "slug": "neural-networks",
+      "width": 320,
+      "stage": 1,
+      "scene": "network",
+      "clipped": 0
+    },
+    {
+      "slug": "neural-networks",
+      "width": 320,
+      "stage": 2,
+      "scene": "inputs",
+      "clipped": 0
+    },
+    {
+      "slug": "neural-networks",
+      "width": 320,
+      "stage": 3,
+      "scene": "pipeline",
+      "clipped": 0
+    },
+    {
+      "slug": "neural-networks",
+      "width": 320,
+      "stage": 4,
+      "scene": "neuron",
+      "clipped": 0
+    },
+    {
+      "slug": "neural-networks",
+      "width": 320,
+      "stage": 5,
+      "scene": "neuron",
+      "clipped": 0
+    },
+    {
+      "slug": "neural-networks",
+      "width": 320,
+      "stage": 6,
+      "scene": "activation",
+      "clipped": 0
+    },
+    {
+      "slug": "neural-networks",
+      "width": 320,
+      "stage": 7,
+      "scene": "forward",
+      "clipped": 0
+    },
+    {
+      "slug": "neural-networks",
+      "width": 320,
+      "stage": 8,
+      "scene": "loss",
+      "clipped": 0
+    },
+    {
+      "slug": "neural-networks",
+      "width": 320,
+      "stage": 9,
+      "scene": "backward",
+      "clipped": 0
+    },
+    {
+      "slug": "neural-networks",
+      "width": 320,
+      "stage": 10,
+      "scene": "update",
+      "clipped": 0
+    },
+    {
+      "slug": "neural-networks",
+      "width": 320,
+      "stage": 11,
+      "scene": "cycle",
+      "clipped": 0
+    },
+    {
+      "slug": "neural-networks",
+      "width": 320,
+      "stage": 12,
+      "scene": "training",
+      "clipped": 0
+    },
+    {
+      "slug": "neural-networks",
+      "width": 320,
+      "stage": 13,
+      "scene": "settings",
+      "clipped": 0
+    },
+    {
+      "slug": "neural-networks",
+      "width": 320,
+      "stage": 14,
+      "scene": "evaluation",
+      "clipped": 0
+    },
+    {
+      "slug": "neural-networks",
+      "width": 320,
+      "stage": 15,
+      "scene": "errors",
+      "clipped": 0
+    },
+    {
+      "slug": "neural-networks",
+      "width": 320,
+      "stage": 16,
+      "scene": "contract",
+      "clipped": 0
+    },
+    {
+      "slug": "neural-networks",
+      "width": 320,
+      "stage": 17,
+      "scene": "architecture",
+      "clipped": 0
+    },
+    {
+      "slug": "neural-networks",
+      "width": 320,
+      "stage": 18,
+      "scene": "network",
+      "clipped": 0
+    },
+    {
+      "slug": "neural-networks",
+      "width": 320,
+      "stage": 19,
+      "scene": "cycle",
+      "clipped": 0
+    },
+    {
+      "slug": "deep-learning",
+      "width": 320,
+      "stage": 1,
+      "scene": "task",
+      "clipped": 0
+    },
+    {
+      "slug": "deep-learning",
+      "width": 320,
+      "stage": 2,
+      "scene": "shortcut",
+      "clipped": 0
+    },
+    {
+      "slug": "deep-learning",
+      "width": 320,
+      "stage": 3,
+      "scene": "pipeline",
+      "clipped": 0
+    },
+    {
+      "slug": "deep-learning",
+      "width": 320,
+      "stage": 4,
+      "scene": "tensor",
+      "clipped": 0
+    },
+    {
+      "slug": "deep-learning",
+      "width": 320,
+      "stage": 5,
+      "scene": "neuron",
+      "clipped": 0
+    },
+    {
+      "slug": "deep-learning",
+      "width": 320,
+      "stage": 6,
+      "scene": "hierarchy",
+      "clipped": 0
+    },
+    {
+      "slug": "deep-learning",
+      "width": 320,
+      "stage": 7,
+      "scene": "cycle",
+      "clipped": 0
+    },
+    {
+      "slug": "deep-learning",
+      "width": 320,
+      "stage": 8,
+      "scene": "regularization",
+      "clipped": 0
+    },
+    {
+      "slug": "deep-learning",
+      "width": 320,
+      "stage": 9,
+      "scene": "architecture",
+      "clipped": 0
+    },
+    {
+      "slug": "deep-learning",
+      "width": 320,
+      "stage": 10,
+      "scene": "transfer",
+      "clipped": 0
+    },
+    {
+      "slug": "deep-learning",
+      "width": 320,
+      "stage": 11,
+      "scene": "evaluation",
+      "clipped": 0
+    },
+    {
+      "slug": "deep-learning",
+      "width": 320,
+      "stage": 12,
+      "scene": "contract",
+      "clipped": 0
+    }
+  ]
+}

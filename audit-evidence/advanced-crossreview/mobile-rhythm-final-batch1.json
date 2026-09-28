@@ -1,0 +1,458 @@
+{
+  "qda": {
+    "8765": {
+      "body": 19064.109375,
+      "scrollHeight": 19064,
+      "scrollWidth": 390,
+      "selector": ".stage[data-stage]",
+      "stages": [
+        {
+          "height": 2022.34375,
+          "stage": "1",
+          "top": 1266
+        },
+        {
+          "height": 1238.203125,
+          "stage": "2",
+          "top": 3288.34375
+        },
+        {
+          "height": 987.53125,
+          "stage": "3",
+          "top": 4526.546875
+        },
+        {
+          "height": 1875.09375,
+          "stage": "4",
+          "top": 5514.078125
+        },
+        {
+          "height": 1252.59375,
+          "stage": "5",
+          "top": 7389.171875
+        },
+        {
+          "height": 1089.625,
+          "stage": "6",
+          "top": 8641.765625
+        },
+        {
+          "height": 3112.765625,
+          "stage": "7",
+          "top": 9731.390625
+        },
+        {
+          "height": 1302.890625,
+          "stage": "8",
+          "top": 12844.15625
+        },
+        {
+          "height": 1966.75,
+          "stage": "9",
+          "top": 14147.046875
+        },
+        {
+          "height": 2786.84375,
+          "stage": "10",
+          "top": 16113.796875
+        }
+      ],
+      "url": "http://127.0.0.1:8765/modules/qda.html?crossreview-final-mobile=1787746766796",
+      "viewport": {
+        "clientHeight": 844,
+        "clientWidth": 390,
+        "innerHeight": 844,
+        "innerWidth": 390
+      }
+    },
+    "8766": {
+      "body": 20686.1875,
+      "scrollHeight": 20686,
+      "scrollWidth": 433,
+      "selector": ".stage[data-stage]",
+      "stages": [
+        {
+          "height": 2175.515625,
+          "stage": "1",
+          "top": 1266
+        },
+        {
+          "height": 1393.046875,
+          "stage": "2",
+          "top": 3441.515625
+        },
+        {
+          "height": 1101.265625,
+          "stage": "3",
+          "top": 4834.5625
+        },
+        {
+          "height": 2039.8125,
+          "stage": "4",
+          "top": 5935.828125
+        },
+        {
+          "height": 1387.984375,
+          "stage": "5",
+          "top": 7975.640625
+        },
+        {
+          "height": 1170.328125,
+          "stage": "6",
+          "top": 9363.625
+        },
+        {
+          "height": 3341.1875,
+          "stage": "7",
+          "top": 10533.953125
+        },
+        {
+          "height": 1551.34375,
+          "stage": "8",
+          "top": 13875.140625
+        },
+        {
+          "height": 2110.40625,
+          "stage": "9",
+          "top": 15426.484375
+        },
+        {
+          "height": 2985.828125,
+          "stage": "10",
+          "top": 17536.890625
+        }
+      ],
+      "url": "http://127.0.0.1:8766/modules/qda.html?crossreview-final-mobile=1787746764625",
+      "viewport": {
+        "clientHeight": 844,
+        "clientWidth": 390,
+        "innerHeight": 844,
+        "innerWidth": 390
+      }
+    }
+  },
+  "model-selection": {
+    "8765": {
+      "body": 14548.859375,
+      "scrollHeight": 14549,
+      "scrollWidth": 390,
+      "selector": ".stage[data-stage]",
+      "stages": [
+        {
+          "height": 800.890625,
+          "stage": "1",
+          "top": 1266
+        },
+        {
+          "height": 1282.765625,
+          "stage": "2",
+          "top": 2066.890625
+        },
+        {
+          "height": 1103.140625,
+          "stage": "3",
+          "top": 3349.65625
+        },
+        {
+          "height": 982.875,
+          "stage": "4",
+          "top": 4452.796875
+        },
+        {
+          "height": 1049.71875,
+          "stage": "5",
+          "top": 5435.671875
+        },
+        {
+          "height": 737.625,
+          "stage": "6",
+          "top": 6485.390625
+        },
+        {
+          "height": 1099.21875,
+          "stage": "7",
+          "top": 7223.015625
+        },
+        {
+          "height": 1246.1875,
+          "stage": "8",
+          "top": 8322.234375
+        },
+        {
+          "height": 792.5625,
+          "stage": "9",
+          "top": 9568.421875
+        },
+        {
+          "height": 970.53125,
+          "stage": "10",
+          "top": 10360.984375
+        },
+        {
+          "height": 1208.28125,
+          "stage": "11",
+          "top": 11331.515625
+        },
+        {
+          "height": 1845.59375,
+          "stage": "12",
+          "top": 12539.796875
+        }
+      ],
+      "url": "http://127.0.0.1:8765/modules/model-selection.html?crossreview-final-mobile=1787746770364",
+      "viewport": {
+        "clientHeight": 844,
+        "clientWidth": 390,
+        "innerHeight": 844,
+        "innerWidth": 390
+      }
+    },
+    "8766": {
+      "body": 16474.796875,
+      "scrollHeight": 16475,
+      "scrollWidth": 390,
+      "selector": ".stage[data-stage]",
+      "stages": [
+        {
+          "height": 960.375,
+          "stage": "1",
+          "top": 1266
+        },
+        {
+          "height": 1500.265625,
+          "stage": "2",
+          "top": 2226.375
+        },
+        {
+          "height": 1197.703125,
+          "stage": "3",
+          "top": 3726.640625
+        },
+        {
+          "height": 1041,
+          "stage": "4",
+          "top": 4924.34375
+        },
+        {
+          "height": 1217.65625,
+          "stage": "5",
+          "top": 5965.34375
+        },
+        {
+          "height": 823.609375,
+          "stage": "6",
+          "top": 7183
+        },
+        {
+          "height": 1265.15625,
+          "stage": "7",
+          "top": 8006.609375
+        },
+        {
+          "height": 1494.109375,
+          "stage": "8",
+          "top": 9271.765625
+        },
+        {
+          "height": 986.34375,
+          "stage": "9",
+          "top": 10765.875
+        },
+        {
+          "height": 1148.921875,
+          "stage": "10",
+          "top": 11752.21875
+        },
+        {
+          "height": 1422.1875,
+          "stage": "11",
+          "top": 12901.140625
+        },
+        {
+          "height": 1988,
+          "stage": "12",
+          "top": 14323.328125
+        }
+      ],
+      "url": "http://127.0.0.1:8766/modules/model-selection.html?crossreview-final-mobile=1787746768801",
+      "viewport": {
+        "clientHeight": 844,
+        "clientWidth": 390,
+        "innerHeight": 844,
+        "innerWidth": 390
+      }
+    }
+  },
+  "support-vector-machine": {
+    "8765": {
+      "body": 11685.859375,
+      "scrollHeight": 11686,
+      "scrollWidth": 390,
+      "selector": ".stage[data-stage]",
+      "stages": [
+        {
+          "height": 634.140625,
+          "stage": "1",
+          "top": 1354.578125
+        },
+        {
+          "height": 738.140625,
+          "stage": "2",
+          "top": 1988.71875
+        },
+        {
+          "height": 597.6875,
+          "stage": "3",
+          "top": 2726.859375
+        },
+        {
+          "height": 606.953125,
+          "stage": "4",
+          "top": 3324.546875
+        },
+        {
+          "height": 666.71875,
+          "stage": "5",
+          "top": 3931.5
+        },
+        {
+          "height": 741.515625,
+          "stage": "6",
+          "top": 4598.21875
+        },
+        {
+          "height": 683.5,
+          "stage": "7",
+          "top": 5339.734375
+        },
+        {
+          "height": 649.203125,
+          "stage": "8",
+          "top": 6023.234375
+        },
+        {
+          "height": 602.953125,
+          "stage": "9",
+          "top": 6672.4375
+        },
+        {
+          "height": 577.03125,
+          "stage": "10",
+          "top": 7275.390625
+        },
+        {
+          "height": 795.671875,
+          "stage": "11",
+          "top": 7852.421875
+        },
+        {
+          "height": 836.90625,
+          "stage": "12",
+          "top": 8648.09375
+        },
+        {
+          "height": 1043.578125,
+          "stage": "13",
+          "top": 9485
+        },
+        {
+          "height": 823.8125,
+          "stage": "14",
+          "top": 10528.578125
+        }
+      ],
+      "url": "http://127.0.0.1:8765/modules/support-vector-machine.html?crossreview-final-mobile=1787746775469",
+      "viewport": {
+        "clientHeight": 844,
+        "clientWidth": 390,
+        "innerHeight": 844,
+        "innerWidth": 390
+      }
+    },
+    "8766": {
+      "body": 12912.9375,
+      "scrollHeight": 12913,
+      "scrollWidth": 390,
+      "selector": ".stage[data-stage]",
+      "stages": [
+        {
+          "height": 688.515625,
+          "stage": "1",
+          "top": 1350.015625
+        },
+        {
+          "height": 820.6875,
+          "stage": "2",
+          "top": 2038.53125
+        },
+        {
+          "height": 703.84375,
+          "stage": "3",
+          "top": 2859.21875
+        },
+        {
+          "height": 680.078125,
+          "stage": "4",
+          "top": 3563.0625
+        },
+        {
+          "height": 683.90625,
+          "stage": "5",
+          "top": 4243.140625
+        },
+        {
+          "height": 819.0625,
+          "stage": "6",
+          "top": 4927.046875
+        },
+        {
+          "height": 734.453125,
+          "stage": "7",
+          "top": 5746.109375
+        },
+        {
+          "height": 710.71875,
+          "stage": "8",
+          "top": 6480.5625
+        },
+        {
+          "height": 731.03125,
+          "stage": "9",
+          "top": 7191.28125
+        },
+        {
+          "height": 631.40625,
+          "stage": "10",
+          "top": 7922.3125
+        },
+        {
+          "height": 845.03125,
+          "stage": "11",
+          "top": 8553.71875
+        },
+        {
+          "height": 929.34375,
+          "stage": "12",
+          "top": 9398.75
+        },
+        {
+          "height": 1180.34375,
+          "stage": "13",
+          "top": 10328.09375
+        },
+        {
+          "height": 1049.03125,
+          "stage": "14",
+          "top": 11508.4375
+        }
+      ],
+      "url": "http://127.0.0.1:8766/modules/support-vector-machine.html?crossreview-final-mobile=1787746771858",
+      "viewport": {
+        "clientHeight": 844,
+        "clientWidth": 390,
+        "innerHeight": 844,
+        "innerWidth": 390
+      }
+    }
+  }
+}

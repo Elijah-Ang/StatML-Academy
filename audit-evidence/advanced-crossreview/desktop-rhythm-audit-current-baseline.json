@@ -1,0 +1,3420 @@
+[
+  {
+    "port": 8766,
+    "slug": "classification-trees.html",
+    "bodyHeight": 21543,
+    "groups": {
+      "section[data-stage]": [
+        {
+          "cls": "hero-section section statml-hero",
+          "display": "flex",
+          "height": 720,
+          "id": null,
+          "minHeight": "720px",
+          "top": 0
+        },
+        {
+          "cls": "section statml-stage",
+          "display": "flex",
+          "height": 1962.39,
+          "id": "statml-stage-1",
+          "minHeight": "662.4px",
+          "top": 720
+        },
+        {
+          "cls": "section statml-stage",
+          "display": "flex",
+          "height": 1123.02,
+          "id": "statml-stage-2",
+          "minHeight": "662.4px",
+          "top": 2682.39
+        },
+        {
+          "cls": "section statml-stage",
+          "display": "flex",
+          "height": 662.39,
+          "id": "statml-stage-3",
+          "minHeight": "662.4px",
+          "top": 3805.41
+        },
+        {
+          "cls": "section statml-stage",
+          "display": "flex",
+          "height": 1858.67,
+          "id": "statml-stage-4",
+          "minHeight": "662.4px",
+          "top": 4467.8
+        },
+        {
+          "cls": "section statml-stage",
+          "display": "flex",
+          "height": 1130.97,
+          "id": "statml-stage-5",
+          "minHeight": "662.4px",
+          "top": 6326.47
+        },
+        {
+          "cls": "section statml-stage",
+          "display": "flex",
+          "height": 1638.83,
+          "id": "statml-stage-6",
+          "minHeight": "662.4px",
+          "top": 7457.44
+        },
+        {
+          "cls": "section statml-stage",
+          "display": "flex",
+          "height": 1355.09,
+          "id": "statml-stage-7",
+          "minHeight": "662.4px",
+          "top": 9096.27
+        },
+        {
+          "cls": "section statml-stage",
+          "display": "flex",
+          "height": 972.25,
+          "id": "statml-stage-8",
+          "minHeight": "662.4px",
+          "top": 10451.36
+        },
+        {
+          "cls": "section statml-stage",
+          "display": "flex",
+          "height": 1564.36,
+          "id": "statml-stage-9",
+          "minHeight": "662.4px",
+          "top": 11423.61
+        },
+        {
+          "cls": "section statml-stage",
+          "display": "flex",
+          "height": 1107.36,
+          "id": "statml-stage-10",
+          "minHeight": "662.4px",
+          "top": 12987.97
+        },
+        {
+          "cls": "section statml-stage",
+          "display": "flex",
+          "height": 1186.83,
+          "id": "statml-stage-11",
+          "minHeight": "662.4px",
+          "top": 14095.33
+        },
+        {
+          "cls": "section statml-stage",
+          "display": "flex",
+          "height": 1507.19,
+          "id": "statml-stage-12",
+          "minHeight": "662.4px",
+          "top": 15282.16
+        },
+        {
+          "cls": "section statml-stage",
+          "display": "flex",
+          "height": 662.39,
+          "id": "statml-stage-13",
+          "minHeight": "662.4px",
+          "top": 16789.34
+        },
+        {
+          "cls": "section statml-stage",
+          "display": "flex",
+          "height": 662.39,
+          "id": "statml-stage-14",
+          "minHeight": "662.4px",
+          "top": 17451.73
+        },
+        {
+          "cls": "section statml-stage",
+          "display": "flex",
+          "height": 3257.48,
+          "id": "statml-stage-15",
+          "minHeight": "662.4px",
+          "top": 18114.13
+        }
+      ]
+    },
+    "scrollWidth": 1280,
+    "viewport": [
+      1280,
+      720
+    ]
+  },
+  {
+    "port": 8766,
+    "slug": "hierarchical-clustering.html",
+    "bodyHeight": 10858,
+    "groups": {
+      "section[data-stage]": [
+        {
+          "cls": "statml-stage",
+          "display": "flex",
+          "height": 1021.98,
+          "id": "statml-stage-1",
+          "minHeight": "662.4px",
+          "top": 720
+        },
+        {
+          "cls": "statml-stage",
+          "display": "flex",
+          "height": 787.94,
+          "id": "statml-stage-2",
+          "minHeight": "662.4px",
+          "top": 1741.98
+        },
+        {
+          "cls": "statml-stage",
+          "display": "flex",
+          "height": 662.39,
+          "id": "statml-stage-3",
+          "minHeight": "662.4px",
+          "top": 2529.92
+        },
+        {
+          "cls": "statml-stage",
+          "display": "flex",
+          "height": 1840.44,
+          "id": "statml-stage-4",
+          "minHeight": "662.4px",
+          "top": 3192.31
+        },
+        {
+          "cls": "statml-stage",
+          "display": "flex",
+          "height": 780.98,
+          "id": "statml-stage-5",
+          "minHeight": "662.4px",
+          "top": 5032.75
+        },
+        {
+          "cls": "statml-stage",
+          "display": "flex",
+          "height": 813.63,
+          "id": "statml-stage-6",
+          "minHeight": "662.4px",
+          "top": 5813.73
+        },
+        {
+          "cls": "statml-stage",
+          "display": "flex",
+          "height": 918.64,
+          "id": "statml-stage-7",
+          "minHeight": "662.4px",
+          "top": 6627.36
+        },
+        {
+          "cls": "statml-stage",
+          "display": "flex",
+          "height": 786.38,
+          "id": "statml-stage-8",
+          "minHeight": "662.4px",
+          "top": 7546
+        },
+        {
+          "cls": "statml-stage",
+          "display": "flex",
+          "height": 2353.95,
+          "id": "statml-stage-9",
+          "minHeight": "662.4px",
+          "top": 8332.38
+        }
+      ]
+    },
+    "scrollWidth": 1280,
+    "viewport": [
+      1280,
+      720
+    ]
+  },
+  {
+    "port": 8766,
+    "slug": "lda.html",
+    "bodyHeight": 24402,
+    "groups": {
+      "section[data-stage]": [
+        {
+          "cls": "hero-section section statml-hero",
+          "display": "flex",
+          "height": 822.52,
+          "id": "sec-0",
+          "minHeight": "720px",
+          "top": 0
+        },
+        {
+          "cls": "section statml-stage",
+          "display": "flex",
+          "height": 2963.75,
+          "id": "sec-1",
+          "minHeight": "662.4px",
+          "top": 822.52
+        },
+        {
+          "cls": "section statml-stage",
+          "display": "flex",
+          "height": 953.13,
+          "id": "sec-2",
+          "minHeight": "662.4px",
+          "top": 3786.27
+        },
+        {
+          "cls": "section statml-stage",
+          "display": "flex",
+          "height": 1034.5,
+          "id": "sec-3",
+          "minHeight": "662.4px",
+          "top": 4739.39
+        },
+        {
+          "cls": "section statml-stage",
+          "display": "flex",
+          "height": 836.03,
+          "id": "sec-4",
+          "minHeight": "662.4px",
+          "top": 5773.89
+        },
+        {
+          "cls": "section statml-stage",
+          "display": "flex",
+          "height": 1502.03,
+          "id": "sec-5",
+          "minHeight": "662.4px",
+          "top": 6609.92
+        },
+        {
+          "cls": "section statml-stage",
+          "display": "flex",
+          "height": 1784.42,
+          "id": "sec-6",
+          "minHeight": "662.4px",
+          "top": 8111.95
+        },
+        {
+          "cls": "section statml-stage",
+          "display": "flex",
+          "height": 1722.7,
+          "id": "sec-7",
+          "minHeight": "662.4px",
+          "top": 9896.38
+        },
+        {
+          "cls": "section statml-stage",
+          "display": "flex",
+          "height": 1171.42,
+          "id": "sec-8",
+          "minHeight": "662.4px",
+          "top": 11619.08
+        },
+        {
+          "cls": "section statml-stage",
+          "display": "flex",
+          "height": 1170.59,
+          "id": "sec-9",
+          "minHeight": "662.4px",
+          "top": 12790.5
+        },
+        {
+          "cls": "section statml-stage",
+          "display": "flex",
+          "height": 1998.53,
+          "id": "sec-10",
+          "minHeight": "662.4px",
+          "top": 13961.09
+        },
+        {
+          "cls": "section statml-stage",
+          "display": "flex",
+          "height": 1407.81,
+          "id": "sec-11",
+          "minHeight": "662.4px",
+          "top": 15959.63
+        },
+        {
+          "cls": "section statml-stage",
+          "display": "flex",
+          "height": 2000.02,
+          "id": "sec-12",
+          "minHeight": "662.4px",
+          "top": 17367.44
+        },
+        {
+          "cls": "section statml-stage",
+          "display": "flex",
+          "height": 2124.89,
+          "id": "sec-13",
+          "minHeight": "662.4px",
+          "top": 19367.45
+        },
+        {
+          "cls": "section statml-stage",
+          "display": "flex",
+          "height": 1844.56,
+          "id": "sec-14",
+          "minHeight": "662.4px",
+          "top": 21492.34
+        },
+        {
+          "cls": "section statml-stage",
+          "display": "flex",
+          "height": 893.38,
+          "id": "sec-15",
+          "minHeight": "662.4px",
+          "top": 23336.91
+        }
+      ]
+    },
+    "scrollWidth": 1280,
+    "viewport": [
+      1280,
+      720
+    ]
+  },
+  {
+    "port": 8766,
+    "slug": "qda.html",
+    "bodyHeight": 18740,
+    "groups": {
+      ".stage": [
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 2065.41,
+          "id": "statml-stage-1",
+          "minHeight": "662.4px",
+          "top": 720
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 1282.98,
+          "id": "statml-stage-2",
+          "minHeight": "662.4px",
+          "top": 2785.41
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 1081.98,
+          "id": "statml-stage-3",
+          "minHeight": "662.4px",
+          "top": 4068.39
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 1937.88,
+          "id": "statml-stage-4",
+          "minHeight": "662.4px",
+          "top": 5150.38
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 1288.94,
+          "id": "statml-stage-5",
+          "minHeight": "662.4px",
+          "top": 7088.25
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 1115.75,
+          "id": "statml-stage-6",
+          "minHeight": "662.4px",
+          "top": 8377.19
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 3128.91,
+          "id": "statml-stage-7",
+          "minHeight": "662.4px",
+          "top": 9492.94
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 1420.7,
+          "id": "statml-stage-8",
+          "minHeight": "662.4px",
+          "top": 12621.84
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 1778.13,
+          "id": "statml-stage-9",
+          "minHeight": "662.4px",
+          "top": 14042.55
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 2747.92,
+          "id": "statml-stage-10",
+          "minHeight": "662.4px",
+          "top": 15820.67
+        }
+      ],
+      "section[data-stage]": [
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 2065.41,
+          "id": "statml-stage-1",
+          "minHeight": "662.4px",
+          "top": 720
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 1282.98,
+          "id": "statml-stage-2",
+          "minHeight": "662.4px",
+          "top": 2785.41
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 1081.98,
+          "id": "statml-stage-3",
+          "minHeight": "662.4px",
+          "top": 4068.39
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 1937.88,
+          "id": "statml-stage-4",
+          "minHeight": "662.4px",
+          "top": 5150.38
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 1288.94,
+          "id": "statml-stage-5",
+          "minHeight": "662.4px",
+          "top": 7088.25
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 1115.75,
+          "id": "statml-stage-6",
+          "minHeight": "662.4px",
+          "top": 8377.19
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 3128.91,
+          "id": "statml-stage-7",
+          "minHeight": "662.4px",
+          "top": 9492.94
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 1420.7,
+          "id": "statml-stage-8",
+          "minHeight": "662.4px",
+          "top": 12621.84
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 1778.13,
+          "id": "statml-stage-9",
+          "minHeight": "662.4px",
+          "top": 14042.55
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 2747.92,
+          "id": "statml-stage-10",
+          "minHeight": "662.4px",
+          "top": 15820.67
+        }
+      ]
+    },
+    "scrollWidth": 1280,
+    "viewport": [
+      1280,
+      720
+    ]
+  },
+  {
+    "port": 8766,
+    "slug": "model-selection.html",
+    "bodyHeight": 14662,
+    "groups": {
+      ".stage": [
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 859.67,
+          "id": "statml-stage-1",
+          "minHeight": "662.4px",
+          "top": 720
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 1341.55,
+          "id": "statml-stage-2",
+          "minHeight": "662.4px",
+          "top": 1579.67
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 1155.92,
+          "id": "statml-stage-3",
+          "minHeight": "662.4px",
+          "top": 2921.22
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 1019.8,
+          "id": "statml-stage-4",
+          "minHeight": "662.4px",
+          "top": 4077.14
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 1102.5,
+          "id": "statml-stage-5",
+          "minHeight": "662.4px",
+          "top": 5096.94
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 805.59,
+          "id": "statml-stage-6",
+          "minHeight": "662.4px",
+          "top": 6199.44
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 1165.58,
+          "id": "statml-stage-7",
+          "minHeight": "662.4px",
+          "top": 7005.03
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 1335.39,
+          "id": "statml-stage-8",
+          "minHeight": "662.4px",
+          "top": 8170.61
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 894.94,
+          "id": "statml-stage-9",
+          "minHeight": "662.4px",
+          "top": 9506
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 1029.31,
+          "id": "statml-stage-10",
+          "minHeight": "662.4px",
+          "top": 10400.94
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 1267.06,
+          "id": "statml-stage-11",
+          "minHeight": "662.4px",
+          "top": 11430.25
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 1792.83,
+          "id": "statml-stage-12",
+          "minHeight": "662.4px",
+          "top": 12697.31
+        }
+      ],
+      "section[data-stage]": [
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 859.67,
+          "id": "statml-stage-1",
+          "minHeight": "662.4px",
+          "top": 720
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 1341.55,
+          "id": "statml-stage-2",
+          "minHeight": "662.4px",
+          "top": 1579.67
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 1155.92,
+          "id": "statml-stage-3",
+          "minHeight": "662.4px",
+          "top": 2921.22
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 1019.8,
+          "id": "statml-stage-4",
+          "minHeight": "662.4px",
+          "top": 4077.14
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 1102.5,
+          "id": "statml-stage-5",
+          "minHeight": "662.4px",
+          "top": 5096.94
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 805.59,
+          "id": "statml-stage-6",
+          "minHeight": "662.4px",
+          "top": 6199.44
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 1165.58,
+          "id": "statml-stage-7",
+          "minHeight": "662.4px",
+          "top": 7005.03
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 1335.39,
+          "id": "statml-stage-8",
+          "minHeight": "662.4px",
+          "top": 8170.61
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 894.94,
+          "id": "statml-stage-9",
+          "minHeight": "662.4px",
+          "top": 9506
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 1029.31,
+          "id": "statml-stage-10",
+          "minHeight": "662.4px",
+          "top": 10400.94
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 1267.06,
+          "id": "statml-stage-11",
+          "minHeight": "662.4px",
+          "top": 11430.25
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 1792.83,
+          "id": "statml-stage-12",
+          "minHeight": "662.4px",
+          "top": 12697.31
+        }
+      ]
+    },
+    "scrollWidth": 1280,
+    "viewport": [
+      1280,
+      720
+    ]
+  },
+  {
+    "port": 8766,
+    "slug": "support-vector-machine.html",
+    "bodyHeight": 11955,
+    "groups": {
+      ".stage": [
+        {
+          "cls": "stage is-active statml-stage",
+          "display": "flex",
+          "height": 727.67,
+          "id": "stage-1",
+          "minHeight": "662.4px",
+          "top": 812.55
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 746.95,
+          "id": "stage-2",
+          "minHeight": "662.4px",
+          "top": 1540.32
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 697.06,
+          "id": "stage-3",
+          "minHeight": "662.4px",
+          "top": 2287.27
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 673.3,
+          "id": "stage-4",
+          "minHeight": "662.4px",
+          "top": 2984.33
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 748.52,
+          "id": "stage-5",
+          "minHeight": "662.4px",
+          "top": 3657.63
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 764.67,
+          "id": "stage-6",
+          "minHeight": "662.4px",
+          "top": 4406.15
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 727.67,
+          "id": "stage-7",
+          "minHeight": "662.4px",
+          "top": 5170.82
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 739.95,
+          "id": "stage-8",
+          "minHeight": "662.4px",
+          "top": 5898.49
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 748.02,
+          "id": "stage-9",
+          "minHeight": "662.4px",
+          "top": 6638.44
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 662.39,
+          "id": "stage-10",
+          "minHeight": "662.4px",
+          "top": 7386.46
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 791.64,
+          "id": "stage-11",
+          "minHeight": "662.4px",
+          "top": 8048.85
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 879.25,
+          "id": "stage-12",
+          "minHeight": "662.4px",
+          "top": 8840.49
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 1036.95,
+          "id": "stage-13",
+          "minHeight": "662.4px",
+          "top": 9719.74
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 894.41,
+          "id": "stage-14",
+          "minHeight": "662.4px",
+          "top": 10756.69
+        }
+      ],
+      "section[data-stage]": [
+        {
+          "cls": "stage is-active statml-stage",
+          "display": "flex",
+          "height": 727.67,
+          "id": "stage-1",
+          "minHeight": "662.4px",
+          "top": 812.55
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 746.95,
+          "id": "stage-2",
+          "minHeight": "662.4px",
+          "top": 1540.32
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 697.06,
+          "id": "stage-3",
+          "minHeight": "662.4px",
+          "top": 2287.27
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 673.3,
+          "id": "stage-4",
+          "minHeight": "662.4px",
+          "top": 2984.33
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 748.52,
+          "id": "stage-5",
+          "minHeight": "662.4px",
+          "top": 3657.63
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 764.67,
+          "id": "stage-6",
+          "minHeight": "662.4px",
+          "top": 4406.15
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 727.67,
+          "id": "stage-7",
+          "minHeight": "662.4px",
+          "top": 5170.82
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 739.95,
+          "id": "stage-8",
+          "minHeight": "662.4px",
+          "top": 5898.49
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 748.02,
+          "id": "stage-9",
+          "minHeight": "662.4px",
+          "top": 6638.44
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 662.39,
+          "id": "stage-10",
+          "minHeight": "662.4px",
+          "top": 7386.46
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 791.64,
+          "id": "stage-11",
+          "minHeight": "662.4px",
+          "top": 8048.85
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 879.25,
+          "id": "stage-12",
+          "minHeight": "662.4px",
+          "top": 8840.49
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 1036.95,
+          "id": "stage-13",
+          "minHeight": "662.4px",
+          "top": 9719.74
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 894.41,
+          "id": "stage-14",
+          "minHeight": "662.4px",
+          "top": 10756.69
+        }
+      ]
+    },
+    "scrollWidth": 1280,
+    "viewport": [
+      1280,
+      720
+    ]
+  },
+  {
+    "port": 8766,
+    "slug": "regression-trees.html",
+    "bodyHeight": 18153,
+    "groups": {},
+    "scrollWidth": 1280,
+    "viewport": [
+      1280,
+      720
+    ]
+  },
+  {
+    "port": 8766,
+    "slug": "deep-learning.html",
+    "bodyHeight": 21810,
+    "groups": {
+      ".lesson-step": [
+        {
+          "cls": "lesson-step",
+          "display": "flex",
+          "height": 1600.7,
+          "id": "chapter-1",
+          "minHeight": "950.4px",
+          "top": 1656.88
+        },
+        {
+          "cls": "lesson-step",
+          "display": "flex",
+          "height": 1562.64,
+          "id": "chapter-2",
+          "minHeight": "950.4px",
+          "top": 3257.58
+        },
+        {
+          "cls": "lesson-step",
+          "display": "flex",
+          "height": 1564.03,
+          "id": "chapter-3",
+          "minHeight": "950.4px",
+          "top": 4820.22
+        },
+        {
+          "cls": "lesson-step",
+          "display": "flex",
+          "height": 1975.55,
+          "id": "chapter-4",
+          "minHeight": "950.4px",
+          "top": 6384.25
+        },
+        {
+          "cls": "lesson-step",
+          "display": "flex",
+          "height": 1707.16,
+          "id": "chapter-5",
+          "minHeight": "950.4px",
+          "top": 8359.8
+        },
+        {
+          "cls": "lesson-step",
+          "display": "flex",
+          "height": 1434.16,
+          "id": "chapter-6",
+          "minHeight": "950.4px",
+          "top": 10066.95
+        },
+        {
+          "cls": "lesson-step",
+          "display": "flex",
+          "height": 1523.45,
+          "id": "chapter-7",
+          "minHeight": "950.4px",
+          "top": 11501.11
+        },
+        {
+          "cls": "lesson-step",
+          "display": "flex",
+          "height": 1655.36,
+          "id": "chapter-8",
+          "minHeight": "950.4px",
+          "top": 13024.56
+        },
+        {
+          "cls": "lesson-step",
+          "display": "flex",
+          "height": 2278.39,
+          "id": "chapter-9",
+          "minHeight": "950.4px",
+          "top": 14679.92
+        },
+        {
+          "cls": "lesson-step",
+          "display": "flex",
+          "height": 1479.42,
+          "id": "chapter-10",
+          "minHeight": "950.4px",
+          "top": 16958.31
+        },
+        {
+          "cls": "lesson-step",
+          "display": "flex",
+          "height": 1579.8,
+          "id": "chapter-11",
+          "minHeight": "950.4px",
+          "top": 18437.73
+        },
+        {
+          "cls": "lesson-step",
+          "display": "flex",
+          "height": 1624.03,
+          "id": "chapter-12",
+          "minHeight": "950.4px",
+          "top": 20017.53
+        }
+      ]
+    },
+    "scrollWidth": 1280,
+    "viewport": [
+      1280,
+      720
+    ]
+  },
+  {
+    "port": 8766,
+    "slug": "neural-networks.html",
+    "bodyHeight": 24463,
+    "groups": {
+      "section[data-stage]": [
+        {
+          "cls": "statml-stage",
+          "display": "block",
+          "height": 1179.03,
+          "id": "stage-1",
+          "minHeight": "662.4px",
+          "top": 720
+        },
+        {
+          "cls": "statml-stage",
+          "display": "block",
+          "height": 934.5,
+          "id": "stage-2",
+          "minHeight": "662.4px",
+          "top": 1899.03
+        },
+        {
+          "cls": "statml-stage",
+          "display": "block",
+          "height": 1600.03,
+          "id": "stage-3",
+          "minHeight": "662.4px",
+          "top": 2833.53
+        },
+        {
+          "cls": "statml-stage",
+          "display": "block",
+          "height": 1309.63,
+          "id": "stage-4",
+          "minHeight": "662.4px",
+          "top": 4433.56
+        },
+        {
+          "cls": "statml-stage",
+          "display": "block",
+          "height": 1165.03,
+          "id": "stage-5",
+          "minHeight": "662.4px",
+          "top": 5743.19
+        },
+        {
+          "cls": "statml-stage",
+          "display": "block",
+          "height": 1881.42,
+          "id": "stage-6",
+          "minHeight": "662.4px",
+          "top": 6908.22
+        },
+        {
+          "cls": "statml-stage",
+          "display": "block",
+          "height": 805.77,
+          "id": "stage-7",
+          "minHeight": "662.4px",
+          "top": 8789.64
+        },
+        {
+          "cls": "statml-stage",
+          "display": "block",
+          "height": 1114.05,
+          "id": "stage-8",
+          "minHeight": "662.4px",
+          "top": 9595.41
+        },
+        {
+          "cls": "statml-stage",
+          "display": "block",
+          "height": 810.11,
+          "id": "stage-9",
+          "minHeight": "662.4px",
+          "top": 10709.45
+        },
+        {
+          "cls": "statml-stage",
+          "display": "block",
+          "height": 1050.23,
+          "id": "stage-10",
+          "minHeight": "662.4px",
+          "top": 11519.56
+        },
+        {
+          "cls": "statml-stage",
+          "display": "block",
+          "height": 987.69,
+          "id": "stage-11",
+          "minHeight": "662.4px",
+          "top": 12569.8
+        },
+        {
+          "cls": "statml-stage",
+          "display": "block",
+          "height": 1845.19,
+          "id": "stage-12",
+          "minHeight": "662.4px",
+          "top": 13557.48
+        },
+        {
+          "cls": "statml-stage",
+          "display": "block",
+          "height": 1689,
+          "id": "stage-13",
+          "minHeight": "662.4px",
+          "top": 15402.67
+        },
+        {
+          "cls": "statml-stage",
+          "display": "block",
+          "height": 1364.78,
+          "id": "stage-14",
+          "minHeight": "662.4px",
+          "top": 17091.67
+        },
+        {
+          "cls": "statml-stage",
+          "display": "block",
+          "height": 1238.19,
+          "id": "stage-15",
+          "minHeight": "662.4px",
+          "top": 18456.45
+        },
+        {
+          "cls": "statml-stage",
+          "display": "block",
+          "height": 947.91,
+          "id": "stage-16",
+          "minHeight": "662.4px",
+          "top": 19694.64
+        },
+        {
+          "cls": "statml-stage",
+          "display": "block",
+          "height": 1497.02,
+          "id": "stage-17",
+          "minHeight": "662.4px",
+          "top": 20642.55
+        },
+        {
+          "cls": "statml-stage",
+          "display": "block",
+          "height": 889,
+          "id": "stage-18",
+          "minHeight": "662.4px",
+          "top": 22139.56
+        },
+        {
+          "cls": "statml-stage",
+          "display": "block",
+          "height": 1362.14,
+          "id": "stage-19",
+          "minHeight": "662.4px",
+          "top": 23028.56
+        }
+      ]
+    },
+    "scrollWidth": 1280,
+    "viewport": [
+      1280,
+      720
+    ]
+  },
+  {
+    "port": 8766,
+    "slug": "naive-bayes.html",
+    "bodyHeight": 12802,
+    "groups": {
+      "section[data-stage]": [
+        {
+          "cls": "chapter active",
+          "display": "flex",
+          "height": 896.55,
+          "id": "stage-1",
+          "minHeight": "662.4px",
+          "top": 720
+        },
+        {
+          "cls": "chapter",
+          "display": "flex",
+          "height": 834.48,
+          "id": "stage-2",
+          "minHeight": "662.4px",
+          "top": 1616.55
+        },
+        {
+          "cls": "chapter",
+          "display": "flex",
+          "height": 1188.17,
+          "id": "stage-3",
+          "minHeight": "662.4px",
+          "top": 2451.03
+        },
+        {
+          "cls": "chapter",
+          "display": "flex",
+          "height": 685.7,
+          "id": "stage-4",
+          "minHeight": "662.4px",
+          "top": 3639.2
+        },
+        {
+          "cls": "chapter",
+          "display": "flex",
+          "height": 805.31,
+          "id": "stage-5",
+          "minHeight": "662.4px",
+          "top": 4324.91
+        },
+        {
+          "cls": "chapter",
+          "display": "flex",
+          "height": 900.61,
+          "id": "stage-6",
+          "minHeight": "662.4px",
+          "top": 5130.22
+        },
+        {
+          "cls": "chapter",
+          "display": "flex",
+          "height": 757.59,
+          "id": "stage-7",
+          "minHeight": "662.4px",
+          "top": 6030.83
+        },
+        {
+          "cls": "chapter",
+          "display": "flex",
+          "height": 738.25,
+          "id": "stage-8",
+          "minHeight": "662.4px",
+          "top": 6788.42
+        },
+        {
+          "cls": "chapter",
+          "display": "flex",
+          "height": 758.73,
+          "id": "stage-9",
+          "minHeight": "662.4px",
+          "top": 7526.67
+        },
+        {
+          "cls": "chapter",
+          "display": "flex",
+          "height": 809.17,
+          "id": "stage-10",
+          "minHeight": "662.4px",
+          "top": 8285.41
+        },
+        {
+          "cls": "chapter",
+          "display": "flex",
+          "height": 851.81,
+          "id": "stage-11",
+          "minHeight": "662.4px",
+          "top": 9094.58
+        },
+        {
+          "cls": "chapter",
+          "display": "flex",
+          "height": 842.34,
+          "id": "stage-13",
+          "minHeight": "662.4px",
+          "top": 9946.39
+        },
+        {
+          "cls": "chapter",
+          "display": "flex",
+          "height": 879.75,
+          "id": "stage-14",
+          "minHeight": "662.4px",
+          "top": 10788.73
+        },
+        {
+          "cls": "chapter",
+          "display": "flex",
+          "height": 961.58,
+          "id": "stage-15",
+          "minHeight": "662.4px",
+          "top": 11668.48
+        }
+      ]
+    },
+    "scrollWidth": 1280,
+    "viewport": [
+      1280,
+      720
+    ]
+  },
+  {
+    "port": 8766,
+    "slug": "one-r.html",
+    "bodyHeight": 13806,
+    "groups": {
+      ".stage": [
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 733.64,
+          "id": "stage-1",
+          "minHeight": "662.4px",
+          "top": 720
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 831.63,
+          "id": "stage-2",
+          "minHeight": "662.4px",
+          "top": 1453.64
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 1012.63,
+          "id": "stage-3",
+          "minHeight": "662.4px",
+          "top": 2285.27
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 1053.91,
+          "id": "stage-4",
+          "minHeight": "662.4px",
+          "top": 3297.89
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 1133.98,
+          "id": "stage-5",
+          "minHeight": "662.4px",
+          "top": 4351.8
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 946.08,
+          "id": "stage-6",
+          "minHeight": "662.4px",
+          "top": 5485.78
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 851.39,
+          "id": "stage-7",
+          "minHeight": "662.4px",
+          "top": 6431.86
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 917,
+          "id": "stage-8",
+          "minHeight": "662.4px",
+          "top": 7283.25
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 1016.59,
+          "id": "stage-9",
+          "minHeight": "662.4px",
+          "top": 8200.25
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 1779.19,
+          "id": "stage-10",
+          "minHeight": "662.4px",
+          "top": 9216.84
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 1126.84,
+          "id": "stage-11",
+          "minHeight": "662.4px",
+          "top": 10996.03
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 1333.42,
+          "id": "stage-12",
+          "minHeight": "662.4px",
+          "top": 12122.88
+        }
+      ],
+      "section[data-stage]": [
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 733.64,
+          "id": "stage-1",
+          "minHeight": "662.4px",
+          "top": 720
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 831.63,
+          "id": "stage-2",
+          "minHeight": "662.4px",
+          "top": 1453.64
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 1012.63,
+          "id": "stage-3",
+          "minHeight": "662.4px",
+          "top": 2285.27
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 1053.91,
+          "id": "stage-4",
+          "minHeight": "662.4px",
+          "top": 3297.89
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 1133.98,
+          "id": "stage-5",
+          "minHeight": "662.4px",
+          "top": 4351.8
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 946.08,
+          "id": "stage-6",
+          "minHeight": "662.4px",
+          "top": 5485.78
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 851.39,
+          "id": "stage-7",
+          "minHeight": "662.4px",
+          "top": 6431.86
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 917,
+          "id": "stage-8",
+          "minHeight": "662.4px",
+          "top": 7283.25
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 1016.59,
+          "id": "stage-9",
+          "minHeight": "662.4px",
+          "top": 8200.25
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 1779.19,
+          "id": "stage-10",
+          "minHeight": "662.4px",
+          "top": 9216.84
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 1126.84,
+          "id": "stage-11",
+          "minHeight": "662.4px",
+          "top": 10996.03
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 1333.42,
+          "id": "stage-12",
+          "minHeight": "662.4px",
+          "top": 12122.88
+        }
+      ]
+    },
+    "scrollWidth": 1280,
+    "viewport": [
+      1280,
+      720
+    ]
+  },
+  {
+    "port": 8766,
+    "slug": "multiple-linear-regression.html",
+    "bodyHeight": 10881,
+    "groups": {
+      "section[data-stage]": [
+        {
+          "cls": "min-h-screen flex flex-col items-center justify-center text-center p-6 relative overflow-hidden statml-hero",
+          "display": "flex",
+          "height": 733.53,
+          "id": null,
+          "minHeight": "720px",
+          "top": 0
+        },
+        {
+          "cls": "story-section statml-stage",
+          "display": "flex",
+          "height": 907.25,
+          "id": "statml-stage-1",
+          "minHeight": "662.4px",
+          "top": 733.53
+        },
+        {
+          "cls": "story-section statml-stage",
+          "display": "flex",
+          "height": 765.19,
+          "id": "statml-stage-2",
+          "minHeight": "662.4px",
+          "top": 1640.78
+        },
+        {
+          "cls": "story-section statml-stage",
+          "display": "flex",
+          "height": 933.98,
+          "id": "statml-stage-3",
+          "minHeight": "662.4px",
+          "top": 2405.97
+        },
+        {
+          "cls": "story-section statml-stage",
+          "display": "flex",
+          "height": 757.91,
+          "id": "statml-stage-4",
+          "minHeight": "662.4px",
+          "top": 3339.95
+        },
+        {
+          "cls": "story-section statml-stage",
+          "display": "flex",
+          "height": 1055.8,
+          "id": "statml-stage-5",
+          "minHeight": "662.4px",
+          "top": 4097.86
+        },
+        {
+          "cls": "story-section statml-stage",
+          "display": "flex",
+          "height": 1025.17,
+          "id": "statml-stage-6",
+          "minHeight": "662.4px",
+          "top": 5153.66
+        },
+        {
+          "cls": "story-section statml-stage",
+          "display": "flex",
+          "height": 1119.42,
+          "id": "statml-stage-7",
+          "minHeight": "662.4px",
+          "top": 6178.83
+        },
+        {
+          "cls": "story-section statml-stage",
+          "display": "flex",
+          "height": 753.13,
+          "id": "statml-stage-8",
+          "minHeight": "662.4px",
+          "top": 7298.25
+        },
+        {
+          "cls": "story-section statml-stage",
+          "display": "flex",
+          "height": 2658.55,
+          "id": "statml-stage-9",
+          "minHeight": "662.4px",
+          "top": 8051.38
+        }
+      ]
+    },
+    "scrollWidth": 1280,
+    "viewport": [
+      1280,
+      720
+    ]
+  },
+  {
+    "port": 8765,
+    "slug": "classification-trees.html",
+    "bodyHeight": 20105,
+    "groups": {
+      "section[data-stage]": [
+        {
+          "cls": "hero-section section statml-hero",
+          "display": "flex",
+          "height": 720,
+          "id": null,
+          "minHeight": "720px",
+          "top": 0
+        },
+        {
+          "cls": "section statml-stage",
+          "display": "flex",
+          "height": 1952.56,
+          "id": "statml-stage-1",
+          "minHeight": "662.4px",
+          "top": 720
+        },
+        {
+          "cls": "section statml-stage",
+          "display": "flex",
+          "height": 1027.7,
+          "id": "statml-stage-2",
+          "minHeight": "662.4px",
+          "top": 2672.56
+        },
+        {
+          "cls": "section statml-stage",
+          "display": "flex",
+          "height": 662.39,
+          "id": "statml-stage-3",
+          "minHeight": "662.4px",
+          "top": 3700.27
+        },
+        {
+          "cls": "section statml-stage",
+          "display": "flex",
+          "height": 1730.88,
+          "id": "statml-stage-4",
+          "minHeight": "662.4px",
+          "top": 4362.66
+        },
+        {
+          "cls": "section statml-stage",
+          "display": "flex",
+          "height": 971.92,
+          "id": "statml-stage-5",
+          "minHeight": "662.4px",
+          "top": 6093.53
+        },
+        {
+          "cls": "section statml-stage",
+          "display": "flex",
+          "height": 1441.75,
+          "id": "statml-stage-6",
+          "minHeight": "662.4px",
+          "top": 7065.45
+        },
+        {
+          "cls": "section statml-stage",
+          "display": "flex",
+          "height": 1264.53,
+          "id": "statml-stage-7",
+          "minHeight": "662.4px",
+          "top": 8507.2
+        },
+        {
+          "cls": "section statml-stage",
+          "display": "flex",
+          "height": 922.75,
+          "id": "statml-stage-8",
+          "minHeight": "662.4px",
+          "top": 9771.73
+        },
+        {
+          "cls": "section statml-stage",
+          "display": "flex",
+          "height": 1289.63,
+          "id": "statml-stage-9",
+          "minHeight": "662.4px",
+          "top": 10694.48
+        },
+        {
+          "cls": "section statml-stage",
+          "display": "flex",
+          "height": 1029.88,
+          "id": "statml-stage-10",
+          "minHeight": "662.4px",
+          "top": 11984.11
+        },
+        {
+          "cls": "section statml-stage",
+          "display": "flex",
+          "height": 1301.64,
+          "id": "statml-stage-11",
+          "minHeight": "662.4px",
+          "top": 13013.98
+        },
+        {
+          "cls": "section statml-stage",
+          "display": "flex",
+          "height": 1411.89,
+          "id": "statml-stage-12",
+          "minHeight": "662.4px",
+          "top": 14315.63
+        },
+        {
+          "cls": "section statml-stage",
+          "display": "flex",
+          "height": 662.39,
+          "id": "statml-stage-13",
+          "minHeight": "662.4px",
+          "top": 15727.52
+        },
+        {
+          "cls": "section statml-stage",
+          "display": "flex",
+          "height": 662.39,
+          "id": "statml-stage-14",
+          "minHeight": "662.4px",
+          "top": 16389.91
+        },
+        {
+          "cls": "section statml-stage",
+          "display": "flex",
+          "height": 2880.92,
+          "id": "statml-stage-15",
+          "minHeight": "662.4px",
+          "top": 17052.3
+        }
+      ]
+    },
+    "scrollWidth": 1280,
+    "viewport": [
+      1280,
+      720
+    ]
+  },
+  {
+    "port": 8765,
+    "slug": "hierarchical-clustering.html",
+    "bodyHeight": 9935,
+    "groups": {
+      "section[data-stage]": [
+        {
+          "cls": "statml-stage",
+          "display": "flex",
+          "height": 918.98,
+          "id": "statml-stage-1",
+          "minHeight": "662.4px",
+          "top": 720
+        },
+        {
+          "cls": "statml-stage",
+          "display": "flex",
+          "height": 706.38,
+          "id": "statml-stage-2",
+          "minHeight": "662.4px",
+          "top": 1638.98
+        },
+        {
+          "cls": "statml-stage",
+          "display": "flex",
+          "height": 662.39,
+          "id": "statml-stage-3",
+          "minHeight": "662.4px",
+          "top": 2345.36
+        },
+        {
+          "cls": "statml-stage",
+          "display": "flex",
+          "height": 1621.53,
+          "id": "statml-stage-4",
+          "minHeight": "662.4px",
+          "top": 3007.75
+        },
+        {
+          "cls": "statml-stage",
+          "display": "flex",
+          "height": 726.61,
+          "id": "statml-stage-5",
+          "minHeight": "662.4px",
+          "top": 4629.28
+        },
+        {
+          "cls": "statml-stage",
+          "display": "flex",
+          "height": 666.39,
+          "id": "statml-stage-6",
+          "minHeight": "662.4px",
+          "top": 5355.89
+        },
+        {
+          "cls": "statml-stage",
+          "display": "flex",
+          "height": 841.08,
+          "id": "statml-stage-7",
+          "minHeight": "662.4px",
+          "top": 6022.28
+        },
+        {
+          "cls": "statml-stage",
+          "display": "flex",
+          "height": 732,
+          "id": "statml-stage-8",
+          "minHeight": "662.4px",
+          "top": 6863.36
+        },
+        {
+          "cls": "statml-stage",
+          "display": "flex",
+          "height": 2168.56,
+          "id": "statml-stage-9",
+          "minHeight": "662.4px",
+          "top": 7595.36
+        }
+      ]
+    },
+    "scrollWidth": 1280,
+    "viewport": [
+      1280,
+      720
+    ]
+  },
+  {
+    "port": 8765,
+    "slug": "lda.html",
+    "bodyHeight": 22382,
+    "groups": {
+      "section[data-stage]": [
+        {
+          "cls": "hero-section section statml-hero",
+          "display": "flex",
+          "height": 822.52,
+          "id": "sec-0",
+          "minHeight": "720px",
+          "top": 0
+        },
+        {
+          "cls": "section statml-stage",
+          "display": "flex",
+          "height": 2897.7,
+          "id": "sec-1",
+          "minHeight": "662.4px",
+          "top": 822.52
+        },
+        {
+          "cls": "section statml-stage",
+          "display": "flex",
+          "height": 844.38,
+          "id": "sec-2",
+          "minHeight": "662.4px",
+          "top": 3720.22
+        },
+        {
+          "cls": "section statml-stage",
+          "display": "flex",
+          "height": 956.91,
+          "id": "sec-3",
+          "minHeight": "662.4px",
+          "top": 4564.59
+        },
+        {
+          "cls": "section statml-stage",
+          "display": "flex",
+          "height": 781.66,
+          "id": "sec-4",
+          "minHeight": "662.4px",
+          "top": 5521.5
+        },
+        {
+          "cls": "section statml-stage",
+          "display": "flex",
+          "height": 1389.52,
+          "id": "sec-5",
+          "minHeight": "662.4px",
+          "top": 6303.16
+        },
+        {
+          "cls": "section statml-stage",
+          "display": "flex",
+          "height": 1542.83,
+          "id": "sec-6",
+          "minHeight": "662.4px",
+          "top": 7692.67
+        },
+        {
+          "cls": "section statml-stage",
+          "display": "flex",
+          "height": 1581.81,
+          "id": "sec-7",
+          "minHeight": "662.4px",
+          "top": 9235.5
+        },
+        {
+          "cls": "section statml-stage",
+          "display": "flex",
+          "height": 1118.48,
+          "id": "sec-8",
+          "minHeight": "662.4px",
+          "top": 10817.31
+        },
+        {
+          "cls": "section statml-stage",
+          "display": "flex",
+          "height": 1050.84,
+          "id": "sec-9",
+          "minHeight": "662.4px",
+          "top": 11935.8
+        },
+        {
+          "cls": "section statml-stage",
+          "display": "flex",
+          "height": 1823.48,
+          "id": "sec-10",
+          "minHeight": "662.4px",
+          "top": 12986.64
+        },
+        {
+          "cls": "section statml-stage",
+          "display": "flex",
+          "height": 1231.28,
+          "id": "sec-11",
+          "minHeight": "662.4px",
+          "top": 14810.13
+        },
+        {
+          "cls": "section statml-stage",
+          "display": "flex",
+          "height": 1841.75,
+          "id": "sec-12",
+          "minHeight": "662.4px",
+          "top": 16041.41
+        },
+        {
+          "cls": "section statml-stage",
+          "display": "flex",
+          "height": 1870.03,
+          "id": "sec-13",
+          "minHeight": "662.4px",
+          "top": 17883.16
+        },
+        {
+          "cls": "section statml-stage",
+          "display": "flex",
+          "height": 1639.11,
+          "id": "sec-14",
+          "minHeight": "662.4px",
+          "top": 19753.19
+        },
+        {
+          "cls": "section statml-stage",
+          "display": "flex",
+          "height": 818.16,
+          "id": "sec-15",
+          "minHeight": "662.4px",
+          "top": 21392.3
+        }
+      ]
+    },
+    "scrollWidth": 1280,
+    "viewport": [
+      1280,
+      720
+    ]
+  },
+  {
+    "port": 8765,
+    "slug": "qda.html",
+    "bodyHeight": 17030,
+    "groups": {
+      ".stage": [
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 1911.81,
+          "id": "statml-stage-1",
+          "minHeight": "662.4px",
+          "top": 720
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 1184.19,
+          "id": "statml-stage-2",
+          "minHeight": "662.4px",
+          "top": 2631.81
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 885.06,
+          "id": "statml-stage-3",
+          "minHeight": "662.4px",
+          "top": 3816
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 1786.09,
+          "id": "statml-stage-4",
+          "minHeight": "662.4px",
+          "top": 4701.06
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 1180.23,
+          "id": "statml-stage-5",
+          "minHeight": "662.4px",
+          "top": 6487.16
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 1023.31,
+          "id": "statml-stage-6",
+          "minHeight": "662.4px",
+          "top": 7667.39
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 2951.2,
+          "id": "statml-stage-7",
+          "minHeight": "662.4px",
+          "top": 8690.7
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 1203.05,
+          "id": "statml-stage-8",
+          "minHeight": "662.4px",
+          "top": 11641.91
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 1596.7,
+          "id": "statml-stage-9",
+          "minHeight": "662.4px",
+          "top": 12844.95
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 2416.44,
+          "id": "statml-stage-10",
+          "minHeight": "662.4px",
+          "top": 14441.66
+        }
+      ],
+      "section[data-stage]": [
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 1911.81,
+          "id": "statml-stage-1",
+          "minHeight": "662.4px",
+          "top": 720
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 1184.19,
+          "id": "statml-stage-2",
+          "minHeight": "662.4px",
+          "top": 2631.81
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 885.06,
+          "id": "statml-stage-3",
+          "minHeight": "662.4px",
+          "top": 3816
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 1786.09,
+          "id": "statml-stage-4",
+          "minHeight": "662.4px",
+          "top": 4701.06
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 1180.23,
+          "id": "statml-stage-5",
+          "minHeight": "662.4px",
+          "top": 6487.16
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 1023.31,
+          "id": "statml-stage-6",
+          "minHeight": "662.4px",
+          "top": 7667.39
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 2951.2,
+          "id": "statml-stage-7",
+          "minHeight": "662.4px",
+          "top": 8690.7
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 1203.05,
+          "id": "statml-stage-8",
+          "minHeight": "662.4px",
+          "top": 11641.91
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 1596.7,
+          "id": "statml-stage-9",
+          "minHeight": "662.4px",
+          "top": 12844.95
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 2416.44,
+          "id": "statml-stage-10",
+          "minHeight": "662.4px",
+          "top": 14441.66
+        }
+      ]
+    },
+    "scrollWidth": 1280,
+    "viewport": [
+      1280,
+      720
+    ]
+  },
+  {
+    "port": 8765,
+    "slug": "model-selection.html",
+    "bodyHeight": 13312,
+    "groups": {
+      ".stage": [
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 754.56,
+          "id": "statml-stage-1",
+          "minHeight": "662.4px",
+          "top": 720
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 1124.05,
+          "id": "statml-stage-2",
+          "minHeight": "662.4px",
+          "top": 1474.56
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 1025.98,
+          "id": "statml-stage-3",
+          "minHeight": "662.4px",
+          "top": 2598.61
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 955.08,
+          "id": "statml-stage-4",
+          "minHeight": "662.4px",
+          "top": 3624.59
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 1026.94,
+          "id": "statml-stage-5",
+          "minHeight": "662.4px",
+          "top": 4579.67
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 796.41,
+          "id": "statml-stage-6",
+          "minHeight": "662.4px",
+          "top": 5606.61
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 1049.25,
+          "id": "statml-stage-7",
+          "minHeight": "662.4px",
+          "top": 6403.02
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 1196.22,
+          "id": "statml-stage-8",
+          "minHeight": "662.4px",
+          "top": 7452.27
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 771.13,
+          "id": "statml-stage-9",
+          "minHeight": "662.4px",
+          "top": 8648.48
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 904.44,
+          "id": "statml-stage-10",
+          "minHeight": "662.4px",
+          "top": 9419.61
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 1216.33,
+          "id": "statml-stage-11",
+          "minHeight": "662.4px",
+          "top": 10324.05
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 1600.56,
+          "id": "statml-stage-12",
+          "minHeight": "662.4px",
+          "top": 11540.38
+        }
+      ],
+      "section[data-stage]": [
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 754.56,
+          "id": "statml-stage-1",
+          "minHeight": "662.4px",
+          "top": 720
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 1124.05,
+          "id": "statml-stage-2",
+          "minHeight": "662.4px",
+          "top": 1474.56
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 1025.98,
+          "id": "statml-stage-3",
+          "minHeight": "662.4px",
+          "top": 2598.61
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 955.08,
+          "id": "statml-stage-4",
+          "minHeight": "662.4px",
+          "top": 3624.59
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 1026.94,
+          "id": "statml-stage-5",
+          "minHeight": "662.4px",
+          "top": 4579.67
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 796.41,
+          "id": "statml-stage-6",
+          "minHeight": "662.4px",
+          "top": 5606.61
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 1049.25,
+          "id": "statml-stage-7",
+          "minHeight": "662.4px",
+          "top": 6403.02
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 1196.22,
+          "id": "statml-stage-8",
+          "minHeight": "662.4px",
+          "top": 7452.27
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 771.13,
+          "id": "statml-stage-9",
+          "minHeight": "662.4px",
+          "top": 8648.48
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 904.44,
+          "id": "statml-stage-10",
+          "minHeight": "662.4px",
+          "top": 9419.61
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 1216.33,
+          "id": "statml-stage-11",
+          "minHeight": "662.4px",
+          "top": 10324.05
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 1600.56,
+          "id": "statml-stage-12",
+          "minHeight": "662.4px",
+          "top": 11540.38
+        }
+      ]
+    },
+    "scrollWidth": 1280,
+    "viewport": [
+      1280,
+      720
+    ]
+  },
+  {
+    "port": 8765,
+    "slug": "support-vector-machine.html",
+    "bodyHeight": 11153,
+    "groups": {
+      ".stage": [
+        {
+          "cls": "stage is-active statml-stage",
+          "display": "flex",
+          "height": 678.31,
+          "id": "stage-1",
+          "minHeight": "662.4px",
+          "top": 812.55
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 662.39,
+          "id": "stage-2",
+          "minHeight": "662.4px",
+          "top": 1490.86
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 662.39,
+          "id": "stage-3",
+          "minHeight": "662.4px",
+          "top": 2153.25
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 662.39,
+          "id": "stage-4",
+          "minHeight": "662.4px",
+          "top": 2815.64
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 731.33,
+          "id": "stage-5",
+          "minHeight": "662.4px",
+          "top": 3478.03
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 715.31,
+          "id": "stage-6",
+          "minHeight": "662.4px",
+          "top": 4209.36
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 662.39,
+          "id": "stage-7",
+          "minHeight": "662.4px",
+          "top": 4924.67
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 703.52,
+          "id": "stage-8",
+          "minHeight": "662.4px",
+          "top": 5587.06
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 662.39,
+          "id": "stage-9",
+          "minHeight": "662.4px",
+          "top": 6290.58
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 662.39,
+          "id": "stage-10",
+          "minHeight": "662.4px",
+          "top": 6952.97
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 764.45,
+          "id": "stage-11",
+          "minHeight": "662.4px",
+          "top": 7615.36
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 795.95,
+          "id": "stage-12",
+          "minHeight": "662.4px",
+          "top": 8379.81
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 919.81,
+          "id": "stage-13",
+          "minHeight": "662.4px",
+          "top": 9175.77
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 754.05,
+          "id": "stage-14",
+          "minHeight": "662.4px",
+          "top": 10095.58
+        }
+      ],
+      "section[data-stage]": [
+        {
+          "cls": "stage is-active statml-stage",
+          "display": "flex",
+          "height": 678.31,
+          "id": "stage-1",
+          "minHeight": "662.4px",
+          "top": 812.55
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 662.39,
+          "id": "stage-2",
+          "minHeight": "662.4px",
+          "top": 1490.86
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 662.39,
+          "id": "stage-3",
+          "minHeight": "662.4px",
+          "top": 2153.25
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 662.39,
+          "id": "stage-4",
+          "minHeight": "662.4px",
+          "top": 2815.64
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 731.33,
+          "id": "stage-5",
+          "minHeight": "662.4px",
+          "top": 3478.03
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 715.31,
+          "id": "stage-6",
+          "minHeight": "662.4px",
+          "top": 4209.36
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 662.39,
+          "id": "stage-7",
+          "minHeight": "662.4px",
+          "top": 4924.67
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 703.52,
+          "id": "stage-8",
+          "minHeight": "662.4px",
+          "top": 5587.06
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 662.39,
+          "id": "stage-9",
+          "minHeight": "662.4px",
+          "top": 6290.58
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 662.39,
+          "id": "stage-10",
+          "minHeight": "662.4px",
+          "top": 6952.97
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 764.45,
+          "id": "stage-11",
+          "minHeight": "662.4px",
+          "top": 7615.36
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 795.95,
+          "id": "stage-12",
+          "minHeight": "662.4px",
+          "top": 8379.81
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 919.81,
+          "id": "stage-13",
+          "minHeight": "662.4px",
+          "top": 9175.77
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 754.05,
+          "id": "stage-14",
+          "minHeight": "662.4px",
+          "top": 10095.58
+        }
+      ]
+    },
+    "scrollWidth": 1280,
+    "viewport": [
+      1280,
+      720
+    ]
+  },
+  {
+    "port": 8765,
+    "slug": "regression-trees.html",
+    "bodyHeight": 17239,
+    "groups": {},
+    "scrollWidth": 1280,
+    "viewport": [
+      1280,
+      720
+    ]
+  },
+  {
+    "port": 8765,
+    "slug": "deep-learning.html",
+    "bodyHeight": 20101,
+    "groups": {
+      ".lesson-step": [
+        {
+          "cls": "lesson-step",
+          "display": "flex",
+          "height": 1480.16,
+          "id": "chapter-1",
+          "minHeight": "950.4px",
+          "top": 1635.75
+        },
+        {
+          "cls": "lesson-step",
+          "display": "flex",
+          "height": 1441.23,
+          "id": "chapter-2",
+          "minHeight": "950.4px",
+          "top": 3115.91
+        },
+        {
+          "cls": "lesson-step",
+          "display": "flex",
+          "height": 1421.23,
+          "id": "chapter-3",
+          "minHeight": "950.4px",
+          "top": 4557.14
+        },
+        {
+          "cls": "lesson-step",
+          "display": "flex",
+          "height": 1775.22,
+          "id": "chapter-4",
+          "minHeight": "950.4px",
+          "top": 5978.38
+        },
+        {
+          "cls": "lesson-step",
+          "display": "flex",
+          "height": 1584.86,
+          "id": "chapter-5",
+          "minHeight": "950.4px",
+          "top": 7753.59
+        },
+        {
+          "cls": "lesson-step",
+          "display": "flex",
+          "height": 1325.23,
+          "id": "chapter-6",
+          "minHeight": "950.4px",
+          "top": 9338.45
+        },
+        {
+          "cls": "lesson-step",
+          "display": "flex",
+          "height": 1456.58,
+          "id": "chapter-7",
+          "minHeight": "950.4px",
+          "top": 10663.69
+        },
+        {
+          "cls": "lesson-step",
+          "display": "flex",
+          "height": 1503.36,
+          "id": "chapter-8",
+          "minHeight": "950.4px",
+          "top": 12120.27
+        },
+        {
+          "cls": "lesson-step",
+          "display": "flex",
+          "height": 2064.27,
+          "id": "chapter-9",
+          "minHeight": "950.4px",
+          "top": 13623.63
+        },
+        {
+          "cls": "lesson-step",
+          "display": "flex",
+          "height": 1316.03,
+          "id": "chapter-10",
+          "minHeight": "950.4px",
+          "top": 15687.89
+        },
+        {
+          "cls": "lesson-step",
+          "display": "flex",
+          "height": 1431.05,
+          "id": "chapter-11",
+          "minHeight": "950.4px",
+          "top": 17003.92
+        },
+        {
+          "cls": "lesson-step",
+          "display": "flex",
+          "height": 1497.42,
+          "id": "chapter-12",
+          "minHeight": "950.4px",
+          "top": 18434.97
+        }
+      ]
+    },
+    "scrollWidth": 1280,
+    "viewport": [
+      1280,
+      720
+    ]
+  },
+  {
+    "port": 8765,
+    "slug": "neural-networks.html",
+    "bodyHeight": 21802,
+    "groups": {
+      "section[data-stage]": [
+        {
+          "cls": "statml-stage",
+          "display": "block",
+          "height": 1051.08,
+          "id": "stage-1",
+          "minHeight": "662.4px",
+          "top": 720
+        },
+        {
+          "cls": "statml-stage",
+          "display": "block",
+          "height": 885.7,
+          "id": "stage-2",
+          "minHeight": "662.4px",
+          "top": 1771.08
+        },
+        {
+          "cls": "statml-stage",
+          "display": "block",
+          "height": 1378.53,
+          "id": "stage-3",
+          "minHeight": "662.4px",
+          "top": 2656.78
+        },
+        {
+          "cls": "statml-stage",
+          "display": "block",
+          "height": 1132.86,
+          "id": "stage-4",
+          "minHeight": "662.4px",
+          "top": 4035.31
+        },
+        {
+          "cls": "statml-stage",
+          "display": "block",
+          "height": 995.02,
+          "id": "stage-5",
+          "minHeight": "662.4px",
+          "top": 5168.17
+        },
+        {
+          "cls": "statml-stage",
+          "display": "block",
+          "height": 1612.45,
+          "id": "stage-6",
+          "minHeight": "662.4px",
+          "top": 6163.19
+        },
+        {
+          "cls": "statml-stage",
+          "display": "block",
+          "height": 753.56,
+          "id": "stage-7",
+          "minHeight": "662.4px",
+          "top": 7775.64
+        },
+        {
+          "cls": "statml-stage",
+          "display": "block",
+          "height": 1053.92,
+          "id": "stage-8",
+          "minHeight": "662.4px",
+          "top": 8529.2
+        },
+        {
+          "cls": "statml-stage",
+          "display": "block",
+          "height": 732.52,
+          "id": "stage-9",
+          "minHeight": "662.4px",
+          "top": 9583.13
+        },
+        {
+          "cls": "statml-stage",
+          "display": "block",
+          "height": 888.88,
+          "id": "stage-10",
+          "minHeight": "662.4px",
+          "top": 10315.64
+        },
+        {
+          "cls": "statml-stage",
+          "display": "block",
+          "height": 895.11,
+          "id": "stage-11",
+          "minHeight": "662.4px",
+          "top": 11204.52
+        },
+        {
+          "cls": "statml-stage",
+          "display": "block",
+          "height": 1633.69,
+          "id": "stage-12",
+          "minHeight": "662.4px",
+          "top": 12099.63
+        },
+        {
+          "cls": "statml-stage",
+          "display": "block",
+          "height": 1490.2,
+          "id": "stage-13",
+          "minHeight": "662.4px",
+          "top": 13733.31
+        },
+        {
+          "cls": "statml-stage",
+          "display": "block",
+          "height": 1293.39,
+          "id": "stage-14",
+          "minHeight": "662.4px",
+          "top": 15223.52
+        },
+        {
+          "cls": "statml-stage",
+          "display": "block",
+          "height": 1126.36,
+          "id": "stage-15",
+          "minHeight": "662.4px",
+          "top": 16516.91
+        },
+        {
+          "cls": "statml-stage",
+          "display": "block",
+          "height": 841.75,
+          "id": "stage-16",
+          "minHeight": "662.4px",
+          "top": 17643.27
+        },
+        {
+          "cls": "statml-stage",
+          "display": "block",
+          "height": 1244.92,
+          "id": "stage-17",
+          "minHeight": "662.4px",
+          "top": 18485.02
+        },
+        {
+          "cls": "statml-stage",
+          "display": "block",
+          "height": 796.2,
+          "id": "stage-18",
+          "minHeight": "662.4px",
+          "top": 19729.94
+        },
+        {
+          "cls": "statml-stage",
+          "display": "block",
+          "height": 1203.36,
+          "id": "stage-19",
+          "minHeight": "662.4px",
+          "top": 20526.14
+        }
+      ]
+    },
+    "scrollWidth": 1280,
+    "viewport": [
+      1280,
+      720
+    ]
+  },
+  {
+    "port": 8765,
+    "slug": "naive-bayes.html",
+    "bodyHeight": 12111,
+    "groups": {
+      "section[data-stage]": [
+        {
+          "cls": "chapter active",
+          "display": "flex",
+          "height": 887.36,
+          "id": "stage-1",
+          "minHeight": "662.4px",
+          "top": 720
+        },
+        {
+          "cls": "chapter",
+          "display": "flex",
+          "height": 792.11,
+          "id": "stage-2",
+          "minHeight": "662.4px",
+          "top": 1607.36
+        },
+        {
+          "cls": "chapter",
+          "display": "flex",
+          "height": 1129.36,
+          "id": "stage-3",
+          "minHeight": "662.4px",
+          "top": 2399.47
+        },
+        {
+          "cls": "chapter",
+          "display": "flex",
+          "height": 662.39,
+          "id": "stage-4",
+          "minHeight": "662.4px",
+          "top": 3528.83
+        },
+        {
+          "cls": "chapter",
+          "display": "flex",
+          "height": 768.31,
+          "id": "stage-5",
+          "minHeight": "662.4px",
+          "top": 4191.22
+        },
+        {
+          "cls": "chapter",
+          "display": "flex",
+          "height": 824.42,
+          "id": "stage-6",
+          "minHeight": "662.4px",
+          "top": 4959.53
+        },
+        {
+          "cls": "chapter",
+          "display": "flex",
+          "height": 662.39,
+          "id": "stage-7",
+          "minHeight": "662.4px",
+          "top": 5783.95
+        },
+        {
+          "cls": "chapter",
+          "display": "flex",
+          "height": 670.47,
+          "id": "stage-8",
+          "minHeight": "662.4px",
+          "top": 6446.34
+        },
+        {
+          "cls": "chapter",
+          "display": "flex",
+          "height": 721.73,
+          "id": "stage-9",
+          "minHeight": "662.4px",
+          "top": 7116.81
+        },
+        {
+          "cls": "chapter",
+          "display": "flex",
+          "height": 731.58,
+          "id": "stage-10",
+          "minHeight": "662.4px",
+          "top": 7838.55
+        },
+        {
+          "cls": "chapter",
+          "display": "flex",
+          "height": 762.22,
+          "id": "stage-11",
+          "minHeight": "662.4px",
+          "top": 8570.13
+        },
+        {
+          "cls": "chapter",
+          "display": "flex",
+          "height": 842.34,
+          "id": "stage-13",
+          "minHeight": "662.4px",
+          "top": 9332.34
+        },
+        {
+          "cls": "chapter",
+          "display": "flex",
+          "height": 811.56,
+          "id": "stage-14",
+          "minHeight": "662.4px",
+          "top": 10174.69
+        },
+        {
+          "cls": "chapter",
+          "display": "flex",
+          "height": 953.77,
+          "id": "stage-15",
+          "minHeight": "662.4px",
+          "top": 10986.25
+        }
+      ]
+    },
+    "scrollWidth": 1280,
+    "viewport": [
+      1280,
+      720
+    ]
+  },
+  {
+    "port": 8765,
+    "slug": "one-r.html",
+    "bodyHeight": 12721,
+    "groups": {
+      ".stage": [
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 662.39,
+          "id": "stage-1",
+          "minHeight": "662.4px",
+          "top": 720
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 716.59,
+          "id": "stage-2",
+          "minHeight": "662.4px",
+          "top": 1382.39
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 961.67,
+          "id": "stage-3",
+          "minHeight": "662.4px",
+          "top": 2098.98
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 997.86,
+          "id": "stage-4",
+          "minHeight": "662.4px",
+          "top": 3060.66
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 1050.38,
+          "id": "stage-5",
+          "minHeight": "662.4px",
+          "top": 4058.52
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 809.47,
+          "id": "stage-6",
+          "minHeight": "662.4px",
+          "top": 5108.89
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 802.48,
+          "id": "stage-7",
+          "minHeight": "662.4px",
+          "top": 5918.36
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 816.45,
+          "id": "stage-8",
+          "minHeight": "662.4px",
+          "top": 6720.84
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 904.92,
+          "id": "stage-9",
+          "minHeight": "662.4px",
+          "top": 7537.3
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 1612.89,
+          "id": "stage-10",
+          "minHeight": "662.4px",
+          "top": 8442.22
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 1090.17,
+          "id": "stage-11",
+          "minHeight": "662.4px",
+          "top": 10055.11
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 1248.19,
+          "id": "stage-12",
+          "minHeight": "662.4px",
+          "top": 11145.28
+        }
+      ],
+      "section[data-stage]": [
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 662.39,
+          "id": "stage-1",
+          "minHeight": "662.4px",
+          "top": 720
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 716.59,
+          "id": "stage-2",
+          "minHeight": "662.4px",
+          "top": 1382.39
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 961.67,
+          "id": "stage-3",
+          "minHeight": "662.4px",
+          "top": 2098.98
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 997.86,
+          "id": "stage-4",
+          "minHeight": "662.4px",
+          "top": 3060.66
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 1050.38,
+          "id": "stage-5",
+          "minHeight": "662.4px",
+          "top": 4058.52
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 809.47,
+          "id": "stage-6",
+          "minHeight": "662.4px",
+          "top": 5108.89
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 802.48,
+          "id": "stage-7",
+          "minHeight": "662.4px",
+          "top": 5918.36
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 816.45,
+          "id": "stage-8",
+          "minHeight": "662.4px",
+          "top": 6720.84
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 904.92,
+          "id": "stage-9",
+          "minHeight": "662.4px",
+          "top": 7537.3
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 1612.89,
+          "id": "stage-10",
+          "minHeight": "662.4px",
+          "top": 8442.22
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 1090.17,
+          "id": "stage-11",
+          "minHeight": "662.4px",
+          "top": 10055.11
+        },
+        {
+          "cls": "stage statml-stage",
+          "display": "flex",
+          "height": 1248.19,
+          "id": "stage-12",
+          "minHeight": "662.4px",
+          "top": 11145.28
+        }
+      ]
+    },
+    "scrollWidth": 1280,
+    "viewport": [
+      1280,
+      720
+    ]
+  },
+  {
+    "port": 8765,
+    "slug": "multiple-linear-regression.html",
+    "bodyHeight": 9790,
+    "groups": {
+      "section[data-stage]": [
+        {
+          "cls": "min-h-screen flex flex-col items-center justify-center text-center p-6 relative overflow-hidden statml-hero",
+          "display": "flex",
+          "height": 733.53,
+          "id": null,
+          "minHeight": "720px",
+          "top": 0
+        },
+        {
+          "cls": "story-section statml-stage",
+          "display": "flex",
+          "height": 804.14,
+          "id": "statml-stage-1",
+          "minHeight": "662.4px",
+          "top": 733.53
+        },
+        {
+          "cls": "story-section statml-stage",
+          "display": "flex",
+          "height": 710.81,
+          "id": "statml-stage-2",
+          "minHeight": "662.4px",
+          "top": 1537.67
+        },
+        {
+          "cls": "story-section statml-stage",
+          "display": "flex",
+          "height": 881.61,
+          "id": "statml-stage-3",
+          "minHeight": "662.4px",
+          "top": 2248.48
+        },
+        {
+          "cls": "story-section statml-stage",
+          "display": "flex",
+          "height": 678.45,
+          "id": "statml-stage-4",
+          "minHeight": "662.4px",
+          "top": 3130.09
+        },
+        {
+          "cls": "story-section statml-stage",
+          "display": "flex",
+          "height": 884.69,
+          "id": "statml-stage-5",
+          "minHeight": "662.4px",
+          "top": 3808.55
+        },
+        {
+          "cls": "story-section statml-stage",
+          "display": "flex",
+          "height": 1011.98,
+          "id": "statml-stage-6",
+          "minHeight": "662.4px",
+          "top": 4693.23
+        },
+        {
+          "cls": "story-section statml-stage",
+          "display": "flex",
+          "height": 962.63,
+          "id": "statml-stage-7",
+          "minHeight": "662.4px",
+          "top": 5705.22
+        },
+        {
+          "cls": "story-section statml-stage",
+          "display": "flex",
+          "height": 671.56,
+          "id": "statml-stage-8",
+          "minHeight": "662.4px",
+          "top": 6667.84
+        },
+        {
+          "cls": "story-section statml-stage",
+          "display": "flex",
+          "height": 2279.52,
+          "id": "statml-stage-9",
+          "minHeight": "662.4px",
+          "top": 7339.41
+        }
+      ]
+    },
+    "scrollWidth": 1280,
+    "viewport": [
+      1280,
+      720
+    ]
+  }
+]

@@ -1,0 +1,53 @@
+{
+  "universe": [
+    {
+      "width": 1440,
+      "count": 33,
+      "unique": 33,
+      "clipped": [],
+      "collisions": [],
+      "overflow": false
+    },
+    {
+      "width": 1280,
+      "count": 33,
+      "unique": 33,
+      "clipped": [],
+      "collisions": [],
+      "overflow": false
+    },
+    {
+      "width": 1200,
+      "count": 33,
+      "unique": 33,
+      "clipped": [],
+      "collisions": [],
+      "overflow": false
+    },
+    {
+      "width": 1110,
+      "count": 33,
+      "unique": 33,
+      "clipped": [],
+      "collisions": [],
+      "overflow": false
+    },
+    {
+      "width": 430,
+      "count": 33,
+      "unique": 33,
+      "clipped": [],
+      "collisions": [],
+      "overflow": false
+    },
+    {
+      "width": 320,
+      "count": 33,
+      "unique": 33,
+      "clipped": [],
+      "collisions": [],
+      "overflow": false
+    }
+  ],
+  "errors": []
+}

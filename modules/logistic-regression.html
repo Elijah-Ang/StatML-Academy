@@ -1,2186 +1,438 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <script src="mobile-reading.js?v=20260908"></script>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Logistic Regression | StatML Academy</title>
-<meta name="description" content="A scroll-driven, interactive visual guide to Logistic Regression. Learn how logistic regression works from raw data to final model prediction.">
-<link href="https://fonts.googleapis.com/css2?family=Patrick+Hand:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-<style>
-*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-:root{
-  --bg:#f7f7f4;--bg2:#f0efeb;--surface:#ffffff;
-  --glass:rgba(255,255,255,0.85);--glass-border:#e7e5e4;
-  --text:#1f2937;--text-dim:#4b5563;--text-muted:#6b7280;
-  --accent:#6366f1;--accent2:#4f46e5;--accent-glow:rgba(99,102,241,0.08);
-  --green:#16a34a;--green-soft:rgba(22,163,74,0.1);
-  --coral:#dc2626;--coral-soft:rgba(220,38,38,0.08);
-  --amber:#d97706;--amber-soft:rgba(217,119,6,0.1);
-  --radius:16px;--radius-sm:10px;
-}
-html{scroll-behavior:smooth;background:var(--bg)}
-body{font-family:'Inter',system-ui,sans-serif;color:var(--text);background:var(--bg);line-height:1.7;overflow-x:hidden}
-.layout{display:flex;min-height:100vh;position:relative}
-.narrative{width:45%;min-width:400px;position:relative;z-index:2}
-.viz-container{width:55%;height:100vh;position:sticky;top:0;right:0;display:flex;align-items:center;justify-content:center;z-index:1;background:var(--bg)}
-#mainCanvas{width:100%;height:100%;display:block}
-.section{min-height:100vh;padding:80px 60px 80px 40px;display:flex;flex-direction:column;justify-content:center;position:relative}
-.section::after{content:'';position:absolute;bottom:0;left:40px;right:60px;height:1px;background:linear-gradient(90deg,transparent,var(--glass-border),transparent)}
-.hero-section{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;width:100vw;position:relative;padding:60px;overflow:hidden}
-.hero-bg{position:absolute;inset:0;z-index:0;pointer-events:none}
-.hero-section h1{font-size:clamp(2.8rem,5vw,4.5rem);font-weight:800;letter-spacing:-0.03em;line-height:1.1;background:linear-gradient(135deg,#1f2937 0%,var(--accent) 50%,var(--accent2) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:20px;position:relative;z-index:1}
-.hero-section .subtitle{font-size:clamp(1rem,1.8vw,1.25rem);color:var(--text-dim);font-weight:400;max-width:600px;margin-bottom:40px;position:relative;z-index:1}
-.hero-section .scroll-hint{font-size:0.85rem;color:var(--text-muted);display:flex;align-items:center;gap:8px;animation:pulse 2s ease-in-out infinite;position:relative;z-index:1}
-@keyframes pulse{0%,100%{opacity:0.5;transform:translateY(0)}50%{opacity:1;transform:translateY(5px)}}
-.hero-badge{display:inline-block;padding:6px 18px;border-radius:100px;background:var(--accent-glow);border:1px solid rgba(99,102,241,0.2);color:var(--accent);font-size:0.8rem;font-weight:500;letter-spacing:0.05em;text-transform:uppercase;margin-bottom:24px;position:relative;z-index:1}
-.hero-note{font-size:0.82rem;color:var(--text-muted);max-width:480px;margin-top:20px;line-height:1.6;position:relative;z-index:1;font-style:italic}
-.stage-num{font-size:0.7rem;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;color:var(--accent);margin-bottom:12px;display:flex;align-items:center;gap:8px}
-.stage-num::before{content:'';width:24px;height:1px;background:var(--accent)}
-h2{font-size:clamp(1.6rem,3vw,2.2rem);font-weight:700;letter-spacing:-0.02em;line-height:1.2;margin-bottom:20px;color:var(--text)}
-h3{font-size:1.1rem;font-weight:600;margin-bottom:12px;color:var(--accent2)}
-p{font-size:0.95rem;color:var(--text-dim);margin-bottom:16px;max-width:520px}
-.glass-card{background:var(--surface);border:1px solid var(--glass-border);border-radius:var(--radius);padding:28px;margin:24px 0;box-shadow:0 2px 8px rgba(0,0,0,0.03)}
-.math-block{font-family:'JetBrains Mono',monospace;font-size:0.85rem;background:rgba(99,102,241,0.05);border:1px solid rgba(99,102,241,0.12);border-radius:var(--radius-sm);padding:20px 24px;margin:20px 0;color:var(--accent2);overflow-x:auto;white-space:pre-wrap;line-height:1.8}
-.metric-row{display:flex;gap:16px;margin:16px 0;flex-wrap:wrap}
-.metric-card{flex:1;min-width:100px;background:var(--bg);border:1px solid var(--glass-border);border-radius:var(--radius-sm);padding:18px 14px;text-align:center}
-.metric-card .val{font-size:1.4rem;font-weight:700;font-family:'JetBrains Mono',monospace}
-.metric-card .lbl{font-size:0.7rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.05em;margin-top:6px}
-.insight-box{border-left:3px solid var(--accent);padding:16px 20px;margin:24px 0;background:var(--accent-glow);border-radius:0 var(--radius-sm) var(--radius-sm) 0}
-.insight-box p{margin:0;font-size:0.88rem;color:var(--text);line-height:1.6}
-.matrix-grid{display:grid;grid-template-columns:auto 1fr 1fr;gap:0;margin:16px 0;font-family:'JetBrains Mono',monospace;font-size:0.8rem}
-.matrix-grid .cell{padding:10px 14px;text-align:center;border:1px solid var(--glass-border);cursor:pointer;transition:background-color 0.2s}
-.matrix-grid .cell:hover{filter:brightness(0.95)}
-.matrix-grid .header{font-weight:600;color:var(--accent2);background:rgba(99,102,241,0.05);cursor:default}
-.matrix-grid .header:hover{filter:none}
-.matrix-grid .tp{background:rgba(22,163,74,0.08);color:var(--green)}
-.matrix-grid .tn{background:rgba(59,130,246,0.08);color:#3b82f6}
-.matrix-grid .fp{background:rgba(217,119,6,0.06);color:var(--amber)}
-.matrix-grid .fn{background:rgba(220,38,38,0.06);color:var(--coral)}
-.slider-wrap{display:flex;align-items:center;gap:12px;margin:12px 0}
-.slider-wrap label{font-size:0.8rem;color:var(--text-muted);white-space:nowrap}
-.slider-wrap input[type=range]{flex:1;accent-color:var(--accent)}
-.slider-wrap .s-val{font-family:'JetBrains Mono',monospace;font-size:1rem;font-weight:600;color:var(--accent2);min-width:50px;text-align:center}
-.btn{padding:10px 20px;border-radius:var(--radius-sm);border:1px solid var(--glass-border);background:var(--surface);color:var(--text);font-family:'Inter',sans-serif;font-size:0.85rem;font-weight:500;cursor:pointer;transition:all 0.2s}
-.btn:hover{background:var(--accent-glow);border-color:var(--accent)}
-.btn-accent{background:rgba(99,102,241,0.1);border-color:rgba(99,102,241,0.25);color:var(--accent2)}
-.btn-accent:hover{background:rgba(99,102,241,0.2)}
-.btn-row{display:flex;gap:10px;flex-wrap:wrap;margin:16px 0}
-.progress-bar{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--accent),var(--accent2));z-index:100;transition:width 0.3s;width:0}
-.stage-dots{position:fixed;right:20px;top:50%;transform:translateY(-50%);z-index:50;display:flex;flex-direction:column;gap:10px}
-.stage-dot{width:10px;height:10px;border-radius:50%;background:#d1d5db;cursor:pointer;transition:all 0.3s;border:2px solid transparent}
-.stage-dot:hover{background:#9ca3af}
-.stage-dot.active{background:var(--accent);border-color:rgba(99,102,241,0.3);box-shadow:0 0 12px rgba(99,102,241,0.35)}
-.tag{display:inline-block;padding:3px 10px;border-radius:100px;font-size:0.72rem;font-weight:600}
-.tag-green{background:var(--green-soft);color:var(--green)}
-.tag-coral{background:var(--coral-soft);color:var(--coral)}
-
-/* Concept Check Quizzes */
-.quiz-card {
-  background: var(--surface);
-  border: 1px dashed var(--accent);
-  border-radius: var(--radius);
-  padding: 24px;
-  margin: 24px 0;
-  box-shadow: 0 4px 12px rgba(99,102,241,0.04);
-}
-.quiz-option {
-  display: block;
-  width: 100%;
-  padding: 12px 16px;
-  margin: 8px 0;
-  background: var(--bg);
-  border: 1px solid var(--glass-border);
-  border-radius: var(--radius-sm);
-  text-align: left;
-  font-size: 0.88rem;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  color: var(--text);
-}
-.quiz-option:hover:not(:disabled) {
-  background: rgba(99,102,241,0.05);
-  border-color: var(--accent);
-}
-.quiz-option.correct {
-  background: var(--green-soft) !important;
-  border-color: var(--green) !important;
-  color: var(--green) !important;
-  font-weight: 600;
-}
-.quiz-option.incorrect {
-  background: var(--coral-soft) !important;
-  border-color: var(--coral) !important;
-  color: var(--coral) !important;
-}
-.quiz-feedback {
-  margin-top: 14px;
-  padding: 12px 16px;
-  border-radius: var(--radius-sm);
-  font-size: 0.85rem;
-  display: none;
-  line-height: 1.5;
-}
-.quiz-feedback.show {
-  display: block;
-}
-
-@media(max-width:900px){
-  .layout{flex-direction:column}
-  .narrative{width:100%;min-width:unset}
-  .viz-container{width:100%;height:50vh;position:sticky;top:0}
-  .section{padding:40px 24px}
-  .hero-section{width:100%}
-  .stage-dots{display:none}
-}
-</style>
-
-<style id="statml-standard-theme">
-:root {
-  --statml-page: #f7f7f4;
-  --statml-page-subtle: #f0efeb;
-  --statml-surface: #ffffff;
-  --statml-border: #e7e5e4;
-  --statml-text: #1f2937;
-  --statml-text-secondary: #4b5563;
-  --statml-text-muted: #6b7280;
-  --statml-brand: #6366f1;
-  --statml-brand-strong: #4f46e5;
-  --statml-brand-soft: #eef2ff;
-  --statml-success: #16a34a;
-  --statml-warning: #d97706;
-  --statml-danger: #dc2626;
-  --statml-info: #2563eb;
-  --statml-radius-control: 8px;
-  --statml-radius-card: 12px;
-  --statml-radius-visual: 16px;
-  --statml-shadow-card: 0 2px 8px rgba(15, 23, 42, 0.045);
-  --statml-shadow-visual: 0 14px 34px rgba(15, 23, 42, 0.07);
-}
-html { scroll-behavior: smooth; scroll-padding-top: 68px; }
-body.statml-standardized {
-  margin: 0 !important;
-  background: var(--statml-page) !important;
-  color: var(--statml-text) !important;
-  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
-  line-height: 1.65 !important;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-}
-body.statml-standardized * { box-sizing: border-box; }
-body.statml-standardized ::selection { background: rgba(99,102,241,.18); }
-body.statml-standardized :focus-visible { outline: 3px solid rgba(99,102,241,.35) !important; outline-offset: 3px !important; }
-body.statml-standardized #progress-bar,
-body.statml-standardized .progress-bar {
-  height: 4px !important;
-  background: linear-gradient(90deg, var(--statml-brand), var(--statml-brand-strong)) !important;
-  z-index: 1200 !important;
-}
-.statml-site-nav {
-  position: fixed;
-  inset: 4px 0 auto 0;
-  height: 54px;
-  z-index: 1100;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  padding: 0 24px;
-  background: rgba(247,247,244,.84);
-  border-bottom: 1px solid rgba(231,229,228,.85);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-}
-.statml-site-nav a { color: inherit; text-decoration: none; }
-.statml-brand-link { display: inline-flex; align-items: center; gap: 10px; font-size: .84rem; font-weight: 700; letter-spacing: -.01em; }
-.statml-brand-mark { width: 24px; height: 24px; display: grid; place-items: center; border: 1px solid var(--statml-border); border-radius: 7px; background: var(--statml-surface); color: var(--statml-brand-strong); font-family: "JetBrains Mono", monospace; font-size: .72rem; box-shadow: var(--statml-shadow-card); }
-.statml-nav-topic { min-width: 0; color: var(--statml-text-secondary); font-size: .79rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.statml-nav-meta { color: var(--statml-text-muted); font-family: "JetBrains Mono", monospace; font-size: .68rem; letter-spacing: .08em; text-transform: none; white-space: nowrap; }
-.statml-hero {
-  min-height: 100svh !important;
-  padding: 7.5rem 2rem 5rem !important;
-  background-color: var(--statml-page) !important;
-  isolation: isolate;
-  display: flex !important;
-  flex-direction: column !important;
-  align-items: center !important;
-  justify-content: center !important;
-  text-align: center !important;
-  position: relative !important;
-  overflow: hidden !important;
-}
-.statml-hero::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  background-image:
-    radial-gradient(circle at 50% 42%, rgba(99,102,241,.10), transparent 34%),
-    radial-gradient(rgba(99,102,241,.14) .7px, transparent .7px);
-  background-size: auto, 30px 30px;
-  mask-image: linear-gradient(to bottom, rgba(0,0,0,.7), transparent 92%);
-  opacity: .62;
-}
-.statml-hero > :not(canvas):not(.hero-bg):not(#hero-bg) { position: relative; z-index: 2; }
-.statml-hero > canvas,
-.statml-hero > .hero-bg,
-.statml-hero > #hero-bg { position: absolute !important; inset: 0 !important; z-index: 0 !important; width: 100% !important; height: 100% !important; pointer-events: none !important; }
-.statml-hero > div:not(.hero-bg):not(#hero-bg) { width: min(100%, 980px); margin-inline: auto; }
-.statml-hero h1 {
-  max-width: 980px !important;
-  margin: 0 auto 1.35rem !important;
-  font-family: Inter, ui-sans-serif, system-ui, sans-serif !important;
-  font-size: clamp(2.8rem, 6.5vw, 5rem) !important;
-  font-weight: 700 !important;
-  line-height: 1.04 !important;
-  letter-spacing: -.045em !important;
-  background: linear-gradient(135deg, #111827 8%, var(--statml-brand-strong) 100%) !important;
-  -webkit-background-clip: text !important;
-  background-clip: text !important;
-  color: transparent !important;
-  -webkit-text-fill-color: transparent !important;
-}
-.statml-hero .hero-subtitle,
-.statml-hero .subtitle,
-.statml-hero > p:not(.hero-badge):not(.topic-badge),
-.statml-hero > div > p:not(.hero-badge):not(.topic-badge) {
-  max-width: 700px !important;
-  margin-left: auto !important;
-  margin-right: auto !important;
-  color: var(--statml-text-secondary) !important;
-  font-family: Inter, ui-sans-serif, system-ui, sans-serif !important;
-  font-size: clamp(1.05rem, 2vw, 1.28rem) !important;
-  line-height: 1.55 !important;
-}
-.statml-hero .hero-badge,
-.statml-hero .topic-badge,
-.statml-hero [data-statml-badge] {
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  width: auto !important;
-  padding: .42rem .9rem !important;
-  margin-bottom: 1.35rem !important;
-  border: 1px solid rgba(99,102,241,.22) !important;
-  border-radius: 999px !important;
-  background: rgba(238,242,255,.82) !important;
-  color: var(--statml-brand-strong) !important;
-  font-family: "JetBrains Mono", ui-monospace, monospace !important;
-  font-size: .72rem !important;
-  font-weight: 600 !important;
-  letter-spacing: .09em !important;
-  text-transform: uppercase !important;
-  box-shadow: none !important;
-}
-.statml-overview {
-  width: min(850px, 100%);
-  margin: 2rem auto 0;
-  padding: 1rem;
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: .7rem;
-  border: 1px solid rgba(231,229,228,.95);
-  border-radius: var(--statml-radius-visual);
-  background: rgba(255,255,255,.66);
-  box-shadow: var(--statml-shadow-card);
-  backdrop-filter: blur(8px);
-}
-.statml-overview-item { display: flex; align-items: flex-start; gap: .65rem; padding: .65rem .72rem; text-align: left; color: var(--statml-text-secondary); font-size: .83rem; line-height: 1.45; }
-.statml-overview-number { flex: 0 0 auto; display: grid; place-items: center; width: 22px; height: 22px; border-radius: 7px; background: var(--statml-brand-soft); color: var(--statml-brand-strong); font-family: "JetBrains Mono", monospace; font-size: .68rem; font-weight: 700; }
-.statml-hero .scroll-cue,
-.statml-hero .scroll-hint,
-.statml-hero .scroll-indicator,
-.statml-hero .hero-scroll {
-  color: var(--statml-text-muted) !important;
-  font-family: "JetBrains Mono", monospace !important;
-  font-size: .7rem !important;
-  letter-spacing: .08em !important;
-  text-transform: uppercase !important;
-}
-.statml-layout {
-  display: grid !important;
-  grid-template-columns: minmax(0,45%) minmax(0,55%) !important;
-  width: 100% !important;
-  max-width: 1400px !important;
-  margin: 0 auto !important;
-  padding: 0 !important;
-  align-items: start !important;
-}
-.statml-narrative {
-  width: auto !important;
-  min-width: 0 !important;
-  padding: 0 4rem 10vh !important;
-  background: transparent !important;
-  z-index: 2 !important;
-}
-.statml-visual {
-  width: auto !important;
-  min-width: 0 !important;
-  height: 100svh !important;
-  position: sticky !important;
-  top: 0 !important;
-  padding: 4.2rem 1.6rem 1.4rem !important;
-  display: flex !important;
-  align-items: stretch !important;
-  justify-content: center !important;
-  background: var(--statml-page) !important;
-  border-left: 1px solid rgba(231,229,228,.72) !important;
-  overflow: hidden !important;
-  z-index: 1 !important;
-}
-.statml-visual > * { max-width: 100%; }
-.statml-visual > :is(.status-strip,.control-panel,.canvas-container,.viz-stage,.canvas-wrapper) { width: 100% !important; }
-.statml-visual-card {
-  flex: 1 1 auto;
-  width: 100%;
-  min-width: 0;
-  min-height: 0;
-  position: relative;
-  overflow: hidden;
-  background: var(--statml-surface);
-  border: 1px solid var(--statml-border);
-  border-radius: var(--statml-radius-visual);
-  box-shadow: var(--statml-shadow-visual);
-}
-.statml-stage {
-  min-height: 92svh !important;
-  padding: 5rem 0 !important;
-  opacity: 1 !important;
-  color: var(--statml-text) !important;
-  scroll-margin-top: 62px;
-  border-bottom: 1px solid rgba(231,229,228,.72);
-}
-.statml-stage:last-child { border-bottom: none; }
-.statml-stage h2 {
-  margin: 0 0 1.25rem !important;
-  color: var(--statml-text) !important;
-  font-family: Inter, ui-sans-serif, system-ui, sans-serif !important;
-  font-size: clamp(1.75rem, 3vw, 2.15rem) !important;
-  font-weight: 700 !important;
-  line-height: 1.18 !important;
-  letter-spacing: -.028em !important;
-}
-.statml-stage h3 { color: var(--statml-text) !important; font-weight: 650 !important; letter-spacing: -.012em; }
-.statml-stage p,
-.statml-stage li { color: var(--statml-text-secondary); font-size: 1rem; line-height: 1.7; }
-.statml-stage strong { color: var(--statml-text); font-weight: 650; }
-.statml-stage .stage-label,
-.statml-stage .stage-num,
-.statml-stage .step-label {
-  position: static !important;
-  inset: auto !important;
-  margin: 0 0 .9rem !important;
-  display: flex !important;
-  align-items: center !important;
-  gap: .6rem !important;
-  color: var(--statml-brand) !important;
-  font-family: "JetBrains Mono", ui-monospace, monospace !important;
-  font-size: .68rem !important;
-  font-weight: 700 !important;
-  letter-spacing: .11em !important;
-  text-transform: uppercase !important;
-}
-.statml-stage .stage-label::before,
-.statml-stage .stage-label::after,
-.statml-stage .stage-num::before,
-.statml-stage .stage-num::after,
-.statml-stage .step-label::before,
-.statml-stage .step-label::after { content: "" !important; width: 22px !important; height: 1px !important; background: var(--statml-brand) !important; opacity: .75 !important; flex: 0 0 auto; }
-.statml-stage .stage-label::after,
-.statml-stage .stage-num::after,
-.statml-stage .step-label::after { display: none !important; }
-.statml-stage :is(.glass-card,.card,.metric-card,.control-panel,.controls,.quiz-card,.worked-example-widget,.formula-block,.math-block,.formula,.software-output,.model-report-block,.limitation-card,.playground-summary-card,.decision-card) {
-  border-radius: var(--statml-radius-card) !important;
-  border-color: var(--statml-border) !important;
-  box-shadow: var(--statml-shadow-card) !important;
-}
-.statml-stage :is(.glass-card,.card,.metric-card,.control-panel,.controls,.quiz-card,.worked-example-widget,.software-output,.model-report-block,.limitation-card,.playground-summary-card,.decision-card) { background-color: var(--statml-surface) !important; }
-.statml-stage :is(.formula-block,.math-block,.formula) {
-  padding: 1rem 1.15rem !important;
-  background: var(--statml-page-subtle) !important;
-  color: var(--statml-text) !important;
-  border: 1px solid var(--statml-border) !important;
-  border-left: 3px solid var(--statml-brand) !important;
-  font-family: "JetBrains Mono", ui-monospace, monospace !important;
-  font-size: .9rem !important;
-  line-height: 1.65 !important;
-  overflow-x: auto !important;
-}
-.statml-stage :is(.insight-box,.takeaway,.look-here,.teaching-note,.breakdown) {
-  border: 1px solid rgba(99,102,241,.18) !important;
-  border-left: 4px solid var(--statml-brand) !important;
-  border-radius: 0 var(--statml-radius-control) var(--statml-radius-control) 0 !important;
-  background: rgba(238,242,255,.68) !important;
-  color: var(--statml-text-secondary) !important;
-  box-shadow: none !important;
-}
-.statml-stage :is(.warning-note,.is-alert) { border-color: rgba(217,119,6,.24) !important; border-left-color: var(--statml-warning) !important; background: rgba(255,251,235,.9) !important; color: #92400e !important; }
-.statml-stage table { width: 100%; border-collapse: collapse; }
-.statml-stage th { background: var(--statml-page-subtle); color: var(--statml-text-muted); font-family: Inter, sans-serif; font-size: .7rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
-.statml-stage th, .statml-stage td { border-color: var(--statml-border) !important; }
-.statml-stage td { color: var(--statml-text-secondary); }
-.statml-stage button,
-.statml-stage .btn,
-.statml-stage .interactive-btn,
-.statml-stage .control-btn,
-.statml-stage select,
-.statml-stage input[type="text"],
-.statml-stage input[type="number"] {
-  min-height: 38px;
-  border-radius: var(--statml-radius-control) !important;
-  border: 1px solid var(--statml-border) !important;
-  font-family: Inter, ui-sans-serif, system-ui, sans-serif !important;
-  transition: border-color .18s ease, background-color .18s ease, transform .18s ease, box-shadow .18s ease !important;
-}
-.statml-stage button:hover,
-.statml-stage .btn:hover,
-.statml-stage .interactive-btn:hover,
-.statml-stage .control-btn:hover { border-color: rgba(99,102,241,.55) !important; transform: translateY(-1px); }
-.statml-stage :is(button,.btn,.interactive-btn,.control-btn).active,
-.statml-stage :is(button,.btn,.interactive-btn,.control-btn).primary,
-.statml-stage .active-btn,
-.statml-stage .btn-accent { background: var(--statml-brand) !important; border-color: var(--statml-brand) !important; color: white !important; }
-.statml-stage input[type="range"] { accent-color: var(--statml-brand) !important; }
-.statml-stage input[type="checkbox"] { accent-color: var(--statml-brand) !important; }
-.statml-stage :is(.metric-value,.metric-val,.val,.value,.control-val,.slider-readout,.s-val,.k-val) { font-family: "JetBrains Mono", ui-monospace, monospace !important; font-variant-numeric: tabular-nums; }
-.statml-prereq,
-.statml-deepening,
-.statml-takeaways {
-  margin: 1.25rem 0 1.5rem;
-  padding: 1.1rem 1.2rem;
-  border: 1px solid var(--statml-border);
-  border-radius: var(--statml-radius-card);
-  background: rgba(255,255,255,.78);
-  box-shadow: var(--statml-shadow-card);
-}
-.statml-prereq { border-left: 4px solid var(--statml-info); }
-.statml-deepening { border-left: 4px solid var(--statml-warning); background: rgba(255,251,235,.66); }
-.statml-takeaways { border-left: 4px solid var(--statml-brand); background: rgba(238,242,255,.58); }
-.statml-content-kicker { display: block; margin-bottom: .4rem; color: var(--statml-text-muted); font-family: "JetBrains Mono", monospace; font-size: .67rem; font-weight: 700; letter-spacing: .09em; text-transform: uppercase; }
-.statml-prereq p,
-.statml-deepening p,
-.statml-takeaways p { margin: .45rem 0 0 !important; font-size: .92rem !important; line-height: 1.6 !important; }
-.statml-takeaways ul { margin: .65rem 0 0; padding-left: 1.15rem; }
-.statml-takeaways li { margin: .42rem 0; font-size: .92rem !important; }
-.statml-stage-rail {
-  position: fixed;
-  right: 14px;
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 1000;
-  display: flex;
-  flex-direction: column;
-  gap: 7px;
-  padding: 10px 8px;
-  border: 1px solid rgba(231,229,228,.92);
-  border-radius: 999px;
-  background: rgba(255,255,255,.78);
-  box-shadow: var(--statml-shadow-card);
-  backdrop-filter: blur(10px);
-}
-.statml-stage-button { position: relative; width: 9px; height: 9px; padding: 0; border: 1px solid #cbd5e1; border-radius: 999px; background: #e5e7eb; cursor: pointer; transition: transform .18s ease, background-color .18s ease, box-shadow .18s ease; }
-.statml-stage-button:hover { transform: scale(1.28); background: #a5b4fc; }
-.statml-stage-button[aria-current="step"] { background: var(--statml-brand); border-color: var(--statml-brand); box-shadow: 0 0 0 5px rgba(99,102,241,.12); }
-.statml-stage-button span { position: absolute; right: 19px; top: 50%; transform: translateY(-50%) translateX(4px); width: max-content; max-width: 240px; padding: .4rem .55rem; border-radius: 7px; background: var(--statml-text); color: white; font-family: Inter, sans-serif; font-size: .7rem; line-height: 1.3; opacity: 0; pointer-events: none; transition: opacity .15s ease, transform .15s ease; }
-.statml-stage-button:hover span,
-.statml-stage-button:focus-visible span { opacity: 1; transform: translateY(-50%) translateX(0); }
-body.statml-standardized > :is(.stage-dots,#stage-dots,#stage-dots-container,.stage-nav-dots),
-body.statml-standardized .statml-legacy-stage-nav { display: none !important; }
-.statml-module-footer {
-  border-top: 1px solid var(--statml-border);
-  background: var(--statml-page-subtle);
-  padding: 2.2rem 1.5rem 2.8rem;
-}
-.statml-footer-inner { width: min(1100px,100%); margin: 0 auto; display: flex; justify-content: center; gap: 1rem; align-items: center; }
-.statml-footer-link { display: flex; flex-direction: column; gap: .18rem; padding: .85rem 1rem; border: 1px solid var(--statml-border); border-radius: var(--statml-radius-card); background: var(--statml-surface); color: var(--statml-text); text-decoration: none; box-shadow: var(--statml-shadow-card); }
-.statml-footer-link:last-child { text-align: right; }
-.statml-footer-label { color: var(--statml-text-muted); font-family: "JetBrains Mono", monospace; font-size: .65rem; letter-spacing: .08em; text-transform: uppercase; }
-.statml-footer-title { font-size: .9rem; font-weight: 650; }
-.statml-footer-home { color: var(--statml-text-muted); font-family: "JetBrains Mono", monospace; font-size: .7rem; text-decoration: none; text-transform: uppercase; letter-spacing: .08em; }
-@media (max-width: 900px) {
-  .statml-site-nav { height: 50px; padding: 0 14px; }
-  .statml-brand-link { font-size: .78rem; }
-  .statml-nav-meta { display: inline; font-size: .6rem; letter-spacing: .02em; }
-  .statml-nav-topic { font-size: .72rem; }
-  .statml-hero { padding: 6.5rem 1.2rem 4rem !important; }
-  .statml-overview { grid-template-columns: 1fr; gap: .2rem; padding: .55rem; }
-  .statml-overview-item { padding: .48rem .55rem; }
-  .statml-layout { display: flex !important; flex-direction: column !important; }
-  .statml-visual { order: 1 !important; width: 100% !important; height: 50svh !important; min-height: 320px; top: 0 !important; padding: 3.6rem .8rem .7rem !important; border-left: none !important; border-bottom: 1px solid var(--statml-border) !important; z-index: 50 !important; }
-  .statml-narrative { order: 2 !important; width: 100% !important; padding: 0 1.35rem 4rem !important; }
-  .statml-stage { min-height: auto !important; padding: 3.4rem 0 !important; }
-  .statml-stage-rail { display: none; }
-  .statml-footer-inner { grid-template-columns: 1fr 1fr; }
-  .statml-footer-home { grid-column: 1 / -1; grid-row: 2; text-align: center; }
-}
-@media (max-width: 560px) {
-  .statml-brand-link span:last-child { display: none; }
-  .statml-hero h1 { font-size: clamp(2.45rem, 13vw, 3.5rem) !important; }
-  .statml-footer-inner { grid-template-columns: 1fr; }
-  .statml-footer-home { grid-column: auto; grid-row: auto; }
-  .statml-footer-link:last-child { text-align: left; }
-}
-@media (prefers-reduced-motion: reduce) {
-  html { scroll-behavior: auto; }
-  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
-}
-</style>
-
-    <link rel="stylesheet" href="academic-rigor.css">
-  <link rel="stylesheet" href="handwritten-theme.css?v=20260826-handwritten-final-2">
-  <script src="handwritten-theme.js?v=20260826-handwritten-final-2" defer></script>
-  <style id="logistic-regression-handwritten-shell">
-    body.hw-handwritten .hero-badge,
-    body.hw-handwritten .topic-badge,
-    body.hw-handwritten .statml-hero .hero-badge {
-      border: 0 !important; border-radius: 3px 5px 2px 4px !important;
-      background: linear-gradient(transparent 38%, rgba(241,212,119,.58) 38%, rgba(241,212,119,.58) 88%, transparent 88%) !important;
-      box-shadow: none !important;
-    }
-    body.hw-handwritten .statml-overview { border: 1px solid rgba(88,83,72,.28) !important; border-radius: 5px 8px 4px 7px !important; background: rgba(255,253,245,.78) !important; box-shadow: none !important; }
-    body.hw-handwritten .statml-overview-item { border-radius: 3px 5px 2px 4px !important; background: rgba(255,252,242,.32) !important; box-shadow: none !important; }
-    body.hw-handwritten .statml-overview-number { border: 1px solid rgba(40,105,173,.38) !important; border-radius: 2px 4px 2px 3px !important; background: rgba(230,240,248,.7) !important; box-shadow: none !important; }
-    body.hw-handwritten :is(.pill,.tag,.badge,.metric-badge,.feature-pill,.transform-bridge-badge) { border: 0 !important; border-radius: 2px 4px 2px 3px !important; background: linear-gradient(transparent 34%, rgba(241,212,119,.48) 34%, rgba(241,212,119,.48) 90%, transparent 90%) !important; box-shadow: none !important; }
-    body.hw-handwritten .statml-stage-rail { border-radius: 4px 6px 3px 5px !important; background-color: rgba(255,252,242,.82) !important; background-image: repeating-linear-gradient(176deg, rgba(223,178,45,.04) 0 2px, transparent 2px 8px), radial-gradient(circle at 14% 18%, rgba(255,255,255,.3), transparent 46%) !important; box-shadow: none !important; }
-    body.hw-handwritten .statml-stage-button { border-radius: 42% 58% 47% 53% !important; box-shadow: none !important; }
-    body.hw-handwritten .statml-stage-button[aria-current="step"] { background: var(--hw-yellow) !important; border-color: var(--hw-ink) !important; box-shadow: none !important; }
-  body.hw-handwritten .statml-stage-button span { border-radius: 3px 5px 2px 4px !important; background: var(--hw-yellow-soft) !important; color: var(--hw-ink) !important; box-shadow: none !important; }
-  body.hw-handwritten input[type="range"] { appearance: none !important; height: 7px !important; border: 0 !important; border-radius: 3px 5px 2px 4px !important; background: repeating-linear-gradient(167deg, rgba(40,105,173,.18) 0 2px, rgba(255,252,242,.72) 2px 6px) !important; box-shadow: 1px 1px 0 rgba(75,68,58,.12) !important; }
-  body.hw-handwritten input[type="range"]::-webkit-slider-thumb { appearance: none; width: 18px; height: 18px; border: 1px solid rgba(75,68,58,.52); border-radius: 42% 58% 47% 53%; background: var(--hw-yellow); box-shadow: 1px 2px 0 rgba(75,68,58,.16); transform: rotate(-3deg); }
-  body.hw-handwritten input[type="range"]::-moz-range-thumb { width: 18px; height: 18px; border: 1px solid rgba(75,68,58,.52); border-radius: 42% 58% 47% 53%; background: var(--hw-yellow); box-shadow: 1px 2px 0 rgba(75,68,58,.16); }
-  body.hw-handwritten.statml-standardized :is(.statml-overview,.statml-overview-item,.glass-card,.card,.metric-card,.control-panel,.controls,.quiz-card,.worked-example-widget,.formula-block,.math-block,.formula,.software-output,.model-report-block,.limitation-card,.playground-summary-card,.decision-card,.interactive,.panel,.chart-card,.figure-card,.visual-panel,.viz-panel,.canvas-container,.canvas-wrap,.viz-stage,.status-strip) { border: 1px solid rgba(88,83,72,.42) !important; border-radius: 5px 8px 4px 7px !important; background-color: rgba(255,252,242,.82) !important; background-image: repeating-linear-gradient(176deg, rgba(223,178,45,.035) 0 2px, transparent 2px 8px), radial-gradient(circle at 14% 18%, rgba(255,255,255,.25), transparent 46%) !important; box-shadow: 1px 2px 0 rgba(76,65,50,.10) !important; backdrop-filter: none !important; }
-  body.hw-handwritten.statml-standardized :is(.insight-box,.callout,.insight,.takeaway,.teaching-note,.look-here,.breakdown,.warning-note,.report,.plain-translation,.statml-takeaways) { border: 1px solid rgba(157,112,12,.34) !important; border-left: 4px solid var(--hw-blue) !important; border-radius: 2px 5px 3px 6px !important; background-color: #fff1b8 !important; background-image: repeating-linear-gradient(176deg, rgba(223,178,45,.07) 0 2px, transparent 2px 7px), radial-gradient(circle at 14% 18%, rgba(255,255,255,.42), transparent 46%) !important; box-shadow: 2px 3px 0 rgba(76,65,50,.14) !important; }
-  body.hw-handwritten.statml-standardized :is(.warning-note,.is-alert) { border-left-color: var(--hw-red) !important; background-color: var(--hw-red-soft) !important; background-image: repeating-linear-gradient(176deg, rgba(200,94,88,.055) 0 2px, transparent 2px 7px), radial-gradient(circle at 14% 18%, rgba(255,255,255,.34), transparent 46%) !important; }
-  body.hw-handwritten.statml-standardized :is(.report,.statml-takeaways) { border-left-color: var(--hw-green) !important; background-color: var(--hw-green-soft) !important; }
-  body.hw-handwritten.statml-standardized :is(button,.btn,.interactive-btn,.control-btn,select,input[type="text"],input[type="number"],textarea,.quiz-option,.scenario-options button,.control button) { border: 1px solid rgba(75,68,58,.52) !important; border-radius: 7px 4px 8px 5px !important; background-color: rgba(248,243,230,.88) !important; background-image: repeating-linear-gradient(167deg, rgba(40,105,173,.035) 0 2px, transparent 2px 6px) !important; box-shadow: 1px 2px 0 rgba(75,68,58,.08) !important; }
-  body.hw-handwritten.statml-standardized table { border-color: rgba(75,68,58,.5) !important; border-radius: 5px 8px 4px 7px !important; background-color: rgba(255,253,245,.70) !important; box-shadow: 1px 2px 0 rgba(75,68,58,.05) !important; }
-  body.hw-handwritten.statml-standardized :is(th,td) { border-color: rgba(75,68,58,.42) !important; border-style: dashed !important; }
-  body.hw-handwritten.statml-standardized th { background: rgba(241,212,119,.16) !important; }
-  body.hw-handwritten.statml-standardized :is(.statml-stage-button,.stage-dot) { min-height: 0 !important; width: 9px !important; height: 9px !important; padding: 0 !important; border-radius: 42% 58% 47% 53% !important; background: var(--hw-paper) !important; background-image: none !important; box-shadow: none !important; }
-  body.hw-handwritten.statml-standardized :is(.statml-stage-button,.stage-dot)[aria-current="step"], body.hw-handwritten.statml-standardized :is(.statml-stage-button,.stage-dot).active { background: var(--hw-yellow) !important; border-color: var(--hw-ink) !important; }
-  body.hw-handwritten.statml-standardized button.statml-stage-button, body.hw-handwritten.statml-standardized button.stage-dot { min-height: 0 !important; width: 9px !important; height: 9px !important; padding: 0 !important; border-radius: 42% 58% 47% 53% !important; background: var(--hw-paper) !important; background-image: none !important; box-shadow: none !important; }
-  body.hw-handwritten.statml-standardized button.statml-stage-button[aria-current="step"], body.hw-handwritten.statml-standardized button.stage-dot.active { background: var(--hw-yellow) !important; border-color: var(--hw-ink) !important; }
-  body.hw-handwritten.statml-standardized :is(.viz-container,.statml-visual-card) {
-    border-color: rgba(88,83,72,.42) !important;
-    border-radius: 4px 8px 5px 7px !important;
-    background-color: rgba(255,252,242,.82) !important;
-    background-image: repeating-linear-gradient(176deg, rgba(223,178,45,.035) 0 2px, transparent 2px 8px), radial-gradient(circle at 14% 18%, rgba(255,255,255,.25), transparent 46%) !important;
-    box-shadow: 1px 2px 0 rgba(76,65,50,.10) !important;
-  }
-  body.hw-handwritten.statml-standardized .matrix-grid .cell {
-    border-color: rgba(75,68,58,.42) !important;
-    border-style: dashed !important;
-    border-radius: 2px 4px 3px 2px !important;
-    background-color: rgba(255,252,242,.72) !important;
-    background-image: repeating-linear-gradient(176deg, rgba(223,178,45,.045) 0 2px, transparent 2px 7px) !important;
-  }
-  body.hw-handwritten.statml-standardized .odds-item {
-    border: 1px solid rgba(88,83,72,.42) !important;
-    border-radius: 4px 7px 3px 6px !important;
-    background-color: rgba(255,252,242,.82) !important;
-    background-image: repeating-linear-gradient(176deg, rgba(223,178,45,.045) 0 2px, transparent 2px 7px), radial-gradient(circle at 14% 18%, rgba(255,255,255,.26), transparent 46%) !important;
-    box-shadow: 1px 2px 0 rgba(76,65,50,.09) !important;
-  }
-  </style>
-  <style id="logistic-regression-handwritten-cue-finish">
-    body.hw-handwritten .statml-hero :is(.scroll-cue,.scroll-hint,.scroll-indicator,.hero-scroll) {
-      position: static !important;
-      inset: auto !important;
-      align-self: center !important;
-      display: inline-flex !important;
-      width: auto !important;
-      max-width: calc(100% - 2rem) !important;
-      margin: .65rem auto 0 !important;
-      padding: 0 !important;
-      border: 0 !important;
-      border-radius: 0 !important;
-      background: transparent !important;
-      background-image: none !important;
-      box-shadow: none !important;
-      clip-path: none !important;
-      transform: none !important;
-      animation: none !important;
-      text-decoration-line: underline !important;
-      text-decoration-style: wavy !important;
-      text-decoration-color: rgba(40,105,173,.55) !important;
-      text-decoration-thickness: 1px !important;
-      text-underline-offset: 4px !important;
-    }
-  </style>
-  <style id="logistic-regression-handwritten-visual-surface-finish">
-    body.hw-handwritten.statml-standardized .statml-visual {
-      background-color: var(--hw-paper) !important;
-      background-image: none !important;
-      border-color: transparent !important;
-    }
-    body.hw-handwritten.statml-standardized .statml-visual-card {
-      background-color: var(--hw-paper) !important;
-      background-image: repeating-linear-gradient(176deg, rgba(223,178,45,.045) 0 2px, transparent 2px 8px) !important;
-      border: 0 !important;
-      border-radius: 0 !important;
-      box-shadow: none !important;
-      position: relative !important;
-    }
-    body.hw-handwritten.statml-standardized .statml-visual-card.hw-rough-surface[data-hw-rough-frame] {
-      box-shadow: none !important;
-    }
-    body.hw-handwritten.statml-standardized .statml-visual-card > .hw-rough-frame {
-      display: none !important;
-    }
-    body.hw-handwritten.statml-standardized .statml-visual-card::before,
-    body.hw-handwritten.statml-standardized .statml-visual-card::after {
-      display: none !important;
-      content: none !important;
-    }
-    body.hw-handwritten.statml-standardized .statml-visual-card::after {
-      inset: 4px 1px 1px 4px; opacity: .3; border-color: rgba(88,83,72,.72);
-      border-radius: 5px 3px 6px 4px; transform: rotate(.17deg);
-    }
-  </style>
-<style id="logistic-regression-handwritten-geometry-calibration">
-@media (min-width: 901px) {
-  body.hw-handwritten.statml-standardized [data-stage="1"]{min-height:1463px !important}
-  body.hw-handwritten.statml-standardized [data-stage="2"]{min-height:910px !important}
-  body.hw-handwritten.statml-standardized [data-stage="3"]{min-height:2422px !important}
-  body.hw-handwritten.statml-standardized [data-stage="4"]{min-height:2733px !important}
-  body.hw-handwritten.statml-standardized [data-stage="5"]{min-height:2528px !important}
-  body.hw-handwritten.statml-standardized [data-stage="6"]{min-height:2149px !important}
-  body.hw-handwritten.statml-standardized [data-stage="7"]{min-height:2514px !important}
-  body.hw-handwritten.statml-standardized [data-stage="8"]{min-height:1808px !important}
-  body.hw-handwritten.statml-standardized [data-stage="9"]{min-height:1634px !important}
-  body.hw-handwritten.statml-standardized [data-stage="10"]{min-height:3455px !important}
-  body.hw-handwritten.statml-standardized .statml-stage-button span{max-width:none !important; width:max-content !important; white-space:nowrap !important}
-}
-@media (min-width: 360px) and (max-width: 900px) {
-  body.hw-handwritten.statml-standardized [data-stage="1"]{min-height:1584px !important}
-  body.hw-handwritten.statml-standardized [data-stage="2"]{min-height:1033px !important}
-  body.hw-handwritten.statml-standardized [data-stage="3"]{min-height:2716px !important}
-  body.hw-handwritten.statml-standardized [data-stage="4"]{min-height:3121px !important}
-  body.hw-handwritten.statml-standardized [data-stage="5"]{min-height:2819px !important}
-  body.hw-handwritten.statml-standardized [data-stage="6"]{min-height:2280px !important}
-  body.hw-handwritten.statml-standardized [data-stage="7"]{min-height:2744px !important}
-  body.hw-handwritten.statml-standardized [data-stage="8"]{min-height:1980px !important}
-  body.hw-handwritten.statml-standardized [data-stage="9"]{min-height:1956px !important}
-  body.hw-handwritten.statml-standardized [data-stage="10"]{min-height:4211px !important}
-}
-</style>
-</head>
-<body>
-<nav class="statml-site-nav" aria-label="StatML Academy navigation">
-  <a class="statml-brand-link" href="../index.html"><span class="statml-brand-mark">S</span><span>StatML Academy</span></a>
-  <span class="statml-nav-topic">Logistic Regression</span>
-  <span class="statml-nav-meta">module 09/21</span>
-</nav>
-
-
-<div class="progress-bar" id="progressBar"></div>
-<div class="stage-dots" id="stageDots"></div>
-
-<!-- HERO -->
-<section class="hero-section section" data-stage="0" id="sec-0">
-  <canvas id="heroCanvas" class="hero-bg"></canvas>
-  <div class="hero-badge">Machine Learning · Classification</div>
-  <h1>Logistic<br>Regression</h1>
-  <div class="scroll-hint">↓ Scroll to begin</div>
-</section>
-
-<!-- MAIN LAYOUT -->
-<div class="layout">
-<div class="narrative">
-
-<!-- S1: Raw Data -->
-<section class="section" data-stage="1" id="sec-1">
-  <div class="stage-num">Stage 01</div>
-  <h2>It Starts with Data 🍦</h2>
-  <p>Imagine you run an ice-cream shop. Every day you note the <strong>temperature</strong>, whether it was <strong>sunny</strong>, and whether someone <strong>bought ice cream</strong>.</p>
-  <p>The plot shows each day as a dot: temperature on the x-axis, outcome (bought or didn't) on the y-axis.</p>
-  <div class="glass-card">
-    <h3>Legend</h3>
-    <p style="margin:0"><span class="tag tag-green">● Bought (y = 1)</span> &nbsp; <span class="tag tag-coral">● Didn't buy (y = 0)</span></p>
-  </div>
-
-  <!-- FIX 1: WHAT IS PROBABILITY -->
-  <div class="glass-card">
-    <h3>What is probability? 🤔</h3>
-    <p style="font-size: 0.9rem; color: var(--text-dim); margin-bottom: 8px;">
-      <strong>Probability</strong> means "how likely something is to happen." It is always written as a number between 0 and 1:
+<!doctype html>
+<!-- Generated from lessons/expanded.mjs. Use the matching notebook generator. -->
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Logistic Regression · StatML Academy</title><meta name="description" content="Read the idea, inspect a small example, then change one thing in the live notebook.">
+<link rel="stylesheet" href="academic-rigor.css"><link rel="stylesheet" href="notebook/notebook.css">
+<script src="core-modules.js" defer></script><script src="academic-rigor.js" defer></script>
+<script type="module" src="notebook/lesson.js"></script></head>
+<body class="paper-notes notebook" data-module="logistic-regression" data-accent="red" data-engine="classification">
+<a href="#lesson" class="skip-link">Skip to lesson</a>
+<nav class="statml-site-nav" aria-label="Academy"><a class="brand" href="../index.html">← Data Science Universe</a><span class="nav-title">Logistic Regression</span><span class="statml-nav-meta">module 09/21</span></nav>
+<div class="lesson-toolbar"><label for="stage-select">Lesson map</label><select id="stage-select"><option value="0">01 · It Starts with Data</option><option value="1">02 · Why Lines Break</option><option value="2">03 · From a Raw Score to a Probability</option><option value="3">04 · Weighted Clues</option><option value="4">05 · Learning from Mistakes</option><option value="5">06 · Drawing the Line</option><option value="6">07 · Select the Decision Rule on Validation Data</option><option value="7">08 · The Validation ROC Curve</option><option value="8">09 · What the Numbers Mean</option><option value="9">10 · The Full Picture</option></select><span class="stage-progress" aria-live="polite">1 / 10</span></div>
+<div class="mobile-lab-bar"><span><small>Live notebook</small><strong id="mobile-summary">What is the binary outcome?</strong></span><button class="primary" type="button" data-open-lab>Explore visual ↗</button></div>
+<main class="notebook-layout" id="lesson"><article class="reading">
+<header class="hero"><p class="eyebrow">Supervised learning · Classification</p><h1>Logistic Regression</h1><p class="intro">A binary target has two defined outcomes. Logistic regression estimates the probability of the designated positive class using inputs available at prediction time.</p><div class="pathway"><div><small>Prerequisites</small>Means, plots, and the train–validation distinction</div><div><small>Recommended next</small><a href="evaluation-metrics.html">Evaluation Metrics</a></div></div><p class="reading-tip">Read a little. Try a little. Open the “why” when you are ready.</p></header>
+<noscript><p class="caution">The full lesson, worked examples and answers are readable here. Enable JavaScript for the interactive experiments and live calculations.</p></noscript>
+<section class="stage" id="stage-1" data-stage="1" aria-labelledby="heading-1">
+<span class="legacy-anchor" id="sec-1" aria-hidden="true"></span><div class="stage-label"><span>01</span>It Starts with Data</div><h2 id="heading-1">What is the binary outcome?</h2>
+<p class="answer">A binary target has two defined outcomes. Logistic regression estimates the probability of the designated positive class using inputs available at prediction time.</p><div class="receipt"><div class="receipt-label">A small example · separate from the live dataset</div><div class="table-wrap"><table><thead><tr><th scope="col">Follow the idea</th><th scope="col">Read it in plain language</th></tr></thead><tbody><tr><th scope="row">Negative class</th><td>0</td></tr><tr><th scope="row">Positive class</th><td>1</td></tr><tr><th scope="row">Prediction</th><td>Estimated P(Y = 1 given inputs)</td></tr></tbody></table></div><p class="mini-note"><strong>Your notebook:</strong> <span data-bind="live-receipt">Open the visual to inspect the current calculation.</span></p></div>
+<div class="experiment"><span class="pencil">↳</span><div><strong>Try it</strong><p>Explore the decision surface. Use the labeled controls, predict what will change, then compare the calculation before and after.</p><button type="button" data-explore-stage="0">Explore this idea <span aria-hidden="true">↗</span></button></div></div>
+<details class="deeper"><summary>Why this works · a little deeper</summary><div><p>A binary target has two defined outcomes. Logistic regression estimates the probability of the designated positive class using inputs available at prediction time.</p><p>No. It expresses estimated risk, not certainty.</p><div class="reference-reading"><p class="reference-label">Additional reference · worked numbers below are separate examples from the live notebook.</p><p>Imagine you run an ice-cream shop. Every day you note the <strong>temperature</strong>, whether it was <strong>sunny</strong>, and whether someone <strong>bought ice cream</strong>.</p>
+<p>The plot shows each day as a dot: temperature on the x-axis, outcome (bought or didn't) on the y-axis.</p>
+<h3>Legend</h3>
+<p>● Bought (y = 1)   ● Didn't buy (y = 0)</p>
+<h3>What is probability? 🤔</h3>
+<p>
+<strong>Probability</strong> means "how likely something is to happen." It is always written as a number between 0 and 1:
     </p>
-    <ul style="margin-left: 20px; font-size: 0.85rem; color: var(--text-dim); margin-bottom: 12px; display: flex; flex-direction: column; gap: 4px;">
-      <li><strong>0</strong> means impossible (0% chance).</li>
-      <li><strong>0.5</strong> means 50-50 (50% chance).</li>
-      <li><strong>1</strong> means certain (100% chance).</li>
-    </ul>
-    <p style="font-size: 0.9rem; color: var(--text-dim); margin-bottom: 8px;">
+<ul>
+<li><strong>0</strong> means impossible (0% chance).</li>
+<li><strong>0.5</strong> means 50-50 (50% chance).</li>
+<li><strong>1</strong> means certain (100% chance).</li>
+</ul>
+<p>
       In this guide, probability means: <em>"How likely is someone to buy ice cream?"</em>
-    </p>
-    <p style="font-size: 0.85rem; color: var(--text-muted); font-style: italic; margin-bottom: 0;">
+</p>
+<p>
       Bought = 1 and Didn't buy = 0 are just category labels. They do not mean someone bought one ice cream or zero ice creams. They simply mark the two possible outcomes for the model.
     </p>
-  </div>
-
-  <p>Notice how higher temperatures tend to cluster near y = 1? That's the <strong>signal</strong> our model will learn to capture.</p>
-  <div class="insight-box"><p>📌 This is a small toy dataset with 20 rows designed for teaching. Real datasets have hundreds or thousands of rows.</p></div>
+<p>Notice how higher temperatures tend to cluster near y = 1? That's the <strong>signal</strong> our model will learn to capture.</p>
+<p>📌 This is a small toy dataset with 20 rows designed for teaching. Real datasets have hundreds or thousands of rows.</p></div></div></details>
+<details class="check"><summary>Quick check · Does a probability of 0.8 guarantee a positive outcome?</summary><p>No. It expresses estimated risk, not certainty.</p></details>
+<a class="next-idea" href="#stage-2">Next: Why Lines Break ↓</a>
 </section>
-
-<!-- S2: Why Not Linear? -->
-<section class="section" data-stage="2" id="sec-2">
-  <div class="stage-num">Stage 02</div>
-  <h2>Why Lines Break 📏</h2>
-  <p>Your first instinct might be to draw a straight line through the data — that's <strong>linear regression</strong>.</p>
-  <p>But watch what happens: the line predicts values <strong>above 1</strong> and <strong>below 0</strong>. Those aren't valid probabilities!</p>
-  <div class="math-block">ŷ = b₀ + b₁ · Temperature
-Can give 1.5 or −0.3 … not a probability!</div>
-
-  <!-- FIX 2: PROBABILITY BOUNDARY EXPLANATION -->
-  <div class="glass-card">
-    <h3>Why Bounds Matter 🚧</h3>
-    <p style="font-size: 0.9rem; color: var(--text-dim); margin-bottom: 8px;">
+<section class="stage" id="stage-2" data-stage="2" aria-labelledby="heading-2">
+<span class="legacy-anchor" id="sec-2" aria-hidden="true"></span><div class="stage-label"><span>02</span>Why Lines Break</div><h2 id="heading-2">Why is an ordinary line awkward for probability?</h2>
+<p class="answer">An ordinary linear prediction can be below zero or above one. Logistic regression uses an unrestricted linear score, then transforms it into the probability range.</p><div class="receipt"><div class="receipt-label">A small example · separate from the live dataset</div><div class="table-wrap"><table><thead><tr><th scope="col">Follow the idea</th><th scope="col">Read it in plain language</th></tr></thead><tbody><tr><th scope="row">Linear score z</th><td>Any real number</td></tr><tr><th scope="row">Sigmoid output</th><td>Between 0 and 1</td></tr><tr><th scope="row">Decision</th><td>A later thresholding step</td></tr></tbody></table></div><p class="mini-note"><strong>Your notebook:</strong> <span data-bind="live-receipt">Open the visual to inspect the current calculation.</span></p></div>
+<div class="experiment"><span class="pencil">↳</span><div><strong>Try it</strong><p>Move the decision threshold. Watch the dashed horizontal line and the red/blue regions move together while the sigmoid curve stays fixed. Red predicts class 1 at or above the cutoff; blue predicts class 0 below it.</p><button type="button" data-explore-stage="1">Explore this idea <span aria-hidden="true">↗</span></button></div></div>
+<details class="deeper"><summary>Why this works · a little deeper</summary><div><p>An ordinary linear prediction can be below zero or above one. Logistic regression uses an unrestricted linear score, then transforms it into the probability range.</p><p>No.</p><div class="reference-reading"><p class="reference-label">Additional reference · worked numbers below are separate examples from the live notebook.</p><p>Your first instinct might be to draw a straight line through the data — that's <strong>linear regression</strong>.</p>
+<p>But watch what happens: the line predicts values <strong>above 1</strong> and <strong>below 0</strong>. Those aren't valid probabilities!</p>
+<p>ŷ = b₀ + b₁ · Temperature Can give 1.5 or −0.3 … not a probability!</p>
+<h3>Why Bounds Matter 🚧</h3>
+<p>
       A probability cannot be below 0 or above 1:
     </p>
-    <ul style="margin-left: 20px; font-size: 0.85rem; color: var(--text-dim); margin-bottom: 12px; display: flex; flex-direction: column; gap: 4px;">
-      <li>Below 0 would mean “less than impossible.”</li>
-      <li>Above 1 would mean “more than certain.”</li>
-    </ul>
-    <p style="font-size: 0.9rem; color: var(--text-dim); margin: 0;">
+<ul>
+<li>Below 0 would mean “less than impossible.”</li>
+<li>Above 1 would mean “more than certain.”</li>
+</ul>
+<p>
       So a prediction like <strong>1.5</strong> means 150%, which makes no real-world sense. We need a curve that stays strictly between 0 and 1.
     </p>
-  </div>
-
-  <p>We need a function that <em>squishes</em> any number into the 0–1 range. Enter the <strong>sigmoid</strong>.</p>
+<p>We need a function that <em>squishes</em> any number into the 0–1 range. Enter the <strong>sigmoid</strong>.</p></div></div></details>
+<details class="check"><summary>Quick check · Is the linear score already a probability?</summary><p>No.</p></details>
+<a class="next-idea" href="#stage-3">Next: From a Raw Score to a Probability ↓</a>
 </section>
-
-<!-- S3: Sigmoid -->
-<section class="section" data-stage="3" id="sec-3">
-  <div class="stage-num">Stage 03</div>
-  <h2>From a Raw Score to a Probability ✨</h2>
-  <p><strong>First, logistic regression starts the same way linear regression does.</strong> For each data point, one linear equation combines that point's features with the model's learned weights and produces one raw number, called <strong>z</strong>.</p>
-  <div class="math-block">z = b₀ + b₁x₁ + b₂x₂ + ···
-
-one data point → one raw score z</div>
-  <p><strong>z is not a z-score or a standard score.</strong> It is not learned separately for each point. It is simply the model's raw opinion before that opinion becomes a probability. z can be any number from negative infinity to positive infinity. If <strong>z = 0</strong>, the model is exactly at 50/50.</p>
-  <p><strong>Only after that</strong> do we apply the <strong>sigmoid function</strong> to turn z into a probability between 0 and 1.</p>
-  <div class="math-block">p = 1 / (1 + e⁻ᶻ)
-
-Large positive z → probability near 1
-Large negative z → probability near 0
-z = 0 → probability exactly 0.5</div>
-  <div class="glass-card">
-    <h3>See the Sigmoid Respond</h3>
-    <div class="slider-wrap">
-      <label>Raw score z =</label>
-      <input type="range" min="-6" max="6" step="0.1" value="0" id="zSlider">
-      <span class="s-val" id="zVal">0.0</span>
-    </div>
-    <div class="metric-row">
-      <div class="metric-card"><div class="val" id="pVal" style="color:var(--accent2)">0.500</div><div class="lbl">Probability</div></div>
-    </div>
-  </div>
-
-  <!-- CLARIFYING Z -->
-  <div class="glass-card">
-    <h3>Where Does z Come From? 🤔</h3>
-    <p>For this interactive slider: <strong>yes</strong>, you are choosing the raw score z manually so you can see how the sigmoid responds.</p>
-    <p>In a real machine learning model: <strong>no</strong>, you do not choose z manually. The model runs its linear equation on each data point's features and learned weights.</p>
-    <div style="text-align: center; margin: 16px 0; font-family: 'JetBrains Mono', monospace; font-size: 0.82rem; line-height: 1.6; color: var(--accent2); background: rgba(99,102,241,0.03); padding: 10px; border-radius: var(--radius-sm);">
-      Features + Weights &rarr; raw score z <br>
-      raw score z &rarr; Sigmoid &rarr; Probability
-    </div>
-    <p style="margin:0; font-size: 0.85rem; color: var(--text-dim);"><em>“The z slider is only a teaching demo. In real logistic regression, the model calculates a separate raw score z for each row, then the sigmoid turns it into a probability.”</em></p>
-  </div>
-
-  <!-- QUIZ 1 -->
-  <div class="quiz-card">
-    <h3 style="font-size: 1rem; margin-bottom: 8px; color: var(--accent);">🧠 Concept Check Quiz 1</h3>
-    <p style="font-size: 0.88rem; margin-bottom: 12px; color: var(--text-dim);">In real logistic regression, where does the raw score z come from?</p>
-    <button class="quiz-option" data-correct="true" onclick="handleQuizClick(this, true)">A. The model's linear equation combines each row's features with learned weights.</button>
-    <button class="quiz-option" data-correct="false" onclick="handleQuizClick(this, false)">B. The user chooses a new z for every row.</button>
-    <button class="quiz-option" data-correct="false" onclick="handleQuizClick(this, false)">C. The sigmoid chooses z after calculating the probability.</button>
-    <button class="quiz-option" data-correct="false" onclick="handleQuizClick(this, false)">D. z is the same as the decision threshold.</button>
-    <div class="quiz-feedback"></div>
-  </div>
-
-  <div class="insight-box"><p>📐 The sigmoid on the canvas is a 2D slice — it plots probability vs. temperature while holding Sunny and Weekend fixed at a neutral 0.5. The real model uses all three features simultaneously.</p></div>
+<section class="stage" id="stage-3" data-stage="3" aria-labelledby="heading-3">
+<span class="legacy-anchor" id="sec-3" aria-hidden="true"></span><div class="stage-label"><span>03</span>From a Raw Score to a Probability</div><h2 id="heading-3">What does the sigmoid do?</h2>
+<p class="answer">The sigmoid is a smooth S-shaped transformation. Zero maps to one-half; large positive scores approach one; large negative scores approach zero.</p><div class="receipt"><div class="receipt-label">A small example · separate from the live dataset</div><div class="table-wrap"><table><thead><tr><th scope="col">Follow the idea</th><th scope="col">Read it in plain language</th></tr></thead><tbody><tr><th scope="row">z = 0</th><td>p = 0.5</td></tr><tr><th scope="row">z ≈ 1.10</th><td>p ≈ 0.75</td></tr><tr><th scope="row">z ≈ −1.10</th><td>p ≈ 0.25</td></tr></tbody></table></div><p class="mini-note"><strong>Your notebook:</strong> <span data-bind="live-receipt">Open the visual to inspect the current calculation.</span></p></div>
+<div class="experiment"><span class="pencil">↳</span><div><strong>Try it</strong><p>Raise the decision threshold, then lower it. Compare the expanding blue region with the shrinking red region. The cutoff changes the decision rule, not the fitted probability.</p><button type="button" data-explore-stage="2">Explore this idea <span aria-hidden="true">↗</span></button></div></div>
+<details class="deeper"><summary>Why this works · a little deeper</summary><div><p>The sigmoid is a smooth S-shaped transformation. Zero maps to one-half; large positive scores approach one; large negative scores approach zero.</p><p>No. The mapping is nonlinear.</p><div class="reference-reading"><p class="reference-label">Additional reference · worked numbers below are separate examples from the live notebook.</p><p><strong>First, logistic regression starts the same way linear regression does.</strong> For each data point, one linear equation combines that point's features with the model's learned weights and produces one raw number, called <strong>z</strong>.</p>
+<p>z = b₀ + b₁x₁ + b₂x₂ + ··· one data point → one raw score z</p>
+<p><strong>z is not a z-score or a standard score.</strong> It is not learned separately for each point. It is simply the model's raw opinion before that opinion becomes a probability. z can be any number from negative infinity to positive infinity. If <strong>z = 0</strong>, the model is exactly at 50/50.</p>
+<p><strong>Only after that</strong> do we apply the <strong>sigmoid function</strong> to turn z into a probability between 0 and 1.</p>
+<p>p = 1 / (1 + e⁻ᶻ) Large positive z → probability near 1 Large negative z → probability near 0 z = 0 → probability exactly 0.5</p>
+<h3>See the Sigmoid Respond</h3>
+<p>Raw score z = 0.0 0.500Probability</p>
+<h3>Where Does z Come From? 🤔</h3>
+<p>In a real machine learning model: <strong>no</strong>, you do not choose z manually. The model runs its linear equation on each data point's features and learned weights.</p>
+<p>Features + Weights → raw score z</p>
+<p>raw score z → Sigmoid → Probability</p>
+<p><em>“The z slider is only a teaching demo. In real logistic regression, the model calculates a separate raw score z for each row, then the sigmoid turns it into a probability.”</em></p>
+<h3>🧠 Concept Check Quiz 1</h3>
+<p>In real logistic regression, where does the raw score z come from?</p></div></div></details>
+<details class="check"><summary>Quick check · Does doubling z double the probability?</summary><p>No. The mapping is nonlinear.</p></details>
+<a class="next-idea" href="#stage-4">Next: Weighted Clues ↓</a>
 </section>
-
-<!-- S4: Building Z -->
-<section class="section" data-stage="4" id="sec-4">
-  <div class="stage-num">Stage 04</div>
-  <h2>Weighted Clues 🧠</h2>
-  <p>How do we construct the score <strong>z</strong>? Think of our features (Temperature, Sunny, Weekend) as clues. Each <strong>weight</strong> describes the change in log-odds for a one-unit increase in that feature, holding the other modeled predictors fixed:</p>
-  <p>• A <strong>positive weight</strong> pushes the score toward "Buy" (y = 1).<br>
-  • A <strong>negative weight</strong> pushes the score toward "Don't Buy" (y = 0).<br>
+<section class="stage" id="stage-4" data-stage="4" aria-labelledby="heading-4">
+<span class="legacy-anchor" id="sec-4" aria-hidden="true"></span><div class="stage-label"><span>04</span>Weighted Clues</div><h2 id="heading-4">How do weighted clues form z?</h2>
+<p class="answer">Multiply each input by its coefficient and add the intercept. This score is the model's log-odds; each contribution is additive on that scale.</p><div class="receipt"><div class="receipt-label">A small example · separate from the live dataset</div><div class="table-wrap"><table><thead><tr><th scope="col">Follow the idea</th><th scope="col">Read it in plain language</th></tr></thead><tbody><tr><th scope="row">Intercept</th><td>−1</td></tr><tr><th scope="row">2 × x, x = 1</th><td>+2</td></tr><tr><th scope="row">Score</th><td>1</td></tr><tr><th scope="row">Probability</th><td>About 0.731</td></tr></tbody></table></div><p class="mini-note"><strong>Your notebook:</strong> <span data-bind="live-receipt">Open the visual to inspect the current calculation.</span></p></div>
+<div class="experiment"><span class="pencil">↳</span><div><strong>Try it</strong><p>Follow each contribution. Use the labeled controls, predict what will change, then compare the calculation before and after.</p><button type="button" data-explore-stage="3">Explore this idea <span aria-hidden="true">↗</span></button></div></div>
+<details class="deeper"><summary>Why this works · a little deeper</summary><div><p>Multiply each input by its coefficient and add the intercept. This score is the model's log-odds; each contribution is additive on that scale.</p><p>They increase by 2, with other inputs fixed.</p><div class="reference-reading"><p class="reference-label">Additional reference · worked numbers below are separate examples from the live notebook.</p><p>How do we construct the score <strong>z</strong>? Think of our features (Temperature, Sunny, Weekend) as clues. Each <strong>weight</strong> describes the change in log-odds for a one-unit increase in that feature, holding the other modeled predictors fixed:</p>
+<p>• A <strong>positive weight</strong> pushes the score toward "Buy" (y = 1).<br/>
+  • A <strong>negative weight</strong> pushes the score toward "Don't Buy" (y = 0).<br/>
   • The <strong>final raw score z</strong> is the total combined push from all clues. The Sigmoid then turns this raw score into a clean final probability.</p>
-
-  <p style="margin-top: 14px;"><strong>These sliders are a sandbox.</strong> You are manually changing the weights only to see how the mathematical curve reacts. In real training, the model learns these weights automatically by reducing log loss.</p>
-
-  <!-- COMPARISON BOX -->
-  <div class="glass-card" style="padding: 16px; margin: 16px 0; border-left: 4px solid var(--accent);">
-    <div style="display: flex; gap: 16px; font-size: 0.85rem; flex-wrap: wrap;">
-      <div style="flex: 1; min-width: 150px;">
-        <strong>Stage 04 (Sandbox):</strong>
-        <p style="margin:4px 0 0; font-size:0.8rem; color: var(--text-dim);">You adjust weights manually to see the shapes of the decision curve.</p>
-      </div>
-      <div style="flex: 1; min-width: 150px; border-left: 1px solid var(--glass-border); padding-left: 16px;">
-        <strong>Stage 05 (Machine Learning):</strong>
-        <p style="margin:4px 0 0; font-size:0.8rem; color: var(--text-dim);">The model adjusts weights automatically using gradient descent.</p>
-      </div>
-    </div>
-  </div>
-
-  <div class="math-block">z = b₀ + b₁·standardized Temp + b₂·Sunny + b₃·Weekend</div>
-  <!-- FIX 4: TYPO CORRECTED -->
-  <p><strong>b₀</strong> = bias (baseline push) · <strong>b₁, b₂, b₃</strong> = individual clue pushes</p>
-
-  <p style="margin-top: 14px;"><strong>Standardized temperature</strong> means we convert raw temperature values into a scaled version with a mean of 0 and standard deviation of 1. Scaling mainly helps optimisation run smoothly and makes regularisation penalties more comparable across features. Large raw values do not inherently overpower the final fitted model: coefficients account for feature units.</p>
-
-  <!-- LIVE SCORE BUILDER -->
-  <div class="glass-card" id="liveScoreCard">
-    <h3 style="color: var(--accent2)">Live Score Builder 🛠️</h3>
-    <p style="font-size: 0.85rem; color: var(--text-dim); margin-bottom: 12px;">
+<p><strong>These sliders are a sandbox.</strong> You are manually changing the weights only to see how the mathematical curve reacts. In real training, the model learns these weights automatically by reducing log loss.</p>
+<strong>Stage 04 (Sandbox):</strong>
+<p>You adjust weights manually to see the shapes of the decision curve.</p>
+<strong>Stage 05 (Machine Learning):</strong>
+<p>The model adjusts weights automatically using gradient descent.</p>
+<p>z = b₀ + b₁·standardized Temp + b₂·Sunny + b₃·Weekend</p>
+<p><strong>b₀</strong> = bias (baseline push) · <strong>b₁, b₂, b₃</strong> = individual clue pushes</p>
+<p><strong>Standardized temperature</strong> means we convert raw temperature values into a scaled version with a mean of 0 and standard deviation of 1. Scaling mainly helps optimisation run smoothly and makes regularisation penalties more comparable across features. Large raw values do not inherently overpower the final fitted model: coefficients account for feature units.</p>
+<h3>Live Score Builder 🛠️</h3>
+<p>
       Let's test our current weights on an example day: a hot <strong>30°C</strong> day (Raw Temperature) that is <strong>sunny</strong> (1) and a <strong>weekend</strong> (1).
     </p>
-    <div style="font-family: 'JetBrains Mono', monospace; font-size: 0.82rem; line-height: 1.6; background: rgba(99,102,241,0.03); padding: 14px; border-radius: var(--radius-sm); border: 1px solid rgba(99,102,241,0.12);">
-      <div>• Baseline Bias Push (b₀): <span id="lsB0" style="font-weight: 600;">--</span></div>
-      <div>• Temperature Push (b₁ × std temp <span id="lsStdVal">--</span>): <span id="lsB1" style="font-weight: 600; color: var(--accent2);">--</span></div>
-      <div>• Sunny Push (b₂ × 1): <span id="lsB2" style="font-weight: 600; color: var(--green);">--</span></div>
-      <div>• Weekend Push (b₃ × 1): <span id="lsB3" style="font-weight: 600; color: var(--amber);">--</span></div>
-      <div style="border-top: 1px solid var(--glass-border); margin-top: 8px; padding-top: 8px; font-weight: bold; font-size: 0.9rem;">
-        Total Score (z) = <span id="lsSum" style="color: var(--text)">--</span>
-      </div>
-      <div style="font-weight: bold; font-size: 0.92rem; color: var(--accent);">
-        Probability = Sigmoid(z) = <span id="lsProb">--</span>%
-      </div>
-    </div>
-  </div>
-
-  <!-- WHO DECIDES WHAT TABLE -->
-  <div class="glass-card">
-    <h3 style="color: var(--accent2)">Who decides what? 📋</h3>
-    <table style="width: 100%; border-collapse: collapse; font-size: 0.8rem; text-align: left; margin: 12px 0;">
-      <thead>
-        <tr style="border-bottom: 2px solid var(--glass-border); color: var(--text-dim);">
-          <th style="padding: 6px 4px;">Item</th>
-          <th style="padding: 6px 4px;">Who determines it?</th>
-          <th style="padding: 6px 4px;">Beginner meaning</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr style="border-bottom: 1px solid var(--glass-border);">
-          <td style="padding: 6px 4px; font-weight: bold;">Features</td>
-          <td style="padding: 6px 4px;">Data / user</td>
-          <td style="padding: 6px 4px;">Inputs like temperature, sunny weather, weekend status</td>
-        </tr>
-        <tr style="border-bottom: 1px solid var(--glass-border);">
-          <td style="padding: 6px 4px; font-weight: bold;">Weights</td>
-          <td style="padding: 6px 4px; color: var(--accent2); font-weight: 600;">Model learns them</td>
-          <td style="padding: 6px 4px;">How strongly each clue pushes the prediction</td>
-        </tr>
-        <tr style="border-bottom: 1px solid var(--glass-border);">
-          <td style="padding: 6px 4px; font-weight: bold;">Raw score z</td>
-          <td style="padding: 6px 4px;">Model calculates it</td>
-          <td style="padding: 6px 4px;">Total push from all weighted clues combined</td>
-        </tr>
-        <tr style="border-bottom: 1px solid var(--glass-border);">
-          <td style="padding: 6px 4px; font-weight: bold;">Probability</td>
-          <td style="padding: 6px 4px;">Sigmoid calculates it</td>
-          <td style="padding: 6px 4px;">Converts score z into a 0 to 1 probability (0% to 100%)</td>
-        </tr>
-        <tr style="border-bottom: 1px solid var(--glass-border);">
-          <td style="padding: 6px 4px; font-weight: bold;">Threshold</td>
-          <td style="padding: 6px 4px; color: var(--amber); font-weight: 600;">Human chooses it</td>
-          <td style="padding: 6px 4px;">Cutoff boundary for Yes/No decision (often 0.50)</td>
-        </tr>
-        <tr style="border-bottom: 1px solid var(--glass-border);">
-          <td style="padding: 6px 4px; font-weight: bold;">Final prediction</td>
-          <td style="padding: 6px 4px;">Decision rule applies it</td>
-          <td style="padding: 6px 4px;">Probability &ge; threshold means Yes (Predict Buy)</td>
-        </tr>
-      </tbody>
-    </table>
-    <p style="font-size: 0.82rem; color: var(--text-muted); margin-top: 8px;">
-      <em>"You do not manually choose z during real prediction. You provide features, the model uses learned weights, and z is calculated automatically."</em>
-    </p>
-  </div>
-
-  <div class="glass-card">
-    <h3>Adjust Weights Manually</h3>
-    <div class="slider-wrap"><label>b₀ (bias)</label><input type="range" min="-8" max="2" step="0.1" value="0" id="b0Slider"><span class="s-val" id="b0Val">0.0</span></div>
-    <div class="slider-wrap"><label>b₁ (temp)</label><input type="range" min="-0.2" max="3" step="0.01" value="1.5" id="b1Slider"><span class="s-val" id="b1Val">1.50</span></div>
-    <div class="slider-wrap"><label>b₂ (sunny)</label><input type="range" min="-2" max="3" step="0.1" value="0.8" id="b2Slider"><span class="s-val" id="b2Val">0.8</span></div>
-    <div class="slider-wrap"><label>b₃ (weekend)</label><input type="range" min="-2" max="3" step="0.1" value="0.5" id="b3Slider"><span class="s-val" id="b3Val">0.5</span></div>
-    <div class="metric-row"><div class="metric-card"><div class="val" id="manualLoss" style="color:var(--amber)">—</div><div class="lbl">Log-Loss</div></div></div>
-  </div>
+<p>• Baseline Bias Push (b₀): -- • Temperature Push (b₁ × std temp --): -- • Sunny Push (b₂ × 1): -- • Weekend Push (b₃ × 1): -- Total Score (z) = -- Probability = Sigmoid(z) = --%</p>
+<h3>Who decides what? 📋</h3>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Who determines it?</th>
+<th>Beginner meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Features</td>
+<td>Data / user</td>
+<td>Inputs like temperature, sunny weather, weekend status</td>
+</tr>
+<tr>
+<td>Weights</td>
+<td>Model learns them</td>
+<td>How strongly each clue pushes the prediction</td>
+</tr>
+<tr>
+<td>Raw score z</td>
+<td>Model calculates it</td>
+<td>Total push from all weighted clues combined</td>
+</tr>
+<tr>
+<td>Probability</td>
+<td>Sigmoid calculates it</td>
+<td>Converts score z into a 0 to 1 probability (0% to 100%)</td>
+</tr>
+<tr>
+<td>Threshold</td>
+<td>Human chooses it</td>
+<td>Cutoff boundary for Yes/No decision (often 0.50)</td>
+</tr>
+<tr>
+<td>Final prediction</td>
+<td>Decision rule applies it</td>
+<td>Probability ≥ threshold means Yes (Predict Buy)</td>
+</tr>
+</tbody>
+</table>
+<p>
+<em>"You do not manually choose z during real prediction. You provide features, the model uses learned weights, and z is calculated automatically."</em>
+</p>
+<h3>Adjust Weights Manually</h3>
+<p>b₀ (bias)0.0 b₁ (temp)1.50 b₂ (sunny)0.8 b₃ (weekend)0.5 —Log-Loss</p></div></div></details>
+<details class="check"><summary>Quick check · What happens to log-odds when x increases by one with coefficient 2?</summary><p>They increase by 2, with other inputs fixed.</p></details>
+<a class="next-idea" href="#stage-5">Next: Learning from Mistakes ↓</a>
 </section>
-
-<!-- S5: Training -->
-<section class="section" data-stage="5" id="sec-5">
-  <div class="stage-num">Stage 05</div>
-  <h2>Learning from Mistakes ⚙️</h2>
-  <p>The model starts with <strong>initial weights</strong>, makes predictions, measures how wrong it was using <strong>log loss</strong>, then nudges the weights to improve. This is <strong>gradient descent</strong>.</p>
-
-  <p style="margin: 14px 0;"><strong>Training does not directly choose z.</strong> Training learns better weights. Once the weights improve, the model calculates better z values for each row of data automatically:</p>
-
-  <div style="font-family: 'JetBrains Mono', monospace; font-size: 0.82rem; background: rgba(99,102,241,0.03); border: 1px solid rgba(99,102,241,0.08); padding: 12px; border-radius: var(--radius-sm); margin: 12px 0; text-align: center; color: var(--accent2);">
-    Training updates weights &rarr; weights calculate z &rarr; sigmoid turns z into probability &rarr; threshold turns probability into Yes/No
-  </div>
-
-  <div class="math-block">L = −[ y·log(p) + (1−y)·log(1−p) ]
-
-The model is punished more when it's
-very confident but very wrong.</div>
-
-  <!-- HOW LOG LOSS THINKS -->
-  <div class="glass-card">
-    <h3>How Log Loss Thinks 🧠</h3>
-    <p style="font-size: 0.85rem; color: var(--text-dim); margin-bottom: 12px;">
+<section class="stage" id="stage-5" data-stage="5" aria-labelledby="heading-5">
+<span class="legacy-anchor" id="sec-5" aria-hidden="true"></span><div class="stage-label"><span>05</span>Learning from Mistakes</div><h2 id="heading-5">What does learning minimize?</h2>
+<p class="answer">Learning minimizes binary log loss, often with a regularization penalty. Confident wrong predictions receive a large penalty, so good probability estimation matters beyond just correct labels.</p><div class="receipt"><div class="receipt-label">A small example · separate from the live dataset</div><div class="table-wrap"><table><thead><tr><th scope="col">Follow the idea</th><th scope="col">Read it in plain language</th></tr></thead><tbody><tr><th scope="row">True class 1, p = 0.9</th><td>Loss about 0.105</td></tr><tr><th scope="row">True class 1, p = 0.1</th><td>Loss about 2.303</td></tr><tr><th scope="row">Learning</th><td>Reduce average training loss</td></tr></tbody></table></div><p class="mini-note"><strong>Your notebook:</strong> <span data-bind="live-receipt">Open the visual to inspect the current calculation.</span></p></div>
+<div class="experiment"><span class="pencil">↳</span><div><strong>Try it</strong><p>Inspect the loss. Use the labeled controls, predict what will change, then compare the calculation before and after.</p><button type="button" data-explore-stage="4">Explore this idea <span aria-hidden="true">↗</span></button></div></div>
+<details class="deeper"><summary>Why this works · a little deeper</summary><div><p>Learning minimizes binary log loss, often with a regularization penalty. Confident wrong predictions receive a large penalty, so good probability estimation matters beyond just correct labels.</p><p>Yes. Their confidence can differ.</p><div class="reference-reading"><p class="reference-label">Additional reference · worked numbers below are separate examples from the live notebook.</p><p>The model starts with <strong>initial weights</strong>, makes predictions, measures how wrong it was using <strong>log loss</strong>, then nudges the weights to improve. This is <strong>gradient descent</strong>.</p>
+<p><strong>Training does not directly choose z.</strong> Training learns better weights. Once the weights improve, the model calculates better z values for each row of data automatically:</p>
+<p>Training updates weights → weights calculate z → sigmoid turns z into probability → threshold turns probability into Yes/No L = −[ y·log(p) + (1−y)·log(1−p) ] The model is punished more when it's very confident but very wrong.</p>
+<h3>How Log Loss Thinks 🧠</h3>
+<p>
       Log loss measures the penalty of wrong answers. If the actual answer is 1 (Bought):
     </p>
-    <table style="width: 100%; border-collapse: collapse; font-size: 0.8rem; text-align: left; margin-bottom: 6px;">
-      <thead>
-        <tr style="border-bottom: 2px solid var(--glass-border); color: var(--text-dim);">
-          <th style="padding: 6px 4px;">Real Answer</th>
-          <th style="padding: 6px 4px;">Predicted Prob</th>
-          <th style="padding: 6px 4px;">Meaning</th>
-          <th style="padding: 6px 4px;">Loss Penalty</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr style="border-bottom: 1px solid var(--glass-border);">
-          <td style="padding: 6px 4px; font-weight: bold; color: var(--green);">1 (Bought)</td>
-          <td style="padding: 6px 4px; font-family: monospace;">0.95</td>
-          <td style="padding: 6px 4px;">Confident & correct</td>
-          <td style="padding: 6px 4px; color: var(--green); font-weight: 600;">Small Loss (0.05)</td>
-        </tr>
-        <tr style="border-bottom: 1px solid var(--glass-border);">
-          <td style="padding: 6px 4px; font-weight: bold; color: var(--green);">1 (Bought)</td>
-          <td style="padding: 6px 4px; font-family: monospace;">0.55</td>
-          <td style="padding: 6px 4px;">Unsure but leaning right</td>
-          <td style="padding: 6px 4px; color: var(--amber); font-weight: 600;">Medium Loss (0.60)</td>
-        </tr>
-        <tr style="border-bottom: 1px solid var(--glass-border);">
-          <td style="padding: 6px 4px; font-weight: bold; color: var(--green);">1 (Bought)</td>
-          <td style="padding: 6px 4px; font-family: monospace;">0.05</td>
-          <td style="padding: 6px 4px;">Confident & wrong!</td>
-          <td style="padding: 6px 4px; color: var(--coral); font-weight: 600;">Huge Loss (3.00)</td>
-        </tr>
-      </tbody>
-    </table>
-    <p style="font-size: 0.75rem; color: var(--text-muted); font-style: italic; margin-bottom: 14px;">
+<table>
+<thead>
+<tr>
+<th>Real Answer</th>
+<th>Predicted Prob</th>
+<th>Meaning</th>
+<th>Loss Penalty</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1 (Bought)</td>
+<td>0.95</td>
+<td>Confident &amp; correct</td>
+<td>Small Loss (0.05)</td>
+</tr>
+<tr>
+<td>1 (Bought)</td>
+<td>0.55</td>
+<td>Unsure but leaning right</td>
+<td>Medium Loss (0.60)</td>
+</tr>
+<tr>
+<td>1 (Bought)</td>
+<td>0.05</td>
+<td>Confident &amp; wrong!</td>
+<td>Huge Loss (3.00)</td>
+</tr>
+</tbody>
+</table>
+<p>
       * Note: These loss values are examples for one single prediction. The training loss shown below is the average loss across all training rows.
     </p>
-
-    <p style="font-size: 0.85rem; color: var(--text-dim); line-height: 1.6;">
-      <strong>Gradient descent</strong> is like adjusting a recipe little by little. If the model is wrong, it changes the weights in the direction that reduces loss. The <strong>learning rate</strong> controls how big each adjustment step is.
+<p>
+<strong>Gradient descent</strong> is like adjusting a recipe little by little. If the model is wrong, it changes the weights in the direction that reduces loss. The <strong>learning rate</strong> controls how big each adjustment step is.
       Gradient descent is one teaching-friendly optimiser, not the definition of logistic regression: Newton, quasi-Newton, coordinate-descent and other solvers are also common. Feature scaling often improves numerical optimisation and is especially relevant with regularisation; fit scaling inside training folds.
     </p>
-    <div class="insight-box" style="margin-top: 12px; border-left-color: var(--coral); background: rgba(220,38,38,0.03);">
-      <p style="font-size: 0.82rem; color: var(--text-dim);">
-        ⚠️ <strong>Warning on Learning Rate:</strong><br>
-        • <strong>Too small:</strong> Learning is very slow, requiring thousands of steps.<br>
+<p>
+        ⚠️ <strong>Warning on Learning Rate:</strong><br/>
+        • <strong>Too small:</strong> Learning is very slow, requiring thousands of steps.<br/>
         • <strong>Too large:</strong> The model may jump right over the best values and fail to settle.
       </p>
-    </div>
-  </div>
-
-  <!-- QUIZ 2 -->
-  <div class="quiz-card">
-    <h3 style="font-size: 1rem; margin-bottom: 8px; color: var(--accent);">🧠 Concept Check Quiz 2</h3>
-    <p style="font-size: 0.88rem; margin-bottom: 12px; color: var(--text-dim);">What does model training mainly learn/adjust?</p>
-    <button class="quiz-option" data-correct="false" onclick="handleQuizClick(this, false)">A. The final threshold only.</button>
-    <button class="quiz-option" data-correct="true" onclick="handleQuizClick(this, true)">B. Better weights that reduce log loss.</button>
-    <button class="quiz-option" data-correct="false" onclick="handleQuizClick(this, false)">C. The labels y = 0 and y = 1.</button>
-    <button class="quiz-option" data-correct="false" onclick="handleQuizClick(this, false)">D. The color of the dots.</button>
-    <div class="quiz-feedback"></div>
-  </div>
-
-  <div class="glass-card">
-    <h3>Train the Model</h3>
-    <div class="btn-row">
-      <button class="btn btn-accent" id="btnTrain">▶ Train</button>
-      <button class="btn" id="btnReset">↺ Reset</button>
-    </div>
-    <div class="slider-wrap"><label>Learning rate</label><input type="range" min="0.001" max="0.2" step="0.001" value="0.01" id="lrSlider"><span class="s-val" id="lrVal">0.010</span></div>
-    <div class="metric-row">
-      <div class="metric-card"><div class="val" id="epochVal" style="color:var(--accent2)">0</div><div class="lbl">Epoch</div></div>
-      <div class="metric-card"><div class="val" id="trainLoss" style="color:var(--amber)">—</div><div class="lbl">Loss</div></div>
-    </div>
-  </div>
-  <div class="insight-box"><p>💡 Temperature is standardized behind the scenes (mean=0, std=1) so all features are on comparable scales. This makes gradient descent more stable.</p></div>
+<h3>🧠 Concept Check Quiz 2</h3>
+<p>What does model training mainly learn/adjust?</p>
+<h3>Train the Model</h3>
+<p>Learning rate0.010 0Epoch —Loss</p>
+<p>💡 Temperature is standardized behind the scenes (mean=0, std=1) so all features are on comparable scales. This makes gradient descent more stable.</p></div></div></details>
+<details class="check"><summary>Quick check · Can two classifiers have the same accuracy but different log loss?</summary><p>Yes. Their confidence can differ.</p></details>
+<a class="next-idea" href="#stage-6">Next: Drawing the Line ↓</a>
 </section>
-
-<!-- S6: Threshold -->
-<section class="section" data-stage="6" id="sec-6">
-  <div class="stage-num">Stage 06</div>
-  <h2>Drawing the Line 🚦</h2>
-  <p>The sigmoid gives a <strong>probability</strong>. But we need a <strong>decision</strong>: Yes or No. We pick a <strong>threshold</strong>.</p>
-  <p>If p ≥ threshold → predict <strong style="color:var(--green)">Yes (1)</strong><br>If p &lt; threshold → predict <strong style="color:var(--coral)">No (0)</strong></p>
-
-  <p style="margin-top: 14px;"><strong>The model only gives probabilities. The threshold is a decision rule chosen by humans.</strong> We choose it based on what kind of mistake is worse or more costly for our specific situation:</p>
-
-  <!-- FIX 6: THRESHOLD VS PROBABILITY -->
-  <div class="glass-card">
-    <h3>Threshold vs. Probability 🔍</h3>
-    <p style="font-size: 0.9rem; color: var(--text-dim); margin-bottom: 8px;">
+<section class="stage" id="stage-6" data-stage="6" aria-labelledby="heading-6">
+<span class="legacy-anchor" id="sec-6" aria-hidden="true"></span><div class="stage-label"><span>06</span>Drawing the Line</div><h2 id="heading-6">Why does a probability need a decision threshold?</h2>
+<p class="answer">A probability describes risk; a threshold turns it into an action. Choose the threshold from validation data and the consequences of missed cases and false alerts.</p><div class="receipt"><div class="receipt-label">A small example · separate from the live dataset</div><div class="table-wrap"><table><thead><tr><th scope="col">Follow the idea</th><th scope="col">Read it in plain language</th></tr></thead><tbody><tr><th scope="row">p ≥ threshold</th><td>Predict positive</td></tr><tr><th scope="row">Lower threshold</th><td>More positive decisions</td></tr><tr><th scope="row">Decision context</th><td>Costs and capacity</td></tr></tbody></table></div><p class="mini-note"><strong>Your notebook:</strong> <span data-bind="live-receipt">Open the visual to inspect the current calculation.</span></p></div>
+<div class="experiment"><span class="pencil">↳</span><div><strong>Try it</strong><p>Move the decision threshold and watch the dashed boundary slide through input space. The colored regions show the resulting decisions; the observations and fitted probabilities stay fixed.</p><button type="button" data-explore-stage="5">Explore this idea <span aria-hidden="true">↗</span></button></div></div>
+<details class="deeper"><summary>Why this works · a little deeper</summary><div><p>A probability describes risk; a threshold turns it into an action. Choose the threshold from validation data and the consequences of missed cases and false alerts.</p><p>No.</p><div class="reference-reading"><p class="reference-label">Additional reference · worked numbers below are separate examples from the live notebook.</p><p>The sigmoid gives a <strong>probability</strong>. But we need a <strong>decision</strong>: Yes or No. We pick a <strong>threshold</strong>.</p>
+<p>If p ≥ threshold → predict <strong>Yes (1)</strong><br/>If p &lt; threshold → predict <strong>No (0)</strong></p>
+<p><strong>The model only gives probabilities. The threshold is a decision rule chosen by humans.</strong> We choose it based on what kind of mistake is worse or more costly for our specific situation:</p>
+<h3>Threshold vs. Probability 🔍</h3>
+<p>
       The threshold <strong>does not change the probability itself</strong>. It only changes how we convert that probability into a final Yes/No decision.
     </p>
-    <div style="background: rgba(99,102,241,0.03); border: 1px solid rgba(99,102,241,0.1); padding: 12px; border-radius: var(--radius-sm); font-size: 0.85rem; line-height: 1.5; color: var(--text-dim); margin-bottom: 8px;">
-      <strong>Example:</strong> If the model predicts a probability of <strong>0.62</strong>:<br>
-      • At threshold <strong>0.50</strong> &rarr; predict <strong>Yes</strong> (since 0.62 &ge; 0.50)<br>
-      • At threshold <strong>0.70</strong> &rarr; predict <strong>No</strong> (since 0.62 &lt; 0.70)
-    </div>
-    <p style="font-size: 0.85rem; color: var(--text-muted); margin: 0; font-style: italic;">
+<strong>Example:</strong>
+<p>If the model predicts a probability of</p>
+<strong>0.62</strong>
+<strong>0.50</strong>
+<strong>Yes</strong>
+<strong>0.70</strong>
+<strong>No</strong>
+<p>
       The probability stayed exactly 0.62. Only the decision rule changed.
     </p>
-  </div>
-
-  <!-- THRESHOLD CHOICE DETAIL -->
-  <div class="glass-card" style="padding: 16px; margin: 16px 0; font-size:0.85rem;">
-    <div style="margin-bottom: 12px;">
-      <strong style="color: var(--green);">Lowering the Threshold (e.g., 0.30):</strong>
-      <p style="margin:2px 0 0; color: var(--text-dim); font-size: 0.8rem;">Predicts "Yes" more easily. You catch more real buyers (high recall), but you also create more false alarms (false positives).</p>
-    </div>
-    <div>
-      <strong style="color: var(--coral);">Raising the Threshold (e.g., 0.70):</strong>
-      <p style="margin:2px 0 0; color: var(--text-dim); font-size: 0.8rem;">Predicts "Yes" only when highly confident. You reduce false alarms (high precision), but you might miss many real buyers (false negatives).</p>
-    </div>
-  </div>
-
-  <div class="glass-card">
-    <h3>Set Threshold</h3>
-    <div class="slider-wrap"><label>Threshold</label><input type="range" min="0.05" max="0.95" step="0.01" value="0.50" id="threshSlider"><span class="s-val" id="threshVal">0.50</span></div>
-  </div>
-  <div class="insight-box"><p><strong>Select this threshold on validation data, never the final test set.</strong> Use error costs, prevalence, capacity, and the real objective. Lock the threshold with all preprocessing and calibration choices, then report final test performance once. Probability calibration and classification accuracy answer different questions.</p></div>
-
-  <!-- QUIZ 3 -->
-  <div class="quiz-card">
-    <h3 style="font-size: 1rem; margin-bottom: 8px; color: var(--accent);">🧠 Concept Check Quiz 3</h3>
-    <p style="font-size: 0.88rem; margin-bottom: 12px; color: var(--text-dim);">Who chooses the decision threshold?</p>
-    <button class="quiz-option" data-correct="true" onclick="handleQuizClick(this, true)">A. Usually the human/researcher, based on the problem.</button>
-    <button class="quiz-option" data-correct="false" onclick="handleQuizClick(this, false)">B. The sigmoid function.</button>
-    <button class="quiz-option" data-correct="false" onclick="handleQuizClick(this, false)">C. The raw temperature column.</button>
-    <button class="quiz-option" data-correct="false" onclick="handleQuizClick(this, false)">D. The y-axis.</button>
-    <div class="quiz-feedback"></div>
-  </div>
-
-  <div class="insight-box"><p>💡 A medical test might use <strong>0.3</strong> (catch more sick people), while a spam filter might use <strong>0.7</strong> (avoid false alarms).</p></div>
+<strong>Lowering the Threshold (e.g., 0.30):</strong>
+<p>Predicts "Yes" more easily. You catch more real buyers (high recall), but you also create more false alarms (false positives).</p>
+<strong>Raising the Threshold (e.g., 0.70):</strong>
+<p>Predicts "Yes" only when highly confident. You reduce false alarms (high precision), but you might miss many real buyers (false negatives).</p>
+<p><strong>Select this threshold on validation data, never the final test set.</strong> Use error costs, prevalence, capacity, and the real objective. Lock the threshold with all preprocessing and calibration choices, then report final test performance once. Probability calibration and classification accuracy answer different questions.</p>
+<h3>🧠 Concept Check Quiz 3</h3>
+<p>Who chooses the decision threshold?</p>
+<p>💡 A medical test might use <strong>0.3</strong> (catch more sick people), while a spam filter might use <strong>0.7</strong> (avoid false alarms).</p></div></div></details>
+<details class="check"><summary>Quick check · Must the threshold be 0.5?</summary><p>No.</p></details>
+<a class="next-idea" href="#stage-7">Next: Select the Decision Rule on Validation Data ↓</a>
 </section>
-
-<!-- S7: Evaluation -->
-<section class="section" data-stage="7" id="sec-7">
-  <div class="stage-num">Stage 07</div>
-  <h2>Select the Decision Rule on Validation Data 📊</h2>
-  <p>Use the <strong>validation set</strong> to explore threshold-dependent trade-offs. The final test set remains hidden while the threshold, metrics and model choices are still changing.</p>
-
-  <div class="insight-box" style="margin-bottom: 20px;">
-    <p><strong>Every validation prediction falls into one of four boxes:</strong></p>
-    <p style="font-size: 0.82rem; margin-top: 6px; line-height: 1.5;">
-      • <strong style="color:var(--green)">TP (True Positive):</strong> Predicted Bought, and they really bought. Correct prediction!<br>
-      • <strong style="color:#3b82f6">TN (True Negative):</strong> Predicted Didn't buy, and they did not buy. Correct prediction!<br>
-      • <strong style="color:var(--amber)">FP (False Positive):</strong> Predicted Bought, but they did not buy. (False alarm!).<br>
-      • <strong style="color:var(--coral)">FN (False Negative):</strong> Predicted Didn't buy, but they actually bought. (Missed buyer!).
+<section class="stage" id="stage-7" data-stage="7" aria-labelledby="heading-7">
+<span class="legacy-anchor" id="sec-7" aria-hidden="true"></span><div class="stage-label"><span>07</span>Select the Decision Rule on Validation Data</div><h2 id="heading-7">Which mistakes does this threshold create?</h2>
+<p class="answer">The confusion matrix counts outcomes after thresholding. Changing the threshold changes these counts without changing the fitted probabilities.</p><div class="receipt"><div class="receipt-label">A small example · separate from the live dataset</div><div class="table-wrap"><table><thead><tr><th scope="col">Follow the idea</th><th scope="col">Read it in plain language</th></tr></thead><tbody><tr><th scope="row">TP</th><td>Positive and alerted</td></tr><tr><th scope="row">FP</th><td>Negative but alerted</td></tr><tr><th scope="row">FN</th><td>Positive but missed</td></tr><tr><th scope="row">TN</th><td>Negative and not alerted</td></tr></tbody></table></div><p class="mini-note"><strong>Your notebook:</strong> <span data-bind="live-receipt">Open the visual to inspect the current calculation.</span></p></div>
+<div class="experiment"><span class="pencil">↳</span><div><strong>Try it</strong><p>Count held-out decisions. Use the labeled controls, predict what will change, then compare the calculation before and after.</p><button type="button" data-explore-stage="6">Explore this idea <span aria-hidden="true">↗</span></button></div></div>
+<details class="deeper"><summary>Why this works · a little deeper</summary><div><p>The confusion matrix counts outcomes after thresholding. Changing the threshold changes these counts without changing the fitted probabilities.</p><p>No.</p><div class="reference-reading"><p class="reference-label">Additional reference · worked numbers below are separate examples from the live notebook.</p><p>Use the <strong>validation set</strong> to explore threshold-dependent trade-offs. The final test set remains hidden while the threshold, metrics and model choices are still changing.</p>
+<p><strong>Every validation prediction falls into one of four boxes:</strong></p>
+<p>
+      • <strong>TP (True Positive):</strong> Predicted Bought, and they really bought. Correct prediction!<br/>
+      • <strong>TN (True Negative):</strong> Predicted Didn't buy, and they did not buy. Correct prediction!<br/>
+      • <strong>FP (False Positive):</strong> Predicted Bought, but they did not buy. (False alarm!).<br/>
+      • <strong>FN (False Negative):</strong> Predicted Didn't buy, but they actually bought. (Missed buyer!).
     </p>
-  </div>
+<h3>Validation Confusion Matrix</h3>
 
-  <div class="glass-card">
-    <h3>Validation Confusion Matrix</h3>
-    <p style="font-size: 0.78rem; color: var(--text-muted); margin-bottom: 8px;">👉 Click on any grid cell below to show its plain-English explanation.</p>
-    <div class="matrix-grid" id="cmGrid">
-      <div class="cell header"></div><div class="cell header">Pred Yes (≥ t)</div><div class="cell header">Pred No (&lt; t)</div>
-      <div class="cell header">Real Yes</div><div class="cell tp" id="cmTP" onclick="showCmExplain('tp')">—</div><div class="cell fn" id="cmFN" onclick="showCmExplain('fn')">—</div>
-      <div class="cell header">Real No</div><div class="cell fp" id="cmFP" onclick="showCmExplain('fp')">—</div><div class="cell tn" id="cmTN" onclick="showCmExplain('tn')">—</div>
-    </div>
-    <div id="cmExplanationBox" class="insight-box" style="margin: 12px 0 0 0; background: var(--accent-glow); display: block; border-left: 3px solid var(--accent);">
-      <p id="cmExplanationText">Click on a grid cell (TP, FN, FP, TN) to show its plain-English breakdown here!</p>
-    </div>
-  </div>
-
-  <div class="glass-card" style="padding:16px;margin:8px 0 24px"><p style="margin:0;font-size:0.88rem"><span style="opacity:0.4">● Dim dots</span> = training set &nbsp;&nbsp;&nbsp; <strong>● Vivid dots</strong> = validation set</p></div>
-
-  <!-- DYNAMIC METRICS WARNING -->
-  <div class="insight-box" style="border-left-color: var(--amber); background: var(--amber-soft); margin-bottom: 24px;">
-    <p style="font-size: 0.85rem; color: var(--text-dim);">
+<p>● Dim dots = training set     <strong>● Vivid dots</strong> = validation set</p>
+<p>
       ⚠️ <strong>Threshold Dependencies:</strong> Changing the decision threshold changes the validation TP, TN, FP, and FN counts. Use these development results to select and lock the rule; do not repeatedly inspect the test set.
     </p>
-  </div>
-
-  <div class="glass-card">
-    <h3>Validation Metrics</h3>
-    <div class="metric-row" id="metricsRow" style="display: flex; flex-direction: column; gap: 12px;">
-
-      <!-- Accuracy -->
-      <div style="background: var(--bg); border: 1px solid var(--glass-border); padding: 14px; border-radius: var(--radius-sm);">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
-          <strong style="color: var(--text)">Overall Accuracy</strong>
-          <span id="mAcc" style="font-family: 'JetBrains Mono', monospace; font-size: 1.3rem; font-weight: 700; color: var(--accent2)">--</span>
-        </div>
-        <div style="font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: var(--text-muted); margin-bottom: 4px;">Formula: (TP + TN) / (TP + TN + FP + FN)</div>
-        <p style="font-size: 0.82rem; line-height: 1.4; color: var(--text-dim); margin-bottom: 0;">
-          <em>Meaning:</em> How often was the model correct overall? Best used when mistakes are equally costly.
+<h3>Validation Metrics</h3>
+<strong>Overall Accuracy</strong>
+<p>-- Formula: (TP + TN) / (TP + TN + FP + FN)</p>
+<p>
+<em>Meaning:</em> How often was the model correct overall? Best used when mistakes are equally costly.
         </p>
-      </div>
-
-      <!-- Precision -->
-      <div style="background: var(--bg); border: 1px solid var(--glass-border); padding: 14px; border-radius: var(--radius-sm);">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
-          <strong style="color: var(--text)">Precision (Reliability of Yes Predictions)</strong>
-          <span id="mPrec" style="font-family: 'JetBrains Mono', monospace; font-size: 1.3rem; font-weight: 700; color: var(--green)">--</span>
-        </div>
-        <div style="font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: var(--text-muted); margin-bottom: 4px;">Formula: TP / (TP + FP)</div>
-        <p style="font-size: 0.82rem; line-height: 1.4; color: var(--text-dim); margin-bottom: 0;">
-          <em>Meaning:</em> When the model predicts Bought, how often is it right? Critical when <strong>false alarms (FP)</strong> are expensive.
+<strong>Precision (Reliability of Yes Predictions)</strong>
+<p>
+<em>Meaning:</em> When the model predicts Bought, how often is it right? Critical when <strong>false alarms (FP)</strong> are expensive.
         </p>
-      </div>
-
-      <!-- Recall -->
-      <div style="background: var(--bg); border: 1px solid var(--glass-border); padding: 14px; border-radius: var(--radius-sm);">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
-          <strong style="color: var(--text)">Recall (Sensitivity / Detection Rate)</strong>
-          <span id="mRec" style="font-family: 'JetBrains Mono', monospace; font-size: 1.3rem; font-weight: 700; color: var(--coral)">--</span>
-        </div>
-        <div style="font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: var(--text-muted); margin-bottom: 4px;">Formula: TP / (TP + FN)</div>
-        <p style="font-size: 0.82rem; line-height: 1.4; color: var(--text-dim); margin-bottom: 0;">
-          <em>Meaning:</em> Out of all real positive buyers, how many did the model catch? Critical when <strong>missing a real positive (FN)</strong> is costly.
+<strong>Recall (Sensitivity / Detection Rate)</strong>
+<p>
+<em>Meaning:</em> Out of all real positive buyers, how many did the model catch? Critical when <strong>missing a real positive (FN)</strong> is costly.
         </p>
-      </div>
-
-      <!-- F1-Score -->
-      <div style="background: var(--bg); border: 1px solid var(--glass-border); padding: 14px; border-radius: var(--radius-sm);">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
-          <strong style="color: var(--text)">F1-Score</strong>
-          <span id="mF1" style="font-family: 'JetBrains Mono', monospace; font-size: 1.3rem; font-weight: 700; color: var(--amber)">--</span>
-        </div>
-        <div style="font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: var(--text-muted); margin-bottom: 4px;">Formula: 2 × (Precision × Recall) / (Precision + Recall)</div>
-        <!-- FIX 8: IMPROVED F1 WORDING -->
-        <p style="font-size: 0.82rem; line-height: 1.4; color: var(--text-dim); margin-bottom: 0;">
-          <em>Meaning:</em> F1 is a balance score between precision and recall. It is not a normal average; it gives a low score if either precision or recall is weak. Perfect when you want to look at general model balance.
+<strong>F1-Score</strong>
+<p>-- Formula: 2 × (Precision × Recall) / (Precision + Recall)</p>
+<p>
+<em>Meaning:</em> F1 is a balance score between precision and recall. It is not a normal average; it gives a low score if either precision or recall is weak. Perfect when you want to look at general model balance.
         </p>
-      </div>
-
-    </div>
-  </div>
-
-  <div class="glass-card" id="finalTestCard" style="border-left:4px solid var(--accent);">
-    <h3>Final untouched test evaluation</h3>
-    <p id="finalTestStatus">Hidden until the model and validation-selected threshold are locked. Reveal this result once, after development is complete.</p>
-    <button class="btn btn-accent" id="btnRevealTest">Lock model and reveal final test result</button>
-    <div id="finalTestResults" hidden style="margin-top:14px;">
-      <p><strong>Locked threshold:</strong> <span id="testThreshold">—</span></p>
-      <p><strong>Confusion matrix:</strong> TP <span id="testTP">—</span> · TN <span id="testTN">—</span> · FP <span id="testFP">—</span> · FN <span id="testFN">—</span></p>
-      <p><strong>Final test metrics:</strong> accuracy <span id="testAcc">—</span> · precision <span id="testPrec">—</span> · recall <span id="testRec">—</span> · F1 <span id="testF1">—</span></p>
-      <p style="font-size:0.8rem;color:var(--text-muted);margin-bottom:0;">This snapshot does not change when validation controls move. Use Reset to begin a new demonstration.</p>
-    </div>
-  </div>
+<h3>Final untouched test evaluation</h3>
+<p>Hidden until the model and validation-selected threshold are locked. Reveal this result once, after development is complete.</p>
+<p><strong>Locked threshold:</strong> —</p>
+<p><strong>Confusion matrix:</strong> TP — · TN — · FP — · FN —</p>
+<p><strong>Final test metrics:</strong> accuracy — · precision — · recall — · F1 —</p>
+<p>This snapshot does not change when validation controls move. Use Reset to begin a new demonstration.</p></div></div></details>
+<details class="check"><summary>Quick check · Does moving the threshold retrain the coefficients?</summary><p>No.</p></details>
+<a class="next-idea" href="#stage-8">Next: The Validation ROC Curve ↓</a>
 </section>
-
-<!-- S8: ROC -->
-<section class="section" data-stage="8" id="sec-8">
-  <div class="stage-num">Stage 08</div>
-  <h2>The Validation ROC Curve 🔔</h2>
-  <p>The <strong>validation ROC curve</strong> shows: at every possible threshold, how does recall trade off against false-alarm rate? It is a development visual and never reads the final test set.</p>
-  <p>Think of a smoke alarm: too sensitive and it goes off when you cook toast; too lenient and it misses an actual fire.</p>
-
-  <!-- ACCURACY VS ROC BOX -->
-  <div class="glass-card" style="padding: 16px; margin: 16px 0; border-left: 4px solid var(--accent);">
-    <p style="font-size:0.85rem; margin-bottom: 8px;"><strong>Accuracy vs. ROC / AUC:</strong></p>
-    <p style="font-size:0.8rem; line-height: 1.5; color: var(--text-dim); margin-bottom: 6px;">
+<section class="stage" id="stage-8" data-stage="8" aria-labelledby="heading-8">
+<span class="legacy-anchor" id="sec-8" aria-hidden="true"></span><div class="stage-label"><span>08</span>The Validation ROC Curve</div><h2 id="heading-8">What does the ROC curve summarize?</h2>
+<p class="answer">The ROC curve traces recall against false-positive rate across thresholds. It describes ranking tradeoffs; it does not measure calibration or select an operating point for you.</p><div class="receipt"><div class="receipt-label">A small example · separate from the live dataset</div><div class="table-wrap"><table><thead><tr><th scope="col">Follow the idea</th><th scope="col">Read it in plain language</th></tr></thead><tbody><tr><th scope="row">Vertical axis</th><td>TP / actual positives</td></tr><tr><th scope="row">Horizontal axis</th><td>FP / actual negatives</td></tr><tr><th scope="row">One point</th><td>One threshold</td></tr></tbody></table></div><p class="mini-note"><strong>Your notebook:</strong> <span data-bind="live-receipt">Open the visual to inspect the current calculation.</span></p></div>
+<div class="experiment"><span class="pencil">↳</span><div><strong>Try it</strong><p>Trace validation thresholds. Use the labeled controls, predict what will change, then compare the calculation before and after.</p><button type="button" data-explore-stage="7">Explore this idea <span aria-hidden="true">↗</span></button></div></div>
+<details class="deeper"><summary>Why this works · a little deeper</summary><div><p>The ROC curve traces recall against false-positive rate across thresholds. It describes ranking tradeoffs; it does not measure calibration or select an operating point for you.</p><p>Yes.</p><div class="reference-reading"><p class="reference-label">Additional reference · worked numbers below are separate examples from the live notebook.</p><p>The <strong>validation ROC curve</strong> shows: at every possible threshold, how does recall trade off against false-alarm rate? It is a development visual and never reads the final test set.</p>
+<p>Think of a smoke alarm: too sensitive and it goes off when you cook toast; too lenient and it misses an actual fire.</p>
+<p><strong>Accuracy vs. ROC / AUC:</strong></p>
+<p>
       • <strong>Accuracy</strong> shows model performance at a single chosen threshold (like 0.50).
     </p>
-    <p style="font-size:0.8rem; line-height: 1.5; color: var(--text-dim); margin-bottom: 6px;">
+<p>
       • <strong>ROC</strong> shows performance trade-offs across <em>all</em> possible thresholds.
     </p>
-    <p style="font-size:0.8rem; line-height: 1.5; color: var(--text-dim);">
+<p>
       • <strong>AUC (Area Under Curve)</strong> is not the same as accuracy. AUC summarizes how well the model separates/ranks positive cases from negative cases across all thresholds.
     </p>
-  </div>
-
-  <div class="glass-card">
-    <h3>Key ROC Metrics Explained</h3>
-    <p style="font-size: 0.85rem; color: var(--text-dim); margin-bottom: 12px;">
+<h3>Key ROC Metrics Explained</h3>
+<p>
       An ROC curve plots two key metrics against each other at all possible thresholds from 0.0 to 1.0:
     </p>
-    <div style="display: flex; flex-direction: column; gap: 8px; font-size: 0.82rem; margin-bottom: 14px;">
-      <div style="background: rgba(99,102,241,0.03); border: 1px solid rgba(99,102,241,0.08); padding: 8px 12px; border-radius: 6px;">
-        <strong>True Positive Rate (TPR / Recall):</strong> <span style="font-family: monospace; color: var(--accent2)">TP / (TP + FN)</span><br>
-        <em>Meaning:</em> Out of all real buyers, what percentage did we catch? (Higher is better!)
-      </div>
-      <div style="background: rgba(220,38,38,0.03); border: 1px solid rgba(220,38,38,0.08); padding: 8px 12px; border-radius: 6px;">
-        <strong>False Positive Rate (FPR / False Alarm Rate):</strong> <span style="font-family: monospace; color: var(--coral)">FP / (FP + TN)</span><br>
-        <em>Meaning:</em> Out of all non-buyers, what percentage did we wrongly predict as buyers? (Lower is better!)
-      </div>
-    </div>
-    <p style="font-size: 0.85rem; color: var(--text-dim); line-height: 1.5;">
+<strong>True Positive Rate (TPR / Recall):</strong>
+<em>Meaning:</em>
+<p>Out of all real buyers, what percentage did we catch? (Higher is better!)</p>
+<strong>False Positive Rate (FPR / False Alarm Rate):</strong>
+<em>Meaning:</em>
+<p>Out of all non-buyers, what percentage did we wrongly predict as buyers? (Lower is better!)</p>
+<p>
       The ROC curve checks many possible thresholds, not just 0.5. Each point on the curve comes from a specific threshold value. Moving the threshold changes TPR and FPR.
     </p>
-  </div>
-
-  <div class="glass-card">
-    <div class="metric-row"><div class="metric-card"><div class="val" id="aucVal" style="color:var(--accent2)">—</div><div class="lbl">AUC (Area Under Curve)</div></div></div>
-    <!-- FIX 9: SOFTENED AUC WORDING -->
-    <p style="font-size:0.82rem;color:var(--text-muted);margin:8px 0 0; line-height: 1.65;">
-      • <strong>AUC = 1.0:</strong> Perfect separation on this dataset.<br>
-      • <strong>AUC = 0.5:</strong> Random guessing. The model has no predictive strength.<br>
-      <span style="display:block; margin-top: 6px; font-style: italic;">Note: AUC does not mean the model is perfect forever. It only summarizes separation performance on the data being evaluated.</span>
-    </p>
-    <div class="insight-box" style="margin-top:20px"><p>📌 <strong>Note:</strong> Because this teaching example has a very small validation set, the ROC curve looks coarse and jumpy. With a larger validation sample, the curve would usually be smoother.</p></div>
-  </div>
+<p>
+      • <strong>AUC = 1.0:</strong> Perfect separation on this dataset.<br/>
+      • <strong>AUC = 0.5:</strong> Random guessing. The model has no predictive strength.<br/>
+Note: AUC does not mean the model is perfect forever. It only summarizes separation performance on the data being evaluated.
+</p>
+<p>📌 <strong>Note:</strong> Because this teaching example has a very small validation set, the ROC curve looks coarse and jumpy. With a larger validation sample, the curve would usually be smoother.</p></div></div></details>
+<details class="check"><summary>Quick check · Can a high ROC-AUC coexist with poor probability calibration?</summary><p>Yes.</p></details>
+<a class="next-idea" href="#stage-9">Next: What the Numbers Mean ↓</a>
 </section>
-
-<!-- S9: Interpretation -->
-<section class="section" data-stage="9" id="sec-9">
-  <div class="stage-num">Stage 09</div>
-  <h2>What the Numbers Mean 📎</h2>
-  <!-- FIX 10: REMOVED EXACTLY HOW TO NOT IMPLY CAUSATION -->
-  <p>We often want to know how the model estimates each feature (temperature, sunny day, weekend status) is associated with higher or lower predicted odds, while holding other features constant. Logistic regression gives us weights that can be converted into <strong>Odds Ratios</strong>.</p>
-
-  <div class="glass-card">
-    <h3>Probability vs. Odds 🎲</h3>
-    <p style="font-size: 0.85rem; color: var(--text-dim); margin-bottom: 12px;">
+<section class="stage" id="stage-9" data-stage="9" aria-labelledby="heading-9">
+<span class="legacy-anchor" id="sec-9" aria-hidden="true"></span><div class="stage-label"><span>09</span>What the Numbers Mean</div><h2 id="heading-9">What is an odds ratio?</h2>
+<p class="answer">Exponentiating a coefficient gives a multiplicative change in odds for a one-unit input increase, holding other inputs fixed. Odds are p/(1 − p), not probability.</p><div class="receipt"><div class="receipt-label">A small example · separate from the live dataset</div><div class="table-wrap"><table><thead><tr><th scope="col">Follow the idea</th><th scope="col">Read it in plain language</th></tr></thead><tbody><tr><th scope="row">p = 0.2</th><td>Odds = 0.25</td></tr><tr><th scope="row">Odds doubled</th><td>0.5</td></tr><tr><th scope="row">New probability</th><td>0.5 / 1.5 ≈ 0.333</td></tr></tbody></table></div><p class="mini-note"><strong>Your notebook:</strong> <span data-bind="live-receipt">Open the visual to inspect the current calculation.</span></p></div>
+<div class="experiment"><span class="pencil">↳</span><div><strong>Try it</strong><p>Read the fitted weights. Use the labeled controls, predict what will change, then compare the calculation before and after.</p><button type="button" data-explore-stage="8">Explore this idea <span aria-hidden="true">↗</span></button></div></div>
+<details class="deeper"><summary>Why this works · a little deeper</summary><div><p>Exponentiating a coefficient gives a multiplicative change in odds for a one-unit input increase, holding other inputs fixed. Odds are p/(1 − p), not probability.</p><p>No.</p><div class="reference-reading"><p class="reference-label">Additional reference · worked numbers below are separate examples from the live notebook.</p><p>We often want to know how the model estimates each feature (temperature, sunny day, weekend status) is associated with higher or lower predicted odds, while holding other features constant. Logistic regression gives us weights that can be converted into <strong>Odds Ratios</strong>.</p>
+<h3>Probability vs. Odds 🎲</h3>
+<p>
       Probability and Odds are related but express likelihood differently:
     </p>
-    <p style="font-size: 0.82rem; color: var(--text-dim); line-height: 1.5; margin-bottom: 12px;">
-      • <strong>Probability (p)</strong> asks: "Out of all outcomes, how likely is Yes?" (Varies between 0 and 1).<br>
-      • <strong>Odds</strong> asks: "How much does the chance of Yes beat No?" (Varies from 0 to infinity). Formula: <span style="font-family: monospace; color: var(--accent2)">Odds = p / (1 - p)</span>
+<p>
+      • <strong>Probability (p)</strong> asks: "Out of all outcomes, how likely is Yes?" (Varies between 0 and 1).<br/>
+      • <strong>Odds</strong> asks: "How much does the chance of Yes beat No?" (Varies from 0 to infinity). Formula: Odds = p / (1 - p)
+</p>
+<table>
+<thead>
+<tr>
+<th>Probability (p)</th>
+<th>Odds Formula</th>
+<th>Odds Value</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0.50 (50%)</td>
+<td>0.50 / 0.50</td>
+<td>1 to 1 (1.0)</td>
+<td>Yes and No are equally likely</td>
+</tr>
+<tr>
+<td>0.75 (75%)</td>
+<td>0.75 / 0.25</td>
+<td>3 to 1 (3.0)</td>
+<td>Yes is three times as likely as No</td>
+</tr>
+<tr>
+<td>0.80 (80%)</td>
+<td>0.80 / 0.20</td>
+<td>4 to 1 (4.0)</td>
+<td>Yes is four times as likely as No</td>
+</tr>
+</tbody>
+</table>
+<p>
+      Taking the exponent of a weight (e<sup>weight</sup>) gives us the <strong>Odds Ratio (OR)</strong>. This ratio tells us how the odds of buying are multiplied for each unit increase in that feature.
     </p>
-
-    <table style="width: 100%; border-collapse: collapse; font-size: 0.8rem; text-align: left; margin-bottom: 12px;">
-      <thead>
-        <tr style="border-bottom: 2px solid var(--glass-border); color: var(--text-dim);">
-          <th style="padding: 6px 4px;">Probability (p)</th>
-          <th style="padding: 6px 4px;">Odds Formula</th>
-          <th style="padding: 6px 4px;">Odds Value</th>
-          <th style="padding: 6px 4px;">Meaning</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr style="border-bottom: 1px solid var(--glass-border);">
-          <td style="padding: 6px 4px; font-family: monospace;">0.50 (50%)</td>
-          <td style="padding: 6px 4px; font-family: monospace;">0.50 / 0.50</td>
-          <td style="padding: 6px 4px; font-weight: 600;">1 to 1 (1.0)</td>
-          <td style="padding: 6px 4px;">Yes and No are equally likely</td>
-        </tr>
-        <tr style="border-bottom: 1px solid var(--glass-border);">
-          <td style="padding: 6px 4px; font-family: monospace;">0.75 (75%)</td>
-          <td style="padding: 6px 4px; font-family: monospace;">0.75 / 0.25</td>
-          <td style="padding: 6px 4px; font-weight: 600;">3 to 1 (3.0)</td>
-          <td style="padding: 6px 4px;">Yes is three times as likely as No</td>
-        </tr>
-        <tr style="border-bottom: 1px solid var(--glass-border);">
-          <td style="padding: 6px 4px; font-family: monospace;">0.80 (80%)</td>
-          <td style="padding: 6px 4px; font-family: monospace;">0.80 / 0.20</td>
-          <td style="padding: 6px 4px; font-weight: 600;">4 to 1 (4.0)</td>
-          <td style="padding: 6px 4px;">Yes is four times as likely as No</td>
-        </tr>
-      </tbody>
-    </table>
-
-    <p style="font-size: 0.85rem; color: var(--text-dim); line-height: 1.5;">
-      Taking the exponent of a weight (<span style="font-family: monospace; color: var(--accent2)">e<sup>weight</sup></span>) gives us the <strong>Odds Ratio (OR)</strong>. This ratio tells us how the odds of buying are multiplied for each unit increase in that feature.
-    </p>
-    <div class="insight-box" style="margin-top: 12px; border-left-color: var(--amber);">
-      <p style="font-size: 0.82rem; color: var(--text-dim);">
-        ⚠️ <strong>Beginner Warning:</strong><br>
+<p>
+        ⚠️ <strong>Beginner Warning:</strong><br/>
         Odds are <strong>not</strong> the same as probability. An odds ratio of 2 does <strong>not</strong> mean the probability doubles! It means the odds ratio doubles (e.g. from 1:1 odds to 2:1 odds).
       </p>
-    </div>
-
-    <!-- CAUSATION WARNING -->
-    <div class="insight-box" style="border-left-color: var(--coral); background: var(--coral-soft); margin-top: 16px;">
-      <p style="font-size: 0.85rem; font-weight: 500; color: var(--coral);">
-        ⚠️ <strong>Coefficient ≠ proof of cause:</strong><br>
-        <span style="font-weight: normal; font-size: 0.82rem; color: var(--text-dim);">A positive coefficient means the feature is associated with higher predicted probability in this model. It does not prove that modifying the feature directly causes buying behavior.</span>
-      </p>
-    </div>
-  </div>
-
-  <div class="glass-card">
-    <h3>Our Weights & Odds Ratios</h3>
-    <p style="margin: 0 0 12px 0; font-size: 0.88rem;">
-      <strong>Positive Weight (OR > 1):</strong> Feature is associated with pushing probability and odds <em>up</em>.<br>
-      <strong>Negative Weight (OR < 1):</strong> Feature is associated with pushing probability and odds <em>down</em>.<br>
-      <strong>Near Zero Weight (OR ≈ 1):</strong> Feature has little to no association with predicted odds.
-    </p>
-    <div id="oddsContainer" style="font-size: 0.85rem; display: flex; flex-direction: column; gap: 10px;"></div>
-  </div>
+<p>
+        ⚠️ <strong>Coefficient ≠ proof of cause:</strong><br/>
+A positive coefficient means the feature is associated with higher predicted probability in this model. It does not prove that modifying the feature directly causes buying behavior.
+</p>
+<h3>Our Weights &amp; Odds Ratios</h3>
+<p>
+<strong>Positive Weight (OR &gt; 1):</strong> Feature is associated with pushing probability and odds <em>up</em>.<br/>
+<strong>Negative Weight (OR &lt; 1):</strong> Feature is associated with pushing probability and odds <em>down</em>.<br/>
+<strong>Near Zero Weight (OR ≈ 1):</strong> Feature has little to no association with predicted odds.
+    </p></div></div></details>
+<details class="check"><summary>Quick check · Does doubling odds from p = 0.2 produce p = 0.4?</summary><p>No.</p></details>
+<a class="next-idea" href="#stage-10">Next: The Full Picture ↓</a>
 </section>
-
-<!-- S10: Summary -->
-<section class="section" data-stage="10" id="sec-10">
-  <div class="stage-num">Stage 10</div>
-  <h2>The Full Picture 🌟</h2>
-  <p>You've walked through the entire logistic regression pipeline! Let's review the whole story in plain English:</p>
-
-  <div class="glass-card" style="background: rgba(99,102,241,0.03); border-color: rgba(99,102,241,0.15);">
-    <h3>The Story of Logistic Regression 📖</h3>
-    <ol style="margin-left: 20px; font-size: 0.88rem; line-height: 1.8; display: flex; flex-direction: column; gap: 8px; color: var(--text-dim);">
-      <li>We collect historical <strong>raw data</strong>: temperature, sunny weather, weekends, and whether someone bought ice cream.</li>
-      <li>A straight <strong>linear regression</strong> line is not suitable because it predicts impossible values (below 0 and above 1) for probabilities.</li>
-      <li>Instead, logistic regression builds an intermediate score called <strong>z</strong> by adding up weighted features (clues).</li>
-      <li>The mathematical <strong>sigmoid function</strong> gracefully "squishes" this score z into a valid probability between 0% and 100%.</li>
-      <li>A decision <strong>threshold</strong> translates probabilities into labels. Select it on validation data from error costs, prevalence and objectives; 0.50 is only a convention.</li>
-      <li>During <strong>training</strong>, the model starts with baseline weights and iteratively adjusts them using <strong>gradient descent</strong> to minimize average <strong>log loss</strong>.</li>
-      <li>A <strong>validation confusion matrix</strong> is used to compare threshold choices without touching the final test set.</li>
-      <li>Performance is summarized using descriptive metrics: <strong>Accuracy</strong> (overall correctness), <strong>Precision</strong> (purity of Yes calls), <strong>Recall</strong> (capture rate of actual positives), and <strong>F1-score</strong> (their balanced harmony).</li>
-      <li>The <strong>validation ROC curve and AUC</strong> summarize ranking trade-offs across thresholds during development.</li>
-      <li>After the model and threshold are locked, the <strong>test set</strong> is revealed once for the final performance estimate.</li>
-      <!-- FIX 10: REPLACED EXACTLY HOW WITH ESTIMATES HOW -->
-      <li>By analyzing <strong>coefficients and odds ratios</strong>, we can interpret how the model estimates each feature is associated with higher or lower odds of a purchase.</li>
-    </ol>
-  </div>
-
-  <div class="glass-card">
-    <h3>Concept Checklist</h3>
-    <p style="margin:0;font-size:0.88rem;line-height:2">
-      <span class="hw-inline-doodle" aria-hidden="true"><svg viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M1.6 6.2L4.5 9.1L10.4 2.8"></path><path d="M1.9 6.5L4.5 9.5L10.1 3.2"></path></svg></span><span hidden>&#10003;</span> Collected and plotted <strong>raw data</strong><br>
-      <span class="hw-inline-doodle" aria-hidden="true"><svg viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M1.6 6.2L4.5 9.1L10.4 2.8"></path><path d="M1.9 6.5L4.5 9.5L10.1 3.2"></path></svg></span><span hidden>&#10003;</span> Saw why linear regression <strong>can't</strong> predict probabilities<br>
-      <span class="hw-inline-doodle" aria-hidden="true"><svg viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M1.6 6.2L4.5 9.1L10.4 2.8"></path><path d="M1.9 6.5L4.5 9.5L10.1 3.2"></path></svg></span><span hidden>&#10003;</span> Met the <strong>sigmoid</strong> that squishes scores into 0–1<br>
-      <span class="hw-inline-doodle" aria-hidden="true"><svg viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M1.6 6.2L4.5 9.1L10.4 2.8"></path><path d="M1.9 6.5L4.5 9.5L10.1 3.2"></path></svg></span><span hidden>&#10003;</span> Built the <strong>score z</strong> from weighted features<br>
-      <span class="hw-inline-doodle" aria-hidden="true"><svg viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M1.6 6.2L4.5 9.1L10.4 2.8"></path><path d="M1.9 6.5L4.5 9.5L10.1 3.2"></path></svg></span><span hidden>&#10003;</span> Trained with <strong>gradient descent</strong> to minimize log loss<br>
-      <span class="hw-inline-doodle" aria-hidden="true"><svg viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M1.6 6.2L4.5 9.1L10.4 2.8"></path><path d="M1.9 6.5L4.5 9.5L10.1 3.2"></path></svg></span><span hidden>&#10003;</span> Chose a <strong>threshold</strong> to turn probabilities into decisions<br>
-      <span class="hw-inline-doodle" aria-hidden="true"><svg viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M1.6 6.2L4.5 9.1L10.4 2.8"></path><path d="M1.9 6.5L4.5 9.5L10.1 3.2"></path></svg></span><span hidden>&#10003;</span> Evaluated with <strong>confusion matrix</strong> and metrics<br>
-      <span class="hw-inline-doodle" aria-hidden="true"><svg viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M1.6 6.2L4.5 9.1L10.4 2.8"></path><path d="M1.9 6.5L4.5 9.5L10.1 3.2"></path></svg></span><span hidden>&#10003;</span> Explored the <strong>ROC curve</strong> for threshold trade-offs<br>
-      <span class="hw-inline-doodle" aria-hidden="true"><svg viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M1.6 6.2L4.5 9.1L10.4 2.8"></path><path d="M1.9 6.5L4.5 9.5L10.1 3.2"></path></svg></span><span hidden>&#10003;</span> Interpreted <strong>coefficients</strong> and <strong>odds ratios</strong>
-    </p>
-  </div>
-  <div class="btn-row"><button class="btn" id="btnRestart">↑ Back to top</button></div>
-  <div style="height:30vh"></div>
+<section class="stage" id="stage-10" data-stage="10" aria-labelledby="heading-10">
+<span class="legacy-anchor" id="sec-10" aria-hidden="true"></span><div class="stage-label"><span>10</span>The Full Picture</div><h2 id="heading-10">What is locked before the final test?</h2>
+<p class="answer">Lock the fitted model and decision threshold before revealing final-test performance. If that result changes your choices, later evaluation needs fresh independent evidence.</p><div class="receipt"><div class="receipt-label">A small example · separate from the live dataset</div><div class="table-wrap"><table><thead><tr><th scope="col">Follow the idea</th><th scope="col">Read it in plain language</th></tr></thead><tbody><tr><th scope="row">Training</th><td>Learn coefficients</td></tr><tr><th scope="row">Validation</th><td>Choose settings and threshold</td></tr><tr><th scope="row">Test</th><td>One evaluation of the frozen choices</td></tr></tbody></table></div><p class="mini-note"><strong>Your notebook:</strong> <span data-bind="live-receipt">Open the visual to inspect the current calculation.</span></p></div>
+<div class="experiment"><span class="pencil">↳</span><div><strong>Try it</strong><p>Lock and evaluate once. Use the labeled controls, predict what will change, then compare the calculation before and after.</p><button type="button" data-explore-stage="9">Explore this idea <span aria-hidden="true">↗</span></button></div></div>
+<details class="deeper"><summary>Why this works · a little deeper</summary><div><p>Lock the fitted model and decision threshold before revealing final-test performance. If that result changes your choices, later evaluation needs fresh independent evidence.</p><p>No. This experiment locks it; resetting is a new development exercise.</p><div class="reference-reading"><p class="reference-label">Additional reference · worked numbers below are separate examples from the live notebook.</p><p>You've walked through the entire logistic regression pipeline! Let's review the whole story in plain English:</p>
+<h3>The Story of Logistic Regression 📖</h3>
+<ol>
+<li>We collect historical <strong>raw data</strong>: temperature, sunny weather, weekends, and whether someone bought ice cream.</li>
+<li>A straight <strong>linear regression</strong> line is not suitable because it predicts impossible values (below 0 and above 1) for probabilities.</li>
+<li>Instead, logistic regression builds an intermediate score called <strong>z</strong> by adding up weighted features (clues).</li>
+<li>The mathematical <strong>sigmoid function</strong> gracefully "squishes" this score z into a valid probability between 0% and 100%.</li>
+<li>A decision <strong>threshold</strong> translates probabilities into labels. Select it on validation data from error costs, prevalence and objectives; 0.50 is only a convention.</li>
+<li>During <strong>training</strong>, the model starts with baseline weights and iteratively adjusts them using <strong>gradient descent</strong> to minimize average <strong>log loss</strong>.</li>
+<li>A <strong>validation confusion matrix</strong> is used to compare threshold choices without touching the final test set.</li>
+<li>Performance is summarized using descriptive metrics: <strong>Accuracy</strong> (overall correctness), <strong>Precision</strong> (purity of Yes calls), <strong>Recall</strong> (capture rate of actual positives), and <strong>F1-score</strong> (their balanced harmony).</li>
+<li>The <strong>validation ROC curve and AUC</strong> summarize ranking trade-offs across thresholds during development.</li>
+<li>After the model and threshold are locked, the <strong>test set</strong> is revealed once for the final performance estimate.</li>
+<li>By analyzing <strong>coefficients and odds ratios</strong>, we can interpret how the model estimates each feature is associated with higher or lower odds of a purchase.</li>
+</ol>
+<h3>Concept Checklist</h3>
+<p>
+✓ Collected and plotted <strong>raw data</strong><br/>
+✓ Saw why linear regression <strong>can't</strong> predict probabilities<br/>
+✓ Met the <strong>sigmoid</strong> that squishes scores into 0–1<br/>
+✓ Built the <strong>score z</strong> from weighted features<br/>
+✓ Trained with <strong>gradient descent</strong> to minimize log loss<br/>
+✓ Chose a <strong>threshold</strong> to turn probabilities into decisions<br/>
+✓ Evaluated with <strong>confusion matrix</strong> and metrics<br/>
+✓ Explored the <strong>ROC curve</strong> for threshold trade-offs<br/>
+✓ Interpreted <strong>coefficients</strong> and <strong>odds ratios</strong>
+</p></div></div></details>
+<details class="check"><summary>Quick check · May the threshold change after the final reveal here?</summary><p>No. This experiment locks it; resetting is a new development exercise.</p></details>
+<a class="next-idea" href="evaluation-metrics.html">Continue to Evaluation Metrics →</a>
 </section>
-
-</div><!-- /narrative -->
-
-<div class="viz-container">
-  <div class="statml-visual-card">
-    <canvas id="mainCanvas"></canvas>
-  </div>
-</div>
-
-</div><!-- /layout -->
-
-<script>
-'use strict';
-// ===== DATA =====
-const DATA=[
-  {temp:15,sunny:0,weekend:0,y:0},{temp:18,sunny:1,weekend:0,y:0},
-  {temp:20,sunny:0,weekend:1,y:0},{temp:22,sunny:0,weekend:0,y:0},
-  {temp:23,sunny:1,weekend:0,y:0},{temp:24,sunny:0,weekend:1,y:1},
-  {temp:25,sunny:1,weekend:0,y:0},{temp:26,sunny:1,weekend:1,y:1},
-  {temp:27,sunny:0,weekend:0,y:0},{temp:28,sunny:1,weekend:0,y:1},
-  {temp:29,sunny:0,weekend:1,y:1},{temp:30,sunny:1,weekend:0,y:1},
-  {temp:31,sunny:1,weekend:1,y:1},{temp:32,sunny:0,weekend:0,y:1},
-  {temp:33,sunny:1,weekend:0,y:1},{temp:34,sunny:1,weekend:1,y:1},
-  {temp:35,sunny:0,weekend:1,y:1},{temp:36,sunny:1,weekend:0,y:1},
-  {temp:38,sunny:1,weekend:1,y:1},{temp:40,sunny:0,weekend:0,y:1}
-];
-function stratifiedThreeWaySplit(data,validationRatio,testRatio){
-  const pos=data.filter(d=>d.y===1),neg=data.filter(d=>d.y===0);
-  // Stable seeded partitions keep the teaching visual reproducible.
-  function seededShuffle(a,s){const r=()=>{s=(s*16807)%2147483647;return(s-1)/2147483646};for(let i=a.length-1;i>0;i--){const j=Math.floor(r()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a;}
-  seededShuffle(pos,42);seededShuffle(neg,42);
-  function partition(group){
-    const nValidation=Math.max(1,Math.round(group.length*validationRatio));
-    const nTest=Math.max(1,Math.round(group.length*testRatio));
-    return{validation:group.slice(0,nValidation),test:group.slice(nValidation,nValidation+nTest),train:group.slice(nValidation+nTest)};
-  }
-  const p=partition(pos),n=partition(neg);
-  return{train:[...p.train,...n.train],validation:[...p.validation,...n.validation],test:[...p.test,...n.test]};
-}
-const SPLIT=stratifiedThreeWaySplit(DATA,0.25,0.25);
-const TRAIN=SPLIT.train,VALIDATION=SPLIT.validation,TEST=SPLIT.test;
-const DEVELOPMENT=[...TRAIN,...VALIDATION];
-const TEMP_MEAN=TRAIN.reduce((s,d)=>s+d.temp,0)/TRAIN.length;
-const TEMP_STD=Math.sqrt(TRAIN.reduce((s,d)=>s+(d.temp-TEMP_MEAN)**2,0)/TRAIN.length);
-function stdTemp(t){return(t-TEMP_MEAN)/TEMP_STD}
-const TEMP_MIN=12,TEMP_MAX=42;
-
-// ===== CANVAS =====
-const canvas=document.getElementById('mainCanvas');
-const ctx=canvas.getContext('2d');
-let W,H;const PAD={t:50,r:40,b:60,l:65};
-
-// The logistic lesson keeps its original canvas geometry and stage logic, but
-// uses one deterministic rough-ink vocabulary for every mark.  The jitter is
-// stateless, so animation and slider changes never alter the underlying data.
-const INK_FONT='Patrick Hand, Kalam, "Comic Sans MS", cursive';
-function inkHash(...values){let h=2166136261;values.forEach(v=>{const s=String(v);for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619)}});return(h>>>0)/4294967296}
-function inkNoise(seed,index=0){return inkHash(seed,index)*2-1}
-function inkPoints(points,seed,amount=0.8){if(points.length<2)return points.map(p=>({x:p.x,y:p.y}));const out=[{x:points[0].x,y:points[0].y}];for(let i=1;i<points.length;i++){const a=points[i-1],b=points[i];out.push({x:(a.x+b.x)/2+inkNoise(seed,i*4+1)*amount,y:(a.y+b.y)/2+inkNoise(seed,i*4+2)*amount},{x:b.x,y:b.y})}return out}
-function inkStroke(points,color,width=1,options={}){const {dash=[],alpha=1,seed=0,jitter=Math.min(1.1,Math.max(0.35,width*0.28))}=options;const p=inkPoints(points,seed,jitter);const second=p.map((q,i)=>i===0||i===p.length-1?q:{x:q.x+inkNoise(`${seed}:second`,i*3+1)*Math.max(1.15,jitter*1.8),y:q.y+inkNoise(`${seed}:second`,i*3+2)*Math.max(1.15,jitter*1.8)});const draw=(line,passAlpha,passWidth)=>{ctx.save();ctx.globalAlpha=passAlpha;ctx.strokeStyle=color;ctx.lineWidth=passWidth;ctx.lineCap='round';ctx.lineJoin='round';ctx.setLineDash(dash);ctx.beginPath();line.forEach((q,i)=>i?ctx.lineTo(q.x,q.y):ctx.moveTo(q.x,q.y));ctx.stroke();ctx.restore()};draw(second,alpha*.48,Math.max(.65,width*.56));draw(p,alpha*.86,width)}
-// A ruler is never a single mathematically perfect segment in the paper
-// notes.  Build a few low-frequency, deterministic bends while keeping the
-// endpoints (and therefore the lesson's geometry/data) exact.  This is used
-// for the axes and the teaching line where a tiny midpoint jitter is otherwise
-// lost at normal screenshot scale.
-function inkRuledStroke(points,color,width=1,options={}){
-  const {dash=[],alpha=1,seed='ruled',roughness=2.2,steps=8}=options;
-  const make=(salt,amount)=>{
-    const out=[];
-    for(let s=0;s<points.length-1;s++){
-      const a=points[s],b=points[s+1],dx=b.x-a.x,dy=b.y-a.y,len=Math.max(1,Math.hypot(dx,dy)),nx=-dy/len,ny=dx/len;
-      for(let i=0;i<=steps;i++){
-        if(s>0&&i===0)continue;
-        const t=i/steps,edge=(i===0||i===steps)?0:1;
-        const bend=inkNoise(`${seed}:${salt}:${s}`,i*7+1)*amount*edge;
-        const along=inkNoise(`${seed}:${salt}:${s}`,i*7+2)*amount*.16*edge;
-        out.push({x:a.x+dx*t+nx*bend+dx/len*along,y:a.y+dy*t+ny*bend+dy/len*along});
-      }
-    }
-    return out;
-  };
-  const primary=make('primary',roughness),second=make('second',roughness*1.18);
-  const vary=(salt,factor)=>dash.length?dash.map((v,i)=>Math.max(1.5,v*(1+inkNoise(`${seed}:${salt}:dash`,i)*factor))):[];
-  const draw=(line,passAlpha,passWidth,pattern)=>{ctx.save();ctx.globalAlpha=passAlpha;ctx.strokeStyle=color;ctx.lineWidth=passWidth;ctx.lineCap='round';ctx.lineJoin='round';ctx.setLineDash(pattern);ctx.beginPath();line.forEach((q,i)=>i?ctx.lineTo(q.x,q.y):ctx.moveTo(q.x,q.y));ctx.stroke();ctx.restore()};
-  draw(second,alpha*.42,Math.max(.65,width*.58),vary('second',.28));
-  draw(primary,alpha*.88,width,vary('primary',.16));
-}
-function inkFillPolygon(points,fill,stroke=null,width=1,seed=0,alpha=1){const p=inkPoints(points,seed,Math.min(1.3,Math.max(0.45,width*0.35)));ctx.save();ctx.globalAlpha=alpha;ctx.fillStyle=fill;ctx.beginPath();p.forEach((q,i)=>i?ctx.lineTo(q.x,q.y):ctx.moveTo(q.x,q.y));ctx.closePath();ctx.fill();if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=width;ctx.lineCap='round';ctx.lineJoin='round';ctx.stroke();const second=p.map((q,i)=>i===0||i===p.length-1?q:{x:q.x+inkNoise(`${seed}:edge`,i*2+1)*1.8,y:q.y+inkNoise(`${seed}:edge`,i*2+2)*1.8});ctx.globalAlpha=alpha*.62;ctx.lineWidth=Math.max(.6,width*.58);ctx.beginPath();second.forEach((q,i)=>i?ctx.lineTo(q.x,q.y):ctx.moveTo(q.x,q.y));ctx.closePath();ctx.stroke()}ctx.restore()}
-function inkCircle(x,y,r,fill,stroke=null,width=1,seed=0,alpha=1){const p=[];for(let i=0;i<13;i++){const a=i/13*Math.PI*2,rr=r*(1+inkNoise(seed,i)*0.3);p.push({x:x+Math.cos(a)*rr,y:y+Math.sin(a)*rr})}inkFillPolygon(p,fill,stroke,width,seed,alpha)}
-function inkRect(x,y,w,h,fill,stroke=null,width=1,seed=0,alpha=1){const edge=1.2;inkFillPolygon([{x:x+inkNoise(seed,4)*edge,y:y+inkNoise(seed,5)*edge},{x:x+w+inkNoise(seed,1)*edge,y:y+inkNoise(seed,2)*edge},{x:x+w+inkNoise(seed,6)*edge,y:y+h+inkNoise(seed,7)*edge},{x:x+inkNoise(seed,3)*edge,y:y+h+inkNoise(seed,8)*edge}],fill,stroke,width,seed,alpha)}
-function inkFont(font){return String(font||'400 12px sans-serif').replace(/Inter|JetBrains Mono|sans-serif|monospace/g,INK_FONT)}
-function inkText(text,x,y,font,fill,align='left'){ctx.save();ctx.font=inkFont(font);ctx.fillStyle=fill;ctx.textAlign=align;ctx.fillText(text,x,y);ctx.restore()}
-function inkSymbol(symbol,x,y,size=16,color='#292524',seed='symbol'){
-  const key=String(symbol).replace(/\uFE0F/g,''),s=size/12, ox=x-6*s, oy=y-8*s, P=(a,b)=>({x:ox+a*s,y:oy+b*s});
-  if(key==='📋'){
-    inkRect(2*s+ox,1*s+oy,8*s,10*s,'rgba(255,241,184,.42)',color,.9,`${seed}:clip`);
-    inkStroke([P(4,4),P(8,4),P(4,6),P(8,6),P(4,8),P(7,8)],color,.8,{seed:`${seed}:lines`,jitter:.3}); return;
-  }
-  if(key==='📏'){
-    inkFillPolygon([P(1.5,3),P(10.3,2),P(10.5,8.5),P(1.8,9.4)],'rgba(230,240,248,.44)',color,.9,`${seed}:ruler`);
-    [3.3,5,6.7,8.4].forEach((a,i)=>inkStroke([P(a,3),P(a+.2,i%2?4.9:5.4)],color,.65,{seed:`${seed}:tick:${i}`,jitter:.25})); return;
-  }
-  if(key==='🍬'){
-    inkCircle(P(6,6).x,P(6,6).y,3.5*s,'rgba(99,102,241,.16)',color,.9,`${seed}:candy`);
-    inkStroke([P(3.2,3.8),P(1.2,2.5),P(2.1,5.1),P(1.2,7.4),P(3.2,6.3)],color,.8,{seed:`${seed}:wrap`,jitter:.3}); return;
-  }
-  if(key==='🧠'){
-    inkFillPolygon([P(3.4,9.7),P(2.1,7),P(2.7,4.3),P(3.6,2),P(5.7,2),P(7,1.7),P(9.2,3.4),P(9.5,6.2),P(8.1,9.5)],'rgba(230,240,248,.42)',color,.9,`${seed}:brain`);
-    inkStroke([P(5.8,2.1),P(4.8,4),P(6,5.5),P(4.9,7),P(6,9)],color,.7,{seed:`${seed}:folds`,jitter:.25}); return;
-  }
-  if(key==='⚙'){
-    const pts=[];for(let i=0;i<12;i++){const a=i*Math.PI/6,r=i%2?4.3:5.7;pts.push(P(6+Math.cos(a)*r,6+Math.sin(a)*r))}inkFillPolygon(pts,'rgba(241,212,119,.34)',color,.9,`${seed}:gear`);inkCircle(P(6,6).x,P(6,6).y,1.4*s,'rgba(255,252,242,.5)',color,.7,`${seed}:hole`);return;
-  }
-  if(key==='🚦'){
-    inkRect(3*s+ox,1*s+oy,6*s,10*s,'rgba(253,233,222,.4)',color,.9,`${seed}:traffic`);
-    [3.3,5.8,8].forEach((a,i)=>inkCircle(P(6,a).x,P(6,a).y,1*s,i===0?'rgba(200,94,88,.7)':i===1?'rgba(217,119,6,.58)':'rgba(45,122,75,.58)',color,.55,`${seed}:light:${i}`)); return;
-  }
-  if(key==='📊'){
-    inkStroke([P(2,10),P(2,2),P(2,10),P(10,10)],color,.9,{seed:`${seed}:axes`,jitter:.3});
-    [[3,7,1.2,3],[5,5,1.2,5],[7,3.2,1.2,6.8]].forEach((a,i)=>inkFillPolygon([P(a[0],10),P(a[0],a[1]),P(a[0]+a[2],a[1]),P(a[0]+a[2],10)],'rgba(99,102,241,.2)',color,.55,`${seed}:bar:${i}`)); return;
-  }
-  if(key==='🔔'){
-    inkFillPolygon([P(2.1,8),P(3.2,6.9),P(3.2,4),P(6,1.5),P(8.8,4),P(8.8,6.9),P(9.9,8)],'rgba(255,241,184,.48)',color,.9,`${seed}:bell`);
-    inkStroke([P(1.8,8),P(10.2,8),P(6.9,9.8)],color,.8,{seed:`${seed}:clapper`,jitter:.3}); return;
-  }
-  const pts=[];for(let i=0;i<8;i++){const a=i*Math.PI/4,r=i%2?3.4:5.2;pts.push(P(6+Math.cos(a)*r,6+Math.sin(a)*r))}inkFillPolygon(pts,'rgba(255,241,184,.32)',color,.8,`${seed}:generic`);
-}
-function plotX(t){return PAD.l+(t-TEMP_MIN)/(TEMP_MAX-TEMP_MIN)*(W-PAD.l-PAD.r)}
-function plotY(v){return PAD.t+(1-v)*(H-PAD.t-PAD.b)}
-function resizeCanvas(){
-  const dpr=window.devicePixelRatio||1;
-  const rect=canvas.parentElement.getBoundingClientRect();
-  W=rect.width;H=rect.height;
-  canvas.width=W*dpr;canvas.height=H*dpr;
-  canvas.style.width=W+'px';canvas.style.height=H+'px';
-  ctx.setTransform(dpr,0,0,dpr,0,0);
-  draw();
-}
-window.addEventListener('resize',resizeCanvas);
-
-// ===== STATE =====
-let currentStage=1;
-let weights={b0:0,b1:1.5,b2:0.8,b3:0.5};
-let trainedWeights={b0:0,b1:1.5,b2:0.8,b3:0.5};
-let threshold=0.5,epoch=0,lossHistory=[];
-let lockedThreshold=null,finalTestResult=null;
-
-// ===== MATH =====
-function sigmoid(z){return 1/(1+Math.exp(-z))}
-function score(d,w){return w.b0+w.b1*stdTemp(d.temp)+w.b2*d.sunny+w.b3*d.weekend}
-function predict(d,w){return sigmoid(score(d,w))}
-function logLoss(data,w){let s=0;for(const d of data){let p=Math.max(1e-10,Math.min(1-1e-10,predict(d,w)));s+=-(d.y*Math.log(p)+(1-d.y)*Math.log(1-p))}return s/data.length}
-function trainStep(lr){const g={b0:0,b1:0,b2:0,b3:0};for(const d of TRAIN){let e=predict(d,trainedWeights)-d.y;g.b0+=e;g.b1+=e*stdTemp(d.temp);g.b2+=e*d.sunny;g.b3+=e*d.weekend}const n=TRAIN.length;trainedWeights.b0-=lr*g.b0/n;trainedWeights.b1-=lr*g.b1/n;trainedWeights.b2-=lr*g.b2/n;trainedWeights.b3-=lr*g.b3/n;epoch++}
-function confusionMatrix(data,w,t){let tp=0,tn=0,fp=0,fn=0;for(const d of data){const p=predict(d,w)>=t?1:0;if(d.y===1&&p===1)tp++;else if(d.y===0&&p===0)tn++;else if(d.y===0&&p===1)fp++;else fn++}return{tp,tn,fp,fn}}
-function metricsFromConfusion(cm){const total=cm.tp+cm.tn+cm.fp+cm.fn||1;const accuracy=(cm.tp+cm.tn)/total;const precision=cm.tp+cm.fp>0?cm.tp/(cm.tp+cm.fp):0;const recall=cm.tp+cm.fn>0?cm.tp/(cm.tp+cm.fn):0;const f1=precision+recall>0?2*precision*recall/(precision+recall):0;return{accuracy,precision,recall,f1}}
-function rocPoints(data,w){const pts=[];for(let t=0;t<=1.001;t+=0.02){const cm=confusionMatrix(data,w,t);const tpr=cm.tp+cm.fn>0?cm.tp/(cm.tp+cm.fn):0;const fpr=cm.fp+cm.tn>0?cm.fp/(cm.fp+cm.tn):0;pts.push({fpr,tpr,t})}pts.sort((a,b)=>a.fpr-b.fpr);return pts}
-function auc(pts){let a=0;for(let i=1;i<pts.length;i++){a+=(pts[i].fpr-pts[i-1].fpr)*(pts[i].tpr+pts[i-1].tpr)/2}return a}
-
-// ===== COLORS =====
-const C={
-  green:'#16a34a',greenA:'rgba(22,163,74,0.8)',greenDim:'rgba(22,163,74,0.2)',
-  coral:'#dc2626',coralA:'rgba(220,38,38,0.8)',coralDim:'rgba(220,38,38,0.2)',
-  accent:'rgba(99,102,241,0.8)',accentDim:'rgba(99,102,241,0.08)',
-  amber:'rgba(217,119,6,0.5)',amberText:'rgba(217,119,6,0.75)',
-  grid:'rgba(0,0,0,0.06)',axis:'rgba(0,0,0,0.15)',label:'rgba(0,0,0,0.45)',bg:'#f7f7f4'
-};
-
-// ===== DRAWING =====
-function clearCanvas(){
-  ctx.save();
-  ctx.globalAlpha=1;
-  ctx.fillStyle='#fbf4e2';
-  ctx.fillRect(0,0,W,H);
-  ctx.globalAlpha=.16;
-  for(let y=18;y<H;y+=28) inkStroke([{x:10,y},{x:W-10,y:y+inkNoise(`paper-rule-${y}`,1)*.7}], 'rgba(120,105,76,.42)', .45, {seed:`paper-rule-${y}`,jitter:.55});
-  ctx.restore();
-}
-function drawAxes(xL,yL){
-  inkRuledStroke([{x:PAD.l,y:PAD.t},{x:PAD.l,y:H-PAD.b},{x:W-PAD.r,y:H-PAD.b}], '#57534e',1.35,{seed:'axis',roughness:3.8,steps:10});
-  for(let i=0;i<=4;i++){const y=PAD.t+i*(H-PAD.t-PAD.b)/4;inkStroke([{x:PAD.l,y},{x:W-PAD.r,y:y+inkNoise(i,2)*0.5}],C.grid,0.75,{seed:`grid-y-${i}`,jitter:0.5})}
-  for(let t=15;t<=40;t+=5){const x=plotX(t);inkStroke([{x,y:PAD.t},{x:x+inkNoise(t,3)*0.5,y:H-PAD.b}],C.grid,0.75,{seed:`grid-x-${t}`,jitter:0.5})}
-  for(let t=15;t<=40;t+=5){const x=plotX(t);inkRuledStroke([{x,y:H-PAD.b},{x:x+inkNoise(`tick-x-${t}`,3)*.35,y:H-PAD.b+5+inkNoise(`tick-x-${t}`,4)*.7}], '#78716c',0.82,{seed:`tick-x-${t}`,roughness:.65,steps:3});inkText(t+'°',x,H-PAD.b+20,'500 11px Inter',C.label,'center')}
-  for(let i=0;i<=4;i++){const y=plotY(i/4);inkRuledStroke([{x:PAD.l-5+inkNoise(`tick-y-${i}`,1)*.35,y},{x:PAD.l,y:y+inkNoise(`tick-y-${i}`,2)*.35}], '#78716c',0.82,{seed:`tick-y-${i}`,roughness:.65,steps:3});inkText((i/4).toFixed(1),PAD.l-10,y+4,'400 10px JetBrains Mono',C.label,'right')}
-  ctx.save();ctx.translate(18,H/2);ctx.rotate(-Math.PI/2);inkText(yL||'',0,0,'600 12px Inter','#292524','center');ctx.restore();
-  inkText(xL||'',W/2,H-PAD.b+42,'600 12px Inter','#292524','center');
-}
-function drawPoints(data,w,mode,alpha){
-  ctx.save();ctx.globalAlpha=alpha||1;
-  for(const d of data){
-    const x=plotX(d.temp),y=plotY(d.y);
-    let fill=d.y===1?C.greenA:C.coralA,stroke='rgba(41,37,36,0.60)',width=0.8;
-    if(mode==='prediction'){const p=predict(d,w),pred=p>=threshold?1:0,ok=pred===d.y;stroke=ok?C.green:C.coral;width=2.3}
-    inkCircle(x,y,6,fill,stroke,width,`point-${d.temp}-${d.y}-${mode}`);
-  }
-  ctx.restore();
-}
-function drawValidationLabels(data,w){
-  ctx.save();
-  const placed={0:[],1:[]};
-  const rightEdge=W-PAD.r-4;
-  let keptTPLabel=false;
-  const labels=data.map(d=>{
-    const xPoint=plotX(d.temp),p=predict(d,w),pred=p>=threshold?1:0;
-    let label='',color='';
-    if(d.y===1&&pred===1){
-      if(keptTPLabel)return null;
-      keptTPLabel=true;label='TP (Correct Yes)';color='#16a34a'
-    }
-    else if(d.y===0&&pred===0){label='TN (Correct No)';color='#3b82f6'}
-    else if(d.y===0&&pred===1){label='FP (False Alarm)';color='#d97706'}
-    else if(d.y===1&&pred===0){label='FN (Missed Yes)';color='#dc2626'}
-    const width=ctx.measureText(label).width;
-    const align=xPoint+10+width<=rightEdge?'left':'right';
-    const x=align==='left'?xPoint+10:Math.max(PAD.l+4+width,xPoint-10);
-    return{label,color,group:d.y,x,left:align==='left'?x:x-width,right:align==='left'?x+width:x,align};
-  }).filter(Boolean).sort((a,b)=>a.left-b.left);
-
-  for(const item of labels){
-    let lane=0;
-    while((placed[item.group][lane]||[]).some(other=>item.left<other.right+10&&item.right>other.left-10))lane++;
-    item.y=item.group===1?Math.max(14,PAD.t-8-lane*14):Math.min(H-8,H-PAD.b-8+lane*14);
-    if(!placed[item.group][lane])placed[item.group][lane]=[];
-    placed[item.group][lane].push(item);
-  }
-
-  for(const item of labels){
-    inkText(item.label,item.x,item.y,'bold 10px JetBrains Mono',item.color,item.align);
-  }
-  ctx.restore();
-}
-// FIX 2: STRENGTHEN THE LINEAR EXPLANATION ZONE ON CANVAS
-function drawLinearLine(){
-  let sx=0,sy=0,sxx=0,sxy=0,n=DATA.length;
-  for(const d of DATA){sx+=d.temp;sy+=d.y;sxx+=d.temp*d.temp;sxy+=d.temp*d.y}
-  const b1l=(n*sxy-sx*sy)/(n*sxx-sx*sx),b0l=(sy-b1l*sx)/n;
-  inkRuledStroke([{x:plotX(TEMP_MIN),y:plotY(b0l+b1l*TEMP_MIN)},{x:plotX(TEMP_MAX),y:plotY(b0l+b1l*TEMP_MAX)}],'rgba(220,38,38,0.65)',1.9,{dash:[6,8,3,5],seed:'linear-line',roughness:10.5,steps:11});
-  if(b0l+b1l*TEMP_MAX>1.05)inkText('> 1 (Impossible Probability!) ✗',plotX(TEMP_MAX)+5,plotY(b0l+b1l*TEMP_MAX),'bold 11px Inter','rgba(220,38,38,0.8)','left');
-  if(b0l+b1l*TEMP_MIN<-0.05)inkText('< 0 (Impossible Probability!) ✗',plotX(TEMP_MIN)-55,plotY(b0l+b1l*TEMP_MIN)-15,'bold 11px Inter','rgba(220,38,38,0.8)','left');
-}
-function drawSigmoidCurve(w){
-  const pts=[];for(let t=TEMP_MIN;t<=TEMP_MAX;t+=0.3){const z=w.b0+w.b1*stdTemp(t)+w.b2*0.5+w.b3*0.5,p=sigmoid(z);pts.push({x:plotX(t),y:plotY(p)})}
-  inkStroke(pts,C.accentDim,7,{seed:'sigmoid-wash',jitter:1.05,alpha:0.55});
-  inkStroke(pts,C.accent,2.4,{seed:'sigmoid-curve',jitter:0.8});
-}
-function drawZDot(zVal){
-  const p=sigmoid(zVal);const w=currentStage>=5?trainedWeights:weights;
-  const tRaw=(zVal-w.b0-w.b2*0.5-w.b3*0.5)/w.b1*TEMP_STD+TEMP_MEAN;
-  const cx=plotX(Math.max(TEMP_MIN,Math.min(TEMP_MAX,tRaw))),cy=plotY(p);
-  inkStroke([{x:cx,y:H-PAD.b},{x:cx,y:cy}],'rgba(99,102,241,0.38)',1,{dash:[3,3],seed:'z-guide-v',jitter:0.55});
-  inkStroke([{x:PAD.l,y:cy},{x:cx,y:cy}],'rgba(99,102,241,0.38)',1,{dash:[3,3],seed:'z-guide-h',jitter:0.55});
-  inkCircle(cx,cy,7,'rgba(99,102,241,0.9)','#fff',1.6,'z-dot');
-  inkText('p='+p.toFixed(3),cx+12,cy-6,'bold 11px JetBrains Mono','rgba(79,70,229,0.95)','left');
-}
-function drawThresholdLine(t){
-  const y=plotY(t);inkStroke([{x:PAD.l,y},{x:W-PAD.r,y:y+inkNoise(t,2)*0.6}],C.amber,1.25,{dash:[6,4],seed:`threshold-${t}`,jitter:0.65});
-  inkText('threshold = '+t.toFixed(2),W-PAD.r-5,Math.min(H-PAD.b-4,Math.max(PAD.t+14,y+16)),'bold 11px JetBrains Mono',C.amberText,'right');
-}
-function drawLossChart(){
-  if(lossHistory.length<2)return;
-  const cW=180,cH=110,ox=W-PAD.r-cW-16,oy=H-PAD.b-cH-16;
-  inkRect(ox,oy,cW,cH,'rgba(255,250,238,0.82)','rgba(68,64,60,0.45)',0.8,'loss-card',0.96);
-  const maxL=Math.max(...lossHistory,0.8);
-  const pts=lossHistory.map((v,i)=>({x:ox+i/(lossHistory.length-1)*cW,y:oy+cH-10-(v/maxL)*(cH-28)}));
-  inkStroke(pts,'rgba(79,70,229,0.78)',1.7,{seed:'loss-curve',jitter:0.7});
-  inkText('Loss',ox+10,oy+16,'500 10px JetBrains Mono',C.label,'left');inkText('Epoch '+lossHistory.length,ox+cW-10,oy+16,'500 10px JetBrains Mono',C.label,'right');
-}
-function drawROC(data,w){
-  clearCanvas();inkStroke([{x:PAD.l,y:PAD.t},{x:PAD.l,y:H-PAD.b},{x:W-PAD.r,y:H-PAD.b}], '#57534e',1.25,{seed:'roc-axis',jitter:0.65});
-  inkStroke([{x:PAD.l,y:H-PAD.b},{x:W-PAD.r,y:PAD.t}],'rgba(68,64,60,0.30)',1,{dash:[4,4],seed:'roc-random',jitter:0.65});
-
-  const rp=rocPoints(data,w),cW=W-PAD.l-PAD.r,cH=H-PAD.t-PAD.b;
-  const rocPts=rp.map(p=>({x:PAD.l+p.fpr*cW,y:H-PAD.b-p.tpr*cH}));
-  inkFillPolygon([{x:PAD.l,y:H-PAD.b},...rocPts,{x:PAD.l+cW,y:H-PAD.b}],C.accentDim,null,1,'roc-wash',0.55);
-  inkStroke(rocPts,C.accent,2.4,{seed:'roc-curve',jitter:0.85});
-
-  // Plot dynamic current threshold dot on ROC curve
-  const currentCM = confusionMatrix(data, w, threshold);
-  const currentTPR = currentCM.tp+currentCM.fn>0?currentCM.tp/(currentCM.tp+currentCM.fn):0;
-  const currentFPR = currentCM.fp+currentCM.tn>0?currentCM.fp/(currentCM.fp+currentCM.tn):0;
-  const dotX = PAD.l + currentFPR * cW;
-  const dotY = H - PAD.b - currentTPR * cH;
-
-  inkCircle(dotX,dotY,7,'#d97706','#fff',1.6,'roc-current');
-  inkText(`Current Threshold (${threshold.toFixed(2)})`,dotX+12,dotY-4,'bold 11px JetBrains Mono','#d97706','left');
-
-  inkText('False Positive Rate (False Alarm Rate)',W/2,H-PAD.b+42,'600 11px Inter',C.label,'center');
-  ctx.save();ctx.translate(18,H/2);ctx.rotate(-Math.PI/2);inkText('True Positive Rate (Recall / Sensitivity)',0,0,'600 11px Inter',C.label,'center');ctx.restore();
-
-  // Curve bending visual guidance
-  inkText('← Better curves bend toward top-left',PAD.l+15,PAD.t+25,'italic 11px Inter','rgba(79,70,229,0.90)','left');
-
-  ctx.save();
-  ctx.translate(PAD.l + cW*0.5, H - PAD.b - cH*0.5);
-  ctx.rotate(-Math.atan2(cH, cW));
-  inkText('Random Guessing (AUC = 0.5)',0,-8,'italic 10px Inter','rgba(68,64,60,0.55)','center');
-  ctx.restore();
-
-  for(let i=0;i<=4;i++){inkText((i/4).toFixed(1),PAD.l+i/4*cW,H-PAD.b+20,'400 10px JetBrains Mono',C.label,'center');inkText((i/4).toFixed(1),PAD.l-10,H-PAD.b-i/4*cH+4,'400 10px JetBrains Mono',C.label,'right')}
-  document.getElementById('aucVal').textContent=auc(rp).toFixed(3);
-}
-function drawCoeffBars(w){
-  clearCanvas();const names=['b₀ bias','b₁ temp','b₂ sunny','b₃ weekend'],vals=[w.b0,w.b1,w.b2,w.b3];
-  const maxAbs=Math.max(...vals.map(Math.abs),1),midY=H/2;
-  const barH=40,gap=20,startY=PAD.t+50,midX=W/2;
-  inkText('Learned Coefficients & Impact',W/2,PAD.t+20,'bold 14px Inter',C.label,'center');
-  inkStroke([{x:midX,y:startY},{x:midX,y:startY+names.length*(barH+gap)}],C.grid,0.8,{seed:'coefficient-midline',jitter:0.45});
-  for(let i=0;i<vals.length;i++){
-    const y=startY+i*(barH+gap),barW=vals[i]/maxAbs*(W/2-PAD.r-50),isPos=vals[i]>=0;
-    const barX=isPos?midX:midX+barW;
-    inkRect(barX,y,Math.abs(barW),barH,isPos?'rgba(22,163,74,0.30)':'rgba(220,38,38,0.30)','rgba(68,64,60,0.50)',0.85,`coef-bar-${i}`,0.95);
-    for(let hatch=12; hatch<Math.abs(barW)-4; hatch+=18) {
-      inkStroke([{x:barX+hatch,y:y+6},{x:barX+hatch+5,y:y+barH-6}],isPos?'rgba(22,96,51,0.14)':'rgba(153,27,27,0.12)',0.55,{seed:`coef-hatch-${i}-${hatch}`,jitter:0.5});
-    }
-    inkText(names[i],midX-14,y+barH/2+4,'500 12px Inter','rgba(68,64,60,0.78)','right');
-    inkText(vals[i].toFixed(3),midX+barW+(isPos?8:-50),y+barH/2+4,'600 12px JetBrains Mono','rgba(41,37,36,0.82)','left');
-    if(i>0){const or=Math.exp(vals[i]);inkText('OR: '+or.toFixed(2),midX+barW+(isPos?8:-50),y+barH/2+18,'400 10px JetBrains Mono','rgba(79,70,229,0.72)','left')}
-  }
-
-  inkText('Positive weight pushes probability UP (OR > 1)  |  Negative weight pushes probability DOWN (OR < 1)',W/2,H-40,'500 11px Inter','rgba(75,85,99,0.85)','center');
-  inkText('Odds Ratio (OR) tells you how many times the Odds are multiplied per unit increase.',W/2,H-22,'italic 10px Inter','rgba(107,114,128,0.8)','center');
-
-  // Odds Ratio Contextual Labels on canvas
-  ctx.save();
-  inkText("Positive Coefficient → pushes probability UP (OR > 1)",PAD.l,startY-15,'bold 10px Inter','rgba(31,41,55,0.8)','left');
-  inkText("Negative Coefficient → pushes probability DOWN (OR < 1)",W-PAD.r,startY-15,'bold 10px Inter','rgba(31,41,55,0.8)','right');
-  ctx.restore();
-
-  // Update odds ratio content block dynamically
-  const oc=document.getElementById('oddsContainer');
-  if (oc) {
-    oc.innerHTML=vals.slice(1).map((v,i)=>{
-      const or=Math.exp(v),nm=['Temperature (standardized)','Sunny Weather','Weekend Status'][i];
-      let desc;
-      if(or>1.05)desc=`associated with multiplying the odds of buying by <strong>${or.toFixed(3)}</strong> per unit, holding other features constant`;
-      else if(or<0.95)desc=`associated with reducing the odds to <strong>${or.toFixed(3)}×</strong> per unit (a ${((1-or)*100).toFixed(1)}% decrease), holding other features constant`;
-      else desc='has <strong>little to no measurable association</strong> with the odds';
-      return`<div class="odds-item" style="background:var(--bg); border:1px solid var(--glass-border); padding:10px 14px; border-radius:var(--radius-sm);">
-        <strong>${nm}:</strong> e<sup>${v.toFixed(3)}</sup> = <strong>${or.toFixed(3)}</strong> Odds Ratio<br>
-        <span style="font-size:0.82rem; color:var(--text-dim);">${desc}.</span>
-      </div>`;
-    }).join('');
-  }
-}
-function roundRect(c,x,y,w,h,r){r=Math.min(r,w/2,h/2);c.moveTo(x+r,y);c.lineTo(x+w-r,y);c.quadraticCurveTo(x+w,y,x+w,y+r);c.lineTo(x+w,y+h-r);c.quadraticCurveTo(x+w,y+h,x+w-r,y+h);c.lineTo(x+r,y+h);c.quadraticCurveTo(x,y+h,x,y+h-r);c.lineTo(x,y+r);c.quadraticCurveTo(x,y,x+r,y)}
-function drawPipeline(){
-  clearCanvas();const steps=['📋 Data','📏 Linear?','🍬 Sigmoid','🧠 Score','⚙️ Train','🚦 Threshold','📊 Evaluate','🔔 ROC'];
-  const n=steps.length,startX=PAD.l+10,endX=W-PAD.r-10,midY=H/2,stepW=(endX-startX)/n;
-  for(let i=0;i<n;i++){
-    const x=startX+i*stepW+stepW/2;
-    inkCircle(x,midY,26,'rgba(99,102,241,0.08)','rgba(79,70,229,0.28)',1.1,`pipeline-node-${i}`);
-    inkSymbol(steps[i].split(' ')[0],x,midY+5,16,'#292524',`pipeline-symbol-${i}`);
-    inkText(steps[i].split(' ').slice(1).join(' '),x,midY+42,'500 9px Inter',C.label,'center');
-    if(i<n-1){inkStroke([{x:x+28,y:midY},{x:x+stepW-28,y:midY}], 'rgba(79,70,229,0.28)',1.1,{seed:`pipeline-link-${i}`,jitter:0.7});inkStroke([{x:x+stepW-33,y:midY-4},{x:x+stepW-28,y:midY},{x:x+stepW-33,y:midY+4}], 'rgba(79,70,229,0.38)',1.1,{seed:`pipeline-arrow-${i}`,jitter:0.5})}
-  }
-  inkText('The Logistic Regression Pipeline',W/2,PAD.t+20,'600 13px Inter',C.label,'center');
-}
-
-// ===== MAIN DRAW =====
-function draw(){
-  const w=currentStage>=5?trainedWeights:weights;
-  if(currentStage===8){canvas.dataset.visualState='validation-roc';drawROC(VALIDATION,w);return}
-  if(currentStage===9){canvas.dataset.visualState='coefficients';drawCoeffBars(w);return}
-  if(currentStage===10){canvas.dataset.visualState='pipeline';drawPipeline();return}
-  clearCanvas();drawAxes('Temperature (°C)','Probability / Outcome');
-
-  if(currentStage===7){
-    canvas.dataset.visualState='validation';
-    drawPoints(TRAIN,w,'class',0.15);
-    drawPoints(VALIDATION,w,'prediction',1);
-  } else if(currentStage>=6){
-    canvas.dataset.visualState='development-predictions';
-    drawPoints(DEVELOPMENT,w,'prediction',1);
-  } else if(currentStage>=1){
-    canvas.dataset.visualState=`stage-${currentStage}`;
-    drawPoints(DEVELOPMENT,w,'class',1);
-  }
-
-  // FIX 11: UNIQUE STAGE BY STAGE OVERLAYS & CONTROLS ALIGNMENT
-  if(currentStage===1){
-    inkText("Each dot = one day",PAD.l+15,PAD.t+25,'500 11px Inter','rgba(31,41,55,0.7)','left');
-  }
-
-  if(currentStage===2){
-    drawLinearLine();
-    inkText("Linear regression line goes above 1 and below 0",PAD.l+15,PAD.t+25,'600 11px Inter','rgba(220,38,38,0.85)','left');
-    inkText("Above 1 = More than certain (impossible probability!)",PAD.l+15,PAD.t+42,'500 10px Inter','rgba(75,85,99,0.85)','left');
-    inkText("Below 0 = Less than impossible (impossible probability!)",PAD.l+15,PAD.t+56,'500 10px Inter','rgba(75,85,99,0.85)','left');
-  }
-
-  if(currentStage>=3)drawSigmoidCurve(w);
-  if(currentStage===3)drawZDot(parseFloat(document.getElementById('zSlider').value));
-
-  // Custom overlay explanations on Canvas
-  if(currentStage===3){
-    inkText("Demo only: choose z → sigmoid → probability",PAD.l+15,PAD.t+25,'600 11px Inter','rgba(79,70,229,0.95)','left');
-    inkText("Output: probability values on y-axis (between 0 and 1)",PAD.l+15,PAD.t+40,'500 10px Inter','rgba(75,85,99,0.85)','left');
-  }
-
-  if(currentStage===4){
-    inkText("Score z = sum of (feature × weight)",PAD.l+15,PAD.t+25,'600 12px Inter','rgba(31,41,55,0.85)','left');
-    inkText("Then sigmoid function squishes z into a probability (0 to 1)",PAD.l+15,PAD.t+42,'400 11px Inter','rgba(75,85,99,0.9)','left');
-    inkText("Manual sandbox: weights → z → probability",PAD.l+15,PAD.t+65,'bold 11px Inter','rgba(79,70,229,0.95)','left');
-    inkText("Changing manual sliders changes the shape of the decision curve.",PAD.l+15,PAD.t+80,'500 10px Inter','rgba(75,85,99,0.85)','left');
-
-    // Highlight 30°C Example Day directly on curve
-    const tVal=30;
-    const tStd=stdTemp(tVal);
-    const zDay=w.b0+w.b1*tStd+w.b2*1.0+w.b3*1.0;
-    const pDay=sigmoid(zDay);
-    const cx=plotX(tVal);
-    const cy=plotY(pDay);
-    inkCircle(cx,cy,8,'rgba(79,70,229,0.95)','#fff',2.2,'example-day');
-    inkText(`30°C Example Day (p = ${(pDay*100).toFixed(0)}%)`,cx+12,cy-4,'bold 10px JetBrains Mono','rgba(31,41,55,0.9)','left');
-  }
-
-  if(currentStage===5){
-    drawLossChart();
-    inkText("Loss going down = model is learning",W-PAD.r-24,H-PAD.b-135,'bold 11px Inter','rgba(22,163,74,0.9)','right');
-    const checkX=W-PAD.r-12,checkY=H-PAD.b-139;
-    inkStroke([{x:checkX-6,y:checkY+1},{x:checkX-2,y:checkY+5},{x:checkX+6,y:checkY-5}], 'rgba(22,163,74,0.9)',1.35,{seed:'learning-check',jitter:.48});
-    inkStroke([{x:checkX-5,y:checkY+2},{x:checkX-2,y:checkY+6},{x:checkX+7,y:checkY-4}], 'rgba(22,163,74,0.9)',.72,{seed:'learning-check-second',jitter:.42});
-  }
-
-  // FIX 7: IMPROVED VISUAL THRESHOLD REGIONS & labels IN STAGE 6 and 7
-  if(currentStage===6 || currentStage===7){
-    // Above Threshold Shade (Elegantly semi-transparent green)
-    inkRect(PAD.l,PAD.t,W-PAD.l-PAD.r,plotY(threshold)-PAD.t,'rgba(22,163,74,0.025)',null,0,'above-threshold',0.95);
-    // Below Threshold Shade (Elegantly semi-transparent red)
-    inkRect(PAD.l,plotY(threshold),W-PAD.l-PAD.r,H-PAD.b-plotY(threshold),'rgba(220,38,38,0.02)',null,0,'below-threshold',0.95);
-
-    // Threshold boundary label text overlays on the canvas
-    inkText("Above threshold = Predict Yes",PAD.l+15,Math.max(PAD.t+28,plotY(threshold)-24),'bold 11px Inter','rgba(22,163,74,0.75)','left');
-    inkText("Below threshold = Predict No",PAD.l+15,Math.min(H-PAD.b-22,plotY(threshold)+32),'bold 11px Inter','rgba(220,38,38,0.75)','left');
-  }
-
-  if(currentStage===7){
-    inkText(`Validation Set (${VALIDATION.length} days)`,PAD.l+15,PAD.t+22,'bold 11px Inter','rgba(31,41,55,0.9)','left');
-    inkText("● Green outline = Correct prediction",PAD.l+15,PAD.t+38,'400 10px Inter','rgba(22,163,74,1)','left');
-    inkText("● Red outline = Wrong prediction",PAD.l+15,PAD.t+52,'400 10px Inter','rgba(220,38,38,1)','left');
-    inkText("Dashed line = Decision threshold (Yes vs No)",PAD.l+15,PAD.t+66,'400 10px Inter',C.label,'left');
-    drawValidationLabels(VALIDATION,w);
-  }
-
-  if(currentStage>=6&&currentStage<=7)drawThresholdLine(threshold);
-}
-
-// ===== HERO CANVAS =====
-const heroCanvas=document.getElementById('heroCanvas');
-const heroCtx=heroCanvas?heroCanvas.getContext('2d'):null;
-function drawHeroBg(){
-  if(!heroCtx)return;
-  const hr=heroCanvas.parentElement.getBoundingClientRect();
-  const dpr=window.devicePixelRatio||1;
-  heroCanvas.width=hr.width*dpr;heroCanvas.height=hr.height*dpr;
-  heroCtx.setTransform(dpr,0,0,dpr,0,0);
-  const w=hr.width,h=hr.height;heroCtx.clearRect(0,0,w,h);
-  function heroInkCircle(x,y,r,fill,stroke){const p=[];for(let i=0;i<10;i++){const a=i/10*Math.PI*2,rr=r*(1+Math.sin(i*1.8+x)*0.08);p.push({x:x+Math.cos(a)*rr,y:y+Math.sin(a)*rr})}heroCtx.save();heroCtx.fillStyle=fill;heroCtx.strokeStyle=stroke;heroCtx.lineWidth=0.8;heroCtx.lineCap='round';heroCtx.beginPath();p.forEach((q,i)=>i?heroCtx.lineTo(q.x,q.y):heroCtx.moveTo(q.x,q.y));heroCtx.closePath();heroCtx.fill();heroCtx.stroke();heroCtx.restore()}
-  for(let i=0;i<30;i++)heroInkCircle(w*0.6+Math.sin(i*2.3)*80,h*0.35+Math.cos(i*1.9)*60,8+Math.sin(i)*4,'rgba(22,163,74,0.035)','rgba(22,101,52,0.10)');
-  for(let i=0;i<30;i++)heroInkCircle(w*0.4+Math.sin(i*2.1)*70,h*0.65+Math.cos(i*1.7)*55,8+Math.cos(i)*4,'rgba(220,38,38,0.035)','rgba(153,27,27,0.10)');
-  heroCtx.strokeStyle='rgba(79,70,229,0.12)';heroCtx.lineWidth=1.8;heroCtx.lineCap='round';heroCtx.setLineDash([12,8]);
-  heroCtx.beginPath();heroCtx.moveTo(w*0.1,h*0.8);
-  for(let x=0;x<=1;x+=0.01){const px=w*(0.1+x*0.8);heroCtx.lineTo(px+Math.sin(x*18)*0.6,h*(0.8-0.6/(1+Math.exp(-10*(x-0.5))))+Math.cos(x*20)*0.6)}
-  heroCtx.stroke();heroCtx.setLineDash([]);
-}
-
-// ===== SCROLL ENGINE =====
-const sections=document.querySelectorAll('[data-stage]');
-const stageIds=[...sections].map(s=>s.dataset.stage);
-const stageDots=document.getElementById('stageDots');
-stageIds.forEach((id,i)=>{const d=document.createElement('div');d.className='stage-dot';d.addEventListener('click',()=>sections[i].scrollIntoView({behavior:'smooth'}));stageDots.appendChild(d)});
-function updateDots(){document.querySelectorAll('.stage-dot').forEach((dot,index)=>dot.classList.toggle('active',index+1===currentStage))}
-const observer=new StatMLStageObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){const stageNumber=Number(e.target.dataset.stage);if(stageNumber>0&&stageNumber!==currentStage){currentStage=stageNumber;draw();updateDots();updateValidationMetrics();updateLiveScore()}}})},{threshold:0.12});
-sections.forEach(s=>observer.observe(s));
-window.addEventListener('scroll',()=>{const h=document.documentElement;document.getElementById('progressBar').style.width=h.scrollTop/(h.scrollHeight-h.clientHeight)*100+'%'});
-
-// ===== CONTROLS =====
-document.getElementById('zSlider').addEventListener('input',function(){
-  document.getElementById('zVal').textContent=parseFloat(this.value).toFixed(1);
-  document.getElementById('pVal').textContent=sigmoid(parseFloat(this.value)).toFixed(3);
-  if(currentStage===3)draw();
-});
-
-function updateLiveScore(){
-  const w=currentStage>=5?trainedWeights:weights;
-  const tStd=stdTemp(30);
-  const b1Push=w.b1*tStd;
-  const b2Push=w.b2*1.0;
-  const b3Push=w.b3*1.0;
-  const totalZ=w.b0+b1Push+b2Push+b3Push;
-  const prob=sigmoid(totalZ);
-
-  const b0El=document.getElementById('lsB0');
-  const b1El=document.getElementById('lsB1');
-  const b2El=document.getElementById('lsB2');
-  const b3El=document.getElementById('lsB3');
-  const sumEl=document.getElementById('lsSum');
-  const probEl=document.getElementById('lsProb');
-  const stdValEl=document.getElementById('lsStdVal');
-
-  if (b0El){
-    b0El.textContent=w.b0.toFixed(2);
-    b1El.textContent=`${w.b1.toFixed(2)} × ${tStd.toFixed(2)} = ${b1Push.toFixed(2)}`;
-    b2El.textContent=`${w.b2.toFixed(2)} × 1.0 = ${b2Push.toFixed(2)}`;
-    b3El.textContent=`${w.b3.toFixed(2)} × 1.0 = ${b3Push.toFixed(2)}`;
-    sumEl.textContent=totalZ.toFixed(2);
-    probEl.textContent=(prob*100).toFixed(1);
-    stdValEl.textContent=tStd.toFixed(2);
-  }
-}
-
-['b0','b1','b2','b3'].forEach(k=>{
-  document.getElementById(k+'Slider').addEventListener('input',function(){
-    weights[k]=parseFloat(this.value);
-    document.getElementById(k+'Val').textContent=parseFloat(this.value).toFixed(2);
-    document.getElementById('manualLoss').textContent=logLoss(TRAIN,weights).toFixed(4);
-    updateLiveScore();
-    if(currentStage===4)draw();
-  });
-});
-
-let trainInterval=null;
-document.getElementById('btnTrain').addEventListener('click',()=>{
-  if(trainInterval){clearInterval(trainInterval);trainInterval=null;document.getElementById('btnTrain').textContent='▶ Train';return}
-  document.getElementById('btnTrain').textContent='⏸ Pause';
-  const lr=parseFloat(document.getElementById('lrSlider').value);
-  trainInterval=setInterval(()=>{
-    trainStep(lr);
-    const l=logLoss(TRAIN,trainedWeights);
-    lossHistory.push(l);
-    document.getElementById('trainLoss').textContent=l.toFixed(4);
-    document.getElementById('epochVal').textContent=epoch;
-    updateLiveScore();
-    if(currentStage===5)draw();
-    if(epoch>=500||l<0.15){
-      clearInterval(trainInterval);trainInterval=null;
-      document.getElementById('btnTrain').textContent='▶ Continue'
-    }
-  },30);
-});
-document.getElementById('btnReset').addEventListener('click',()=>{
-  if(trainInterval){clearInterval(trainInterval);trainInterval=null}
-  trainedWeights={b0:0,b1:1.5,b2:0.8,b3:0.5};
-  epoch=0;lossHistory=[];
-  document.getElementById('trainLoss').textContent='—';
-  document.getElementById('epochVal').textContent='0';
-  document.getElementById('btnTrain').textContent='▶ Train';
-  resetFinalTestReveal();
-  updateLiveScore();
-  if(currentStage===5)draw();
-});
-
-document.getElementById('lrSlider').addEventListener('input',function(){
-  document.getElementById('lrVal').textContent=parseFloat(this.value).toFixed(3);
-});
-
-document.getElementById('threshSlider').addEventListener('input',function(){
-  threshold=parseFloat(this.value);
-  document.getElementById('threshVal').textContent=threshold.toFixed(2);
-  if(currentStage>=6)draw();
-  updateValidationMetrics();
-});
-document.getElementById('btnRevealTest').addEventListener('click',revealFinalTestMetrics);
-document.getElementById('btnRestart').addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
-
-// ===== METRICS & INTERACTIVE CONFUSION MATRIX =====
-window.showCmExplain = function(type) {
-  const textEl = document.getElementById('cmExplanationText');
-  const explanations={
-    tp: "<strong>True Positive (TP):</strong> The model predicted <span class='tag tag-green'>Bought</span>, and the customer actually bought ice cream. Correct prediction!",
-    tn: "<strong>True Negative (TN):</strong> The model predicted <span class='tag tag-coral'>Didn't Buy</span>, and the customer did not buy. Correct prediction!",
-    fp: "<strong>False Positive (FP) - False Alarm:</strong> The model predicted <span class='tag tag-green'>Bought</span>, but the customer did not buy. A false alarm!",
-    fn: "<strong>False Negative (FN) - Missed Buyer:</strong> The model predicted <span class='tag tag-coral'>Didn't Buy</span>, but the customer actually bought. The model missed a real buyer."
-  };
-  if(textEl) textEl.innerHTML=explanations[type] || "Click on a grid cell to learn what it means.";
-}
-
-function updateValidationMetrics(){
-  const w=trainedWeights;
-  const cm=confusionMatrix(VALIDATION,w,threshold);
-
-  const tpEl=document.getElementById('cmTP');
-  const tnEl=document.getElementById('cmTN');
-  const fpEl=document.getElementById('cmFP');
-  const fnEl=document.getElementById('cmFN');
-
-  if(tpEl){
-    tpEl.textContent=cm.tp;
-    tnEl.textContent=cm.tn;
-    fpEl.textContent=cm.fp;
-    fnEl.textContent=cm.fn;
-  }
-
-  const {accuracy,precision,recall,f1}=metricsFromConfusion(cm);
-
-  const accEl=document.getElementById('mAcc');
-  const precEl=document.getElementById('mPrec');
-  const recEl=document.getElementById('mRec');
-  const f1El=document.getElementById('mF1');
-
-  if (accEl) {
-    accEl.textContent=(accuracy*100).toFixed(0)+'%';
-    precEl.textContent=(precision*100).toFixed(0)+'%';
-    recEl.textContent=(recall*100).toFixed(0)+'%';
-    f1El.textContent=f1.toFixed(3);
-  }
-}
-
-function revealFinalTestMetrics(){
-  if(finalTestResult)return;
-  if(trainInterval){clearInterval(trainInterval);trainInterval=null;}
-  lockedThreshold=threshold;
-  const cm=confusionMatrix(TEST,trainedWeights,lockedThreshold);
-  finalTestResult={cm,...metricsFromConfusion(cm)};
-  document.getElementById('testThreshold').textContent=lockedThreshold.toFixed(2);
-  document.getElementById('testTP').textContent=cm.tp;
-  document.getElementById('testTN').textContent=cm.tn;
-  document.getElementById('testFP').textContent=cm.fp;
-  document.getElementById('testFN').textContent=cm.fn;
-  document.getElementById('testAcc').textContent=(finalTestResult.accuracy*100).toFixed(0)+'%';
-  document.getElementById('testPrec').textContent=(finalTestResult.precision*100).toFixed(0)+'%';
-  document.getElementById('testRec').textContent=(finalTestResult.recall*100).toFixed(0)+'%';
-  document.getElementById('testF1').textContent=finalTestResult.f1.toFixed(3);
-  document.getElementById('finalTestResults').hidden=false;
-  document.getElementById('finalTestStatus').textContent='Model and threshold locked. This is the one-time final test snapshot for this run.';
-  const revealButton=document.getElementById('btnRevealTest');
-  revealButton.disabled=true;revealButton.textContent='Final test result revealed';
-  document.getElementById('threshSlider').disabled=true;
-  document.getElementById('btnTrain').disabled=true;
-  document.getElementById('lrSlider').disabled=true;
-}
-
-function resetFinalTestReveal(){
-  lockedThreshold=null;finalTestResult=null;
-  document.getElementById('finalTestResults').hidden=true;
-  document.getElementById('finalTestStatus').textContent='Hidden until the model and validation-selected threshold are locked. Reveal this result once, after development is complete.';
-  const revealButton=document.getElementById('btnRevealTest');
-  revealButton.disabled=false;revealButton.textContent='Lock model and reveal final test result';
-  document.getElementById('threshSlider').disabled=false;
-  document.getElementById('btnTrain').disabled=false;
-  document.getElementById('lrSlider').disabled=false;
-}
-
-// ===== QUIZ INTERACTION =====
-window.handleQuizClick = function(button, correct) {
-  const card = button.closest('.quiz-card');
-  const options = card.querySelectorAll('.quiz-option');
-  const feedback = card.querySelector('.quiz-feedback');
-
-  options.forEach(opt => {
-    opt.disabled = true;
-    if (opt.getAttribute('data-correct') === 'true') {
-      opt.classList.add('correct');
-    }
-  });
-
-  const feedbacks = {
-    "sec-3": "<strong>Correct!</strong> The z slider above is only a teaching demo. In real-world logistic regression, the model's linear equation calculates a raw score z for each data row from its features and learned parameters. The sigmoid then turns that score into a probability.",
-    "sec-5": "<strong>Correct!</strong> Training iteratively adapts weights to discover the direction of minimum prediction penalty (log loss). Decision rules (thresholds) are set by analysts afterwards.",
-    "sec-6": "<strong>Correct!</strong> The model only issues probability scores. Picking the threshold cut-off point is a human decision tailored strictly to practical needs (such as catching more buyers vs. avoiding false alarms)."
-  };
-
-  const sectionId = card.closest('.section').id;
-  const textContent = feedbacks[sectionId] || "Great job exploring the concepts!";
-
-  if (!correct) {
-    button.classList.add('incorrect');
-    feedback.style.background = 'rgba(220,38,38,0.05)';
-    feedback.style.color = 'var(--coral)';
-    feedback.style.border = '1px solid rgba(220,38,38,0.15)';
-    feedback.innerHTML = `<strong>Not quite.</strong> Let's look at the correct answer: <br>${textContent}`;
-  } else {
-    feedback.style.background = 'rgba(22,163,74,0.05)';
-    feedback.style.color = 'var(--green)';
-    feedback.style.border = '1px solid rgba(22,163,74,0.15)';
-    feedback.innerHTML = textContent;
-  }
-
-  feedback.classList.add('show');
-}
-
-// ===== INIT =====
-resizeCanvas();drawHeroBg();updateDots();
-updateLiveScore();
-document.getElementById('manualLoss').textContent=logLoss(TRAIN,weights).toFixed(4);
-showCmExplain('tp'); // Default explanation card visible on start
-updateValidationMetrics();
-</script>
-
-<footer class="statml-module-footer">
-  <div class="statml-footer-inner">
-    <a class="statml-footer-home" href="../index.html">All modules</a>
-  </div>
-</footer>
-
-<script id="statml-standard-runtime">
-(() => {
-const META = {"title": "Logistic Regression", "badge": "Machine Learning · Classification", "overview": ["Convert a linear score into a probability", "Understand coefficients, loss, and decision thresholds", "Evaluate classification beyond accuracy"], "prereq": "Logistic regression predicts the probability of a class. The final class label is produced only after applying a decision threshold to that probability.", "additionStage": 10, "additionTitle": "Thresholds, imbalance, and calibration", "additionHtml": "<p>The default threshold of 0.50 is a convention, not a law. Choose a threshold based on the relative cost of false positives and false negatives.</p><p>With imbalanced classes, accuracy may look impressive while the model misses the minority class. Inspect precision, recall, ROC or precision–recall curves, and whether predicted probabilities are well calibrated.</p>", "takeaways": ["The sigmoid maps a linear score to a probability between 0 and 1.", "Coefficients act on log-odds; exponentiated coefficients are odds ratios.", "Evaluation and threshold choice should reflect the real cost of classification errors."], "selectors": {"hero": ".hero-section", "layout": ".layout", "narrative": ".narrative", "visual": ".viz-container"}, "stages": [{"n": 1, "title": "It Starts with Data 🍦"}, {"n": 2, "title": "Why Lines Break 📏"}, {"n": 3, "title": "From a Raw Score to a Probability ✨"}, {"n": 4, "title": "Weighted Clues 🧠"}, {"n": 5, "title": "Learning from Mistakes ⚙️"}, {"n": 6, "title": "Drawing the Line 🚦"}, {"n": 7, "title": "How Good Is It? 📊"}, {"n": 8, "title": "The ROC Curve 🔔"}, {"n": 9, "title": "What the Numbers Mean 📎"}, {"n": 10, "title": "The Full Picture 🌟"}], "phases": ["Understand", "Understand", "Build", "Understand", "Build", "Understand", "Understand", "Understand", "Reflect", "Reflect"]};
-  document.body.classList.add('statml-standardized');
-  const $ = (s, root=document) => root.querySelector(s);
-  const $$ = (s, root=document) => [...root.querySelectorAll(s)];
-  const hero = $(META.selectors.hero);
-  const layout = $(META.selectors.layout);
-  const narrative = $(META.selectors.narrative);
-  const visual = $(META.selectors.visual);
-  hero?.classList.add('statml-hero');
-  layout?.classList.add('statml-layout');
-  narrative?.classList.add('statml-narrative');
-  visual?.classList.add('statml-visual');
-  if (visual) { visual.setAttribute('role','region'); visual.setAttribute('aria-label', `${META.title} interactive visualisation`); }
-
-  let badge = hero?.querySelector('.hero-badge,.topic-badge,[data-statml-badge]');
-  if (!badge && hero) {
-    badge = [...hero.querySelectorAll('span,p')].find(el => /learning|method|blueprint|inference|classification|regression|statistical/i.test(el.textContent));
-    if (badge) badge.setAttribute('data-statml-badge','');
-  }
-  if (badge) badge.textContent = META.badge;
-
-  const stageEls = $$('[data-stage]').filter(el => Number(el.dataset.stage) > 0).sort((a,b) => Number(a.dataset.stage)-Number(b.dataset.stage));
-  // Inline tokens are converted to local ink doodles after the runtime has
-  // built the stage rail; do not delete their semantic positions here.
-  const emojiRE = /$^/gu;
-  stageEls.forEach((stage, index) => {
-    stage.classList.add('statml-stage');
-    const n = Number(stage.dataset.stage);
-    if (!stage.id) stage.id = `statml-stage-${n}`;
-    const heading = stage.querySelector('h2,h1');
-    if (heading) heading.textContent = heading.textContent.replace(emojiRE,'').replace(/\s{2,}/g,' ').trim();
-    stage.querySelectorAll('h3,h4').forEach(sub => { if (!sub.children.length) sub.textContent = sub.textContent.replace(emojiRE,'').replace(/\s{2,}/g,' ').trim(); });
-    const label = stage.querySelector('.stage-label,.stage-num,.step-label');
-    if (label) label.textContent = `Stage ${String(n).padStart(2,'0')} · ${META.phases[index] || 'Learn'}`;
-  });
-
-  if (hero && !hero.querySelector('.statml-overview')) {
-    const overview = document.createElement('div');
-    overview.className = 'statml-overview';
-    overview.setAttribute('aria-label','Lesson outcomes');
-    overview.innerHTML = META.overview.map((item,i)=>`<div class="statml-overview-item"><span class="statml-overview-number">${i+1}</span><span>${item}</span></div>`).join('');
-    const cue = hero.querySelector('.scroll-cue,.scroll-hint,.scroll-indicator,.hero-scroll');
-    if (cue?.parentElement) cue.parentElement.insertBefore(overview,cue); else hero.appendChild(overview);
-  }
-
-  const first = stageEls[0];
-  if (first && !first.querySelector('.statml-prereq')) {
-    const box = document.createElement('div');
-    box.className = 'statml-prereq';
-    box.innerHTML = `<span class="statml-content-kicker">Before you start</span><p>${META.prereq}</p>`;
-    const h = first.querySelector('h2,h1');
-    h?.insertAdjacentElement('afterend',box);
-  }
-  const additionTarget = stageEls.find(el => Number(el.dataset.stage) === Number(META.additionStage)) || stageEls.at(-1);
-  if (additionTarget && !additionTarget.querySelector('.statml-deepening')) {
-    const box = document.createElement('div');
-    box.className='statml-deepening';
-    box.innerHTML=`<span class="statml-content-kicker">Complete the picture</span><h3>${META.additionTitle}</h3>${META.additionHtml}`;
-    additionTarget.appendChild(box);
-  }
-  const last = stageEls.at(-1);
-  if (last && !last.querySelector('.statml-takeaways')) {
-    const box = document.createElement('div');
-    box.className='statml-takeaways';
-    box.innerHTML=`<span class="statml-content-kicker">Key takeaways</span><ul>${META.takeaways.map(x=>`<li>${x}</li>`).join('')}</ul>`;
-    last.appendChild(box);
-  }
-
-  $$('button').forEach(b => { if (!b.getAttribute('type')) b.setAttribute('type','button'); });
-  $$('input[type="range"]').forEach((input,i) => {
-    if (!input.hasAttribute('aria-label')) {
-      const parent=input.closest('.control-row,.control-group,.slider-wrap,.k-slider-wrap') || input.parentElement;
-      const label=parent?.querySelector('label,.control-label');
-      input.setAttribute('aria-label', label?.textContent.trim() || `Interactive parameter ${i+1}`);
-    }
-  });
-
-  $$('body > .stage-dots,body > #stage-dots,body > #stage-dots-container,body > .stage-nav-dots').forEach(el => el.classList.add('statml-legacy-stage-nav'));
-  const rail=document.createElement('nav');
-  rail.className='statml-stage-rail';
-  rail.setAttribute('aria-label','Lesson stages');
-  stageEls.forEach((stage,index)=>{
-    const btn=document.createElement('button');
-    btn.className='statml-stage-button';
-    btn.type='button';
-    const heading=stage.querySelector('h2,h1')?.textContent.trim() || `Stage ${index+1}`;
-    btn.setAttribute('aria-label',`Go to stage ${index+1}: ${heading}`);
-    btn.innerHTML=`<span>${String(index+1).padStart(2,'0')} · ${heading}</span>`;
-    btn.addEventListener('click',()=>stage.scrollIntoView({behavior: matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'}));
-    rail.appendChild(btn);
-  });
-  document.body.appendChild(rail);
-  const railButtons=$$('.statml-stage-button',rail);
-  const activate=(stage)=>{
-    const idx=stageEls.indexOf(stage);
-    railButtons.forEach((b,i)=> i===idx ? b.setAttribute('aria-current','step') : b.removeAttribute('aria-current'));
-  };
-  if (stageEls.length) activate(stageEls[0]);
-  const observer=new StatMLStageObserver(entries=>{
-    const visible=entries.filter(e=>e.isIntersecting).sort((a,b)=>b.intersectionRatio-a.intersectionRatio)[0];
-    if (visible) activate(visible.target);
-  },{rootMargin:'-25% 0px -45% 0px',threshold:[0,.15,.35,.6]});
-  stageEls.forEach(s=>observer.observe(s));
-  requestAnimationFrame(() => window.dispatchEvent(new Event('resize')));
-})();
-</script>
-
-<script src="core-modules.js"></script>
-<script src="academic-rigor.js"></script>
-<style id="inline-ink-doodle-style">
-.hw-inline-doodle{display:inline-block;width:1.08em;height:1.08em;margin-inline:.045em;vertical-align:-.17em;line-height:1;position:relative;transform:rotate(var(--hw-tilt,0deg));color:currentColor}
-.hw-inline-doodle svg{display:block;width:100%;height:100%;overflow:visible}
-.hw-inline-doodle path,.hw-inline-doodle circle,.hw-inline-doodle ellipse,.hw-inline-doodle line,.hw-inline-doodle polyline,.hw-inline-doodle rect{fill:none;stroke:currentColor;stroke-width:1.15;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke}
-.hw-inline-doodle .ink-fill{fill:currentColor;fill-opacity:.16}
-.hw-inline-doodle .ink-warm{stroke:#b55a52}.hw-inline-doodle .ink-orange{stroke:#d97706}.hw-inline-doodle .ink-green{stroke:#2d7a4b}.hw-inline-doodle .ink-red{stroke:#b84b47}
-</style>
-<script id="inline-ink-doodle-runtime">
-(()=>{const re=/(\p{Extended_Pictographic}(?:\uFE0F)?)/gu,kind=Object.create(null);
-[['👀','eyes'],['▶','play'],['⏸','pause'],['⚠️','warn'],['⚠','warn'],['❌','cross'],['📖','book'],['💡','bulb'],['🍎','apple'],['🍊','orange'],['★','star'],['✅','check'],['🧠','brain'],['💪','muscle'],['🍦','ice'],['🤔','think'],['📌','pin'],['📏','ruler'],['🚧','barrier'],['✨','spark'],['📐','angle'],['🛠️','tools'],['🛠','tools'],['📋','clipbd'],['⚙️','gear'],['⚙','gear'],['🚦','traffic'],['🔍','magnify'],['📊','chart'],['👉','point'],['🔔','bell'],['📎','clip'],['🎲','dice'],['🌟','sun'],['🍬','candy'],['🔬','scope'],['🎉','party'],['🟢','green'],['🔵','blue'],['🟠','orangeDot'],['🔴','red'],['🔢','numbers'],['🔥','fire']].forEach(a=>kind[a[0].replace(/\uFE0F/g,'')]=a[1]);
-const shape={
-eyes:'<path d="M1 6Q3 2 5.8 6Q3 10 1 6"/><path d="M6.2 6Q9 2 11 6Q9 10 6.2 6"/><ellipse cx="3.5" cy="6" rx=".7" ry="1.1"/><ellipse cx="8.5" cy="6" rx=".7" ry="1.1"/>',
-play:'<path class="ink-fill" d="M2 1.5L10 5.8L2.1 10Q1.4 10 1.5 9Z"/>',pause:'<path d="M3 2L3.1 10"/><path d="M8.6 2.1L8.5 9.8"/>',
-warn:'<path class="ink-fill" d="M6 1L11 10L1 10Z"/><path d="M6 3.6L6.2 7.2"/><circle cx="6.15" cy="8.6" r=".45"/>',
-cross:'<path d="M2 2L10 10"/><path d="M10 2L2 10"/>',book:'<path d="M1.3 2Q3.6 1.3 5.9 3V10Q3.5 8.5 1.3 9Z"/><path d="M10.7 2Q8.4 1.3 6.1 3V10Q8.5 8.5 10.7 9Z"/><path d="M2.3 4Q4 3.8 5.5 4.8M9.7 4Q8 3.8 6.5 4.8"/>',
-bulb:'<path class="ink-fill" d="M3 6Q2.8 3 6 1.7Q9.2 3 8.8 6Q8 7.5 7 7.8H4.8Q3.8 7.2 3 6Z"/><path d="M4.7 8.4L7.3 8.3M5.1 9.5L6.9 9.4"/>',
-apple:'<path class="ink-fill ink-warm" d="M2.1 4.4Q3.5 2.9 5.6 3.8Q7.7 2.9 9.5 4.5Q10 7.6 7.3 10Q6 10.8 5.5 9.8Q4.6 10.8 3.3 10Q1.1 7.7 2.1 4.4Z"/><path d="M5.7 3.6Q5.5 1.7 7.2 .9Q8.5 .7 8.9 1.2Q7.9 2.7 5.7 3.6Z"/>',
-orange:'<path class="ink-fill ink-orange" d="M6 1.9Q9.8 1.8 10 6Q9.7 9.8 6 10Q2.2 9.8 2 6Q2.2 2.1 6 1.9Z"/><path d="M5.8 1.9Q6.1 1.1 7.4 1.2M4.1 4.4Q5.6 3.8 7.5 4.2"/>',
-star:'<path class="ink-fill" d="M6 1.1L7.1 4.2L10.3 4.2L7.8 6.1L8.8 9.6L6 7.5L3.1 9.6L4.1 6.2L1.6 4.2L4.9 4.1Z"/>',
-check:'<path d="M1.6 6.2L4.5 9.1L10.4 2.8"/>',brain:'<path class="ink-fill" d="M4 10Q1.8 9 2.4 7.2Q.9 5.4 2.4 4.2Q1.7 2.3 3.6 1.8Q5 .4 6 1.7Q7.3 .4 8.6 1.9Q10.4 2.5 9.5 4.1Q11 5.7 9.5 7.2Q10 9.2 7.9 9.8Z"/><path d="M5.8 1.9Q4.8 3 5.9 4Q4.7 5.2 5.9 6Q4.9 7.1 5.8 8.8M3 4.2Q4 4.1 4.4 5M7 3Q8.2 3.2 8.1 4.4M7 7Q8.2 6.9 8.8 7.7"/>',
-muscle:'<path class="ink-fill ink-green" d="M1.7 9Q1.9 6.5 3.5 5.2Q4.8 5.4 5.1 3.6Q5.8 1.7 7.5 2.1Q8.8 2.9 7.9 5Q9.8 4.8 10.2 6.4Q10.2 8.8 7.6 9.8Z"/><path d="M4.6 5.2Q5.8 6.1 7.2 5.1"/>',
-generic:'<path d="M1.5 6Q3 2.4 6 3.2Q8.8 1.7 10.5 5.5Q9 8.8 6.2 8Q3.3 10 1.5 6Z"/><path d="M3 6.4Q6 4.4 9 6.3"/>'
-};
-const aliases={ice:'bulb',think:'generic',pin:'generic',ruler:'ruler',barrier:'generic',spark:'star',angle:'angle',tools:'generic',clipbd:'clip',gear:'generic',traffic:'generic',magnify:'generic',chart:'generic',point:'generic',bell:'generic',clip:'generic',dice:'generic',sun:'star',candy:'generic',scope:'generic',party:'star',green:'generic',blue:'generic',orangeDot:'orange',red:'generic',numbers:'generic',fire:'spark'};
-const labels={'👀':'look here','▶':'play','⏸':'pause','⚠':'warning','❌':'not correct','📖':'book','💡':'idea','🍎':'apple','🍊':'orange','★':'query point','✅':'correct','🧠':'concept','💪':'strength','🍦':'ice cream','🤔':'thinking','📌':'note','📏':'ruler','🚧':'boundary','✨':'sparkle','📐':'angle','🛠':'tools','📋':'clipboard','⚙':'settings','🚦':'decision threshold','🔍':'inspect','📊':'chart','👉':'pointer','🔔':'bell','📎':'paper clip','🎲':'random','🌟':'highlight','🍬':'sigmoid','🔬':'experiment','🎉':'celebration','🟢':'correct','🔵':'training','🟠':'test','🔴':'incorrect','🔢':'numbers','🔥':'important'};
-let serial=0;
-function doodle(t){const n=t.replace(/\uFE0F/g,''),s=document.createElement('span'),k=kind[n]||'generic';s.className='hw-inline-doodle';s.dataset.hwSymbol=t;s.dataset.hwKind=k;s.setAttribute('role','img');s.setAttribute('aria-label',labels[n]||'hand-drawn symbol');s.style.setProperty('--hw-tilt',(((serial++%5)-2)*.65)+'deg');s.innerHTML='<svg viewBox="0 0 12 12" aria-hidden="true" focusable="false">'+(shape[aliases[k]||k]||shape.generic)+'</svg>';return s}
-function scan(root){const w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT),nodes=[];let n;while(n=w.nextNode()){if(!n.nodeValue||n.parentElement.closest('script,style,.hw-inline-doodle'))continue;re.lastIndex=0;if(re.test(n.nodeValue))nodes.push(n)}nodes.forEach(node=>{const v=node.nodeValue;re.lastIndex=0;let at=0,m,frag=document.createDocumentFragment();while((m=re.exec(v))){if(m.index>at)frag.appendChild(document.createTextNode(v.slice(at,m.index)));frag.appendChild(doodle(m[1]));at=m.index+m[1].length}if(at<v.length)frag.appendChild(document.createTextNode(v.slice(at)));node.parentNode.replaceChild(frag,node)})}
-function cleanDoodleLabels(){document.querySelectorAll('.statml-stage-button[aria-label]').forEach(btn=>{const v=btn.getAttribute('aria-label')||'';btn.setAttribute('aria-label',v.replace(re,m=>labels[m.replace(/\uFE0F/g,'')]||'hand-drawn symbol'))})}
-scan(document.body);cleanDoodleLabels();let queued=false;new MutationObserver(()=>{if(queued)return;queued=true;queueMicrotask(()=>{queued=false;scan(document.body);cleanDoodleLabels()})}).observe(document.body,{subtree:true,childList:true});
-})();
-</script>
-</body>
-</html>
+</article><aside class="lab-home" aria-label="Interactive notebook"><section class="lab-panel" id="lab-panel"><header class="lab-header"><div><p class="eyebrow">THE LIVE NOTEBOOK <span id="lab-stage">01</span></p><h2 id="lab-title">It Starts with Data</h2></div><button class="icon-button" type="button" data-reset aria-label="Reset this experiment" title="Reset this experiment">↺</button></header>
+<div id="lab-content" data-interactive="classification"><p class="loading-note">Your interactive notebook is loading. The complete written lesson is on the left.</p></div>
+<p id="motion-status" class="motion-status" aria-live="off"></p><p class="lab-caption" id="lab-caption">Read the idea, inspect a small example, then change one thing in the live notebook.</p><p class="live-announcement" role="status" aria-live="polite"></p></section></aside></main>
+<dialog class="lab-dialog" aria-labelledby="dialog-title"><header class="dialog-header"><strong id="dialog-title">Explore the notebook</strong><button type="button" data-close-lab>Back to reading ✕</button></header><div class="dialog-body"></div></dialog>
+<details class="topic-directory"><summary>Explore all 33 topics</summary><nav aria-label="All academy topics"><a href="anova.html">Analysis of Variance (ANOVA)</a><a href="bias-variance.html">Bias-Variance Trade-Off &amp; Resampling</a><a href="chi-square.html">Chi-Square Test of Independence</a><a href="classification-trees.html">Classification Trees</a><a href="confidence-hypothesis-testing.html">Confidence Intervals &amp; Hypothesis Testing</a><a href="correlation.html">Correlation</a><a href="data-leakage-pipelines.html">Data Leakage &amp; Pipelines</a><a href="deep-learning.html">Deep Learning</a><a href="evaluation-metrics.html">Evaluation Metrics</a><a href="experimental-design.html">Experimental Design &amp; Randomisation</a><a href="gradient-boosting.html">Gradient Boosting</a><a href="hierarchical-clustering.html">Hierarchical Clustering</a><a href="imbalanced-classification.html">Imbalanced Classification</a><a href="kmeans.html">K-Means Clustering</a><a href="knn.html">K-Nearest Neighbors (KNN)</a><a href="lda.html">Linear Discriminant Analysis (LDA)</a><a href="logistic-regression.html" aria-current="page">Logistic Regression</a><a href="missing-data-encoding.html">Missing Data &amp; Encoding</a><a href="model-selection.html">Model Selection &amp; Regularization</a><a href="multiple-linear-regression.html">Multiple Linear Regression</a><a href="naive-bayes.html">Naive Bayes</a><a href="neural-networks.html">Neural Networks</a><a href="one-r.html">One-R</a><a href="polynomial-regression.html">Polynomial Regression</a><a href="pca.html">Principal Component Analysis (PCA)</a><a href="probability-sampling.html">Probability &amp; Sampling Distributions</a><a href="qda.html">Quadratic Discriminant Analysis (QDA)</a><a href="random-forest.html">Random Forest</a><a href="regression-diagnostics.html">Regression Diagnostics</a><a href="regression-trees.html">Regression Trees</a><a href="simple-linear-regression.html">Simple Linear Regression</a><a href="support-vector-machine.html">Support Vector Machines — Separate classes with breathing room</a><a href="time-series-analysis.html">Time Series Analysis</a></nav></details>
+<footer class="notebook-footer"><a href="../index.html">← Back to the Data Science Universe</a><span>StatML Academy · Learn by making the idea move.</span></footer>
+</body></html>

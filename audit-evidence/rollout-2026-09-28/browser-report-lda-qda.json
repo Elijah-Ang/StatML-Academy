@@ -1,0 +1,536 @@
+{
+  "checks": 75,
+  "widths": [
+    1440,
+    430,
+    320
+  ],
+  "errors": [],
+  "stages": [
+    {
+      "slug": "lda",
+      "width": 1440,
+      "stage": 1,
+      "scene": "clouds",
+      "clipped": 0
+    },
+    {
+      "slug": "lda",
+      "width": 1440,
+      "stage": 2,
+      "scene": "clouds",
+      "clipped": 0
+    },
+    {
+      "slug": "lda",
+      "width": 1440,
+      "stage": 3,
+      "scene": "split",
+      "clipped": 0
+    },
+    {
+      "slug": "lda",
+      "width": 1440,
+      "stage": 4,
+      "scene": "clouds",
+      "clipped": 0
+    },
+    {
+      "slug": "lda",
+      "width": 1440,
+      "stage": 5,
+      "scene": "means",
+      "clipped": 0
+    },
+    {
+      "slug": "lda",
+      "width": 1440,
+      "stage": 6,
+      "scene": "covariance",
+      "clipped": 0
+    },
+    {
+      "slug": "lda",
+      "width": 1440,
+      "stage": 7,
+      "scene": "covariance",
+      "clipped": 0
+    },
+    {
+      "slug": "lda",
+      "width": 1440,
+      "stage": 8,
+      "scene": "means",
+      "clipped": 0
+    },
+    {
+      "slug": "lda",
+      "width": 1440,
+      "stage": 9,
+      "scene": "projection",
+      "clipped": 0
+    },
+    {
+      "slug": "lda",
+      "width": 1440,
+      "stage": 10,
+      "scene": "boundary",
+      "clipped": 0
+    },
+    {
+      "slug": "lda",
+      "width": 1440,
+      "stage": 11,
+      "scene": "scores",
+      "clipped": 0
+    },
+    {
+      "slug": "lda",
+      "width": 1440,
+      "stage": 12,
+      "scene": "confusion",
+      "clipped": 0
+    },
+    {
+      "slug": "lda",
+      "width": 1440,
+      "stage": 13,
+      "scene": "coefficients",
+      "clipped": 0
+    },
+    {
+      "slug": "lda",
+      "width": 1440,
+      "stage": 14,
+      "scene": "clouds",
+      "clipped": 0
+    },
+    {
+      "slug": "lda",
+      "width": 1440,
+      "stage": 15,
+      "scene": "boundary",
+      "clipped": 0
+    },
+    {
+      "slug": "qda",
+      "width": 1440,
+      "stage": 1,
+      "scene": "clouds",
+      "clipped": 0
+    },
+    {
+      "slug": "qda",
+      "width": 1440,
+      "stage": 2,
+      "scene": "split",
+      "clipped": 0
+    },
+    {
+      "slug": "qda",
+      "width": 1440,
+      "stage": 3,
+      "scene": "boundary",
+      "clipped": 0
+    },
+    {
+      "slug": "qda",
+      "width": 1440,
+      "stage": 4,
+      "scene": "covariance",
+      "clipped": 0
+    },
+    {
+      "slug": "qda",
+      "width": 1440,
+      "stage": 5,
+      "scene": "distances",
+      "clipped": 0
+    },
+    {
+      "slug": "qda",
+      "width": 1440,
+      "stage": 6,
+      "scene": "boundary",
+      "clipped": 0
+    },
+    {
+      "slug": "qda",
+      "width": 1440,
+      "stage": 7,
+      "scene": "confusion",
+      "clipped": 0
+    },
+    {
+      "slug": "qda",
+      "width": 1440,
+      "stage": 8,
+      "scene": "coefficients",
+      "clipped": 0
+    },
+    {
+      "slug": "qda",
+      "width": 1440,
+      "stage": 9,
+      "scene": "covariance",
+      "clipped": 0
+    },
+    {
+      "slug": "qda",
+      "width": 1440,
+      "stage": 10,
+      "scene": "boundary",
+      "clipped": 0
+    },
+    {
+      "slug": "lda",
+      "width": 430,
+      "stage": 1,
+      "scene": "clouds",
+      "clipped": 0
+    },
+    {
+      "slug": "lda",
+      "width": 430,
+      "stage": 2,
+      "scene": "clouds",
+      "clipped": 0
+    },
+    {
+      "slug": "lda",
+      "width": 430,
+      "stage": 3,
+      "scene": "split",
+      "clipped": 0
+    },
+    {
+      "slug": "lda",
+      "width": 430,
+      "stage": 4,
+      "scene": "clouds",
+      "clipped": 0
+    },
+    {
+      "slug": "lda",
+      "width": 430,
+      "stage": 5,
+      "scene": "means",
+      "clipped": 0
+    },
+    {
+      "slug": "lda",
+      "width": 430,
+      "stage": 6,
+      "scene": "covariance",
+      "clipped": 0
+    },
+    {
+      "slug": "lda",
+      "width": 430,
+      "stage": 7,
+      "scene": "covariance",
+      "clipped": 0
+    },
+    {
+      "slug": "lda",
+      "width": 430,
+      "stage": 8,
+      "scene": "means",
+      "clipped": 0
+    },
+    {
+      "slug": "lda",
+      "width": 430,
+      "stage": 9,
+      "scene": "projection",
+      "clipped": 0
+    },
+    {
+      "slug": "lda",
+      "width": 430,
+      "stage": 10,
+      "scene": "boundary",
+      "clipped": 0
+    },
+    {
+      "slug": "lda",
+      "width": 430,
+      "stage": 11,
+      "scene": "scores",
+      "clipped": 0
+    },
+    {
+      "slug": "lda",
+      "width": 430,
+      "stage": 12,
+      "scene": "confusion",
+      "clipped": 0
+    },
+    {
+      "slug": "lda",
+      "width": 430,
+      "stage": 13,
+      "scene": "coefficients",
+      "clipped": 0
+    },
+    {
+      "slug": "lda",
+      "width": 430,
+      "stage": 14,
+      "scene": "clouds",
+      "clipped": 0
+    },
+    {
+      "slug": "lda",
+      "width": 430,
+      "stage": 15,
+      "scene": "boundary",
+      "clipped": 0
+    },
+    {
+      "slug": "qda",
+      "width": 430,
+      "stage": 1,
+      "scene": "clouds",
+      "clipped": 0
+    },
+    {
+      "slug": "qda",
+      "width": 430,
+      "stage": 2,
+      "scene": "split",
+      "clipped": 0
+    },
+    {
+      "slug": "qda",
+      "width": 430,
+      "stage": 3,
+      "scene": "boundary",
+      "clipped": 0
+    },
+    {
+      "slug": "qda",
+      "width": 430,
+      "stage": 4,
+      "scene": "covariance",
+      "clipped": 0
+    },
+    {
+      "slug": "qda",
+      "width": 430,
+      "stage": 5,
+      "scene": "distances",
+      "clipped": 0
+    },
+    {
+      "slug": "qda",
+      "width": 430,
+      "stage": 6,
+      "scene": "boundary",
+      "clipped": 0
+    },
+    {
+      "slug": "qda",
+      "width": 430,
+      "stage": 7,
+      "scene": "confusion",
+      "clipped": 0
+    },
+    {
+      "slug": "qda",
+      "width": 430,
+      "stage": 8,
+      "scene": "coefficients",
+      "clipped": 0
+    },
+    {
+      "slug": "qda",
+      "width": 430,
+      "stage": 9,
+      "scene": "covariance",
+      "clipped": 0
+    },
+    {
+      "slug": "qda",
+      "width": 430,
+      "stage": 10,
+      "scene": "boundary",
+      "clipped": 0
+    },
+    {
+      "slug": "lda",
+      "width": 320,
+      "stage": 1,
+      "scene": "clouds",
+      "clipped": 0
+    },
+    {
+      "slug": "lda",
+      "width": 320,
+      "stage": 2,
+      "scene": "clouds",
+      "clipped": 0
+    },
+    {
+      "slug": "lda",
+      "width": 320,
+      "stage": 3,
+      "scene": "split",
+      "clipped": 0
+    },
+    {
+      "slug": "lda",
+      "width": 320,
+      "stage": 4,
+      "scene": "clouds",
+      "clipped": 0
+    },
+    {
+      "slug": "lda",
+      "width": 320,
+      "stage": 5,
+      "scene": "means",
+      "clipped": 0
+    },
+    {
+      "slug": "lda",
+      "width": 320,
+      "stage": 6,
+      "scene": "covariance",
+      "clipped": 0
+    },
+    {
+      "slug": "lda",
+      "width": 320,
+      "stage": 7,
+      "scene": "covariance",
+      "clipped": 0
+    },
+    {
+      "slug": "lda",
+      "width": 320,
+      "stage": 8,
+      "scene": "means",
+      "clipped": 0
+    },
+    {
+      "slug": "lda",
+      "width": 320,
+      "stage": 9,
+      "scene": "projection",
+      "clipped": 0
+    },
+    {
+      "slug": "lda",
+      "width": 320,
+      "stage": 10,
+      "scene": "boundary",
+      "clipped": 0
+    },
+    {
+      "slug": "lda",
+      "width": 320,
+      "stage": 11,
+      "scene": "scores",
+      "clipped": 0
+    },
+    {
+      "slug": "lda",
+      "width": 320,
+      "stage": 12,
+      "scene": "confusion",
+      "clipped": 0
+    },
+    {
+      "slug": "lda",
+      "width": 320,
+      "stage": 13,
+      "scene": "coefficients",
+      "clipped": 0
+    },
+    {
+      "slug": "lda",
+      "width": 320,
+      "stage": 14,
+      "scene": "clouds",
+      "clipped": 0
+    },
+    {
+      "slug": "lda",
+      "width": 320,
+      "stage": 15,
+      "scene": "boundary",
+      "clipped": 0
+    },
+    {
+      "slug": "qda",
+      "width": 320,
+      "stage": 1,
+      "scene": "clouds",
+      "clipped": 0
+    },
+    {
+      "slug": "qda",
+      "width": 320,
+      "stage": 2,
+      "scene": "split",
+      "clipped": 0
+    },
+    {
+      "slug": "qda",
+      "width": 320,
+      "stage": 3,
+      "scene": "boundary",
+      "clipped": 0
+    },
+    {
+      "slug": "qda",
+      "width": 320,
+      "stage": 4,
+      "scene": "covariance",
+      "clipped": 0
+    },
+    {
+      "slug": "qda",
+      "width": 320,
+      "stage": 5,
+      "scene": "distances",
+      "clipped": 0
+    },
+    {
+      "slug": "qda",
+      "width": 320,
+      "stage": 6,
+      "scene": "boundary",
+      "clipped": 0
+    },
+    {
+      "slug": "qda",
+      "width": 320,
+      "stage": 7,
+      "scene": "confusion",
+      "clipped": 0
+    },
+    {
+      "slug": "qda",
+      "width": 320,
+      "stage": 8,
+      "scene": "coefficients",
+      "clipped": 0
+    },
+    {
+      "slug": "qda",
+      "width": 320,
+      "stage": 9,
+      "scene": "covariance",
+      "clipped": 0
+    },
+    {
+      "slug": "qda",
+      "width": 320,
+      "stage": 10,
+      "scene": "boundary",
+      "clipped": 0
+    }
+  ]
+}

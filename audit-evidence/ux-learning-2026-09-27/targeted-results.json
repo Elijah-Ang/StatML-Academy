@@ -1,0 +1,62 @@
+[
+  {
+    "slug": "simple-linear-regression",
+    "reducedMotionRAFinOneIdleSecond": 60,
+    "last": {
+      "stage": 8,
+      "showPlayground": 0.9502993825197004,
+      "active": [
+        "8"
+      ]
+    },
+    "backToFirst": {
+      "stage": 1,
+      "showPlayground": 0.0025720005450639866,
+      "active": [
+        "1"
+      ]
+    }
+  },
+  {
+    "slug": "kmeans",
+    "reducedMotionRAFinOneIdleSecond": 60
+  },
+  {
+    "slug": "pca",
+    "reducedMotionRAFinOneIdleSecond": 60
+  },
+  {
+    "slug": "naive-bayes",
+    "reducedMotionRAFinOneIdleSecond": 0,
+    "sameSVGAfterStep": false,
+    "playStartedInReducedMotion": "true"
+  },
+  {
+    "slug": "deep-learning",
+    "reducedMotionRAFinOneIdleSecond": 0,
+    "sameSVGAfterStep": false,
+    "playStartedInReducedMotion": "true"
+  },
+  {
+    "slug": "probability-sampling",
+    "reducedMotionRAFinOneIdleSecond": 0,
+    "means": [
+      {
+        "width": 1440,
+        "metrics": "3.00\nSE theory\n100\nSamples\n50.1\nMean"
+      },
+      {
+        "width": 1000,
+        "metrics": "3.00\nSE theory\n100\nSamples\n49.7\nMean"
+      },
+      {
+        "width": 1200,
+        "metrics": "3.00\nSE theory\n100\nSamples\n50.5\nMean"
+      },
+      {
+        "width": 1440,
+        "metrics": "3.00\nSE theory\n100\nSamples\n49.7\nMean"
+      }
+    ]
+  }
+]

@@ -1,0 +1,930 @@
+{
+  "started": "2026-09-28T12:59:00.843Z",
+  "method": "Visible SVG text DOM bounding boxes: intersections above 2 CSS pixels in both dimensions; reports require visual review. Scroll selects each section. Reduced motion; web fonts ready.",
+  "scenes": [
+    {
+      "slug": "neural-networks",
+      "width": 1440,
+      "stage": 1,
+      "scene": "network",
+      "texts": 10,
+      "svgwidth": 634,
+      "svgheight": 460,
+      "pairs": [
+        {
+          "a": {
+            "key": "network-xt0",
+            "text": "-2.5",
+            "box": {
+              "x": 740.0291748046875,
+              "y": 586.385009765625,
+              "w": 18.09375,
+              "h": 16
+            },
+            "svgbox": {
+              "x": 35.95189666748047,
+              "y": 373.99835205078125,
+              "w": 18.096208572387695,
+              "h": 16.002174377441406
+            }
+          },
+          "b": {
+            "key": "network-yt0",
+            "text": "-2.5",
+            "box": {
+              "x": 723.9832153320312,
+              "y": 573.3868408203125,
+              "w": 18.09375,
+              "h": 16
+            },
+            "svgbox": {
+              "x": 19.903789520263672,
+              "y": 360.99835205078125,
+              "w": 18.096208572387695,
+              "h": 16.002174377441406
+            }
+          },
+          "intersection": {
+            "w": 2.04779052734375,
+            "h": 3.0018310546875,
+            "area": 6.147121198475361
+          }
+        }
+      ],
+      "clipped": []
+    },
+    {
+      "slug": "neural-networks",
+      "width": 1440,
+      "stage": 2,
+      "scene": "inputs",
+      "texts": 10,
+      "svgwidth": 634,
+      "svgheight": 460,
+      "pairs": [
+        {
+          "a": {
+            "key": "inputs-xt0",
+            "text": "-2.5",
+            "box": {
+              "x": 741.0289916992188,
+              "y": 546.3905029296875,
+              "w": 18.09375,
+              "h": 16
+            },
+            "svgbox": {
+              "x": 36.95189666748047,
+              "y": 333.99835205078125,
+              "w": 18.096208572387695,
+              "h": 16.002174377441406
+            }
+          },
+          "b": {
+            "key": "inputs-yt0",
+            "text": "-2.5",
+            "box": {
+              "x": 724.9830932617188,
+              "y": 533.3922119140625,
+              "w": 18.09375,
+              "h": 16
+            },
+            "svgbox": {
+              "x": 20.903791427612305,
+              "y": 320.99835205078125,
+              "w": 18.096208572387695,
+              "h": 16.002174377441406
+            }
+          },
+          "intersection": {
+            "w": 2.0478515625,
+            "h": 3.001708984375,
+            "area": 6.147054433822632
+          }
+        }
+      ],
+      "clipped": []
+    },
+    {
+      "slug": "neural-networks",
+      "width": 1440,
+      "stage": 3,
+      "scene": "pipeline",
+      "texts": 5,
+      "svgwidth": 634,
+      "svgheight": 460,
+      "pairs": [],
+      "clipped": []
+    },
+    {
+      "slug": "neural-networks",
+      "width": 1440,
+      "stage": 4,
+      "scene": "neuron",
+      "texts": 19,
+      "svgwidth": 634,
+      "svgheight": 460,
+      "pairs": [],
+      "clipped": []
+    },
+    {
+      "slug": "neural-networks",
+      "width": 1440,
+      "stage": 5,
+      "scene": "neuron",
+      "texts": 27,
+      "svgwidth": 634,
+      "svgheight": 693,
+      "pairs": [],
+      "clipped": []
+    },
+    {
+      "slug": "neural-networks",
+      "width": 1440,
+      "stage": 6,
+      "scene": "activation",
+      "texts": 13,
+      "svgwidth": 634,
+      "svgheight": 508,
+      "pairs": [],
+      "clipped": []
+    },
+    {
+      "slug": "neural-networks",
+      "width": 1440,
+      "stage": 7,
+      "scene": "forward",
+      "texts": 27,
+      "svgwidth": 634,
+      "svgheight": 693,
+      "pairs": [],
+      "clipped": []
+    },
+    {
+      "slug": "neural-networks",
+      "width": 1440,
+      "stage": 8,
+      "scene": "loss",
+      "texts": 10,
+      "svgwidth": 634,
+      "svgheight": 460,
+      "pairs": [],
+      "clipped": []
+    },
+    {
+      "slug": "neural-networks",
+      "width": 1440,
+      "stage": 9,
+      "scene": "backward",
+      "texts": 8,
+      "svgwidth": 634,
+      "svgheight": 460,
+      "pairs": [],
+      "clipped": []
+    },
+    {
+      "slug": "neural-networks",
+      "width": 1440,
+      "stage": 10,
+      "scene": "update",
+      "texts": 8,
+      "svgwidth": 634,
+      "svgheight": 460,
+      "pairs": [],
+      "clipped": []
+    },
+    {
+      "slug": "neural-networks",
+      "width": 1440,
+      "stage": 11,
+      "scene": "cycle",
+      "texts": 27,
+      "svgwidth": 634,
+      "svgheight": 693,
+      "pairs": [],
+      "clipped": []
+    },
+    {
+      "slug": "neural-networks",
+      "width": 1440,
+      "stage": 12,
+      "scene": "training",
+      "texts": 10,
+      "svgwidth": 634,
+      "svgheight": 460,
+      "pairs": [],
+      "clipped": []
+    },
+    {
+      "slug": "neural-networks",
+      "width": 1440,
+      "stage": 13,
+      "scene": "settings",
+      "texts": 10,
+      "svgwidth": 634,
+      "svgheight": 460,
+      "pairs": [],
+      "clipped": []
+    },
+    {
+      "slug": "neural-networks",
+      "width": 1440,
+      "stage": 14,
+      "scene": "evaluation",
+      "texts": 10,
+      "svgwidth": 634,
+      "svgheight": 460,
+      "pairs": [],
+      "clipped": []
+    },
+    {
+      "slug": "neural-networks",
+      "width": 1440,
+      "stage": 15,
+      "scene": "errors",
+      "texts": 10,
+      "svgwidth": 634,
+      "svgheight": 460,
+      "pairs": [
+        {
+          "a": {
+            "key": "errors-xt0",
+            "text": "-2.5",
+            "box": {
+              "x": 740.0291748046875,
+              "y": 576.3864135742188,
+              "w": 18.09375,
+              "h": 16
+            },
+            "svgbox": {
+              "x": 35.95189666748047,
+              "y": 363.9983825683594,
+              "w": 18.096208572387695,
+              "h": 16.002174377441406
+            }
+          },
+          "b": {
+            "key": "errors-yt0",
+            "text": "-2.5",
+            "box": {
+              "x": 723.9832153320312,
+              "y": 563.38818359375,
+              "w": 18.09375,
+              "h": 16
+            },
+            "svgbox": {
+              "x": 19.903789520263672,
+              "y": 350.9983825683594,
+              "w": 18.096208572387695,
+              "h": 16.002174377441406
+            }
+          },
+          "intersection": {
+            "w": 2.04779052734375,
+            "h": 3.00177001953125,
+            "area": 6.146996211260557
+          }
+        }
+      ],
+      "clipped": []
+    },
+    {
+      "slug": "neural-networks",
+      "width": 1440,
+      "stage": 16,
+      "scene": "contract",
+      "texts": 10,
+      "svgwidth": 634,
+      "svgheight": 460,
+      "pairs": [
+        {
+          "a": {
+            "key": "contract-xt0",
+            "text": "-2.5",
+            "box": {
+              "x": 740.0291748046875,
+              "y": 596.1851806640625,
+              "w": 18.09375,
+              "h": 16
+            },
+            "svgbox": {
+              "x": 35.95189666748047,
+              "y": 349.99835205078125,
+              "w": 18.096208572387695,
+              "h": 16.002174377441406
+            }
+          },
+          "b": {
+            "key": "contract-yt0",
+            "text": "-2.5",
+            "box": {
+              "x": 723.9832153320312,
+              "y": 583.1869506835938,
+              "w": 18.09375,
+              "h": 15.99993896484375
+            },
+            "svgbox": {
+              "x": 19.903789520263672,
+              "y": 336.99835205078125,
+              "w": 18.096208572387695,
+              "h": 16.002174377441406
+            }
+          },
+          "intersection": {
+            "w": 2.04779052734375,
+            "h": 3.001708984375,
+            "area": 6.1468712240457535
+          }
+        }
+      ],
+      "clipped": []
+    },
+    {
+      "slug": "neural-networks",
+      "width": 1440,
+      "stage": 17,
+      "scene": "architecture",
+      "texts": 59,
+      "svgwidth": 634,
+      "svgheight": 460,
+      "pairs": [],
+      "clipped": []
+    },
+    {
+      "slug": "neural-networks",
+      "width": 1440,
+      "stage": 18,
+      "scene": "network",
+      "texts": 10,
+      "svgwidth": 634,
+      "svgheight": 460,
+      "pairs": [
+        {
+          "a": {
+            "key": "network-xt0",
+            "text": "-2.5",
+            "box": {
+              "x": 740.0291748046875,
+              "y": 586.385009765625,
+              "w": 18.09375,
+              "h": 16
+            },
+            "svgbox": {
+              "x": 35.95189666748047,
+              "y": 373.99835205078125,
+              "w": 18.096208572387695,
+              "h": 16.002174377441406
+            }
+          },
+          "b": {
+            "key": "network-yt0",
+            "text": "-2.5",
+            "box": {
+              "x": 723.9832153320312,
+              "y": 573.3868408203125,
+              "w": 18.09375,
+              "h": 16
+            },
+            "svgbox": {
+              "x": 19.903789520263672,
+              "y": 360.99835205078125,
+              "w": 18.096208572387695,
+              "h": 16.002174377441406
+            }
+          },
+          "intersection": {
+            "w": 2.04779052734375,
+            "h": 3.0018310546875,
+            "area": 6.147121198475361
+          }
+        }
+      ],
+      "clipped": []
+    },
+    {
+      "slug": "neural-networks",
+      "width": 1440,
+      "stage": 19,
+      "scene": "cycle",
+      "texts": 27,
+      "svgwidth": 634,
+      "svgheight": 693,
+      "pairs": [],
+      "clipped": []
+    },
+    {
+      "slug": "neural-networks",
+      "width": 320,
+      "stage": 1,
+      "scene": "network",
+      "texts": 12,
+      "svgwidth": 250,
+      "svgheight": 460,
+      "pairs": [],
+      "clipped": []
+    },
+    {
+      "slug": "neural-networks",
+      "width": 320,
+      "stage": 2,
+      "scene": "inputs",
+      "texts": 12,
+      "svgwidth": 250,
+      "svgheight": 460,
+      "pairs": [],
+      "clipped": []
+    },
+    {
+      "slug": "neural-networks",
+      "width": 320,
+      "stage": 3,
+      "scene": "pipeline",
+      "texts": 7,
+      "svgwidth": 250,
+      "svgheight": 460,
+      "pairs": [],
+      "clipped": []
+    },
+    {
+      "slug": "neural-networks",
+      "width": 320,
+      "stage": 4,
+      "scene": "neuron",
+      "texts": 20,
+      "svgwidth": 250,
+      "svgheight": 460,
+      "pairs": [],
+      "clipped": []
+    },
+    {
+      "slug": "neural-networks",
+      "width": 320,
+      "stage": 5,
+      "scene": "neuron",
+      "texts": 32,
+      "svgwidth": 250,
+      "svgheight": 769,
+      "pairs": [],
+      "clipped": []
+    },
+    {
+      "slug": "neural-networks",
+      "width": 320,
+      "stage": 6,
+      "scene": "activation",
+      "texts": 15,
+      "svgwidth": 250,
+      "svgheight": 508,
+      "pairs": [],
+      "clipped": []
+    },
+    {
+      "slug": "neural-networks",
+      "width": 320,
+      "stage": 7,
+      "scene": "forward",
+      "texts": 32,
+      "svgwidth": 250,
+      "svgheight": 769,
+      "pairs": [],
+      "clipped": []
+    },
+    {
+      "slug": "neural-networks",
+      "width": 320,
+      "stage": 8,
+      "scene": "loss",
+      "texts": 11,
+      "svgwidth": 250,
+      "svgheight": 460,
+      "pairs": [],
+      "clipped": []
+    },
+    {
+      "slug": "neural-networks",
+      "width": 320,
+      "stage": 9,
+      "scene": "backward",
+      "texts": 14,
+      "svgwidth": 250,
+      "svgheight": 549,
+      "pairs": [],
+      "clipped": []
+    },
+    {
+      "slug": "neural-networks",
+      "width": 320,
+      "stage": 10,
+      "scene": "update",
+      "texts": 14,
+      "svgwidth": 250,
+      "svgheight": 549,
+      "pairs": [],
+      "clipped": []
+    },
+    {
+      "slug": "neural-networks",
+      "width": 320,
+      "stage": 11,
+      "scene": "cycle",
+      "texts": 32,
+      "svgwidth": 250,
+      "svgheight": 769,
+      "pairs": [],
+      "clipped": []
+    },
+    {
+      "slug": "neural-networks",
+      "width": 320,
+      "stage": 12,
+      "scene": "training",
+      "texts": 12,
+      "svgwidth": 250,
+      "svgheight": 460,
+      "pairs": [],
+      "clipped": []
+    },
+    {
+      "slug": "neural-networks",
+      "width": 320,
+      "stage": 13,
+      "scene": "settings",
+      "texts": 12,
+      "svgwidth": 250,
+      "svgheight": 460,
+      "pairs": [],
+      "clipped": []
+    },
+    {
+      "slug": "neural-networks",
+      "width": 320,
+      "stage": 14,
+      "scene": "evaluation",
+      "texts": 12,
+      "svgwidth": 250,
+      "svgheight": 460,
+      "pairs": [],
+      "clipped": []
+    },
+    {
+      "slug": "neural-networks",
+      "width": 320,
+      "stage": 15,
+      "scene": "errors",
+      "texts": 12,
+      "svgwidth": 250,
+      "svgheight": 460,
+      "pairs": [],
+      "clipped": []
+    },
+    {
+      "slug": "neural-networks",
+      "width": 320,
+      "stage": 16,
+      "scene": "contract",
+      "texts": 12,
+      "svgwidth": 250,
+      "svgheight": 460,
+      "pairs": [],
+      "clipped": []
+    },
+    {
+      "slug": "neural-networks",
+      "width": 320,
+      "stage": 17,
+      "scene": "architecture",
+      "texts": 61,
+      "svgwidth": 250,
+      "svgheight": 460,
+      "pairs": [],
+      "clipped": []
+    },
+    {
+      "slug": "neural-networks",
+      "width": 320,
+      "stage": 18,
+      "scene": "network",
+      "texts": 12,
+      "svgwidth": 250,
+      "svgheight": 460,
+      "pairs": [],
+      "clipped": []
+    },
+    {
+      "slug": "neural-networks",
+      "width": 320,
+      "stage": 19,
+      "scene": "cycle",
+      "texts": 32,
+      "svgwidth": 250,
+      "svgheight": 769,
+      "pairs": [],
+      "clipped": []
+    },
+    {
+      "slug": "deep-learning",
+      "width": 1440,
+      "stage": 1,
+      "scene": "task",
+      "texts": 3,
+      "svgwidth": 634,
+      "svgheight": 460,
+      "pairs": [],
+      "clipped": []
+    },
+    {
+      "slug": "deep-learning",
+      "width": 1440,
+      "stage": 2,
+      "scene": "shortcut",
+      "texts": 6,
+      "svgwidth": 634,
+      "svgheight": 460,
+      "pairs": [],
+      "clipped": []
+    },
+    {
+      "slug": "deep-learning",
+      "width": 1440,
+      "stage": 3,
+      "scene": "pipeline",
+      "texts": 5,
+      "svgwidth": 634,
+      "svgheight": 460,
+      "pairs": [],
+      "clipped": []
+    },
+    {
+      "slug": "deep-learning",
+      "width": 1440,
+      "stage": 4,
+      "scene": "tensor",
+      "texts": 36,
+      "svgwidth": 634,
+      "svgheight": 460,
+      "pairs": [],
+      "clipped": []
+    },
+    {
+      "slug": "deep-learning",
+      "width": 1440,
+      "stage": 5,
+      "scene": "neuron",
+      "texts": 19,
+      "svgwidth": 634,
+      "svgheight": 460,
+      "pairs": [],
+      "clipped": []
+    },
+    {
+      "slug": "deep-learning",
+      "width": 1440,
+      "stage": 6,
+      "scene": "hierarchy",
+      "texts": 59,
+      "svgwidth": 634,
+      "svgheight": 460,
+      "pairs": [],
+      "clipped": []
+    },
+    {
+      "slug": "deep-learning",
+      "width": 1440,
+      "stage": 7,
+      "scene": "cycle",
+      "texts": 27,
+      "svgwidth": 634,
+      "svgheight": 693,
+      "pairs": [],
+      "clipped": []
+    },
+    {
+      "slug": "deep-learning",
+      "width": 1440,
+      "stage": 8,
+      "scene": "regularization",
+      "texts": 27,
+      "svgwidth": 634,
+      "svgheight": 693,
+      "pairs": [],
+      "clipped": []
+    },
+    {
+      "slug": "deep-learning",
+      "width": 1440,
+      "stage": 9,
+      "scene": "architecture",
+      "texts": 59,
+      "svgwidth": 634,
+      "svgheight": 460,
+      "pairs": [],
+      "clipped": []
+    },
+    {
+      "slug": "deep-learning",
+      "width": 1440,
+      "stage": 10,
+      "scene": "transfer",
+      "texts": 30,
+      "svgwidth": 634,
+      "svgheight": 460,
+      "pairs": [],
+      "clipped": []
+    },
+    {
+      "slug": "deep-learning",
+      "width": 1440,
+      "stage": 11,
+      "scene": "evaluation",
+      "texts": 10,
+      "svgwidth": 634,
+      "svgheight": 460,
+      "pairs": [],
+      "clipped": []
+    },
+    {
+      "slug": "deep-learning",
+      "width": 1440,
+      "stage": 12,
+      "scene": "contract",
+      "texts": 10,
+      "svgwidth": 634,
+      "svgheight": 460,
+      "pairs": [
+        {
+          "a": {
+            "key": "contract-xt0",
+            "text": "-2.5",
+            "box": {
+              "x": 740.0291748046875,
+              "y": 562.3883056640625,
+              "w": 18.09375,
+              "h": 16
+            },
+            "svgbox": {
+              "x": 35.95189666748047,
+              "y": 349.99835205078125,
+              "w": 18.096208572387695,
+              "h": 16.002174377441406
+            }
+          },
+          "b": {
+            "key": "contract-yt0",
+            "text": "-2.5",
+            "box": {
+              "x": 723.9832153320312,
+              "y": 549.3900756835938,
+              "w": 18.09375,
+              "h": 15.99993896484375
+            },
+            "svgbox": {
+              "x": 19.903789520263672,
+              "y": 336.99835205078125,
+              "w": 18.096208572387695,
+              "h": 16.002174377441406
+            }
+          },
+          "intersection": {
+            "w": 2.04779052734375,
+            "h": 3.001708984375,
+            "area": 6.1468712240457535
+          }
+        }
+      ],
+      "clipped": []
+    },
+    {
+      "slug": "deep-learning",
+      "width": 320,
+      "stage": 1,
+      "scene": "task",
+      "texts": 6,
+      "svgwidth": 250,
+      "svgheight": 460,
+      "pairs": [],
+      "clipped": []
+    },
+    {
+      "slug": "deep-learning",
+      "width": 320,
+      "stage": 2,
+      "scene": "shortcut",
+      "texts": 10,
+      "svgwidth": 250,
+      "svgheight": 463,
+      "pairs": [],
+      "clipped": []
+    },
+    {
+      "slug": "deep-learning",
+      "width": 320,
+      "stage": 3,
+      "scene": "pipeline",
+      "texts": 7,
+      "svgwidth": 250,
+      "svgheight": 460,
+      "pairs": [],
+      "clipped": []
+    },
+    {
+      "slug": "deep-learning",
+      "width": 320,
+      "stage": 4,
+      "scene": "tensor",
+      "texts": 39,
+      "svgwidth": 250,
+      "svgheight": 466,
+      "pairs": [],
+      "clipped": []
+    },
+    {
+      "slug": "deep-learning",
+      "width": 320,
+      "stage": 5,
+      "scene": "neuron",
+      "texts": 20,
+      "svgwidth": 250,
+      "svgheight": 460,
+      "pairs": [],
+      "clipped": []
+    },
+    {
+      "slug": "deep-learning",
+      "width": 320,
+      "stage": 6,
+      "scene": "hierarchy",
+      "texts": 61,
+      "svgwidth": 250,
+      "svgheight": 460,
+      "pairs": [],
+      "clipped": []
+    },
+    {
+      "slug": "deep-learning",
+      "width": 320,
+      "stage": 7,
+      "scene": "cycle",
+      "texts": 32,
+      "svgwidth": 250,
+      "svgheight": 769,
+      "pairs": [],
+      "clipped": []
+    },
+    {
+      "slug": "deep-learning",
+      "width": 320,
+      "stage": 8,
+      "scene": "regularization",
+      "texts": 32,
+      "svgwidth": 250,
+      "svgheight": 769,
+      "pairs": [],
+      "clipped": []
+    },
+    {
+      "slug": "deep-learning",
+      "width": 320,
+      "stage": 9,
+      "scene": "architecture",
+      "texts": 61,
+      "svgwidth": 250,
+      "svgheight": 460,
+      "pairs": [],
+      "clipped": []
+    },
+    {
+      "slug": "deep-learning",
+      "width": 320,
+      "stage": 10,
+      "scene": "transfer",
+      "texts": 33,
+      "svgwidth": 250,
+      "svgheight": 482,
+      "pairs": [],
+      "clipped": []
+    },
+    {
+      "slug": "deep-learning",
+      "width": 320,
+      "stage": 11,
+      "scene": "evaluation",
+      "texts": 12,
+      "svgwidth": 250,
+      "svgheight": 460,
+      "pairs": [],
+      "clipped": []
+    },
+    {
+      "slug": "deep-learning",
+      "width": 320,
+      "stage": 12,
+      "scene": "contract",
+      "texts": 12,
+      "svgwidth": 250,
+      "svgheight": 460,
+      "pairs": [],
+      "clipped": []
+    }
+  ],
+  "errors": [],
+  "finished": "2026-09-28T12:59:05.002Z"
+}

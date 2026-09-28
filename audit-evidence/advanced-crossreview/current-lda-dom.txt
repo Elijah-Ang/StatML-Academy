@@ -1,0 +1,754 @@
+- navigation "StatML Academy navigation":
+  - link "S StatML Academy":
+    - /url: ../index.html
+    - text: S
+    - generic: StatML Academy
+  - generic: Linear Discriminant Analysis (LDA)
+  - 'link "Previous module: K-Nearest Neighbors (KNN)"':
+    - /url: knn.html
+    - text: ←
+  - 'link "Next module: Quadratic Discriminant Analysis"':
+    - /url: qda.html
+    - text: →
+  - generic: module 11/21
+- generic: Machine Learning · Classification
+- heading "Linear Discriminant Analysis" [level=1]:
+  - text: Linear Discriminant
+  - text: Analysis
+- paragraph: Watch one plot evolve as LDA finds the best linear direction for separating apples from oranges — from raw data to a trained classifier, one step at a time.
+- paragraph: The dataset used here is intentionally simplified so you can clearly see how each step of LDA works. Real-world data is messier and noisier.
+- generic "Lesson outcomes":
+  - generic: "1"
+  - generic: Project classes onto a discriminating direction
+  - generic: "2"
+  - generic: Understand shared covariance and posterior classification
+  - generic: "3"
+  - generic: Evaluate assumptions and compare with QDA
+- generic: ↓ Scroll to begin
+- generic: Stage 01 · Observe
+- heading "The Raw Data" [level=2]: The Raw Data
+- generic: Before you start
+- paragraph: LDA is a probabilistic classifier. It models each class and then compares posterior scores for a new observation.
+- paragraph:
+  - text: Every machine learning model starts with data. Here we have measurements of fruits — each one scored on
+  - strong: Sweetness
+  - text: and
+  - strong: Color
+  - text: .
+- paragraph:
+  - text: "Each fruit is already labeled: it's either an"
+  - generic: Apple
+  - text: or an
+  - generic: Orange
+  - text: . Because we have labels, this is
+  - emphasis: supervised learning
+  - text: .
+- heading "The Whole Idea of LDA" [level=3]
+- paragraph:
+  - strong: Linear Discriminant Analysis (LDA)
+  - text: is a supervised classification method. It uses labeled examples to learn a straight-line rule that separates classes.
+- paragraph:
+  - strong: "Simple Idea:"
+  - text: "LDA looks for a direction (projection axis) where:"
+  - text: • Different class centers are as
+  - strong: far apart
+  - text: as possible.
+  - text: • Points inside each class are as
+  - strong: tightly bunched (low spread)
+  - text: as possible.
+- strong: "LDA General Pipeline:"
+- text: Labeled Data → Class Centers → Class Spread → Optimal Direction → Boundary → Prediction
+- paragraph: "\"LDA is like looking at a messy 2D cloud of points from the best angle so the two groups look as separated as possible.\""
+- heading "Tiny LDA Dictionary" [level=3]
+- strong: "Feature:"
+- text: A measurement used to make a prediction (e.g., Sweetness or Color).
+- strong: "Label:"
+- text: The known category of an example (e.g., Apple or Orange).
+- strong: "Class:"
+- text: The target group we want to predict (Apple class or Orange class).
+- strong: "Mean (μ):"
+- text: The average position or center of a class point cloud.
+- strong: "Variance:"
+- text: How much a single feature fluctuates.
+- strong: "Covariance:"
+- text: How two features move in relation to each other.
+- strong: "Scatter (S):"
+- text: A mathematical measure of data spread or messiness.
+- strong: "Projection:"
+- text: Squashing 2D coordinates down onto a single 1D axis.
+- strong: "Discriminant Score (δ):"
+- text: A numerical score LDA computes for each class; the highest score wins!
+- heading "Training Dataset" [level=3]
+- table:
+  - rowgroup:
+    - row "# Sweetness Color Label":
+      - columnheader "#"
+      - columnheader "Sweetness"
+      - columnheader "Color"
+      - columnheader "Label"
+  - rowgroup:
+    - row "1 7.2 8.1 Apple":
+      - cell "1"
+      - cell "7.2"
+      - cell "8.1"
+      - cell "Apple":
+        - generic: Apple
+    - row "2 6.5 7.4 Apple":
+      - cell "2"
+      - cell "6.5"
+      - cell "7.4"
+      - cell "Apple":
+        - generic: Apple
+    - row "3 8 8.8 Apple":
+      - cell "3"
+      - cell "8"
+      - cell "8.8"
+      - cell "Apple":
+        - generic: Apple
+    - row "4 7.8 7.6 Apple":
+      - cell "4"
+      - cell "7.8"
+      - cell "7.6"
+      - cell "Apple":
+        - generic: Apple
+    - row "5 6.9 8.5 Apple":
+      - cell "5"
+      - cell "6.9"
+      - cell "8.5"
+      - cell "Apple":
+        - generic: Apple
+    - row "6 7.5 7 Apple":
+      - cell "6"
+      - cell "7.5"
+      - cell "7"
+      - cell "Apple":
+        - generic: Apple
+    - row "7 8.2 9.1 Apple":
+      - cell "7"
+      - cell "8.2"
+      - cell "9.1"
+      - cell "Apple":
+        - generic: Apple
+    - row "8 6.3 7.8 Apple":
+      - cell "8"
+      - cell "6.3"
+      - cell "7.8"
+      - cell "Apple":
+        - generic: Apple
+    - row "9 7.1 8.3 Apple":
+      - cell "9"
+      - cell "7.1"
+      - cell "8.3"
+      - cell "Apple":
+        - generic: Apple
+    - row "10 7.7 7.2 Apple":
+      - cell "10"
+      - cell "7.7"
+      - cell "7.2"
+      - cell "Apple":
+        - generic: Apple
+    - row "11 6.8 8.7 Apple":
+      - cell "11"
+      - cell "6.8"
+      - cell "8.7"
+      - cell "Apple":
+        - generic: Apple
+    - row "12 8.5 8 Apple":
+      - cell "12"
+      - cell "8.5"
+      - cell "8"
+      - cell "Apple":
+        - generic: Apple
+    - row "13 3.1 2.4 Orange":
+      - cell "13"
+      - cell "3.1"
+      - cell "2.4"
+      - cell "Orange":
+        - generic: Orange
+    - row "14 4 3.2 Orange":
+      - cell "14"
+      - cell "4"
+      - cell "3.2"
+      - cell "Orange":
+        - generic: Orange
+    - row "15 2.5 1.8 Orange":
+      - cell "15"
+      - cell "2.5"
+      - cell "1.8"
+      - cell "Orange":
+        - generic: Orange
+    - row "16 3.8 2.9 Orange":
+      - cell "16"
+      - cell "3.8"
+      - cell "2.9"
+      - cell "Orange":
+        - generic: Orange
+    - row "17 2.2 1.5 Orange":
+      - cell "17"
+      - cell "2.2"
+      - cell "1.5"
+      - cell "Orange":
+        - generic: Orange
+    - row "18 3.5 3.6 Orange":
+      - cell "18"
+      - cell "3.5"
+      - cell "3.6"
+      - cell "Orange":
+        - generic: Orange
+    - row "19 4.2 2.1 Orange":
+      - cell "19"
+      - cell "4.2"
+      - cell "2.1"
+      - cell "Orange":
+        - generic: Orange
+    - row "20 2.8 2.7 Orange":
+      - cell "20"
+      - cell "2.8"
+      - cell "2.7"
+      - cell "Orange":
+        - generic: Orange
+    - row "21 3.3 3 Orange":
+      - cell "21"
+      - cell "3.3"
+      - cell "3"
+      - cell "Orange":
+        - generic: Orange
+    - row "22 4.5 1.9 Orange":
+      - cell "22"
+      - cell "4.5"
+      - cell "1.9"
+      - cell "Orange":
+        - generic: Orange
+    - row "23 3 2.2 Orange":
+      - cell "23"
+      - cell "3"
+      - cell "2.2"
+      - cell "Orange":
+        - generic: Orange
+    - row "24 2.6 3.4 Orange":
+      - cell "24"
+      - cell "2.6"
+      - cell "3.4"
+      - cell "Orange":
+        - generic: Orange
+- paragraph:
+  - text: LDA needs labeled examples to learn the pattern that separates classes. Without labels, it cannot learn.
+- generic: Stage 02 · Prepare
+- heading "Choosing Good Features" [level=2]: Choosing Good Features
+- paragraph: Not every measurement helps separate classes. We pick features where the groups actually show different patterns — like Sweetness and Color Score.
+- paragraph: Bad features (random IDs, row numbers) add noise without signal. LDA works best when features genuinely explain class differences.
+- heading "Feature Quality Evaluation" [level=3]
+- paragraph:
+  - text: •
+  - strong: "Sweetness:"
+  - text: In this toy dataset, the two fruit groups show different sweetness patterns.
+- paragraph:
+  - text: •
+  - strong: "Color Score:"
+  - text: In this toy dataset, apples and oranges have different color score patterns.
+- paragraph:
+  - text: •
+  - strong: "Row Number:"
+  - text: Completely meaningless for classification.
+- paragraph:
+  - text: •
+  - strong: "Day of Entry:"
+  - text: No predictive power.
+- paragraph:
+  - strong: "Warning:"
+  - text: Bad or irrelevant features can seriously confuse LDA because they add noise to the calculated means, covariances, and final decision boundary.
+- generic: Stage 03 · Prepare
+- heading "Train / Test Split" [level=2]: Train / Test Split
+- paragraph:
+  - text: We hold out a small
+  - strong: test set
+  - text: (2 apples + 2 oranges) that the model will not see during training. The remaining
+  - strong: 20 points
+  - text: are used to learn the pattern.
+- paragraph: The test points are completely hidden until the evaluation stage. A model that only memorizes training data isn't actually smart — it's just a parrot with ambitions.
+- generic: "20"
+- generic: Training
+- generic: "4"
+- generic: Testing (hidden)
+- paragraph:
+  - strong: "How the sets are used:"
+- strong: "Training Set:"
+- text: Used to learn means, covariance, priors, and the decision rule.
+- strong: "Test Set:"
+- text: Used exactly once at the very end to check whether the learned rule works on unseen, new data.
+- paragraph:
+  - strong: "Data Leakage Warning:"
+  - text: The test set must stay absolutely hidden until final evaluation. Do not use the test set to choose features, tune settings, or adjust the model. If the test set influences training decisions, the final evaluation score becomes dishonest!
+- generic: Stage 04 · Understand
+- heading "Group by Class" [level=2]: Group by Class
+- paragraph: LDA first separates the training data by label. All apples together, all oranges together. Now it can study each group independently.
+- paragraph:
+  - strong: Why group by class?
+  - text: This step is critical because LDA calculates a separate center (mean) and spread (scatter) for each individual class.
+- heading "Class Groups" [level=3]
+- generic: "10"
+- generic: Apples
+- generic: "10"
+- generic: Oranges
+- paragraph:
+  - strong: "Understanding the hulls:"
+- paragraph:
+  - text: A
+  - emphasis: convex hull
+  - text: is just a visual outline drawn around the training points in a class. It is
+  - strong: not
+  - text: the LDA model itself! It only helps us see where each class cloud lives in our feature space.
+- generic: Stage 05 · Build
+- heading "Compute Class Means" [level=2]: Compute Class Means
+- paragraph:
+  - text: The
+  - emphasis: mean
+  - text: is the center of each class — its average position in feature space. LDA uses these to understand where each group lives.
+- heading "Class Means (Centers)" [level=3]
+- text: μ_apple = [ 7.32, 7.98 ]
+- text: μ_orange = [ 3.39, 2.51 ]
+- paragraph: Each mean is computed by averaging the Sweetness and Color scores of all training points in that class.
+- heading "Mean = Class Center" [level=3]
+- paragraph:
+  - text: The class mean is the average location of all points in that class. It is like the
+  - strong: center of gravity
+  - text: of the class cloud.
+- paragraph:
+  - emphasis: "Example:"
+  - text: If most apples have high Sweetness and high Color Score, the apple mean center (μ_apple) will appear right in the middle of the apple cluster.
+- text: μ_apple = average position of all apple training points
+- text: μ_orange = average position of all orange training points
+- paragraph:
+  - text: The
+  - text: markers on the plot show each class center. The gap between them is what LDA will try to exploit.
+- 'heading "Concept Check: Class Mean" [level=3]'
+- paragraph: What does a class mean (μ) represent in LDA?
+- button "A) The single most sweet fruit in the dataset.":
+  - text: A) The single most sweet fruit in the dataset.
+- button "B) The average center of a class.":
+  - text: B) The average center of a class.
+- button "C) The line that separates the two classes.":
+  - text: C) The line that separates the two classes.
+- button "D) The number of points in the dataset.":
+  - text: D) The number of points in the dataset.
+- generic: Stage 06 · Build
+- heading "Within-Class Scatter" [level=2]: Within-Class Scatter
+- paragraph:
+  - text: Not all apples are identical. S
+  - subscript: W
+  - text: measures how much the points in each class
+  - emphasis: wiggle
+  - text: around their own mean.
+- paragraph: The covariance ellipses on the plot show the spread shape. Diagonal entries = how much each feature varies. Off-diagonal = how features vary together.
+- heading "Within-Class Scatter Matrix SW" [level=3]:
+  - text: Within-Class Scatter Matrix S
+  - subscript: W
+- text: S_W = (n₁ − 1)·Σ_apple + (n₂ − 1)·Σ_orange S_W = ⎡ 8.685 2.645 ⎤ ⎣ 2.645 8.565 ⎦
+- paragraph: "Each class covariance is weighted by (n_k − 1) before summing. Diagonal: variance of each feature. Off-diagonal: how features co-vary within a class."
+- heading "What does within-class scatter mean?" [level=3]
+- paragraph:
+  - text: Within-class scatter tells us
+  - strong: how messy or spread out
+  - text: each class is inside itself.
+  - text: • If all apples are clustered tightly together, apple scatter is
+  - strong: small
+  - text: .
+  - text: • If apples are spread out all over the plot, apple scatter is
+  - strong: large
+  - text: .
+- paragraph:
+  - strong: What is covariance?
+  - text: "Covariance tells us whether Sweetness and Color move together:"
+  - text: •
+  - strong: "Positive covariance:"
+  - text: Sweetness goes up, and Color Score also tends to go up.
+  - text: •
+  - strong: "Negative covariance:"
+  - text: One goes up, while the other goes down.
+  - text: •
+  - strong: "Near Zero:"
+  - text: They do not move together in any pattern.
+- paragraph:
+  - strong: "Understanding the Scatter Matrix:"
+  - text: •
+  - strong: "Diagonal entries:"
+  - text: How much each feature varies by itself (variance).
+  - text: •
+  - strong: "Off-diagonal entries:"
+  - text: How much the two features move together (covariance).
+- 'heading "Concept Check: Within-Class Scatter" [level=3]'
+- paragraph: What does within-class scatter measure?
+- button "A) The distance between the Apple center and Orange center.":
+  - text: A) The distance between the Apple center and Orange center.
+- button "B) How spread out or messy points are inside each class.":
+  - text: B) How spread out or messy points are inside each class.
+- button "C) The accuracy of the final predictions on unseen data.":
+  - text: C) The accuracy of the final predictions on unseen data.
+- button "D) The total count of features we selected.":
+  - text: D) The total count of features we selected.
+- generic: Stage 07 · Prepare
+- heading "The Shared Covariance Assumption" [level=2]: The Shared Covariance Assumption
+- paragraph:
+  - text: Here's LDA's
+  - strong: key assumption
+  - text: ": all classes share the same covariance shape. The groups can have different centers, but their spread is assumed to be roughly the same."
+- paragraph:
+  - text: So LDA
+  - emphasis: pools
+  - text: the individual covariance matrices into one shared estimate. Watch the ellipses morph into a single shape.
+- heading "Pooled Covariance Matrix Σ" [level=3]
+- text: Σ = S_W / (n − 2) Σ = ⎡ 0.482 0.147 ⎤ ⎣ 0.147 0.476 ⎦
+- heading "Why does LDA pool covariance?" [level=3]
+- paragraph:
+  - text: LDA assumes that the classes have similar spread shapes. Instead of keeping separate shapes for Apple and Orange, it combines them into
+  - strong: one shared covariance estimate
+  - text: .
+- paragraph:
+  - strong: "Simple meaning:"
+  - text: Different centers, same general spread shape.
+- strong: "LDA vs. QDA Comparison:"
+- text: •
+- strong: "LDA (Linear):"
+- text: Assumes shared covariance → Draws a
+- strong: straight
+- text: decision line.
+- text: •
+- strong: "QDA (Quadratic):"
+- text: Allows different covariances per class → Can draw a
+- strong: curved
+- text: decision line.
+- paragraph:
+  - strong: "Warning:"
+  - text: If the class clouds actually have very different shapes, LDA's shared covariance assumption is violated. LDA may struggle, and QDA (Quadratic Discriminant Analysis) might fit the data much better.
+- 'heading "Concept Check: Shared Covariance" [level=3]'
+- paragraph: What is LDA’s shared covariance assumption?
+- button "A) Every fruit in the dataset has the exact same sweetness value.":
+  - text: A) Every fruit in the dataset has the exact same sweetness value.
+- button "B) The test set must have the same size as the training set.":
+  - text: B) The test set must have the same size as the training set.
+- button "C) Classes can have different centers, but they are assumed to have similar spread shapes.":
+  - text: C) Classes can have different centers, but they are assumed to have similar spread shapes.
+- button "D) The decision boundary must always be curved.":
+  - text: D) The decision boundary must always be curved.
+- generic: Stage 08 · Build
+- heading "Between-Class Scatter" [level=2]: Between-Class Scatter
+- paragraph:
+  - text: S
+  - subscript: B
+  - text: measures how far apart the class centers are. The further apart, the easier it is for LDA to separate them.
+- paragraph:
+  - text: LDA's goal is to
+  - strong: maximize the ratio
+  - text: "of between-class scatter to within-class scatter:"
+- heading "Between-class scatter = gap between class centers" [level=3]
+- paragraph:
+  - text: "Let's contrast the two scatter metrics:"
+  - text: •
+  - strong: "Within-class scatter asks:"
+  - text: "\"How messy and spread out is each class"
+  - emphasis: inside
+  - text: itself?"
+  - text: •
+  - strong: "Between-class scatter asks:"
+  - text: "\"How far apart are the class centers (means)?\""
+- paragraph:
+  - strong: "LDA's Ultimate Goal:"
+  - text: We want the gap between classes to be
+  - strong: BIG
+  - text: ", and the messiness inside each class to be"
+  - strong: SMALL
+  - text: "!"
+- text: "J(w) = wᵀ S_B w / wᵀ S_W w In simple terms, J(w) is maximized when: 1. Projected class means are far apart. 2. Projected class spreads are small."
+- heading "Between-Class Scatter SB" [level=3]:
+  - text: Between-Class Scatter S
+  - subscript: B
+- text: S_B = (n₁·n₂/n) · (μ₁ − μ₂)(μ₁ − μ₂)ᵀ S_B = ⎡ 77.224 107.485 ⎤ ⎣ 107.485 149.604 ⎦
+- generic: Stage 09 · Understand
+- heading "The Optimal Direction" [level=2]: The Optimal Direction
+- paragraph:
+  - text: In this 2-class example, LDA gives one main discriminant direction
+  - strong: w
+  - text: — the angle where classes appear most separated.
+- heading "What is projection and why do we do it?" [level=3]
+- paragraph:
+  - strong: Projection
+  - text: means dropping every 2D point (Sweetness, Color) down onto a single 1D line or direction.
+- paragraph:
+  - text: This turns a 2D pair of numbers into a
+  - strong: single 1D score
+  - text: ":"
+- generic: Fruit (Sweetness, Color) → [Project] → One LDA Score
+- paragraph:
+  - strong: Why project?
+  - text: If the projected Apple scores sit neatly on one side of the line and the projected Orange scores sit on the other side, LDA has found an excellent direction for separation!
+- text: w ∝ S_W⁻¹ (μ₁ − μ₂) This isn't just the straight line between means. It also tilts to avoid the direction of maximum within-class spread.
+- heading "Optimal Direction w" [level=3]
+- text: w = S_W⁻¹ · (μ₁ − μ₂) → [ 0.4594, 0.8883 ]
+- paragraph: This direction maximizes the Fisher criterion J(w). Points projected onto it show maximum class separation.
+- generic: Stage 10 · Build
+- heading "The Decision Boundary" [level=2]: The Decision Boundary
+- paragraph:
+  - text: Because LDA is
+  - emphasis: linear
+  - text: ", the boundary between classes is a straight line (in 2D). Everything on one side is classified as Apple, the other as Orange."
+- 'heading "Discriminant Scores: Highest Score Wins" [level=3]'
+- paragraph:
+  - text: LDA calculates a separate scoring function for each class, called the
+  - strong: Discriminant Score (δ)
+  - text: ":"
+- text: δ_apple(x) = Score indicating how much point x looks like an Apple
+- text: δ_orange(x) = Score indicating how much point x looks like an Orange
+- paragraph:
+  - text: "For any point, LDA compares the two scores:"
+  - strong: whichever score is higher is the predicted class!
+- strong: "Example Fruit Prediction:"
+- emphasis: (Simple illustrative example, not a live value from the current dataset)
+- text: • Apple Score (δ_apple) =
+- strong: "2.31"
+- text: • Orange Score (δ_orange) =
+- strong: "-1.44"
+- text: Since 2.31 is higher than -1.44, LDA predicts
+- strong: Apple
+- text: "!"
+- heading "What are priors (π_k)?" [level=3]
+- paragraph:
+  - text: The
+  - strong: prior probability (π_k)
+  - text: represents how common a class is in our training data.
+  - text: • If apples and oranges are equally common, priors are equal (50% each).
+  - text: • If we have 90% apples in training, the apple score gets a prior boost, shifting the boundary slightly to favor Apple predictions.
+- text: δ_k(x) = xᵀ Σ⁻¹ μ_k − ½ μ_kᵀ Σ⁻¹ μ_k + log(π_k) Predict class k with the highest δ_k(x)
+- heading "Decision Rule" [level=3]
+- text: Prior π_apple = 0.50
+- text: Prior π_orange = 0.50
+- paragraph: The boundary is where δ_apple(x) = δ_orange(x). Points on the apple side get a higher apple score.
+- 'heading "Concept Check: Decision Rule" [level=3]'
+- paragraph: How does LDA decide the final predicted class of a point?
+- button "A) It checks which class is physically closer using plain Euclidean distance.":
+  - text: A) It checks which class is physically closer using plain Euclidean distance.
+- button "B) It calculates a discriminant score for each class and chooses the highest one.":
+  - text: B) It calculates a discriminant score for each class and chooses the highest one.
+- button "C) It always predicts the class that has more training samples.":
+  - text: C) It always predicts the class that has more training samples.
+- button "D) It uses random guessing when a point is near the boundary.":
+  - text: D) It uses random guessing when a point is near the boundary.
+- generic: Stage 11 · Understand
+- heading "Classifying Test Points" [level=2]: Classifying Test Points
+- paragraph: Now the moment of truth. We take the test points the model has never seen and run them through the decision function.
+- paragraph: Watch each test point light up with its prediction. Green rings = correct. Red rings = wrong.
+- heading "Detailed Test Point Breakdown" [level=3]
+- paragraph: "Let's inspect exactly how the model classifies one hidden test fruit:"
+- strong: "Selected Test Fruit:"
+- text: "• Features: Sweetness = 8.5, Color Score = 8.0"
+- text: "• Computed Scores:"
+- text: δ_apple = 106.56
+- text: δ_orange = 63.13
+- text: "• Decision: δ_apple is higher"
+- text: "• Prediction:"
+- strong: APPLE
+- text: "• Actual Label:"
+- strong: APPLE
+- text: "Result:"
+- strong: CORRECT
+- heading "Test Set Classification" [level=3]
+- generic: "4"
+- generic: Correct
+- generic: "0"
+- generic: Wrong
+- text: "Test 1: actual=apple, predicted=apple (δ₁=97.02, δ₂=55.36)"
+- text: "Test 2: actual=apple, predicted=apple (δ₁=106.56, δ₂=63.13)"
+- text: "Test 3: actual=orange, predicted=orange (δ₁=-31.90, δ₂=10.35)"
+- text: "Test 4: actual=orange, predicted=orange (δ₁=-20.34, δ₂=12.07)"
+- strong: "Test Classification Legend:"
+- generic: Green ring = correct prediction
+- generic: Red ring = wrong prediction
+- generic: Stage 12 · Understand
+- heading "Evaluating the Model" [level=2]: Evaluating the Model
+- paragraph:
+  - text: We don't just say "it works." We inspect
+  - emphasis: how
+  - text: it works and where it fails.
+- heading "The Four Outcomes (Apple = Positive Class)" [level=3]
+- paragraph: "When we test the model, every prediction falls into one of four distinct boxes:"
+- strong: "True Positive (TP):"
+- text: Predicted Apple, and it was actually an Apple.
+- strong: "True Negative (TN):"
+- text: Predicted Orange, and it was actually an Orange.
+- strong: "False Positive (FP):"
+- text: Predicted Apple, but it was actually an Orange (Type I Error).
+- strong: "False Negative (FN):"
+- text: Predicted Orange, but it was actually an Apple (Type II Error).
+- heading "Confusion Matrix (Click cells for explanations)" [level=3]
+- generic: Pred Apple
+- generic: Pred Orange
+- generic: Actual Apple
+- generic: "2"
+- generic: "0"
+- generic: Actual Orange
+- generic: "0"
+- generic: "2"
+- text: Click any colored box in the matrix above to understand what that count means!
+- heading "Performance Metrics (Apple = positive class)" [level=3]
+- generic: 100%
+- generic: Accuracy
+- generic: (TP + TN) / Total
+- generic: How often was the model correct overall?
+- generic: 100%
+- generic: Precision
+- generic: TP / (TP + FP)
+- generic: Of predicted Apples, how many were really Apples?
+- generic: 100%
+- generic: Recall
+- generic: TP / (TP + FN)
+- generic: Of actual Apples, how many did the model find?
+- generic: 100%
+- generic: F1 Score
+- generic: 2×P×R / (P+R)
+- generic: Balanced harmonic mean of Precision and Recall.
+- paragraph: "Note: This toy test set is extremely small, so these metrics are primarily for educational purposes rather than serious statistical performance claims."
+- 'heading "Concept Check: Confusion Matrix" [level=3]'
+- paragraph: If Apple is the positive class, what is a False Positive?
+- button "A) The model correctly predicted an Apple.":
+  - text: A) The model correctly predicted an Apple.
+- button "B) The model predicted Orange, but the fruit was actually Apple.":
+  - text: B) The model predicted Orange, but the fruit was actually Apple.
+- button "C) The model predicted Apple, but the fruit was actually Orange.":
+  - text: C) The model predicted Apple, but the fruit was actually Orange.
+- button "D) The model predicted Orange, and it was actually Orange.":
+  - text: D) The model predicted Orange, and it was actually Orange.
+- generic: Stage 13 · Evaluate
+- heading "Reading LDA Output" [level=2]: Reading LDA Output
+- paragraph:
+  - text: When running LDA in statistical software (such as Python’s
+  - code: scikit-learn
+  - text: or R), you don't get pretty 2D animations. Instead, you get matrices, coefficients, and metrics. Learning to read this text output is a crucial skill.
+- paragraph:
+  - text: Click any highlighted output section to learn how to read it.
+- generic: "Class priors: Apple: 0.500 Orange: 0.500"
+- generic: "Class means: Apple μ = [7.320, 7.980] Orange μ = [3.390, 2.510]"
+- generic: "Pooled covariance matrix Σ: [0.482, 0.147] [0.147, 0.476]"
+- generic: "LDA direction w: [0.459, 0.888]"
+- text: "Test predictions: Test 1: (6.800, 8.700) actual=Apple, predicted=Apple"
+- text: "Correct Test 2: (8.500, 8.000) actual=Apple, predicted=Apple"
+- text: "Correct Test 3: (3.000, 2.200) actual=Orange, predicted=Orange"
+- text: "Correct Test 4: (2.600, 3.400) actual=Orange, predicted=Orange"
+- text: Correct
+- generic: "Confusion matrix: TP=2, FP=0 FN=0, TN=2"
+- generic: "Metrics: Accuracy: 100% Precision: 100% Recall: 100% F1 Score: 100%"
+- heading "How to use this section" [level=3]
+- paragraph: "Click any highlighted part of the LDA output above. The explanation panel will tell you:"
+- list:
+  - listitem: What that output means,
+  - listitem: How to interpret it,
+  - listitem: What mistake to avoid.
+- strong: "A Word of Caution:"
+- text: This toy dataset is very clean. A perfect score here does not mean LDA is always perfect. It only means these toy apples and oranges are easy to separate. Real datasets usually have overlap, noise, and outliers.
+- heading "Mini interpretation" [level=3]
+- paragraph: In this current toy run, the Apple and Orange class means are far apart, so the groups are fairly easy for LDA to separate.
+- paragraph:
+  - text: "The live confusion matrix shows:"
+  - strong: TP = 2
+  - text: ","
+  - strong: TN = 2
+  - text: ","
+  - strong: FP = 0
+  - text: ", and"
+  - strong: FN = 0
+  - text: .
+- paragraph: This means the model made no mistakes on the 4-point held-out test set.
+- paragraph:
+  - text: "The live metrics are:"
+  - strong: Accuracy = 100%
+  - text: ","
+  - strong: Precision = 100%
+  - text: ","
+  - strong: Recall = 100%
+  - text: ", and"
+  - strong: F1 = 100%
+  - text: . Read this as performance on this tiny teaching test set, not proof that LDA will be perfect forever.
+- generic: Stage 14 · Prepare
+- heading "Assumptions & Limitations" [level=2]: Assumptions & Limitations
+- paragraph: To use LDA effectively, you need to understand when it thrives and when it falls short.
+- heading "LDA Works Best When:" [level=3]
+- list:
+  - strong: "Linearity:"
+  - text: A straight-line boundary is a reasonable way to separate classes.
+  - strong: "Normality:"
+  - text: Each class looks like a symmetrical oval cloud (multivariate normal distribution).
+  - strong: "Equal Spread:"
+  - text: All classes share roughly the same spread/covariance shape.
+  - strong: "Independence:"
+  - text: Data samples are collected independently.
+  - strong: "Data Volume:"
+  - text: There are many more rows than features.
+  - strong: "No Outliers:"
+  - text: Extreme values are absent (outliers pull means away easily).
+- heading "LDA Struggles When:" [level=3]
+- list:
+  - listitem: The true dividing boundary is highly curved.
+  - listitem: Classes have very different shapes or spreads (e.g., one is a tight circle, the other is a giant flat ellipse).
+  - listitem: There are severe outliers that skew centers.
+  - listitem: You have too many features and not enough rows (overfitting).
+  - listitem: Features are redundant or highly correlated (collinearity).
+- heading "Alternative Methods" [level=3]
+- paragraph: "If LDA doesn't fit, consider these standard alternatives:"
+- strong: "QDA (Quadratic Discriminant Analysis):"
+- text: Excellent if class spreads are highly unequal.
+- strong: "Logistic Regression:"
+- text: Better if you need direct probabilities and fewer statistical assumptions.
+- strong: "KNN or Decision Trees:"
+- text: Great for highly complex, non-linear boundaries.
+- generic: Complete the picture
+- heading "Posterior probabilities and regularised LDA" [level=3]
+- paragraph: The discriminant scores can be converted into posterior class probabilities. These probabilities are useful for ranking and threshold decisions, not merely producing a hard label.
+- paragraph: When the covariance estimate is unstable because there are many features or limited data, shrinkage or regularised LDA can trade a little bias for much lower variance.
+- generic: Stage 15 · Explore
+- heading "Interactive Playground" [level=2]: Interactive Playground
+- paragraph: Click anywhere on the plot to add a new point. The model will classify it in real time using the decision function it just learned.
+- button "Reset Points"
+- button "New Dataset"
+- heading "Click the plot to classify new points →" [level=3]
+- paragraph: Each new point is scored against both classes. The class with the higher discriminant score wins.
+- generic: Key takeaways
+- list:
+  - listitem: LDA assumes class-specific means but one shared covariance structure.
+  - listitem: The resulting boundary is linear under those assumptions.
+  - listitem: Use held-out data and inspect posterior probabilities, not only the apparent training separation.
+- region "Linear Discriminant Analysis (LDA) interactive visualisation":
+  - generic: Visual Legend
+  - generic: Apple training point
+  - generic: Orange training point
+- contentinfo:
+  - link "All modules":
+    - /url: ../index.html
+- navigation "Lesson stages":
+  - 'button "Go to stage 1: The Raw Data"':
+    - generic: 01 · The Raw Data
+  - 'button "Go to stage 2: Choosing Good Features"':
+    - generic: 02 · Choosing Good Features
+  - 'button "Go to stage 3: Train / Test Split"':
+    - generic: 03 · Train / Test Split
+  - 'button "Go to stage 4: Group by Class"':
+    - generic: 04 · Group by Class
+  - 'button "Go to stage 5: Compute Class Means"':
+    - generic: 05 · Compute Class Means
+  - 'button "Go to stage 6: Within-Class Scatter"':
+    - generic: 06 · Within-Class Scatter
+  - 'button "Go to stage 7: The Shared Covariance Assumption"':
+    - generic: 07 · The Shared Covariance Assumption
+  - 'button "Go to stage 8: Between-Class Scatter"':
+    - generic: 08 · Between-Class Scatter
+  - 'button "Go to stage 9: The Optimal Direction"':
+    - generic: 09 · The Optimal Direction
+  - 'button "Go to stage 10: The Decision Boundary"':
+    - generic: 10 · The Decision Boundary
+  - 'button "Go to stage 11: Classifying Test Points"':
+    - generic: 11 · Classifying Test Points
+  - 'button "Go to stage 12: Evaluating the Model"':
+    - generic: 12 · Evaluating the Model
+  - 'button "Go to stage 13: Reading LDA Output"':
+    - generic: 13 · Reading LDA Output
+  - 'button "Go to stage 14: Assumptions & Limitations"':
+    - generic: 14 · Assumptions & Limitations
+  - 'button "Go to stage 15: Interactive Playground"':
+    - generic: 15 · Interactive Playground

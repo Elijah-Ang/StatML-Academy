@@ -1,0 +1,845 @@
+[
+  {
+    "width": 1440,
+    "k": 1,
+    "weighted": "no",
+    "exact": false,
+    "count": 1,
+    "weight": 1,
+    "share": 1,
+    "prediction": 1,
+    "exactMatches": 0,
+    "clipped": [],
+    "overlaps": [],
+    "viewControls": 0
+  },
+  {
+    "width": 1440,
+    "k": 1,
+    "weighted": "no",
+    "exact": true,
+    "count": 1,
+    "weight": 1,
+    "share": 0,
+    "prediction": 0,
+    "exactMatches": 1,
+    "clipped": [],
+    "overlaps": [],
+    "viewControls": 0
+  },
+  {
+    "width": 1440,
+    "k": 1,
+    "weighted": "yes",
+    "exact": false,
+    "count": 1,
+    "weight": 1,
+    "share": 1,
+    "prediction": 1,
+    "exactMatches": 0,
+    "clipped": [],
+    "overlaps": [],
+    "viewControls": 0
+  },
+  {
+    "width": 1440,
+    "k": 1,
+    "weighted": "yes",
+    "exact": true,
+    "count": 1,
+    "weight": 1,
+    "share": 0,
+    "prediction": 0,
+    "exactMatches": 1,
+    "clipped": [],
+    "overlaps": [],
+    "viewControls": 0
+  },
+  {
+    "width": 1440,
+    "k": 5,
+    "weighted": "no",
+    "exact": false,
+    "count": 5,
+    "weight": 1,
+    "share": 0.8,
+    "prediction": 0.8,
+    "exactMatches": 0,
+    "clipped": [],
+    "overlaps": [],
+    "viewControls": 0
+  },
+  {
+    "width": 1440,
+    "k": 5,
+    "weighted": "no",
+    "exact": true,
+    "count": 5,
+    "weight": 1,
+    "share": 0,
+    "prediction": 0,
+    "exactMatches": 1,
+    "clipped": [],
+    "overlaps": [],
+    "viewControls": 0
+  },
+  {
+    "width": 1440,
+    "k": 5,
+    "weighted": "yes",
+    "exact": false,
+    "count": 5,
+    "weight": 1,
+    "share": 0.8109234148204959,
+    "prediction": 0.8109234148204959,
+    "exactMatches": 0,
+    "clipped": [],
+    "overlaps": [],
+    "viewControls": 0
+  },
+  {
+    "width": 1440,
+    "k": 5,
+    "weighted": "yes",
+    "exact": true,
+    "count": 5,
+    "weight": 1,
+    "share": 0,
+    "prediction": 0,
+    "exactMatches": 1,
+    "clipped": [],
+    "overlaps": [],
+    "viewControls": 0
+  },
+  {
+    "width": 1440,
+    "k": 21,
+    "weighted": "no",
+    "exact": false,
+    "count": 21,
+    "weight": 1.0000000000000004,
+    "share": 0.6666666666666667,
+    "prediction": 0.6666666666666666,
+    "exactMatches": 0,
+    "clipped": [],
+    "overlaps": [],
+    "viewControls": 0
+  },
+  {
+    "width": 1440,
+    "k": 21,
+    "weighted": "no",
+    "exact": true,
+    "count": 21,
+    "weight": 1,
+    "share": 0,
+    "prediction": 0,
+    "exactMatches": 1,
+    "clipped": [],
+    "overlaps": [],
+    "viewControls": 0
+  },
+  {
+    "width": 1440,
+    "k": 21,
+    "weighted": "yes",
+    "exact": false,
+    "count": 21,
+    "weight": 0.9999999999999999,
+    "share": 0.6951387702470441,
+    "prediction": 0.6951387702470442,
+    "exactMatches": 0,
+    "clipped": [],
+    "overlaps": [],
+    "viewControls": 0
+  },
+  {
+    "width": 1440,
+    "k": 21,
+    "weighted": "yes",
+    "exact": true,
+    "count": 21,
+    "weight": 1,
+    "share": 0,
+    "prediction": 0,
+    "exactMatches": 1,
+    "clipped": [],
+    "overlaps": [],
+    "viewControls": 0
+  },
+  {
+    "width": 1440,
+    "criteria": [
+      {
+        "penalty": "ridge",
+        "lambda": 0,
+        "aic": -57.01397964678699,
+        "bic": -49.787329687705714,
+        "rss": 10.611171768193534,
+        "candidate": [
+          1.066977508114366,
+          0.7012584658668406,
+          0.7623002801417653
+        ],
+        "penalized": [
+          1.066977508114366,
+          0.7012584658668406,
+          0.7623002801417653
+        ],
+        "label": "InspectValueCandidateUnpenalized degree-2 polynomial; 45 training rowsOLS residual sum of squares10.6112AIC (common likelihood constant omitted)-57.01BIC (common likelihood constant omitted)-49.79Estimated parameters4: regression coefficients including intercept, plus residual varianceConditionsGaussian equal-variance likelihood; compare the same response and rows. This separate OLS candidate does not use the penalty selected in other sections."
+      },
+      {
+        "penalty": "ridge",
+        "lambda": 0.8,
+        "aic": -57.01397964678699,
+        "bic": -49.787329687705714,
+        "rss": 10.611171768193534,
+        "candidate": [
+          1.066977508114366,
+          0.7012584658668406,
+          0.7623002801417653
+        ],
+        "penalized": [
+          1.3810130304049533,
+          0.38484743611728317,
+          0.4719132339184079
+        ],
+        "label": "InspectValueCandidateUnpenalized degree-2 polynomial; 45 training rowsOLS residual sum of squares10.6112AIC (common likelihood constant omitted)-57.01BIC (common likelihood constant omitted)-49.79Estimated parameters4: regression coefficients including intercept, plus residual varianceConditionsGaussian equal-variance likelihood; compare the same response and rows. This separate OLS candidate does not use the penalty selected in other sections."
+      },
+      {
+        "penalty": "ridge",
+        "lambda": 2,
+        "aic": -57.01397964678699,
+        "bic": -49.787329687705714,
+        "rss": 10.611171768193534,
+        "candidate": [
+          1.066977508114366,
+          0.7012584658668406,
+          0.7623002801417653
+        ],
+        "penalized": [
+          1.5679130300614255,
+          0.22735854254387758,
+          0.30242731121562755
+        ],
+        "label": "InspectValueCandidateUnpenalized degree-2 polynomial; 45 training rowsOLS residual sum of squares10.6112AIC (common likelihood constant omitted)-57.01BIC (common likelihood constant omitted)-49.79Estimated parameters4: regression coefficients including intercept, plus residual varianceConditionsGaussian equal-variance likelihood; compare the same response and rows. This separate OLS candidate does not use the penalty selected in other sections."
+      },
+      {
+        "penalty": "lasso",
+        "lambda": 0,
+        "aic": -57.01397964678699,
+        "bic": -49.787329687705714,
+        "rss": 10.611171768193534,
+        "candidate": [
+          1.066977508114366,
+          0.7012584658668406,
+          0.7623002801417653
+        ],
+        "penalized": [
+          1.0669775086580267,
+          0.7012584657665241,
+          0.7623002799119059
+        ],
+        "label": "InspectValueCandidateUnpenalized degree-2 polynomial; 45 training rowsOLS residual sum of squares10.6112AIC (common likelihood constant omitted)-57.01BIC (common likelihood constant omitted)-49.79Estimated parameters4: regression coefficients including intercept, plus residual varianceConditionsGaussian equal-variance likelihood; compare the same response and rows. This separate OLS candidate does not use the penalty selected in other sections."
+      },
+      {
+        "penalty": "lasso",
+        "lambda": 0.8,
+        "aic": -57.01397964678699,
+        "bic": -49.787329687705714,
+        "rss": 10.611171768193534,
+        "candidate": [
+          1.066977508114366,
+          0.7012584658668406,
+          0.7623002801417653
+        ],
+        "penalized": [
+          1.734470883941895,
+          0,
+          0.14196149714932882
+        ],
+        "label": "InspectValueCandidateUnpenalized degree-2 polynomial; 45 training rowsOLS residual sum of squares10.6112AIC (common likelihood constant omitted)-57.01BIC (common likelihood constant omitted)-49.79Estimated parameters4: regression coefficients including intercept, plus residual varianceConditionsGaussian equal-variance likelihood; compare the same response and rows. This separate OLS candidate does not use the penalty selected in other sections."
+      },
+      {
+        "penalty": "lasso",
+        "lambda": 2,
+        "aic": -57.01397964678699,
+        "bic": -49.787329687705714,
+        "rss": 10.611171768193534,
+        "candidate": [
+          1.066977508114366,
+          0.7012584658668406,
+          0.7623002801417653
+        ],
+        "penalized": [
+          1.9085423118927713,
+          0,
+          0
+        ],
+        "label": "InspectValueCandidateUnpenalized degree-2 polynomial; 45 training rowsOLS residual sum of squares10.6112AIC (common likelihood constant omitted)-57.01BIC (common likelihood constant omitted)-49.79Estimated parameters4: regression coefficients including intercept, plus residual varianceConditionsGaussian equal-variance likelihood; compare the same response and rows. This separate OLS candidate does not use the penalty selected in other sections."
+      }
+    ]
+  },
+  {
+    "width": 430,
+    "k": 1,
+    "weighted": "no",
+    "exact": false,
+    "count": 1,
+    "weight": 1,
+    "share": 1,
+    "prediction": 1,
+    "exactMatches": 0,
+    "clipped": [],
+    "overlaps": [],
+    "viewControls": 0
+  },
+  {
+    "width": 430,
+    "k": 1,
+    "weighted": "no",
+    "exact": true,
+    "count": 1,
+    "weight": 1,
+    "share": 0,
+    "prediction": 0,
+    "exactMatches": 1,
+    "clipped": [],
+    "overlaps": [],
+    "viewControls": 0
+  },
+  {
+    "width": 430,
+    "k": 1,
+    "weighted": "yes",
+    "exact": false,
+    "count": 1,
+    "weight": 1,
+    "share": 1,
+    "prediction": 1,
+    "exactMatches": 0,
+    "clipped": [],
+    "overlaps": [],
+    "viewControls": 0
+  },
+  {
+    "width": 430,
+    "k": 1,
+    "weighted": "yes",
+    "exact": true,
+    "count": 1,
+    "weight": 1,
+    "share": 0,
+    "prediction": 0,
+    "exactMatches": 1,
+    "clipped": [],
+    "overlaps": [],
+    "viewControls": 0
+  },
+  {
+    "width": 430,
+    "k": 5,
+    "weighted": "no",
+    "exact": false,
+    "count": 5,
+    "weight": 1,
+    "share": 0.8,
+    "prediction": 0.8,
+    "exactMatches": 0,
+    "clipped": [],
+    "overlaps": [],
+    "viewControls": 0
+  },
+  {
+    "width": 430,
+    "k": 5,
+    "weighted": "no",
+    "exact": true,
+    "count": 5,
+    "weight": 1,
+    "share": 0,
+    "prediction": 0,
+    "exactMatches": 1,
+    "clipped": [],
+    "overlaps": [],
+    "viewControls": 0
+  },
+  {
+    "width": 430,
+    "k": 5,
+    "weighted": "yes",
+    "exact": false,
+    "count": 5,
+    "weight": 1,
+    "share": 0.8109234148204959,
+    "prediction": 0.8109234148204959,
+    "exactMatches": 0,
+    "clipped": [],
+    "overlaps": [],
+    "viewControls": 0
+  },
+  {
+    "width": 430,
+    "k": 5,
+    "weighted": "yes",
+    "exact": true,
+    "count": 5,
+    "weight": 1,
+    "share": 0,
+    "prediction": 0,
+    "exactMatches": 1,
+    "clipped": [],
+    "overlaps": [],
+    "viewControls": 0
+  },
+  {
+    "width": 430,
+    "k": 21,
+    "weighted": "no",
+    "exact": false,
+    "count": 21,
+    "weight": 1.0000000000000004,
+    "share": 0.6666666666666667,
+    "prediction": 0.6666666666666666,
+    "exactMatches": 0,
+    "clipped": [],
+    "overlaps": [],
+    "viewControls": 0
+  },
+  {
+    "width": 430,
+    "k": 21,
+    "weighted": "no",
+    "exact": true,
+    "count": 21,
+    "weight": 1,
+    "share": 0,
+    "prediction": 0,
+    "exactMatches": 1,
+    "clipped": [],
+    "overlaps": [],
+    "viewControls": 0
+  },
+  {
+    "width": 430,
+    "k": 21,
+    "weighted": "yes",
+    "exact": false,
+    "count": 21,
+    "weight": 0.9999999999999999,
+    "share": 0.6951387702470441,
+    "prediction": 0.6951387702470442,
+    "exactMatches": 0,
+    "clipped": [],
+    "overlaps": [],
+    "viewControls": 0
+  },
+  {
+    "width": 430,
+    "k": 21,
+    "weighted": "yes",
+    "exact": true,
+    "count": 21,
+    "weight": 1,
+    "share": 0,
+    "prediction": 0,
+    "exactMatches": 1,
+    "clipped": [],
+    "overlaps": [],
+    "viewControls": 0
+  },
+  {
+    "width": 430,
+    "criteria": [
+      {
+        "penalty": "ridge",
+        "lambda": 0,
+        "aic": -57.01397964678699,
+        "bic": -49.787329687705714,
+        "rss": 10.611171768193534,
+        "candidate": [
+          1.066977508114366,
+          0.7012584658668406,
+          0.7623002801417653
+        ],
+        "penalized": [
+          1.066977508114366,
+          0.7012584658668406,
+          0.7623002801417653
+        ],
+        "label": "InspectValueCandidateUnpenalized degree-2 polynomial; 45 training rowsOLS residual sum of squares10.6112AIC (common likelihood constant omitted)-57.01BIC (common likelihood constant omitted)-49.79Estimated parameters4: regression coefficients including intercept, plus residual varianceConditionsGaussian equal-variance likelihood; compare the same response and rows. This separate OLS candidate does not use the penalty selected in other sections."
+      },
+      {
+        "penalty": "ridge",
+        "lambda": 0.8,
+        "aic": -57.01397964678699,
+        "bic": -49.787329687705714,
+        "rss": 10.611171768193534,
+        "candidate": [
+          1.066977508114366,
+          0.7012584658668406,
+          0.7623002801417653
+        ],
+        "penalized": [
+          1.3810130304049533,
+          0.38484743611728317,
+          0.4719132339184079
+        ],
+        "label": "InspectValueCandidateUnpenalized degree-2 polynomial; 45 training rowsOLS residual sum of squares10.6112AIC (common likelihood constant omitted)-57.01BIC (common likelihood constant omitted)-49.79Estimated parameters4: regression coefficients including intercept, plus residual varianceConditionsGaussian equal-variance likelihood; compare the same response and rows. This separate OLS candidate does not use the penalty selected in other sections."
+      },
+      {
+        "penalty": "ridge",
+        "lambda": 2,
+        "aic": -57.01397964678699,
+        "bic": -49.787329687705714,
+        "rss": 10.611171768193534,
+        "candidate": [
+          1.066977508114366,
+          0.7012584658668406,
+          0.7623002801417653
+        ],
+        "penalized": [
+          1.5679130300614255,
+          0.22735854254387758,
+          0.30242731121562755
+        ],
+        "label": "InspectValueCandidateUnpenalized degree-2 polynomial; 45 training rowsOLS residual sum of squares10.6112AIC (common likelihood constant omitted)-57.01BIC (common likelihood constant omitted)-49.79Estimated parameters4: regression coefficients including intercept, plus residual varianceConditionsGaussian equal-variance likelihood; compare the same response and rows. This separate OLS candidate does not use the penalty selected in other sections."
+      },
+      {
+        "penalty": "lasso",
+        "lambda": 0,
+        "aic": -57.01397964678699,
+        "bic": -49.787329687705714,
+        "rss": 10.611171768193534,
+        "candidate": [
+          1.066977508114366,
+          0.7012584658668406,
+          0.7623002801417653
+        ],
+        "penalized": [
+          1.0669775086580267,
+          0.7012584657665241,
+          0.7623002799119059
+        ],
+        "label": "InspectValueCandidateUnpenalized degree-2 polynomial; 45 training rowsOLS residual sum of squares10.6112AIC (common likelihood constant omitted)-57.01BIC (common likelihood constant omitted)-49.79Estimated parameters4: regression coefficients including intercept, plus residual varianceConditionsGaussian equal-variance likelihood; compare the same response and rows. This separate OLS candidate does not use the penalty selected in other sections."
+      },
+      {
+        "penalty": "lasso",
+        "lambda": 0.8,
+        "aic": -57.01397964678699,
+        "bic": -49.787329687705714,
+        "rss": 10.611171768193534,
+        "candidate": [
+          1.066977508114366,
+          0.7012584658668406,
+          0.7623002801417653
+        ],
+        "penalized": [
+          1.734470883941895,
+          0,
+          0.14196149714932882
+        ],
+        "label": "InspectValueCandidateUnpenalized degree-2 polynomial; 45 training rowsOLS residual sum of squares10.6112AIC (common likelihood constant omitted)-57.01BIC (common likelihood constant omitted)-49.79Estimated parameters4: regression coefficients including intercept, plus residual varianceConditionsGaussian equal-variance likelihood; compare the same response and rows. This separate OLS candidate does not use the penalty selected in other sections."
+      },
+      {
+        "penalty": "lasso",
+        "lambda": 2,
+        "aic": -57.01397964678699,
+        "bic": -49.787329687705714,
+        "rss": 10.611171768193534,
+        "candidate": [
+          1.066977508114366,
+          0.7012584658668406,
+          0.7623002801417653
+        ],
+        "penalized": [
+          1.9085423118927713,
+          0,
+          0
+        ],
+        "label": "InspectValueCandidateUnpenalized degree-2 polynomial; 45 training rowsOLS residual sum of squares10.6112AIC (common likelihood constant omitted)-57.01BIC (common likelihood constant omitted)-49.79Estimated parameters4: regression coefficients including intercept, plus residual varianceConditionsGaussian equal-variance likelihood; compare the same response and rows. This separate OLS candidate does not use the penalty selected in other sections."
+      }
+    ]
+  },
+  {
+    "width": 320,
+    "k": 1,
+    "weighted": "no",
+    "exact": false,
+    "count": 1,
+    "weight": 1,
+    "share": 1,
+    "prediction": 1,
+    "exactMatches": 0,
+    "clipped": [],
+    "overlaps": [],
+    "viewControls": 0
+  },
+  {
+    "width": 320,
+    "k": 1,
+    "weighted": "no",
+    "exact": true,
+    "count": 1,
+    "weight": 1,
+    "share": 0,
+    "prediction": 0,
+    "exactMatches": 1,
+    "clipped": [],
+    "overlaps": [],
+    "viewControls": 0
+  },
+  {
+    "width": 320,
+    "k": 1,
+    "weighted": "yes",
+    "exact": false,
+    "count": 1,
+    "weight": 1,
+    "share": 1,
+    "prediction": 1,
+    "exactMatches": 0,
+    "clipped": [],
+    "overlaps": [],
+    "viewControls": 0
+  },
+  {
+    "width": 320,
+    "k": 1,
+    "weighted": "yes",
+    "exact": true,
+    "count": 1,
+    "weight": 1,
+    "share": 0,
+    "prediction": 0,
+    "exactMatches": 1,
+    "clipped": [],
+    "overlaps": [],
+    "viewControls": 0
+  },
+  {
+    "width": 320,
+    "k": 5,
+    "weighted": "no",
+    "exact": false,
+    "count": 5,
+    "weight": 1,
+    "share": 0.8,
+    "prediction": 0.8,
+    "exactMatches": 0,
+    "clipped": [],
+    "overlaps": [],
+    "viewControls": 0
+  },
+  {
+    "width": 320,
+    "k": 5,
+    "weighted": "no",
+    "exact": true,
+    "count": 5,
+    "weight": 1,
+    "share": 0,
+    "prediction": 0,
+    "exactMatches": 1,
+    "clipped": [],
+    "overlaps": [],
+    "viewControls": 0
+  },
+  {
+    "width": 320,
+    "k": 5,
+    "weighted": "yes",
+    "exact": false,
+    "count": 5,
+    "weight": 1,
+    "share": 0.8109234148204959,
+    "prediction": 0.8109234148204959,
+    "exactMatches": 0,
+    "clipped": [],
+    "overlaps": [],
+    "viewControls": 0
+  },
+  {
+    "width": 320,
+    "k": 5,
+    "weighted": "yes",
+    "exact": true,
+    "count": 5,
+    "weight": 1,
+    "share": 0,
+    "prediction": 0,
+    "exactMatches": 1,
+    "clipped": [],
+    "overlaps": [],
+    "viewControls": 0
+  },
+  {
+    "width": 320,
+    "k": 21,
+    "weighted": "no",
+    "exact": false,
+    "count": 21,
+    "weight": 1.0000000000000004,
+    "share": 0.6666666666666667,
+    "prediction": 0.6666666666666666,
+    "exactMatches": 0,
+    "clipped": [],
+    "overlaps": [],
+    "viewControls": 0
+  },
+  {
+    "width": 320,
+    "k": 21,
+    "weighted": "no",
+    "exact": true,
+    "count": 21,
+    "weight": 1,
+    "share": 0,
+    "prediction": 0,
+    "exactMatches": 1,
+    "clipped": [],
+    "overlaps": [],
+    "viewControls": 0
+  },
+  {
+    "width": 320,
+    "k": 21,
+    "weighted": "yes",
+    "exact": false,
+    "count": 21,
+    "weight": 0.9999999999999999,
+    "share": 0.6951387702470441,
+    "prediction": 0.6951387702470442,
+    "exactMatches": 0,
+    "clipped": [],
+    "overlaps": [],
+    "viewControls": 0
+  },
+  {
+    "width": 320,
+    "k": 21,
+    "weighted": "yes",
+    "exact": true,
+    "count": 21,
+    "weight": 1,
+    "share": 0,
+    "prediction": 0,
+    "exactMatches": 1,
+    "clipped": [],
+    "overlaps": [],
+    "viewControls": 0
+  },
+  {
+    "width": 320,
+    "criteria": [
+      {
+        "penalty": "ridge",
+        "lambda": 0,
+        "aic": -57.01397964678699,
+        "bic": -49.787329687705714,
+        "rss": 10.611171768193534,
+        "candidate": [
+          1.066977508114366,
+          0.7012584658668406,
+          0.7623002801417653
+        ],
+        "penalized": [
+          1.066977508114366,
+          0.7012584658668406,
+          0.7623002801417653
+        ],
+        "label": "InspectValueCandidateUnpenalized degree-2 polynomial; 45 training rowsOLS residual sum of squares10.6112AIC (common likelihood constant omitted)-57.01BIC (common likelihood constant omitted)-49.79Estimated parameters4: regression coefficients including intercept, plus residual varianceConditionsGaussian equal-variance likelihood; compare the same response and rows. This separate OLS candidate does not use the penalty selected in other sections."
+      },
+      {
+        "penalty": "ridge",
+        "lambda": 0.8,
+        "aic": -57.01397964678699,
+        "bic": -49.787329687705714,
+        "rss": 10.611171768193534,
+        "candidate": [
+          1.066977508114366,
+          0.7012584658668406,
+          0.7623002801417653
+        ],
+        "penalized": [
+          1.3810130304049533,
+          0.38484743611728317,
+          0.4719132339184079
+        ],
+        "label": "InspectValueCandidateUnpenalized degree-2 polynomial; 45 training rowsOLS residual sum of squares10.6112AIC (common likelihood constant omitted)-57.01BIC (common likelihood constant omitted)-49.79Estimated parameters4: regression coefficients including intercept, plus residual varianceConditionsGaussian equal-variance likelihood; compare the same response and rows. This separate OLS candidate does not use the penalty selected in other sections."
+      },
+      {
+        "penalty": "ridge",
+        "lambda": 2,
+        "aic": -57.01397964678699,
+        "bic": -49.787329687705714,
+        "rss": 10.611171768193534,
+        "candidate": [
+          1.066977508114366,
+          0.7012584658668406,
+          0.7623002801417653
+        ],
+        "penalized": [
+          1.5679130300614255,
+          0.22735854254387758,
+          0.30242731121562755
+        ],
+        "label": "InspectValueCandidateUnpenalized degree-2 polynomial; 45 training rowsOLS residual sum of squares10.6112AIC (common likelihood constant omitted)-57.01BIC (common likelihood constant omitted)-49.79Estimated parameters4: regression coefficients including intercept, plus residual varianceConditionsGaussian equal-variance likelihood; compare the same response and rows. This separate OLS candidate does not use the penalty selected in other sections."
+      },
+      {
+        "penalty": "lasso",
+        "lambda": 0,
+        "aic": -57.01397964678699,
+        "bic": -49.787329687705714,
+        "rss": 10.611171768193534,
+        "candidate": [
+          1.066977508114366,
+          0.7012584658668406,
+          0.7623002801417653
+        ],
+        "penalized": [
+          1.0669775086580267,
+          0.7012584657665241,
+          0.7623002799119059
+        ],
+        "label": "InspectValueCandidateUnpenalized degree-2 polynomial; 45 training rowsOLS residual sum of squares10.6112AIC (common likelihood constant omitted)-57.01BIC (common likelihood constant omitted)-49.79Estimated parameters4: regression coefficients including intercept, plus residual varianceConditionsGaussian equal-variance likelihood; compare the same response and rows. This separate OLS candidate does not use the penalty selected in other sections."
+      },
+      {
+        "penalty": "lasso",
+        "lambda": 0.8,
+        "aic": -57.01397964678699,
+        "bic": -49.787329687705714,
+        "rss": 10.611171768193534,
+        "candidate": [
+          1.066977508114366,
+          0.7012584658668406,
+          0.7623002801417653
+        ],
+        "penalized": [
+          1.734470883941895,
+          0,
+          0.14196149714932882
+        ],
+        "label": "InspectValueCandidateUnpenalized degree-2 polynomial; 45 training rowsOLS residual sum of squares10.6112AIC (common likelihood constant omitted)-57.01BIC (common likelihood constant omitted)-49.79Estimated parameters4: regression coefficients including intercept, plus residual varianceConditionsGaussian equal-variance likelihood; compare the same response and rows. This separate OLS candidate does not use the penalty selected in other sections."
+      },
+      {
+        "penalty": "lasso",
+        "lambda": 2,
+        "aic": -57.01397964678699,
+        "bic": -49.787329687705714,
+        "rss": 10.611171768193534,
+        "candidate": [
+          1.066977508114366,
+          0.7012584658668406,
+          0.7623002801417653
+        ],
+        "penalized": [
+          1.9085423118927713,
+          0,
+          0
+        ],
+        "label": "InspectValueCandidateUnpenalized degree-2 polynomial; 45 training rowsOLS residual sum of squares10.6112AIC (common likelihood constant omitted)-57.01BIC (common likelihood constant omitted)-49.79Estimated parameters4: regression coefficients including intercept, plus residual varianceConditionsGaussian equal-variance likelihood; compare the same response and rows. This separate OLS candidate does not use the penalty selected in other sections."
+      }
+    ]
+  }
+]

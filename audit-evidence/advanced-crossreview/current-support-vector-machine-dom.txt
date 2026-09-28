@@ -1,0 +1,236 @@
+- navigation "StatML Academy navigation":
+  - link "S StatML Academy":
+    - /url: ../index.html
+    - text: S
+    - generic: StatML Academy
+  - generic: Support Vector Machines
+  - 'link "Previous module: Classification Trees"':
+    - /url: classification-trees.html
+    - text: ←
+  - 'link "Next module: One-R"':
+    - /url: one-r.html
+    - text: →
+  - generic: module 14/21
+- banner:
+  - generic: Machine Learning · Margin-Based Classification
+  - heading "Support Vector Machines" [level=1]:
+    - text: Support Vector
+    - text: Machines
+  - paragraph: Learn how an SVM separates classes with the widest defensible margin, why a handful of difficult points control the model, and how kernels bend the rule without abandoning the geometry.
+  - generic: 01 · Build the geometry
+  - text: Maximum margins, support vectors, slack, hinge loss, and the role of C.
+  - generic: 02 · Extend the boundary
+  - text: Scaling, linear and RBF kernels, and the locality controlled by gamma.
+  - generic: 03 · Validate honestly
+  - text: Leakage-safe pipelines, class-aware metrics, thresholding, and calibrated probabilities.
+  - text: Two visible features for teaching. The same mathematics extends to higher dimensions.
+  - generic: Scroll to begin
+- main:
+  - article:
+    - generic: Stage 01 · Observe
+    - heading "Points, labels, and a decision boundary" [level=2]: Points, labels, and a decision boundary
+    - paragraph: Each point is one labelled training row with two features. Colour marks the class. A classifier needs a rule that places a future point on one side or the other.
+    - text: f(x) > 0 → Class +1
+    - text: f(x) < 0 → Class −1
+    - paragraph:
+      - text: In two dimensions the boundary is a line. In three dimensions it is a plane. Beyond that, it becomes a
+      - strong: hyperplane
+      - text: ", a dramatic name for the same separating idea."
+    - text: The plot uses two features because humans remain tragically dependent on visible space. The model itself can work with many features.
+    - generic: Stage 02 · Question
+    - heading "Why not choose any separating line?" [level=2]: Why not choose any separating line?
+    - paragraph: When the classes are separable, several lines can classify every training point correctly. Training accuracy alone cannot tell us which line is safer.
+    - heading "Narrow clearance" [level=3]
+    - paragraph: Fits the training rows, but a small measurement change can flip a prediction.
+    - heading "Wide clearance" [level=3]
+    - paragraph: Leaves more room before the nearest point crosses the boundary.
+    - paragraph: "A linear SVM adds a preference: choose the separator with the greatest distance to the closest points from either class."
+    - 'generic "Quick check: what extra criterion does SVM use? +"'
+    - generic: Stage 03 · Understand
+    - heading "The margin is protected space" [level=2]: The margin is protected space
+    - paragraph: The margin is the gap between two parallel support planes touching the closest training points on each side.
+    - text: "Boundary: wᵀx + b = 0"
+    - text: "Margin boundaries: wᵀx + b = +1 and −1"
+    - text: Geometric margin width = 2 / ‖w‖
+    - paragraph: Maximising the margin is equivalent to keeping the weight vector small while still satisfying the classification constraints.
+    - text: A wide margin can make the separator less sensitive. It cannot rescue biased data, leakage, poor labels, or a mismatched kernel. Geometry is useful, not divine intervention.
+    - generic: Stage 04 · Focus
+    - heading "Support vectors are the points that matter most" [level=2]: Support vectors are the points that matter most
+    - paragraph: Support vectors lie on or inside the margin. They directly constrain the fitted boundary.
+    - text: f(x) = Σᵢ αᵢ yᵢ K(xᵢ, x) + b
+    - text: Only rows with αᵢ > 0 are support vectors.
+    - paragraph: Move a distant, safely classified point a little and the boundary may not change. Move a support vector and the solution can shift immediately.
+    - strong: "Important distinction:"
+    - text: “support vector” means the row constrains this fitted margin. It does not mean the row is causally or commercially important in every possible sense.
+    - generic: Stage 05 · Relax
+    - heading "Hard margins break when reality overlaps" [level=2]: Hard margins break when reality overlaps
+    - paragraph: A hard-margin SVM demands perfect separation with every row outside the margin. Real classes overlap, labels contain errors, and outliers appear because datasets enjoy sabotage.
+    - paragraph: A soft-margin SVM introduces slack variables ξᵢ so violations are allowed but penalised.
+    - text: yᵢ(wᵀxᵢ + b) ≥ 1 − ξᵢ, with ξᵢ ≥ 0
+    - table:
+      - rowgroup:
+        - row "Slack Meaning":
+          - columnheader "Slack"
+          - columnheader "Meaning"
+      - rowgroup:
+        - row "ξ = 0 Correct and on or beyond the margin":
+          - cell "ξ = 0"
+          - cell "Correct and on or beyond the margin"
+        - row "0 < ξ ≤ 1 Correct side, but inside the margin":
+          - cell "0 < ξ ≤ 1"
+          - cell "Correct side, but inside the margin"
+        - row "ξ > 1 Misclassified":
+          - cell "ξ > 1"
+          - cell "Misclassified"
+    - generic: Stage 06 · Tune
+    - heading "C decides how expensive violations are" [level=2]: C decides how expensive violations are
+    - text: minimise ½‖w‖² + C Σᵢ ξᵢ
+    - heading "Small C" [level=3]
+    - paragraph: Violations are cheaper. The model accepts more errors to preserve a wider, smoother margin.
+    - heading "Large C" [level=3]
+    - paragraph: Violations are expensive. The model fits training rows more aggressively, often with a narrower margin.
+    - paragraph: "C is an inverse regularisation parameter: larger C means less regularisation."
+    - text: A huge C does not mean “more accurate”. It means “punish training violations more”, which can also mean “memorise the noise with confidence”.
+    - generic: Stage 07 · Prepare
+    - heading "Scale features before comparing distances" [level=2]: Scale features before comparing distances
+    - paragraph: SVM geometry uses dot products and distances. A feature ranging from 0 to 100,000 can dominate another ranging from 0 to 1, even when the smaller-scale feature is genuinely informative.
+    - text: standardised value = (value − training mean) ÷ training standard deviation
+    - paragraph: Fit the scaler inside each training fold, then apply that fitted transformation to validation, test, and production rows.
+    - strong: "Two distinct failures:"
+    - text: scaling before the split leaks information; scaling the test set separately changes the coordinate system. Both are wrong in impressively different ways.
+    - generic: Stage 08 · Formalise
+    - heading "Hinge loss ignores easy correct points" [level=2]: Hinge loss ignores easy correct points
+    - text: hinge loss = max(0, 1 − y × f(x))
+    - table:
+      - rowgroup:
+        - row "Signed margin y f(x) Loss Interpretation":
+          - columnheader "Signed margin y f(x)"
+          - columnheader "Loss"
+          - columnheader "Interpretation"
+      - rowgroup:
+        - row "≥ 1 0 Correct and safely beyond the margin":
+          - cell "≥ 1"
+          - cell "0"
+          - cell "Correct and safely beyond the margin"
+        - row "0 to 1 positive Correct but inside the margin":
+          - cell "0 to 1"
+          - cell "positive"
+          - cell "Correct but inside the margin"
+        - row "≤ 0 ≥ 1 Misclassified":
+          - cell "≤ 0"
+          - cell "≥ 1"
+          - cell "Misclassified"
+    - paragraph: Once a point is correctly beyond the margin, its hinge loss is zero. Distant easy points stop pulling the boundary.
+    - 'generic "Quick check: y f(x) = 1.7. What is the loss? +"'
+    - generic: Stage 09 · Interpret
+    - heading "The decision score is not automatically a probability" [level=2]: The decision score is not automatically a probability
+    - paragraph: The decision function reports which side of the boundary a row occupies and how strongly it lies in that direction.
+    - text: larger positive f(x) → stronger Class +1 decision
+    - text: larger negative f(x) → stronger Class −1 decision
+    - paragraph: For a linear SVM, the score relates to signed distance after accounting for ‖w‖. For a kernel SVM, treat it as a boundary score rather than literal distance in the original plot.
+    - text: f(x) = 2 does not mean 200%, nor twice the probability of f(x) = 1. Probability estimates require a separate calibration model fitted with held-out predictions.
+    - generic: Stage 10 · Extend
+    - heading "A straight boundary cannot solve every pattern" [level=2]: A straight boundary cannot solve every pattern
+    - paragraph: Imagine one class forming an inner cluster and another forming an outer ring. No straight line can separate them in the original two-feature space.
+    - paragraph: "A transformed feature such as squared radius can reveal the structure:"
+    - text: r² = x₁² + x₂²
+    - paragraph: In transformed space, a simple threshold on r² can separate inner from outer points. A curved boundary in the original plot can still correspond to a linear rule elsewhere.
+    - generic: Stage 11 · Kernelise
+    - heading "The kernel trick avoids explicit feature explosion" [level=2]: The kernel trick avoids explicit feature explosion
+    - paragraph: A kernel computes similarities that behave like inner products in a richer feature space, without explicitly constructing every transformed coordinate.
+    - text: K(x, z) = φ(x)ᵀφ(z)
+    - text: "RBF: K(x,z) = exp(−γ ‖x − z‖²)"
+    - heading "Small gamma" [level=3]
+    - paragraph: Each point has broad influence. The decision surface changes slowly.
+    - heading "Large gamma" [level=3]
+    - paragraph: Influence becomes local. The boundary can wrap tightly around training points.
+    - text: Large gamma plus large C can create an intricate boundary that remembers noise instead of learning structure.
+    - generic: Stage 12 · Validate
+    - heading "Tune the whole pipeline inside cross-validation" [level=2]: Tune the whole pipeline inside cross-validation
+    - paragraph: Kernel, C, gamma, class weights, and preprocessing are hyperparameters. Choose them using validation folds inside the development data.
+    - text: Pipeline(StandardScaler(), SVC())
+    - text: GridSearchCV(C, gamma, kernel, scoring)
+    - generic: OK Create an untouched final test set when the dataset is large enough.
+    - generic: OK Fit scaling and feature processing inside each training fold.
+    - generic: OK Score candidate settings using a metric aligned with the task.
+    - generic: OK Refit on all development data, then evaluate once on the test set.
+    - text: Search C and gamma on logarithmic scales. If the winner sits at the edge, extend the range rather than declaring the boundary divinely optimal.
+    - generic: Stage 13 · Evaluate
+    - heading "Measure the errors the problem actually cares about" [level=2]: Measure the errors the problem actually cares about
+    - paragraph: Accuracy alone can hide minority-class failures. Use confusion matrices, per-class recall, and precision–recall analysis when the positive class is rare.
+    - heading "Class imbalance" [level=3]
+    - paragraph: Consider class weights when minority-class mistakes deserve a larger penalty.
+    - heading "Operational thresholds" [level=3]
+    - paragraph: Tune the decision threshold on validation data when the default boundary is unsuitable.
+    - heading "Calibration" [level=3]
+    - paragraph: Map held-out SVM scores to probabilities using sigmoid, isotonic, or another calibration method.
+    - heading "Multiclass" [level=3]
+    - paragraph: Combine binary models using one-vs-rest or one-vs-one decisions.
+    - text: "One-vs-one classifiers: K(K−1)/2"
+    - text: "One-vs-rest classifiers: K"
+    - text: "A calibrated 0.8 has a frequency meaning: among cases assigned about 0.8, roughly 80% should belong to that class. Raw margin scores make no such promise."
+    - generic: Stage 14 · Synthesis
+    - heading "Change the knobs and watch the boundary answer back" [level=2]: Change the knobs and watch the boundary answer back
+    - paragraph: The playground fits a small SVM directly in your browser. Change the dataset, kernel, C, and gamma. Click the plot to add a labelled point. Support vectors are ringed.
+    - generic: scale within a pipeline
+    - generic: start linear when appropriate
+    - generic: cross-validate C and kernel
+    - generic: inspect support-vector count
+    - generic: measure class-specific errors
+    - generic: calibrate only when needed
+    - heading "Strengths" [level=3]
+    - paragraph: Effective in high dimensions, flexible kernels, margin regularisation, sparse dependence on support vectors.
+    - heading "Limits" [level=3]
+    - paragraph: Kernel training can scale poorly, tuning matters greatly, probabilities are not native, nonlinear models are hard to interpret globally.
+    - 'generic "Final concept check: extremely large RBF gamma? +"'
+  - region "Support Vector Machines interactive visualisation":
+    - generic: Stage 01 · Observe
+    - heading "Labelled points in feature space" [level=3]
+    - paragraph: Two features, two classes, one eventual decision rule.
+    - generic "Plot legend":
+      - generic: Class −1
+      - generic: Class +1
+      - generic: Support vector
+    - generic "Interactive support vector machine diagram"
+    - generic: Click to move the query point
+    - generic: "1.68"
+    - generic: Margin
+    - generic: 3 / 18
+    - generic: Support vectors
+    - generic: "0"
+    - generic: Violations
+    - generic: 100%
+    - generic: Train accuracy
+- contentinfo: A standalone visual lesson built from the supplied SVM notes and educational-site blueprint. No server, framework, or suspiciously confident chart library required.
+- contentinfo:
+  - link "All modules":
+    - /url: ../index.html
+- navigation "Lesson stages":
+  - 'button "Go to stage 1: Points, labels, and a decision boundary"':
+    - generic: 01 · Points, labels, and a decision boundary
+  - 'button "Go to stage 2: Why not choose any separating line?"':
+    - generic: 02 · Why not choose any separating line?
+  - 'button "Go to stage 3: The margin is protected space"':
+    - generic: 03 · The margin is protected space
+  - 'button "Go to stage 4: Support vectors are the points that matter most"':
+    - generic: 04 · Support vectors are the points that matter most
+  - 'button "Go to stage 5: Hard margins break when reality overlaps"':
+    - generic: 05 · Hard margins break when reality overlaps
+  - 'button "Go to stage 6: C decides how expensive violations are"':
+    - generic: 06 · C decides how expensive violations are
+  - 'button "Go to stage 7: Scale features before comparing distances"':
+    - generic: 07 · Scale features before comparing distances
+  - 'button "Go to stage 8: Hinge loss ignores easy correct points"':
+    - generic: 08 · Hinge loss ignores easy correct points
+  - 'button "Go to stage 9: The decision score is not automatically a probability"':
+    - generic: 09 · The decision score is not automatically a probability
+  - 'button "Go to stage 10: A straight boundary cannot solve every pattern"':
+    - generic: 10 · A straight boundary cannot solve every pattern
+  - 'button "Go to stage 11: The kernel trick avoids explicit feature explosion"':
+    - generic: 11 · The kernel trick avoids explicit feature explosion
+  - 'button "Go to stage 12: Tune the whole pipeline inside cross-validation"':
+    - generic: 12 · Tune the whole pipeline inside cross-validation
+  - 'button "Go to stage 13: Measure the errors the problem actually cares about"':
+    - generic: 13 · Measure the errors the problem actually cares about
+  - 'button "Go to stage 14: Change the knobs and watch the boundary answer back"':
+    - generic: 14 · Change the knobs and watch the boundary answer back

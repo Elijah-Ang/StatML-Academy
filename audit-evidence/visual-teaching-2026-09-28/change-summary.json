@@ -1,0 +1,48 @@
+{
+  "changed_snapshotted_sources": [
+    "modules/notebook/regression-lab.js",
+    "modules/notebook/metrics.js",
+    "modules/notebook/catalog.js",
+    "modules/notebook/classification.js",
+    "modules/notebook/neural.js",
+    "modules/notebook/clustering.js",
+    "modules/notebook/lab.js",
+    "lessons/expanded/answers.txt",
+    "index.html",
+    "scripts/build.mjs"
+  ],
+  "new_sources": [
+    "modules/notebook/spatial.js",
+    "modules/notebook/spatial-science.js",
+    "modules/notebook/multiple.js",
+    "modules/notebook/tree-space.js",
+    "modules/notebook/neural-scenes.js",
+    "lessons/spatial-prompts.mjs",
+    "lessons/expanded/spatial-fixtures.json",
+    "scripts/test-spatial-science.mjs",
+    "scripts/test-visual-teaching-browser.mjs"
+  ],
+  "additional_edited_sources": [
+    "lessons/expanded.mjs",
+    "lessons/pilots.mjs",
+    "scripts/build.mjs",
+    "scripts/test-notebook-browser.mjs",
+    "package.json"
+  ],
+  "generated_module_pages": [
+    "multiple-linear-regression",
+    "regression-trees",
+    "classification-trees",
+    "random-forest",
+    "neural-networks",
+    "deep-learning",
+    "evaluation-metrics",
+    "bias-variance"
+  ],
+  "scope": {
+    "modules": 33,
+    "sections": 359,
+    "priority_modules": 6,
+    "priority_sections": 80
+  }
+}

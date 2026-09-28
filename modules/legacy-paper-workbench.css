@@ -1,0 +1,100 @@
+/* Scoped paper/ink surface treatment for the legacy lessons.  Geometry,
+   order, and responsive placement stay in each module's original CSS. */
+body.hw-handwritten.legacy-sketch {
+  --legacy-paper: #f8f3e6;
+  --legacy-paper-deep: #f1e8d4;
+  --legacy-ink: #202421;
+  --legacy-rule: rgba(32, 36, 33, .28);
+  --legacy-blue: #1f65b7;
+  --legacy-green: #3f9a63;
+  --legacy-orange: #df7a25;
+  --legacy-red: #c84b43;
+  --legacy-purple: #8057bd;
+  background-color: var(--legacy-paper) !important;
+  color: var(--legacy-ink) !important;
+}
+
+body.hw-handwritten.legacy-sketch .statml-site-nav,
+body.hw-handwritten.legacy-sketch .statml-hero,
+body.hw-handwritten.legacy-sketch .statml-narrative,
+body.hw-handwritten.legacy-sketch .statml-visual {
+  color: var(--legacy-ink) !important;
+  background-color: var(--legacy-paper) !important;
+  border-color: var(--legacy-rule) !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+body.hw-handwritten.legacy-sketch .statml-brand-mark {
+  border-color: var(--legacy-ink) !important;
+  background: transparent !important;
+  color: var(--legacy-ink) !important;
+  box-shadow: none !important;
+}
+body.hw-handwritten.legacy-sketch .statml-nav-topic,
+body.hw-handwritten.legacy-sketch .statml-nav-meta { color: rgba(32, 36, 33, .72) !important; }
+body.hw-handwritten.legacy-sketch .statml-hero h1,
+body.hw-handwritten.legacy-sketch .statml-hero .hero-subtitle,
+body.hw-handwritten.legacy-sketch .statml-hero p { color: var(--legacy-ink) !important; }
+body.hw-handwritten.legacy-sketch .statml-hero .hero-subtitle,
+body.hw-handwritten.legacy-sketch .statml-hero p { color: rgba(32, 36, 33, .78) !important; }
+body.hw-handwritten.legacy-sketch .statml-hero > canvas,
+body.hw-handwritten.legacy-sketch .statml-hero > .hero-bg { filter: none !important; }
+
+body.hw-handwritten.legacy-sketch .statml-stage,
+body.hw-handwritten.legacy-sketch .statml-stage .glass-card,
+body.hw-handwritten.legacy-sketch .statml-stage .card,
+body.hw-handwritten.legacy-sketch .statml-stage .metric-card,
+body.hw-handwritten.legacy-sketch .statml-stage .control-panel,
+body.hw-handwritten.legacy-sketch .statml-stage .controls,
+body.hw-handwritten.legacy-sketch .statml-stage .quiz-card,
+body.hw-handwritten.legacy-sketch .statml-stage .worked-example-widget,
+body.hw-handwritten.legacy-sketch .statml-stage .formula-block,
+body.hw-handwritten.legacy-sketch .statml-stage .math-block,
+body.hw-handwritten.legacy-sketch .statml-stage .formula,
+body.hw-handwritten.legacy-sketch .statml-stage .software-output,
+body.hw-handwritten.legacy-sketch .statml-stage .model-report-block,
+body.hw-handwritten.legacy-sketch .statml-stage .limitation-card,
+body.hw-handwritten.legacy-sketch .statml-stage .playground-summary-card,
+body.hw-handwritten.legacy-sketch .statml-stage .decision-card {
+  color: var(--legacy-ink) !important;
+  background-color: rgba(255, 252, 242, .62) !important;
+  border-color: var(--legacy-rule) !important;
+  box-shadow: none !important;
+}
+body.hw-handwritten.legacy-sketch .statml-stage .formula-block,
+body.hw-handwritten.legacy-sketch .statml-stage .math-block,
+body.hw-handwritten.legacy-sketch .statml-stage .formula {
+  background-color: rgba(244, 223, 160, .3) !important;
+  border-left-color: var(--legacy-blue) !important;
+}
+body.hw-handwritten.legacy-sketch .statml-stage table {
+  border-color: var(--legacy-rule) !important;
+  background-color: rgba(248, 243, 230, .25) !important;
+}
+body.hw-handwritten.legacy-sketch .statml-stage th,
+body.hw-handwritten.legacy-sketch .statml-stage td { border-color: var(--legacy-rule) !important; color: var(--legacy-ink) !important; }
+body.hw-handwritten.legacy-sketch .statml-stage th { background-color: rgba(244, 223, 160, .24) !important; }
+body.hw-handwritten.legacy-sketch .statml-stage input[type="range"] { accent-color: var(--legacy-blue) !important; }
+body.hw-handwritten.legacy-sketch .statml-stage button,
+body.hw-handwritten.legacy-sketch .statml-stage select,
+body.hw-handwritten.legacy-sketch .statml-stage input[type="text"],
+body.hw-handwritten.legacy-sketch .statml-stage input[type="number"] {
+  border-color: rgba(32, 36, 33, .35) !important;
+  background-color: rgba(248, 243, 230, .4) !important;
+  box-shadow: none !important;
+}
+
+body.hw-handwritten.legacy-sketch .statml-visual > .canvas-container,
+body.hw-handwritten.legacy-sketch .statml-visual > .visualization-container,
+body.hw-handwritten.legacy-sketch .statml-visual > .viz-stage,
+body.hw-handwritten.legacy-sketch .statml-visual > .canvas-wrapper,
+body.hw-handwritten.legacy-sketch .statml-visual > .dist-container,
+body.hw-handwritten.legacy-sketch .statml-visual > .matrix-container,
+body.hw-handwritten.legacy-sketch .statml-visual canvas {
+  background-color: rgba(248, 243, 230, .72) !important;
+  border-color: var(--legacy-rule) !important;
+  box-shadow: none !important;
+  filter: none !important;
+}

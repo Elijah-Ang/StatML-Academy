@@ -1,0 +1,16 @@
+[
+  "modules/notebook/multiple.js",
+  "modules/notebook/regression-lab.js",
+  "modules/notebook/ui.js",
+  "modules/notebook/spatial.js",
+  "modules/notebook/tree-space.js",
+  "modules/notebook/classification.js",
+  "modules/notebook/neural-scenes.js",
+  "modules/notebook/neural.js",
+  "modules/notebook/statistics.js",
+  "modules/notebook/workflow.js",
+  "modules/notebook/trees.js",
+  "modules/notebook/notebook.css",
+  "docs/ux-learning-redesign/visual-teaching-review.md",
+  "docs/ux-learning-redesign/README.md"
+]

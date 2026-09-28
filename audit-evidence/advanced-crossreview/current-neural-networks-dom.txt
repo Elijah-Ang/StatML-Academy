@@ -1,0 +1,561 @@
+- link "Skip to lesson":
+  - /url: "#lesson"
+- navigation "StatML Academy navigation":
+  - link "S StatML Academy":
+    - /url: https://elijah-ang.github.io/StatML-Academy/index.html
+    - text: S
+    - generic: StatML Academy
+  - generic: Neural Networks
+  - generic: Machine Learning · visual module
+- banner:
+  - generic: Machine Learning · Neural Networks
+  - heading "Neural Networks" [level=1]: Neural Networks
+  - generic "Lesson overview":
+    - generic: "1"
+    - strong: Prepare the evidence.
+    - text: Turn messy examples into usable features and honest data splits.
+    - generic: "2"
+    - strong: Learn through error.
+    - text: See signals move forward and corrections move backward.
+    - generic: "3"
+    - strong: Prove it works.
+    - text: Validate, test, deploy, monitor, and check fairness.
+  - generic: ↓ Scroll to begin
+- main:
+  - article:
+    - generic: Stage 01
+    - 'heading "The whole idea: learn patterns from examples" [level=2]': "The whole idea: learn patterns from examples"
+    - paragraph:
+      - text: A
+      - strong: neural network
+      - text: is a model made of small calculation units called neurons. Each neuron receives numbers, gives some of them more importance than others, combines them, and passes a new number forward.
+    - paragraph:
+      - text: Imagine teaching a child to recognize cats. You do not write every possible cat rule. You show many examples labeled
+      - generic: cat
+      - text: or
+      - generic: not cat
+      - text: . The child gradually notices patterns. A neural network does something similar with numbers.
+    - generic: →
+    - paragraph:
+      - strong: "Plain-English translation:"
+      - text: examples go in, a prediction comes out, mistakes are measured, and the internal settings are adjusted so the next prediction is less wrong.
+    - heading "Normal programming versus machine learning" [level=3]
+    - paragraph:
+      - strong: "Normal programming:"
+      - text: a human writes the rules, the computer applies them, and an answer comes out.
+      - strong: "Machine learning:"
+      - text: a human supplies examples and correct outcomes, then the model learns useful rules from those examples. Neural networks are valuable when the rules are too numerous or complicated to write by hand.
+    - generic: Before you continue
+    - paragraph: You only need basic comfort with multiplication, averages, and percentages. Every specialist word is defined before it is used.
+    - generic: Stage 02
+    - heading "Data becomes features and labels" [level=2]: Data becomes features and labels
+    - paragraph:
+      - strong: Data
+      - text: is the collection of examples the model learns from. In our toy problem, each row describes one student.
+    - table:
+      - rowgroup:
+        - row "Study hours Sleep hours Attendance Passed?":
+          - columnheader "Study hours"
+          - columnheader "Sleep hours"
+          - columnheader "Attendance"
+          - columnheader "Passed?"
+      - rowgroup:
+        - row "8 7 90% Yes":
+          - cell "8"
+          - cell "7"
+          - cell "90%"
+          - cell "Yes":
+            - generic: "Yes"
+        - row "2 4 40% No":
+          - cell "2"
+          - cell "4"
+          - cell "40%"
+          - cell "No":
+            - generic: "No"
+        - row "5 6 70% Yes":
+          - cell "5"
+          - cell "6"
+          - cell "70%"
+          - cell "Yes":
+            - generic: "Yes"
+    - heading "Features" [level=3]
+    - paragraph: "The clues the model receives: study hours, sleep hours, and attendance."
+    - heading "Label" [level=3]
+    - paragraph: "The correct answer it must learn to predict: passed or failed."
+    - paragraph:
+      - strong: Supervised learning
+      - text: means the training examples already contain the correct answers. Features are the clues; the label is the answer key.
+    - generic: Stage 03
+    - heading "Clean, encode, scale, then split" [level=2]: Clean, encode, scale, then split
+    - paragraph: Real data is rarely ready to train on. Missing values, duplicates, impossible values, inconsistent labels, and suspicious outliers must be investigated before the model sees them.
+    - heading "1. Clean" [level=3]
+    - paragraph: Fix or remove records that are missing, duplicated, impossible, or inconsistent.
+    - heading "2. Encode" [level=3]
+    - paragraph: Turn words and categories into numbers because the network performs mathematics.
+    - heading "3. Scale" [level=3]
+    - paragraph: Put numerical features on comparable ranges so a large unit does not look important merely because its number is bigger.
+    - heading "4. Split" [level=3]
+    - paragraph: Keep separate training, validation, and test sets so memorization cannot impersonate learning.
+    - text: Training set ≈ 70% → teaches the model Validation set ≈ 15% → tunes choices during development Test set ≈ 15% → final, untouched exam
+    - paragraph:
+      - strong: "Keep the final exam separate:"
+      - text: the test examples must not be used to teach or tune the model. Otherwise the final score no longer shows how well the model handles genuinely unseen data.
+    - paragraph: Academic precision
+    - heading "Why scaling is useful" [level=3]
+    - heading "What it prevents" [level=4]
+    - paragraph: A feature measured in thousands can dominate numerical updates even when it is not more meaningful.
+    - heading "What it does not mean" [level=4]
+    - paragraph: Scaling does not automatically decide which feature matters. The network still learns weights from the data.
+    - generic: Stage 04
+    - heading "A network is layers of tiny calculators" [level=2]: A network is layers of tiny calculators
+    - paragraph:
+      - text: The
+      - strong: input layer
+      - text: receives study, sleep, and attendance. Each hidden neuron receives its own weighted mixture of those inputs. Across training, different mixtures become sensitive to different combinations—perhaps high study with low sleep, or strong attendance with moderate study. These are
+      - strong: emergent feature detectors
+      - text: ": useful sensitivities discovered from data, not roles assigned to neurons by a person."
+    - text: "Student pass/fail architecture: 3 → 8 → 4 → 1 3 inputs → hidden patterns → 1 pass-score neuron"
+    - generic "What humans choose versus what the model learns":
+      - generic: What you choose
+      - heading "Design decisions before training" [level=3]
+      - list:
+        - listitem: How many hidden layers
+        - listitem: How many neurons per layer
+        - listitem: Hidden and output activations
+        - listitem: Optimizer and learning rate
+      - generic: What the model learns
+      - heading "Parameters discovered from examples" [level=3]
+      - list:
+        - listitem: Every connection weight
+        - listitem: Every neuron bias
+        - listitem: Useful internal sensitivities
+        - listitem: Representations that reduce loss
+    - generic: "?"
+    - paragraph:
+      - strong: Why not something simpler?
+      - text: A linear model may be enough when one straight boundary captures the pattern. Hidden layers are justified only when interactions and reusable intermediate patterns improve performance on new data.
+    - paragraph: "The visual begins with the skeleton you designed, then animates the connection strengths that training learns. A larger network is not automatically better: more depth and width need more data, computation, and protection against overfitting."
+    - generic: Stage 05
+    - heading "One feature has a different weight into every hidden neuron" [level=2]: One feature has a different weight into every hidden neuron
+    - paragraph: There is not one universal “sleep weight.” Sleep connects to every neuron in the next layer, and each connection learns a separate value. One neuron may respond strongly to sleep, another weakly, and another negatively because it combines sleep with different evidence.
+    - generic: Connection explorer
+    - paragraph: Choose an input to reveal its four independently learned connections.
+    - group "Choose a feature to inspect":
+      - button "Study"
+      - button "Sleep" [pressed]
+      - button "Attendance"
+    - text: hidden neuron j score = study × wstudy,j + sleep × wsleep,j + attendance × wattendance,j + biasj
+    - generic: w
+    - paragraph:
+      - strong: "What:"
+      - text: weights control sensitivity and biases shift activation.
+      - strong: "How:"
+      - text: training changes all of them to reduce loss.
+      - strong: "Why:"
+      - text: separate weights let neurons specialize in different combinations.
+      - strong: Why not assign roles?
+      - text: Human labels would constrain the model before the data reveals which combinations are useful.
+    - paragraph:
+      - strong: "Interpretability note:"
+      - text: you can inspect every weight, but raw numbers rarely translate into one clean human rule. A neuron usually participates in a distributed pattern with many other neurons.
+    - generic: Stage 06
+    - heading "Non-linearity lets stacked layers learn bends" [level=2]: Non-linearity lets stacked layers learn bends
+    - paragraph: First ask why an activation is needed. If every layer performs only a linear weighted sum, stacking ten layers still collapses into one linear transformation. The network gains more arithmetic, but not a more flexible decision boundary.
+    - text: inputs → weighted sum + bias → raw score → activation function → output signal
+    - generic: Boundary experiment
+    - group "Toggle the hidden-layer ReLU":
+      - button "Linear only"
+      - button "ReLU on" [pressed]
+    - paragraph: "Use the buttons to focus either path; both remain visible for a direct comparison. Hidden layers use ReLU by default here. The output activation changes with the task:"
+    - group "Choose output task":
+      - button "Binary sigmoid" [pressed]
+      - button "Multiclass softmax"
+      - button "Regression linear"
+    - generic: ↳
+    - paragraph:
+      - strong: ReLU is a learned-pattern gate.
+      - text: "A positive raw score passes as evidence that one learned pattern is present; zero means that neuron does not pass evidence for that pattern. It is misleading to say the network simply “throws away negative information”: other neurons—with different weights and biases—can represent opposing or complementary evidence."
+    - 'heading "Hidden layers: ReLU" [level=3]'
+    - paragraph:
+      - code: ReLU(2.5) = 2.5
+      - text: passes positive evidence;
+      - code: ReLU(-3) = 0
+      - text: gates that detector off.
+    - 'heading "Binary output: sigmoid" [level=3]'
+    - paragraph:
+      - text: One raw output becomes a score from 0 to 1, such as a pass score of
+      - code: "0.82"
+      - text: .
+    - 'heading "Multiclass output: softmax" [level=3]'
+    - paragraph: Several class scores are converted together into probabilities that total 100%.
+    - 'heading "Regression output: linear" [level=3]'
+    - paragraph: The output remains a direct number because a probability constraint would be inappropriate.
+    - paragraph:
+      - strong: "Design decision:"
+      - text: humans choose activations before training. Training learns the weights and biases that determine which patterns produce positive or non-positive raw scores.
+    - generic: Stage 07
+    - heading "Forward propagation makes one pass-score prediction" [level=2]: Forward propagation makes one pass-score prediction
+    - paragraph:
+      - strong: Forward propagation
+      - text: means information moves from the three inputs, through every hidden layer, to the single output neuron used by this binary task.
+    - text: study + sleep + attendance → hidden-layer calculations and ReLU activations → one raw output score → sigmoid → pass score between 0 and 1
+    - paragraph:
+      - text: For one student, the output neuron might produce
+      - strong: "0.82"
+      - text: . We read that as an 82% model score for “pass.” The corresponding fail score is
+      - code: 1 − 0.82 = 0.18
+      - text: .
+    - paragraph: The output neuron does not yet make the final Pass/Fail decision. Stage 14 will apply a separate decision threshold, such as 0.50, to turn this continuous score into a class label.
+    - generic: Stage 08
+    - heading "Loss measures how wrong the prediction was" [level=2]: Loss measures how wrong the prediction was
+    - paragraph:
+      - text: A
+      - strong: loss function
+      - text: converts prediction error into a number. Smaller loss is better. Larger loss tells the training process that the current weights need more correction.
+    - heading "Regression" [level=3]
+    - paragraph:
+      - text: When predicting a number,
+      - strong: mean squared error
+      - text: is common. It squares mistakes, so large errors receive extra punishment.
+    - heading "Classification" [level=3]
+    - paragraph:
+      - text: When predicting a class,
+      - strong: cross-entropy loss
+      - text: is common. It strongly penalizes a model that is confidently wrong.
+    - generic: "!"
+    - paragraph:
+      - strong: Loss is the teacher's marking pen.
+      - text: It does not merely say “wrong.” It gives the optimizer a numerical signal showing how much improvement is needed.
+    - paragraph: Do not confuse these
+    - heading "Loss versus metric" [level=3]
+    - heading "Loss" [level=4]
+    - paragraph: The quantity optimized during training. It guides weight updates.
+    - heading "Metric" [level=4]
+    - paragraph: A human-readable measure such as accuracy, precision, recall, MAE, or RMSE.
+    - generic: Stage 09
+    - heading "Backpropagation computes gradients—only gradients" [level=2]: Backpropagation computes gradients—only gradients
+    - paragraph:
+      - text: A
+      - strong: gradient
+      - text: "is a collection of slopes: for each weight, it answers “if this weight increased a tiny amount, how would the loss change?” The sign gives a direction and the magnitude describes local sensitivity."
+    - text: forward pass → prediction prediction + truth → loss backpropagation → gradient for every weight and bias weights are still unchanged
+    - paragraph:
+      - text: Backpropagation applies the chain rule from the loss backward through the network. It calculates how local changes connect to the final error. It does
+      - strong: not
+      - text: choose a learning rate and it never updates a parameter.
+    - paragraph:
+      - strong: "Plain distinction:"
+      - text: backprop computes gradients only. The optimizer later uses those gradients to update weights.
+    - generic: Stage 10
+    - heading "The optimizer takes iterative, local steps" [level=2]: The optimizer takes iterative, local steps
+    - paragraph:
+      - strong: Gradient descent
+      - text: applies the update. It combines the local gradient with a
+      - strong: learning rate
+      - text: ":"
+      - code: next weight = current weight − learning rate × gradient
+      - text: . Because the gradient describes only the slope near the current point, optimization must repeat rather than jump directly to the answer.
+    - generic: Watch it walk downhill
+    - group "Choose learning-rate behavior":
+      - button "Tiny steps"
+      - button "Medium steps" [pressed]
+      - button "Too large"
+      - button "Pause"
+    - paragraph:
+      - strong: Small steps
+      - text: need many updates.
+      - strong: Medium steps
+      - text: descend efficiently.
+      - strong: Large steps
+      - text: can overshoot and bounce away. Drag the current point on the curve to inspect a different local slope.
+    - generic: ∇
+    - paragraph:
+      - strong: "What:"
+      - text: a gradient is local slope.
+      - strong: "Why:"
+      - text: it tells the optimizer which nearby direction lowers loss.
+      - strong: "How:"
+      - text: multiply it by the learning rate and update.
+      - strong: Why not one giant step?
+      - text: the landscape bends, and the local slope does not reveal the whole terrain.
+    - generic "Why local does not guarantee global +"
+    - generic: Stage 11
+    - heading "One update has a strict causal order" [level=2]: One update has a strict causal order
+    - paragraph:
+      - text: The model usually learns from a small
+      - strong: batch
+      - text: . Each update follows the same sequence; confusing these steps hides what actually causes learning.
+    - text: 1. take data 2. forward pass makes predictions 3. loss measures error 4. backpropagation computes gradients 5. optimizer applies parameter updates 6. updated weights change the next prediction 7. repeat
+    - generic: Batch
+    - generic: examples per update
+    - generic: Iteration
+    - generic: one update step
+    - generic: Epoch
+    - generic: one full pass through training data
+    - text: 1,000 examples ÷ batch size 100 = 10 iterations per epoch
+    - generic: ↻
+    - paragraph: The forward pass supplies a prediction; loss supplies an objective; backprop supplies gradients; the optimizer supplies the update. Repetition turns many local corrections into learned behavior.
+    - generic: Stage 12
+    - heading "Choose the model before validation gets worse" [level=2]: Choose the model before validation gets worse
+    - paragraph: "Training loss can keep falling while validation loss eventually rises. That is the causal signature of overfitting: the model is improving on examples it trains on while becoming less useful on unseen data. Keep the checkpoint near the lowest validation loss, not the final training step."
+    - paragraph:
+      - strong: "Local is not global:"
+      - text: "an optimizer follows nearby slopes and may settle in one valley even if a lower valley exists elsewhere. Validation asks a different question: whichever valley training reaches, does that model generalize?"
+    - generic: "!"
+    - paragraph:
+      - strong: Why can dependence be bad?
+      - text: A neuron might learn a brittle shortcut such as “attendance decides everything.” If later neurons rely heavily on that one pathway, the network may fail when the shortcut does not hold for new students.
+    - generic: Regularization control
+    - generic: "Dropout rate during training: 20%"
+    - 'slider "Dropout rate during training: 20%"': "20"
+    - paragraph: Decrease the rate and more hidden neurons stay active on the right. Increase it and more paths switch off, which can reduce shortcut dependence but may underfit; at 100%, this simplified visual switches off every hidden neuron.
+    - heading "During training" [level=3]
+    - paragraph: Different hidden neurons are temporarily switched off on different updates.
+    - heading "Validation and real use" [level=3]
+    - paragraph: Dropout is switched off, the full network is used, and the framework handles the required scaling.
+    - heading "Decrease dropout" [level=3]
+    - paragraph: More paths stay active, but the model may overfit by leaning on shortcuts.
+    - heading "Increase dropout" [level=3]
+    - paragraph: More paths switch off in the visual, spreading reliance until excessive dropout starts to underfit.
+    - paragraph:
+      - strong: "Keep this model:"
+      - text: save the checkpoint at the validation minimum. Dropout is one possible regularizer, not an automatic requirement; its value depends on the architecture, data, and observed overfitting.
+    - generic: Stage 13
+    - heading "Humans choose the architecture and hyperparameters" [level=2]: Humans choose the architecture and hyperparameters
+    - paragraph:
+      - strong: Parameters
+      - text: "are learned by the model: every weight and bias."
+      - strong: Hyperparameters
+      - text: are design decisions made before or around training.
+    - paragraph: Design decisions
+    - heading "Why each choice exists" [level=3]
+    - heading "Depth and width" [level=4]
+    - paragraph: Control representational capacity. Too little can underfit; too much can waste data and computation or overfit.
+    - heading "Activations" [level=4]
+    - paragraph: Add non-linearity and match output constraints. Hidden layers remain ReLU here.
+    - heading "Optimizer" [level=4]
+    - paragraph: Defines how gradients are converted into parameter updates.
+    - heading "Learning rate" [level=4]
+    - paragraph: "Sets update scale: small is slow; large can overshoot."
+    - generic: Output-layer explorer
+    - group "Choose prediction task":
+      - button "Binary class" [pressed]
+      - button "Multi-class"
+      - button "Regression"
+    - heading "Binary classification" [level=3]
+    - paragraph: "Hidden layers: ReLU. Output: one neuron with sigmoid."
+    - heading "Multi-class classification" [level=3]
+    - paragraph: "Hidden layers: ReLU. Output: one score per class with softmax."
+    - heading "Regression" [level=3]
+    - paragraph: "Hidden layers: ReLU. Output: usually one linear numerical value."
+    - heading "Feature engineering" [level=3]
+    - paragraph: Structured problems may improve when raw fields are turned into more useful clues, such as date of birth → age.
+    - paragraph: There is no universal “best” architecture. A design must match the task, data quantity, noise, complexity, and cost of mistakes.
+    - generic: Stage 14
+    - heading "The test set evaluates both scores and decisions" [level=2]: The test set evaluates both scores and decisions
+    - paragraph:
+      - text: After training and tuning are finished, the model is evaluated once on the untouched
+      - strong: test set
+      - text: . For our binary task, sigmoid first produces a pass score. A separate
+      - strong: classification decision threshold
+      - text: then converts that score into Pass or Fail.
+    - text: model pass score = 0.72 decision threshold = 0.50 0.72 ≥ 0.50 prediction = Pass
+    - paragraph:
+      - text: This threshold is
+      - strong: not the school’s exam passing mark
+      - text: . It is the model’s cutoff for turning a score between 0 and 1 into a predicted class.
+    - generic: Decision control
+    - generic: "Classification decision threshold: 0.50"
+    - 'slider "Classification decision threshold: 0.50"': "50"
+    - paragraph: "Lowering the threshold predicts Pass more easily: recall usually rises, but false positives may increase. Raising it is stricter: false positives may fall, but more actual passes can be missed."
+    - generic: "0.75"
+    - generic: Precision
+    - generic: "0.75"
+    - generic: Recall
+    - generic: "0.75"
+    - generic: F1-score
+    - table:
+      - rowgroup:
+        - row "Actually passed Actually failed":
+          - columnheader
+          - columnheader "Actually passed"
+          - columnheader "Actually failed"
+      - rowgroup:
+        - 'row "Predicted pass True positive: 3 False positive: 1"':
+          - rowheader "Predicted pass"
+          - 'cell "True positive: 3"':
+            - strong: "True positive:"
+            - text: "3"
+          - 'cell "False positive: 1"':
+            - strong: "False positive:"
+            - text: "1"
+        - 'row "Predicted fail False negative: 1 True negative: 3"':
+          - rowheader "Predicted fail"
+          - 'cell "False negative: 1"':
+            - strong: "False negative:"
+            - text: "1"
+          - 'cell "True negative: 3"':
+            - strong: "True negative:"
+            - text: "3"
+    - paragraph:
+      - strong: Accuracy alone can mislead.
+      - text: Precision asks whether predicted passes were usually correct. Recall asks how many actual passes the model successfully found.
+    - generic: Stage 15
+    - heading "Error analysis starts with individual students" [level=2]: Error analysis starts with individual students
+    - paragraph: Overall scores hide which people are affected. Move the threshold, inspect the highlighted false positives and false negatives, and connect each case to the metric that represents its cost.
+    - generic: Case-level threshold explorer
+    - generic: "Classification threshold: 0.50"
+    - 'slider "Classification threshold: 0.50"': "50"
+    - group "Sort student predictions":
+      - button "Sort by score"
+      - button "Sort by distance to threshold" [pressed]
+    - paragraph:
+      - strong: "Noor, score 0.68, actually failed:"
+      - text: at the starting 0.50 threshold this is a
+      - strong: false positive
+      - text: . If wrongly predicting success is costly, prioritize
+      - strong: precision
+      - text: .
+    - paragraph:
+      - strong: "Sam, score 0.43, actually passed:"
+      - text: at the starting 0.50 threshold this is a
+      - strong: false negative
+      - text: . If missing a student who would pass is costly, prioritize
+      - strong: recall
+      - text: .
+    - paragraph:
+      - strong: "Ana, score 0.57, actually passed:"
+      - text: at the starting threshold this is a borderline true positive that flips when the threshold rises past 0.57.
+      - strong: F1
+      - text: is useful when both false positives and false negatives matter and one balanced summary is needed.
+    - generic: From case to action
+    - paragraph: Threshold changes only the decision rule; it does not repair weak features, biased labels, or poor calibration. Inspect concrete errors, diagnose the cause, change the appropriate part, then evaluate again by relevant groups.
+    - generic: Stage 16
+    - heading "Saving, deployment, and monitoring finish the lifecycle" [level=2]: Saving, deployment, and monitoring finish the lifecycle
+    - paragraph: Once performance is acceptable, the final model is saved. The saved package includes the architecture, learned weights and biases, and often the preprocessing rules needed to reproduce training-time inputs.
+    - text: new user input → same preprocessing used during training → saved model → prediction → application response
+    - paragraph:
+      - strong: Deployment
+      - text: puts the model into a website, mobile app, server API, edge device, or business system. A model sitting in a notebook is an experiment, not a working service.
+    - generic: After launch
+    - paragraph:
+      - text: Monitor accuracy, error types, input-data changes, speed, complaints, fairness, and security. When the world changes and performance falls, the model is experiencing
+      - strong: drift
+      - text: .
+    - generic: Stage 17
+    - heading "Different network families organize information differently" [level=2]: Different network families organize information differently
+    - heading "Feedforward network" [level=3]
+    - paragraph: Information moves from input to hidden layers to output. This is the structure used throughout this lesson.
+    - heading "Convolutional network (CNN)" [level=3]
+    - paragraph: Common for images. Early layers notice edges; later layers combine them into shapes and object parts.
+    - heading "Recurrent network (RNN)" [level=3]
+    - paragraph: Designed for sequences and previous context, such as text, audio, and time series.
+    - heading "Transformer" [level=3]
+    - paragraph: Uses attention to connect relevant parts of data, allowing many relationships to be considered at once.
+    - paragraph:
+      - text: This layered transformation is called
+      - strong: representation learning
+      - text: ". Raw inputs become increasingly useful internal patterns: pixels → edges → shapes → objects, or word pieces → phrases → context."
+    - paragraph:
+      - strong: "Interpretability:"
+      - text: weights are visible, but a representation is usually distributed across many parameters. Inspecting one large weight rarely yields a faithful human rule; use case-level explanations, sensitivity analyses, and validation evidence together.
+    - paragraph: "Neural networks are powerful because they can learn complex representations. They are used for images, speech, text, translation, recommendations, medical scans, fraud detection, forecasting, game playing, and large language models. They are not magic: they still depend on good data, sensible design, testing, monitoring, and human judgment."
+    - generic: Stage 18
+    - heading "Try the tiny student-pass network" [level=2]: Try the tiny student-pass network
+    - paragraph: Move the inputs and watch the same network update. This is an illustrative toy, not a trained admissions or education model.
+    - generic: "Study hours: 6"
+    - 'slider "Study hours: 6"': "6"
+    - generic: "Sleep hours: 7"
+    - 'slider "Sleep hours: 7"': "7"
+    - generic: "Attendance: 75%"
+    - 'slider "Attendance: 75%"': "75"
+    - generic: "0.77"
+    - generic: Toy pass score
+    - generic: Pass
+    - generic: At current threshold
+    - generic: High
+    - generic: Distance from threshold
+    - paragraph: A score is not a guarantee and does not explain causation. This toy only demonstrates how changed inputs can flow through a fixed set of weights.
+    - generic: Final synthesis
+    - heading "One full training cycle" [level=2]: One full training cycle
+    - generic: The causal chain
+    - list:
+      - strong: You choose
+      - text: the architecture, activations, optimizer, and learning rate.
+      - strong: Data
+      - text: enters and a forward pass produces predictions.
+      - strong: Loss
+      - text: converts prediction error into an objective.
+      - strong: Backpropagation computes gradients only.
+      - strong: The optimizer updates every weight and bias.
+      - strong: Updated parameters
+      - text: change the next forward pass.
+      - strong: Validation
+      - text: identifies the checkpoint that generalizes best.
+      - strong: Testing, deployment, monitoring, and error analysis
+      - text: keep the model accountable after training.
+    - text: data → forward pass → loss → backprop gradients → optimizer step → updated weights → repeat
+    - generic: ↻
+    - paragraph:
+      - strong: "What:"
+      - text: a parameterized function.
+      - strong: "Why:"
+      - text: to learn patterns too complex to specify cleanly.
+      - strong: "How:"
+      - text: repeated local updates reduce loss.
+      - strong: Why not something simpler?
+      - text: use a simpler model whenever it generalizes well enough and is easier to maintain or explain.
+    - heading "Final check" [level=3]
+    - paragraph: Which dataset should stay untouched until training and tuning are complete?
+    - button "Training set":
+      - text: Training set
+    - button "Validation set":
+      - text: Validation set
+    - button "Test set":
+      - text: Test set
+  - complementary "Interactive neural network visualization":
+    - generic: Stage 01
+    - generic: Learn patterns from examples
+    - generic: Neural learning lab
+    - img "A neural network diagram that changes with each lesson stage"
+    - generic: Examples enter from the left; a prediction leaves on the right.
+    - generic: data → prediction
+- navigation "Lesson stages":
+  - 'button "Go to The whole idea: learn patterns from examples"':
+    - generic: "The whole idea: learn patterns from examples"
+  - button "Go to Data becomes features and labels":
+    - generic: Data becomes features and labels
+  - button "Go to Clean, encode, scale, then split":
+    - generic: Clean, encode, scale, then split
+  - button "Go to A network is layers of tiny calculators":
+    - generic: A network is layers of tiny calculators
+  - button "Go to One feature has a different weight into every hidden neuron":
+    - generic: One feature has a different weight into every hidden neuron
+  - button "Go to Non-linearity lets stacked layers learn bends":
+    - generic: Non-linearity lets stacked layers learn bends
+  - button "Go to Forward propagation makes one pass-score prediction":
+    - generic: Forward propagation makes one pass-score prediction
+  - button "Go to Loss measures how wrong the prediction was":
+    - generic: Loss measures how wrong the prediction was
+  - button "Go to Backpropagation computes gradients—only gradients":
+    - generic: Backpropagation computes gradients—only gradients
+  - button "Go to The optimizer takes iterative, local steps":
+    - generic: The optimizer takes iterative, local steps
+  - button "Go to One update has a strict causal order":
+    - generic: One update has a strict causal order
+  - button "Go to Choose the model before validation gets worse":
+    - generic: Choose the model before validation gets worse
+  - button "Go to Humans choose the architecture and hyperparameters":
+    - generic: Humans choose the architecture and hyperparameters
+  - button "Go to The test set evaluates both scores and decisions":
+    - generic: The test set evaluates both scores and decisions
+  - button "Go to Error analysis starts with individual students":
+    - generic: Error analysis starts with individual students
+  - button "Go to Saving, deployment, and monitoring finish the lifecycle":
+    - generic: Saving, deployment, and monitoring finish the lifecycle
+  - button "Go to Different network families organize information differently":
+    - generic: Different network families organize information differently
+  - button "Go to Try the tiny student-pass network":
+    - generic: Try the tiny student-pass network
+  - button "Go to One full training cycle":
+    - generic: One full training cycle

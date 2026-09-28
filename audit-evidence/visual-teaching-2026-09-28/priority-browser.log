@@ -1,0 +1,39 @@
+neural-networks 1440 stage 9: foot is not defined
+neural-networks 1440 stage 9: foot is not defined
+neural-networks 1440 stage 10: foot is not defined
+neural-networks 1440 stage 10: foot is not defined
+neural-networks 1024 stage 9: foot is not defined
+neural-networks 1024 stage 9: foot is not defined
+neural-networks 1024 stage 10: foot is not defined
+neural-networks 768 stage 9: foot is not defined
+neural-networks 768 stage 9: foot is not defined
+neural-networks 768 stage 9: foot is not defined
+neural-networks 768 stage 10: foot is not defined
+neural-networks 768 stage 10: foot is not defined
+neural-networks 768 stage 10: foot is not defined
+neural-networks 768 stage 10: foot is not defined
+neural-networks 768 stage 10: foot is not defined
+neural-networks 430 stage 9: foot is not defined
+neural-networks 430 stage 9: foot is not defined
+neural-networks 430 stage 9: clipped [{"text":"1","x":518.8203125,"y":361,"width":4.359375},{"text":"Predicted P(class 1)","x":233.984375,"y":377,"width":101.03125}]
+neural-networks 430 stage 9: foot is not defined
+neural-networks 430 stage 10: foot is not defined
+neural-networks 430 stage 10: foot is not defined
+neural-networks 430 stage 10: foot is not defined
+neural-networks 430 stage 10: clipped [{"text":"1","x":518.8203125,"y":361,"width":4.359375},{"text":"Predicted P(class 1)","x":233.984375,"y":377,"width":101.03125}]
+neural-networks 430 stage 10: foot is not defined
+neural-networks 430 stage 10: foot is not defined
+neural-networks 320 stage 9: foot is not defined
+neural-networks 320 stage 9: foot is not defined
+neural-networks 320 stage 9: clipped [{"text":"0.5","x":277.9923095703125,"y":361.0688171386719,"width":13.015373229980469},{"text":"1","x":518.8195190429688,"y":361.0688171386719,"width":4.360907554626465},{"text":"Predicted P(class 1)","x":233.987548828125,"y":376.9136047363281,"width":101.02488708496094}]
+neural-networks 320 stage 9: foot is not defined
+neural-networks 320 stage 10: foot is not defined
+neural-networks 320 stage 10: foot is not defined
+neural-networks 320 stage 10: foot is not defined
+neural-networks 320 stage 10: clipped [{"text":"0.5","x":277.9923095703125,"y":361.0688171386719,"width":13.015373229980469},{"text":"1","x":518.8195190429688,"y":361.0688171386719,"width":4.360907554626465},{"text":"Predicted P(class 1)","x":233.987548828125,"y":376.9136047363281,"width":101.02488708496094}]
+neural-networks 320 stage 10: foot is not defined
+neural-networks 320 stage 11: foot is not defined
+neural behavior: foot is not defined
+neural behavior: foot is not defined
+neural behavior: foot is not defined
+neural behavior: foot is not defined

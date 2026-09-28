@@ -1,0 +1,472 @@
+{
+  "classification-trees": {
+    "8765": {
+      "body": 21657.78125,
+      "scrollHeight": 21658,
+      "scrollWidth": 1280,
+      "selector": "section[data-stage]",
+      "stages": [
+        {
+          "height": 720,
+          "stage": "0",
+          "top": 0
+        },
+        {
+          "height": 1962.375,
+          "stage": "1",
+          "top": 720
+        },
+        {
+          "height": 1123.015625,
+          "stage": "2",
+          "top": 2682.375
+        },
+        {
+          "height": 662.375,
+          "stage": "3",
+          "top": 3805.390625
+        },
+        {
+          "height": 1858.65625,
+          "stage": "4",
+          "top": 4467.765625
+        },
+        {
+          "height": 1130.96875,
+          "stage": "5",
+          "top": 6326.421875
+        },
+        {
+          "height": 1638.828125,
+          "stage": "6",
+          "top": 7457.390625
+        },
+        {
+          "height": 1355.078125,
+          "stage": "7",
+          "top": 9096.21875
+        },
+        {
+          "height": 972.25,
+          "stage": "8",
+          "top": 10451.296875
+        },
+        {
+          "height": 1564.359375,
+          "stage": "9",
+          "top": 11423.546875
+        },
+        {
+          "height": 1107.359375,
+          "stage": "10",
+          "top": 12987.90625
+        },
+        {
+          "height": 1301.640625,
+          "stage": "11",
+          "top": 14095.265625
+        },
+        {
+          "height": 1507.1875,
+          "stage": "12",
+          "top": 15396.90625
+        },
+        {
+          "height": 662.375,
+          "stage": "13",
+          "top": 16904.09375
+        },
+        {
+          "height": 662.375,
+          "stage": "14",
+          "top": 17566.46875
+        },
+        {
+          "height": 3257.46875,
+          "stage": "15",
+          "top": 18228.84375
+        }
+      ],
+      "url": "http://127.0.0.1:8765/modules/classification-trees.html?crossreview-final-rhythm=1787746555412"
+    },
+    "8766": {
+      "body": 21543.078125,
+      "scrollHeight": 21543,
+      "scrollWidth": 1280,
+      "selector": "section[data-stage]",
+      "stages": [
+        {
+          "height": 720,
+          "stage": "0",
+          "top": 0
+        },
+        {
+          "height": 1962.390625,
+          "stage": "1",
+          "top": 720
+        },
+        {
+          "height": 1123.015625,
+          "stage": "2",
+          "top": 2682.390625
+        },
+        {
+          "height": 662.390625,
+          "stage": "3",
+          "top": 3805.40625
+        },
+        {
+          "height": 1858.671875,
+          "stage": "4",
+          "top": 4467.796875
+        },
+        {
+          "height": 1130.96875,
+          "stage": "5",
+          "top": 6326.46875
+        },
+        {
+          "height": 1638.828125,
+          "stage": "6",
+          "top": 7457.4375
+        },
+        {
+          "height": 1355.09375,
+          "stage": "7",
+          "top": 9096.265625
+        },
+        {
+          "height": 972.25,
+          "stage": "8",
+          "top": 10451.359375
+        },
+        {
+          "height": 1564.359375,
+          "stage": "9",
+          "top": 11423.609375
+        },
+        {
+          "height": 1107.359375,
+          "stage": "10",
+          "top": 12987.96875
+        },
+        {
+          "height": 1186.828125,
+          "stage": "11",
+          "top": 14095.328125
+        },
+        {
+          "height": 1507.1875,
+          "stage": "12",
+          "top": 15282.15625
+        },
+        {
+          "height": 662.390625,
+          "stage": "13",
+          "top": 16789.34375
+        },
+        {
+          "height": 662.390625,
+          "stage": "14",
+          "top": 17451.734375
+        },
+        {
+          "height": 3257.484375,
+          "stage": "15",
+          "top": 18114.125
+        }
+      ],
+      "url": "http://127.0.0.1:8766/modules/classification-trees.html?crossreview-final-rhythm=1787746553347"
+    }
+  },
+  "hierarchical-clustering": {
+    "8765": {
+      "body": 10857.71875,
+      "scrollHeight": 10858,
+      "scrollWidth": 1280,
+      "selector": "section[data-stage]",
+      "stages": [
+        {
+          "height": 1021.96875,
+          "stage": "1",
+          "top": 720
+        },
+        {
+          "height": 787.9375,
+          "stage": "2",
+          "top": 1741.96875
+        },
+        {
+          "height": 662.375,
+          "stage": "3",
+          "top": 2529.90625
+        },
+        {
+          "height": 1840.4375,
+          "stage": "4",
+          "top": 3192.28125
+        },
+        {
+          "height": 780.96875,
+          "stage": "5",
+          "top": 5032.71875
+        },
+        {
+          "height": 813.625,
+          "stage": "6",
+          "top": 5813.6875
+        },
+        {
+          "height": 918.625,
+          "stage": "7",
+          "top": 6627.3125
+        },
+        {
+          "height": 786.375,
+          "stage": "8",
+          "top": 7545.9375
+        },
+        {
+          "height": 2353.9375,
+          "stage": "9",
+          "top": 8332.3125
+        }
+      ],
+      "url": "http://127.0.0.1:8765/modules/hierarchical-clustering.html?crossreview-final-rhythm=1787746558257"
+    },
+    "8766": {
+      "body": 10857.796875,
+      "scrollHeight": 10858,
+      "scrollWidth": 1280,
+      "selector": "section[data-stage]",
+      "stages": [
+        {
+          "height": 1021.984375,
+          "stage": "1",
+          "top": 720
+        },
+        {
+          "height": 787.9375,
+          "stage": "2",
+          "top": 1741.984375
+        },
+        {
+          "height": 662.390625,
+          "stage": "3",
+          "top": 2529.921875
+        },
+        {
+          "height": 1840.4375,
+          "stage": "4",
+          "top": 3192.3125
+        },
+        {
+          "height": 780.984375,
+          "stage": "5",
+          "top": 5032.75
+        },
+        {
+          "height": 813.625,
+          "stage": "6",
+          "top": 5813.734375
+        },
+        {
+          "height": 918.640625,
+          "stage": "7",
+          "top": 6627.359375
+        },
+        {
+          "height": 786.375,
+          "stage": "8",
+          "top": 7546
+        },
+        {
+          "height": 2353.953125,
+          "stage": "9",
+          "top": 8332.375
+        }
+      ],
+      "url": "http://127.0.0.1:8766/modules/hierarchical-clustering.html?crossreview-final-rhythm=1787746557220"
+    }
+  },
+  "lda": {
+    "8765": {
+      "body": 24401.59375,
+      "scrollHeight": 24402,
+      "scrollWidth": 1280,
+      "selector": "section[data-stage]",
+      "stages": [
+        {
+          "height": 822.515625,
+          "stage": "0",
+          "top": 0
+        },
+        {
+          "height": 2963.75,
+          "stage": "1",
+          "top": 822.515625
+        },
+        {
+          "height": 953.125,
+          "stage": "2",
+          "top": 3786.265625
+        },
+        {
+          "height": 1034.5,
+          "stage": "3",
+          "top": 4739.390625
+        },
+        {
+          "height": 836.015625,
+          "stage": "4",
+          "top": 5773.890625
+        },
+        {
+          "height": 1502.015625,
+          "stage": "5",
+          "top": 6609.90625
+        },
+        {
+          "height": 1784.40625,
+          "stage": "6",
+          "top": 8111.921875
+        },
+        {
+          "height": 1722.6875,
+          "stage": "7",
+          "top": 9896.328125
+        },
+        {
+          "height": 1171.40625,
+          "stage": "8",
+          "top": 11619.015625
+        },
+        {
+          "height": 1170.578125,
+          "stage": "9",
+          "top": 12790.421875
+        },
+        {
+          "height": 1998.515625,
+          "stage": "10",
+          "top": 13961
+        },
+        {
+          "height": 1407.796875,
+          "stage": "11",
+          "top": 15959.515625
+        },
+        {
+          "height": 2000.015625,
+          "stage": "12",
+          "top": 17367.3125
+        },
+        {
+          "height": 2124.875,
+          "stage": "13",
+          "top": 19367.328125
+        },
+        {
+          "height": 1844.546875,
+          "stage": "14",
+          "top": 21492.203125
+        },
+        {
+          "height": 893.375,
+          "stage": "15",
+          "top": 23336.75
+        }
+      ],
+      "url": "http://127.0.0.1:8765/modules/lda.html?crossreview-final-rhythm=1787746564213"
+    },
+    "8766": {
+      "body": 24401.75,
+      "scrollHeight": 24402,
+      "scrollWidth": 1280,
+      "selector": "section[data-stage]",
+      "stages": [
+        {
+          "height": 822.515625,
+          "stage": "0",
+          "top": 0
+        },
+        {
+          "height": 2963.75,
+          "stage": "1",
+          "top": 822.515625
+        },
+        {
+          "height": 953.125,
+          "stage": "2",
+          "top": 3786.265625
+        },
+        {
+          "height": 1034.5,
+          "stage": "3",
+          "top": 4739.390625
+        },
+        {
+          "height": 836.03125,
+          "stage": "4",
+          "top": 5773.890625
+        },
+        {
+          "height": 1502.03125,
+          "stage": "5",
+          "top": 6609.921875
+        },
+        {
+          "height": 1784.421875,
+          "stage": "6",
+          "top": 8111.953125
+        },
+        {
+          "height": 1722.703125,
+          "stage": "7",
+          "top": 9896.375
+        },
+        {
+          "height": 1171.421875,
+          "stage": "8",
+          "top": 11619.078125
+        },
+        {
+          "height": 1170.59375,
+          "stage": "9",
+          "top": 12790.5
+        },
+        {
+          "height": 1998.53125,
+          "stage": "10",
+          "top": 13961.09375
+        },
+        {
+          "height": 1407.8125,
+          "stage": "11",
+          "top": 15959.625
+        },
+        {
+          "height": 2000.015625,
+          "stage": "12",
+          "top": 17367.4375
+        },
+        {
+          "height": 2124.890625,
+          "stage": "13",
+          "top": 19367.453125
+        },
+        {
+          "height": 1844.5625,
+          "stage": "14",
+          "top": 21492.34375
+        },
+        {
+          "height": 893.375,
+          "stage": "15",
+          "top": 23336.90625
+        }
+      ],
+      "url": "http://127.0.0.1:8766/modules/lda.html?crossreview-final-rhythm=1787746561444"
+    }
+  }
+}

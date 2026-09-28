@@ -1,0 +1,910 @@
+{
+  "classification-trees": {
+    "baselineBody": 21543.078125,
+    "currentBody": 21657.78125,
+    "bodyRatio": 1.0053243610005245,
+    "bodyDelta": 114.703125,
+    "currentScrollWidth": 1280,
+    "stageRatios": [
+      {
+        "stage": "0",
+        "ratio": 1,
+        "delta": 0
+      },
+      {
+        "stage": "1",
+        "ratio": 0.9999920377728058,
+        "delta": -0.015625
+      },
+      {
+        "stage": "2",
+        "ratio": 1,
+        "delta": 0
+      },
+      {
+        "stage": "3",
+        "ratio": 0.9999764111999623,
+        "delta": -0.015625
+      },
+      {
+        "stage": "4",
+        "ratio": 0.9999915934597117,
+        "delta": -0.015625
+      },
+      {
+        "stage": "5",
+        "ratio": 1,
+        "delta": 0
+      },
+      {
+        "stage": "6",
+        "ratio": 1,
+        "delta": 0
+      },
+      {
+        "stage": "7",
+        "ratio": 0.9999884694324654,
+        "delta": -0.015625
+      },
+      {
+        "stage": "8",
+        "ratio": 1,
+        "delta": 0
+      },
+      {
+        "stage": "9",
+        "ratio": 1,
+        "delta": 0
+      },
+      {
+        "stage": "10",
+        "ratio": 1,
+        "delta": 0
+      },
+      {
+        "stage": "11",
+        "ratio": 1.0967389444027542,
+        "delta": 114.8125
+      },
+      {
+        "stage": "12",
+        "ratio": 1,
+        "delta": 0
+      },
+      {
+        "stage": "13",
+        "ratio": 0.9999764111999623,
+        "delta": -0.015625
+      },
+      {
+        "stage": "14",
+        "ratio": 0.9999764111999623,
+        "delta": -0.015625
+      },
+      {
+        "stage": "15",
+        "ratio": 0.999995203353815,
+        "delta": -0.015625
+      }
+    ]
+  },
+  "hierarchical-clustering": {
+    "baselineBody": 10857.796875,
+    "currentBody": 10857.71875,
+    "bodyRatio": 0.9999928047097492,
+    "bodyDelta": -0.078125,
+    "currentScrollWidth": 1280,
+    "stageRatios": [
+      {
+        "stage": "1",
+        "ratio": 0.9999847111165472,
+        "delta": -0.015625
+      },
+      {
+        "stage": "2",
+        "ratio": 1,
+        "delta": 0
+      },
+      {
+        "stage": "3",
+        "ratio": 0.9999764111999623,
+        "delta": -0.015625
+      },
+      {
+        "stage": "4",
+        "ratio": 1,
+        "delta": 0
+      },
+      {
+        "stage": "5",
+        "ratio": 0.9999799931976873,
+        "delta": -0.015625
+      },
+      {
+        "stage": "6",
+        "ratio": 1,
+        "delta": 0
+      },
+      {
+        "stage": "7",
+        "ratio": 0.9999829911724185,
+        "delta": -0.015625
+      },
+      {
+        "stage": "8",
+        "ratio": 1,
+        "delta": 0
+      },
+      {
+        "stage": "9",
+        "ratio": 0.9999933622297598,
+        "delta": -0.015625
+      }
+    ]
+  },
+  "lda": {
+    "baselineBody": 24401.75,
+    "currentBody": 24401.59375,
+    "bodyRatio": 0.9999935967707234,
+    "bodyDelta": -0.15625,
+    "currentScrollWidth": 1280,
+    "stageRatios": [
+      {
+        "stage": "0",
+        "ratio": 1,
+        "delta": 0
+      },
+      {
+        "stage": "1",
+        "ratio": 1,
+        "delta": 0
+      },
+      {
+        "stage": "2",
+        "ratio": 1,
+        "delta": 0
+      },
+      {
+        "stage": "3",
+        "ratio": 1,
+        "delta": 0
+      },
+      {
+        "stage": "4",
+        "ratio": 0.9999813105072328,
+        "delta": -0.015625
+      },
+      {
+        "stage": "5",
+        "ratio": 0.9999895974201602,
+        "delta": -0.015625
+      },
+      {
+        "stage": "6",
+        "ratio": 0.9999912436626008,
+        "delta": -0.015625
+      },
+      {
+        "stage": "7",
+        "ratio": 0.9999909299520194,
+        "delta": -0.015625
+      },
+      {
+        "stage": "8",
+        "ratio": 0.9999866615091169,
+        "delta": -0.015625
+      },
+      {
+        "stage": "9",
+        "ratio": 0.999986652072933,
+        "delta": -0.015625
+      },
+      {
+        "stage": "10",
+        "ratio": 0.9999921817584789,
+        "delta": -0.015625
+      },
+      {
+        "stage": "11",
+        "ratio": 0.9999889012208657,
+        "delta": -0.015625
+      },
+      {
+        "stage": "12",
+        "ratio": 1,
+        "delta": 0
+      },
+      {
+        "stage": "13",
+        "ratio": 0.9999926466803438,
+        "delta": -0.015625
+      },
+      {
+        "stage": "14",
+        "ratio": 0.9999915291566428,
+        "delta": -0.015625
+      },
+      {
+        "stage": "15",
+        "ratio": 1,
+        "delta": 0
+      }
+    ]
+  },
+  "qda": {
+    "baselineBody": 18740.0625,
+    "currentBody": 18740,
+    "bodyRatio": 0.9999966648990631,
+    "bodyDelta": -0.0625,
+    "currentScrollWidth": 1280,
+    "stageRatios": [
+      {
+        "stage": "1",
+        "ratio": 1,
+        "delta": 0
+      },
+      {
+        "stage": "2",
+        "ratio": 0.9999878213637637,
+        "delta": -0.015625
+      },
+      {
+        "stage": "3",
+        "ratio": 0.9999855589411816,
+        "delta": -0.015625
+      },
+      {
+        "stage": "4",
+        "ratio": 1,
+        "delta": 0
+      },
+      {
+        "stage": "5",
+        "ratio": 1,
+        "delta": 0
+      },
+      {
+        "stage": "6",
+        "ratio": 1,
+        "delta": 0
+      },
+      {
+        "stage": "7",
+        "ratio": 1,
+        "delta": 0
+      },
+      {
+        "stage": "8",
+        "ratio": 0.9999890019246632,
+        "delta": -0.015625
+      },
+      {
+        "stage": "9",
+        "ratio": 1,
+        "delta": 0
+      },
+      {
+        "stage": "10",
+        "ratio": 0.9999943138849244,
+        "delta": -0.015625
+      }
+    ]
+  },
+  "model-selection": {
+    "baselineBody": 14661.609375,
+    "currentBody": 14661.515625,
+    "bodyRatio": 0.9999936057497099,
+    "bodyDelta": -0.09375,
+    "currentScrollWidth": 1280,
+    "stageRatios": [
+      {
+        "stage": "1",
+        "ratio": 0.9999818244606409,
+        "delta": -0.015625
+      },
+      {
+        "stage": "2",
+        "ratio": 1,
+        "delta": 0
+      },
+      {
+        "stage": "3",
+        "ratio": 0.9999864826504818,
+        "delta": -0.015625
+      },
+      {
+        "stage": "4",
+        "ratio": 1,
+        "delta": 0
+      },
+      {
+        "stage": "5",
+        "ratio": 1,
+        "delta": 0
+      },
+      {
+        "stage": "6",
+        "ratio": 0.9999806043678964,
+        "delta": -0.015625
+      },
+      {
+        "stage": "7",
+        "ratio": 1,
+        "delta": 0
+      },
+      {
+        "stage": "8",
+        "ratio": 0.9999882993038086,
+        "delta": -0.015625
+      },
+      {
+        "stage": "9",
+        "ratio": 1,
+        "delta": 0
+      },
+      {
+        "stage": "10",
+        "ratio": 0.9999848199647823,
+        "delta": -0.015625
+      },
+      {
+        "stage": "11",
+        "ratio": 0.9999876683273319,
+        "delta": -0.015625
+      },
+      {
+        "stage": "12",
+        "ratio": 1,
+        "delta": 0
+      }
+    ]
+  },
+  "support-vector-machine": {
+    "baselineBody": 11955.46875,
+    "currentBody": 11954.328125,
+    "bodyRatio": 0.9999045938704829,
+    "bodyDelta": -1.140625,
+    "currentScrollWidth": 1280,
+    "stageRatios": [
+      {
+        "stage": "1",
+        "ratio": 0.9999785274097615,
+        "delta": -0.015625
+      },
+      {
+        "stage": "2",
+        "ratio": 0.9999790816860161,
+        "delta": -0.015625
+      },
+      {
+        "stage": "3",
+        "ratio": 0.9999775845064108,
+        "delta": -0.015625
+      },
+      {
+        "stage": "4",
+        "ratio": 1,
+        "delta": 0
+      },
+      {
+        "stage": "5",
+        "ratio": 1,
+        "delta": 0
+      },
+      {
+        "stage": "6",
+        "ratio": 0.9999795663989864,
+        "delta": -0.015625
+      },
+      {
+        "stage": "7",
+        "ratio": 0.9999785274097615,
+        "delta": -0.015625
+      },
+      {
+        "stage": "8",
+        "ratio": 0.9999788837975379,
+        "delta": -0.015625
+      },
+      {
+        "stage": "9",
+        "ratio": 1,
+        "delta": 0
+      },
+      {
+        "stage": "10",
+        "ratio": 0.9999764111999623,
+        "delta": -0.015625
+      },
+      {
+        "stage": "11",
+        "ratio": 0.9999796457245844,
+        "delta": -0.01611328125
+      },
+      {
+        "stage": "12",
+        "ratio": 1,
+        "delta": 0
+      },
+      {
+        "stage": "13",
+        "ratio": 0.9999849318164695,
+        "delta": -0.015625
+      },
+      {
+        "stage": "14",
+        "ratio": 1,
+        "delta": 0
+      }
+    ]
+  },
+  "regression-trees": {
+    "baselineBody": 18152.859375,
+    "currentBody": 18152.6875,
+    "bodyRatio": 0.9999905317946639,
+    "bodyDelta": -0.171875,
+    "currentScrollWidth": 1280,
+    "stageRatios": [
+      {
+        "stage": "1",
+        "ratio": 0.9999809994299829,
+        "delta": -0.015625
+      },
+      {
+        "stage": "2",
+        "ratio": 0.9999806729672793,
+        "delta": -0.015625
+      },
+      {
+        "stage": "3",
+        "ratio": 1,
+        "delta": 0
+      },
+      {
+        "stage": "4",
+        "ratio": 0.9999764111999623,
+        "delta": -0.015625
+      },
+      {
+        "stage": "5",
+        "ratio": 0.9999847358539526,
+        "delta": -0.015625
+      },
+      {
+        "stage": "6",
+        "ratio": 0.9999854750388543,
+        "delta": -0.015625
+      },
+      {
+        "stage": "7",
+        "ratio": 0.9999764111999623,
+        "delta": -0.015625
+      },
+      {
+        "stage": "8",
+        "ratio": 1,
+        "delta": 0
+      },
+      {
+        "stage": "9",
+        "ratio": 1,
+        "delta": 0
+      },
+      {
+        "stage": "10",
+        "ratio": 0.9999933075898624,
+        "delta": -0.015625
+      },
+      {
+        "stage": "11",
+        "ratio": 0.9999781157675894,
+        "delta": -0.015625
+      },
+      {
+        "stage": "12",
+        "ratio": 1,
+        "delta": 0
+      },
+      {
+        "stage": "13",
+        "ratio": 0.9999764111999623,
+        "delta": -0.015625
+      },
+      {
+        "stage": "14",
+        "ratio": 0.9999931498873157,
+        "delta": -0.015625
+      },
+      {
+        "stage": "15",
+        "ratio": 0.9999884350279872,
+        "delta": -0.015625
+      },
+      {
+        "stage": "16",
+        "ratio": 1,
+        "delta": 0
+      }
+    ]
+  },
+  "deep-learning": {
+    "baselineBody": 21809.546875,
+    "currentBody": 21789.3125,
+    "bodyRatio": 0.9990722239615535,
+    "bodyDelta": -20.234375,
+    "currentScrollWidth": 1280,
+    "stageRatios": [
+      {
+        "stage": "0",
+        "ratio": 0.9999902386646493,
+        "delta": -0.015625
+      },
+      {
+        "stage": "1",
+        "ratio": 0.999990000899919,
+        "delta": -0.015625
+      },
+      {
+        "stage": "2",
+        "ratio": 0.9999900097904054,
+        "delta": -0.015625
+      },
+      {
+        "stage": "3",
+        "ratio": 1,
+        "delta": 0
+      },
+      {
+        "stage": "4",
+        "ratio": 1,
+        "delta": 0
+      },
+      {
+        "stage": "5",
+        "ratio": 1,
+        "delta": 0
+      },
+      {
+        "stage": "6",
+        "ratio": 0.9999897436949364,
+        "delta": -0.015625
+      },
+      {
+        "stage": "7",
+        "ratio": 1,
+        "delta": 0
+      },
+      {
+        "stage": "8",
+        "ratio": 0.9999931420890569,
+        "delta": -0.015625
+      },
+      {
+        "stage": "9",
+        "ratio": 0.999989438441959,
+        "delta": -0.015625
+      },
+      {
+        "stage": "10",
+        "ratio": 1,
+        "delta": 0
+      },
+      {
+        "stage": "11",
+        "ratio": 0.9999903788797168,
+        "delta": -0.015625
+      }
+    ]
+  },
+  "neural-networks": {
+    "baselineBody": 24462.703125,
+    "currentBody": 24462.59375,
+    "bodyRatio": 0.9999955289078463,
+    "bodyDelta": -0.109375,
+    "currentScrollWidth": 1280,
+    "stageRatios": [
+      {
+        "stage": "1",
+        "ratio": 0.9999867475946884,
+        "delta": -0.015625
+      },
+      {
+        "stage": "2",
+        "ratio": 1,
+        "delta": 0
+      },
+      {
+        "stage": "3",
+        "ratio": 0.9999902345657311,
+        "delta": -0.015625
+      },
+      {
+        "stage": "4",
+        "ratio": 1,
+        "delta": 0
+      },
+      {
+        "stage": "5",
+        "ratio": 0.9999865883425874,
+        "delta": -0.015625
+      },
+      {
+        "stage": "6",
+        "ratio": 0.9999916951109118,
+        "delta": -0.015625
+      },
+      {
+        "stage": "7",
+        "ratio": 1,
+        "delta": 0
+      },
+      {
+        "stage": "8",
+        "ratio": 1,
+        "delta": 0
+      },
+      {
+        "stage": "9",
+        "ratio": 1,
+        "delta": 0
+      },
+      {
+        "stage": "10",
+        "ratio": 0.9999851223685189,
+        "delta": -0.015625
+      },
+      {
+        "stage": "11",
+        "ratio": 1,
+        "delta": 0
+      },
+      {
+        "stage": "12",
+        "ratio": 1,
+        "delta": 0
+      },
+      {
+        "stage": "13",
+        "ratio": 1,
+        "delta": 0
+      },
+      {
+        "stage": "14",
+        "ratio": 0.9999885512788221,
+        "delta": -0.015625
+      },
+      {
+        "stage": "15",
+        "ratio": 1,
+        "delta": 0
+      },
+      {
+        "stage": "16",
+        "ratio": 1,
+        "delta": 0
+      },
+      {
+        "stage": "17",
+        "ratio": 1,
+        "delta": 0
+      },
+      {
+        "stage": "18",
+        "ratio": 1,
+        "delta": 0
+      },
+      {
+        "stage": "19",
+        "ratio": 0.9999885290845062,
+        "delta": -0.015625
+      }
+    ]
+  },
+  "naive-bayes": {
+    "baselineBody": 12801.53125,
+    "currentBody": 12801.40625,
+    "bodyRatio": 0.9999902355431113,
+    "bodyDelta": -0.125,
+    "currentScrollWidth": 1280,
+    "stageRatios": [
+      {
+        "stage": "1",
+        "ratio": 1,
+        "delta": 0
+      },
+      {
+        "stage": "2",
+        "ratio": 0.9999812758627147,
+        "delta": -0.015625
+      },
+      {
+        "stage": "3",
+        "ratio": 0.9999868495456518,
+        "delta": -0.015625
+      },
+      {
+        "stage": "4",
+        "ratio": 0.9999772131707872,
+        "delta": -0.015625
+      },
+      {
+        "stage": "5",
+        "ratio": 0.9999805975941016,
+        "delta": -0.015625
+      },
+      {
+        "stage": "6",
+        "ratio": 1,
+        "delta": 0
+      },
+      {
+        "stage": "7",
+        "ratio": 0.9999793754898321,
+        "delta": -0.015625
+      },
+      {
+        "stage": "8",
+        "ratio": 1,
+        "delta": 0
+      },
+      {
+        "stage": "9",
+        "ratio": 0.9999794064951915,
+        "delta": -0.015625
+      },
+      {
+        "stage": "10",
+        "ratio": 0.9999806901345898,
+        "delta": -0.015625
+      },
+      {
+        "stage": "11",
+        "ratio": 0.9999816567613178,
+        "delta": -0.015625
+      },
+      {
+        "stage": "13",
+        "ratio": 1,
+        "delta": 0
+      },
+      {
+        "stage": "14",
+        "ratio": 1,
+        "delta": 0
+      },
+      {
+        "stage": "15",
+        "ratio": 1,
+        "delta": 0
+      }
+    ]
+  },
+  "one-r": {
+    "baselineBody": 13805.734375,
+    "currentBody": 13783.984375,
+    "bodyRatio": 0.99842456768983,
+    "bodyDelta": -21.75,
+    "currentScrollWidth": 1280,
+    "stageRatios": [
+      {
+        "stage": "1",
+        "ratio": 0.9999787021063616,
+        "delta": -0.015625
+      },
+      {
+        "stage": "2",
+        "ratio": 1,
+        "delta": 0
+      },
+      {
+        "stage": "3",
+        "ratio": 1,
+        "delta": 0
+      },
+      {
+        "stage": "4",
+        "ratio": 1,
+        "delta": 0
+      },
+      {
+        "stage": "5",
+        "ratio": 0.9999862211505339,
+        "delta": -0.015625
+      },
+      {
+        "stage": "6",
+        "ratio": 1,
+        "delta": 0
+      },
+      {
+        "stage": "7",
+        "ratio": 0.9999816476720071,
+        "delta": -0.015625
+      },
+      {
+        "stage": "8",
+        "ratio": 1,
+        "delta": 0
+      },
+      {
+        "stage": "9",
+        "ratio": 0.9999846300451877,
+        "delta": -0.015625
+      },
+      {
+        "stage": "10",
+        "ratio": 1,
+        "delta": 0
+      },
+      {
+        "stage": "11",
+        "ratio": 0.9999861338362128,
+        "delta": -0.015625
+      },
+      {
+        "stage": "12",
+        "ratio": 0.9999882820281466,
+        "delta": -0.015625
+      }
+    ]
+  },
+  "multiple-linear-regression": {
+    "baselineBody": 10881.390625,
+    "currentBody": 10881.34375,
+    "bodyRatio": 0.9999956921866318,
+    "bodyDelta": -0.046875,
+    "currentScrollWidth": 1280,
+    "stageRatios": [
+      {
+        "stage": "0",
+        "ratio": 1,
+        "delta": 0
+      },
+      {
+        "stage": "1",
+        "ratio": 1,
+        "delta": 0
+      },
+      {
+        "stage": "2",
+        "ratio": 1,
+        "delta": 0
+      },
+      {
+        "stage": "3",
+        "ratio": 0.9999832705980761,
+        "delta": -0.015625
+      },
+      {
+        "stage": "4",
+        "ratio": 1,
+        "delta": 0
+      },
+      {
+        "stage": "5",
+        "ratio": 1,
+        "delta": 0
+      },
+      {
+        "stage": "6",
+        "ratio": 0.9999847586532746,
+        "delta": -0.015625
+      },
+      {
+        "stage": "7",
+        "ratio": 0.9999860419022095,
+        "delta": -0.015625
+      },
+      {
+        "stage": "8",
+        "ratio": 1,
+        "delta": 0
+      },
+      {
+        "stage": "9",
+        "ratio": 1,
+        "delta": 0
+      }
+    ]
+  }
+}

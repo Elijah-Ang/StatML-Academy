@@ -85,16 +85,16 @@ try {
   // Verify selection and feedback survive decoration/re-decoration.
   await page.setViewportSize({ width: 1280, height: 900 });
   await page.goto(`http://127.0.0.1:${server.address().port}/modules/one-r.html`);
-  for (const metric of ['accuracy', 'precision', 'recall']) {
-    const button = page.locator(`[data-cv-metric="${metric}"]`);
-    await button.click();
-    expect(await button.getAttribute('aria-pressed') === 'true', 'One-R metric selection failed');
+  await page.waitForFunction(()=>!!window.__notebook);
+  for (const feature of ['x','z','auto']) {
+    await page.locator('#feature').selectOption(feature);
+    expect(await page.evaluate(value=>window.__notebook.controller.state.feature===value,feature),'One-R rule selection failed');
   }
   await page.goto(`http://127.0.0.1:${server.address().port}/modules/probability-sampling.html`);
   await page.locator('.quiz-option[data-correct="true"]').first().click();
   expect((await page.locator('.feedback').first().textContent()).trim().length > 0, 'Quiz feedback missing');
   if (failures.length) throw new Error(failures.join('\n'));
-  console.log(`Paper-notes checks passed: ${pages.length} pages at desktop and phone widths, plus CV selection and quiz feedback.`);
+  console.log(`Paper-notes checks passed: ${pages.length} pages at desktop and phone widths, plus One-R selection and quiz feedback.`);
 } finally {
   await browser?.close();
   await new Promise(resolveClose => server.close(resolveClose));

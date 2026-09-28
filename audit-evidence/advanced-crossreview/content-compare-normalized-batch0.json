@@ -1,0 +1,28 @@
+{
+  "classification-trees": {
+    "sameText": false,
+    "baselineLength": 66,
+    "currentLength": 18017,
+    "firstDiff": {
+      "index": 0,
+      "baseline": "Error: CDP operation exceeded its deadline before command dispatch",
+      "current": "S StatML Academy Classification Trees module 13/21 MACHINE LEARNING · TREE MODELS Classification Trees Watch an intuitiv"
+    }
+  },
+  "hierarchical-clustering": {
+    "sameText": true,
+    "baselineLength": 8518,
+    "currentLength": 8518,
+    "firstDiff": null
+  },
+  "lda": {
+    "sameText": false,
+    "baselineLength": 19493,
+    "currentLength": 19477,
+    "firstDiff": {
+      "index": 3400,
+      "baseline": "️ Warning: Bad or irrelevant features can seriously confuse LDA because they add noise to the calculated means, covarian",
+      "current": "Warning: Bad or irrelevant features can seriously confuse LDA because they add noise to the calculated means, covariance"
+    }
+  }
+}

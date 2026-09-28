@@ -1,0 +1,936 @@
+{
+  "runs": [
+    {
+      "viewport": {
+        "name": "desktop",
+        "width": 1440,
+        "height": 900
+      },
+      "chapters": [
+        {
+          "chapter": 1,
+          "box": {
+            "x": 675.59375,
+            "y": 1644.375,
+            "width": 718.8125,
+            "height": 812
+          },
+          "state": {
+            "renderer": {
+              "active": 0,
+              "biased": false,
+              "tensorMode": "image",
+              "earWeight": 1.2,
+              "furWeight": 0.6,
+              "backgroundWeight": 0.2,
+              "neuronBias": -0.2,
+              "learnStep": 3,
+              "learningRate": 0.5,
+              "epoch": 12,
+              "architecture": "cnn",
+              "threshold": 0.5
+            },
+            "debug": {
+              "active": 0,
+              "mobile": false,
+              "staticKey": "finishLine:ch01.finish-line:column:0 0 1000 666",
+              "motionActive": false,
+              "rafActive": false,
+              "animationCount": 0,
+              "assetId": "ch01.finish-line",
+              "collisions": []
+            },
+            "diagnostics": [],
+            "scrollWidth": 1440,
+            "clientWidth": 1440
+          }
+        },
+        {
+          "chapter": 2,
+          "box": {
+            "x": 675.59375,
+            "y": 68,
+            "width": 718.8125,
+            "height": 812
+          },
+          "state": {
+            "renderer": {
+              "active": 1,
+              "biased": false,
+              "tensorMode": "image",
+              "earWeight": 1.2,
+              "furWeight": 0.6,
+              "backgroundWeight": 0.2,
+              "neuronBias": -0.2,
+              "learnStep": 3,
+              "learningRate": 0.5,
+              "epoch": 12,
+              "architecture": "cnn",
+              "threshold": 0.5
+            },
+            "debug": {
+              "active": 1,
+              "mobile": false,
+              "staticKey": "dataset:ch02.dataset:column:0 0 1000 666",
+              "motionActive": true,
+              "rafActive": false,
+              "animationCount": 7,
+              "assetId": "ch02.dataset",
+              "collisions": []
+            },
+            "diagnostics": [],
+            "scrollWidth": 1440,
+            "clientWidth": 1440
+          }
+        },
+        {
+          "chapter": 3,
+          "box": {
+            "x": 675.59375,
+            "y": 68,
+            "width": 718.8125,
+            "height": 812
+          },
+          "state": {
+            "renderer": {
+              "active": 2,
+              "biased": false,
+              "tensorMode": "image",
+              "earWeight": 1.2,
+              "furWeight": 0.6,
+              "backgroundWeight": 0.2,
+              "neuronBias": -0.2,
+              "learnStep": 3,
+              "learningRate": 0.5,
+              "epoch": 12,
+              "architecture": "cnn",
+              "threshold": 0.5
+            },
+            "debug": {
+              "active": 2,
+              "mobile": false,
+              "staticKey": "split:ch03.split:column:0 0 1000 666",
+              "motionActive": true,
+              "rafActive": false,
+              "animationCount": 11,
+              "assetId": "ch03.split",
+              "collisions": []
+            },
+            "diagnostics": [],
+            "scrollWidth": 1440,
+            "clientWidth": 1440
+          }
+        },
+        {
+          "chapter": 4,
+          "box": {
+            "x": 675.59375,
+            "y": 68,
+            "width": 718.8125,
+            "height": 812
+          },
+          "state": {
+            "renderer": {
+              "active": 3,
+              "biased": false,
+              "tensorMode": "image",
+              "earWeight": 1.2,
+              "furWeight": 0.6,
+              "backgroundWeight": 0.2,
+              "neuronBias": -0.2,
+              "learnStep": 3,
+              "learningRate": 0.5,
+              "epoch": 12,
+              "architecture": "cnn",
+              "threshold": 0.5
+            },
+            "debug": {
+              "active": 3,
+              "mobile": false,
+              "staticKey": "tensor:ch04.image:column:0 0 1000 666",
+              "motionActive": true,
+              "rafActive": false,
+              "animationCount": 13,
+              "assetId": "ch04.image",
+              "collisions": []
+            },
+            "diagnostics": [],
+            "scrollWidth": 1440,
+            "clientWidth": 1440
+          }
+        },
+        {
+          "chapter": 5,
+          "box": {
+            "x": 675.59375,
+            "y": 68,
+            "width": 718.8125,
+            "height": 812
+          },
+          "state": {
+            "renderer": {
+              "active": 4,
+              "biased": false,
+              "tensorMode": "image",
+              "earWeight": 1.2,
+              "furWeight": 0.6,
+              "backgroundWeight": 0.2,
+              "neuronBias": -0.2,
+              "learnStep": 3,
+              "learningRate": 0.5,
+              "epoch": 12,
+              "architecture": "cnn",
+              "threshold": 0.5
+            },
+            "debug": {
+              "active": 4,
+              "mobile": false,
+              "staticKey": "neuron:ch05.neuron:column:0 0 1000 666",
+              "motionActive": true,
+              "rafActive": false,
+              "animationCount": 18,
+              "assetId": "ch05.neuron",
+              "collisions": []
+            },
+            "diagnostics": [],
+            "scrollWidth": 1440,
+            "clientWidth": 1440
+          }
+        },
+        {
+          "chapter": 6,
+          "box": {
+            "x": 675.59375,
+            "y": 68,
+            "width": 718.8125,
+            "height": 812
+          },
+          "state": {
+            "renderer": {
+              "active": 5,
+              "biased": false,
+              "tensorMode": "image",
+              "earWeight": 1.2,
+              "furWeight": 0.6,
+              "backgroundWeight": 0.2,
+              "neuronBias": -0.2,
+              "learnStep": 3,
+              "learningRate": 0.5,
+              "epoch": 12,
+              "architecture": "cnn",
+              "threshold": 0.5
+            },
+            "debug": {
+              "active": 5,
+              "mobile": false,
+              "staticKey": "featureDepth:ch06.feature-ladder:column:0 0 1000 666",
+              "motionActive": true,
+              "rafActive": false,
+              "animationCount": 11,
+              "assetId": "ch06.feature-ladder",
+              "collisions": []
+            },
+            "diagnostics": [],
+            "scrollWidth": 1440,
+            "clientWidth": 1440
+          }
+        },
+        {
+          "chapter": 7,
+          "box": {
+            "x": 675.59375,
+            "y": 68,
+            "width": 718.8125,
+            "height": 812
+          },
+          "state": {
+            "renderer": {
+              "active": 6,
+              "biased": false,
+              "tensorMode": "image",
+              "earWeight": 1.2,
+              "furWeight": 0.6,
+              "backgroundWeight": 0.2,
+              "neuronBias": -0.2,
+              "learnStep": 3,
+              "learningRate": 0.5,
+              "epoch": 12,
+              "architecture": "cnn",
+              "threshold": 0.5
+            },
+            "debug": {
+              "active": 6,
+              "mobile": false,
+              "staticKey": "learningLoop:ch07.learning-loop:column:0 0 1000 666",
+              "motionActive": true,
+              "rafActive": false,
+              "animationCount": 10,
+              "assetId": "ch07.learning-loop",
+              "collisions": []
+            },
+            "diagnostics": [],
+            "scrollWidth": 1440,
+            "clientWidth": 1440
+          }
+        },
+        {
+          "chapter": 8,
+          "box": {
+            "x": 675.59375,
+            "y": 68,
+            "width": 718.8125,
+            "height": 812
+          },
+          "state": {
+            "renderer": {
+              "active": 7,
+              "biased": false,
+              "tensorMode": "image",
+              "earWeight": 1.2,
+              "furWeight": 0.6,
+              "backgroundWeight": 0.2,
+              "neuronBias": -0.2,
+              "learnStep": 3,
+              "learningRate": 0.5,
+              "epoch": 12,
+              "architecture": "cnn",
+              "threshold": 0.5
+            },
+            "debug": {
+              "active": 7,
+              "mobile": false,
+              "staticKey": "trainingCurve:ch08.training-curve:column:0 0 1000 666",
+              "motionActive": true,
+              "rafActive": false,
+              "animationCount": 15,
+              "assetId": "ch08.training-curve",
+              "collisions": []
+            },
+            "diagnostics": [],
+            "scrollWidth": 1440,
+            "clientWidth": 1440
+          }
+        },
+        {
+          "chapter": 9,
+          "box": {
+            "x": 675.59375,
+            "y": 68,
+            "width": 718.8125,
+            "height": 812
+          },
+          "state": {
+            "renderer": {
+              "active": 8,
+              "biased": false,
+              "tensorMode": "image",
+              "earWeight": 1.2,
+              "furWeight": 0.6,
+              "backgroundWeight": 0.2,
+              "neuronBias": -0.2,
+              "learnStep": 3,
+              "learningRate": 0.5,
+              "epoch": 12,
+              "architecture": "cnn",
+              "threshold": 0.5
+            },
+            "debug": {
+              "active": 8,
+              "mobile": false,
+              "staticKey": "architecture:ch09.architecture:column:0 0 1000 666",
+              "motionActive": true,
+              "rafActive": false,
+              "animationCount": 7,
+              "assetId": "ch09.architecture",
+              "collisions": []
+            },
+            "diagnostics": [],
+            "scrollWidth": 1440,
+            "clientWidth": 1440
+          }
+        },
+        {
+          "chapter": 10,
+          "box": {
+            "x": 675.59375,
+            "y": 68,
+            "width": 718.8125,
+            "height": 812
+          },
+          "state": {
+            "renderer": {
+              "active": 9,
+              "biased": false,
+              "tensorMode": "image",
+              "earWeight": 1.2,
+              "furWeight": 0.6,
+              "backgroundWeight": 0.2,
+              "neuronBias": -0.2,
+              "learnStep": 3,
+              "learningRate": 0.5,
+              "epoch": 12,
+              "architecture": "cnn",
+              "threshold": 0.5
+            },
+            "debug": {
+              "active": 9,
+              "mobile": false,
+              "staticKey": "transfer:ch10.transfer:column:0 0 1000 666",
+              "motionActive": true,
+              "rafActive": false,
+              "animationCount": 13,
+              "assetId": "ch10.transfer",
+              "collisions": []
+            },
+            "diagnostics": [],
+            "scrollWidth": 1440,
+            "clientWidth": 1440
+          }
+        },
+        {
+          "chapter": 11,
+          "box": {
+            "x": 675.59375,
+            "y": 68,
+            "width": 718.8125,
+            "height": 812
+          },
+          "state": {
+            "renderer": {
+              "active": 10,
+              "biased": false,
+              "tensorMode": "image",
+              "earWeight": 1.2,
+              "furWeight": 0.6,
+              "backgroundWeight": 0.2,
+              "neuronBias": -0.2,
+              "learnStep": 3,
+              "learningRate": 0.5,
+              "epoch": 12,
+              "architecture": "cnn",
+              "threshold": 0.5
+            },
+            "debug": {
+              "active": 10,
+              "mobile": false,
+              "staticKey": "threshold:ch11.threshold:column:0 0 1000 666",
+              "motionActive": true,
+              "rafActive": false,
+              "animationCount": 23,
+              "assetId": "ch11.threshold",
+              "collisions": []
+            },
+            "diagnostics": [],
+            "scrollWidth": 1440,
+            "clientWidth": 1440
+          }
+        },
+        {
+          "chapter": 12,
+          "box": {
+            "x": 675.59375,
+            "y": 68,
+            "width": 718.8125,
+            "height": 812
+          },
+          "state": {
+            "renderer": {
+              "active": 11,
+              "biased": false,
+              "tensorMode": "image",
+              "earWeight": 1.2,
+              "furWeight": 0.6,
+              "backgroundWeight": 0.2,
+              "neuronBias": -0.2,
+              "learnStep": 3,
+              "learningRate": 0.5,
+              "epoch": 12,
+              "architecture": "cnn",
+              "threshold": 0.5
+            },
+            "debug": {
+              "active": 11,
+              "mobile": false,
+              "staticKey": "release:ch12.release:column:0 0 1000 666",
+              "motionActive": true,
+              "rafActive": false,
+              "animationCount": 39,
+              "assetId": "ch12.release",
+              "collisions": []
+            },
+            "diagnostics": [],
+            "scrollWidth": 1440,
+            "clientWidth": 1440
+          }
+        }
+      ],
+      "events": []
+    },
+    {
+      "viewport": {
+        "name": "mobile",
+        "width": 390,
+        "height": 844
+      },
+      "chapters": [
+        {
+          "chapter": 1,
+          "box": {
+            "x": 46,
+            "y": 1809.234375,
+            "width": 322,
+            "height": 214.4375
+          },
+          "state": {
+            "renderer": {
+              "active": 0,
+              "biased": false,
+              "tensorMode": "image",
+              "earWeight": 1.2,
+              "furWeight": 0.6,
+              "backgroundWeight": 0.2,
+              "neuronBias": -0.2,
+              "learnStep": 3,
+              "learningRate": 0.5,
+              "epoch": 12,
+              "architecture": "cnn",
+              "threshold": 0.5
+            },
+            "debug": {
+              "active": 0,
+              "mobile": true,
+              "staticKey": "finishLine:ch01.finish-line:phone:0 0 1000 666",
+              "motionActive": false,
+              "rafActive": false,
+              "animationCount": 0,
+              "assetId": "ch01.finish-line",
+              "collisions": []
+            },
+            "diagnostics": [],
+            "scrollWidth": 390,
+            "clientWidth": 390
+          }
+        },
+        {
+          "chapter": 2,
+          "box": {
+            "x": 46,
+            "y": 120.25,
+            "width": 322,
+            "height": 214.4375
+          },
+          "state": {
+            "renderer": {
+              "active": 1,
+              "biased": false,
+              "tensorMode": "image",
+              "earWeight": 1.2,
+              "furWeight": 0.6,
+              "backgroundWeight": 0.2,
+              "neuronBias": -0.2,
+              "learnStep": 3,
+              "learningRate": 0.5,
+              "epoch": 12,
+              "architecture": "cnn",
+              "threshold": 0.5
+            },
+            "debug": {
+              "active": 1,
+              "mobile": true,
+              "staticKey": "dataset:ch02.dataset:phone:0 0 1000 666",
+              "motionActive": false,
+              "rafActive": false,
+              "animationCount": 0,
+              "assetId": "ch02.dataset",
+              "collisions": []
+            },
+            "diagnostics": [],
+            "scrollWidth": 390,
+            "clientWidth": 390
+          }
+        },
+        {
+          "chapter": 3,
+          "box": {
+            "x": 46,
+            "y": 126.828125,
+            "width": 322,
+            "height": 214.4375
+          },
+          "state": {
+            "renderer": {
+              "active": 2,
+              "biased": false,
+              "tensorMode": "image",
+              "earWeight": 1.2,
+              "furWeight": 0.6,
+              "backgroundWeight": 0.2,
+              "neuronBias": -0.2,
+              "learnStep": 3,
+              "learningRate": 0.5,
+              "epoch": 12,
+              "architecture": "cnn",
+              "threshold": 0.5
+            },
+            "debug": {
+              "active": 2,
+              "mobile": true,
+              "staticKey": "split:ch03.split:phone:0 0 1000 666",
+              "motionActive": false,
+              "rafActive": false,
+              "animationCount": 0,
+              "assetId": "ch03.split",
+              "collisions": []
+            },
+            "diagnostics": [],
+            "scrollWidth": 390,
+            "clientWidth": 390
+          }
+        },
+        {
+          "chapter": 4,
+          "box": {
+            "x": 46,
+            "y": 5.015625,
+            "width": 322,
+            "height": 214.4375
+          },
+          "state": {
+            "renderer": {
+              "active": 3,
+              "biased": false,
+              "tensorMode": "image",
+              "earWeight": 1.2,
+              "furWeight": 0.6,
+              "backgroundWeight": 0.2,
+              "neuronBias": -0.2,
+              "learnStep": 3,
+              "learningRate": 0.5,
+              "epoch": 12,
+              "architecture": "cnn",
+              "threshold": 0.5
+            },
+            "debug": {
+              "active": 3,
+              "mobile": true,
+              "staticKey": "tensor:ch04.image:phone:0 0 1000 666",
+              "motionActive": false,
+              "rafActive": false,
+              "animationCount": 0,
+              "assetId": "ch04.image",
+              "collisions": []
+            },
+            "diagnostics": [],
+            "scrollWidth": 390,
+            "clientWidth": 390
+          }
+        },
+        {
+          "chapter": 5,
+          "box": {
+            "x": 46,
+            "y": 52.578125,
+            "width": 322,
+            "height": 214.4375
+          },
+          "state": {
+            "renderer": {
+              "active": 4,
+              "biased": false,
+              "tensorMode": "image",
+              "earWeight": 1.2,
+              "furWeight": 0.6,
+              "backgroundWeight": 0.2,
+              "neuronBias": -0.2,
+              "learnStep": 3,
+              "learningRate": 0.5,
+              "epoch": 12,
+              "architecture": "cnn",
+              "threshold": 0.5
+            },
+            "debug": {
+              "active": 4,
+              "mobile": true,
+              "staticKey": "neuron:ch05.neuron:phone:0 0 1000 666",
+              "motionActive": false,
+              "rafActive": false,
+              "animationCount": 0,
+              "assetId": "ch05.neuron",
+              "collisions": []
+            },
+            "diagnostics": [],
+            "scrollWidth": 390,
+            "clientWidth": 390
+          }
+        },
+        {
+          "chapter": 6,
+          "box": {
+            "x": 46,
+            "y": 207.15625,
+            "width": 322,
+            "height": 214.4375
+          },
+          "state": {
+            "renderer": {
+              "active": 5,
+              "biased": false,
+              "tensorMode": "image",
+              "earWeight": 1.2,
+              "furWeight": 0.6,
+              "backgroundWeight": 0.2,
+              "neuronBias": -0.2,
+              "learnStep": 3,
+              "learningRate": 0.5,
+              "epoch": 12,
+              "architecture": "cnn",
+              "threshold": 0.5
+            },
+            "debug": {
+              "active": 5,
+              "mobile": true,
+              "staticKey": "featureDepth:ch06.feature-ladder:phone:0 0 1000 666",
+              "motionActive": false,
+              "rafActive": false,
+              "animationCount": 0,
+              "assetId": "ch06.feature-ladder",
+              "collisions": []
+            },
+            "diagnostics": [],
+            "scrollWidth": 390,
+            "clientWidth": 390
+          }
+        },
+        {
+          "chapter": 7,
+          "box": {
+            "x": 46,
+            "y": 89.15625,
+            "width": 322,
+            "height": 214.4375
+          },
+          "state": {
+            "renderer": {
+              "active": 6,
+              "biased": false,
+              "tensorMode": "image",
+              "earWeight": 1.2,
+              "furWeight": 0.6,
+              "backgroundWeight": 0.2,
+              "neuronBias": -0.2,
+              "learnStep": 3,
+              "learningRate": 0.5,
+              "epoch": 12,
+              "architecture": "cnn",
+              "threshold": 0.5
+            },
+            "debug": {
+              "active": 6,
+              "mobile": true,
+              "staticKey": "learningLoop:ch07.learning-loop:phone:0 0 1000 666",
+              "motionActive": false,
+              "rafActive": false,
+              "animationCount": 0,
+              "assetId": "ch07.learning-loop",
+              "collisions": []
+            },
+            "diagnostics": [],
+            "scrollWidth": 390,
+            "clientWidth": 390
+          }
+        },
+        {
+          "chapter": 8,
+          "box": {
+            "x": 46,
+            "y": 111.765625,
+            "width": 322,
+            "height": 214.4375
+          },
+          "state": {
+            "renderer": {
+              "active": 7,
+              "biased": false,
+              "tensorMode": "image",
+              "earWeight": 1.2,
+              "furWeight": 0.6,
+              "backgroundWeight": 0.2,
+              "neuronBias": -0.2,
+              "learnStep": 3,
+              "learningRate": 0.5,
+              "epoch": 12,
+              "architecture": "cnn",
+              "threshold": 0.5
+            },
+            "debug": {
+              "active": 7,
+              "mobile": true,
+              "staticKey": "trainingCurve:ch08.training-curve:phone:0 0 1000 666",
+              "motionActive": false,
+              "rafActive": false,
+              "animationCount": 0,
+              "assetId": "ch08.training-curve",
+              "collisions": []
+            },
+            "diagnostics": [],
+            "scrollWidth": 390,
+            "clientWidth": 390
+          }
+        },
+        {
+          "chapter": 9,
+          "box": {
+            "x": 46,
+            "y": -164.234375,
+            "width": 322,
+            "height": 214.4375
+          },
+          "state": {
+            "renderer": {
+              "active": 8,
+              "biased": false,
+              "tensorMode": "image",
+              "earWeight": 1.2,
+              "furWeight": 0.6,
+              "backgroundWeight": 0.2,
+              "neuronBias": -0.2,
+              "learnStep": 3,
+              "learningRate": 0.5,
+              "epoch": 12,
+              "architecture": "cnn",
+              "threshold": 0.5
+            },
+            "debug": {
+              "active": 8,
+              "mobile": true,
+              "staticKey": "architecture:ch09.architecture:phone:0 0 1000 666",
+              "motionActive": false,
+              "rafActive": false,
+              "animationCount": 0,
+              "assetId": "ch09.architecture",
+              "collisions": []
+            },
+            "diagnostics": [],
+            "scrollWidth": 390,
+            "clientWidth": 390
+          }
+        },
+        {
+          "chapter": 10,
+          "box": {
+            "x": 46,
+            "y": 248.65625,
+            "width": 322,
+            "height": 214.4375
+          },
+          "state": {
+            "renderer": {
+              "active": 9,
+              "biased": false,
+              "tensorMode": "image",
+              "earWeight": 1.2,
+              "furWeight": 0.6,
+              "backgroundWeight": 0.2,
+              "neuronBias": -0.2,
+              "learnStep": 3,
+              "learningRate": 0.5,
+              "epoch": 12,
+              "architecture": "cnn",
+              "threshold": 0.5
+            },
+            "debug": {
+              "active": 9,
+              "mobile": true,
+              "staticKey": "transfer:ch10.transfer:phone:0 0 1000 666",
+              "motionActive": false,
+              "rafActive": false,
+              "animationCount": 0,
+              "assetId": "ch10.transfer",
+              "collisions": []
+            },
+            "diagnostics": [],
+            "scrollWidth": 390,
+            "clientWidth": 390
+          }
+        },
+        {
+          "chapter": 11,
+          "box": {
+            "x": 46,
+            "y": 134.0625,
+            "width": 322,
+            "height": 214.4375
+          },
+          "state": {
+            "renderer": {
+              "active": 10,
+              "biased": false,
+              "tensorMode": "image",
+              "earWeight": 1.2,
+              "furWeight": 0.6,
+              "backgroundWeight": 0.2,
+              "neuronBias": -0.2,
+              "learnStep": 3,
+              "learningRate": 0.5,
+              "epoch": 12,
+              "architecture": "cnn",
+              "threshold": 0.5
+            },
+            "debug": {
+              "active": 10,
+              "mobile": true,
+              "staticKey": "threshold:ch11.threshold:phone:0 0 1000 666",
+              "motionActive": false,
+              "rafActive": false,
+              "animationCount": 0,
+              "assetId": "ch11.threshold",
+              "collisions": []
+            },
+            "diagnostics": [],
+            "scrollWidth": 390,
+            "clientWidth": 390
+          }
+        },
+        {
+          "chapter": 12,
+          "box": {
+            "x": 46,
+            "y": 114.453125,
+            "width": 322,
+            "height": 214.4375
+          },
+          "state": {
+            "renderer": {
+              "active": 11,
+              "biased": false,
+              "tensorMode": "image",
+              "earWeight": 1.2,
+              "furWeight": 0.6,
+              "backgroundWeight": 0.2,
+              "neuronBias": -0.2,
+              "learnStep": 3,
+              "learningRate": 0.5,
+              "epoch": 12,
+              "architecture": "cnn",
+              "threshold": 0.5
+            },
+            "debug": {
+              "active": 11,
+              "mobile": true,
+              "staticKey": "release:ch12.release:phone:0 0 1000 666",
+              "motionActive": false,
+              "rafActive": false,
+              "animationCount": 0,
+              "assetId": "ch12.release",
+              "collisions": []
+            },
+            "diagnostics": [],
+            "scrollWidth": 390,
+            "clientWidth": 390
+          }
+        }
+      ],
+      "events": []
+    }
+  ]
+}

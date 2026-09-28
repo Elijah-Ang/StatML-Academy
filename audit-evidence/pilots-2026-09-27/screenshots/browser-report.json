@@ -1,0 +1,165 @@
+{
+  "report": [
+    {
+      "slug": "simple-linear-regression",
+      "width": 1440,
+      "stages": 8
+    },
+    {
+      "slug": "kmeans",
+      "width": 1440,
+      "stages": 9
+    },
+    {
+      "slug": "naive-bayes",
+      "width": 1440,
+      "stages": 12
+    },
+    {
+      "slug": "evaluation-metrics",
+      "width": 1440,
+      "stages": 9
+    },
+    {
+      "slug": "simple-linear-regression",
+      "width": 1024,
+      "stages": 8
+    },
+    {
+      "slug": "kmeans",
+      "width": 1024,
+      "stages": 9
+    },
+    {
+      "slug": "naive-bayes",
+      "width": 1024,
+      "stages": 12
+    },
+    {
+      "slug": "evaluation-metrics",
+      "width": 1024,
+      "stages": 9
+    },
+    {
+      "slug": "simple-linear-regression",
+      "width": 900,
+      "stages": 8
+    },
+    {
+      "slug": "kmeans",
+      "width": 900,
+      "stages": 9
+    },
+    {
+      "slug": "naive-bayes",
+      "width": 900,
+      "stages": 12
+    },
+    {
+      "slug": "evaluation-metrics",
+      "width": 900,
+      "stages": 9
+    },
+    {
+      "slug": "simple-linear-regression",
+      "width": 768,
+      "stages": 8
+    },
+    {
+      "slug": "kmeans",
+      "width": 768,
+      "stages": 9
+    },
+    {
+      "slug": "naive-bayes",
+      "width": 768,
+      "stages": 12
+    },
+    {
+      "slug": "evaluation-metrics",
+      "width": 768,
+      "stages": 9
+    },
+    {
+      "slug": "simple-linear-regression",
+      "width": 430,
+      "stages": 8
+    },
+    {
+      "slug": "kmeans",
+      "width": 430,
+      "stages": 9
+    },
+    {
+      "slug": "naive-bayes",
+      "width": 430,
+      "stages": 12
+    },
+    {
+      "slug": "evaluation-metrics",
+      "width": 430,
+      "stages": 9
+    },
+    {
+      "slug": "simple-linear-regression",
+      "width": 390,
+      "stages": 8
+    },
+    {
+      "slug": "kmeans",
+      "width": 390,
+      "stages": 9
+    },
+    {
+      "slug": "naive-bayes",
+      "width": 390,
+      "stages": 12
+    },
+    {
+      "slug": "evaluation-metrics",
+      "width": 390,
+      "stages": 9
+    },
+    {
+      "slug": "simple-linear-regression",
+      "width": 360,
+      "stages": 8
+    },
+    {
+      "slug": "kmeans",
+      "width": 360,
+      "stages": 9
+    },
+    {
+      "slug": "naive-bayes",
+      "width": 360,
+      "stages": 12
+    },
+    {
+      "slug": "evaluation-metrics",
+      "width": 360,
+      "stages": 9
+    },
+    {
+      "slug": "simple-linear-regression",
+      "width": 320,
+      "stages": 8
+    },
+    {
+      "slug": "kmeans",
+      "width": 320,
+      "stages": 9
+    },
+    {
+      "slug": "naive-bayes",
+      "width": 320,
+      "stages": 12
+    },
+    {
+      "slug": "evaluation-metrics",
+      "width": 320,
+      "stages": 9
+    }
+  ],
+  "errors": []
+}

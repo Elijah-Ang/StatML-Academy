@@ -1,0 +1,26 @@
+{
+  "model": {
+    "pageName": "model-selection",
+    "n": 12,
+    "ok": 12,
+    "bad": [],
+    "after": {
+      "active": [],
+      "title": "",
+      "y": 11170
+    }
+  },
+  "regression": {
+    "pageName": "regression-trees",
+    "n": 16,
+    "ok": 16,
+    "bad": [],
+    "after": {
+      "active": [
+        "statml-stage-15"
+      ],
+      "title": "",
+      "y": 15268
+    }
+  }
+}

@@ -1,0 +1,1642 @@
+[
+  {
+    "port": 8766,
+    "slug": "classification-trees",
+    "d": {
+      "box": "border-box",
+      "display": "flex",
+      "h": 720,
+      "heightStyle": "720px",
+      "kids": [
+        {
+          "cls": "hero-bg",
+          "display": "block",
+          "h": 720,
+          "heightStyle": "720px",
+          "minHeight": "0px",
+          "pad": "0px",
+          "tag": "CANVAS",
+          "top": 0
+        },
+        {
+          "cls": "hero-badge",
+          "display": "flex",
+          "h": 34.4375,
+          "heightStyle": "34.4375px",
+          "minHeight": "auto",
+          "pad": "6.72px 14.4px",
+          "tag": "DIV",
+          "top": 134.359375
+        },
+        {
+          "cls": "",
+          "display": "block",
+          "h": 166.375,
+          "heightStyle": "166.375px",
+          "minHeight": "auto",
+          "pad": "0px",
+          "tag": "H1",
+          "top": 190.390625
+        },
+        {
+          "cls": "subtitle",
+          "display": "block",
+          "h": 63.5,
+          "heightStyle": "63.5px",
+          "minHeight": "auto",
+          "pad": "0px",
+          "tag": "P",
+          "top": 378.359375
+        },
+        {
+          "cls": "statml-overview",
+          "display": "grid",
+          "h": 93.28125,
+          "heightStyle": "93.2812px",
+          "minHeight": "auto",
+          "pad": "16px",
+          "tag": "DIV",
+          "top": 513.859375
+        },
+        {
+          "cls": "scroll-hint",
+          "display": "flex",
+          "h": 18.484375,
+          "heightStyle": "18.4844px",
+          "minHeight": "auto",
+          "pad": "0px",
+          "tag": "DIV",
+          "top": 607.2174682617188
+        }
+      ],
+      "minHeight": "720px",
+      "pad": "120px 32px 80px",
+      "sel": "section[data-stage]"
+    }
+  },
+  {
+    "port": 8766,
+    "slug": "hierarchical-clustering",
+    "d": {
+      "box": "border-box",
+      "display": "flex",
+      "h": 1021.984375,
+      "heightStyle": "1021.98px",
+      "kids": [
+        {
+          "cls": "stage-label",
+          "display": "flex",
+          "h": 17.9375,
+          "heightStyle": "17.9375px",
+          "minHeight": "auto",
+          "pad": "0px",
+          "tag": "DIV",
+          "top": 800
+        },
+        {
+          "cls": "",
+          "display": "block",
+          "h": 40.59375,
+          "heightStyle": "40.5938px",
+          "minHeight": "auto",
+          "pad": "0px",
+          "tag": "H2",
+          "top": 832.328125
+        },
+        {
+          "cls": "statml-prereq",
+          "display": "block",
+          "h": 132.6875,
+          "heightStyle": "132.688px",
+          "minHeight": "auto",
+          "pad": "17.6px 19.2px",
+          "tag": "DIV",
+          "top": 912.921875
+        },
+        {
+          "cls": "",
+          "display": "block",
+          "h": 108.75,
+          "heightStyle": "108.75px",
+          "minHeight": "auto",
+          "pad": "0px",
+          "tag": "P",
+          "top": 1069.609375
+        },
+        {
+          "cls": "",
+          "display": "block",
+          "h": 81.5625,
+          "heightStyle": "81.5625px",
+          "minHeight": "auto",
+          "pad": "0px",
+          "tag": "P",
+          "top": 1198.359375
+        },
+        {
+          "cls": "insight-box",
+          "display": "block",
+          "h": 142.3125,
+          "heightStyle": "142.312px",
+          "minHeight": "auto",
+          "pad": "20px 24px",
+          "tag": "DIV",
+          "top": 1323.921875
+        },
+        {
+          "cls": "",
+          "display": "block",
+          "h": 54.375,
+          "heightStyle": "54.375px",
+          "minHeight": "auto",
+          "pad": "0px",
+          "tag": "P",
+          "top": 1490.234375
+        },
+        {
+          "cls": "takeaway",
+          "display": "block",
+          "h": 56.375,
+          "heightStyle": "56.375px",
+          "minHeight": "auto",
+          "pad": "0px",
+          "tag": "P",
+          "top": 1584.609375
+        }
+      ],
+      "minHeight": "662.4px",
+      "pad": "80px 0px",
+      "sel": "section[data-stage]"
+    }
+  },
+  {
+    "port": 8766,
+    "slug": "lda",
+    "d": {
+      "box": "border-box",
+      "display": "flex",
+      "h": 822.515625,
+      "heightStyle": "822.516px",
+      "kids": [
+        {
+          "cls": "hero-bg",
+          "display": "block",
+          "h": 822.515625,
+          "heightStyle": "822.516px",
+          "minHeight": "0px",
+          "pad": "0px",
+          "tag": "CANVAS",
+          "top": 0
+        },
+        {
+          "cls": "hero-badge",
+          "display": "flex",
+          "h": 34.4375,
+          "heightStyle": "34.4375px",
+          "minHeight": "auto",
+          "pad": "6.72px 14.4px",
+          "tag": "DIV",
+          "top": 120
+        },
+        {
+          "cls": "",
+          "display": "block",
+          "h": 166.375,
+          "heightStyle": "166.375px",
+          "minHeight": "auto",
+          "pad": "0px",
+          "tag": "H1",
+          "top": 176.03125
+        },
+        {
+          "cls": "subtitle",
+          "display": "block",
+          "h": 95.25,
+          "heightStyle": "95.25px",
+          "minHeight": "auto",
+          "pad": "0px",
+          "tag": "P",
+          "top": 364
+        },
+        {
+          "cls": "hero-note",
+          "display": "block",
+          "h": 63.5,
+          "heightStyle": "63.5px",
+          "minHeight": "auto",
+          "pad": "0px",
+          "tag": "P",
+          "top": 519.25
+        },
+        {
+          "cls": "statml-overview",
+          "display": "grid",
+          "h": 93.28125,
+          "heightStyle": "93.2812px",
+          "minHeight": "auto",
+          "pad": "16px",
+          "tag": "DIV",
+          "top": 630.75
+        },
+        {
+          "cls": "scroll-hint",
+          "display": "flex",
+          "h": 18.484375,
+          "heightStyle": "18.4844px",
+          "minHeight": "auto",
+          "pad": "0px",
+          "tag": "DIV",
+          "top": 727.6818237304688
+        }
+      ],
+      "minHeight": "720px",
+      "pad": "120px 32px 80px",
+      "sel": "section[data-stage]"
+    }
+  },
+  {
+    "port": 8766,
+    "slug": "qda",
+    "d": {
+      "box": "border-box",
+      "display": "flex",
+      "h": 2065.40625,
+      "heightStyle": "2065.41px",
+      "kids": [
+        {
+          "cls": "stage-label",
+          "display": "flex",
+          "h": 17.9375,
+          "heightStyle": "17.9375px",
+          "minHeight": "auto",
+          "pad": "0px",
+          "tag": "DIV",
+          "top": 800
+        },
+        {
+          "cls": "",
+          "display": "block",
+          "h": 40.59375,
+          "heightStyle": "40.5938px",
+          "minHeight": "auto",
+          "pad": "0px",
+          "tag": "H2",
+          "top": 832.328125
+        },
+        {
+          "cls": "statml-prereq",
+          "display": "block",
+          "h": 132.6875,
+          "heightStyle": "132.688px",
+          "minHeight": "auto",
+          "pad": "17.6px 19.2px",
+          "tag": "DIV",
+          "top": 912.921875
+        },
+        {
+          "cls": "",
+          "display": "block",
+          "h": 87.484375,
+          "heightStyle": "87.4844px",
+          "minHeight": "auto",
+          "pad": "0px",
+          "tag": "P",
+          "top": 1069.609375
+        },
+        {
+          "cls": "",
+          "display": "block",
+          "h": 85.640625,
+          "heightStyle": "85.6406px",
+          "minHeight": "auto",
+          "pad": "0px",
+          "tag": "P",
+          "top": 1181.09375
+        },
+        {
+          "cls": "glass-card",
+          "display": "block",
+          "h": 445.703125,
+          "heightStyle": "445.703px",
+          "minHeight": "auto",
+          "pad": "24px",
+          "tag": "DIV",
+          "top": 1290.734375
+        },
+        {
+          "cls": "glass-card",
+          "display": "block",
+          "h": 346.015625,
+          "heightStyle": "346.016px",
+          "minHeight": "auto",
+          "pad": "24px",
+          "tag": "DIV",
+          "top": 1760.4375
+        },
+        {
+          "cls": "glass-card",
+          "display": "block",
+          "h": 198.234375,
+          "heightStyle": "198.234px",
+          "minHeight": "auto",
+          "pad": "24px",
+          "tag": "DIV",
+          "top": 2130.453125
+        },
+        {
+          "cls": "quiz-card glass-card",
+          "display": "block",
+          "h": 303.71875,
+          "heightStyle": "303.719px",
+          "minHeight": "auto",
+          "pad": "24px",
+          "tag": "DIV",
+          "top": 2376.6875
+        }
+      ],
+      "minHeight": "662.4px",
+      "pad": "80px 0px",
+      "sel": ".stage"
+    }
+  },
+  {
+    "port": 8766,
+    "slug": "model-selection",
+    "d": {
+      "box": "border-box",
+      "display": "flex",
+      "h": 859.671875,
+      "heightStyle": "859.672px",
+      "kids": [
+        {
+          "cls": "stage-label",
+          "display": "flex",
+          "h": 17.9375,
+          "heightStyle": "17.9375px",
+          "minHeight": "auto",
+          "pad": "0px",
+          "tag": "DIV",
+          "top": 800
+        },
+        {
+          "cls": "",
+          "display": "block",
+          "h": 40.59375,
+          "heightStyle": "40.5938px",
+          "minHeight": "auto",
+          "pad": "0px",
+          "tag": "H2",
+          "top": 832.328125
+        },
+        {
+          "cls": "statml-prereq",
+          "display": "block",
+          "h": 132.6875,
+          "heightStyle": "132.688px",
+          "minHeight": "auto",
+          "pad": "17.6px 19.2px",
+          "tag": "DIV",
+          "top": 912.921875
+        },
+        {
+          "cls": "",
+          "display": "block",
+          "h": 81.5625,
+          "heightStyle": "81.5625px",
+          "minHeight": "auto",
+          "pad": "0px",
+          "tag": "P",
+          "top": 1069.609375
+        },
+        {
+          "cls": "",
+          "display": "block",
+          "h": 108.75,
+          "heightStyle": "108.75px",
+          "minHeight": "auto",
+          "pad": "0px",
+          "tag": "P",
+          "top": 1171.171875
+        },
+        {
+          "cls": "insight-box",
+          "display": "block",
+          "h": 150.75,
+          "heightStyle": "150.75px",
+          "minHeight": "auto",
+          "pad": "20px 24px",
+          "tag": "DIV",
+          "top": 1323.921875
+        }
+      ],
+      "minHeight": "662.4px",
+      "pad": "80px 0px",
+      "sel": ".stage"
+    }
+  },
+  {
+    "port": 8766,
+    "slug": "support-vector-machine",
+    "d": {
+      "box": "border-box",
+      "display": "flex",
+      "h": 727.671875,
+      "heightStyle": "727.672px",
+      "kids": [
+        {
+          "cls": "stage-inner",
+          "display": "block",
+          "h": 566.671875,
+          "heightStyle": "566.672px",
+          "minHeight": "auto",
+          "pad": "0px",
+          "tag": "DIV",
+          "top": 892.546875
+        }
+      ],
+      "minHeight": "662.4px",
+      "pad": "80px 0px",
+      "sel": ".stage"
+    }
+  },
+  {
+    "port": 8766,
+    "slug": "regression-trees",
+    "d": {
+      "box": "border-box",
+      "display": "flex",
+      "h": 822.34375,
+      "heightStyle": "822.344px",
+      "kids": [
+        {
+          "cls": "stage-label",
+          "display": "flex",
+          "h": 17.9375,
+          "heightStyle": "17.9375px",
+          "minHeight": "auto",
+          "pad": "0px",
+          "tag": "DIV",
+          "top": 800
+        },
+        {
+          "cls": "",
+          "display": "block",
+          "h": 40.59375,
+          "heightStyle": "40.5938px",
+          "minHeight": "auto",
+          "pad": "0px",
+          "tag": "H2",
+          "top": 832.328125
+        },
+        {
+          "cls": "statml-prereq",
+          "display": "block",
+          "h": 132.6875,
+          "heightStyle": "132.688px",
+          "minHeight": "auto",
+          "pad": "17.6px 19.2px",
+          "tag": "DIV",
+          "top": 912.921875
+        },
+        {
+          "cls": "",
+          "display": "block",
+          "h": 81.5625,
+          "heightStyle": "81.5625px",
+          "minHeight": "auto",
+          "pad": "0px",
+          "tag": "P",
+          "top": 1069.609375
+        },
+        {
+          "cls": "",
+          "display": "block",
+          "h": 82.71875,
+          "heightStyle": "82.7188px",
+          "minHeight": "auto",
+          "pad": "0px",
+          "tag": "P",
+          "top": 1171.171875
+        },
+        {
+          "cls": "glass-card",
+          "display": "block",
+          "h": 123.453125,
+          "heightStyle": "123.453px",
+          "minHeight": "auto",
+          "pad": "24px",
+          "tag": "DIV",
+          "top": 1305.890625
+        }
+      ],
+      "minHeight": "662.4px",
+      "pad": "80px 0px",
+      "sel": ".stage-section"
+    }
+  },
+  {
+    "port": 8766,
+    "slug": "deep-learning",
+    "d": {
+      "box": "border-box",
+      "display": "flex",
+      "h": 1600.703125,
+      "heightStyle": "1600.7px",
+      "kids": [
+        {
+          "cls": "step-number",
+          "display": "block",
+          "h": 39.203125,
+          "heightStyle": "37px",
+          "minHeight": "0px",
+          "pad": "12px",
+          "tag": "DIV",
+          "top": 2437.6171875
+        },
+        {
+          "cls": "eyebrow",
+          "display": "block",
+          "h": 15.390625,
+          "heightStyle": "15.3906px",
+          "minHeight": "auto",
+          "pad": "0px",
+          "tag": "P",
+          "top": 1826.875
+        },
+        {
+          "cls": "",
+          "display": "block",
+          "h": 110.34375,
+          "heightStyle": "110.344px",
+          "minHeight": "auto",
+          "pad": "0px",
+          "tag": "H2",
+          "top": 1864.265625
+        },
+        {
+          "cls": "chapter-intro",
+          "display": "block",
+          "h": 129.1875,
+          "heightStyle": "129.188px",
+          "minHeight": "auto",
+          "pad": "0px",
+          "tag": "P",
+          "top": 2002.609375
+        },
+        {
+          "cls": "why-block",
+          "display": "block",
+          "h": 209.125,
+          "heightStyle": "209.125px",
+          "minHeight": "auto",
+          "pad": "20px 0px 0px",
+          "tag": "DIV",
+          "top": 2165.796875
+        },
+        {
+          "cls": "how-block",
+          "display": "block",
+          "h": 263.34375,
+          "heightStyle": "263.344px",
+          "minHeight": "auto",
+          "pad": "20px 0px 0px",
+          "tag": "DIV",
+          "top": 2408.921875
+        },
+        {
+          "cls": "mental-model",
+          "display": "block",
+          "h": 119.03125,
+          "heightStyle": "119.031px",
+          "minHeight": "auto",
+          "pad": "20px 22px",
+          "tag": "P",
+          "top": 2702.265625
+        },
+        {
+          "cls": "margin-note",
+          "display": "block",
+          "h": 69.28125,
+          "heightStyle": "69.2812px",
+          "minHeight": "auto",
+          "pad": "0px 0px 0px 18px",
+          "tag": "P",
+          "top": 2845.296875
+        },
+        {
+          "cls": "micro-example",
+          "display": "block",
+          "h": 164,
+          "heightStyle": "164px",
+          "minHeight": "auto",
+          "pad": "23px 24px",
+          "tag": "DIV",
+          "top": 2948.578125
+        }
+      ],
+      "minHeight": "950.4px",
+      "pad": "170px 0px 145px 55px",
+      "sel": ".lesson-step"
+    }
+  },
+  {
+    "port": 8766,
+    "slug": "neural-networks",
+    "d": {
+      "box": "border-box",
+      "display": "block",
+      "h": 1179.03125,
+      "heightStyle": "1179.03px",
+      "kids": [
+        {
+          "cls": "stage-label",
+          "display": "flex",
+          "h": 17.9375,
+          "heightStyle": "17.9375px",
+          "minHeight": "0px",
+          "pad": "0px",
+          "tag": "DIV",
+          "top": 800
+        },
+        {
+          "cls": "",
+          "display": "block",
+          "h": 81.1875,
+          "heightStyle": "81.1875px",
+          "minHeight": "0px",
+          "pad": "0px",
+          "tag": "H2",
+          "top": 832.328125
+        },
+        {
+          "cls": "",
+          "display": "block",
+          "h": 108.75,
+          "heightStyle": "108.75px",
+          "minHeight": "0px",
+          "pad": "0px",
+          "tag": "P",
+          "top": 933.515625
+        },
+        {
+          "cls": "",
+          "display": "block",
+          "h": 136.5,
+          "heightStyle": "136.5px",
+          "minHeight": "0px",
+          "pad": "0px",
+          "tag": "P",
+          "top": 1058.265625
+        },
+        {
+          "cls": "plain-translation",
+          "display": "grid",
+          "h": 134.0625,
+          "heightStyle": "134.062px",
+          "minHeight": "0px",
+          "pad": "16px",
+          "tag": "DIV",
+          "top": 1212.359375
+        },
+        {
+          "cls": "glass-card",
+          "display": "block",
+          "h": 265.59375,
+          "heightStyle": "265.594px",
+          "minHeight": "0px",
+          "pad": "17.6px 19.2px",
+          "tag": "DIV",
+          "top": 1366.421875
+        },
+        {
+          "cls": "statml-prereq",
+          "display": "block",
+          "h": 146.015625,
+          "heightStyle": "146.016px",
+          "minHeight": "0px",
+          "pad": "17.6px 19.2px",
+          "tag": "DIV",
+          "top": 1652.015625
+        }
+      ],
+      "minHeight": "662.4px",
+      "pad": "80px 0px",
+      "sel": "section[data-stage]"
+    }
+  },
+  {
+    "port": 8766,
+    "slug": "naive-bayes",
+    "d": {
+      "box": "border-box",
+      "display": "flex",
+      "h": 896.546875,
+      "heightStyle": "896.547px",
+      "kids": [
+        {
+          "cls": "chapter-inner",
+          "display": "block",
+          "h": 735.546875,
+          "heightStyle": "735.547px",
+          "minHeight": "auto",
+          "pad": "0px",
+          "tag": "DIV",
+          "top": 800
+        }
+      ],
+      "minHeight": "662.4px",
+      "pad": "80px 0px",
+      "sel": "section[data-stage]"
+    }
+  },
+  {
+    "port": 8766,
+    "slug": "one-r",
+    "d": {
+      "box": "border-box",
+      "display": "flex",
+      "h": 733.640625,
+      "heightStyle": "733.641px",
+      "kids": [
+        {
+          "cls": "stage-inner",
+          "display": "block",
+          "h": 571.640625,
+          "heightStyle": "571.641px",
+          "minHeight": "auto",
+          "pad": "0px",
+          "tag": "DIV",
+          "top": 801
+        }
+      ],
+      "minHeight": "662.4px",
+      "pad": "80px 0px",
+      "sel": ".stage"
+    }
+  },
+  {
+    "port": 8766,
+    "slug": "multiple-linear-regression",
+    "d": {
+      "box": "border-box",
+      "display": "flex",
+      "h": 733.53125,
+      "heightStyle": "733.531px",
+      "kids": [
+        {
+          "cls": "absolute inset-0 z-0 opacity-20 pointer-events-none",
+          "display": "block",
+          "h": 733.53125,
+          "heightStyle": "733.531px",
+          "minHeight": "0px",
+          "pad": "0px",
+          "tag": "DIV",
+          "top": 0
+        },
+        {
+          "cls": "z-10 max-w-3xl",
+          "display": "block",
+          "h": 408.25,
+          "heightStyle": "408.25px",
+          "minHeight": "auto",
+          "pad": "0px",
+          "tag": "DIV",
+          "top": 120
+        },
+        {
+          "cls": "statml-overview",
+          "display": "grid",
+          "h": 93.28125,
+          "heightStyle": "93.2812px",
+          "minHeight": "auto",
+          "pad": "16px",
+          "tag": "DIV",
+          "top": 560.25
+        }
+      ],
+      "minHeight": "720px",
+      "pad": "120px 32px 80px",
+      "sel": "section[data-stage]"
+    }
+  },
+  {
+    "port": 8765,
+    "slug": "classification-trees",
+    "d": {
+      "box": "border-box",
+      "display": "flex",
+      "h": 720,
+      "heightStyle": "720px",
+      "kids": [
+        {
+          "cls": "hero-bg",
+          "display": "block",
+          "h": 720,
+          "heightStyle": "720px",
+          "minHeight": "0px",
+          "pad": "0px",
+          "tag": "CANVAS",
+          "top": 0
+        },
+        {
+          "cls": "hero-badge hw-marker-label",
+          "display": "flex",
+          "h": 34.4375,
+          "heightStyle": "34.4375px",
+          "minHeight": "auto",
+          "pad": "6.72px 14.4px",
+          "tag": "DIV",
+          "top": 134.359375
+        },
+        {
+          "cls": "hw-ink-heading",
+          "display": "block",
+          "h": 166.375,
+          "heightStyle": "166.375px",
+          "minHeight": "auto",
+          "pad": "0px",
+          "tag": "H1",
+          "top": 190.390625
+        },
+        {
+          "cls": "subtitle",
+          "display": "block",
+          "h": 63.5,
+          "heightStyle": "63.5px",
+          "minHeight": "auto",
+          "pad": "0px",
+          "tag": "P",
+          "top": 378.359375
+        },
+        {
+          "cls": "statml-overview hw-rough-surface",
+          "display": "grid",
+          "h": 93.28125,
+          "heightStyle": "93.2812px",
+          "minHeight": "auto",
+          "pad": "16px",
+          "tag": "DIV",
+          "top": 513.859375
+        },
+        {
+          "cls": "scroll-hint",
+          "display": "flex",
+          "h": 18.484375,
+          "heightStyle": "18.4844px",
+          "minHeight": "auto",
+          "pad": "0px",
+          "tag": "DIV",
+          "top": 608.9641723632812
+        }
+      ],
+      "minHeight": "720px",
+      "pad": "120px 32px 80px",
+      "sel": "section[data-stage]"
+    }
+  },
+  {
+    "port": 8765,
+    "slug": "hierarchical-clustering",
+    "d": {
+      "box": "border-box",
+      "display": "flex",
+      "h": 918.984375,
+      "heightStyle": "918.984px",
+      "kids": [
+        {
+          "cls": "stage-label",
+          "display": "flex",
+          "h": 17.9375,
+          "heightStyle": "17.9375px",
+          "minHeight": "auto",
+          "pad": "0px",
+          "tag": "DIV",
+          "top": 800
+        },
+        {
+          "cls": "hw-ink-heading",
+          "display": "block",
+          "h": 40.59375,
+          "heightStyle": "40.5938px",
+          "minHeight": "auto",
+          "pad": "0px",
+          "tag": "H2",
+          "top": 832.328125
+        },
+        {
+          "cls": "statml-prereq hw-rough-surface hw-frame-relative hw-sticky-material",
+          "display": "block",
+          "h": 109.140625,
+          "heightStyle": "109.141px",
+          "minHeight": "auto",
+          "pad": "17.6px 19.2px",
+          "tag": "DIV",
+          "top": 912.921875
+        },
+        {
+          "cls": "",
+          "display": "block",
+          "h": 81.5625,
+          "heightStyle": "81.5625px",
+          "minHeight": "auto",
+          "pad": "0px",
+          "tag": "P",
+          "top": 1046.0625
+        },
+        {
+          "cls": "",
+          "display": "block",
+          "h": 54.375,
+          "heightStyle": "54.375px",
+          "minHeight": "auto",
+          "pad": "0px",
+          "tag": "P",
+          "top": 1147.625
+        },
+        {
+          "cls": "insight-box hw-rough-surface hw-frame-relative hw-sticky-material",
+          "display": "block",
+          "h": 117.234375,
+          "heightStyle": "117.234px",
+          "minHeight": "auto",
+          "pad": "20px 24px",
+          "tag": "DIV",
+          "top": 1246
+        },
+        {
+          "cls": "",
+          "display": "block",
+          "h": 54.375,
+          "heightStyle": "54.375px",
+          "minHeight": "auto",
+          "pad": "0px",
+          "tag": "P",
+          "top": 1387.234375
+        },
+        {
+          "cls": "takeaway hw-rough-surface hw-frame-relative hw-sticky-material",
+          "display": "block",
+          "h": 56.375,
+          "heightStyle": "56.375px",
+          "minHeight": "auto",
+          "pad": "0px",
+          "tag": "P",
+          "top": 1481.609375
+        }
+      ],
+      "minHeight": "662.4px",
+      "pad": "80px 0px",
+      "sel": "section[data-stage]"
+    }
+  },
+  {
+    "port": 8765,
+    "slug": "lda",
+    "d": {
+      "box": "border-box",
+      "display": "flex",
+      "h": 822.515625,
+      "heightStyle": "822.516px",
+      "kids": [
+        {
+          "cls": "hero-bg",
+          "display": "block",
+          "h": 822.515625,
+          "heightStyle": "822.516px",
+          "minHeight": "0px",
+          "pad": "0px",
+          "tag": "CANVAS",
+          "top": 0
+        },
+        {
+          "cls": "hero-badge hw-marker-label",
+          "display": "flex",
+          "h": 34.4375,
+          "heightStyle": "34.4375px",
+          "minHeight": "auto",
+          "pad": "6.72px 14.4px",
+          "tag": "DIV",
+          "top": 120
+        },
+        {
+          "cls": "hw-ink-heading",
+          "display": "block",
+          "h": 166.375,
+          "heightStyle": "166.375px",
+          "minHeight": "auto",
+          "pad": "0px",
+          "tag": "H1",
+          "top": 176.03125
+        },
+        {
+          "cls": "subtitle",
+          "display": "block",
+          "h": 95.25,
+          "heightStyle": "95.25px",
+          "minHeight": "95.25px",
+          "pad": "0px",
+          "tag": "P",
+          "top": 364
+        },
+        {
+          "cls": "hero-note",
+          "display": "block",
+          "h": 63.5,
+          "heightStyle": "63.5px",
+          "minHeight": "auto",
+          "pad": "0px",
+          "tag": "P",
+          "top": 519.25
+        },
+        {
+          "cls": "statml-overview hw-rough-surface",
+          "display": "grid",
+          "h": 93.28125,
+          "heightStyle": "93.2812px",
+          "minHeight": "auto",
+          "pad": "16px",
+          "tag": "DIV",
+          "top": 630.75
+        },
+        {
+          "cls": "scroll-hint",
+          "display": "flex",
+          "h": 18.484375,
+          "heightStyle": "18.4844px",
+          "minHeight": "auto",
+          "pad": "0px",
+          "tag": "DIV",
+          "top": 726.7670288085938
+        }
+      ],
+      "minHeight": "720px",
+      "pad": "120px 32px 80px",
+      "sel": "section[data-stage]"
+    }
+  },
+  {
+    "port": 8765,
+    "slug": "qda",
+    "d": {
+      "box": "border-box",
+      "display": "flex",
+      "h": 1911.8125,
+      "heightStyle": "1911.81px",
+      "kids": [
+        {
+          "cls": "stage-label",
+          "display": "flex",
+          "h": 17.9375,
+          "heightStyle": "17.9375px",
+          "minHeight": "auto",
+          "pad": "0px",
+          "tag": "DIV",
+          "top": 800
+        },
+        {
+          "cls": "hw-ink-heading",
+          "display": "block",
+          "h": 40.59375,
+          "heightStyle": "40.5938px",
+          "minHeight": "auto",
+          "pad": "0px",
+          "tag": "H2",
+          "top": 832.328125
+        },
+        {
+          "cls": "statml-prereq hw-rough-surface hw-frame-relative hw-sticky-material",
+          "display": "block",
+          "h": 109.140625,
+          "heightStyle": "109.141px",
+          "minHeight": "auto",
+          "pad": "17.6px 19.2px",
+          "tag": "DIV",
+          "top": 912.921875
+        },
+        {
+          "cls": "",
+          "display": "block",
+          "h": 58.9375,
+          "heightStyle": "58.9375px",
+          "minHeight": "auto",
+          "pad": "0px",
+          "tag": "P",
+          "top": 1046.0625
+        },
+        {
+          "cls": "",
+          "display": "block",
+          "h": 57.09375,
+          "heightStyle": "57.0938px",
+          "minHeight": "auto",
+          "pad": "0px",
+          "tag": "P",
+          "top": 1129
+        },
+        {
+          "cls": "glass-card hw-rough-surface hw-frame-relative",
+          "display": "block",
+          "h": 400.109375,
+          "heightStyle": "400.109px",
+          "minHeight": "auto",
+          "pad": "24px",
+          "tag": "DIV",
+          "top": 1210.09375
+        },
+        {
+          "cls": "glass-card hw-rough-surface hw-frame-relative",
+          "display": "block",
+          "h": 346.015625,
+          "heightStyle": "346.016px",
+          "minHeight": "auto",
+          "pad": "24px",
+          "tag": "DIV",
+          "top": 1634.203125
+        },
+        {
+          "cls": "glass-card hw-rough-surface hw-frame-relative",
+          "display": "block",
+          "h": 199.953125,
+          "heightStyle": "199.953px",
+          "minHeight": "auto",
+          "pad": "24px",
+          "tag": "DIV",
+          "top": 2004.21875
+        },
+        {
+          "cls": "quiz-card glass-card hw-rough-surface hw-frame-relative",
+          "display": "block",
+          "h": 274.640625,
+          "heightStyle": "274.641px",
+          "minHeight": "auto",
+          "pad": "24px",
+          "tag": "DIV",
+          "top": 2252.171875
+        }
+      ],
+      "minHeight": "662.4px",
+      "pad": "80px 0px",
+      "sel": ".stage"
+    }
+  },
+  {
+    "port": 8765,
+    "slug": "model-selection",
+    "d": {
+      "box": "border-box",
+      "display": "flex",
+      "h": 754.5625,
+      "heightStyle": "754.562px",
+      "kids": [
+        {
+          "cls": "stage-label",
+          "display": "flex",
+          "h": 17.9375,
+          "heightStyle": "17.9375px",
+          "minHeight": "auto",
+          "pad": "0px",
+          "tag": "DIV",
+          "top": 800
+        },
+        {
+          "cls": "hw-ink-heading",
+          "display": "block",
+          "h": 40.59375,
+          "heightStyle": "40.5938px",
+          "minHeight": "auto",
+          "pad": "0px",
+          "tag": "H2",
+          "top": 832.328125
+        },
+        {
+          "cls": "statml-prereq hw-rough-surface hw-frame-relative hw-sticky-material",
+          "display": "block",
+          "h": 109.140625,
+          "heightStyle": "109.141px",
+          "minHeight": "auto",
+          "pad": "17.6px 19.2px",
+          "tag": "DIV",
+          "top": 912.921875
+        },
+        {
+          "cls": "",
+          "display": "block",
+          "h": 54.375,
+          "heightStyle": "54.375px",
+          "minHeight": "auto",
+          "pad": "0px",
+          "tag": "P",
+          "top": 1046.0625
+        },
+        {
+          "cls": "",
+          "display": "block",
+          "h": 81.5625,
+          "heightStyle": "81.5625px",
+          "minHeight": "auto",
+          "pad": "0px",
+          "tag": "P",
+          "top": 1120.4375
+        },
+        {
+          "cls": "insight-box hw-rough-surface hw-frame-relative hw-sticky-material",
+          "display": "block",
+          "h": 123.5625,
+          "heightStyle": "123.562px",
+          "minHeight": "auto",
+          "pad": "20px 24px",
+          "tag": "DIV",
+          "top": 1246
+        }
+      ],
+      "minHeight": "662.4px",
+      "pad": "80px 0px",
+      "sel": ".stage"
+    }
+  },
+  {
+    "port": 8765,
+    "slug": "support-vector-machine",
+    "d": {
+      "box": "border-box",
+      "display": "flex",
+      "h": 678.3125,
+      "heightStyle": "678.312px",
+      "kids": [
+        {
+          "cls": "stage-inner",
+          "display": "block",
+          "h": 517.3125,
+          "heightStyle": "517.312px",
+          "minHeight": "auto",
+          "pad": "0px",
+          "tag": "DIV",
+          "top": 892.546875
+        }
+      ],
+      "minHeight": "662.4px",
+      "pad": "80px 0px",
+      "sel": ".stage"
+    }
+  },
+  {
+    "port": 8765,
+    "slug": "regression-trees",
+    "d": {
+      "box": "border-box",
+      "display": "flex",
+      "h": 772.765625,
+      "heightStyle": "772.766px",
+      "kids": [
+        {
+          "cls": "stage-label",
+          "display": "flex",
+          "h": 17.9375,
+          "heightStyle": "17.9375px",
+          "minHeight": "auto",
+          "pad": "0px",
+          "tag": "DIV",
+          "top": 800
+        },
+        {
+          "cls": "hw-ink-heading",
+          "display": "block",
+          "h": 40.59375,
+          "heightStyle": "40.5938px",
+          "minHeight": "auto",
+          "pad": "0px",
+          "tag": "H2",
+          "top": 832.328125
+        },
+        {
+          "cls": "statml-prereq hw-rough-surface hw-frame-relative hw-sticky-material",
+          "display": "block",
+          "h": 109.140625,
+          "heightStyle": "109.141px",
+          "minHeight": "auto",
+          "pad": "17.6px 19.2px",
+          "tag": "DIV",
+          "top": 912.921875
+        },
+        {
+          "cls": "",
+          "display": "block",
+          "h": 81.5625,
+          "heightStyle": "81.5625px",
+          "minHeight": "auto",
+          "pad": "0px",
+          "tag": "P",
+          "top": 1046.0625
+        },
+        {
+          "cls": "",
+          "display": "block",
+          "h": 56.6875,
+          "heightStyle": "56.6875px",
+          "minHeight": "auto",
+          "pad": "0px",
+          "tag": "P",
+          "top": 1147.625
+        },
+        {
+          "cls": "glass-card hw-rough-surface hw-frame-relative",
+          "display": "block",
+          "h": 123.453125,
+          "heightStyle": "123.453px",
+          "minHeight": "auto",
+          "pad": "24px",
+          "tag": "DIV",
+          "top": 1256.3125
+        }
+      ],
+      "minHeight": "662.4px",
+      "pad": "80px 0px",
+      "sel": ".stage-section"
+    }
+  },
+  {
+    "port": 8765,
+    "slug": "deep-learning",
+    "d": {
+      "box": "border-box",
+      "display": "flex",
+      "h": 1480.15625,
+      "heightStyle": "1480.16px",
+      "kids": [
+        {
+          "cls": "step-number",
+          "display": "block",
+          "h": 35.3125,
+          "heightStyle": "37px",
+          "minHeight": "0px",
+          "pad": "12px",
+          "tag": "DIV",
+          "top": 2358.171875
+        },
+        {
+          "cls": "eyebrow",
+          "display": "block",
+          "h": 15.390625,
+          "heightStyle": "15.3906px",
+          "minHeight": "auto",
+          "pad": "0px",
+          "tag": "P",
+          "top": 1805.75
+        },
+        {
+          "cls": "hw-ink-heading",
+          "display": "block",
+          "h": 110.34375,
+          "heightStyle": "110.344px",
+          "minHeight": "auto",
+          "pad": "0px",
+          "tag": "H2",
+          "top": 1843.140625
+        },
+        {
+          "cls": "chapter-intro",
+          "display": "block",
+          "h": 96.890625,
+          "heightStyle": "96.8906px",
+          "minHeight": "auto",
+          "pad": "0px",
+          "tag": "P",
+          "top": 1981.484375
+        },
+        {
+          "cls": "why-block",
+          "display": "block",
+          "h": 154.75,
+          "heightStyle": "154.75px",
+          "minHeight": "auto",
+          "pad": "20px 0px 0px",
+          "tag": "DIV",
+          "top": 2112.375
+        },
+        {
+          "cls": "how-block",
+          "display": "block",
+          "h": 252.5625,
+          "heightStyle": "252.562px",
+          "minHeight": "auto",
+          "pad": "20px 0px 0px",
+          "tag": "DIV",
+          "top": 2301.125
+        },
+        {
+          "cls": "mental-model",
+          "display": "block",
+          "h": 119.03125,
+          "heightStyle": "119.031px",
+          "minHeight": "auto",
+          "pad": "20px 22px",
+          "tag": "P",
+          "top": 2583.6875
+        },
+        {
+          "cls": "margin-note",
+          "display": "block",
+          "h": 46.1875,
+          "heightStyle": "46.1875px",
+          "minHeight": "auto",
+          "pad": "0px 0px 0px 18px",
+          "tag": "P",
+          "top": 2726.71875
+        },
+        {
+          "cls": "micro-example",
+          "display": "block",
+          "h": 164,
+          "heightStyle": "164px",
+          "minHeight": "auto",
+          "pad": "23px 24px",
+          "tag": "DIV",
+          "top": 2806.90625
+        }
+      ],
+      "minHeight": "950.4px",
+      "pad": "170px 0px 145px 55px",
+      "sel": ".lesson-step"
+    }
+  },
+  {
+    "port": 8765,
+    "slug": "neural-networks",
+    "d": {
+      "box": "border-box",
+      "display": "block",
+      "h": 1051.078125,
+      "heightStyle": "1051.08px",
+      "kids": [
+        {
+          "cls": "stage-label",
+          "display": "flex",
+          "h": 17.9375,
+          "heightStyle": "17.9375px",
+          "minHeight": "0px",
+          "pad": "0px",
+          "tag": "DIV",
+          "top": 800
+        },
+        {
+          "cls": "hw-ink-heading",
+          "display": "block",
+          "h": 81.1875,
+          "heightStyle": "81.1875px",
+          "minHeight": "0px",
+          "pad": "0px",
+          "tag": "H2",
+          "top": 832.328125
+        },
+        {
+          "cls": "",
+          "display": "block",
+          "h": 81.5625,
+          "heightStyle": "81.5625px",
+          "minHeight": "0px",
+          "pad": "0px",
+          "tag": "P",
+          "top": 933.515625
+        },
+        {
+          "cls": "",
+          "display": "block",
+          "h": 110.3125,
+          "heightStyle": "110.312px",
+          "minHeight": "0px",
+          "pad": "0px",
+          "tag": "P",
+          "top": 1031.078125
+        },
+        {
+          "cls": "plain-translation hw-rough-surface hw-frame-relative hw-sticky-material",
+          "display": "grid",
+          "h": 109.046875,
+          "heightStyle": "109.047px",
+          "minHeight": "0px",
+          "pad": "16px",
+          "tag": "DIV",
+          "top": 1158.984375
+        },
+        {
+          "cls": "glass-card hw-rough-surface hw-frame-relative",
+          "display": "block",
+          "h": 227.21875,
+          "heightStyle": "227.219px",
+          "minHeight": "0px",
+          "pad": "17.6px 19.2px",
+          "tag": "DIV",
+          "top": 1288.03125
+        },
+        {
+          "cls": "statml-prereq hw-rough-surface hw-frame-relative hw-sticky-material",
+          "display": "block",
+          "h": 134.828125,
+          "heightStyle": "134.828px",
+          "minHeight": "0px",
+          "pad": "17.6px 19.2px",
+          "tag": "DIV",
+          "top": 1535.25
+        }
+      ],
+      "minHeight": "662.4px",
+      "pad": "80px 0px",
+      "sel": "section[data-stage]"
+    }
+  },
+  {
+    "port": 8765,
+    "slug": "naive-bayes",
+    "d": {
+      "box": "border-box",
+      "display": "flex",
+      "h": 887.359375,
+      "heightStyle": "887.359px",
+      "kids": [
+        {
+          "cls": "chapter-inner",
+          "display": "block",
+          "h": 726.359375,
+          "heightStyle": "726.359px",
+          "minHeight": "auto",
+          "pad": "0px",
+          "tag": "DIV",
+          "top": 800
+        }
+      ],
+      "minHeight": "662.4px",
+      "pad": "80px 0px",
+      "sel": "section[data-stage]"
+    }
+  },
+  {
+    "port": 8765,
+    "slug": "one-r",
+    "d": {
+      "box": "border-box",
+      "display": "flex",
+      "h": 662.390625,
+      "heightStyle": "662.391px",
+      "kids": [
+        {
+          "cls": "stage-inner",
+          "display": "block",
+          "h": 409.390625,
+          "heightStyle": "409.391px",
+          "minHeight": "auto",
+          "pad": "0px",
+          "tag": "DIV",
+          "top": 846.5
+        }
+      ],
+      "minHeight": "662.4px",
+      "pad": "80px 0px",
+      "sel": ".stage"
+    }
+  },
+  {
+    "port": 8765,
+    "slug": "multiple-linear-regression",
+    "d": {
+      "box": "border-box",
+      "display": "flex",
+      "h": 733.53125,
+      "heightStyle": "733.531px",
+      "kids": [
+        {
+          "cls": "absolute inset-0 z-0 opacity-20 pointer-events-none",
+          "display": "block",
+          "h": 733.53125,
+          "heightStyle": "733.531px",
+          "minHeight": "0px",
+          "pad": "0px",
+          "tag": "DIV",
+          "top": 0
+        },
+        {
+          "cls": "z-10 max-w-3xl",
+          "display": "block",
+          "h": 408.25,
+          "heightStyle": "408.25px",
+          "minHeight": "408.25px",
+          "pad": "0px",
+          "tag": "DIV",
+          "top": 120
+        },
+        {
+          "cls": "statml-overview hw-rough-surface",
+          "display": "grid",
+          "h": 93.28125,
+          "heightStyle": "93.2812px",
+          "minHeight": "auto",
+          "pad": "16px",
+          "tag": "DIV",
+          "top": 560.25
+        }
+      ],
+      "minHeight": "720px",
+      "pad": "120px 32px 80px",
+      "sel": "section[data-stage]"
+    }
+  }
+]

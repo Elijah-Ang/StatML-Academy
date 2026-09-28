@@ -1,0 +1,23 @@
+{
+  "changedExistingFiles": [
+    "modules/kmeans.html",
+    "modules/evaluation-metrics.html",
+    "modules/simple-linear-regression.html",
+    "modules/naive-bayes.html",
+    "scripts/test-study-sketch-browser.mjs",
+    "scripts/core-modules.mjs",
+    "scripts/build.mjs",
+    "scripts/generate-foundations.mjs",
+    "package.json"
+  ],
+  "newNotebookFiles": [
+    "modules/notebook/ui.js",
+    "modules/notebook/lesson.js",
+    "modules/notebook/metrics.js",
+    "modules/notebook/models.js",
+    "modules/notebook/regression.js",
+    "modules/notebook/clustering.js",
+    "modules/notebook/notebook.css",
+    "modules/notebook/bayes.js"
+  ]
+}

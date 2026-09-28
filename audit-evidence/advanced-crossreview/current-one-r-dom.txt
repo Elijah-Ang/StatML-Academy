@@ -1,0 +1,392 @@
+- navigation "StatML Academy navigation":
+  - link "S StatML Academy":
+    - /url: ../index.html
+    - text: S
+    - generic: StatML Academy
+  - generic: One-R
+  - 'link "Previous module: Support Vector Machines"':
+    - /url: support-vector-machine.html
+    - text: ←
+  - 'link "Next module: Naive Bayes"':
+    - /url: naive-bayes.html
+    - text: →
+  - generic: module 15/21
+- banner:
+  - generic: Machine Learning · Classification Baseline
+  - heading "One-R" [level=1]: One-R
+  - paragraph: Start from raw rows, test every feature, keep the best one, and turn it into a tiny rulebook you can inspect without summoning a committee of neural networks.
+  - link "Scroll to begin":
+    - /url: "#stage-1"
+    - text: Scroll to begin
+- main:
+  - article:
+    - generic: Stage 01 · Observe
+    - heading "What problem is One-R solving?" [level=2]: What problem is One-R solving?
+    - paragraph:
+      - text: Classification predicts a category, such as
+      - strong: "Yes"
+      - text: or
+      - strong: "No"
+      - text: . A feature is an input column. The target is the category we want to predict.
+    - paragraph: Our teaching sample records 14 days. Each row contains outlook, humidity, wind, temperature, and whether someone carried an umbrella.
+    - generic: The central question
+    - paragraph: “If I may inspect only one column, which column should I choose, and what should I predict for each of its values?”
+    - generic: 14 rows
+    - generic: 4 candidate features
+    - generic: Yes target
+    - generic: No target
+    - generic: Stage 02 · Baseline
+    - heading "First, make the lazy prediction." [level=2]: First, make the lazy prediction.
+    - paragraph:
+      - text: Before building a model, count the target classes. There are 8
+      - strong: "Yes"
+      - text: rows and 6
+      - strong: "No"
+      - text: rows, so the majority classifier predicts Yes for every case.
+    - text: majority accuracy = largest class count ÷ all rows
+    - text: 8 ÷ 14 = 57.1%
+    - paragraph: This baseline is intentionally dull. That is its job. A new classifier that cannot beat it has not earned its electricity.
+    - strong: Class imbalance warning.
+    - text: If 95% of rows are No, always predicting No scores 95% accuracy while learning nothing about Yes. Accuracy needs company.
+    - paragraph: If a dataset has 70 Yes rows and 30 No rows, what does the majority classifier predict?
+    - paragraph: Yes for every row, producing 70% training accuracy.
+    - generic: Stage 03 · Build
+    - heading "Make a rule from one categorical feature." [level=2]: Make a rule from one categorical feature.
+    - paragraph:
+      - text: Choose a candidate feature, such as
+      - strong: Outlook
+      - text: . Handle each distinct value separately and predict its local majority class.
+    - generic: "1"
+    - generic: Collect all rows where Outlook is Sunny.
+    - generic: "2"
+    - generic: Count Yes and No among those rows.
+    - generic: "3"
+    - generic: Use the local majority as the prediction for Sunny.
+    - generic: "4"
+    - generic: Repeat for Cloudy and Rainy.
+    - generic: Example rulebook
+    - generic: IF Outlook = Sunny THEN Umbrella = No
+    - generic: IF Outlook = Cloudy THEN Umbrella = Yes
+    - generic: IF Outlook = Rainy THEN Umbrella = Yes
+    - text: error for a feature value = rows that disagree with that value’s majority class
+    - generic: Stage 04 · Compare
+    - heading "Test every feature. Keep the lowest-error rule." [level=2]: Test every feature. Keep the lowest-error rule.
+    - paragraph: One-R repeats the same construction for every candidate feature. Each feature gets a rulebook and a total error count.
+    - table "Candidate feature errors":
+      - rowgroup:
+        - row "Feature Training errors Error rate Result":
+          - columnheader "Feature"
+          - columnheader "Training errors"
+          - columnheader "Error rate"
+          - columnheader "Result"
+      - rowgroup:
+        - row "Outlook 3 / 14 21.4% Selected":
+          - cell "Outlook"
+          - cell "3 / 14"
+          - cell "21.4%"
+          - cell "Selected"
+        - row "Humidity 4 / 14 28.6% Runner-up":
+          - cell "Humidity"
+          - cell "4 / 14"
+          - cell "28.6%"
+          - cell "Runner-up"
+        - row "Wind 5 / 14 35.7% Rejected":
+          - cell "Wind"
+          - cell "5 / 14"
+          - cell "35.7%"
+          - cell "Rejected"
+        - row "Temperature* 5 / 14 35.7% After buckets":
+          - cell "Temperature*"
+          - cell "5 / 14"
+          - cell "35.7%"
+          - cell "After buckets"
+    - text: selected feature = arg min(feature training errors)
+    - generic "Feature comparison control":
+      - generic: Inspect a rulebook
+      - combobox "Inspect a rulebook":
+        - option "Outlook" [selected]
+        - option "Humidity"
+        - option "Wind"
+    - strong: Ties are allowed.
+    - text: "Declare a policy in advance: prefer fewer values, use a fixed feature order, or choose the winner under cross-validation. Do not improvise after seeing the result."
+    - paragraph: "*Temperature uses the fixed teaching intervals introduced next. Exact bucketing procedures vary by implementation."
+    - generic: Stage 05 · Prepare
+    - heading "Turn numeric values into intervals." [level=2]: Turn numeric values into intervals.
+    - paragraph: A rule for every exact temperature would memorise the training sample and fail on a new value such as 23.6°C. One-R therefore discretises numeric values into intervals.
+    - generic: "1"
+    - generic: Sort rows by the numeric feature.
+    - generic: "2"
+    - generic: Group neighbouring values into sufficiently reliable buckets.
+    - generic: "3"
+    - generic: Assign each bucket its majority class.
+    - generic: "4"
+    - generic: Merge or adjust unstable neighbours according to the chosen implementation.
+    - generic: One possible training-only discretisation
+    - generic: Temperature ≤ 22.5 → Yes
+    - generic: 22.5 < Temperature ≤ 27.5 → Yes
+    - generic: Temperature > 27.5 → No
+    - generic "Temperature display mode":
+      - button "Exact values"
+      - button "Stable intervals"
+    - strong: Leakage alert.
+    - text: Fit cut-points using training data only. Choosing intervals after inspecting test labels is answer-shopping in a lab coat.
+    - generic: Stage 06 · Safeguard
+    - heading "Missing values and unseen categories are part of the model." [level=2]: Missing values and unseen categories are part of the model.
+    - paragraph: Real inputs are rarely as cooperative as textbook tables. Decide what happens when the selected feature is missing, a category never appeared during training, classes tie, or a number falls outside the observed range.
+    - generic: "?"
+    - generic: Missing input
+    - generic: New
+    - generic: Unseen category
+    - generic: 4–4
+    - generic: Local tie
+    - generic: Reasonable fallback
+    - paragraph: Use the overall training-set majority class or estimated class prior. Another option is to learn “Missing” as its own category when enough training rows contain missing values.
+    - paragraph: The fitted rule uses Outlook, but a future row has Outlook = “Hazy”. What happens?
+    - paragraph: Use the declared fallback. Do not invent a rule from the test row.
+    - generic: Stage 07 · Predict
+    - heading "Prediction is deliberately cheap." [level=2]: Prediction is deliberately cheap.
+    - paragraph: Read the selected feature, find its stored value or interval, return the class, and use the fallback if nothing matches.
+    - generic "New case controls":
+      - generic: Outlook
+      - combobox "Outlook":
+        - option "Sunny"
+        - option "Cloudy" [selected]
+        - option "Rainy"
+        - option "Hazy"
+      - generic: Humidity
+      - combobox "Humidity":
+        - option "Low" [selected]
+        - option "High"
+      - generic: Wind
+      - combobox "Wind":
+        - option "Calm"
+        - option "Breezy"
+        - option "Strong" [selected]
+      - button "Run the one-rule prediction"
+    - strong: "Prediction:"
+    - text: Outlook = Cloudy → Umbrella = Yes. Humidity and wind are ignored because Outlook won training selection.
+    - paragraph:
+      - text: The model is saying Outlook is the strongest
+      - strong: standalone
+      - text: predictor in this sample. It is not saying the other features have no relationship with umbrella use.
+    - generic: Stage 08 · Understand
+    - heading "One feature cannot express an interaction." [level=2]: One feature cannot express an interaction.
+    - paragraph:
+      - text: Suppose people carry umbrellas only when it is both cloudy
+      - strong: and
+      - text: very humid. Neither feature alone may be strongly predictive, but their combination is.
+    - text: "useful pattern: Outlook = Cloudy AND Humidity = High"
+    - generic: "1"
+    - generic: Feature used
+    - generic: "0"
+    - generic: Interactions
+    - generic: Inspectability
+    - generic: One-R sees
+    - paragraph: One column and one lookup table.
+    - generic: One-R misses
+    - paragraph: Interactions, gradual multi-feature effects, and alternative routes to the same class.
+    - strong: Interpretability is not innocence.
+    - text: A selected feature may be a proxy, unfair, operationally inappropriate, or merely associated rather than causal.
+    - generic: Stage 09 · Evaluate
+    - heading "Validate the whole learning process" [level=2]: Validate the whole learning process
+    - paragraph: Don’t judge the model only on the final prediction. Any choice the model makes—like selecting the best feature or building rules—must be done inside the training fold, then checked on data it has not seen.
+    - generic: "1"
+    - strong: Split the data into folds
+    - generic: "2"
+    - strong: Use the training fold to learn
+    - generic: Build buckets, test candidate rules, and choose the best option here.
+    - generic: "3"
+    - strong: Freeze the rule
+    - generic: Stop changing it. No more label peeking.
+    - generic: "4"
+    - strong: Test on the held-out fold
+    - generic: Predict unseen rows and record the error.
+    - generic: "5"
+    - strong: Repeat and average
+    - generic: Run this across all folds, then average the results.
+    - strong: "Grouped data:"
+    - text: If several rows belong to the same person, device, or organisation, keep the whole group in one fold. Otherwise the model may recognise the group instead of learning a pattern that generalizes.
+    - generic: Stage 10 · Measure
+    - heading "Evaluate each fold. Decide what to do next." [level=2]: Evaluate each fold. Decide what to do next.
+    - paragraph: Cross-validation gives multiple views of performance. Use the right metric for your goal, check stability across folds, and decide whether to proceed, tune, or collect more data.
+    - generic: "1"
+    - strong: Choose the right metric
+    - paragraph: Pick the metric that matches the problem and the cost of mistakes.
+    - group "Metric used for the cross-validation stability summary":
+      - button "Overall"
+      - button "Precision"
+      - button "Recall" [pressed]
+    - heading "Overall accuracy" [level=3]
+    - paragraph: Focus when classes are balanced and both types of errors matter similarly.
+    - paragraph:
+      - strong: "Best for:"
+      - text: General performance check, balanced datasets.
+    - heading "Precision" [level=3]
+    - paragraph: Focus when false positives are costly (predicting Yes when it’s actually No).
+    - paragraph:
+      - strong: "Best for:"
+      - text: Spam detection, fraud alerts, medical testing.
+    - heading "Recall" [level=3]
+    - paragraph: Focus when false negatives are costly (missing actual Yes cases).
+    - paragraph:
+      - strong: "Best for:"
+      - text: Disease screening, churn prevention, safety monitoring.
+    - generic: "2"
+    - strong: Measure stability across folds
+    - paragraph: Compute the chosen metric for each fold. Then summarize the stability.
+    - generic: CV stability % (coefficient of variation)
+    - paragraph: Measures how much the metric varies across folds relative to its average.
+    - code: cv_stability_percent = scores.std() / scores.mean() * 100
+    - paragraph: Lower percentages mean more consistent performance from fold to fold.
+    - generic: Report all three (recommended)
+    - paragraph: Always look at these together for the full picture.
+    - list:
+      - strong: "Mean (μ):"
+      - text: average performance across folds
+      - strong: "Standard deviation (σ):"
+      - text: spread of performance
+      - strong: "CV stability %:"
+      - text: relative variation (lower is better)
+    - paragraph:
+      - text: Also check the
+      - strong: min–max range
+      - text: across folds.
+    - generic: "3"
+    - strong: Interpret stability (rule of thumb)
+    - paragraph: Use these as rough guides, not strict rules. Consider dataset size, domain, and the impact of errors.
+    - table "Cross-validation stability interpretation":
+      - rowgroup:
+        - row "CV stability % Interpretation What it means":
+          - columnheader "CV stability %"
+          - columnheader "Interpretation"
+          - columnheader "What it means"
+      - rowgroup:
+        - row "<10% Very stable Very consistent across folds. Safe to proceed.":
+          - cell "<10%"
+          - cell "Very stable"
+          - cell "Very consistent across folds. Safe to proceed."
+        - row "10–20% Good Generally consistent. Proceed with confidence.":
+          - cell "10–20%"
+          - cell "Good"
+          - cell "Generally consistent. Proceed with confidence."
+        - row "20–30% Acceptable Moderate variation. Still acceptable, but monitor.":
+          - cell "20–30%"
+          - cell "Acceptable"
+          - cell "Moderate variation. Still acceptable, but monitor."
+        - row "30–40% Investigate High variation. Investigate causes before proceeding.":
+          - cell "30–40%"
+          - cell "Investigate"
+          - cell "High variation. Investigate causes before proceeding."
+        - row ">40% Potentially unstable Unstable across folds. Do not proceed yet.":
+          - cell ">40%"
+          - cell "Potentially unstable"
+          - cell "Unstable across folds. Do not proceed yet."
+    - strong: "Why this works:"
+    - text: CV Stability % = (SD / Mean) × 100. Lower % means the metric changes little across folds relative to its average.
+    - generic: Stage 11 · Reflect
+    - heading "Use simple models as diagnostic instruments." [level=2]: Use simple models as diagnostic instruments.
+    - table "Model comparison":
+      - rowgroup:
+        - row "Model Uses Typical purpose":
+          - columnheader "Model"
+          - columnheader "Uses"
+          - columnheader "Typical purpose"
+      - rowgroup:
+        - row "Majority No features Absolute minimum baseline":
+          - cell "Majority"
+          - cell "No features"
+          - cell "Absolute minimum baseline"
+        - row "One-R One feature, many value rules Transparent signal baseline":
+          - cell "One-R"
+          - cell "One feature, many value rules"
+          - cell "Transparent signal baseline"
+        - row "Decision stump One tree split Single partition baseline":
+          - cell "Decision stump"
+          - cell "One tree split"
+          - cell "Single partition baseline"
+        - row "Full tree Sequential splits Interactions and complexity":
+          - cell "Full tree"
+          - cell "Sequential splits"
+          - cell "Interactions and complexity"
+    - paragraph: One-R and a decision stump are related, but not identical. Categorical One-R can assign a separate class to every value of one feature; a stump is usually described as one split with leaf predictions.
+    - strong: Suspiciously strong simplicity.
+    - text: If One-R nearly matches a complex model, one feature may dominate the task, or the evaluation may contain leakage. Investigate both before celebrating.
+    - generic: Useful when
+    - generic: interpretable benchmark
+    - generic: small data
+    - generic: cheap deployment
+    - generic: strongest standalone feature
+    - generic: Weak when
+    - generic: interactions matter
+    - generic: signals must combine
+    - generic: feature drift
+    - generic: unequal error costs
+    - generic: Stage 12 · Practice
+    - heading "Build the rule, then explain what it means." [level=2]: Build the rule, then explain what it means.
+    - paragraph: Choose a candidate feature and a new case. The visual updates the value-level rulebook, training error, and prediction. The point is not merely to obtain a label, but to explain exactly how that label appeared.
+    - generic "One-R playground":
+      - generic: Candidate feature
+      - combobox "Candidate feature":
+        - option "Outlook" [selected]
+        - option "Humidity"
+        - option "Wind"
+      - generic: New value
+      - combobox "New value":
+        - option "Sunny" [selected]
+        - option "Cloudy"
+        - option "Rainy"
+      - button "Apply this rulebook"
+    - generic: "3"
+    - generic: Training errors
+    - generic: "3"
+    - generic: Value rules
+    - generic: "No"
+    - generic: New prediction
+    - paragraph: One-R selected Outlook. Humidity also relates strongly to the target. Is “humidity is useless” the correct conclusion?
+    - paragraph: No. Outlook produced the best single-feature rule under this procedure. Humidity may still add useful information in a multi-feature model.
+    - generic: Key takeaways
+    - paragraph: One-R creates a majority-class rule for every value or interval of each candidate feature.
+    - paragraph: It selects the lowest training error, but performance belongs on held-out data.
+    - paragraph: Numeric buckets, fallbacks, ties, and missing values are fitted-model decisions.
+    - paragraph: Its value is transparent baseline reasoning, not pretending one feature explains the universe.
+    - strong: One rule.
+    - text: Surprisingly useful. Keep it beside stronger models as a readable benchmark and a fast warning system for suspiciously easy prediction.
+  - region "One-R interactive visualisation":
+    - generic: Persistent visual · Rule desk
+    - generic: Observe the rows
+    - generic: Stage 01
+    - generic "Animated visual explanation of One-R"
+    - generic: All columns
+    - generic: Feature view
+    - generic: —
+    - generic: Rule error
+    - generic: 14 rows
+    - generic: Current reading
+- contentinfo:
+  - link "All modules":
+    - /url: ../index.html
+- navigation "Lesson stages":
+  - 'button "Go to stage 1: What problem is One-R solving?"':
+    - generic: 01 · What problem is One-R solving?
+  - 'button "Go to stage 2: First, make the lazy prediction."':
+    - generic: 02 · First, make the lazy prediction.
+  - 'button "Go to stage 3: Make a rule from one categorical feature."':
+    - generic: 03 · Make a rule from one categorical feature.
+  - 'button "Go to stage 4: Test every feature. Keep the lowest-error rule."':
+    - generic: 04 · Test every feature. Keep the lowest-error rule.
+  - 'button "Go to stage 5: Turn numeric values into intervals."':
+    - generic: 05 · Turn numeric values into intervals.
+  - 'button "Go to stage 6: Missing values and unseen categories are part of the model."':
+    - generic: 06 · Missing values and unseen categories are part of the model.
+  - 'button "Go to stage 7: Prediction is deliberately cheap."':
+    - generic: 07 · Prediction is deliberately cheap.
+  - 'button "Go to stage 8: One feature cannot express an interaction."':
+    - generic: 08 · One feature cannot express an interaction.
+  - 'button "Go to stage 9: Validate the whole learning process"':
+    - generic: 09 · Validate the whole learning process
+  - 'button "Go to stage 10: Evaluate each fold. Decide what to do next."':
+    - generic: 10 · Evaluate each fold. Decide what to do next.
+  - 'button "Go to stage 11: Use simple models as diagnostic instruments."':
+    - generic: 11 · Use simple models as diagnostic instruments.
+  - 'button "Go to stage 12: Build the rule, then explain what it means."':
+    - generic: 12 · Build the rule, then explain what it means.

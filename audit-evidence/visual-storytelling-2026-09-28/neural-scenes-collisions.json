@@ -1,0 +1,68 @@
+[
+  {
+    "width": 1440,
+    "stage": 4,
+    "name": "input-weights",
+    "collisions": []
+  },
+  {
+    "width": 1440,
+    "stage": 6,
+    "name": "features",
+    "collisions": []
+  },
+  {
+    "width": 1440,
+    "stage": 9,
+    "name": "landscape",
+    "collisions": []
+  },
+  {
+    "width": 390,
+    "stage": 4,
+    "name": "input-weights",
+    "collisions": [
+      [
+        "Shared input x₁",
+        "Gold input x₁ = 0.80",
+        17.797086238861084
+      ]
+    ]
+  },
+  {
+    "width": 390,
+    "stage": 6,
+    "name": "features",
+    "collisions": []
+  },
+  {
+    "width": 390,
+    "stage": 9,
+    "name": "landscape",
+    "collisions": []
+  },
+  {
+    "width": 320,
+    "stage": 4,
+    "name": "input-weights",
+    "collisions": [
+      [
+        "Shared input x₁",
+        "Gold input x₁ = 0.80",
+        41.336652413339834
+      ]
+    ]
+  },
+  {
+    "width": 320,
+    "stage": 6,
+    "name": "features",
+    "collisions": []
+  },
+  {
+    "width": 320,
+    "stage": 9,
+    "name": "landscape",
+    "collisions": []
+  }
+]

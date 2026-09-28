@@ -1,0 +1,557 @@
+{
+  "checks": 78,
+  "widths": [
+    1440,
+    430,
+    320
+  ],
+  "errors": [],
+  "stages": [
+    {
+      "slug": "knn",
+      "width": 1440,
+      "stage": 1,
+      "scene": "neighbors",
+      "clipped": 0
+    },
+    {
+      "slug": "knn",
+      "width": 1440,
+      "stage": 2,
+      "scene": "neighbors",
+      "clipped": 0
+    },
+    {
+      "slug": "knn",
+      "width": 1440,
+      "stage": 3,
+      "scene": "split",
+      "clipped": 0
+    },
+    {
+      "slug": "knn",
+      "width": 1440,
+      "stage": 4,
+      "scene": "neighbors",
+      "clipped": 0
+    },
+    {
+      "slug": "knn",
+      "width": 1440,
+      "stage": 5,
+      "scene": "distances",
+      "clipped": 0
+    },
+    {
+      "slug": "knn",
+      "width": 1440,
+      "stage": 6,
+      "scene": "neighbors",
+      "clipped": 0
+    },
+    {
+      "slug": "knn",
+      "width": 1440,
+      "stage": 7,
+      "scene": "distances",
+      "clipped": 0
+    },
+    {
+      "slug": "knn",
+      "width": 1440,
+      "stage": 8,
+      "scene": "votes",
+      "clipped": 0
+    },
+    {
+      "slug": "knn",
+      "width": 1440,
+      "stage": 9,
+      "scene": "boundary",
+      "clipped": 0
+    },
+    {
+      "slug": "knn",
+      "width": 1440,
+      "stage": 10,
+      "scene": "neighbors",
+      "clipped": 0
+    },
+    {
+      "slug": "knn",
+      "width": 1440,
+      "stage": 11,
+      "scene": "confusion",
+      "clipped": 0
+    },
+    {
+      "slug": "knn",
+      "width": 1440,
+      "stage": 12,
+      "scene": "tuning",
+      "clipped": 0
+    },
+    {
+      "slug": "knn",
+      "width": 1440,
+      "stage": 13,
+      "scene": "neighbors",
+      "clipped": 0
+    },
+    {
+      "slug": "knn",
+      "width": 1440,
+      "stage": 14,
+      "scene": "votes",
+      "clipped": 0
+    },
+    {
+      "slug": "model-selection",
+      "width": 1440,
+      "stage": 1,
+      "scene": "scores",
+      "clipped": 0
+    },
+    {
+      "slug": "model-selection",
+      "width": 1440,
+      "stage": 2,
+      "scene": "coefficients",
+      "clipped": 0
+    },
+    {
+      "slug": "model-selection",
+      "width": 1440,
+      "stage": 3,
+      "scene": "subsets",
+      "clipped": 0
+    },
+    {
+      "slug": "model-selection",
+      "width": 1440,
+      "stage": 4,
+      "scene": "criteria",
+      "clipped": 0
+    },
+    {
+      "slug": "model-selection",
+      "width": 1440,
+      "stage": 5,
+      "scene": "coefficients",
+      "clipped": 0
+    },
+    {
+      "slug": "model-selection",
+      "width": 1440,
+      "stage": 6,
+      "scene": "coefficients",
+      "clipped": 0
+    },
+    {
+      "slug": "model-selection",
+      "width": 1440,
+      "stage": 7,
+      "scene": "coefficients",
+      "clipped": 0
+    },
+    {
+      "slug": "model-selection",
+      "width": 1440,
+      "stage": 8,
+      "scene": "scores",
+      "clipped": 0
+    },
+    {
+      "slug": "model-selection",
+      "width": 1440,
+      "stage": 9,
+      "scene": "components",
+      "clipped": 0
+    },
+    {
+      "slug": "model-selection",
+      "width": 1440,
+      "stage": 10,
+      "scene": "coefficients",
+      "clipped": 0
+    },
+    {
+      "slug": "model-selection",
+      "width": 1440,
+      "stage": 11,
+      "scene": "folds",
+      "clipped": 0
+    },
+    {
+      "slug": "model-selection",
+      "width": 1440,
+      "stage": 12,
+      "scene": "scores",
+      "clipped": 0
+    },
+    {
+      "slug": "knn",
+      "width": 430,
+      "stage": 1,
+      "scene": "neighbors",
+      "clipped": 0
+    },
+    {
+      "slug": "knn",
+      "width": 430,
+      "stage": 2,
+      "scene": "neighbors",
+      "clipped": 0
+    },
+    {
+      "slug": "knn",
+      "width": 430,
+      "stage": 3,
+      "scene": "split",
+      "clipped": 0
+    },
+    {
+      "slug": "knn",
+      "width": 430,
+      "stage": 4,
+      "scene": "neighbors",
+      "clipped": 0
+    },
+    {
+      "slug": "knn",
+      "width": 430,
+      "stage": 5,
+      "scene": "distances",
+      "clipped": 0
+    },
+    {
+      "slug": "knn",
+      "width": 430,
+      "stage": 6,
+      "scene": "neighbors",
+      "clipped": 0
+    },
+    {
+      "slug": "knn",
+      "width": 430,
+      "stage": 7,
+      "scene": "distances",
+      "clipped": 0
+    },
+    {
+      "slug": "knn",
+      "width": 430,
+      "stage": 8,
+      "scene": "votes",
+      "clipped": 0
+    },
+    {
+      "slug": "knn",
+      "width": 430,
+      "stage": 9,
+      "scene": "boundary",
+      "clipped": 0
+    },
+    {
+      "slug": "knn",
+      "width": 430,
+      "stage": 10,
+      "scene": "neighbors",
+      "clipped": 0
+    },
+    {
+      "slug": "knn",
+      "width": 430,
+      "stage": 11,
+      "scene": "confusion",
+      "clipped": 0
+    },
+    {
+      "slug": "knn",
+      "width": 430,
+      "stage": 12,
+      "scene": "tuning",
+      "clipped": 0
+    },
+    {
+      "slug": "knn",
+      "width": 430,
+      "stage": 13,
+      "scene": "neighbors",
+      "clipped": 0
+    },
+    {
+      "slug": "knn",
+      "width": 430,
+      "stage": 14,
+      "scene": "votes",
+      "clipped": 0
+    },
+    {
+      "slug": "model-selection",
+      "width": 430,
+      "stage": 1,
+      "scene": "scores",
+      "clipped": 0
+    },
+    {
+      "slug": "model-selection",
+      "width": 430,
+      "stage": 2,
+      "scene": "coefficients",
+      "clipped": 0
+    },
+    {
+      "slug": "model-selection",
+      "width": 430,
+      "stage": 3,
+      "scene": "subsets",
+      "clipped": 0
+    },
+    {
+      "slug": "model-selection",
+      "width": 430,
+      "stage": 4,
+      "scene": "criteria",
+      "clipped": 0
+    },
+    {
+      "slug": "model-selection",
+      "width": 430,
+      "stage": 5,
+      "scene": "coefficients",
+      "clipped": 0
+    },
+    {
+      "slug": "model-selection",
+      "width": 430,
+      "stage": 6,
+      "scene": "coefficients",
+      "clipped": 0
+    },
+    {
+      "slug": "model-selection",
+      "width": 430,
+      "stage": 7,
+      "scene": "coefficients",
+      "clipped": 0
+    },
+    {
+      "slug": "model-selection",
+      "width": 430,
+      "stage": 8,
+      "scene": "scores",
+      "clipped": 0
+    },
+    {
+      "slug": "model-selection",
+      "width": 430,
+      "stage": 9,
+      "scene": "components",
+      "clipped": 0
+    },
+    {
+      "slug": "model-selection",
+      "width": 430,
+      "stage": 10,
+      "scene": "coefficients",
+      "clipped": 0
+    },
+    {
+      "slug": "model-selection",
+      "width": 430,
+      "stage": 11,
+      "scene": "folds",
+      "clipped": 0
+    },
+    {
+      "slug": "model-selection",
+      "width": 430,
+      "stage": 12,
+      "scene": "scores",
+      "clipped": 0
+    },
+    {
+      "slug": "knn",
+      "width": 320,
+      "stage": 1,
+      "scene": "neighbors",
+      "clipped": 0
+    },
+    {
+      "slug": "knn",
+      "width": 320,
+      "stage": 2,
+      "scene": "neighbors",
+      "clipped": 0
+    },
+    {
+      "slug": "knn",
+      "width": 320,
+      "stage": 3,
+      "scene": "split",
+      "clipped": 0
+    },
+    {
+      "slug": "knn",
+      "width": 320,
+      "stage": 4,
+      "scene": "neighbors",
+      "clipped": 0
+    },
+    {
+      "slug": "knn",
+      "width": 320,
+      "stage": 5,
+      "scene": "distances",
+      "clipped": 0
+    },
+    {
+      "slug": "knn",
+      "width": 320,
+      "stage": 6,
+      "scene": "neighbors",
+      "clipped": 0
+    },
+    {
+      "slug": "knn",
+      "width": 320,
+      "stage": 7,
+      "scene": "distances",
+      "clipped": 0
+    },
+    {
+      "slug": "knn",
+      "width": 320,
+      "stage": 8,
+      "scene": "votes",
+      "clipped": 0
+    },
+    {
+      "slug": "knn",
+      "width": 320,
+      "stage": 9,
+      "scene": "boundary",
+      "clipped": 0
+    },
+    {
+      "slug": "knn",
+      "width": 320,
+      "stage": 10,
+      "scene": "neighbors",
+      "clipped": 0
+    },
+    {
+      "slug": "knn",
+      "width": 320,
+      "stage": 11,
+      "scene": "confusion",
+      "clipped": 0
+    },
+    {
+      "slug": "knn",
+      "width": 320,
+      "stage": 12,
+      "scene": "tuning",
+      "clipped": 0
+    },
+    {
+      "slug": "knn",
+      "width": 320,
+      "stage": 13,
+      "scene": "neighbors",
+      "clipped": 0
+    },
+    {
+      "slug": "knn",
+      "width": 320,
+      "stage": 14,
+      "scene": "votes",
+      "clipped": 0
+    },
+    {
+      "slug": "model-selection",
+      "width": 320,
+      "stage": 1,
+      "scene": "scores",
+      "clipped": 0
+    },
+    {
+      "slug": "model-selection",
+      "width": 320,
+      "stage": 2,
+      "scene": "coefficients",
+      "clipped": 0
+    },
+    {
+      "slug": "model-selection",
+      "width": 320,
+      "stage": 3,
+      "scene": "subsets",
+      "clipped": 0
+    },
+    {
+      "slug": "model-selection",
+      "width": 320,
+      "stage": 4,
+      "scene": "criteria",
+      "clipped": 0
+    },
+    {
+      "slug": "model-selection",
+      "width": 320,
+      "stage": 5,
+      "scene": "coefficients",
+      "clipped": 0
+    },
+    {
+      "slug": "model-selection",
+      "width": 320,
+      "stage": 6,
+      "scene": "coefficients",
+      "clipped": 0
+    },
+    {
+      "slug": "model-selection",
+      "width": 320,
+      "stage": 7,
+      "scene": "coefficients",
+      "clipped": 0
+    },
+    {
+      "slug": "model-selection",
+      "width": 320,
+      "stage": 8,
+      "scene": "scores",
+      "clipped": 0
+    },
+    {
+      "slug": "model-selection",
+      "width": 320,
+      "stage": 9,
+      "scene": "components",
+      "clipped": 0
+    },
+    {
+      "slug": "model-selection",
+      "width": 320,
+      "stage": 10,
+      "scene": "coefficients",
+      "clipped": 0
+    },
+    {
+      "slug": "model-selection",
+      "width": 320,
+      "stage": 11,
+      "scene": "folds",
+      "clipped": 0
+    },
+    {
+      "slug": "model-selection",
+      "width": 320,
+      "stage": 12,
+      "scene": "scores",
+      "clipped": 0
+    }
+  ]
+}

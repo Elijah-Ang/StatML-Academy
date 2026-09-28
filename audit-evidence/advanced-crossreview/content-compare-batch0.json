@@ -1,0 +1,28 @@
+{
+  "classification-trees": {
+    "sameText": false,
+    "baselineLength": 18116,
+    "currentLength": 18033,
+    "firstDiff": {
+      "index": 2897,
+      "baseline": "💡 This is a classification task because we want to predict a specific category or discrete group, rather than a continu",
+      "current": "This is a classification task because we want to predict a specific category or discrete group, rather than a continuous"
+    }
+  },
+  "hierarchical-clustering": {
+    "sameText": true,
+    "baselineLength": 8524,
+    "currentLength": 8524,
+    "firstDiff": null
+  },
+  "lda": {
+    "sameText": false,
+    "baselineLength": 19578,
+    "currentLength": 19503,
+    "firstDiff": {
+      "index": 2686,
+      "baseline": "💡 LDA needs labeled examples to learn the pattern that separates classes. Without labels, it cannot learn. STAGE 02 · P",
+      "current": "LDA needs labeled examples to learn the pattern that separates classes. Without labels, it cannot learn. STAGE 02 · PREP"
+    }
+  }
+}

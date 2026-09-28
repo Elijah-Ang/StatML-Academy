@@ -1,0 +1,676 @@
+- navigation "StatML Academy navigation":
+  - link "S StatML Academy":
+    - /url: ../index.html
+    - text: S
+    - generic: StatML Academy
+  - generic: Classification Trees
+  - 'link "Previous module: Quadratic Discriminant Analysis"':
+    - /url: qda.html
+    - text: ←
+  - 'link "Next module: Support Vector Machines"':
+    - /url: support-vector-machine.html
+    - text: →
+  - generic: module 13/21
+- generic: Machine Learning · Tree Models
+- heading "Classification Trees" [level=1]:
+  - text: Classification
+  - text: Trees
+- paragraph: Watch an intuitive machine learning algorithm learn yes-or-no flowchart questions to segment data.
+- generic "Lesson outcomes":
+  - generic: "1"
+  - generic: Choose splits using impurity reduction
+  - generic: "2"
+  - generic: Control depth and prune a tree
+  - generic: "3"
+  - generic: Interpret paths, probabilities, and classification metrics
+- generic: ↓ Scroll to begin
+- generic: Stage 01 · Observe
+- heading "The Raw Data" [level=2]: The Raw Data
+- generic: Before you start
+- paragraph: A classification tree repeatedly divides the feature space into regions. Each terminal leaf predicts a class or class probability.
+- paragraph:
+  - text: Every problem starts with data. We have measurements for fruit —
+  - strong: Weight
+  - text: (x-axis) and
+  - strong: Color Intensity
+  - text: (y-axis).
+- paragraph:
+  - text: "Each fruit is already labeled: an"
+  - generic: Apple
+  - text: or an
+  - generic: Orange
+  - text: . The goal of our tree is to learn rules to sort them into cleaner groups.
+- heading "The Whole Idea of Classification Trees" [level=3]:
+  - text: The Whole Idea of Classification Trees
+- paragraph:
+  - text: A
+  - strong: Classification Tree
+  - text: is a supervised machine-learning model that learns a sequence of simple yes/no flowchart-like questions to sort data into categories.
+- generic: Raw Labeled Data → Root Node → Scan Best Question → Split Data → Repeat Recursively → Leaf Prediction → Evaluation
+- heading "Tiny Tree Dictionary" [level=3]:
+  - text: Tiny Tree Dictionary
+- strong: "• Feature:"
+- text: A measurable property or input variable used to make predictions (e.g., Weight, Color Intensity).
+- strong: "• Label:"
+- text: The target outcome or true answer we want the model to predict (e.g., Apple, Orange).
+- strong: "• Class:"
+- text: One of the specific categorical outcomes (e.g., Apples vs. Oranges).
+- strong: "• Root Node:"
+- text: The very first top-level block containing 100% of the training data.
+- strong: "• Split:"
+- text: A division of a parent node into two child nodes based on a feature question.
+- strong: "• Child Node:"
+- text: The subgroups created after splitting a parent node.
+- strong: "• Leaf Node:"
+- text: A final terminal node that does not split further. It makes the final prediction.
+- strong: "• Impurity:"
+- text: A measure of how mixed or diverse the class labels are within a particular node.
+- strong: "• Gini Impurity:"
+- text: A mathematical metric used to calculate impurity (0.0 means perfectly pure; 0.5 is the maximum for a balanced binary node).
+- strong: "• Weighted Impurity:"
+- text: The combined impurity of child nodes, weighted by the proportion of samples that went into each child.
+- strong: "• Impurity Decrease:"
+- text: The difference between parent Gini and weighted child Gini. The tree maximizes this "gain".
+- strong: "• Decision Boundary:"
+- text: The geometric line(s) dividing different class zones on the coordinate map.
+- strong: "• Tree Depth:"
+- text: The length of the longest path from the root node down to any leaf node.
+- strong: "• Pruning:"
+- text: Cutting back branches to simplify the model and improve generalizability on unseen data.
+- strong: "• Overfitting:"
+- text: Memorizing noise in the training set, causing failure on unseen test data.
+- strong: "• Underfitting:"
+- text: Creating a model that is too simple (e.g. too shallow) to learn the real underlying patterns.
+- heading "Training Data Preview" [level=3]
+- table:
+  - rowgroup:
+    - row "# Weight Color Label":
+      - columnheader "#"
+      - columnheader "Weight"
+      - columnheader "Color"
+      - columnheader "Label"
+  - rowgroup:
+    - row "1 3.5 8.5 Apple":
+      - cell "1"
+      - cell "3.5"
+      - cell "8.5"
+      - cell "Apple":
+        - generic: Apple
+    - row "2 4.2 7.8 Apple":
+      - cell "2"
+      - cell "4.2"
+      - cell "7.8"
+      - cell "Apple":
+        - generic: Apple
+    - row "3 3.8 9.0 Apple":
+      - cell "3"
+      - cell "3.8"
+      - cell "9.0"
+      - cell "Apple":
+        - generic: Apple
+    - row "4 4.0 8.0 Apple":
+      - cell "4"
+      - cell "4.0"
+      - cell "8.0"
+      - cell "Apple":
+        - generic: Apple
+    - row "5 2.8 9.2 Apple":
+      - cell "5"
+      - cell "2.8"
+      - cell "9.2"
+      - cell "Apple":
+        - generic: Apple
+    - row "6 4.5 6.8 Apple":
+      - cell "6"
+      - cell "4.5"
+      - cell "6.8"
+      - cell "Apple":
+        - generic: Apple
+    - row "7 3.2 8.2 Apple":
+      - cell "7"
+      - cell "3.2"
+      - cell "8.2"
+      - cell "Apple":
+        - generic: Apple
+    - row "8 4.8 7.5 Apple":
+      - cell "8"
+      - cell "4.8"
+      - cell "7.5"
+      - cell "Apple":
+        - generic: Apple
+    - row "9 5.0 8.4 Apple":
+      - cell "9"
+      - cell "5.0"
+      - cell "8.4"
+      - cell "Apple":
+        - generic: Apple
+    - row "10 2.5 7.9 Apple":
+      - cell "10"
+      - cell "2.5"
+      - cell "7.9"
+      - cell "Apple":
+        - generic: Apple
+    - row "... 18 more rows":
+      - cell "... 18 more rows"
+- paragraph:
+  - text: This is a classification task because we want to predict a specific category or discrete group, rather than a continuous number.
+- generic: Stage 02 · Prepare
+- heading "The Train / Test Split" [level=2]: The Train / Test Split
+- paragraph: "To build a robust model, we never evaluate our tree on the exact same data it used for learning. Instead, we divide our original dataset into two parts:"
+- heading "Data Partitioning" [level=3]:
+  - text: Data Partitioning
+- heading "Training Set" [level=4]:
+  - text: Training Set
+- paragraph:
+  - text: Used to scan thresholds, calculate Gini, and build rules.
+  - strong: "Count: 28 fruits"
+- heading "Test Set (Held out)" [level=4]:
+  - text: Test Set (Held out)
+- paragraph:
+  - text: Kept completely hidden from the tree during training.
+  - strong: "Count: 6 fruits"
+- paragraph:
+  - strong: "Data Leakage Warning:"
+  - text: Using test data to choose splits, tune tree depth, or pick stopping criteria is a cardinal sin of machine learning. The test set must ONLY be used for final generalizability assessment.
+- generic: Check Your Knowledge
+- paragraph: Why is a Train/Test split essential for decision trees?
+- button "It helps the tree grow deeper and generate more rules."
+- button "It allows us to detect overfitting by measuring performance on unseen samples."
+- button "It guarantees that Gini impurity reaches exactly 0.0."
+- generic: Stage 03 · Understand
+- heading "The Root Node" [level=2]: The Root Node
+- paragraph:
+  - text: At the very beginning, a Classification Tree puts
+  - emphasis: all
+  - text: the training data into one big group on the fruit map. We call this the
+  - strong: Root Node
+  - text: .
+- paragraph: This starting box is very "messy" because it contains a mix of both apples and oranges. The tree's job is to split this box into smaller, cleaner sub-groups.
+- heading "Root Node Content" [level=3]
+- generic: "14"
+- generic: Apples
+- generic: "14"
+- generic: Oranges
+- generic: Stage 04 · Understand
+- heading "Measuring Messiness" [level=2]: Measuring Messiness
+- paragraph:
+  - text: To split effectively, the tree needs a way to measure how mixed a box is. We use a math rule called
+  - strong: Gini Impurity
+  - text: .
+- paragraph:
+  - text: A Gini score of
+  - code: "0.0"
+  - text: means the box is
+  - emphasis: perfectly pure
+  - text: . For this binary example,
+  - code: "0.5"
+  - text: is the maximum at a 50/50 mix; multiclass maxima differ.
+- heading "Gini Impurity Formula" [level=3]:
+  - text: Gini Impurity Formula
+- text: "Gini = 1 - Σ pᵢ² For two classes (Apple & Orange): Gini = 1 - [ P(Apple)² + P(Orange)² ]"
+- heading "Live Root Node Calculation" [level=3]:
+  - text: Live Root Node Calculation
+- text: "• Total training fruit (N):"
+- strong: "28"
+- text: • Apples (
+- text: "):"
+- strong: "14"
+- text: • Oranges (
+- text: "):"
+- strong: "14"
+- text: P(Apple) = 14 / 28 =
+- strong: "0.50"
+- text: P(Orange) = 14 / 28 =
+- strong: "0.50"
+- text: Gini = 1 - [ P(Apple)² + P(Orange)² ]
+- text: Gini = 1 - [ (0.50)² + (0.50)² ]
+- text: Gini = 1 - [ 0.25 + 0.25 ] =
+- strong: "0.50"
+- text: "Meaning:"
+- text: This root node is very mixed because it contains equal numbers of Apples and Oranges.
+- heading "Gini Impurity vs. Entropy" [level=3]:
+  - text: Gini Impurity vs. Entropy
+- paragraph:
+  - text: While Gini is highly popular in CART (Classification and Regression Trees), another metric called
+  - strong: Entropy
+  - text: "is also widely used:"
+- generic: Entropy = - Σ pᵢ log₂(pᵢ)
+- paragraph: "Both metrics measure the same core property: disorder. A node with equal proportions of classes has a Gini score of 0.50 and an Entropy score of 1.0. Both reach 0.0 when a node is perfectly pure. In practice, Gini and entropy often choose very similar splits, but not always. This guide uses Gini because it is simple, common, and easy to compute."
+- generic: Concept Quiz
+- paragraph: What does a Gini Impurity of 0.0 indicate about a subset of fruit?
+- button "The subset contains exactly 50% Apples and 50% Oranges."
+- button "The subset is 100% pure (contains only one type of fruit)."
+- button "The subset is empty."
+- generic: Stage 05 · Observe
+- heading "Testing Every Question" [level=2]: Testing Every Question
+- paragraph: How does the tree find the best split? It tries testing candidate split points between observed values across the map.
+- paragraph: Because the tree asks one feature question at a time (e.g., "Is Weight < X?"), each possible split becomes a straight vertical or horizontal cut across the graph. Watch the sweeping line on the canvas analyze both features.
+- heading "The Candidate Search Strategy" [level=3]:
+  - text: The Candidate Search Strategy
+- paragraph: "How does a decision tree find the best threshold? It doesn't guess random decimals. Instead, it uses a deterministic mathematical process:"
+- list:
+  - strong: "Sort values:"
+  - text: For a given feature (like Weight), it sorts all observed training values in ascending order.
+  - strong: "Compute Midpoints:"
+  - text: It calculates the halfway points (midpoints) between every adjacent pair of unique values.
+  - strong: "Evaluate Splits:"
+  - text: It treats each midpoint as a candidate threshold (e.g.,
+  - code: Weight < 5.40
+  - text: ), splits the data, and evaluates the resulting weighted Gini impurity.
+- heading "Live Search (Scanning...)" [level=3]
+- paragraph: "Testing Split: Weight < 5.0..."
+- paragraph: "Average Gini: ~0.45"
+- generic: Stage 06 · Build
+- heading "How the Tree Scores One Split" [level=2]: How the Tree Scores One Split
+- paragraph: The tree found the single best question! By splitting the data at this specific threshold, it gets the lowest possible combined Gini impurity.
+- paragraph: This first split is often very influential because it shapes the rest of the tree. It divides the fruit map cleanly into two distinct regions.
+- heading "The Golden Question" [level=3]
+- text: "Best Split: Color < 5.50"
+- heading "How the Tree Scores This Split" [level=3]:
+  - text: How the Tree Scores This Split
+- text: "Chosen Split Question: Color < 5.50"
+- strong: "Left Child (Yes):"
+- text: "• Total Samples: 13"
+- text: • Apples (
+- text: "): 0 | Oranges ("
+- text: "): 13"
+- text: • Gini_left = 1 - [(0/13)² + (13/13)²] ≈
+- strong: "0.000"
+- strong: "Right Child (No):"
+- text: "• Total Samples: 15"
+- text: • Apples (
+- text: "): 14 | Oranges ("
+- text: "): 1"
+- text: • Gini_right = 1 - [(14/15)² + (1/15)²] ≈
+- strong: "0.124"
+- strong:
+  - text: "Weighted Gini Impurity:"
+- text: Weighted Gini = (N_left / N) × Gini_left + (N_right / N) × Gini_right
+- text: Weighted Gini = (13/28 × 0.000) + (15/28 × 0.124) ≈
+- strong: "0.067"
+- strong:
+  - text: "Impurity Decrease (Gini Gain):"
+- text: Gini Decrease = Root Gini - Weighted Gini = 0.500 - 0.067 =
+- strong: "0.433"
+- generic: Split Calculation Quiz
+- paragraph: What property makes a candidate split the absolute "winner" in a decision tree?
+- button "It always splits the dataset exactly 50/50 by quantity."
+- button "It yields the largest Gini impurity decrease (lowest weighted children impurity)."
+- button "It guarantees that both left and right child nodes become 100% pure instantly."
+- generic: Stage 07 · Build
+- heading "Recursive Splitting" [level=2]: Recursive Splitting
+- paragraph:
+  - text: "The tree isn't done. It now treats each of the two new boxes as a separate problem, and asks again:"
+  - emphasis: "\"Can I perform another split to make these even cleaner?\""
+- paragraph: It repeats this process recursively, carving the map into smaller and smaller axis-aligned rectangles until a box becomes pure, gets too small, or reaches the depth limit.
+- heading "Tree Stopping Rules" [level=3]:
+  - text: Tree Stopping Rules
+- paragraph: "To prevent the tree from growing infinitely, we define stopping constraints (hyperparameters in ML frameworks):"
+- list:
+  - strong: "Node Purity:"
+  - text: Stop if all items in a node belong to a single class (Gini = 0).
+  - strong: "Max Depth (`max_depth`):"
+  - text: Stop if the path length from the root matches our limit.
+  - strong: "Min Samples Split (`min_samples_split`):"
+  - text: Stop if a node contains too few samples to allow another split.
+  - strong: "Min Samples Leaf (`min_samples_leaf`):"
+  - text: Prevent splits that leave a child with too few samples.
+  - strong: "Min Impurity Decrease (`min_impurity_decrease`):"
+  - text: Stop if Gini gain is below a small threshold.
+- generic: Stopping Rules Quiz
+- paragraph: What is the main danger of growing a classification tree completely unchecked without any stopping rules?
+- button "The tree will underfit and fail to capture simple boundaries."
+- button "The tree will overfit by creating hyper-specific rules to capture training noise."
+- button "The root Gini impurity will increase beyond 0.50."
+- generic: Stage 08 · Build
+- heading "The Decision Boundary" [level=2]: The Decision Boundary
+- paragraph: Once the tree stops growing, we fill in the colors. Each rectangular box becomes a "Leaf Node". The model assigns a prediction to the entire box based on the fruit type that appears most often in that box.
+- 'heading "Leaf Nodes: How Predictions Are Made" [level=3]':
+  - text: "Leaf Nodes: How Predictions Are Made"
+- paragraph:
+  - text: Every final sub-box is a terminal
+  - strong: Leaf Node
+  - text: . It predicts the majority class contained within its boundary.
+- paragraph:
+  - text: We can also calculate a
+  - strong: Class Probability Estimate
+  - text: "simply as the proportion of that class in the leaf box:"
+- generic: P(Apple) = Leaf_Apples / Total_Leaf_Samples
+- paragraph:
+  - strong: "Warning:"
+  - text: These leaf-proportion probabilities can be overconfident, especially in deep trees with small sample sizes in leaf boxes (e.g. predicting 100% confidence because a leaf contains exactly 1 Apple).
+- heading "Live Tree Snapshot" [level=3]
+- list:
+  - strong: "Criterion:"
+  - text: Gini Impurity
+  - strong: "Classes:"
+  - text: Apple, Orange
+  - strong: "Max Depth:"
+  - text: "10"
+  - strong: "Leaf Nodes:"
+  - text: "4"
+- generic: Stage 09 · Build
+- heading "Depth Limiting vs. Post-Pruning" [level=2]: Depth Limiting vs. Post-Pruning
+- paragraph:
+  - text: Look closely at the tiny boxes the tree made just to capture one outlier fruit. The tree has started memorizing noise in the training dataset. This is called
+  - strong: Overfitting
+  - text: .
+- paragraph: If we give the tree new fruit, these hyper-specific rules will likely fail. We fix this by limiting the maximum depth of the tree (Pre-Pruning), so it learns general rules instead of tracking every detail.
+- heading "Pre-Pruning vs. Post-Pruning" [level=3]
+- table:
+  - rowgroup:
+    - row "Method How it works Pros / Cons":
+      - columnheader "Method"
+      - columnheader "How it works"
+      - columnheader "Pros / Cons"
+  - rowgroup:
+    - row "Pre-Pruning Stop tree growth early using rules like max_depth or min_samples_split. Very fast to compute, but might stop too early before discovering complex interactions.":
+      - cell "Pre-Pruning":
+        - strong: Pre-Pruning
+      - cell "Stop tree growth early using rules like max_depth or min_samples_split.":
+        - text: Stop tree growth early using rules like
+        - code: max_depth
+        - text: or
+        - code: min_samples_split
+        - text: .
+      - cell "Very fast to compute, but might stop too early before discovering complex interactions."
+    - row "Post-Pruning Grow the full complex tree first, then cut back nodes that do not add predictive value (e.g. cost-complexity pruning). Often more systematic, but computationally heavier because you build the full tree first.":
+      - cell "Post-Pruning":
+        - strong: Post-Pruning
+      - cell "Grow the full complex tree first, then cut back nodes that do not add predictive value (e.g. cost-complexity pruning)."
+      - cell "Often more systematic, but computationally heavier because you build the full tree first."
+- heading "Toggle Max Depth Model" [level=3]
+- button "Overfit Tree (Depth=10)"
+- button "Pruned Tree (Depth=3)"
+- generic: Generalization Quiz
+- paragraph: Which of the following is a classic consequence of underfitting?
+- button "The model achieves 100% accuracy on both training and test data."
+- button "The model fits training noise perfectly but fails on test data."
+- button "The model is too simple to capture the true underlying pattern, performing poorly on both datasets."
+- generic: Stage 10 · Understand
+- heading "Choosing Tree Depth" [level=2]: Choosing Tree Depth
+- paragraph:
+  - text: How do we select the perfect
+  - code: max_depth
+  - text: parameter? We plot a
+  - strong: Validation Curve
+  - text: .
+- paragraph:
+  - text: Below, we train 10 different trees with maximum depths ranging from 1 to 10. We compare
+  - strong: Training Accuracy
+  - text: with
+  - strong: Validation Accuracy
+  - text: to choose depth.
+- heading "Tree Depth Validation Curve" [level=3]:
+  - text: Tree Depth Validation Curve
+- generic: Training Accuracy
+- generic: Validation Accuracy
+- paragraph:
+  - strong: "Optimal Max Depth:"
+  - text: Depth
+  - strong: "2"
+  - text: "(Training Accuracy:"
+  - strong: 96%
+  - text: ", Validation Accuracy:"
+  - strong: 100%
+  - text: )
+- paragraph:
+  - strong: "Key Takeaway:"
+  - text: Training accuracy keeps rising while validation accuracy peaks and then degrades. Choose depth from validation evidence, lock the tree, and evaluate final test accuracy once.
+- paragraph:
+  - strong: "Teaching note:"
+  - text: This curve uses a validation set. Do not tune
+  - code: max_depth
+  - text: on the final test set; reserve it for one final evaluation after pruning is locked.
+- generic: Stage 11 · Understand
+- heading "Classifying Test Points" [level=2]: Classifying Test Points
+- paragraph: Now we bring in our small test dataset the model has not seen during training. We drop each test fruit (plotted as diamonds) onto the map. (Green border = correct prediction, red border = incorrect prediction).
+- paragraph: Click on any row in the table below to trace exactly how that specific fruit traverses the tree rules on the canvas.
+- heading "Prediction Results Trace" [level=3]
+- table:
+  - rowgroup:
+    - row "Actual Predicted Classification Trace Path (Click row to draw on map)":
+      - columnheader "Actual"
+      - columnheader "Predicted"
+      - columnheader "Classification Trace Path (Click row to draw on map)"
+  - rowgroup:
+    - row "Apple Apple → Color < 5.5? No → Weight < 6.0? Yes → Predict Apple ( 13 0)":
+      - cell "Apple":
+        - generic: Apple
+      - cell "Apple":
+        - generic: Apple
+      - cell "→ Color < 5.5? No → Weight < 6.0? Yes → Predict Apple ( 13 0)":
+        - generic: → Color < 5.5? No
+        - generic: → Weight < 6.0? Yes
+        - text: → Predict Apple (
+        - text: "13"
+        - text: 0)
+    - row "Orange Orange → Color < 5.5? Yes → Predict Orange ( 0 13)":
+      - cell "Orange":
+        - generic: Orange
+      - cell "Orange":
+        - generic: Orange
+      - cell "→ Color < 5.5? Yes → Predict Orange ( 0 13)":
+        - generic: → Color < 5.5? Yes
+        - text: → Predict Orange (
+        - text: "0"
+        - text: 13)
+    - row "Apple Apple → Color < 5.5? No → Weight < 6.0? Yes → Predict Apple ( 13 0)":
+      - cell "Apple":
+        - generic: Apple
+      - cell "Apple":
+        - generic: Apple
+      - cell "→ Color < 5.5? No → Weight < 6.0? Yes → Predict Apple ( 13 0)":
+        - generic: → Color < 5.5? No
+        - generic: → Weight < 6.0? Yes
+        - text: → Predict Apple (
+        - text: "13"
+        - text: 0)
+    - row "Orange Orange → Color < 5.5? Yes → Predict Orange ( 0 13)":
+      - cell "Orange":
+        - generic: Orange
+      - cell "Orange":
+        - generic: Orange
+      - cell "→ Color < 5.5? Yes → Predict Orange ( 0 13)":
+        - generic: → Color < 5.5? Yes
+        - text: → Predict Orange (
+        - text: "0"
+        - text: 13)
+    - row "Orange Apple → Color < 5.5? No → Weight < 6.0? No → Predict Apple ( 1 1)":
+      - cell "Orange":
+        - generic: Orange
+      - cell "Apple":
+        - generic: Apple
+      - cell "→ Color < 5.5? No → Weight < 6.0? No → Predict Apple ( 1 1)":
+        - generic: → Color < 5.5? No
+        - generic: → Weight < 6.0? No
+        - text: → Predict Apple (
+        - text: "1"
+        - text: 1)
+    - row "Apple Orange → Color < 5.5? Yes → Predict Orange ( 0 13)":
+      - cell "Apple":
+        - generic: Apple
+      - cell "Orange":
+        - generic: Orange
+      - cell "→ Color < 5.5? Yes → Predict Orange ( 0 13)":
+        - generic: → Color < 5.5? Yes
+        - text: → Predict Orange (
+        - text: "0"
+        - text: 13)
+- paragraph: 4/6 correct
+- generic: Stage 12 · Evaluate
+- heading "Performance Metrics" [level=2]: Performance Metrics
+- paragraph: To evaluate how well our pruned tree performs on completely unseen data, we check the results of classifying our hidden Test set.
+- heading "Interactive Confusion Matrix" [level=3]:
+  - text: Interactive Confusion Matrix
+- paragraph: "Click on any cell in the grid below to inspect exactly what it means:"
+- generic: Actual / Pred
+- generic: Pred Apple
+- generic: Pred Orange
+- generic: Act Apple
+- text: TP = 2
+- generic: Inspect
+- text: FN = 1
+- generic: Inspect
+- generic: Act Orange
+- text: FP = 1
+- generic: Inspect
+- text: TN = 2
+- generic: Inspect
+- heading "Detailed Performance Metrics" [level=3]:
+  - text: Detailed Performance Metrics
+- paragraph: Click on any card to see its mathematical definition and intuitive meaning in plain English.
+- generic: 67%
+- generic: Accuracy
+- generic: Click to inspect
+- generic: 67%
+- generic: Precision
+- generic: Click to inspect
+- generic: 67%
+- generic: Recall
+- generic: Click to inspect
+- generic: 67%
+- generic: F1 Score
+- generic: Click to inspect
+- generic: Evaluation Quiz
+- paragraph: If Apples are the positive class, what does a False Positive mean in this context?
+- button "We predicted Apple, and the fruit was actually an Apple."
+- button "We predicted Apple, but the fruit was actually an Orange."
+- button "We predicted Orange, but the fruit was actually an Apple."
+- generic: Stage 13 · Understand
+- heading "Reading Tree Output" [level=2]: Reading Tree Output
+- paragraph: When software packages train a decision tree, they output a comprehensive model summary. Let's learn to interpret these metrics directly.
+- heading "Model Report Dashboard" [level=3]:
+  - text: Model Report Dashboard
+- paragraph: Click on any underlined Key Concept to view an explanation of its role in the model summary.
+- generic: Stage 14 · Explore
+- heading "Interactive Playground" [level=2]: Interactive Playground
+- paragraph: Now it's your turn. Use the control panel to adjust depth limits, or click the graph to plot new fruits to instantly classify them.
+- button "Clear Drops"
+- generic: "Max Depth: 3"
+- slider "Interactive parameter 1": "3"
+- paragraph:
+  - strong: "Note:"
+  - text: Small depth = simpler rules. Large depth = more detailed map but higher overfitting risk.
+- generic: Stage 15 · Reflect
+- heading "Limitations & Model Choice" [level=2]: Limitations & Model Choice
+- paragraph: Classification Trees are incredibly intuitive, but they are not always the best tool for every job. Understanding their trade-offs is crucial for a data scientist.
+- heading "Strengths vs. Weaknesses" [level=3]:
+  - text: Strengths vs.
+  - text: Weaknesses
+- heading "When they shine:" [level=4]
+- list:
+  - strong: "Explainability:"
+  - text: Outputs simple rules that any non-expert can read and audit.
+  - strong: "No Scaling Required:"
+  - text: Features are evaluated independently, so feature magnitude does not matter.
+  - strong: "Handles Mixed Types Conceptually:"
+  - text: Trees can split numerical and categorical predictors, but raw categorical support depends on the software. Some libraries require encoded categories; others implement native categorical splits.
+- heading "When they struggle:" [level=4]
+- list:
+  - strong: "High Variance:"
+  - text: Extremely sensitive to tiny training set alterations, which can yield completely different splits.
+  - strong: "Axis-Aligned Boundaries:"
+  - text: Since splits are purely horizontal or vertical, diagonal patterns require jagged, inefficient steps.
+  - strong: "Overfitting:"
+  - text: Easily memorize noise if depth is unchecked.
+  - strong: "Class Imbalance:"
+  - text: If one class is much more common, the tree may favor that class unless class weights, resampling, or better evaluation metrics are used.
+- heading "Model Comparison Roadmap" [level=3]:
+  - text: Model Comparison Roadmap
+- table:
+  - rowgroup:
+    - row "Model Boundary Type Interpretability Best Used For...":
+      - columnheader "Model"
+      - columnheader "Boundary Type"
+      - columnheader "Interpretability"
+      - columnheader "Best Used For..."
+  - rowgroup:
+    - row "Decision Tree Axis-Aligned Boxes High (Flowchart) Rules-based audits, mixed categorical/numerical data.":
+      - cell "Decision Tree":
+        - strong: Decision Tree
+      - cell "Axis-Aligned Boxes"
+      - cell "High (Flowchart)"
+      - cell "Rules-based audits, mixed categorical/numerical data."
+    - row "Logistic Regression Smooth Linear Medium (Weights) Linear associations, computing well-calibrated odds.":
+      - cell "Logistic Regression":
+        - strong: Logistic Regression
+      - cell "Smooth Linear"
+      - cell "Medium (Weights)"
+      - cell "Linear associations, computing well-calibrated odds."
+    - row "K-Nearest Neighbors (KNN) Irregular / Local Low (Instance-based) Complex local shapes, feature manifolds.":
+      - cell "K-Nearest Neighbors (KNN)":
+        - strong: K-Nearest Neighbors (KNN)
+      - cell "Irregular / Local"
+      - cell "Low (Instance-based)"
+      - cell "Complex local shapes, feature manifolds."
+    - row "Random Forest Complex / Smooth Low (Ensemble) High-accuracy, non-linear tasks (reduces variance).":
+      - cell "Random Forest":
+        - strong: Random Forest
+      - cell "Complex / Smooth"
+      - cell "Low (Ensemble)"
+      - cell "High-accuracy, non-linear tasks (reduces variance)."
+- paragraph:
+  - strong: "The Upgrade Path:"
+  - text: To overcome the instability and high variance of a single Classification Tree, we combine hundreds of trees into an ensemble. Models like
+  - strong: Random Forests
+  - text: (voting trees) and
+  - strong: Gradient Boosted Trees
+  - text: (sequential error correction) represent the state-of-the-art for tabular data!
+- generic: Complete the picture
+- heading "Probabilities, leakage, and honest pruning" [level=3]
+- paragraph: A leaf probability is the class proportion among training cases in that leaf. Small leaves can produce unstable probabilities, so minimum-leaf constraints and calibration may matter.
+- paragraph: All pruning and hyperparameter choices must use training or validation data only. Letting the test set influence tree depth is data leakage wearing a respectable-looking branch costume.
+- generic: Key takeaways
+- list:
+  - listitem: Each split should improve class purity enough to justify additional complexity.
+  - listitem: Depth limits and pruning reduce overfitting.
+  - listitem: Interpret both the decision path and out-of-sample metrics.
+- region "Practical method checklist":
+  - paragraph: Practical method checklist
+  - heading "Before you finish" [level=3]
+  - heading "Assumptions" [level=4]
+  - paragraph: Representative observations and features available at prediction time.
+  - heading "When the method fails" [level=4]
+  - paragraph: Small leaves, unstable splits, conflicting labels, and distribution shift.
+  - heading "Validation and leakage" [level=4]
+  - paragraph: Choose depth and pruning through validation or cross-validation.
+  - heading "Interpretation cautions" [level=4]
+  - paragraph: Impurity, probabilities, and categorical support depend on context and software.
+  - heading "What to report" [level=4]
+  - paragraph: Tree constraints, pruning rule, class metrics with uncertainty, and final test result.
+- region "Classification Trees interactive visualisation":
+- contentinfo:
+  - link "All modules":
+    - /url: ../index.html
+- navigation "Lesson stages":
+  - 'button "Go to stage 1: The Raw Data"':
+    - generic: 01 · The Raw Data
+  - 'button "Go to stage 2: The Train / Test Split"':
+    - generic: 02 · The Train / Test Split
+  - 'button "Go to stage 3: The Root Node"':
+    - generic: 03 · The Root Node
+  - 'button "Go to stage 4: Measuring Messiness"':
+    - generic: 04 · Measuring Messiness
+  - 'button "Go to stage 5: Testing Every Question"':
+    - generic: 05 · Testing Every Question
+  - 'button "Go to stage 6: How the Tree Scores One Split"':
+    - generic: 06 · How the Tree Scores One Split
+  - 'button "Go to stage 7: Recursive Splitting"':
+    - generic: 07 · Recursive Splitting
+  - 'button "Go to stage 8: The Decision Boundary"':
+    - generic: 08 · The Decision Boundary
+  - 'button "Go to stage 9: Depth Limiting vs. Post-Pruning"':
+    - generic: 09 · Depth Limiting vs. Post-Pruning
+  - 'button "Go to stage 10: Choosing Tree Depth"':
+    - generic: 10 · Choosing Tree Depth
+  - 'button "Go to stage 11: Classifying Test Points"':
+    - generic: 11 · Classifying Test Points
+  - 'button "Go to stage 12: Performance Metrics"':
+    - generic: 12 · Performance Metrics
+  - 'button "Go to stage 13: Reading Tree Output"':
+    - generic: 13 · Reading Tree Output
+  - 'button "Go to stage 14: Interactive Playground"':
+    - generic: 14 · Interactive Playground
+  - 'button "Go to stage 15: Limitations & Model Choice"':
+    - generic: 15 · Limitations & Model Choice

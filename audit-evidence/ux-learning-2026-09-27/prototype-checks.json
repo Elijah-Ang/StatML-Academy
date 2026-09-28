@@ -1,0 +1,45 @@
+[
+  {
+    "initialSSE": "51.0"
+  },
+  {
+    "fittedSSE": "1.9"
+  },
+  {
+    "selectedStudent": "C",
+    "residual": "1.0"
+  },
+  {
+    "width": 992,
+    "overflow": false,
+    "sse": "1.9",
+    "svgWidth": 482.328125
+  },
+  {
+    "width": 704,
+    "overflow": false,
+    "sse": "1.9",
+    "svgWidth": 638
+  },
+  {
+    "width": 358,
+    "overflow": false,
+    "sse": "1.9",
+    "svgWidth": 292
+  },
+  {
+    "width": 288,
+    "overflow": false,
+    "sse": "1.9",
+    "svgWidth": 222
+  },
+  {
+    "reducedMotionResetSSE": "51.0"
+  },
+  {
+    "changedSlopeSSE": "178.0"
+  },
+  {
+    "pageErrors": []
+  }
+]

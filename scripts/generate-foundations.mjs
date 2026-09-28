@@ -1,5 +1,6 @@
 import { writeFile } from 'node:fs/promises';
 import { join, resolve } from 'node:path';
+import { pathToFileURL } from 'node:url';
 
 const lessons = {
   'evaluation-metrics': {
@@ -106,5 +107,11 @@ function quizHtml(questions){return questions.map((q,i)=>`<div class="question" 
 function page(slug,d){const stages=[['The problem',d.problem],['Intuition and objective',d.intuition],['Worked example',d.worked],['Reasoning with the method',`<p>${deepNotes[slug]}</p><p>${reasoningFrame}</p>`],['Interactive laboratory',`<p>${d.interactive}</p><div class="interactive" data-interactive="${d.interaction}"><canvas class="viz" width="620" height="300" aria-label="${esc(d.title)} interactive visualisation"></canvas><div class="interactive-controls"></div></div>`],['Assumptions and failure modes',`<h3>Assumptions</h3><p>${d.assumptions}</p><h3>When the method fails</h3><p>${d.failures}</p>`],['Practical workflow',`<ol class="workflow">${d.workflow.map(x=>`<li>${x}</li>`).join('')}</ol>`],['Interpretation and reporting',`<p class="callout report"><strong>What to report:</strong> ${d.report}</p><p class="callout"><strong>Common misuse:</strong> ${d.misuse}</p>`],['Knowledge checks',`<div class="knowledge-check" data-knowledge-check>${quizHtml(d.questions)}</div>`]];return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="${esc(d.intro)}"><link rel="stylesheet" href="foundation-module.css"><link rel="stylesheet" href="handwritten-theme.css?v=20260826-handwritten-final-2"><script src="handwritten-theme.js?v=20260826-handwritten-final-2" defer></script><script src="foundation-module.js?v=20260826-foundation-final-2" defer></script><title>${esc(d.title)} · StatML Academy</title></head><body><header class="hero"><a class="home" href="../index.html">← StatML Academy</a><div class="eyebrow">${esc(d.badge)}</div><h1>${esc(d.title)}</h1><p>${esc(d.intro)}</p><div class="outcomes">${d.outcomes.map(x=>`<span>${esc(x)}</span>`).join('')}</div><div class="pathway"><div><small>Prerequisites</small>${esc(d.prerequisite)}</div><div><small>Recommended next</small>${esc(d.next)}</div></div></header><main class="shell"><article class="lesson">${stages.map((s,i)=>`<section class="stage" id="stage-${i+1}" data-stage="${i+1}"><p class="stage-label">Stage ${String(i+1).padStart(2,'0')}</p><h2>${s[0]}</h2><div>${s[1]}</div></section>`).join('')}</article><nav class="map" aria-label="Lesson stages"><strong>Lesson map</strong>${stages.map((s,i)=>`<a href="#stage-${i+1}">${String(i+1).padStart(2,'0')} · ${s[0]}</a>`).join('')}</nav></main></body></html>`}
 
 const root=resolve(import.meta.dirname,'..');
-for(const [slug,data] of Object.entries(lessons)) await writeFile(join(root,'modules',`${slug}.html`),page(slug,data));
+export async function generateFoundations() {
+  const { generateNotebooks } = await import('./generate-notebooks.mjs');
+  await generateNotebooks(Object.keys(lessons).filter(slug => slug !== 'evaluation-metrics'));
+  const { generatePilots } = await import('./generate-pilots.mjs');
+  await generatePilots(['evaluation-metrics']);
+}
+if (process.argv[1] && import.meta.url === pathToFileURL(resolve(process.argv[1])).href) await generateFoundations();
 export { lessons };

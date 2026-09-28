@@ -1,0 +1,1608 @@
+[
+  {
+    "pageName": "classification-trees",
+    "desktop": {
+      "bodyClass": "statml-standardized hw-handwritten",
+      "bodyFont": "\"Patrick Hand\", Kalam, \"Marker Felt\", \"Chalkboard SE\", \"Comic Sans MS\", \"Segoe Print\", cursive",
+      "canvases": 2,
+      "cards": 59,
+      "digitalFonts": [],
+      "emoji": [],
+      "gradients": [
+        {
+          "bg": "repeating-linear-gradient(162deg, rgba(255, 255, 255, 0.26) 0px, rgba(255, 255, 255, 0.26) 2px, rgba(0, 0, 0, 0) 2px, rgba(0, 0, 0, 0) 6px)",
+          "cls": "progress-bar",
+          "id": "progressBar",
+          "tag": "DIV"
+        },
+        {
+          "bg": "linear-gradient(177deg, rgba(0, 0, 0, 0) 20%, rgba(241, 212, 119, 0.22) 20%, rgba(241, 212, 119, 0.22) 35%, rgba(241, 212, 119, 0.54) 35%, rgba(241, 212, 119, 0.54) 78%, rgba(0, 0, 0, 0) 78%), linear-gradient(181deg, rgba(0, 0, 0, 0) 34%, rgba(241, 212, 119, 0.25) 34%, rgba(241, 212, 119, 0.25) 83%, rgba(0, 0, 0, 0) 83%)",
+          "cls": "hero-badge hw-marker-label",
+          "id": "",
+          "tag": "DIV"
+        },
+        {
+          "bg": "linear-gradient(177deg, rgba(0, 0, 0, 0) 20%, rgba(241, 212, 119, 0.22) 20%, rgba(241, 212, 119, 0.22) 35%, rgba(241, 212, 119, 0.54) 35%, rgba(241, 212, 119, 0.54) 78%, rgba(0, 0, 0, 0) 78%), linear-gradient(181deg, rgba(0, 0, 0, 0) 34%, rgba(241, 212, 119, 0.25) 34%, rgba(241, 212, 119, 0.25) 83%, rgba(0, 0, 0, 0) 83%)",
+          "cls": "tag tag-apple hw-marker-label",
+          "id": "",
+          "tag": "SPAN"
+        },
+        {
+          "bg": "linear-gradient(182deg, rgba(0, 0, 0, 0) 23%, rgba(241, 212, 119, 0.5) 23%, rgba(241, 212, 119, 0.5) 76%, rgba(0, 0, 0, 0) 76%), linear-gradient(175deg, rgba(0, 0, 0, 0) 38%, rgba(241, 212, 119, 0.22) 38%, rgba(241, 212, 119, 0.22) 84%, rgba(0, 0, 0, 0) 84%)",
+          "cls": "tag tag-orange hw-marker-label",
+          "id": "",
+          "tag": "SPAN"
+        },
+        {
+          "bg": "linear-gradient(177deg, rgba(0, 0, 0, 0) 20%, rgba(241, 212, 119, 0.22) 20%, rgba(241, 212, 119, 0.22) 35%, rgba(241, 212, 119, 0.54) 35%, rgba(241, 212, 119, 0.54) 78%, rgba(0, 0, 0, 0) 78%), linear-gradient(181deg, rgba(0, 0, 0, 0) 34%, rgba(241, 212, 119, 0.25) 34%, rgba(241, 212, 119, 0.25) 83%, rgba(0, 0, 0, 0) 83%)",
+          "cls": "tag tag-apple hw-marker-label",
+          "id": "",
+          "tag": "SPAN"
+        },
+        {
+          "bg": "linear-gradient(177deg, rgba(0, 0, 0, 0) 20%, rgba(241, 212, 119, 0.22) 20%, rgba(241, 212, 119, 0.22) 35%, rgba(241, 212, 119, 0.54) 35%, rgba(241, 212, 119, 0.54) 78%, rgba(0, 0, 0, 0) 78%), linear-gradient(181deg, rgba(0, 0, 0, 0) 34%, rgba(241, 212, 119, 0.25) 34%, rgba(241, 212, 119, 0.25) 83%, rgba(0, 0, 0, 0) 83%)",
+          "cls": "tag tag-apple hw-marker-label",
+          "id": "",
+          "tag": "SPAN"
+        },
+        {
+          "bg": "linear-gradient(177deg, rgba(0, 0, 0, 0) 20%, rgba(241, 212, 119, 0.22) 20%, rgba(241, 212, 119, 0.22) 35%, rgba(241, 212, 119, 0.54) 35%, rgba(241, 212, 119, 0.54) 78%, rgba(0, 0, 0, 0) 78%), linear-gradient(181deg, rgba(0, 0, 0, 0) 34%, rgba(241, 212, 119, 0.25) 34%, rgba(241, 212, 119, 0.25) 83%, rgba(0, 0, 0, 0) 83%)",
+          "cls": "tag tag-apple hw-marker-label",
+          "id": "",
+          "tag": "SPAN"
+        },
+        {
+          "bg": "linear-gradient(177deg, rgba(0, 0, 0, 0) 20%, rgba(241, 212, 119, 0.22) 20%, rgba(241, 212, 119, 0.22) 35%, rgba(241, 212, 119, 0.54) 35%, rgba(241, 212, 119, 0.54) 78%, rgba(0, 0, 0, 0) 78%), linear-gradient(181deg, rgba(0, 0, 0, 0) 34%, rgba(241, 212, 119, 0.25) 34%, rgba(241, 212, 119, 0.25) 83%, rgba(0, 0, 0, 0) 83%)",
+          "cls": "tag tag-apple hw-marker-label",
+          "id": "",
+          "tag": "SPAN"
+        },
+        {
+          "bg": "linear-gradient(177deg, rgba(0, 0, 0, 0) 20%, rgba(241, 212, 119, 0.22) 20%, rgba(241, 212, 119, 0.22) 35%, rgba(241, 212, 119, 0.54) 35%, rgba(241, 212, 119, 0.54) 78%, rgba(0, 0, 0, 0) 78%), linear-gradient(181deg, rgba(0, 0, 0, 0) 34%, rgba(241, 212, 119, 0.25) 34%, rgba(241, 212, 119, 0.25) 83%, rgba(0, 0, 0, 0) 83%)",
+          "cls": "tag tag-apple hw-marker-label",
+          "id": "",
+          "tag": "SPAN"
+        },
+        {
+          "bg": "linear-gradient(177deg, rgba(0, 0, 0, 0) 20%, rgba(241, 212, 119, 0.22) 20%, rgba(241, 212, 119, 0.22) 35%, rgba(241, 212, 119, 0.54) 35%, rgba(241, 212, 119, 0.54) 78%, rgba(0, 0, 0, 0) 78%), linear-gradient(181deg, rgba(0, 0, 0, 0) 34%, rgba(241, 212, 119, 0.25) 34%, rgba(241, 212, 119, 0.25) 83%, rgba(0, 0, 0, 0) 83%)",
+          "cls": "tag tag-apple hw-marker-label",
+          "id": "",
+          "tag": "SPAN"
+        },
+        {
+          "bg": "linear-gradient(177deg, rgba(0, 0, 0, 0) 20%, rgba(241, 212, 119, 0.22) 20%, rgba(241, 212, 119, 0.22) 35%, rgba(241, 212, 119, 0.54) 35%, rgba(241, 212, 119, 0.54) 78%, rgba(0, 0, 0, 0) 78%), linear-gradient(181deg, rgba(0, 0, 0, 0) 34%, rgba(241, 212, 119, 0.25) 34%, rgba(241, 212, 119, 0.25) 83%, rgba(0, 0, 0, 0) 83%)",
+          "cls": "tag tag-apple hw-marker-label",
+          "id": "",
+          "tag": "SPAN"
+        },
+        {
+          "bg": "linear-gradient(177deg, rgba(0, 0, 0, 0) 20%, rgba(241, 212, 119, 0.22) 20%, rgba(241, 212, 119, 0.22) 35%, rgba(241, 212, 119, 0.54) 35%, rgba(241, 212, 119, 0.54) 78%, rgba(0, 0, 0, 0) 78%), linear-gradient(181deg, rgba(0, 0, 0, 0) 34%, rgba(241, 212, 119, 0.25) 34%, rgba(241, 212, 119, 0.25) 83%, rgba(0, 0, 0, 0) 83%)",
+          "cls": "tag tag-apple hw-marker-label",
+          "id": "",
+          "tag": "SPAN"
+        },
+        {
+          "bg": "linear-gradient(177deg, rgba(0, 0, 0, 0) 20%, rgba(241, 212, 119, 0.22) 20%, rgba(241, 212, 119, 0.22) 35%, rgba(241, 212, 119, 0.54) 35%, rgba(241, 212, 119, 0.54) 78%, rgba(0, 0, 0, 0) 78%), linear-gradient(181deg, rgba(0, 0, 0, 0) 34%, rgba(241, 212, 119, 0.25) 34%, rgba(241, 212, 119, 0.25) 83%, rgba(0, 0, 0, 0) 83%)",
+          "cls": "tag tag-apple hw-marker-label",
+          "id": "",
+          "tag": "SPAN"
+        },
+        {
+          "bg": "linear-gradient(177deg, rgba(0, 0, 0, 0) 20%, rgba(241, 212, 119, 0.22) 20%, rgba(241, 212, 119, 0.22) 35%, rgba(241, 212, 119, 0.54) 35%, rgba(241, 212, 119, 0.54) 78%, rgba(0, 0, 0, 0) 78%), linear-gradient(181deg, rgba(0, 0, 0, 0) 34%, rgba(241, 212, 119, 0.25) 34%, rgba(241, 212, 119, 0.25) 83%, rgba(0, 0, 0, 0) 83%)",
+          "cls": "tag tag-apple hw-marker-label",
+          "id": "",
+          "tag": "SPAN"
+        },
+        {
+          "bg": "repeating-linear-gradient(176deg, rgba(223, 178, 45, 0.07) 0px, rgba(223, 178, 45, 0.07) 2px, rgba(0, 0, 0, 0) 2px, rgba(0, 0, 0, 0) 7px), radial-gradient(circle at 14% 18%, rgba(255, 255, 255, 0.42), rgba(0, 0, 0, 0) 46%)",
+          "cls": "insight-box hw-rough-surface hw-frame-relative hw-sticky-material",
+          "id": "",
+          "tag": "DIV"
+        },
+        {
+          "bg": "repeating-linear-gradient(87deg, rgba(135, 105, 68, 0.11) 0px, rgba(135, 105, 68, 0.11) 1px, rgba(0, 0, 0, 0) 1px, rgba(0, 0, 0, 0) 4px), none",
+          "cls": "hw-tape",
+          "id": "",
+          "tag": "SPAN"
+        },
+        {
+          "bg": "repeating-linear-gradient(176deg, rgba(223, 178, 45, 0.07) 0px, rgba(223, 178, 45, 0.07) 2px, rgba(0, 0, 0, 0) 2px, rgba(0, 0, 0, 0) 7px), radial-gradient(circle at 14% 18%, rgba(255, 255, 255, 0.42), rgba(0, 0, 0, 0) 46%)",
+          "cls": "insight-box hw-rough-surface hw-frame-relative hw-sticky-material",
+          "id": "",
+          "tag": "DIV"
+        },
+        {
+          "bg": "repeating-linear-gradient(87deg, rgba(135, 105, 68, 0.11) 0px, rgba(135, 105, 68, 0.11) 1px, rgba(0, 0, 0, 0) 1px, rgba(0, 0, 0, 0) 4px), none",
+          "cls": "hw-tape",
+          "id": "",
+          "tag": "SPAN"
+        },
+        {
+          "bg": "repeating-linear-gradient(176deg, rgba(223, 178, 45, 0.07) 0px, rgba(223, 178, 45, 0.07) 2px, rgba(0, 0, 0, 0) 2px, rgba(0, 0, 0, 0) 7px), radial-gradient(circle at 14% 18%, rgba(255, 255, 255, 0.42), rgba(0, 0, 0, 0) 46%)",
+          "cls": "insight-box hw-rough-surface hw-frame-relative hw-sticky-material",
+          "id": "",
+          "tag": "DIV"
+        },
+        {
+          "bg": "repeating-linear-gradient(87deg, rgba(135, 105, 68, 0.11) 0px, rgba(135, 105, 68, 0.11) 1px, rgba(0, 0, 0, 0) 1px, rgba(0, 0, 0, 0) 4px), none",
+          "cls": "hw-tape",
+          "id": "",
+          "tag": "SPAN"
+        },
+        {
+          "bg": "linear-gradient(177deg, rgba(0, 0, 0, 0) 20%, rgba(241, 212, 119, 0.22) 20%, rgba(241, 212, 119, 0.22) 35%, rgba(241, 212, 119, 0.54) 35%, rgba(241, 212, 119, 0.54) 78%, rgba(0, 0, 0, 0) 78%), linear-gradient(181deg, rgba(0, 0, 0, 0) 34%, rgba(241, 212, 119, 0.25) 34%, rgba(241, 212, 119, 0.25) 83%, rgba(0, 0, 0, 0) 83%)",
+          "cls": "tag tag-apple hw-marker-label",
+          "id": "",
+          "tag": "SPAN"
+        },
+        {
+          "bg": "linear-gradient(177deg, rgba(0, 0, 0, 0) 20%, rgba(241, 212, 119, 0.22) 20%, rgba(241, 212, 119, 0.22) 35%, rgba(241, 212, 119, 0.54) 35%, rgba(241, 212, 119, 0.54) 78%, rgba(0, 0, 0, 0) 78%), linear-gradient(181deg, rgba(0, 0, 0, 0) 34%, rgba(241, 212, 119, 0.25) 34%, rgba(241, 212, 119, 0.25) 83%, rgba(0, 0, 0, 0) 83%)",
+          "cls": "tag tag-apple hw-marker-label",
+          "id": "",
+          "tag": "SPAN"
+        },
+        {
+          "bg": "linear-gradient(177deg, rgba(0, 0, 0, 0) 20%, rgba(241, 212, 119, 0.22) 20%, rgba(241, 212, 119, 0.22) 35%, rgba(241, 212, 119, 0.54) 35%, rgba(241, 212, 119, 0.54) 78%, rgba(0, 0, 0, 0) 78%), linear-gradient(181deg, rgba(0, 0, 0, 0) 34%, rgba(241, 212, 119, 0.25) 34%, rgba(241, 212, 119, 0.25) 83%, rgba(0, 0, 0, 0) 83%)",
+          "cls": "tag tag-orange hw-marker-label",
+          "id": "",
+          "tag": "SPAN"
+        },
+        {
+          "bg": "linear-gradient(177deg, rgba(0, 0, 0, 0) 20%, rgba(241, 212, 119, 0.22) 20%, rgba(241, 212, 119, 0.22) 35%, rgba(241, 212, 119, 0.54) 35%, rgba(241, 212, 119, 0.54) 78%, rgba(0, 0, 0, 0) 78%), linear-gradient(181deg, rgba(0, 0, 0, 0) 34%, rgba(241, 212, 119, 0.25) 34%, rgba(241, 212, 119, 0.25) 83%, rgba(0, 0, 0, 0) 83%)",
+          "cls": "tag tag-orange hw-marker-label",
+          "id": "",
+          "tag": "SPAN"
+        },
+        {
+          "bg": "linear-gradient(177deg, rgba(0, 0, 0, 0) 20%, rgba(241, 212, 119, 0.22) 20%, rgba(241, 212, 119, 0.22) 35%, rgba(241, 212, 119, 0.54) 35%, rgba(241, 212, 119, 0.54) 78%, rgba(0, 0, 0, 0) 78%), linear-gradient(181deg, rgba(0, 0, 0, 0) 34%, rgba(241, 212, 119, 0.25) 34%, rgba(241, 212, 119, 0.25) 83%, rgba(0, 0, 0, 0) 83%)",
+          "cls": "tag tag-apple hw-marker-label",
+          "id": "",
+          "tag": "SPAN"
+        }
+      ],
+      "h1": "Classification\nTrees",
+      "perfectRadii": [],
+      "roughFrames": 59,
+      "scrollHeight": 20105,
+      "stageCount": 16,
+      "svgs": 117,
+      "vh": 720,
+      "vw": 1280
+    },
+    "mobile": {
+      "bodyFont": "\"Patrick Hand\", Kalam, \"Marker Felt\", \"Chalkboard SE\", \"Comic Sans MS\", \"Segoe Print\", cursive",
+      "h1": "Classification\nTrees",
+      "overflow": false,
+      "roughFrames": 59,
+      "scrollHeight": 21721,
+      "stageCount": 16,
+      "vh": 844,
+      "visibleControls": 22,
+      "vw": 390
+    }
+  },
+  {
+    "pageName": "hierarchical-clustering",
+    "desktop": {
+      "bodyClass": "statml-standardized hw-handwritten",
+      "bodyFont": "\"Patrick Hand\", Kalam, \"Marker Felt\", \"Chalkboard SE\", \"Comic Sans MS\", \"Segoe Print\", cursive",
+      "canvases": 1,
+      "cards": 32,
+      "digitalFonts": [],
+      "emoji": [],
+      "gradients": [
+        {
+          "bg": "repeating-linear-gradient(162deg, rgba(255, 255, 255, 0.26) 0px, rgba(255, 255, 255, 0.26) 2px, rgba(0, 0, 0, 0) 2px, rgba(0, 0, 0, 0) 6px)",
+          "cls": "",
+          "id": "progress-bar",
+          "tag": "DIV"
+        },
+        {
+          "bg": "linear-gradient(177deg, rgba(0, 0, 0, 0) 20%, rgba(241, 212, 119, 0.22) 20%, rgba(241, 212, 119, 0.22) 35%, rgba(241, 212, 119, 0.54) 35%, rgba(241, 212, 119, 0.54) 78%, rgba(0, 0, 0, 0) 78%), linear-gradient(181deg, rgba(0, 0, 0, 0) 34%, rgba(241, 212, 119, 0.25) 34%, rgba(241, 212, 119, 0.25) 83%, rgba(0, 0, 0, 0) 83%)",
+          "cls": "topic-badge hw-marker-label",
+          "id": "",
+          "tag": "DIV"
+        },
+        {
+          "bg": "repeating-linear-gradient(87deg, rgba(135, 105, 68, 0.11) 0px, rgba(135, 105, 68, 0.11) 1px, rgba(0, 0, 0, 0) 1px, rgba(0, 0, 0, 0) 4px), none",
+          "cls": "hw-tape",
+          "id": "",
+          "tag": "SPAN"
+        },
+        {
+          "bg": "repeating-linear-gradient(87deg, rgba(135, 105, 68, 0.11) 0px, rgba(135, 105, 68, 0.11) 1px, rgba(0, 0, 0, 0) 1px, rgba(0, 0, 0, 0) 4px), none",
+          "cls": "hw-tape",
+          "id": "",
+          "tag": "SPAN"
+        },
+        {
+          "bg": "repeating-linear-gradient(87deg, rgba(135, 105, 68, 0.11) 0px, rgba(135, 105, 68, 0.11) 1px, rgba(0, 0, 0, 0) 1px, rgba(0, 0, 0, 0) 4px), none",
+          "cls": "hw-tape",
+          "id": "",
+          "tag": "SPAN"
+        },
+        {
+          "bg": "repeating-linear-gradient(87deg, rgba(135, 105, 68, 0.11) 0px, rgba(135, 105, 68, 0.11) 1px, rgba(0, 0, 0, 0) 1px, rgba(0, 0, 0, 0) 4px), none",
+          "cls": "hw-tape",
+          "id": "",
+          "tag": "SPAN"
+        },
+        {
+          "bg": "repeating-linear-gradient(87deg, rgba(135, 105, 68, 0.11) 0px, rgba(135, 105, 68, 0.11) 1px, rgba(0, 0, 0, 0) 1px, rgba(0, 0, 0, 0) 4px), none",
+          "cls": "hw-tape",
+          "id": "",
+          "tag": "SPAN"
+        },
+        {
+          "bg": "repeating-linear-gradient(87deg, rgba(135, 105, 68, 0.11) 0px, rgba(135, 105, 68, 0.11) 1px, rgba(0, 0, 0, 0) 1px, rgba(0, 0, 0, 0) 4px), none",
+          "cls": "hw-tape",
+          "id": "",
+          "tag": "SPAN"
+        },
+        {
+          "bg": "repeating-linear-gradient(87deg, rgba(135, 105, 68, 0.11) 0px, rgba(135, 105, 68, 0.11) 1px, rgba(0, 0, 0, 0) 1px, rgba(0, 0, 0, 0) 4px), none",
+          "cls": "hw-tape",
+          "id": "",
+          "tag": "SPAN"
+        },
+        {
+          "bg": "repeating-linear-gradient(87deg, rgba(135, 105, 68, 0.11) 0px, rgba(135, 105, 68, 0.11) 1px, rgba(0, 0, 0, 0) 1px, rgba(0, 0, 0, 0) 4px), none",
+          "cls": "hw-tape",
+          "id": "",
+          "tag": "SPAN"
+        },
+        {
+          "bg": "repeating-linear-gradient(87deg, rgba(135, 105, 68, 0.11) 0px, rgba(135, 105, 68, 0.11) 1px, rgba(0, 0, 0, 0) 1px, rgba(0, 0, 0, 0) 4px), none",
+          "cls": "hw-tape",
+          "id": "",
+          "tag": "SPAN"
+        },
+        {
+          "bg": "repeating-linear-gradient(87deg, rgba(135, 105, 68, 0.11) 0px, rgba(135, 105, 68, 0.11) 1px, rgba(0, 0, 0, 0) 1px, rgba(0, 0, 0, 0) 4px), none",
+          "cls": "hw-tape",
+          "id": "",
+          "tag": "SPAN"
+        },
+        {
+          "bg": "repeating-linear-gradient(87deg, rgba(135, 105, 68, 0.11) 0px, rgba(135, 105, 68, 0.11) 1px, rgba(0, 0, 0, 0) 1px, rgba(0, 0, 0, 0) 4px), none",
+          "cls": "hw-tape",
+          "id": "",
+          "tag": "SPAN"
+        },
+        {
+          "bg": "repeating-linear-gradient(87deg, rgba(135, 105, 68, 0.11) 0px, rgba(135, 105, 68, 0.11) 1px, rgba(0, 0, 0, 0) 1px, rgba(0, 0, 0, 0) 4px), none",
+          "cls": "hw-tape",
+          "id": "",
+          "tag": "SPAN"
+        },
+        {
+          "bg": "repeating-linear-gradient(176deg, rgba(223, 178, 45, 0.07) 0px, rgba(223, 178, 45, 0.07) 2px, rgba(0, 0, 0, 0) 2px, rgba(0, 0, 0, 0) 7px), radial-gradient(circle at 14% 18%, rgba(255, 255, 255, 0.42), rgba(0, 0, 0, 0) 46%)",
+          "cls": "statml-takeaways hw-rough-surface hw-frame-relative hw-sticky-material",
+          "id": "",
+          "tag": "DIV"
+        },
+        {
+          "bg": "repeating-linear-gradient(87deg, rgba(135, 105, 68, 0.11) 0px, rgba(135, 105, 68, 0.11) 1px, rgba(0, 0, 0, 0) 1px, rgba(0, 0, 0, 0) 4px), none",
+          "cls": "hw-tape",
+          "id": "",
+          "tag": "SPAN"
+        }
+      ],
+      "h1": "Hierarchical Clustering",
+      "perfectRadii": [],
+      "roughFrames": 32,
+      "scrollHeight": 10834,
+      "stageCount": 10,
+      "svgs": 34,
+      "vh": 844,
+      "vw": 390
+    },
+    "mobile": {
+      "bodyFont": "\"Patrick Hand\", Kalam, \"Marker Felt\", \"Chalkboard SE\", \"Comic Sans MS\", \"Segoe Print\", cursive",
+      "h1": "Hierarchical Clustering",
+      "overflow": false,
+      "roughFrames": 32,
+      "scrollHeight": 10834,
+      "stageCount": 10,
+      "vh": 844,
+      "visibleControls": 6,
+      "vw": 390
+    }
+  },
+  {
+    "pageName": "lda",
+    "desktop": {
+      "bodyClass": "statml-standardized hw-handwritten",
+      "bodyFont": "\"Patrick Hand\", Kalam, \"Marker Felt\", \"Chalkboard SE\", \"Comic Sans MS\", \"Segoe Print\", cursive",
+      "canvases": 2,
+      "cards": 96,
+      "digitalFonts": [],
+      "emoji": [],
+      "gradients": [
+        {
+          "bg": "repeating-linear-gradient(162deg, rgba(255, 255, 255, 0.26) 0px, rgba(255, 255, 255, 0.26) 2px, rgba(0, 0, 0, 0) 2px, rgba(0, 0, 0, 0) 6px)",
+          "cls": "progress-bar",
+          "id": "progressBar",
+          "tag": "DIV"
+        },
+        {
+          "bg": "linear-gradient(177deg, rgba(0, 0, 0, 0) 20%, rgba(241, 212, 119, 0.22) 20%, rgba(241, 212, 119, 0.22) 35%, rgba(241, 212, 119, 0.54) 35%, rgba(241, 212, 119, 0.54) 78%, rgba(0, 0, 0, 0) 78%), linear-gradient(181deg, rgba(0, 0, 0, 0) 34%, rgba(241, 212, 119, 0.25) 34%, rgba(241, 212, 119, 0.25) 83%, rgba(0, 0, 0, 0) 83%)",
+          "cls": "hero-badge hw-marker-label",
+          "id": "",
+          "tag": "DIV"
+        },
+        {
+          "bg": "linear-gradient(177deg, rgba(0, 0, 0, 0) 20%, rgba(241, 212, 119, 0.22) 20%, rgba(241, 212, 119, 0.22) 35%, rgba(241, 212, 119, 0.54) 35%, rgba(241, 212, 119, 0.54) 78%, rgba(0, 0, 0, 0) 78%), linear-gradient(181deg, rgba(0, 0, 0, 0) 34%, rgba(241, 212, 119, 0.25) 34%, rgba(241, 212, 119, 0.25) 83%, rgba(0, 0, 0, 0) 83%)",
+          "cls": "tag tag-apple hw-marker-label",
+          "id": "",
+          "tag": "SPAN"
+        },
+        {
+          "bg": "linear-gradient(182deg, rgba(0, 0, 0, 0) 23%, rgba(241, 212, 119, 0.5) 23%, rgba(241, 212, 119, 0.5) 76%, rgba(0, 0, 0, 0) 76%), linear-gradient(175deg, rgba(0, 0, 0, 0) 38%, rgba(241, 212, 119, 0.22) 38%, rgba(241, 212, 119, 0.22) 84%, rgba(0, 0, 0, 0) 84%)",
+          "cls": "tag tag-orange hw-marker-label",
+          "id": "",
+          "tag": "SPAN"
+        },
+        {
+          "bg": "linear-gradient(177deg, rgba(0, 0, 0, 0) 20%, rgba(241, 212, 119, 0.22) 20%, rgba(241, 212, 119, 0.22) 35%, rgba(241, 212, 119, 0.54) 35%, rgba(241, 212, 119, 0.54) 78%, rgba(0, 0, 0, 0) 78%), linear-gradient(181deg, rgba(0, 0, 0, 0) 34%, rgba(241, 212, 119, 0.25) 34%, rgba(241, 212, 119, 0.25) 83%, rgba(0, 0, 0, 0) 83%)",
+          "cls": "tag tag-apple hw-marker-label",
+          "id": "",
+          "tag": "SPAN"
+        },
+        {
+          "bg": "linear-gradient(177deg, rgba(0, 0, 0, 0) 20%, rgba(241, 212, 119, 0.22) 20%, rgba(241, 212, 119, 0.22) 35%, rgba(241, 212, 119, 0.54) 35%, rgba(241, 212, 119, 0.54) 78%, rgba(0, 0, 0, 0) 78%), linear-gradient(181deg, rgba(0, 0, 0, 0) 34%, rgba(241, 212, 119, 0.25) 34%, rgba(241, 212, 119, 0.25) 83%, rgba(0, 0, 0, 0) 83%)",
+          "cls": "tag tag-apple hw-marker-label",
+          "id": "",
+          "tag": "SPAN"
+        },
+        {
+          "bg": "linear-gradient(177deg, rgba(0, 0, 0, 0) 20%, rgba(241, 212, 119, 0.22) 20%, rgba(241, 212, 119, 0.22) 35%, rgba(241, 212, 119, 0.54) 35%, rgba(241, 212, 119, 0.54) 78%, rgba(0, 0, 0, 0) 78%), linear-gradient(181deg, rgba(0, 0, 0, 0) 34%, rgba(241, 212, 119, 0.25) 34%, rgba(241, 212, 119, 0.25) 83%, rgba(0, 0, 0, 0) 83%)",
+          "cls": "tag tag-apple hw-marker-label",
+          "id": "",
+          "tag": "SPAN"
+        },
+        {
+          "bg": "linear-gradient(177deg, rgba(0, 0, 0, 0) 20%, rgba(241, 212, 119, 0.22) 20%, rgba(241, 212, 119, 0.22) 35%, rgba(241, 212, 119, 0.54) 35%, rgba(241, 212, 119, 0.54) 78%, rgba(0, 0, 0, 0) 78%), linear-gradient(181deg, rgba(0, 0, 0, 0) 34%, rgba(241, 212, 119, 0.25) 34%, rgba(241, 212, 119, 0.25) 83%, rgba(0, 0, 0, 0) 83%)",
+          "cls": "tag tag-apple hw-marker-label",
+          "id": "",
+          "tag": "SPAN"
+        },
+        {
+          "bg": "linear-gradient(177deg, rgba(0, 0, 0, 0) 20%, rgba(241, 212, 119, 0.22) 20%, rgba(241, 212, 119, 0.22) 35%, rgba(241, 212, 119, 0.54) 35%, rgba(241, 212, 119, 0.54) 78%, rgba(0, 0, 0, 0) 78%), linear-gradient(181deg, rgba(0, 0, 0, 0) 34%, rgba(241, 212, 119, 0.25) 34%, rgba(241, 212, 119, 0.25) 83%, rgba(0, 0, 0, 0) 83%)",
+          "cls": "tag tag-apple hw-marker-label",
+          "id": "",
+          "tag": "SPAN"
+        },
+        {
+          "bg": "linear-gradient(177deg, rgba(0, 0, 0, 0) 20%, rgba(241, 212, 119, 0.22) 20%, rgba(241, 212, 119, 0.22) 35%, rgba(241, 212, 119, 0.54) 35%, rgba(241, 212, 119, 0.54) 78%, rgba(0, 0, 0, 0) 78%), linear-gradient(181deg, rgba(0, 0, 0, 0) 34%, rgba(241, 212, 119, 0.25) 34%, rgba(241, 212, 119, 0.25) 83%, rgba(0, 0, 0, 0) 83%)",
+          "cls": "tag tag-apple hw-marker-label",
+          "id": "",
+          "tag": "SPAN"
+        },
+        {
+          "bg": "linear-gradient(177deg, rgba(0, 0, 0, 0) 20%, rgba(241, 212, 119, 0.22) 20%, rgba(241, 212, 119, 0.22) 35%, rgba(241, 212, 119, 0.54) 35%, rgba(241, 212, 119, 0.54) 78%, rgba(0, 0, 0, 0) 78%), linear-gradient(181deg, rgba(0, 0, 0, 0) 34%, rgba(241, 212, 119, 0.25) 34%, rgba(241, 212, 119, 0.25) 83%, rgba(0, 0, 0, 0) 83%)",
+          "cls": "tag tag-apple hw-marker-label",
+          "id": "",
+          "tag": "SPAN"
+        },
+        {
+          "bg": "linear-gradient(177deg, rgba(0, 0, 0, 0) 20%, rgba(241, 212, 119, 0.22) 20%, rgba(241, 212, 119, 0.22) 35%, rgba(241, 212, 119, 0.54) 35%, rgba(241, 212, 119, 0.54) 78%, rgba(0, 0, 0, 0) 78%), linear-gradient(181deg, rgba(0, 0, 0, 0) 34%, rgba(241, 212, 119, 0.25) 34%, rgba(241, 212, 119, 0.25) 83%, rgba(0, 0, 0, 0) 83%)",
+          "cls": "tag tag-apple hw-marker-label",
+          "id": "",
+          "tag": "SPAN"
+        },
+        {
+          "bg": "linear-gradient(177deg, rgba(0, 0, 0, 0) 20%, rgba(241, 212, 119, 0.22) 20%, rgba(241, 212, 119, 0.22) 35%, rgba(241, 212, 119, 0.54) 35%, rgba(241, 212, 119, 0.54) 78%, rgba(0, 0, 0, 0) 78%), linear-gradient(181deg, rgba(0, 0, 0, 0) 34%, rgba(241, 212, 119, 0.25) 34%, rgba(241, 212, 119, 0.25) 83%, rgba(0, 0, 0, 0) 83%)",
+          "cls": "tag tag-apple hw-marker-label",
+          "id": "",
+          "tag": "SPAN"
+        },
+        {
+          "bg": "linear-gradient(177deg, rgba(0, 0, 0, 0) 20%, rgba(241, 212, 119, 0.22) 20%, rgba(241, 212, 119, 0.22) 35%, rgba(241, 212, 119, 0.54) 35%, rgba(241, 212, 119, 0.54) 78%, rgba(0, 0, 0, 0) 78%), linear-gradient(181deg, rgba(0, 0, 0, 0) 34%, rgba(241, 212, 119, 0.25) 34%, rgba(241, 212, 119, 0.25) 83%, rgba(0, 0, 0, 0) 83%)",
+          "cls": "tag tag-apple hw-marker-label",
+          "id": "",
+          "tag": "SPAN"
+        },
+        {
+          "bg": "linear-gradient(177deg, rgba(0, 0, 0, 0) 20%, rgba(241, 212, 119, 0.22) 20%, rgba(241, 212, 119, 0.22) 35%, rgba(241, 212, 119, 0.54) 35%, rgba(241, 212, 119, 0.54) 78%, rgba(0, 0, 0, 0) 78%), linear-gradient(181deg, rgba(0, 0, 0, 0) 34%, rgba(241, 212, 119, 0.25) 34%, rgba(241, 212, 119, 0.25) 83%, rgba(0, 0, 0, 0) 83%)",
+          "cls": "tag tag-apple hw-marker-label",
+          "id": "",
+          "tag": "SPAN"
+        },
+        {
+          "bg": "linear-gradient(177deg, rgba(0, 0, 0, 0) 20%, rgba(241, 212, 119, 0.22) 20%, rgba(241, 212, 119, 0.22) 35%, rgba(241, 212, 119, 0.54) 35%, rgba(241, 212, 119, 0.54) 78%, rgba(0, 0, 0, 0) 78%), linear-gradient(181deg, rgba(0, 0, 0, 0) 34%, rgba(241, 212, 119, 0.25) 34%, rgba(241, 212, 119, 0.25) 83%, rgba(0, 0, 0, 0) 83%)",
+          "cls": "tag tag-apple hw-marker-label",
+          "id": "",
+          "tag": "SPAN"
+        },
+        {
+          "bg": "linear-gradient(177deg, rgba(0, 0, 0, 0) 20%, rgba(241, 212, 119, 0.22) 20%, rgba(241, 212, 119, 0.22) 35%, rgba(241, 212, 119, 0.54) 35%, rgba(241, 212, 119, 0.54) 78%, rgba(0, 0, 0, 0) 78%), linear-gradient(181deg, rgba(0, 0, 0, 0) 34%, rgba(241, 212, 119, 0.25) 34%, rgba(241, 212, 119, 0.25) 83%, rgba(0, 0, 0, 0) 83%)",
+          "cls": "tag tag-orange hw-marker-label",
+          "id": "",
+          "tag": "SPAN"
+        },
+        {
+          "bg": "linear-gradient(177deg, rgba(0, 0, 0, 0) 20%, rgba(241, 212, 119, 0.22) 20%, rgba(241, 212, 119, 0.22) 35%, rgba(241, 212, 119, 0.54) 35%, rgba(241, 212, 119, 0.54) 78%, rgba(0, 0, 0, 0) 78%), linear-gradient(181deg, rgba(0, 0, 0, 0) 34%, rgba(241, 212, 119, 0.25) 34%, rgba(241, 212, 119, 0.25) 83%, rgba(0, 0, 0, 0) 83%)",
+          "cls": "tag tag-orange hw-marker-label",
+          "id": "",
+          "tag": "SPAN"
+        },
+        {
+          "bg": "linear-gradient(177deg, rgba(0, 0, 0, 0) 20%, rgba(241, 212, 119, 0.22) 20%, rgba(241, 212, 119, 0.22) 35%, rgba(241, 212, 119, 0.54) 35%, rgba(241, 212, 119, 0.54) 78%, rgba(0, 0, 0, 0) 78%), linear-gradient(181deg, rgba(0, 0, 0, 0) 34%, rgba(241, 212, 119, 0.25) 34%, rgba(241, 212, 119, 0.25) 83%, rgba(0, 0, 0, 0) 83%)",
+          "cls": "tag tag-orange hw-marker-label",
+          "id": "",
+          "tag": "SPAN"
+        },
+        {
+          "bg": "linear-gradient(177deg, rgba(0, 0, 0, 0) 20%, rgba(241, 212, 119, 0.22) 20%, rgba(241, 212, 119, 0.22) 35%, rgba(241, 212, 119, 0.54) 35%, rgba(241, 212, 119, 0.54) 78%, rgba(0, 0, 0, 0) 78%), linear-gradient(181deg, rgba(0, 0, 0, 0) 34%, rgba(241, 212, 119, 0.25) 34%, rgba(241, 212, 119, 0.25) 83%, rgba(0, 0, 0, 0) 83%)",
+          "cls": "tag tag-orange hw-marker-label",
+          "id": "",
+          "tag": "SPAN"
+        },
+        {
+          "bg": "linear-gradient(177deg, rgba(0, 0, 0, 0) 20%, rgba(241, 212, 119, 0.22) 20%, rgba(241, 212, 119, 0.22) 35%, rgba(241, 212, 119, 0.54) 35%, rgba(241, 212, 119, 0.54) 78%, rgba(0, 0, 0, 0) 78%), linear-gradient(181deg, rgba(0, 0, 0, 0) 34%, rgba(241, 212, 119, 0.25) 34%, rgba(241, 212, 119, 0.25) 83%, rgba(0, 0, 0, 0) 83%)",
+          "cls": "tag tag-orange hw-marker-label",
+          "id": "",
+          "tag": "SPAN"
+        },
+        {
+          "bg": "linear-gradient(177deg, rgba(0, 0, 0, 0) 20%, rgba(241, 212, 119, 0.22) 20%, rgba(241, 212, 119, 0.22) 35%, rgba(241, 212, 119, 0.54) 35%, rgba(241, 212, 119, 0.54) 78%, rgba(0, 0, 0, 0) 78%), linear-gradient(181deg, rgba(0, 0, 0, 0) 34%, rgba(241, 212, 119, 0.25) 34%, rgba(241, 212, 119, 0.25) 83%, rgba(0, 0, 0, 0) 83%)",
+          "cls": "tag tag-orange hw-marker-label",
+          "id": "",
+          "tag": "SPAN"
+        },
+        {
+          "bg": "linear-gradient(177deg, rgba(0, 0, 0, 0) 20%, rgba(241, 212, 119, 0.22) 20%, rgba(241, 212, 119, 0.22) 35%, rgba(241, 212, 119, 0.54) 35%, rgba(241, 212, 119, 0.54) 78%, rgba(0, 0, 0, 0) 78%), linear-gradient(181deg, rgba(0, 0, 0, 0) 34%, rgba(241, 212, 119, 0.25) 34%, rgba(241, 212, 119, 0.25) 83%, rgba(0, 0, 0, 0) 83%)",
+          "cls": "tag tag-orange hw-marker-label",
+          "id": "",
+          "tag": "SPAN"
+        },
+        {
+          "bg": "linear-gradient(177deg, rgba(0, 0, 0, 0) 20%, rgba(241, 212, 119, 0.22) 20%, rgba(241, 212, 119, 0.22) 35%, rgba(241, 212, 119, 0.54) 35%, rgba(241, 212, 119, 0.54) 78%, rgba(0, 0, 0, 0) 78%), linear-gradient(181deg, rgba(0, 0, 0, 0) 34%, rgba(241, 212, 119, 0.25) 34%, rgba(241, 212, 119, 0.25) 83%, rgba(0, 0, 0, 0) 83%)",
+          "cls": "tag tag-orange hw-marker-label",
+          "id": "",
+          "tag": "SPAN"
+        },
+        {
+          "bg": "linear-gradient(177deg, rgba(0, 0, 0, 0) 20%, rgba(241, 212, 119, 0.22) 20%, rgba(241, 212, 119, 0.22) 35%, rgba(241, 212, 119, 0.54) 35%, rgba(241, 212, 119, 0.54) 78%, rgba(0, 0, 0, 0) 78%), linear-gradient(181deg, rgba(0, 0, 0, 0) 34%, rgba(241, 212, 119, 0.25) 34%, rgba(241, 212, 119, 0.25) 83%, rgba(0, 0, 0, 0) 83%)",
+          "cls": "tag tag-orange hw-marker-label",
+          "id": "",
+          "tag": "SPAN"
+        }
+      ],
+      "h1": "Linear Discriminant\nAnalysis",
+      "perfectRadii": [
+        {
+          "cls": "",
+          "id": "",
+          "radius": "50%",
+          "tag": "SPAN"
+        },
+        {
+          "cls": "",
+          "id": "",
+          "radius": "50%",
+          "tag": "SPAN"
+        }
+      ],
+      "roughFrames": 96,
+      "scrollHeight": 24138,
+      "stageCount": 16,
+      "svgs": 127,
+      "vh": 844,
+      "vw": 390
+    },
+    "mobile": {
+      "bodyFont": "\"Patrick Hand\", Kalam, \"Marker Felt\", \"Chalkboard SE\", \"Comic Sans MS\", \"Segoe Print\", cursive",
+      "h1": "Linear Discriminant\nAnalysis",
+      "overflow": false,
+      "roughFrames": 96,
+      "scrollHeight": 24138,
+      "stageCount": 16,
+      "vh": 844,
+      "visibleControls": 22,
+      "vw": 390
+    }
+  },
+  {
+    "pageName": "qda",
+    "desktop": {
+      "bodyClass": "statml-standardized hw-handwritten",
+      "bodyFont": "\"Patrick Hand\", Kalam, \"Marker Felt\", \"Chalkboard SE\", \"Comic Sans MS\", \"Segoe Print\", cursive",
+      "canvases": 1,
+      "cards": 73,
+      "digitalFonts": [],
+      "emoji": [],
+      "gradients": [
+        {
+          "bg": "repeating-linear-gradient(162deg, rgba(255, 255, 255, 0.26) 0px, rgba(255, 255, 255, 0.26) 2px, rgba(0, 0, 0, 0) 2px, rgba(0, 0, 0, 0) 6px)",
+          "cls": "",
+          "id": "progress-bar",
+          "tag": "DIV"
+        },
+        {
+          "bg": "linear-gradient(177deg, rgba(0, 0, 0, 0) 20%, rgba(241, 212, 119, 0.22) 20%, rgba(241, 212, 119, 0.22) 35%, rgba(241, 212, 119, 0.54) 35%, rgba(241, 212, 119, 0.54) 78%, rgba(0, 0, 0, 0) 78%), linear-gradient(181deg, rgba(0, 0, 0, 0) 34%, rgba(241, 212, 119, 0.25) 34%, rgba(241, 212, 119, 0.25) 83%, rgba(0, 0, 0, 0) 83%)",
+          "cls": "topic-badge hw-marker-label",
+          "id": "",
+          "tag": "DIV"
+        },
+        {
+          "bg": "linear-gradient(177deg, rgba(0, 0, 0, 0) 20%, rgba(241, 212, 119, 0.22) 20%, rgba(241, 212, 119, 0.22) 35%, rgba(241, 212, 119, 0.54) 35%, rgba(241, 212, 119, 0.54) 78%, rgba(0, 0, 0, 0) 78%), linear-gradient(181deg, rgba(0, 0, 0, 0) 34%, rgba(241, 212, 119, 0.25) 34%, rgba(241, 212, 119, 0.25) 83%, rgba(0, 0, 0, 0) 83%)",
+          "cls": "pill class-a hw-marker-label",
+          "id": "",
+          "tag": "SPAN"
+        },
+        {
+          "bg": "linear-gradient(182deg, rgba(0, 0, 0, 0) 23%, rgba(241, 212, 119, 0.5) 23%, rgba(241, 212, 119, 0.5) 76%, rgba(0, 0, 0, 0) 76%), linear-gradient(175deg, rgba(0, 0, 0, 0) 38%, rgba(241, 212, 119, 0.22) 38%, rgba(241, 212, 119, 0.22) 84%, rgba(0, 0, 0, 0) 84%)",
+          "cls": "pill class-b hw-marker-label",
+          "id": "",
+          "tag": "SPAN"
+        },
+        {
+          "bg": "repeating-linear-gradient(87deg, rgba(135, 105, 68, 0.11) 0px, rgba(135, 105, 68, 0.11) 1px, rgba(0, 0, 0, 0) 1px, rgba(0, 0, 0, 0) 4px), none",
+          "cls": "hw-tape",
+          "id": "",
+          "tag": "SPAN"
+        },
+        {
+          "bg": "repeating-linear-gradient(87deg, rgba(135, 105, 68, 0.11) 0px, rgba(135, 105, 68, 0.11) 1px, rgba(0, 0, 0, 0) 1px, rgba(0, 0, 0, 0) 4px), none",
+          "cls": "hw-tape",
+          "id": "",
+          "tag": "SPAN"
+        },
+        {
+          "bg": "repeating-linear-gradient(87deg, rgba(135, 105, 68, 0.11) 0px, rgba(135, 105, 68, 0.11) 1px, rgba(0, 0, 0, 0) 1px, rgba(0, 0, 0, 0) 4px), none",
+          "cls": "hw-tape",
+          "id": "",
+          "tag": "SPAN"
+        },
+        {
+          "bg": "repeating-linear-gradient(87deg, rgba(135, 105, 68, 0.11) 0px, rgba(135, 105, 68, 0.11) 1px, rgba(0, 0, 0, 0) 1px, rgba(0, 0, 0, 0) 4px), none",
+          "cls": "hw-tape",
+          "id": "",
+          "tag": "SPAN"
+        },
+        {
+          "bg": "repeating-linear-gradient(87deg, rgba(135, 105, 68, 0.11) 0px, rgba(135, 105, 68, 0.11) 1px, rgba(0, 0, 0, 0) 1px, rgba(0, 0, 0, 0) 4px), none",
+          "cls": "hw-tape",
+          "id": "",
+          "tag": "SPAN"
+        },
+        {
+          "bg": "linear-gradient(177deg, rgba(0, 0, 0, 0) 20%, rgba(241, 212, 119, 0.22) 20%, rgba(241, 212, 119, 0.22) 35%, rgba(241, 212, 119, 0.54) 35%, rgba(241, 212, 119, 0.54) 78%, rgba(0, 0, 0, 0) 78%), linear-gradient(181deg, rgba(0, 0, 0, 0) 34%, rgba(241, 212, 119, 0.25) 34%, rgba(241, 212, 119, 0.25) 83%, rgba(0, 0, 0, 0) 83%)",
+          "cls": "hotspot-tag hw-marker-label",
+          "id": "",
+          "tag": "SPAN"
+        },
+        {
+          "bg": "linear-gradient(177deg, rgba(0, 0, 0, 0) 20%, rgba(241, 212, 119, 0.22) 20%, rgba(241, 212, 119, 0.22) 35%, rgba(241, 212, 119, 0.54) 35%, rgba(241, 212, 119, 0.54) 78%, rgba(0, 0, 0, 0) 78%), linear-gradient(181deg, rgba(0, 0, 0, 0) 34%, rgba(241, 212, 119, 0.25) 34%, rgba(241, 212, 119, 0.25) 83%, rgba(0, 0, 0, 0) 83%)",
+          "cls": "hotspot-tag hw-marker-label",
+          "id": "",
+          "tag": "SPAN"
+        },
+        {
+          "bg": "linear-gradient(177deg, rgba(0, 0, 0, 0) 20%, rgba(241, 212, 119, 0.22) 20%, rgba(241, 212, 119, 0.22) 35%, rgba(241, 212, 119, 0.54) 35%, rgba(241, 212, 119, 0.54) 78%, rgba(0, 0, 0, 0) 78%), linear-gradient(181deg, rgba(0, 0, 0, 0) 34%, rgba(241, 212, 119, 0.25) 34%, rgba(241, 212, 119, 0.25) 83%, rgba(0, 0, 0, 0) 83%)",
+          "cls": "hotspot-tag hw-marker-label",
+          "id": "",
+          "tag": "SPAN"
+        },
+        {
+          "bg": "linear-gradient(177deg, rgba(0, 0, 0, 0) 20%, rgba(241, 212, 119, 0.22) 20%, rgba(241, 212, 119, 0.22) 35%, rgba(241, 212, 119, 0.54) 35%, rgba(241, 212, 119, 0.54) 78%, rgba(0, 0, 0, 0) 78%), linear-gradient(181deg, rgba(0, 0, 0, 0) 34%, rgba(241, 212, 119, 0.25) 34%, rgba(241, 212, 119, 0.25) 83%, rgba(0, 0, 0, 0) 83%)",
+          "cls": "hotspot-tag hw-marker-label",
+          "id": "",
+          "tag": "SPAN"
+        },
+        {
+          "bg": "linear-gradient(177deg, rgba(0, 0, 0, 0) 20%, rgba(241, 212, 119, 0.22) 20%, rgba(241, 212, 119, 0.22) 35%, rgba(241, 212, 119, 0.54) 35%, rgba(241, 212, 119, 0.54) 78%, rgba(0, 0, 0, 0) 78%), linear-gradient(181deg, rgba(0, 0, 0, 0) 34%, rgba(241, 212, 119, 0.25) 34%, rgba(241, 212, 119, 0.25) 83%, rgba(0, 0, 0, 0) 83%)",
+          "cls": "hotspot-tag hw-marker-label",
+          "id": "",
+          "tag": "SPAN"
+        },
+        {
+          "bg": "linear-gradient(177deg, rgba(0, 0, 0, 0) 20%, rgba(241, 212, 119, 0.22) 20%, rgba(241, 212, 119, 0.22) 35%, rgba(241, 212, 119, 0.54) 35%, rgba(241, 212, 119, 0.54) 78%, rgba(0, 0, 0, 0) 78%), linear-gradient(181deg, rgba(0, 0, 0, 0) 34%, rgba(241, 212, 119, 0.25) 34%, rgba(241, 212, 119, 0.25) 83%, rgba(0, 0, 0, 0) 83%)",
+          "cls": "hotspot-tag hw-marker-label",
+          "id": "",
+          "tag": "SPAN"
+        },
+        {
+          "bg": "linear-gradient(177deg, rgba(0, 0, 0, 0) 20%, rgba(241, 212, 119, 0.22) 20%, rgba(241, 212, 119, 0.22) 35%, rgba(241, 212, 119, 0.54) 35%, rgba(241, 212, 119, 0.54) 78%, rgba(0, 0, 0, 0) 78%), linear-gradient(181deg, rgba(0, 0, 0, 0) 34%, rgba(241, 212, 119, 0.25) 34%, rgba(241, 212, 119, 0.25) 83%, rgba(0, 0, 0, 0) 83%)",
+          "cls": "hotspot-tag hw-marker-label",
+          "id": "",
+          "tag": "SPAN"
+        },
+        {
+          "bg": "linear-gradient(177deg, rgba(0, 0, 0, 0) 20%, rgba(241, 212, 119, 0.22) 20%, rgba(241, 212, 119, 0.22) 35%, rgba(241, 212, 119, 0.54) 35%, rgba(241, 212, 119, 0.54) 78%, rgba(0, 0, 0, 0) 78%), linear-gradient(181deg, rgba(0, 0, 0, 0) 34%, rgba(241, 212, 119, 0.25) 34%, rgba(241, 212, 119, 0.25) 83%, rgba(0, 0, 0, 0) 83%)",
+          "cls": "hotspot-tag hw-marker-label",
+          "id": "",
+          "tag": "SPAN"
+        },
+        {
+          "bg": "repeating-linear-gradient(87deg, rgba(135, 105, 68, 0.11) 0px, rgba(135, 105, 68, 0.11) 1px, rgba(0, 0, 0, 0) 1px, rgba(0, 0, 0, 0) 4px), none",
+          "cls": "hw-tape",
+          "id": "",
+          "tag": "SPAN"
+        },
+        {
+          "bg": "repeating-linear-gradient(176deg, rgba(223, 178, 45, 0.07) 0px, rgba(223, 178, 45, 0.07) 2px, rgba(0, 0, 0, 0) 2px, rgba(0, 0, 0, 0) 7px), radial-gradient(circle at 14% 18%, rgba(255, 255, 255, 0.42), rgba(0, 0, 0, 0) 46%)",
+          "cls": "statml-takeaways hw-rough-surface hw-frame-relative hw-sticky-material",
+          "id": "",
+          "tag": "DIV"
+        },
+        {
+          "bg": "repeating-linear-gradient(87deg, rgba(135, 105, 68, 0.11) 0px, rgba(135, 105, 68, 0.11) 1px, rgba(0, 0, 0, 0) 1px, rgba(0, 0, 0, 0) 4px), none",
+          "cls": "hw-tape",
+          "id": "",
+          "tag": "SPAN"
+        }
+      ],
+      "h1": "Quadratic Discriminant Analysis",
+      "perfectRadii": [],
+      "roughFrames": 73,
+      "scrollHeight": 19064,
+      "stageCount": 10,
+      "svgs": 104,
+      "vh": 844,
+      "vw": 390
+    },
+    "mobile": {
+      "bodyFont": "\"Patrick Hand\", Kalam, \"Marker Felt\", \"Chalkboard SE\", \"Comic Sans MS\", \"Segoe Print\", cursive",
+      "h1": "Quadratic Discriminant Analysis",
+      "overflow": false,
+      "roughFrames": 73,
+      "scrollHeight": 19064,
+      "stageCount": 10,
+      "vh": 844,
+      "visibleControls": 46,
+      "vw": 390
+    }
+  },
+  {
+    "pageName": "model-selection",
+    "desktop": {
+      "bodyClass": "statml-standardized hw-handwritten",
+      "bodyFont": "\"Patrick Hand\", Kalam, \"Marker Felt\", \"Chalkboard SE\", \"Comic Sans MS\", \"Segoe Print\", cursive",
+      "canvases": 1,
+      "cards": 36,
+      "digitalFonts": [],
+      "emoji": [],
+      "gradients": [
+        {
+          "bg": "repeating-linear-gradient(162deg, rgba(255, 255, 255, 0.26) 0px, rgba(255, 255, 255, 0.26) 2px, rgba(0, 0, 0, 0) 2px, rgba(0, 0, 0, 0) 6px)",
+          "cls": "",
+          "id": "progress-bar",
+          "tag": "DIV"
+        },
+        {
+          "bg": "linear-gradient(177deg, rgba(0, 0, 0, 0) 20%, rgba(241, 212, 119, 0.22) 20%, rgba(241, 212, 119, 0.22) 35%, rgba(241, 212, 119, 0.54) 35%, rgba(241, 212, 119, 0.54) 78%, rgba(0, 0, 0, 0) 78%), linear-gradient(181deg, rgba(0, 0, 0, 0) 34%, rgba(241, 212, 119, 0.25) 34%, rgba(241, 212, 119, 0.25) 83%, rgba(0, 0, 0, 0) 83%)",
+          "cls": "topic-badge hw-marker-label",
+          "id": "",
+          "tag": "DIV"
+        },
+        {
+          "bg": "repeating-linear-gradient(176deg, rgba(223, 178, 45, 0.07) 0px, rgba(223, 178, 45, 0.07) 2px, rgba(0, 0, 0, 0) 2px, rgba(0, 0, 0, 0) 7px), radial-gradient(circle at 14% 18%, rgba(255, 255, 255, 0.42), rgba(0, 0, 0, 0) 46%)",
+          "cls": "insight-box hw-rough-surface hw-frame-relative hw-sticky-material",
+          "id": "",
+          "tag": "DIV"
+        },
+        {
+          "bg": "repeating-linear-gradient(87deg, rgba(135, 105, 68, 0.11) 0px, rgba(135, 105, 68, 0.11) 1px, rgba(0, 0, 0, 0) 1px, rgba(0, 0, 0, 0) 4px), none",
+          "cls": "hw-tape",
+          "id": "",
+          "tag": "SPAN"
+        },
+        {
+          "bg": "repeating-linear-gradient(176deg, rgba(223, 178, 45, 0.07) 0px, rgba(223, 178, 45, 0.07) 2px, rgba(0, 0, 0, 0) 2px, rgba(0, 0, 0, 0) 7px), radial-gradient(circle at 14% 18%, rgba(255, 255, 255, 0.42), rgba(0, 0, 0, 0) 46%)",
+          "cls": "insight-box hw-rough-surface hw-frame-relative hw-sticky-material",
+          "id": "",
+          "tag": "DIV"
+        },
+        {
+          "bg": "repeating-linear-gradient(87deg, rgba(135, 105, 68, 0.11) 0px, rgba(135, 105, 68, 0.11) 1px, rgba(0, 0, 0, 0) 1px, rgba(0, 0, 0, 0) 4px), none",
+          "cls": "hw-tape",
+          "id": "",
+          "tag": "SPAN"
+        },
+        {
+          "bg": "linear-gradient(177deg, rgba(0, 0, 0, 0) 20%, rgba(241, 212, 119, 0.22) 20%, rgba(241, 212, 119, 0.22) 35%, rgba(241, 212, 119, 0.54) 35%, rgba(241, 212, 119, 0.54) 78%, rgba(0, 0, 0, 0) 78%), linear-gradient(181deg, rgba(0, 0, 0, 0) 34%, rgba(241, 212, 119, 0.25) 34%, rgba(241, 212, 119, 0.25) 83%, rgba(0, 0, 0, 0) 83%)",
+          "cls": "pill blue hw-marker-label",
+          "id": "",
+          "tag": "SPAN"
+        },
+        {
+          "bg": "linear-gradient(177deg, rgba(0, 0, 0, 0) 20%, rgba(241, 212, 119, 0.22) 20%, rgba(241, 212, 119, 0.22) 35%, rgba(241, 212, 119, 0.54) 35%, rgba(241, 212, 119, 0.54) 78%, rgba(0, 0, 0, 0) 78%), linear-gradient(181deg, rgba(0, 0, 0, 0) 34%, rgba(241, 212, 119, 0.25) 34%, rgba(241, 212, 119, 0.25) 83%, rgba(0, 0, 0, 0) 83%)",
+          "cls": "pill red hw-marker-label",
+          "id": "",
+          "tag": "SPAN"
+        },
+        {
+          "bg": "linear-gradient(177deg, rgba(0, 0, 0, 0) 20%, rgba(241, 212, 119, 0.22) 20%, rgba(241, 212, 119, 0.22) 35%, rgba(241, 212, 119, 0.54) 35%, rgba(241, 212, 119, 0.54) 78%, rgba(0, 0, 0, 0) 78%), linear-gradient(181deg, rgba(0, 0, 0, 0) 34%, rgba(241, 212, 119, 0.25) 34%, rgba(241, 212, 119, 0.25) 83%, rgba(0, 0, 0, 0) 83%)",
+          "cls": "pill purple hw-marker-label",
+          "id": "",
+          "tag": "SPAN"
+        },
+        {
+          "bg": "repeating-linear-gradient(176deg, rgba(223, 178, 45, 0.07) 0px, rgba(223, 178, 45, 0.07) 2px, rgba(0, 0, 0, 0) 2px, rgba(0, 0, 0, 0) 7px), radial-gradient(circle at 14% 18%, rgba(255, 255, 255, 0.42), rgba(0, 0, 0, 0) 46%)",
+          "cls": "insight-box hw-rough-surface hw-frame-relative hw-sticky-material",
+          "id": "",
+          "tag": "DIV"
+        },
+        {
+          "bg": "repeating-linear-gradient(87deg, rgba(135, 105, 68, 0.11) 0px, rgba(135, 105, 68, 0.11) 1px, rgba(0, 0, 0, 0) 1px, rgba(0, 0, 0, 0) 4px), none",
+          "cls": "hw-tape",
+          "id": "",
+          "tag": "SPAN"
+        },
+        {
+          "bg": "repeating-linear-gradient(176deg, rgba(223, 178, 45, 0.07) 0px, rgba(223, 178, 45, 0.07) 2px, rgba(0, 0, 0, 0) 2px, rgba(0, 0, 0, 0) 7px), radial-gradient(circle at 14% 18%, rgba(255, 255, 255, 0.42), rgba(0, 0, 0, 0) 46%)",
+          "cls": "insight-box hw-rough-surface hw-frame-relative hw-sticky-material",
+          "id": "",
+          "tag": "DIV"
+        },
+        {
+          "bg": "repeating-linear-gradient(87deg, rgba(135, 105, 68, 0.11) 0px, rgba(135, 105, 68, 0.11) 1px, rgba(0, 0, 0, 0) 1px, rgba(0, 0, 0, 0) 4px), none",
+          "cls": "hw-tape",
+          "id": "",
+          "tag": "SPAN"
+        },
+        {
+          "bg": "repeating-linear-gradient(176deg, rgba(223, 178, 45, 0.07) 0px, rgba(223, 178, 45, 0.07) 2px, rgba(0, 0, 0, 0) 2px, rgba(0, 0, 0, 0) 7px), radial-gradient(circle at 14% 18%, rgba(255, 255, 255, 0.42), rgba(0, 0, 0, 0) 46%)",
+          "cls": "insight-box hw-rough-surface hw-frame-relative hw-sticky-material",
+          "id": "",
+          "tag": "DIV"
+        },
+        {
+          "bg": "repeating-linear-gradient(87deg, rgba(135, 105, 68, 0.11) 0px, rgba(135, 105, 68, 0.11) 1px, rgba(0, 0, 0, 0) 1px, rgba(0, 0, 0, 0) 4px), none",
+          "cls": "hw-tape",
+          "id": "",
+          "tag": "SPAN"
+        },
+        {
+          "bg": "repeating-linear-gradient(176deg, rgba(223, 178, 45, 0.07) 0px, rgba(223, 178, 45, 0.07) 2px, rgba(0, 0, 0, 0) 2px, rgba(0, 0, 0, 0) 7px), radial-gradient(circle at 14% 18%, rgba(255, 255, 255, 0.42), rgba(0, 0, 0, 0) 46%)",
+          "cls": "insight-box hw-rough-surface hw-frame-relative hw-sticky-material",
+          "id": "",
+          "tag": "DIV"
+        },
+        {
+          "bg": "repeating-linear-gradient(87deg, rgba(135, 105, 68, 0.11) 0px, rgba(135, 105, 68, 0.11) 1px, rgba(0, 0, 0, 0) 1px, rgba(0, 0, 0, 0) 4px), none",
+          "cls": "hw-tape",
+          "id": "",
+          "tag": "SPAN"
+        },
+        {
+          "bg": "repeating-linear-gradient(176deg, rgba(223, 178, 45, 0.07) 0px, rgba(223, 178, 45, 0.07) 2px, rgba(0, 0, 0, 0) 2px, rgba(0, 0, 0, 0) 7px), radial-gradient(circle at 14% 18%, rgba(255, 255, 255, 0.42), rgba(0, 0, 0, 0) 46%)",
+          "cls": "statml-takeaways hw-rough-surface hw-frame-relative hw-sticky-material",
+          "id": "",
+          "tag": "DIV"
+        },
+        {
+          "bg": "repeating-linear-gradient(87deg, rgba(135, 105, 68, 0.11) 0px, rgba(135, 105, 68, 0.11) 1px, rgba(0, 0, 0, 0) 1px, rgba(0, 0, 0, 0) 4px), none",
+          "cls": "hw-tape",
+          "id": "",
+          "tag": "SPAN"
+        }
+      ],
+      "h1": "Model Selection & Regularization",
+      "perfectRadii": [
+        {
+          "cls": "recommended-badge",
+          "id": "",
+          "radius": "999px",
+          "tag": "DIV"
+        },
+        {
+          "cls": "recommended-badge",
+          "id": "",
+          "radius": "999px",
+          "tag": "DIV"
+        }
+      ],
+      "roughFrames": 36,
+      "scrollHeight": 14549,
+      "stageCount": 12,
+      "svgs": 37,
+      "vh": 844,
+      "vw": 390
+    },
+    "mobile": {
+      "bodyFont": "\"Patrick Hand\", Kalam, \"Marker Felt\", \"Chalkboard SE\", \"Comic Sans MS\", \"Segoe Print\", cursive",
+      "h1": "Model Selection & Regularization",
+      "overflow": false,
+      "roughFrames": 36,
+      "scrollHeight": 14549,
+      "stageCount": 12,
+      "vh": 844,
+      "visibleControls": 13,
+      "vw": 390
+    }
+  },
+  {
+    "pageName": "support-vector-machine",
+    "desktop": {
+      "bodyClass": "statml-standardized hw-handwritten",
+      "bodyFont": "\"Patrick Hand\", Kalam, \"Marker Felt\", \"Chalkboard SE\", \"Comic Sans MS\", \"Segoe Print\", cursive",
+      "canvases": 2,
+      "cards": 48,
+      "digitalFonts": [],
+      "emoji": [],
+      "gradients": [
+        {
+          "bg": "repeating-linear-gradient(162deg, rgba(255, 255, 255, 0.26) 0px, rgba(255, 255, 255, 0.26) 2px, rgba(0, 0, 0, 0) 2px, rgba(0, 0, 0, 0) 6px)",
+          "cls": "progress-bar",
+          "id": "progressBar",
+          "tag": "DIV"
+        },
+        {
+          "bg": "linear-gradient(177deg, rgba(0, 0, 0, 0) 20%, rgba(241, 212, 119, 0.22) 20%, rgba(241, 212, 119, 0.22) 35%, rgba(241, 212, 119, 0.54) 35%, rgba(241, 212, 119, 0.54) 78%, rgba(0, 0, 0, 0) 78%), linear-gradient(181deg, rgba(0, 0, 0, 0) 34%, rgba(241, 212, 119, 0.25) 34%, rgba(241, 212, 119, 0.25) 83%, rgba(0, 0, 0, 0) 83%)",
+          "cls": "pill indigo hw-marker-label",
+          "id": "",
+          "tag": "SPAN"
+        },
+        {
+          "bg": "linear-gradient(182deg, rgba(0, 0, 0, 0) 23%, rgba(241, 212, 119, 0.5) 23%, rgba(241, 212, 119, 0.5) 76%, rgba(0, 0, 0, 0) 76%), linear-gradient(175deg, rgba(0, 0, 0, 0) 38%, rgba(241, 212, 119, 0.22) 38%, rgba(241, 212, 119, 0.22) 84%, rgba(0, 0, 0, 0) 84%)",
+          "cls": "pill indigo hw-marker-label",
+          "id": "",
+          "tag": "SPAN"
+        },
+        {
+          "bg": "linear-gradient(177deg, rgba(0, 0, 0, 0) 20%, rgba(241, 212, 119, 0.22) 20%, rgba(241, 212, 119, 0.22) 35%, rgba(241, 212, 119, 0.54) 35%, rgba(241, 212, 119, 0.54) 78%, rgba(0, 0, 0, 0) 78%), linear-gradient(181deg, rgba(0, 0, 0, 0) 34%, rgba(241, 212, 119, 0.25) 34%, rgba(241, 212, 119, 0.25) 83%, rgba(0, 0, 0, 0) 83%)",
+          "cls": "pill indigo hw-marker-label",
+          "id": "",
+          "tag": "SPAN"
+        },
+        {
+          "bg": "linear-gradient(182deg, rgba(0, 0, 0, 0) 23%, rgba(241, 212, 119, 0.5) 23%, rgba(241, 212, 119, 0.5) 76%, rgba(0, 0, 0, 0) 76%), linear-gradient(175deg, rgba(0, 0, 0, 0) 38%, rgba(241, 212, 119, 0.22) 38%, rgba(241, 212, 119, 0.22) 84%, rgba(0, 0, 0, 0) 84%)",
+          "cls": "pill indigo hw-marker-label",
+          "id": "",
+          "tag": "SPAN"
+        },
+        {
+          "bg": "linear-gradient(177deg, rgba(0, 0, 0, 0) 20%, rgba(241, 212, 119, 0.22) 20%, rgba(241, 212, 119, 0.22) 35%, rgba(241, 212, 119, 0.54) 35%, rgba(241, 212, 119, 0.54) 78%, rgba(0, 0, 0, 0) 78%), linear-gradient(181deg, rgba(0, 0, 0, 0) 34%, rgba(241, 212, 119, 0.25) 34%, rgba(241, 212, 119, 0.25) 83%, rgba(0, 0, 0, 0) 83%)",
+          "cls": "pill indigo hw-marker-label",
+          "id": "",
+          "tag": "SPAN"
+        },
+        {
+          "bg": "linear-gradient(182deg, rgba(0, 0, 0, 0) 23%, rgba(241, 212, 119, 0.5) 23%, rgba(241, 212, 119, 0.5) 76%, rgba(0, 0, 0, 0) 76%), linear-gradient(175deg, rgba(0, 0, 0, 0) 38%, rgba(241, 212, 119, 0.22) 38%, rgba(241, 212, 119, 0.22) 84%, rgba(0, 0, 0, 0) 84%)",
+          "cls": "pill indigo hw-marker-label",
+          "id": "",
+          "tag": "SPAN"
+        }
+      ],
+      "h1": "Support Vector\nMachines",
+      "perfectRadii": [
+        {
+          "cls": "scroll-mouse",
+          "id": "",
+          "radius": "999px",
+          "tag": "DIV"
+        },
+        {
+          "cls": "stage-dots hw-rough-surface",
+          "id": "stageDots",
+          "radius": "999px",
+          "tag": "NAV"
+        },
+        {
+          "cls": "statml-stage-rail hw-rough-surface",
+          "id": "",
+          "radius": "999px",
+          "tag": "NAV"
+        }
+      ],
+      "roughFrames": 48,
+      "scrollHeight": 11704,
+      "stageCount": 14,
+      "svgs": 49,
+      "vh": 844,
+      "vw": 390
+    },
+    "mobile": {
+      "bodyFont": "\"Patrick Hand\", Kalam, \"Marker Felt\", \"Chalkboard SE\", \"Comic Sans MS\", \"Segoe Print\", cursive",
+      "h1": "Support Vector\nMachines",
+      "overflow": false,
+      "roughFrames": 48,
+      "scrollHeight": 11704,
+      "stageCount": 14,
+      "vh": 844,
+      "visibleControls": 0,
+      "vw": 390
+    }
+  },
+  {
+    "pageName": "regression-trees",
+    "desktop": {
+      "bodyClass": "statml-standardized hw-handwritten",
+      "bodyFont": "\"Patrick Hand\", Kalam, \"Marker Felt\", \"Chalkboard SE\", \"Comic Sans MS\", \"Segoe Print\", cursive",
+      "canvases": 3,
+      "cards": 54,
+      "digitalFonts": [],
+      "emoji": [],
+      "gradients": [
+        {
+          "bg": "repeating-linear-gradient(162deg, rgba(255, 255, 255, 0.26) 0px, rgba(255, 255, 255, 0.26) 2px, rgba(0, 0, 0, 0) 2px, rgba(0, 0, 0, 0) 6px)",
+          "cls": "",
+          "id": "progress-bar",
+          "tag": "DIV"
+        },
+        {
+          "bg": "linear-gradient(177deg, rgba(0, 0, 0, 0) 20%, rgba(241, 212, 119, 0.22) 20%, rgba(241, 212, 119, 0.22) 35%, rgba(241, 212, 119, 0.54) 35%, rgba(241, 212, 119, 0.54) 78%, rgba(0, 0, 0, 0) 78%), linear-gradient(181deg, rgba(0, 0, 0, 0) 34%, rgba(241, 212, 119, 0.25) 34%, rgba(241, 212, 119, 0.25) 83%, rgba(0, 0, 0, 0) 83%)",
+          "cls": "topic-badge hw-marker-label",
+          "id": "",
+          "tag": "DIV"
+        },
+        {
+          "bg": "linear-gradient(177deg, rgba(0, 0, 0, 0) 20%, rgba(241, 212, 119, 0.22) 20%, rgba(241, 212, 119, 0.22) 35%, rgba(241, 212, 119, 0.54) 35%, rgba(241, 212, 119, 0.54) 78%, rgba(0, 0, 0, 0) 78%), linear-gradient(181deg, rgba(0, 0, 0, 0) 34%, rgba(241, 212, 119, 0.25) 34%, rgba(241, 212, 119, 0.25) 83%, rgba(0, 0, 0, 0) 83%)",
+          "cls": "tag hw-marker-label",
+          "id": "",
+          "tag": "SPAN"
+        },
+        {
+          "bg": "linear-gradient(182deg, rgba(0, 0, 0, 0) 23%, rgba(241, 212, 119, 0.5) 23%, rgba(241, 212, 119, 0.5) 76%, rgba(0, 0, 0, 0) 76%), linear-gradient(175deg, rgba(0, 0, 0, 0) 38%, rgba(241, 212, 119, 0.22) 38%, rgba(241, 212, 119, 0.22) 84%, rgba(0, 0, 0, 0) 84%)",
+          "cls": "tag hw-marker-label",
+          "id": "",
+          "tag": "SPAN"
+        },
+        {
+          "bg": "linear-gradient(177deg, rgba(0, 0, 0, 0) 20%, rgba(241, 212, 119, 0.22) 20%, rgba(241, 212, 119, 0.22) 35%, rgba(241, 212, 119, 0.54) 35%, rgba(241, 212, 119, 0.54) 78%, rgba(0, 0, 0, 0) 78%), linear-gradient(181deg, rgba(0, 0, 0, 0) 34%, rgba(241, 212, 119, 0.25) 34%, rgba(241, 212, 119, 0.25) 83%, rgba(0, 0, 0, 0) 83%)",
+          "cls": "tag hw-marker-label",
+          "id": "",
+          "tag": "SPAN"
+        },
+        {
+          "bg": "linear-gradient(177deg, rgba(0, 0, 0, 0) 20%, rgba(241, 212, 119, 0.22) 20%, rgba(241, 212, 119, 0.22) 35%, rgba(241, 212, 119, 0.54) 35%, rgba(241, 212, 119, 0.54) 78%, rgba(0, 0, 0, 0) 78%), linear-gradient(181deg, rgba(0, 0, 0, 0) 34%, rgba(241, 212, 119, 0.25) 34%, rgba(241, 212, 119, 0.25) 83%, rgba(0, 0, 0, 0) 83%)",
+          "cls": "tag hw-marker-label",
+          "id": "",
+          "tag": "SPAN"
+        },
+        {
+          "bg": "linear-gradient(177deg, rgba(0, 0, 0, 0) 20%, rgba(241, 212, 119, 0.22) 20%, rgba(241, 212, 119, 0.22) 35%, rgba(241, 212, 119, 0.54) 35%, rgba(241, 212, 119, 0.54) 78%, rgba(0, 0, 0, 0) 78%), linear-gradient(181deg, rgba(0, 0, 0, 0) 34%, rgba(241, 212, 119, 0.25) 34%, rgba(241, 212, 119, 0.25) 83%, rgba(0, 0, 0, 0) 83%)",
+          "cls": "tag hw-marker-label",
+          "id": "",
+          "tag": "SPAN"
+        },
+        {
+          "bg": "linear-gradient(177deg, rgba(0, 0, 0, 0) 20%, rgba(241, 212, 119, 0.22) 20%, rgba(241, 212, 119, 0.22) 35%, rgba(241, 212, 119, 0.54) 35%, rgba(241, 212, 119, 0.54) 78%, rgba(0, 0, 0, 0) 78%), linear-gradient(181deg, rgba(0, 0, 0, 0) 34%, rgba(241, 212, 119, 0.25) 34%, rgba(241, 212, 119, 0.25) 83%, rgba(0, 0, 0, 0) 83%)",
+          "cls": "tag hw-marker-label",
+          "id": "",
+          "tag": "SPAN"
+        },
+        {
+          "bg": "repeating-linear-gradient(176deg, rgba(223, 178, 45, 0.07) 0px, rgba(223, 178, 45, 0.07) 2px, rgba(0, 0, 0, 0) 2px, rgba(0, 0, 0, 0) 7px), radial-gradient(circle at 14% 18%, rgba(255, 255, 255, 0.42), rgba(0, 0, 0, 0) 46%)",
+          "cls": "insight-box hw-rough-surface hw-frame-relative hw-sticky-material",
+          "id": "",
+          "tag": "DIV"
+        },
+        {
+          "bg": "repeating-linear-gradient(87deg, rgba(135, 105, 68, 0.11) 0px, rgba(135, 105, 68, 0.11) 1px, rgba(0, 0, 0, 0) 1px, rgba(0, 0, 0, 0) 4px), none",
+          "cls": "hw-tape",
+          "id": "",
+          "tag": "SPAN"
+        },
+        {
+          "bg": "repeating-linear-gradient(176deg, rgba(223, 178, 45, 0.07) 0px, rgba(223, 178, 45, 0.07) 2px, rgba(0, 0, 0, 0) 2px, rgba(0, 0, 0, 0) 7px), radial-gradient(circle at 14% 18%, rgba(255, 255, 255, 0.42), rgba(0, 0, 0, 0) 46%)",
+          "cls": "insight-box hw-rough-surface hw-frame-relative hw-sticky-material",
+          "id": "",
+          "tag": "DIV"
+        },
+        {
+          "bg": "repeating-linear-gradient(87deg, rgba(135, 105, 68, 0.11) 0px, rgba(135, 105, 68, 0.11) 1px, rgba(0, 0, 0, 0) 1px, rgba(0, 0, 0, 0) 4px), none",
+          "cls": "hw-tape",
+          "id": "",
+          "tag": "SPAN"
+        },
+        {
+          "bg": "repeating-linear-gradient(176deg, rgba(223, 178, 45, 0.07) 0px, rgba(223, 178, 45, 0.07) 2px, rgba(0, 0, 0, 0) 2px, rgba(0, 0, 0, 0) 7px), radial-gradient(circle at 14% 18%, rgba(255, 255, 255, 0.42), rgba(0, 0, 0, 0) 46%)",
+          "cls": "insight-box hw-rough-surface hw-frame-relative hw-sticky-material",
+          "id": "",
+          "tag": "DIV"
+        },
+        {
+          "bg": "repeating-linear-gradient(87deg, rgba(135, 105, 68, 0.11) 0px, rgba(135, 105, 68, 0.11) 1px, rgba(0, 0, 0, 0) 1px, rgba(0, 0, 0, 0) 4px), none",
+          "cls": "hw-tape",
+          "id": "",
+          "tag": "SPAN"
+        },
+        {
+          "bg": "repeating-linear-gradient(176deg, rgba(223, 178, 45, 0.07) 0px, rgba(223, 178, 45, 0.07) 2px, rgba(0, 0, 0, 0) 2px, rgba(0, 0, 0, 0) 7px), radial-gradient(circle at 14% 18%, rgba(255, 255, 255, 0.42), rgba(0, 0, 0, 0) 46%)",
+          "cls": "insight-box hw-rough-surface hw-frame-relative hw-sticky-material",
+          "id": "",
+          "tag": "DIV"
+        },
+        {
+          "bg": "repeating-linear-gradient(87deg, rgba(135, 105, 68, 0.11) 0px, rgba(135, 105, 68, 0.11) 1px, rgba(0, 0, 0, 0) 1px, rgba(0, 0, 0, 0) 4px), none",
+          "cls": "hw-tape",
+          "id": "",
+          "tag": "SPAN"
+        },
+        {
+          "bg": "linear-gradient(177deg, rgba(0, 0, 0, 0) 20%, rgba(241, 212, 119, 0.22) 20%, rgba(241, 212, 119, 0.22) 35%, rgba(241, 212, 119, 0.54) 35%, rgba(241, 212, 119, 0.54) 78%, rgba(0, 0, 0, 0) 78%), linear-gradient(181deg, rgba(0, 0, 0, 0) 34%, rgba(241, 212, 119, 0.25) 34%, rgba(241, 212, 119, 0.25) 83%, rgba(0, 0, 0, 0) 83%)",
+          "cls": "tag hw-marker-label",
+          "id": "",
+          "tag": "SPAN"
+        },
+        {
+          "bg": "linear-gradient(177deg, rgba(0, 0, 0, 0) 20%, rgba(241, 212, 119, 0.22) 20%, rgba(241, 212, 119, 0.22) 35%, rgba(241, 212, 119, 0.54) 35%, rgba(241, 212, 119, 0.54) 78%, rgba(0, 0, 0, 0) 78%), linear-gradient(181deg, rgba(0, 0, 0, 0) 34%, rgba(241, 212, 119, 0.25) 34%, rgba(241, 212, 119, 0.25) 83%, rgba(0, 0, 0, 0) 83%)",
+          "cls": "tag hw-marker-label",
+          "id": "",
+          "tag": "SPAN"
+        },
+        {
+          "bg": "linear-gradient(177deg, rgba(0, 0, 0, 0) 20%, rgba(241, 212, 119, 0.22) 20%, rgba(241, 212, 119, 0.22) 35%, rgba(241, 212, 119, 0.54) 35%, rgba(241, 212, 119, 0.54) 78%, rgba(0, 0, 0, 0) 78%), linear-gradient(181deg, rgba(0, 0, 0, 0) 34%, rgba(241, 212, 119, 0.25) 34%, rgba(241, 212, 119, 0.25) 83%, rgba(0, 0, 0, 0) 83%)",
+          "cls": "tag hw-marker-label",
+          "id": "",
+          "tag": "SPAN"
+        },
+        {
+          "bg": "linear-gradient(177deg, rgba(0, 0, 0, 0) 20%, rgba(241, 212, 119, 0.22) 20%, rgba(241, 212, 119, 0.22) 35%, rgba(241, 212, 119, 0.54) 35%, rgba(241, 212, 119, 0.54) 78%, rgba(0, 0, 0, 0) 78%), linear-gradient(181deg, rgba(0, 0, 0, 0) 34%, rgba(241, 212, 119, 0.25) 34%, rgba(241, 212, 119, 0.25) 83%, rgba(0, 0, 0, 0) 83%)",
+          "cls": "tag hw-marker-label",
+          "id": "",
+          "tag": "SPAN"
+        },
+        {
+          "bg": "repeating-linear-gradient(176deg, rgba(223, 178, 45, 0.07) 0px, rgba(223, 178, 45, 0.07) 2px, rgba(0, 0, 0, 0) 2px, rgba(0, 0, 0, 0) 7px), radial-gradient(circle at 14% 18%, rgba(255, 255, 255, 0.42), rgba(0, 0, 0, 0) 46%)",
+          "cls": "insight-box hw-rough-surface hw-frame-relative hw-sticky-material",
+          "id": "",
+          "tag": "DIV"
+        },
+        {
+          "bg": "repeating-linear-gradient(87deg, rgba(135, 105, 68, 0.11) 0px, rgba(135, 105, 68, 0.11) 1px, rgba(0, 0, 0, 0) 1px, rgba(0, 0, 0, 0) 4px), none",
+          "cls": "hw-tape",
+          "id": "",
+          "tag": "SPAN"
+        },
+        {
+          "bg": "repeating-linear-gradient(176deg, rgba(223, 178, 45, 0.07) 0px, rgba(223, 178, 45, 0.07) 2px, rgba(0, 0, 0, 0) 2px, rgba(0, 0, 0, 0) 7px), radial-gradient(circle at 14% 18%, rgba(255, 255, 255, 0.42), rgba(0, 0, 0, 0) 46%)",
+          "cls": "insight-box hw-rough-surface hw-frame-relative hw-sticky-material",
+          "id": "",
+          "tag": "DIV"
+        },
+        {
+          "bg": "repeating-linear-gradient(87deg, rgba(135, 105, 68, 0.11) 0px, rgba(135, 105, 68, 0.11) 1px, rgba(0, 0, 0, 0) 1px, rgba(0, 0, 0, 0) 4px), none",
+          "cls": "hw-tape",
+          "id": "",
+          "tag": "SPAN"
+        },
+        {
+          "bg": "repeating-linear-gradient(176deg, rgba(223, 178, 45, 0.07) 0px, rgba(223, 178, 45, 0.07) 2px, rgba(0, 0, 0, 0) 2px, rgba(0, 0, 0, 0) 7px), radial-gradient(circle at 14% 18%, rgba(255, 255, 255, 0.42), rgba(0, 0, 0, 0) 46%)",
+          "cls": "insight-box hw-rough-surface hw-frame-relative hw-sticky-material",
+          "id": "",
+          "tag": "DIV"
+        }
+      ],
+      "h1": "Regression Trees",
+      "perfectRadii": [],
+      "roughFrames": 54,
+      "scrollHeight": 17709,
+      "stageCount": 16,
+      "svgs": 72,
+      "vh": 844,
+      "vw": 390
+    },
+    "mobile": {
+      "bodyFont": "\"Patrick Hand\", Kalam, \"Marker Felt\", \"Chalkboard SE\", \"Comic Sans MS\", \"Segoe Print\", cursive",
+      "h1": "Regression Trees",
+      "overflow": false,
+      "roughFrames": 54,
+      "scrollHeight": 17709,
+      "stageCount": 16,
+      "vh": 844,
+      "visibleControls": 13,
+      "vw": 390
+    }
+  },
+  {
+    "pageName": "deep-learning",
+    "desktop": {
+      "bodyClass": "",
+      "bodyFont": "Times",
+      "canvases": 0,
+      "cards": 0,
+      "digitalFonts": [],
+      "emoji": [],
+      "gradients": [],
+      "h1": "DATA SCIENCE PYTHON PLAYGROUND",
+      "perfectRadii": [],
+      "roughFrames": 0,
+      "scrollHeight": 2966,
+      "stageCount": 0,
+      "svgs": 0,
+      "vh": 844,
+      "vw": 390
+    },
+    "mobile": {
+      "bodyFont": "Times",
+      "h1": "DATA SCIENCE PYTHON PLAYGROUND",
+      "overflow": false,
+      "roughFrames": 0,
+      "scrollHeight": 2966,
+      "stageCount": 0,
+      "vh": 844,
+      "visibleControls": 0,
+      "vw": 390
+    }
+  },
+  {
+    "pageName": "neural-networks",
+    "desktop": {
+      "bodyClass": "statml-standardized hw-handwritten",
+      "bodyFont": "\"Patrick Hand\", Kalam, \"Marker Felt\", \"Chalkboard SE\", \"Comic Sans MS\", \"Segoe Print\", cursive",
+      "canvases": 2,
+      "cards": 74,
+      "digitalFonts": [],
+      "emoji": [],
+      "gradients": [
+        {
+          "bg": "repeating-linear-gradient(162deg, rgba(255, 255, 255, 0.26) 0px, rgba(255, 255, 255, 0.26) 2px, rgba(0, 0, 0, 0) 2px, rgba(0, 0, 0, 0) 6px)",
+          "cls": "progress-bar",
+          "id": "progressBar",
+          "tag": "DIV"
+        },
+        {
+          "bg": "linear-gradient(177deg, rgba(0, 0, 0, 0) 20%, rgba(241, 212, 119, 0.22) 20%, rgba(241, 212, 119, 0.22) 35%, rgba(241, 212, 119, 0.54) 35%, rgba(241, 212, 119, 0.54) 78%, rgba(0, 0, 0, 0) 78%), linear-gradient(181deg, rgba(0, 0, 0, 0) 34%, rgba(241, 212, 119, 0.25) 34%, rgba(241, 212, 119, 0.25) 83%, rgba(0, 0, 0, 0) 83%)",
+          "cls": "hero-badge hw-marker-label",
+          "id": "",
+          "tag": "DIV"
+        },
+        {
+          "bg": "linear-gradient(177deg, rgba(0, 0, 0, 0) 20%, rgba(241, 212, 119, 0.22) 20%, rgba(241, 212, 119, 0.22) 35%, rgba(241, 212, 119, 0.54) 35%, rgba(241, 212, 119, 0.54) 78%, rgba(0, 0, 0, 0) 78%), linear-gradient(181deg, rgba(0, 0, 0, 0) 34%, rgba(241, 212, 119, 0.25) 34%, rgba(241, 212, 119, 0.25) 83%, rgba(0, 0, 0, 0) 83%)",
+          "cls": "tag green hw-marker-label",
+          "id": "",
+          "tag": "SPAN"
+        },
+        {
+          "bg": "linear-gradient(182deg, rgba(0, 0, 0, 0) 23%, rgba(241, 212, 119, 0.5) 23%, rgba(241, 212, 119, 0.5) 76%, rgba(0, 0, 0, 0) 76%), linear-gradient(175deg, rgba(0, 0, 0, 0) 38%, rgba(241, 212, 119, 0.22) 38%, rgba(241, 212, 119, 0.22) 84%, rgba(0, 0, 0, 0) 84%)",
+          "cls": "tag red hw-marker-label",
+          "id": "",
+          "tag": "SPAN"
+        },
+        {
+          "bg": "repeating-linear-gradient(176deg, rgba(223, 178, 45, 0.07) 0px, rgba(223, 178, 45, 0.07) 2px, rgba(0, 0, 0, 0) 2px, rgba(0, 0, 0, 0) 7px), radial-gradient(circle at 14% 18%, rgba(255, 255, 255, 0.42), rgba(0, 0, 0, 0) 46%)",
+          "cls": "plain-translation hw-rough-surface hw-frame-relative hw-sticky-material",
+          "id": "",
+          "tag": "DIV"
+        },
+        {
+          "bg": "repeating-linear-gradient(87deg, rgba(135, 105, 68, 0.11) 0px, rgba(135, 105, 68, 0.11) 1px, rgba(0, 0, 0, 0) 1px, rgba(0, 0, 0, 0) 4px), none",
+          "cls": "hw-tape",
+          "id": "",
+          "tag": "SPAN"
+        },
+        {
+          "bg": "linear-gradient(177deg, rgba(0, 0, 0, 0) 20%, rgba(241, 212, 119, 0.22) 20%, rgba(241, 212, 119, 0.22) 35%, rgba(241, 212, 119, 0.54) 35%, rgba(241, 212, 119, 0.54) 78%, rgba(0, 0, 0, 0) 78%), linear-gradient(181deg, rgba(0, 0, 0, 0) 34%, rgba(241, 212, 119, 0.25) 34%, rgba(241, 212, 119, 0.25) 83%, rgba(0, 0, 0, 0) 83%)",
+          "cls": "tag green hw-marker-label",
+          "id": "",
+          "tag": "SPAN"
+        },
+        {
+          "bg": "linear-gradient(177deg, rgba(0, 0, 0, 0) 20%, rgba(241, 212, 119, 0.22) 20%, rgba(241, 212, 119, 0.22) 35%, rgba(241, 212, 119, 0.54) 35%, rgba(241, 212, 119, 0.54) 78%, rgba(0, 0, 0, 0) 78%), linear-gradient(181deg, rgba(0, 0, 0, 0) 34%, rgba(241, 212, 119, 0.25) 34%, rgba(241, 212, 119, 0.25) 83%, rgba(0, 0, 0, 0) 83%)",
+          "cls": "tag red hw-marker-label",
+          "id": "",
+          "tag": "SPAN"
+        },
+        {
+          "bg": "linear-gradient(177deg, rgba(0, 0, 0, 0) 20%, rgba(241, 212, 119, 0.22) 20%, rgba(241, 212, 119, 0.22) 35%, rgba(241, 212, 119, 0.54) 35%, rgba(241, 212, 119, 0.54) 78%, rgba(0, 0, 0, 0) 78%), linear-gradient(181deg, rgba(0, 0, 0, 0) 34%, rgba(241, 212, 119, 0.25) 34%, rgba(241, 212, 119, 0.25) 83%, rgba(0, 0, 0, 0) 83%)",
+          "cls": "tag green hw-marker-label",
+          "id": "",
+          "tag": "SPAN"
+        },
+        {
+          "bg": "repeating-linear-gradient(176deg, rgba(223, 178, 45, 0.07) 0px, rgba(223, 178, 45, 0.07) 2px, rgba(0, 0, 0, 0) 2px, rgba(0, 0, 0, 0) 7px), radial-gradient(circle at 14% 18%, rgba(255, 255, 255, 0.42), rgba(0, 0, 0, 0) 46%)",
+          "cls": "insight-box hw-rough-surface hw-frame-relative hw-sticky-material",
+          "id": "",
+          "tag": "DIV"
+        },
+        {
+          "bg": "repeating-linear-gradient(87deg, rgba(135, 105, 68, 0.11) 0px, rgba(135, 105, 68, 0.11) 1px, rgba(0, 0, 0, 0) 1px, rgba(0, 0, 0, 0) 4px), none",
+          "cls": "hw-tape",
+          "id": "",
+          "tag": "SPAN"
+        },
+        {
+          "bg": "repeating-linear-gradient(176deg, rgba(223, 178, 45, 0.07) 0px, rgba(223, 178, 45, 0.07) 2px, rgba(0, 0, 0, 0) 2px, rgba(0, 0, 0, 0) 7px), radial-gradient(circle at 14% 18%, rgba(255, 255, 255, 0.42), rgba(0, 0, 0, 0) 46%)",
+          "cls": "warning-note hw-rough-surface hw-frame-relative hw-sticky-material",
+          "id": "",
+          "tag": "DIV"
+        },
+        {
+          "bg": "repeating-linear-gradient(87deg, rgba(135, 105, 68, 0.11) 0px, rgba(135, 105, 68, 0.11) 1px, rgba(0, 0, 0, 0) 1px, rgba(0, 0, 0, 0) 4px), none",
+          "cls": "hw-tape",
+          "id": "",
+          "tag": "SPAN"
+        },
+        {
+          "bg": "repeating-linear-gradient(176deg, rgba(223, 178, 45, 0.07) 0px, rgba(223, 178, 45, 0.07) 2px, rgba(0, 0, 0, 0) 2px, rgba(0, 0, 0, 0) 7px), radial-gradient(circle at 14% 18%, rgba(255, 255, 255, 0.42), rgba(0, 0, 0, 0) 46%)",
+          "cls": "plain-translation hw-rough-surface hw-frame-relative hw-sticky-material",
+          "id": "",
+          "tag": "DIV"
+        },
+        {
+          "bg": "repeating-linear-gradient(87deg, rgba(135, 105, 68, 0.11) 0px, rgba(135, 105, 68, 0.11) 1px, rgba(0, 0, 0, 0) 1px, rgba(0, 0, 0, 0) 4px), none",
+          "cls": "hw-tape",
+          "id": "",
+          "tag": "SPAN"
+        },
+        {
+          "bg": "repeating-linear-gradient(176deg, rgba(223, 178, 45, 0.07) 0px, rgba(223, 178, 45, 0.07) 2px, rgba(0, 0, 0, 0) 2px, rgba(0, 0, 0, 0) 7px), radial-gradient(circle at 14% 18%, rgba(255, 255, 255, 0.42), rgba(0, 0, 0, 0) 46%)",
+          "cls": "insight-box hw-rough-surface hw-frame-relative hw-sticky-material",
+          "id": "",
+          "tag": "DIV"
+        },
+        {
+          "bg": "repeating-linear-gradient(87deg, rgba(135, 105, 68, 0.11) 0px, rgba(135, 105, 68, 0.11) 1px, rgba(0, 0, 0, 0) 1px, rgba(0, 0, 0, 0) 4px), none",
+          "cls": "hw-tape",
+          "id": "",
+          "tag": "SPAN"
+        },
+        {
+          "bg": "repeating-linear-gradient(176deg, rgba(223, 178, 45, 0.07) 0px, rgba(223, 178, 45, 0.07) 2px, rgba(0, 0, 0, 0) 2px, rgba(0, 0, 0, 0) 7px), radial-gradient(circle at 14% 18%, rgba(255, 255, 255, 0.42), rgba(0, 0, 0, 0) 46%)",
+          "cls": "plain-translation hw-rough-surface hw-frame-relative hw-sticky-material",
+          "id": "",
+          "tag": "DIV"
+        },
+        {
+          "bg": "repeating-linear-gradient(87deg, rgba(135, 105, 68, 0.11) 0px, rgba(135, 105, 68, 0.11) 1px, rgba(0, 0, 0, 0) 1px, rgba(0, 0, 0, 0) 4px), none",
+          "cls": "hw-tape",
+          "id": "",
+          "tag": "SPAN"
+        },
+        {
+          "bg": "repeating-linear-gradient(176deg, rgba(223, 178, 45, 0.07) 0px, rgba(223, 178, 45, 0.07) 2px, rgba(0, 0, 0, 0) 2px, rgba(0, 0, 0, 0) 7px), radial-gradient(circle at 14% 18%, rgba(255, 255, 255, 0.42), rgba(0, 0, 0, 0) 46%)",
+          "cls": "insight-box hw-rough-surface hw-frame-relative hw-sticky-material",
+          "id": "",
+          "tag": "DIV"
+        },
+        {
+          "bg": "repeating-linear-gradient(87deg, rgba(135, 105, 68, 0.11) 0px, rgba(135, 105, 68, 0.11) 1px, rgba(0, 0, 0, 0) 1px, rgba(0, 0, 0, 0) 4px), none",
+          "cls": "hw-tape",
+          "id": "",
+          "tag": "SPAN"
+        },
+        {
+          "bg": "repeating-linear-gradient(176deg, rgba(223, 178, 45, 0.07) 0px, rgba(223, 178, 45, 0.07) 2px, rgba(0, 0, 0, 0) 2px, rgba(0, 0, 0, 0) 7px), radial-gradient(circle at 14% 18%, rgba(255, 255, 255, 0.42), rgba(0, 0, 0, 0) 46%)",
+          "cls": "plain-translation hw-rough-surface hw-frame-relative hw-sticky-material",
+          "id": "",
+          "tag": "DIV"
+        },
+        {
+          "bg": "repeating-linear-gradient(87deg, rgba(135, 105, 68, 0.11) 0px, rgba(135, 105, 68, 0.11) 1px, rgba(0, 0, 0, 0) 1px, rgba(0, 0, 0, 0) 4px), none",
+          "cls": "hw-tape",
+          "id": "",
+          "tag": "SPAN"
+        },
+        {
+          "bg": "repeating-linear-gradient(176deg, rgba(223, 178, 45, 0.07) 0px, rgba(223, 178, 45, 0.07) 2px, rgba(0, 0, 0, 0) 2px, rgba(0, 0, 0, 0) 7px), radial-gradient(circle at 14% 18%, rgba(255, 255, 255, 0.42), rgba(0, 0, 0, 0) 46%)",
+          "cls": "warning-note hw-rough-surface hw-frame-relative hw-sticky-material",
+          "id": "",
+          "tag": "DIV"
+        },
+        {
+          "bg": "repeating-linear-gradient(87deg, rgba(135, 105, 68, 0.11) 0px, rgba(135, 105, 68, 0.11) 1px, rgba(0, 0, 0, 0) 1px, rgba(0, 0, 0, 0) 4px), none",
+          "cls": "hw-tape",
+          "id": "",
+          "tag": "SPAN"
+        }
+      ],
+      "h1": "Neural Networks",
+      "perfectRadii": [],
+      "roughFrames": 74,
+      "scrollHeight": 25591,
+      "stageCount": 19,
+      "svgs": 76,
+      "vh": 844,
+      "vw": 390
+    },
+    "mobile": {
+      "bodyFont": "\"Patrick Hand\", Kalam, \"Marker Felt\", \"Chalkboard SE\", \"Comic Sans MS\", \"Segoe Print\", cursive",
+      "h1": "Neural Networks",
+      "overflow": false,
+      "roughFrames": 74,
+      "scrollHeight": 25591,
+      "stageCount": 19,
+      "vh": 844,
+      "visibleControls": 26,
+      "vw": 390
+    }
+  },
+  {
+    "pageName": "naive-bayes",
+    "desktop": {
+      "bodyClass": "hw-handwritten",
+      "bodyFont": "\"Patrick Hand\", Kalam, \"Marker Felt\", \"Chalkboard SE\", \"Comic Sans MS\", \"Segoe Print\", cursive",
+      "canvases": 2,
+      "cards": 54,
+      "digitalFonts": [],
+      "emoji": [],
+      "gradients": [
+        {
+          "bg": "repeating-linear-gradient(162deg, rgba(255, 255, 255, 0.26) 0px, rgba(255, 255, 255, 0.26) 2px, rgba(0, 0, 0, 0) 2px, rgba(0, 0, 0, 0) 6px)",
+          "cls": "progress-bar",
+          "id": "progressBar",
+          "tag": "DIV"
+        },
+        {
+          "bg": "linear-gradient(177deg, rgba(0, 0, 0, 0) 20%, rgba(241, 212, 119, 0.22) 20%, rgba(241, 212, 119, 0.22) 35%, rgba(241, 212, 119, 0.54) 35%, rgba(241, 212, 119, 0.54) 78%, rgba(0, 0, 0, 0) 78%), linear-gradient(181deg, rgba(0, 0, 0, 0) 34%, rgba(241, 212, 119, 0.25) 34%, rgba(241, 212, 119, 0.25) 83%, rgba(0, 0, 0, 0) 83%)",
+          "cls": "topic-badge hw-marker-label",
+          "id": "",
+          "tag": "DIV"
+        },
+        {
+          "bg": "linear-gradient(177deg, rgba(0, 0, 0, 0) 20%, rgba(241, 212, 119, 0.22) 20%, rgba(241, 212, 119, 0.22) 35%, rgba(241, 212, 119, 0.54) 35%, rgba(241, 212, 119, 0.54) 78%, rgba(0, 0, 0, 0) 78%), linear-gradient(181deg, rgba(0, 0, 0, 0) 34%, rgba(241, 212, 119, 0.25) 34%, rgba(241, 212, 119, 0.25) 83%, rgba(0, 0, 0, 0) 83%)",
+          "cls": "pill hw-marker-label",
+          "id": "",
+          "tag": "SPAN"
+        },
+        {
+          "bg": "linear-gradient(182deg, rgba(0, 0, 0, 0) 23%, rgba(241, 212, 119, 0.5) 23%, rgba(241, 212, 119, 0.5) 76%, rgba(0, 0, 0, 0) 76%), linear-gradient(175deg, rgba(0, 0, 0, 0) 38%, rgba(241, 212, 119, 0.22) 38%, rgba(241, 212, 119, 0.22) 84%, rgba(0, 0, 0, 0) 84%)",
+          "cls": "pill hw-marker-label",
+          "id": "",
+          "tag": "SPAN"
+        },
+        {
+          "bg": "linear-gradient(177deg, rgba(0, 0, 0, 0) 20%, rgba(241, 212, 119, 0.22) 20%, rgba(241, 212, 119, 0.22) 35%, rgba(241, 212, 119, 0.54) 35%, rgba(241, 212, 119, 0.54) 78%, rgba(0, 0, 0, 0) 78%), linear-gradient(181deg, rgba(0, 0, 0, 0) 34%, rgba(241, 212, 119, 0.25) 34%, rgba(241, 212, 119, 0.25) 83%, rgba(0, 0, 0, 0) 83%)",
+          "cls": "pill hw-marker-label",
+          "id": "",
+          "tag": "SPAN"
+        }
+      ],
+      "h1": "Naive\nBayes",
+      "perfectRadii": [
+        {
+          "cls": "stage-dots hw-rough-surface",
+          "id": "stageDots",
+          "radius": "999px",
+          "tag": "NAV"
+        }
+      ],
+      "roughFrames": 54,
+      "scrollHeight": 12780,
+      "stageCount": 28,
+      "svgs": 55,
+      "vh": 844,
+      "vw": 390
+    },
+    "mobile": {
+      "bodyFont": "\"Patrick Hand\", Kalam, \"Marker Felt\", \"Chalkboard SE\", \"Comic Sans MS\", \"Segoe Print\", cursive",
+      "h1": "Naive\nBayes",
+      "overflow": false,
+      "roughFrames": 54,
+      "scrollHeight": 12780,
+      "stageCount": 28,
+      "vh": 844,
+      "visibleControls": 10,
+      "vw": 390
+    }
+  },
+  {
+    "pageName": "one-r",
+    "desktop": {
+      "bodyClass": "statml-standardized hw-handwritten",
+      "bodyFont": "\"Patrick Hand\", Kalam, \"Marker Felt\", \"Chalkboard SE\", \"Comic Sans MS\", \"Segoe Print\", cursive",
+      "canvases": 1,
+      "cards": 39,
+      "digitalFonts": [],
+      "emoji": [],
+      "gradients": [
+        {
+          "bg": "repeating-linear-gradient(162deg, rgba(255, 255, 255, 0.26) 0px, rgba(255, 255, 255, 0.26) 2px, rgba(0, 0, 0, 0) 2px, rgba(0, 0, 0, 0) 6px)",
+          "cls": "progress-bar",
+          "id": "progressBar",
+          "tag": "DIV"
+        },
+        {
+          "bg": "linear-gradient(177deg, rgba(0, 0, 0, 0) 20%, rgba(241, 212, 119, 0.22) 20%, rgba(241, 212, 119, 0.22) 35%, rgba(241, 212, 119, 0.54) 35%, rgba(241, 212, 119, 0.54) 78%, rgba(0, 0, 0, 0) 78%), linear-gradient(181deg, rgba(0, 0, 0, 0) 34%, rgba(241, 212, 119, 0.25) 34%, rgba(241, 212, 119, 0.25) 83%, rgba(0, 0, 0, 0) 83%)",
+          "cls": "chip accent hw-marker-label",
+          "id": "",
+          "tag": "SPAN"
+        },
+        {
+          "bg": "linear-gradient(182deg, rgba(0, 0, 0, 0) 23%, rgba(241, 212, 119, 0.5) 23%, rgba(241, 212, 119, 0.5) 76%, rgba(0, 0, 0, 0) 76%), linear-gradient(175deg, rgba(0, 0, 0, 0) 38%, rgba(241, 212, 119, 0.22) 38%, rgba(241, 212, 119, 0.22) 84%, rgba(0, 0, 0, 0) 84%)",
+          "cls": "chip accent hw-marker-label",
+          "id": "",
+          "tag": "SPAN"
+        },
+        {
+          "bg": "linear-gradient(177deg, rgba(0, 0, 0, 0) 20%, rgba(241, 212, 119, 0.22) 20%, rgba(241, 212, 119, 0.22) 35%, rgba(241, 212, 119, 0.54) 35%, rgba(241, 212, 119, 0.54) 78%, rgba(0, 0, 0, 0) 78%), linear-gradient(181deg, rgba(0, 0, 0, 0) 34%, rgba(241, 212, 119, 0.25) 34%, rgba(241, 212, 119, 0.25) 83%, rgba(0, 0, 0, 0) 83%)",
+          "cls": "chip yes hw-marker-label",
+          "id": "",
+          "tag": "SPAN"
+        },
+        {
+          "bg": "linear-gradient(182deg, rgba(0, 0, 0, 0) 23%, rgba(241, 212, 119, 0.5) 23%, rgba(241, 212, 119, 0.5) 76%, rgba(0, 0, 0, 0) 76%), linear-gradient(175deg, rgba(0, 0, 0, 0) 38%, rgba(241, 212, 119, 0.22) 38%, rgba(241, 212, 119, 0.22) 84%, rgba(0, 0, 0, 0) 84%)",
+          "cls": "chip no hw-marker-label",
+          "id": "",
+          "tag": "SPAN"
+        },
+        {
+          "bg": "linear-gradient(177deg, rgba(0, 0, 0, 0) 20%, rgba(241, 212, 119, 0.22) 20%, rgba(241, 212, 119, 0.22) 35%, rgba(241, 212, 119, 0.54) 35%, rgba(241, 212, 119, 0.54) 78%, rgba(0, 0, 0, 0) 78%), linear-gradient(181deg, rgba(0, 0, 0, 0) 34%, rgba(241, 212, 119, 0.25) 34%, rgba(241, 212, 119, 0.25) 83%, rgba(0, 0, 0, 0) 83%)",
+          "cls": "chip accent hw-marker-label",
+          "id": "",
+          "tag": "SPAN"
+        },
+        {
+          "bg": "linear-gradient(182deg, rgba(0, 0, 0, 0) 23%, rgba(241, 212, 119, 0.5) 23%, rgba(241, 212, 119, 0.5) 76%, rgba(0, 0, 0, 0) 76%), linear-gradient(175deg, rgba(0, 0, 0, 0) 38%, rgba(241, 212, 119, 0.22) 38%, rgba(241, 212, 119, 0.22) 84%, rgba(0, 0, 0, 0) 84%)",
+          "cls": "chip accent hw-marker-label",
+          "id": "",
+          "tag": "SPAN"
+        },
+        {
+          "bg": "linear-gradient(177deg, rgba(0, 0, 0, 0) 20%, rgba(241, 212, 119, 0.22) 20%, rgba(241, 212, 119, 0.22) 35%, rgba(241, 212, 119, 0.54) 35%, rgba(241, 212, 119, 0.54) 78%, rgba(0, 0, 0, 0) 78%), linear-gradient(181deg, rgba(0, 0, 0, 0) 34%, rgba(241, 212, 119, 0.25) 34%, rgba(241, 212, 119, 0.25) 83%, rgba(0, 0, 0, 0) 83%)",
+          "cls": "chip accent hw-marker-label",
+          "id": "",
+          "tag": "SPAN"
+        },
+        {
+          "bg": "linear-gradient(182deg, rgba(0, 0, 0, 0) 23%, rgba(241, 212, 119, 0.5) 23%, rgba(241, 212, 119, 0.5) 76%, rgba(0, 0, 0, 0) 76%), linear-gradient(175deg, rgba(0, 0, 0, 0) 38%, rgba(241, 212, 119, 0.22) 38%, rgba(241, 212, 119, 0.22) 84%, rgba(0, 0, 0, 0) 84%)",
+          "cls": "chip accent hw-marker-label",
+          "id": "",
+          "tag": "SPAN"
+        },
+        {
+          "bg": "linear-gradient(177deg, rgba(0, 0, 0, 0) 20%, rgba(241, 212, 119, 0.22) 20%, rgba(241, 212, 119, 0.22) 35%, rgba(241, 212, 119, 0.54) 35%, rgba(241, 212, 119, 0.54) 78%, rgba(0, 0, 0, 0) 78%), linear-gradient(181deg, rgba(0, 0, 0, 0) 34%, rgba(241, 212, 119, 0.25) 34%, rgba(241, 212, 119, 0.25) 83%, rgba(0, 0, 0, 0) 83%)",
+          "cls": "chip amber hw-marker-label",
+          "id": "",
+          "tag": "SPAN"
+        },
+        {
+          "bg": "linear-gradient(182deg, rgba(0, 0, 0, 0) 23%, rgba(241, 212, 119, 0.5) 23%, rgba(241, 212, 119, 0.5) 76%, rgba(0, 0, 0, 0) 76%), linear-gradient(175deg, rgba(0, 0, 0, 0) 38%, rgba(241, 212, 119, 0.22) 38%, rgba(241, 212, 119, 0.22) 84%, rgba(0, 0, 0, 0) 84%)",
+          "cls": "chip amber hw-marker-label",
+          "id": "",
+          "tag": "SPAN"
+        },
+        {
+          "bg": "linear-gradient(177deg, rgba(0, 0, 0, 0) 20%, rgba(241, 212, 119, 0.22) 20%, rgba(241, 212, 119, 0.22) 35%, rgba(241, 212, 119, 0.54) 35%, rgba(241, 212, 119, 0.54) 78%, rgba(0, 0, 0, 0) 78%), linear-gradient(181deg, rgba(0, 0, 0, 0) 34%, rgba(241, 212, 119, 0.25) 34%, rgba(241, 212, 119, 0.25) 83%, rgba(0, 0, 0, 0) 83%)",
+          "cls": "chip amber hw-marker-label",
+          "id": "",
+          "tag": "SPAN"
+        },
+        {
+          "bg": "linear-gradient(182deg, rgba(0, 0, 0, 0) 23%, rgba(241, 212, 119, 0.5) 23%, rgba(241, 212, 119, 0.5) 76%, rgba(0, 0, 0, 0) 76%), linear-gradient(175deg, rgba(0, 0, 0, 0) 38%, rgba(241, 212, 119, 0.22) 38%, rgba(241, 212, 119, 0.22) 84%, rgba(0, 0, 0, 0) 84%)",
+          "cls": "chip amber hw-marker-label",
+          "id": "",
+          "tag": "SPAN"
+        }
+      ],
+      "h1": "One-R",
+      "perfectRadii": [],
+      "roughFrames": 39,
+      "scrollHeight": 14304,
+      "stageCount": 12,
+      "svgs": 41,
+      "vh": 844,
+      "vw": 390
+    },
+    "mobile": {
+      "bodyFont": "\"Patrick Hand\", Kalam, \"Marker Felt\", \"Chalkboard SE\", \"Comic Sans MS\", \"Segoe Print\", cursive",
+      "h1": "One-R",
+      "overflow": false,
+      "roughFrames": 39,
+      "scrollHeight": 14304,
+      "stageCount": 12,
+      "vh": 844,
+      "visibleControls": 13,
+      "vw": 390
+    }
+  },
+  {
+    "pageName": "multiple-linear-regression",
+    "desktop": {
+      "bodyClass": "statml-standardized hw-handwritten",
+      "bodyFont": "\"Patrick Hand\", Kalam, \"Marker Felt\", \"Chalkboard SE\", \"Comic Sans MS\", \"Segoe Print\", cursive",
+      "canvases": 1,
+      "cards": 22,
+      "digitalFonts": [],
+      "emoji": [],
+      "gradients": [
+        {
+          "bg": "repeating-linear-gradient(162deg, rgba(255, 255, 255, 0.26) 0px, rgba(255, 255, 255, 0.26) 2px, rgba(0, 0, 0, 0) 2px, rgba(0, 0, 0, 0) 6px)",
+          "cls": "",
+          "id": "progress-bar",
+          "tag": "DIV"
+        },
+        {
+          "bg": "repeating-linear-gradient(176deg, rgba(223, 178, 45, 0.07) 0px, rgba(223, 178, 45, 0.07) 2px, rgba(0, 0, 0, 0) 2px, rgba(0, 0, 0, 0) 7px), radial-gradient(circle at 14% 18%, rgba(255, 255, 255, 0.42), rgba(0, 0, 0, 0) 46%)",
+          "cls": "insight-box hw-rough-surface hw-frame-relative hw-sticky-material",
+          "id": "",
+          "tag": "DIV"
+        },
+        {
+          "bg": "repeating-linear-gradient(87deg, rgba(135, 105, 68, 0.11) 0px, rgba(135, 105, 68, 0.11) 1px, rgba(0, 0, 0, 0) 1px, rgba(0, 0, 0, 0) 4px), none",
+          "cls": "hw-tape",
+          "id": "",
+          "tag": "SPAN"
+        },
+        {
+          "bg": "repeating-linear-gradient(176deg, rgba(223, 178, 45, 0.07) 0px, rgba(223, 178, 45, 0.07) 2px, rgba(0, 0, 0, 0) 2px, rgba(0, 0, 0, 0) 7px), radial-gradient(circle at 14% 18%, rgba(255, 255, 255, 0.42), rgba(0, 0, 0, 0) 46%)",
+          "cls": "insight-box mt-4 hw-rough-surface hw-frame-relative hw-sticky-material",
+          "id": "",
+          "tag": "DIV"
+        },
+        {
+          "bg": "repeating-linear-gradient(87deg, rgba(135, 105, 68, 0.11) 0px, rgba(135, 105, 68, 0.11) 1px, rgba(0, 0, 0, 0) 1px, rgba(0, 0, 0, 0) 4px), none",
+          "cls": "hw-tape",
+          "id": "",
+          "tag": "SPAN"
+        },
+        {
+          "bg": "repeating-linear-gradient(176deg, rgba(223, 178, 45, 0.07) 0px, rgba(223, 178, 45, 0.07) 2px, rgba(0, 0, 0, 0) 2px, rgba(0, 0, 0, 0) 7px), radial-gradient(circle at 14% 18%, rgba(255, 255, 255, 0.42), rgba(0, 0, 0, 0) 46%)",
+          "cls": "insight-box hw-rough-surface hw-frame-relative hw-sticky-material",
+          "id": "",
+          "tag": "DIV"
+        },
+        {
+          "bg": "repeating-linear-gradient(87deg, rgba(135, 105, 68, 0.11) 0px, rgba(135, 105, 68, 0.11) 1px, rgba(0, 0, 0, 0) 1px, rgba(0, 0, 0, 0) 4px), none",
+          "cls": "hw-tape",
+          "id": "",
+          "tag": "SPAN"
+        },
+        {
+          "bg": "repeating-linear-gradient(176deg, rgba(223, 178, 45, 0.07) 0px, rgba(223, 178, 45, 0.07) 2px, rgba(0, 0, 0, 0) 2px, rgba(0, 0, 0, 0) 7px), radial-gradient(circle at 14% 18%, rgba(255, 255, 255, 0.42), rgba(0, 0, 0, 0) 46%)",
+          "cls": "insight-box hw-rough-surface hw-frame-relative hw-sticky-material",
+          "id": "",
+          "tag": "DIV"
+        },
+        {
+          "bg": "repeating-linear-gradient(87deg, rgba(135, 105, 68, 0.11) 0px, rgba(135, 105, 68, 0.11) 1px, rgba(0, 0, 0, 0) 1px, rgba(0, 0, 0, 0) 4px), none",
+          "cls": "hw-tape",
+          "id": "",
+          "tag": "SPAN"
+        },
+        {
+          "bg": "repeating-linear-gradient(176deg, rgba(223, 178, 45, 0.07) 0px, rgba(223, 178, 45, 0.07) 2px, rgba(0, 0, 0, 0) 2px, rgba(0, 0, 0, 0) 7px), radial-gradient(circle at 14% 18%, rgba(255, 255, 255, 0.42), rgba(0, 0, 0, 0) 46%)",
+          "cls": "statml-takeaways hw-rough-surface hw-frame-relative hw-sticky-material",
+          "id": "",
+          "tag": "DIV"
+        },
+        {
+          "bg": "repeating-linear-gradient(87deg, rgba(135, 105, 68, 0.11) 0px, rgba(135, 105, 68, 0.11) 1px, rgba(0, 0, 0, 0) 1px, rgba(0, 0, 0, 0) 4px), none",
+          "cls": "hw-tape",
+          "id": "",
+          "tag": "SPAN"
+        }
+      ],
+      "h1": "Multiple Linear\nRegression",
+      "perfectRadii": [
+        {
+          "cls": "inline-block py-1 px-3 rounded-full bg-indigo-100 text-indigo-700 font-semibold ",
+          "id": "",
+          "radius": "999px",
+          "tag": "SPAN"
+        },
+        {
+          "cls": "inline-block w-3 h-3 rounded-full bg-blue-500 mr-2",
+          "id": "",
+          "radius": "9999px",
+          "tag": "SPAN"
+        },
+        {
+          "cls": "inline-block w-3 h-3 rounded-full bg-emerald-500 mr-2",
+          "id": "",
+          "radius": "9999px",
+          "tag": "SPAN"
+        },
+        {
+          "cls": "inline-block w-3 h-3 rounded-full bg-indigo-500 mr-2",
+          "id": "",
+          "radius": "9999px",
+          "tag": "SPAN"
+        }
+      ],
+      "roughFrames": 22,
+      "scrollHeight": 10918,
+      "stageCount": 10,
+      "svgs": 24,
+      "vh": 844,
+      "vw": 390
+    },
+    "mobile": {
+      "bodyFont": "\"Patrick Hand\", Kalam, \"Marker Felt\", \"Chalkboard SE\", \"Comic Sans MS\", \"Segoe Print\", cursive",
+      "h1": "Multiple Linear\nRegression",
+      "overflow": false,
+      "roughFrames": 22,
+      "scrollHeight": 10918,
+      "stageCount": 10,
+      "vh": 844,
+      "visibleControls": 8,
+      "vw": 390
+    }
+  }
+]

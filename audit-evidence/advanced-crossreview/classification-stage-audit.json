@@ -1,0 +1,171 @@
+{
+  "pageName": "classification-trees",
+  "n": 15,
+  "results": [
+    {
+      "i": 0,
+      "label": "Go to stage 1: The Raw Data",
+      "ok": true,
+      "st": {
+        "active": [],
+        "url": "http://127.0.0.1:8765/modules/classification-trees.html",
+        "visual": "",
+        "y": 590
+      }
+    },
+    {
+      "i": 1,
+      "label": "Go to stage 2: The Train / Test Split",
+      "ok": true,
+      "st": {
+        "active": [],
+        "url": "http://127.0.0.1:8765/modules/classification-trees.html",
+        "visual": "",
+        "y": 2314
+      }
+    },
+    {
+      "i": 2,
+      "label": "Go to stage 3: The Root Node",
+      "ok": true,
+      "st": {
+        "active": [],
+        "url": "http://127.0.0.1:8765/modules/classification-trees.html",
+        "visual": "",
+        "y": 3533
+      }
+    },
+    {
+      "i": 3,
+      "label": "Go to stage 4: Measuring Messiness",
+      "ok": true,
+      "st": {
+        "active": [],
+        "url": "http://127.0.0.1:8765/modules/classification-trees.html",
+        "visual": "",
+        "y": 4233
+      }
+    },
+    {
+      "i": 4,
+      "label": "Go to stage 5: Testing Every Question",
+      "ok": true,
+      "st": {
+        "active": [],
+        "url": "http://127.0.0.1:8765/modules/classification-trees.html",
+        "visual": "",
+        "y": 5798
+      }
+    },
+    {
+      "i": 5,
+      "label": "Go to stage 6: How the Tree Scores One Split",
+      "ok": true,
+      "st": {
+        "active": [],
+        "url": "http://127.0.0.1:8765/modules/classification-trees.html",
+        "visual": "",
+        "y": 6920
+      }
+    },
+    {
+      "i": 6,
+      "label": "Go to stage 7: Recursive Splitting",
+      "ok": true,
+      "st": {
+        "active": [],
+        "url": "http://127.0.0.1:8765/modules/classification-trees.html",
+        "visual": "",
+        "y": 8319
+      }
+    },
+    {
+      "i": 7,
+      "label": "Go to stage 8: The Decision Boundary",
+      "ok": true,
+      "st": {
+        "active": [],
+        "url": "http://127.0.0.1:8765/modules/classification-trees.html",
+        "visual": "",
+        "y": 9582
+      }
+    },
+    {
+      "i": 8,
+      "label": "Go to stage 9: Depth Limiting vs. Post-Pruning",
+      "ok": true,
+      "st": {
+        "active": [],
+        "url": "http://127.0.0.1:8765/modules/classification-trees.html",
+        "visual": "",
+        "y": 10554
+      }
+    },
+    {
+      "i": 9,
+      "label": "Go to stage 10: Choosing Tree Depth",
+      "ok": true,
+      "st": {
+        "active": [],
+        "url": "http://127.0.0.1:8765/modules/classification-trees.html",
+        "visual": "",
+        "y": 11798
+      }
+    },
+    {
+      "i": 10,
+      "label": "Go to stage 11: Classifying Test Points",
+      "ok": true,
+      "st": {
+        "active": [],
+        "url": "http://127.0.0.1:8765/modules/classification-trees.html",
+        "visual": "",
+        "y": 12874
+      }
+    },
+    {
+      "i": 11,
+      "label": "Go to stage 12: Performance Metrics",
+      "ok": true,
+      "st": {
+        "active": [],
+        "url": "http://127.0.0.1:8765/modules/classification-trees.html",
+        "visual": "",
+        "y": 14121
+      }
+    },
+    {
+      "i": 12,
+      "label": "Go to stage 13: Reading Tree Output",
+      "ok": true,
+      "st": {
+        "active": [],
+        "url": "http://127.0.0.1:8765/modules/classification-trees.html",
+        "visual": "",
+        "y": 15512
+      }
+    },
+    {
+      "i": 13,
+      "label": "Go to stage 14: Interactive Playground",
+      "ok": true,
+      "st": {
+        "active": [],
+        "url": "http://127.0.0.1:8765/modules/classification-trees.html",
+        "visual": "",
+        "y": 17711
+      }
+    },
+    {
+      "i": 14,
+      "label": "Go to stage 15: Limitations & Model Choice",
+      "ok": true,
+      "st": {
+        "active": [],
+        "url": "http://127.0.0.1:8765/modules/classification-trees.html",
+        "visual": "",
+        "y": 18727
+      }
+    }
+  ]
+}

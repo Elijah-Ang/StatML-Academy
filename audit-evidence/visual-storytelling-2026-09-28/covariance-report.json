@@ -1,0 +1,653 @@
+{
+  "contourChecks": 7020,
+  "report": [
+    {
+      "width": 1440,
+      "slug": "lda",
+      "radius": 0.5,
+      "shrink": 0,
+      "clipped": [],
+      "overlaps": [],
+      "stage": 5,
+      "visual": "lda-shared-covariance",
+      "centers": [
+        true,
+        true
+      ],
+      "contours": [
+        true,
+        true
+      ]
+    },
+    {
+      "width": 1440,
+      "slug": "lda",
+      "radius": 1,
+      "shrink": 0,
+      "clipped": [],
+      "overlaps": [],
+      "stage": 5,
+      "visual": "lda-shared-covariance",
+      "centers": [
+        true,
+        true
+      ],
+      "contours": [
+        true,
+        true
+      ]
+    },
+    {
+      "width": 1440,
+      "slug": "lda",
+      "radius": 2,
+      "shrink": 0,
+      "clipped": [],
+      "overlaps": [],
+      "stage": 5,
+      "visual": "lda-shared-covariance",
+      "centers": [
+        true,
+        true
+      ],
+      "contours": [
+        true,
+        true
+      ]
+    },
+    {
+      "width": 1440,
+      "slug": "qda",
+      "radius": 0.5,
+      "shrink": 0,
+      "clipped": [],
+      "overlaps": [],
+      "stage": 3,
+      "visual": "qda-covariance-shapes",
+      "centers": [
+        true,
+        true
+      ],
+      "contours": [
+        true,
+        true
+      ]
+    },
+    {
+      "width": 1440,
+      "slug": "qda",
+      "radius": 0.5,
+      "shrink": 0.5,
+      "clipped": [],
+      "overlaps": [],
+      "stage": 3,
+      "visual": "qda-covariance-shapes",
+      "centers": [
+        true,
+        true
+      ],
+      "contours": [
+        true,
+        true
+      ]
+    },
+    {
+      "width": 1440,
+      "slug": "qda",
+      "radius": 0.5,
+      "shrink": 1,
+      "clipped": [],
+      "overlaps": [],
+      "stage": 3,
+      "visual": "qda-covariance-shapes",
+      "centers": [
+        true,
+        true
+      ],
+      "contours": [
+        true,
+        true
+      ]
+    },
+    {
+      "width": 1440,
+      "slug": "qda",
+      "radius": 1,
+      "shrink": 0,
+      "clipped": [],
+      "overlaps": [],
+      "stage": 3,
+      "visual": "qda-covariance-shapes",
+      "centers": [
+        true,
+        true
+      ],
+      "contours": [
+        true,
+        true
+      ]
+    },
+    {
+      "width": 1440,
+      "slug": "qda",
+      "radius": 1,
+      "shrink": 0.5,
+      "clipped": [],
+      "overlaps": [],
+      "stage": 3,
+      "visual": "qda-covariance-shapes",
+      "centers": [
+        true,
+        true
+      ],
+      "contours": [
+        true,
+        true
+      ]
+    },
+    {
+      "width": 1440,
+      "slug": "qda",
+      "radius": 1,
+      "shrink": 1,
+      "clipped": [],
+      "overlaps": [],
+      "stage": 3,
+      "visual": "qda-covariance-shapes",
+      "centers": [
+        true,
+        true
+      ],
+      "contours": [
+        true,
+        true
+      ]
+    },
+    {
+      "width": 1440,
+      "slug": "qda",
+      "radius": 2,
+      "shrink": 0,
+      "clipped": [],
+      "overlaps": [],
+      "stage": 3,
+      "visual": "qda-covariance-shapes",
+      "centers": [
+        true,
+        true
+      ],
+      "contours": [
+        true,
+        true
+      ]
+    },
+    {
+      "width": 1440,
+      "slug": "qda",
+      "radius": 2,
+      "shrink": 0.5,
+      "clipped": [],
+      "overlaps": [],
+      "stage": 3,
+      "visual": "qda-covariance-shapes",
+      "centers": [
+        true,
+        true
+      ],
+      "contours": [
+        true,
+        true
+      ]
+    },
+    {
+      "width": 1440,
+      "slug": "qda",
+      "radius": 2,
+      "shrink": 1,
+      "clipped": [],
+      "overlaps": [],
+      "stage": 3,
+      "visual": "qda-covariance-shapes",
+      "centers": [
+        true,
+        true
+      ],
+      "contours": [
+        true,
+        true
+      ]
+    },
+    {
+      "width": 430,
+      "slug": "lda",
+      "radius": 0.5,
+      "shrink": 0,
+      "clipped": [],
+      "overlaps": [],
+      "stage": 5,
+      "visual": "lda-shared-covariance",
+      "centers": [
+        true,
+        true
+      ],
+      "contours": [
+        true,
+        true
+      ]
+    },
+    {
+      "width": 430,
+      "slug": "lda",
+      "radius": 1,
+      "shrink": 0,
+      "clipped": [],
+      "overlaps": [],
+      "stage": 5,
+      "visual": "lda-shared-covariance",
+      "centers": [
+        true,
+        true
+      ],
+      "contours": [
+        true,
+        true
+      ]
+    },
+    {
+      "width": 430,
+      "slug": "lda",
+      "radius": 2,
+      "shrink": 0,
+      "clipped": [],
+      "overlaps": [],
+      "stage": 5,
+      "visual": "lda-shared-covariance",
+      "centers": [
+        true,
+        true
+      ],
+      "contours": [
+        true,
+        true
+      ]
+    },
+    {
+      "width": 430,
+      "slug": "qda",
+      "radius": 0.5,
+      "shrink": 0,
+      "clipped": [],
+      "overlaps": [],
+      "stage": 3,
+      "visual": "qda-covariance-shapes",
+      "centers": [
+        true,
+        true
+      ],
+      "contours": [
+        true,
+        true
+      ]
+    },
+    {
+      "width": 430,
+      "slug": "qda",
+      "radius": 0.5,
+      "shrink": 0.5,
+      "clipped": [],
+      "overlaps": [],
+      "stage": 3,
+      "visual": "qda-covariance-shapes",
+      "centers": [
+        true,
+        true
+      ],
+      "contours": [
+        true,
+        true
+      ]
+    },
+    {
+      "width": 430,
+      "slug": "qda",
+      "radius": 0.5,
+      "shrink": 1,
+      "clipped": [],
+      "overlaps": [],
+      "stage": 3,
+      "visual": "qda-covariance-shapes",
+      "centers": [
+        true,
+        true
+      ],
+      "contours": [
+        true,
+        true
+      ]
+    },
+    {
+      "width": 430,
+      "slug": "qda",
+      "radius": 1,
+      "shrink": 0,
+      "clipped": [],
+      "overlaps": [],
+      "stage": 3,
+      "visual": "qda-covariance-shapes",
+      "centers": [
+        true,
+        true
+      ],
+      "contours": [
+        true,
+        true
+      ]
+    },
+    {
+      "width": 430,
+      "slug": "qda",
+      "radius": 1,
+      "shrink": 0.5,
+      "clipped": [],
+      "overlaps": [],
+      "stage": 3,
+      "visual": "qda-covariance-shapes",
+      "centers": [
+        true,
+        true
+      ],
+      "contours": [
+        true,
+        true
+      ]
+    },
+    {
+      "width": 430,
+      "slug": "qda",
+      "radius": 1,
+      "shrink": 1,
+      "clipped": [],
+      "overlaps": [],
+      "stage": 3,
+      "visual": "qda-covariance-shapes",
+      "centers": [
+        true,
+        true
+      ],
+      "contours": [
+        true,
+        true
+      ]
+    },
+    {
+      "width": 430,
+      "slug": "qda",
+      "radius": 2,
+      "shrink": 0,
+      "clipped": [],
+      "overlaps": [],
+      "stage": 3,
+      "visual": "qda-covariance-shapes",
+      "centers": [
+        true,
+        true
+      ],
+      "contours": [
+        true,
+        true
+      ]
+    },
+    {
+      "width": 430,
+      "slug": "qda",
+      "radius": 2,
+      "shrink": 0.5,
+      "clipped": [],
+      "overlaps": [],
+      "stage": 3,
+      "visual": "qda-covariance-shapes",
+      "centers": [
+        true,
+        true
+      ],
+      "contours": [
+        true,
+        true
+      ]
+    },
+    {
+      "width": 430,
+      "slug": "qda",
+      "radius": 2,
+      "shrink": 1,
+      "clipped": [],
+      "overlaps": [],
+      "stage": 3,
+      "visual": "qda-covariance-shapes",
+      "centers": [
+        true,
+        true
+      ],
+      "contours": [
+        true,
+        true
+      ]
+    },
+    {
+      "width": 320,
+      "slug": "lda",
+      "radius": 0.5,
+      "shrink": 0,
+      "clipped": [],
+      "overlaps": [],
+      "stage": 5,
+      "visual": "lda-shared-covariance",
+      "centers": [
+        true,
+        true
+      ],
+      "contours": [
+        true,
+        true
+      ]
+    },
+    {
+      "width": 320,
+      "slug": "lda",
+      "radius": 1,
+      "shrink": 0,
+      "clipped": [],
+      "overlaps": [],
+      "stage": 5,
+      "visual": "lda-shared-covariance",
+      "centers": [
+        true,
+        true
+      ],
+      "contours": [
+        true,
+        true
+      ]
+    },
+    {
+      "width": 320,
+      "slug": "lda",
+      "radius": 2,
+      "shrink": 0,
+      "clipped": [],
+      "overlaps": [],
+      "stage": 5,
+      "visual": "lda-shared-covariance",
+      "centers": [
+        true,
+        true
+      ],
+      "contours": [
+        true,
+        true
+      ]
+    },
+    {
+      "width": 320,
+      "slug": "qda",
+      "radius": 0.5,
+      "shrink": 0,
+      "clipped": [],
+      "overlaps": [],
+      "stage": 3,
+      "visual": "qda-covariance-shapes",
+      "centers": [
+        true,
+        true
+      ],
+      "contours": [
+        true,
+        true
+      ]
+    },
+    {
+      "width": 320,
+      "slug": "qda",
+      "radius": 0.5,
+      "shrink": 0.5,
+      "clipped": [],
+      "overlaps": [],
+      "stage": 3,
+      "visual": "qda-covariance-shapes",
+      "centers": [
+        true,
+        true
+      ],
+      "contours": [
+        true,
+        true
+      ]
+    },
+    {
+      "width": 320,
+      "slug": "qda",
+      "radius": 0.5,
+      "shrink": 1,
+      "clipped": [],
+      "overlaps": [],
+      "stage": 3,
+      "visual": "qda-covariance-shapes",
+      "centers": [
+        true,
+        true
+      ],
+      "contours": [
+        true,
+        true
+      ]
+    },
+    {
+      "width": 320,
+      "slug": "qda",
+      "radius": 1,
+      "shrink": 0,
+      "clipped": [],
+      "overlaps": [],
+      "stage": 3,
+      "visual": "qda-covariance-shapes",
+      "centers": [
+        true,
+        true
+      ],
+      "contours": [
+        true,
+        true
+      ]
+    },
+    {
+      "width": 320,
+      "slug": "qda",
+      "radius": 1,
+      "shrink": 0.5,
+      "clipped": [],
+      "overlaps": [],
+      "stage": 3,
+      "visual": "qda-covariance-shapes",
+      "centers": [
+        true,
+        true
+      ],
+      "contours": [
+        true,
+        true
+      ]
+    },
+    {
+      "width": 320,
+      "slug": "qda",
+      "radius": 1,
+      "shrink": 1,
+      "clipped": [],
+      "overlaps": [],
+      "stage": 3,
+      "visual": "qda-covariance-shapes",
+      "centers": [
+        true,
+        true
+      ],
+      "contours": [
+        true,
+        true
+      ]
+    },
+    {
+      "width": 320,
+      "slug": "qda",
+      "radius": 2,
+      "shrink": 0,
+      "clipped": [],
+      "overlaps": [],
+      "stage": 3,
+      "visual": "qda-covariance-shapes",
+      "centers": [
+        true,
+        true
+      ],
+      "contours": [
+        true,
+        true
+      ]
+    },
+    {
+      "width": 320,
+      "slug": "qda",
+      "radius": 2,
+      "shrink": 0.5,
+      "clipped": [],
+      "overlaps": [],
+      "stage": 3,
+      "visual": "qda-covariance-shapes",
+      "centers": [
+        true,
+        true
+      ],
+      "contours": [
+        true,
+        true
+      ]
+    },
+    {
+      "width": 320,
+      "slug": "qda",
+      "radius": 2,
+      "shrink": 1,
+      "clipped": [],
+      "overlaps": [],
+      "stage": 3,
+      "visual": "qda-covariance-shapes",
+      "centers": [
+        true,
+        true
+      ],
+      "contours": [
+        true,
+        true
+      ]
+    }
+  ]
+}

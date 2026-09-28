@@ -1,0 +1,295 @@
+- navigation "StatML Academy navigation":
+  - link "S StatML Academy":
+    - /url: ../index.html
+    - text: S
+    - generic: StatML Academy
+  - generic: Hierarchical Clustering
+  - 'link "Previous module: K-Means Clustering"':
+    - /url: kmeans.html
+    - text: ←
+  - 'link "Next module: Principal Component Analysis (PCA)"':
+    - /url: pca.html
+    - text: →
+  - generic: module 18/21
+- banner:
+  - generic: Unsupervised Learning · Clustering
+  - heading "Hierarchical Clustering" [level=1]: Hierarchical Clustering
+  - paragraph: The secret art of discovering hidden family trees in your data. No labels, no pre-defined answers—just the mathematical pursuit of "closeness".
+  - generic "Lesson outcomes":
+    - generic: "1"
+    - generic: Build a hierarchy from pairwise distances
+    - generic: "2"
+    - generic: Compare linkage definitions
+    - generic: "3"
+    - generic: Cut and interpret a dendrogram
+  - generic: Scroll to begin
+- main:
+  - article:
+    - generic: Stage 01 · Observe
+    - heading "The Uncharted Planet" [level=2]: The Uncharted Planet
+    - generic: Before you start
+    - paragraph: Hierarchical clustering requires a distance measure and a linkage rule. Both choices define what it means for groups to be close.
+    - paragraph:
+      - text: Imagine landing on a distant planet with no map or guidebook. Your goal isn't to reach a destination; it's simply to see what is there. This is the essence of
+      - strong: Unsupervised Learning
+      - text: .
+    - paragraph: Unlike supervised learning, where we try to predict a specific answer, here we only have features. We are discovering the natural structure of the data.
+    - strong: "The Toy Box Analogy:"
+    - text: Think of a child given a massive box of mixed toys and told to "find the patterns." Without instructions, they group them naturally by similarity.
+    - paragraph: To the right, we have a raw dataset. Just points in space waiting to be understood.
+    - paragraph:
+      - strong: "Takeaway:"
+      - text: Unsupervised learning is about revealing structure that is already hiding in the data.
+    - generic: Stage 02 · Understand
+    - heading "Measuring \"Close\"" [level=2]: Measuring "Close"
+    - paragraph: Before we can group anything, we must define what "similar" means. The most common way is to measure the physical distance between data points.
+    - paragraph:
+      - text: We use the
+      - strong: Euclidean distance
+      - text: (the straight-line distance) to find out who is closest to whom. It is common, but not the only option; Manhattan, cosine, or domain-specific distances can make more sense for different data.
+    - text: d(A, B) = √[ (x₂ - x₁)² + (y₂ - y₁)² ]
+    - paragraph: By measuring the distance between every single pair of points, we build a "distance matrix"—a lookup table for similarity.
+    - paragraph:
+      - strong: "Takeaway:"
+      - text: Clustering depends on your distance choice, because "close" is a design decision.
+    - generic: Stage 03 · Build
+    - heading "The First Merge" [level=2]: The First Merge
+    - paragraph:
+      - text: Hierarchical clustering (specifically the
+      - emphasis: Agglomerative
+      - text: "or \"bottom-up\" kind) starts with a simple rule:"
+    - list:
+      - listitem: Every point starts as its own separate cluster.
+      - listitem: Find the two clusters that are closest together.
+      - listitem: Merge them.
+    - paragraph: Watch as the algorithm scans all points, finds the single closest pair, and binds them into a new, single cluster.
+    - paragraph:
+      - strong: "Takeaway:"
+      - text: Agglomerative clustering grows structure from the bottom up, one merge at a time.
+    - generic: Stage 04 · Build
+    - paragraph:
+      - strong: Linkage and distance are not interchangeable.
+      - text: Ward linkage is tied to Euclidean geometry and increases in within-cluster variance. Single linkage can chain; complete linkage favours compact groups; average linkage is a compromise. Dendrogram heights do not represent the same quantity for every method.
+    - heading "Defining Group Distance (Linkage)" [level=2]: Defining Group Distance (Linkage)
+    - paragraph:
+      - text: Merging two individual points is easy. But how do you measure the distance between a single point and a
+      - emphasis: group
+      - text: "? Or between two groups?"
+    - paragraph:
+      - text: This is called
+      - strong: Linkage
+      - text: . The linkage method you choose changes the shape of the clusters.
+    - paragraph: "Select a linkage method to re-calculate the merges:"
+    - button "Average"
+    - button "Single"
+    - button "Complete"
+    - button "Ward"
+    - list:
+      - strong: "Average:"
+      - text: Mean distance between all pairs. Balanced clusters.
+    - 'heading "Worked Example: How is this calculated?" [level=3]'
+    - generic: Average Linkage = mean(...)
+    - generic: "Step 1: Before Merge"
+    - table:
+      - rowgroup:
+        - row "A B C":
+          - columnheader
+          - columnheader "A"
+          - columnheader "B"
+          - columnheader "C"
+        - row "A — 2 10":
+          - rowheader "A"
+          - cell "—"
+          - cell "2"
+          - cell "10"
+        - row "B — 12":
+          - columnheader "B"
+          - cell
+          - cell "—"
+          - cell "12"
+        - row "C —":
+          - columnheader "C"
+          - cell
+          - cell
+          - cell "—"
+    - generic: →
+    - generic: "Step 3: After Merging [A,B]"
+    - table:
+      - rowgroup:
+        - row "[A,B] C":
+          - columnheader
+          - columnheader "[A,B]"
+          - columnheader "C"
+        - row "[A,B] — 11":
+          - rowheader "[A,B]"
+          - cell "—"
+          - cell "11"
+        - row "C —":
+          - columnheader "C"
+          - cell
+          - cell "—"
+    - list:
+      - strong: "Step 1:"
+      - text: Find the smallest distance in the matrix. A and B are closest (distance = 2).
+      - strong: "Step 2:"
+      - text: "Merge A and B into a new group:"
+      - strong: "[A,B]"
+      - text: .
+      - strong: "Step 3:"
+      - text: Rebuild the matrix. We need the new distance between
+      - strong: "[A,B]"
+      - text: and the remaining point
+      - strong: C
+      - text: .
+      - strong: "Step 4:"
+      - text: "Check old distances: A to C was 10, B to C was 12. Average uses the"
+      - emphasis: mean
+      - text: ", so"
+      - strong: (10 + 12) / 2 = 11
+      - text: .
+    - paragraph:
+      - strong: "Takeaway:"
+      - text: Linkage is the rulebook for deciding which groups are "closest" once clusters start to grow.
+    - generic: Stage 05 · Understand
+    - heading "The Process in Motion" [level=2]: The Process in Motion
+    - paragraph: Now, the algorithm repeats the rule over and over. It constantly recalculates distances using the linkage method, finding the next closest pair of clusters, and merging them.
+    - paragraph: Slowly, tiny groups fuse into medium groups, which fuse into large groups. It only stops when everything becomes one giant family. Use the merge scrubber on the right to step through the history one merge at a time.
+    - generic: "17"
+    - generic: Current Clusters
+    - generic: "0.054"
+    - generic: Next Merge Distance
+    - generic: Average
+    - generic: Current Linkage
+    - paragraph:
+      - strong: "Takeaway:"
+      - text: The algorithm keeps rebuilding the distance picture after every merge, so the path matters.
+    - generic: Stage 06 · Understand
+    - heading "The Family Tree (Dendrogram)" [level=2]: The Family Tree (Dendrogram)
+    - paragraph:
+      - text: Instead of just looking at circles on a map, we can record the exact
+      - emphasis: history
+      - text: of these merges in a tree structure called a
+      - strong: Dendrogram
+      - text: .
+    - paragraph:
+      - text: As the points align at the bottom, watch the tree grow upwards. The
+      - strong: vertical height
+      - text: "of each branch is critical: it tells us exactly how far apart the two groups were when they merged."
+    - strong: "Rule of thumb:"
+    - text: A fusion low on the tree means the items were very similar. A fusion high up means they were quite different.
+    - paragraph:
+      - strong: "Takeaway:"
+      - text: A dendrogram preserves the full merge history, and branch height tells you how costly each merge was.
+    - generic: Stage 07 · Understand
+    - heading "Cutting the Tree" [level=2]: Cutting the Tree
+    - paragraph: "What if you don't know how many clusters you need? That is the superpower of hierarchical clustering: you don't have to guess upfront."
+    - paragraph:
+      - text: By drawing a horizontal line across the dendrogram, you "cut" the branches. The number of vertical lines you intersect is your number of clusters (
+      - strong: K
+      - text: ).
+    - paragraph:
+      - text: How do you choose the cut? A good first strategy is to look for a
+      - strong: big jump in merge height
+      - text: and cut just below it, because that often means the algorithm has started forcing together groups that were meaningfully different. If you want a more quantitative check, you can also compare several cuts with a metric such as
+      - strong: silhouette score
+      - text: .
+    - generic: Cut Height (merge distance)
+    - generic: "0.337"
+    - slider "Interactive parameter 1": "50"
+    - generic: "Resulting Clusters: 4"
+    - paragraph:
+      - strong: "Takeaway:"
+      - text: Choose cuts where the tree shows a natural separation, not just where a slider gives a convenient K.
+    - generic: Stage 08 · Explore
+    - heading "The Detective's Challenge" [level=2]: The Detective's Challenge
+    - paragraph: Clustering is subjective detective work. Because there is no "true" answer (no target variable Y), the results rely entirely on your choices.
+    - heading "The \"Socks and Computers\" Problem" [level=3]
+    - paragraph:
+      - text: If variables use different units or their raw scales should not control distance,
+      - strong: scale
+      - text: them using training data only. When variables share meaningful units and variance differences matter, standardisation may be undesirable.
+    - paragraph:
+      - text: Furthermore, an
+      - strong: outlier
+      - text: can distort the tree, pulling a group away from its true members just to accommodate the stranger.
+    - paragraph:
+      - strong: "Takeaway:"
+      - text: Scaling and outliers can change the tree dramatically, so preprocessing matters.
+    - generic: Stage 09 · Reflect
+    - heading "Synthesis & Recap" [level=2]: Synthesis & Recap
+    - paragraph: "Hierarchical clustering gives us a rich, explorable structure rather than a single flat answer. Let's compare it to the other famous method, K-Means:"
+    - table:
+      - rowgroup:
+        - row "Feature Hierarchical K-Means":
+          - columnheader "Feature"
+          - columnheader "Hierarchical"
+          - columnheader "K-Means"
+        - row "Setup Pick K after Pick K first":
+          - cell "Setup"
+          - cell "Pick K after":
+            - text: Pick K
+            - emphasis: after
+          - cell "Pick K first":
+            - text: Pick K
+            - emphasis: first
+        - row "Output Tree (Dendrogram) Flat groups":
+          - cell "Output"
+          - cell "Tree (Dendrogram)"
+          - cell "Flat groups"
+        - row "Speed Usually slower because it builds the full merge tree and repeatedly compares clusters Faster":
+          - cell "Speed"
+          - cell "Usually slower because it builds the full merge tree and repeatedly compares clusters"
+          - cell "Faster"
+    - paragraph:
+      - strong: "Final Advice:"
+      - text: Never take one clustering result as absolute truth. Try different linkages and cut heights. If the same patterns emerge every time, you've found something truly interesting.
+    - paragraph:
+      - strong: "Takeaway:"
+      - text: Hierarchical clustering is valuable when you want an explorable merge history, not just one fixed partition.
+    - generic: Complete the picture
+    - heading "Scaling and cluster stability" [level=3]
+    - paragraph: Standardise features when their units differ, unless those units deliberately encode importance. Otherwise one large-scale variable can dominate every merge.
+    - paragraph: Dendrogram branches are descriptive, not automatically “true” clusters. Compare linkage choices, inspect stability, and use domain knowledge when selecting a cut height.
+    - generic: Key takeaways
+    - list:
+      - listitem: The dendrogram records the order and distance of merges.
+      - listitem: Linkage choice changes the geometry of the resulting groups.
+      - listitem: Scaling and cut height must be justified, not selected because the picture looks pleasant.
+    - region "Practical method checklist":
+      - paragraph: Practical method checklist
+      - heading "Before you finish" [level=3]
+      - heading "Assumptions" [level=4]
+      - paragraph: A justified distance-linkage combination and meaningful feature scale.
+      - heading "When the method fails" [level=4]
+      - paragraph: Chaining, outliers, scale dominance, and unstable dendrogram branches.
+      - heading "Validation and leakage" [level=4]
+      - paragraph: Assess stability under resampling and reasonable preprocessing choices.
+      - heading "Interpretation cautions" [level=4]
+      - paragraph: Dendrogram heights differ in meaning across linkage methods.
+      - heading "What to report" [level=4]
+      - paragraph: Distance, linkage, scaling, cut rule, sensitivity, and cluster stability.
+  - region "Hierarchical Clustering interactive visualisation":
+    - button "Random Dataset"
+    - generic: Hover a point or dendrogram leaf to trace the same sample across both views.
+- contentinfo:
+  - link "All modules":
+    - /url: ../index.html
+- navigation "Lesson stages":
+  - 'button "Go to stage 1: The Uncharted Planet"':
+    - generic: 01 · The Uncharted Planet
+  - 'button "Go to stage 2: Measuring \"Close\""':
+    - generic: 02 · Measuring "Close"
+  - 'button "Go to stage 3: The First Merge"':
+    - generic: 03 · The First Merge
+  - 'button "Go to stage 4: Defining Group Distance (Linkage)"':
+    - generic: 04 · Defining Group Distance (Linkage)
+  - 'button "Go to stage 5: The Process in Motion"':
+    - generic: 05 · The Process in Motion
+  - 'button "Go to stage 6: The Family Tree (Dendrogram)"':
+    - generic: 06 · The Family Tree (Dendrogram)
+  - 'button "Go to stage 7: Cutting the Tree"':
+    - generic: 07 · Cutting the Tree
+  - 'button "Go to stage 8: The Detective''s Challenge"':
+    - generic: 08 · The Detective's Challenge
+  - 'button "Go to stage 9: Synthesis & Recap"':
+    - generic: 09 · Synthesis & Recap

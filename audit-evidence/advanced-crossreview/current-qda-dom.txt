@@ -1,0 +1,911 @@
+- navigation "StatML Academy navigation":
+  - link "S StatML Academy":
+    - /url: ../index.html
+    - text: S
+    - generic: StatML Academy
+  - generic: Quadratic Discriminant Analysis (QDA)
+  - 'link "Previous module: Linear Discriminant Analysis"':
+    - /url: lda.html
+    - text: ←
+  - 'link "Next module: Classification Trees"':
+    - /url: classification-trees.html
+    - text: →
+  - generic: module 12/21
+- banner:
+  - generic: Machine Learning · Classification
+  - heading "Quadratic Discriminant Analysis" [level=1]: Quadratic Discriminant Analysis
+  - paragraph: "A comprehensive learning simulator: Watch statistical shape, sample sizes, and shape-aware distance mathematically bend decision boundaries."
+  - generic "Lesson outcomes":
+    - generic: "1"
+    - generic: Model class-specific covariance shapes
+    - generic: "2"
+    - generic: Understand why QDA creates curved boundaries
+    - generic: "3"
+    - generic: Balance flexibility against data requirements
+  - generic: Scroll to explore
+  - generic: ↓
+- generic: Stage 01 · Observe
+- heading "The Raw Data Cloud" [level=2]: The Raw Data Cloud
+- generic: Before you start
+- paragraph: QDA extends LDA by estimating a separate covariance matrix for each class. That extra freedom requires more data.
+- paragraph:
+  - text: Imagine sorting fruit into
+  - generic: Apples
+  - text: and
+  - generic: Pears
+  - text: "based on two measurements: Sweetness ("
+  - math:
+    - generic: X
+    - generic: "1"
+  - text: X
+  - generic: "1"
+  - text: ) and Roundness (
+  - math:
+    - generic: X
+    - generic: "2"
+  - text: X
+  - generic: "2"
+  - text: ).
+- paragraph: In generative modeling, we look at where each class cluster sits and how the points are distributed across the features.
+- heading "The Whole Idea of QDA" [level=3]
+- paragraph:
+  - strong: Quadratic Discriminant Analysis (QDA)
+  - text: is a supervised classification method. It models each class as its own independent multi-dimensional probability cloud.
+- paragraph:
+  - text: "Simple intuition: QDA asks:"
+  - emphasis: "\"Which of these distinct class clouds does this new coordinate fit into best?\""
+- paragraph:
+  - text: Unlike LDA (which forces every class to share the exact same shape), QDA allows each class to have its own unique spread, stretch, and tilt. This mathematical flexibility is what creates
+  - strong: curved boundaries
+  - text: .
+- strong: "QDA Pipeline:"
+- text: Labeled data → Split Train/Test → Fit class-specific shapes → Score new test coordinates → Make prediction → Evaluate performance
+- heading "Tiny QDA Dictionary" [level=3]
+- paragraph:
+  - strong: "Feature:"
+  - text: An input variable/measurement (e.g., Sweetness, Roundness).
+- paragraph:
+  - strong: "Label / Class:"
+  - text: The category we want to predict (e.g., Apple, Pear).
+- paragraph:
+  - strong:
+    - text: Mean (
+    - math:
+      - generic: μ
+    - generic: μ
+    - text: "):"
+  - text: The center coordinate of a class's data cloud.
+- paragraph:
+  - strong:
+    - text: Covariance Matrix (
+    - math:
+      - generic: Σ
+    - generic: Σ
+    - text: "):"
+  - text: The learned shape, spread, and tilt of a class cloud.
+- paragraph:
+  - strong:
+    - text: Prior Probability (
+    - math:
+      - generic: π
+    - generic: π
+    - text: "):"
+  - text: The baseline proportion of each class in the dataset.
+- paragraph:
+  - strong: "Mahalanobis Distance:"
+  - text: A shape-aware distance metric scaled by a class cloud's variance.
+- paragraph:
+  - strong: "Posterior Probability:"
+  - text: The calculated probability that a point belongs to a class
+  - emphasis: after
+  - text: measuring its features.
+- paragraph:
+  - strong:
+    - text: Discriminant Score (
+    - math:
+      - generic: δ
+    - generic: δ
+    - text: "):"
+  - text: The classification value calculated by QDA; highest score wins.
+- paragraph:
+  - strong: "Regularization:"
+  - text: Adding a small constant diagonal shift to stabilize covariance estimation.
+- generic: Prior Probability Controls
+- text: Apples (
+- math:
+  - generic: "N"
+  - generic: A
+- text: "N"
+- generic: A
+- text: "):"
+- slider "Apples ($N_A$):": "80"
+- generic: "80"
+- text: Pears (
+- math:
+  - generic: "N"
+  - generic: B
+- text: "N"
+- generic: B
+- text: "):"
+- slider "Pears ($N_B$):": "80"
+- generic: "80"
+- button "Re-scatter Random Points"
+- generic: "Concept Check: What is the primary difference between LDA and QDA?"
+- button "LDA is a non-linear classifier while QDA can only handle straight-line separations.":
+  - text: LDA is a non-linear classifier while QDA can only handle straight-line separations.
+- button "QDA allows each class to estimate and keep its own unique covariance shape, whereas LDA forces a shared pooled covariance shape.":
+  - text: QDA allows each class to estimate and keep its own unique covariance shape, whereas LDA forces a shared pooled covariance shape.
+- button "QDA requires the classes to have identical prior probabilities, whereas LDA does not.":
+  - text: QDA requires the classes to have identical prior probabilities, whereas LDA does not.
+- generic: Stage 02 · Prepare
+- heading "Train / Test Split" [level=2]: Train / Test Split
+- paragraph:
+  - text: To perform proper Machine Learning, we cannot estimate our model and test its performance on the same data points. This is known as
+  - strong: Data Leakage
+  - text: .
+- paragraph:
+  - strong: "The Rules of the Split:"
+- list:
+  - strong: "Training Set (80%):"
+  - text: Used exclusively to calculate Class Priors, Means, and Covariance Matrices.
+  - strong: "Test Set (20%):"
+  - text: Hidden away completely during the learning phase. Used only for final model evaluation.
+- strong: "Warning:"
+- text: Including testing data in your mean or covariance calculations will falsely inflate performance metrics, making you think your model generalizes better than it actually does!
+- generic: Live Partition Counts
+- generic: "Apple Train / Test:"
+- strong: 64 / 16
+- generic: "Pear Train / Test:"
+- strong: 64 / 16
+- generic: "Concept Check: Why must we fit QDA's parameters using ONLY the training partition?"
+- button "Because KaTeX cannot render equations if there are too many total data points.":
+  - text: Because KaTeX cannot render equations if there are too many total data points.
+- button "To prevent data leakage. Using test data during parameter estimation leads to overly optimistic evaluation metrics.":
+  - text: To prevent data leakage. Using test data during parameter estimation leads to overly optimistic evaluation metrics.
+- button "Because test data points do not possess true class labels.":
+  - text: Because test data points do not possess true class labels.
+- generic: Stage 03 · Understand
+- heading "The Straight-Line Trap (LDA)" [level=2]: The Straight-Line Trap (LDA)
+- paragraph:
+  - text: The simplest approach is
+  - strong: Linear Discriminant Analysis (LDA)
+  - text: . It draws a straight boundary to separate the groups.
+- paragraph:
+  - text: To do this, LDA calculates the pooled average shape of all the data and forces
+  - emphasis: both
+  - text: groups to share that exact same covariance matrix (
+  - math:
+    - generic: Σ
+    - generic: ^
+    - generic: s
+    - generic: h
+    - generic: a
+    - generic: r
+    - generic: e
+    - generic: d
+  - generic: Σ
+  - text: ^
+  - generic: shared
+  - text: ).
+- strong: "The Limitation:"
+- text: Look at the dotted ellipses on the canvas. Because LDA forces them to be identical in shape and tilt, it misclassifies points near the edges. It completely ignores the unique diagonal stretch of the Pears.
+- generic: "Concept Check: What happens when we force classes with different spreads to share a covariance matrix?"
+- button "The model becomes highly flexible and always overfits the dataset.":
+  - text: The model becomes highly flexible and always overfits the dataset.
+- button "We can no longer invert the matrix, resulting in computational errors.":
+  - text: We can no longer invert the matrix, resulting in computational errors.
+- button "We average out their unique shape characteristics, resulting in an inappropriate straight decision boundary.":
+  - text: We average out their unique shape characteristics, resulting in an inappropriate straight decision boundary.
+- generic: Stage 04 · Build
+- 'heading "Fitting QDA: What the Model Learns" [level=2]': "Fitting QDA: What the Model Learns"
+- paragraph:
+  - text: To fit QDA, we estimate three key statistical parameters directly from our
+  - strong: training set
+  - text: for each class
+  - math:
+    - generic: k
+  - generic: k
+  - text: ":"
+- heading "Apple Class Statistics ( )" [level=4]:
+  - text: Apple Class Statistics (
+  - math:
+    - generic: k
+    - generic: =
+    - generic: A
+  - generic: k =
+  - generic: A
+  - text: )
+- text: "Prior probability:"
+- math:
+  - generic: π
+  - generic: A
+  - generic: =
+  - generic: "0.500"
+- text: π
+- generic: A
+- text: =
+- generic: "0.500"
+- text: "Mean vector:"
+- math:
+  - generic: μ
+  - generic: ^
+  - generic: A
+  - generic: =
+  - generic: "["
+  - generic: "3.53"
+  - generic: ","
+  - generic: "7.20"
+  - generic: "]"
+  - generic: T
+- generic: μ
+- text: ^
+- generic: A
+- text: =
+- text: "[3.53, 7.20"
+- text: "]"
+- generic: T
+- generic: "Covariance Matrix:"
+- math:
+  - generic: Σ
+  - generic: ^
+  - generic: A
+  - generic: =
+  - generic: (
+  - generic: "1.367"
+  - generic: −
+  - generic: "0.041"
+  - generic: −
+  - generic: "0.041"
+  - generic: "1.395"
+  - generic: )
+- generic: Σ
+- text: ^
+- generic: A
+- text: =
+- generic: (
+- generic: "1.367"
+- generic: −0.041
+- generic: −0.041
+- generic: "1.395"
+- generic: )
+- text: Click covariance matrix to inspect anatomy!
+- heading "Pear Class Statistics ( )" [level=4]:
+  - text: Pear Class Statistics (
+  - math:
+    - generic: k
+    - generic: =
+    - generic: B
+  - generic: k =
+  - generic: B
+  - text: )
+- text: "Prior probability:"
+- math:
+  - generic: π
+  - generic: B
+  - generic: =
+  - generic: "0.500"
+- text: π
+- generic: B
+- text: =
+- generic: "0.500"
+- text: "Mean vector:"
+- math:
+  - generic: μ
+  - generic: ^
+  - generic: B
+  - generic: =
+  - generic: "["
+  - generic: "7.15"
+  - generic: ","
+  - generic: "3.64"
+  - generic: "]"
+  - generic: T
+- generic: μ
+- text: ^
+- generic: B
+- text: =
+- text: "[7.15, 3.64"
+- text: "]"
+- generic: T
+- generic: "Covariance Matrix:"
+- math:
+  - generic: Σ
+  - generic: ^
+  - generic: B
+  - generic: =
+  - generic: (
+  - generic: "2.755"
+  - generic: "1.815"
+  - generic: "1.815"
+  - generic: "2.052"
+  - generic: )
+- generic: Σ
+- text: ^
+- generic: B
+- text: =
+- generic: (
+- generic: "2.755"
+- generic: "1.815"
+- generic: "1.815"
+- generic: "2.052"
+- generic: )
+- text: Click covariance matrix to inspect anatomy!
+- heading "Covariance Matrix Anatomy" [level=3]
+- paragraph: "For our two features, the 2x2 Covariance Matrix is represented as:"
+- math:
+  - generic: Σ
+  - generic: =
+  - generic: (
+  - generic: Variance
+  - generic: (
+  - generic: X
+  - generic: "1"
+  - generic: )
+  - generic: Covariance
+  - generic: (
+  - generic: X
+  - generic: "1"
+  - generic: ","
+  - generic: X
+  - generic: "2"
+  - generic: )
+  - generic: Covariance
+  - generic: (
+  - generic: X
+  - generic: "1"
+  - generic: ","
+  - generic: X
+  - generic: "2"
+  - generic: )
+  - generic: Variance
+  - generic: (
+  - generic: X
+  - generic: "2"
+  - generic: )
+  - generic: )
+- generic: Σ =
+- generic: (
+- generic: Variance
+- text: (
+- text: X
+- generic: "1"
+- text: )
+- generic: Covariance
+- text: (
+- text: X
+- generic: "1"
+- text: ","
+- text: X
+- generic: "2"
+- text: )
+- generic: Covariance
+- text: (
+- text: X
+- generic: "1"
+- text: ","
+- text: X
+- generic: "2"
+- text: )
+- generic: Variance
+- text: (
+- text: X
+- generic: "2"
+- text: )
+- generic: )
+- paragraph:
+  - strong: "Diagonal entries:"
+  - text: Represent the independent spread of Sweetness and Roundness.
+  - strong: "Off-diagonal entries:"
+  - text: Represent the relationship. A positive value means sweeter fruit is generally rounder, creating a diagonal tilt!
+- heading "Determinants & Inverses" [level=3]
+- paragraph:
+  - strong:
+    - text: The Determinant (
+    - math:
+      - generic: ∣
+      - generic: Σ
+      - generic: k
+      - generic: ∣
+    - text: ∣
+    - text: Σ
+    - generic: k
+    - text: ∣
+    - text: "):"
+  - text: Is a covariance-volume scaling factor. Its square root,
+  - math:
+    - generic: ∣
+    - generic: Σ
+    - generic: k
+    - generic: ∣
+  - text: ∣
+  - text: Σ
+  - generic: k
+  - text: ∣
+  - text: ", corresponds more closely to geometric area or volume."
+- paragraph:
+  - strong:
+    - text: The Inverse (
+    - math:
+      - generic: Σ
+      - generic: k
+      - generic: −
+      - generic: "1"
+    - text: Σ
+    - generic: k
+    - generic: −1
+    - text: "):"
+  - text: Acts as a scaling standardizer. It mathematically divides distances by the variance in that specific direction so wide directions aren't artificially penalized.
+- generic: "Concept Check: What do the diagonal values in a covariance matrix represent?"
+- button "The correlation between the two features.":
+  - text: The correlation between the two features.
+- button "The individual variances of each feature.":
+  - text: The individual variances of each feature.
+- button "The coordinates of the class center.":
+  - text: The coordinates of the class center.
+- generic: Stage 05 · Build
+- heading "Testing with Shape-Aware Distance" [level=2]: Testing with Shape-Aware Distance
+- paragraph: Euclidean distance only measures straight-line distance. It assumes classes are perfect, un-tilted circles.
+- paragraph:
+  - text: QDA uses
+  - strong: Mahalanobis Distance
+  - text: ", which measures distance in units of class-specific standard deviations, aligning with the class's natural stretch and tilt."
+- strong: "Try it:"
+- text: Tap and drag on the canvas to reposition the test probe. Look at the contour lines of equal distance wrapping around each class mean.
+- paragraph: Activate the interactive probe (tap & drag on canvas) to view a live, step-by-step mathematical score breakdown!
+- heading "A Note on Posterior Probabilities" [level=3]
+- paragraph: The posteriors are calculated assuming the features are strictly normally (Gaussian) distributed. If your real-world data is heavily skewed or multimodal, the model's confidence scores will be poorly calibrated!
+- generic: "Concept Check: Why is Mahalanobis distance superior to Euclidean distance for elliptical clusters?"
+- button "It accounts for class-specific variance and correlation, standardizing distance along the cluster's actual tilt.":
+  - text: It accounts for class-specific variance and correlation, standardizing distance along the cluster's actual tilt.
+- button "It ignores the units of the features entirely to simplify calculations.":
+  - text: It ignores the units of the features entirely to simplify calculations.
+- button "It guarantees that all distances are transformed into positive integers.":
+  - text: It guarantees that all distances are transformed into positive integers.
+- generic: Stage 06 · Build
+- heading "The Curved Boundary" [level=2]: The Curved Boundary
+- paragraph: "The decision boundary is defined mathematically as the curve where the score for Apples exactly equals the score for Pears:"
+- math:
+  - generic: δ
+  - generic: Apple
+  - generic: (
+  - generic: x
+  - generic: )
+  - generic: =
+  - generic: δ
+  - generic: Pear
+  - generic: (
+  - generic: x
+  - generic: )
+- text: δ
+- generic: Apple
+- text: (x) =
+- text: δ
+- generic: Pear
+- text: (x)
+- paragraph:
+  - text: Because the covariance matrices
+  - math:
+    - generic: Σ
+    - generic: ^
+    - generic: Apple
+    - generic: ≠
+    - generic: Σ
+    - generic: ^
+    - generic: Pear
+  - generic: Σ
+  - text: ^
+  - generic: Apple
+  - generic: 
+  - text: =
+  - generic: Σ
+  - text: ^
+  - generic: Pear
+  - text: ", the quadratic terms in the equation do not cancel. The boundary naturally curves to encapsulate the unique shape characteristics of each class."
+- generic: Boundary Visualization Toggle
+- paragraph: "Use the controls below to directly overlay and compare LDA and QDA decision boundaries:"
+- button "Show LDA (Linear)"
+- button "Show QDA (Curved)"
+- button "Show Both"
+- generic: "Concept Check: Why does the QDA decision boundary curve while LDA's is a straight line?"
+- button "LDA uses non-linear activation functions while QDA does not.":
+  - text: LDA uses non-linear activation functions while QDA does not.
+- button "Because the classes have different covariance matrices, the quadratic terms in the score equations do not cancel out.":
+  - text: Because the classes have different covariance matrices, the quadratic terms in the score equations do not cancel out.
+- button "Because QDA uses more training data points than LDA.":
+  - text: Because QDA uses more training data points than LDA.
+- generic: Stage 07 · Understand
+- heading "Evaluating QDA on Unseen Data" [level=2]: Evaluating QDA on Unseen Data
+- paragraph:
+  - text: We evaluate our fitted model using our held-out
+  - strong: test set
+  - text: ". Watch the canvas: test points are highlighted as green (correctly predicted) or red (incorrectly predicted) rings."
+- generic: 100.0%
+- generic: Accuracy ?
+- generic: 100.0%
+- generic: Precision ◎
+- generic: 100.0%
+- generic: Recall ?
+- generic: 100.0%
+- generic: F1 Score balance
+- generic: Confusion Matrix (Click cells for explanation)
+- table:
+  - rowgroup:
+    - row "Predicted Class":
+      - columnheader
+      - columnheader "Predicted Class"
+    - row "Apple Pear":
+      - columnheader
+      - columnheader "Apple":
+        - text: Apple
+      - columnheader "Pear":
+        - text: Pear
+  - rowgroup:
+    - row "Actual Apple 16 True Positive (TP) 0 False Negative (FN)":
+      - rowheader "Actual Apple"
+      - cell "16 True Positive (TP)":
+        - generic: "16"
+        - generic: True Positive (TP)
+      - cell "0 False Negative (FN)":
+        - generic: "0"
+        - generic: False Negative (FN)
+    - row "Actual Pear 0 False Positive (FP) 16 True Negative (TN)":
+      - rowheader "Actual Pear"
+      - cell "0 False Positive (FP)":
+        - generic: "0"
+        - generic: False Positive (FP)
+      - cell "16 True Negative (TN)":
+        - generic: "16"
+        - generic: True Negative (TN)
+- paragraph: Accuracy, Precision, Recall, and F1 Score are computed using standard equations. Observe how changing sample sizes or shapes on other stages immediately alters these test scores!
+- heading "How to Read the Evaluation Metrics" [level=3]
+- paragraph:
+  - text: We treat
+  - strong: Apple
+  - text: as the positive class. These scores are calculated from the held-out test set only. Click any of the metric cards above to quickly jump and highlight its details.
+- heading "Accuracy ?" [level=4]:
+  - generic: Accuracy
+  - generic: "?"
+- paragraph:
+  - strong: "Formula:"
+  - math:
+    - generic: TP
+    - generic: +
+    - generic: TN
+    - generic: Total
+  - generic: Total
+  - generic: TP
+  - text: +
+  - generic: TN
+- paragraph:
+  - strong: "Live calculation:"
+  - math:
+    - generic: "16"
+    - generic: +
+    - generic: "16"
+    - generic: "32"
+    - generic: =
+    - generic: "100.0"
+  - generic: "32"
+  - generic: 16+16
+  - text: =
+  - generic: "100.0"
+- paragraph:
+  - strong: "Meaning:"
+  - text: Out of all test fruits, how many did the model classify correctly?
+- paragraph: "Warning: Accuracy can look high even when one class is being ignored, especially with imbalanced data."
+- heading "Precision ◎" [level=4]:
+  - generic: Precision
+  - generic: ◎
+- paragraph:
+  - strong: "Formula:"
+  - math:
+    - generic: TP
+    - generic: TP
+    - generic: +
+    - generic: FP
+  - generic: TP
+  - text: +
+  - generic: FP
+  - generic: TP
+- paragraph:
+  - strong: "Live calculation:"
+  - math:
+    - generic: "16"
+    - generic: "16"
+    - generic: +
+    - generic: "0"
+    - generic: =
+    - generic: "100.0"
+  - generic: 16+0
+  - generic: "16"
+  - text: =
+  - generic: "100.0"
+- paragraph:
+  - strong: "Meaning:"
+  - text: When the model predicts Apple, how often is it actually Apple?
+- paragraph: "Precision focuses on false alarms: predicted Apple but actually Pear."
+- heading "Recall ?" [level=4]:
+  - generic: Recall
+  - generic: "?"
+- paragraph:
+  - strong: "Formula:"
+  - math:
+    - generic: TP
+    - generic: TP
+    - generic: +
+    - generic: FN
+  - generic: TP
+  - text: +
+  - generic: FN
+  - generic: TP
+- paragraph:
+  - strong: "Live calculation:"
+  - math:
+    - generic: "16"
+    - generic: "16"
+    - generic: +
+    - generic: "0"
+    - generic: =
+    - generic: "100.0"
+  - generic: 16+0
+  - generic: "16"
+  - text: =
+  - generic: "100.0"
+- paragraph:
+  - strong: "Meaning:"
+  - text: Of all real Apples, how many did the model successfully find?
+- paragraph: "Recall focuses on missed Apples: actual Apple but predicted Pear."
+- heading "F1 Score balance" [level=4]:
+  - generic: F1 Score
+  - generic: balance
+- paragraph:
+  - strong: "Formula:"
+  - math:
+    - generic: "2"
+    - generic: ×
+    - generic: Precision
+    - generic: ×
+    - generic: Recall
+    - generic: Precision
+    - generic: +
+    - generic: Recall
+  - generic: 2 ×
+  - generic: Precision
+  - text: +
+  - generic: Recall
+  - generic: Precision
+  - text: ×
+  - generic: Recall
+- paragraph:
+  - strong: "Live calculation:"
+  - text: Precision = 1.00, Recall = 1.00
+  - text: F1 = 2 × 1.00 × 1.00 / (1.00 + 1.00) = 1.00 = 100.0%
+- paragraph:
+  - strong: "Meaning:"
+  - text: A balance score between precision and recall.
+- paragraph: Useful when both false positives and false negatives matter.
+- strong: "Do not overtrust 100%:"
+- text: If all metrics are 100%, it only means the current simulated test split was classified perfectly. It does not prove QDA will always be perfect.
+- generic: "Concept Check: Defining Apple as the positive class, what is a False Positive?"
+- button "Predicting Pear when the actual class was Apple.":
+  - text: Predicting Pear when the actual class was Apple.
+- button "Predicting Apple when the actual class was Pear.":
+  - text: Predicting Apple when the actual class was Pear.
+- button "Correctly predicting Apple.":
+  - text: Correctly predicting Apple.
+- generic: Stage 08 · Evaluate
+- heading "Reading QDA Output" [level=2]: Reading QDA Output
+- paragraph:
+  - text: When running QDA in standard statistical software like R or Python's
+  - code: scikit-learn
+  - text: ", you are presented with a summary output. Click the highlighted items in the simulated log block below to understand what they represent:"
+- generic: qda_model_output.log
+- generic: "[Priors] Class Priors: π_Apple = 0.500, π_Pear = 0.500"
+- generic: "[Means] Empirical Class Means: μ_Apple = [3.53, 7.20] μ_Pear = [7.15, 3.64]"
+- generic: "[Covariance] Class Covariance Matrices: Σ_Apple = [[1.367, -0.041], [-0.041, 1.395]] Σ_Pear = [[2.755, 1.815], [1.815, 2.052]]"
+- generic: "[Determinants] Determinants (Volume): |Σ_Apple| = 1.9046 |Σ_Pear| = 2.3572"
+- generic: "[Scores] Active Probe Scores: δ_Apple = -- δ_Pear = --"
+- generic: "[Posteriors] Probabilities: P(Apple|x) = -- P(Pear|x) = -- Prediction: --"
+- generic: "[Confusion] Test Set Counts: TP: 16, TN: 16, FP: 0, FN: 0"
+- generic: "[Metrics] Evaluation Metrics: Accuracy: 100.0%, Precision: 100.0% Recall: 100.0%, F1: 100.0%"
+- paragraph: ^ Click any highlighted log row above to open an interactive explainer!
+- generic: "Concept Check: What does a prior probability of 0.70 for Apple mean?"
+- button "Apples represent 70% of the training set.":
+  - text: Apples represent 70% of the training set.
+- button "The model is 70% confident that every new fruit is an Apple.":
+  - text: The model is 70% confident that every new fruit is an Apple.
+- button "Apples have an average sweetness rating of 7.0.":
+  - text: Apples have an average sweetness rating of 7.0.
+- generic: Stage 09 · Explore
+- heading "Regularization & Shape Playground" [level=2]: Regularization & Shape Playground
+- paragraph: When class distributions are close or contain few data points, the empirical covariance matrices can become unstable or singular (zero determinant), causing inverse division errors.
+- paragraph:
+  - text: To solve this, we add a
+  - strong: regularization ridge
+  - text: (
+  - math:
+    - generic: λ
+  - generic: λ
+  - text: ") directly to the diagonals of the covariance matrices:"
+- paragraph:
+  - strong: Regularisation depends on its target.
+  - text: A class covariance can shrink toward a diagonal matrix, an identity matrix, or a shared pooled covariance. Only shrinkage toward the shared covariance moves QDA directly toward LDA. Choose both target and amount through validation or cross-validation.
+- math:
+  - generic: Σ
+  - generic: regularized
+  - generic: =
+  - generic: Σ
+  - generic: +
+  - generic: λ
+  - generic: I
+- text: Σ
+- generic: regularized
+- text: =
+- generic: Σ +
+- generic: λI
+- generic: Regularization Control
+- text: Ridge Parameter (
+- math:
+  - generic: λ
+- generic: λ
+- text: "):"
+- slider "Ridge Parameter ($\\lambda$):": "0.1"
+- generic: "0.10"
+- paragraph:
+  - strong: "Low Ridge (0.0):"
+  - text: Maximum flexibility, but highly sensitive to noise and singularity.
+  - strong: "High Ridge (1.5):"
+  - text: Increases stability, squeezing matrices to be circular. The curved boundary smooths out, behaving more like LDA!
+- generic: QDA Shape Playground
+- paragraph: "Modify the true underlying distributions below. The simulator will instantly re-draw points and recalculate QDA:"
+- generic: Apple Base Parameters
+- generic: Mean X
+- slider "Mean X": "3.5"
+- generic: Mean Y
+- slider "Mean Y": "7"
+- generic: Spread
+- slider "Spread": "1.2"
+- generic: Stretch
+- slider "Stretch": "1"
+- generic: Tilt
+- slider "Tilt": "0"
+- generic: Pear Base Parameters
+- generic: Mean X
+- slider "Mean X": "7"
+- generic: Mean Y
+- slider "Mean Y": "3.5"
+- generic: Spread
+- slider "Spread": "1.5"
+- generic: Stretch
+- slider "Stretch": "3"
+- generic: Tilt
+- slider "Tilt": "45"
+- generic: "Concept Check: What is the primary benefit of regularization in QDA?"
+- button "It eliminates the need for prior probability calculations.":
+  - text: It eliminates the need for prior probability calculations.
+- button "It prevents computational instability (singular matrix errors) and smooths out noisy decision boundaries.":
+  - text: It prevents computational instability (singular matrix errors) and smooths out noisy decision boundaries.
+- button "It forces the decision boundary to remain strictly linear.":
+  - text: It forces the decision boundary to remain strictly linear.
+- generic: Stage 10 · Prepare
+- heading "Assumptions, Complexity & Synthesis" [level=2]: Assumptions, Complexity & Synthesis
+- paragraph: Every algorithm is a balance of flexibility and parameters. QDA estimates a separate covariance matrix for each class, which comes at a significant parameter cost.
+- generic: Parameter Complexity Calculator
+- paragraph:
+  - text: Adjust the class count (
+  - math:
+    - generic: K
+  - generic: K
+  - text: ) and feature count (
+  - math:
+    - generic: p
+  - generic: p
+  - text: ") to compare parameter counts:"
+- text: Classes (
+- math:
+  - generic: K
+- generic: K
+- text: "):"
+- slider "Classes ($K$):": "2"
+- generic: "2"
+- text: Features (
+- math:
+  - generic: p
+- generic: p
+- text: "):"
+- slider "Features ($p$):": "2"
+- generic: "2"
+- generic: "LDA Parameters:"
+- strong: "7"
+- generic: "QDA Parameters:"
+- strong: "10"
+- text: For small
+- math:
+  - generic: p
+  - generic: =
+  - generic: "2"
+- generic: p =
+- generic: "2"
+- text: ", QDA is manageable. But notice how fast QDA's parameter count increases as you add more features!"
+- paragraph:
+  - strong: "When QDA Thrives:"
+- list:
+  - text: Classes have completely different shapes and orientations.
+  - text: The dataset is large enough to estimate parameters reliably.
+  - text: Boundaries are naturally curved.
+- paragraph:
+  - strong: "When QDA Struggles:"
+- list:
+  - text: Extremely small datasets (leads to overfitting and singular matrices).
+  - text: Datasets with many features (parameter explosion).
+  - text: Outliers present that distort covariance matrix estimation.
+- paragraph:
+  - strong: "Alternatives to QDA:"
+- list:
+  - strong: "LDA:"
+  - text: If dataset is small or class spreads are similar.
+  - strong: "Logistic Regression:"
+  - text: If you prefer to model class boundaries without making Gaussian distribution assumptions.
+  - strong: "KNN or SVM:"
+  - text: If decision boundaries are highly complex or non-Gaussian.
+- generic: Complete the picture
+- heading "When full QDA is too unstable" [level=3]
+- paragraph: Separate covariance matrices contain many parameters. With few observations or many features, estimates can become unstable or singular.
+- paragraph: Regularised discriminant analysis provides a continuum between LDA and QDA by shrinking class covariance estimates toward a shared structure. Cross-validation should choose the amount of flexibility.
+- generic: Key takeaways
+- list:
+  - listitem: QDA uses class-specific covariance matrices and can form curved boundaries.
+  - listitem: Its flexibility can outperform LDA when class shapes genuinely differ.
+  - listitem: That flexibility costs data and may require regularisation.
+- region "Practical method checklist":
+  - paragraph: Practical method checklist
+  - heading "Before you finish" [level=3]
+  - heading "Assumptions" [level=4]
+  - paragraph: Class-conditional covariance estimates sufficiently supported by data.
+  - heading "When the method fails" [level=4]
+  - paragraph: Small classes, many features, singular covariance, outliers, and drift.
+  - heading "Validation and leakage" [level=4]
+  - paragraph: Choose the shrinkage target and amount within cross-validation.
+  - heading "Interpretation cautions" [level=4]
+  - paragraph: Only shrinkage toward pooled covariance moves QDA directly toward LDA.
+  - heading "What to report" [level=4]
+  - paragraph: Priors, covariance treatment, regularisation, metrics, calibration, and uncertainty.
+- region "Quadratic Discriminant Analysis (QDA) interactive visualisation":
+  - generic: Roundness (Feature 2)
+  - generic: Legend
+  - generic: Train Apples
+  - generic: Train Pears
+  - generic: Test Apples
+  - generic: Test Pears
+  - generic: "Predicted: --"
+  - generic: Posterior Probability
+  - generic: "Apple:"
+  - generic: "0% (δ: 0)"
+  - generic: "Pear:"
+  - generic: "0% (δ: 0)"
+  - generic: Sweetness (Feature 1)
+  - generic: "Stage 1: Live Generated Scatter Data"
+- contentinfo:
+  - link "All modules":
+    - /url: ../index.html
+- navigation "Lesson stages":
+  - 'button "Go to stage 1: The Raw Data Cloud"':
+    - generic: 01 · The Raw Data Cloud
+  - 'button "Go to stage 2: Train / Test Split"':
+    - generic: 02 · Train / Test Split
+  - 'button "Go to stage 3: The Straight-Line Trap (LDA)"':
+    - generic: 03 · The Straight-Line Trap (LDA)
+  - 'button "Go to stage 4: Fitting QDA: What the Model Learns"':
+    - generic: "04 · Fitting QDA: What the Model Learns"
+  - 'button "Go to stage 5: Testing with Shape-Aware Distance"':
+    - generic: 05 · Testing with Shape-Aware Distance
+  - 'button "Go to stage 6: The Curved Boundary"':
+    - generic: 06 · The Curved Boundary
+  - 'button "Go to stage 7: Evaluating QDA on Unseen Data"':
+    - generic: 07 · Evaluating QDA on Unseen Data
+  - 'button "Go to stage 8: Reading QDA Output"':
+    - generic: 08 · Reading QDA Output
+  - 'button "Go to stage 9: Regularization & Shape Playground"':
+    - generic: 09 · Regularization & Shape Playground
+  - 'button "Go to stage 10: Assumptions, Complexity & Synthesis"':
+    - generic: 10 · Assumptions, Complexity & Synthesis
