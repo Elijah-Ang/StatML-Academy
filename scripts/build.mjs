@@ -10,17 +10,21 @@ const validateOnly = process.argv.includes("--validate-only");
 const sources = ["index.html", "modules", "assets"];
 const originalModules = CORE_MODULES.map((module) => module.slug);
 const foundationModules = Object.keys(foundationLessons);
+// Retain the projection wording checks for existing lessons. Closed frequent
+// itemsets with counts have an exact support-preserving property instead.
+const projectionInformationClaims = [
+  /preserv(?:e|es|ed|ing) (?:\d+% of )?(?:the )?information/i,
+  /same information/i,
+];
 const banned = [
   /definitely related/i,
   /(?:result|relationship) is likely real/i,
-  /preserv(?:e|es|ed|ing) (?:\d+% of )?(?:the )?information/i,
   /always standardi[sz]e/i,
   /model is completely lost/i,
   /mandatory feature scaling/i,
   /feature scaling is essential/i,
   /filtering out (?:the )?noise/i,
   /preserving .*mathematical .*soul/i,
-  /same information/i,
   /scale your data first/i,
   /perfectly fits the noise/i,
   /force all scales to 0.?1/i,
@@ -60,7 +64,7 @@ for (const rel of pages) {
   else if (titles.has(title))
     errors.push(`${rel}: duplicate title also used by ${titles.get(title)}`);
   else titles.set(title, rel);
-  for (const phrase of banned)
+  for (const phrase of [...banned, ...(rel === "modules/association-rules.html" ? [] : projectionInformationClaims)])
     if (phrase.test(html))
       errors.push(`${rel}: banned statistical wording matches ${phrase}`);
   for (const match of html.matchAll(/(?:href|src)=["']([^"'#?]+)["']/g)) {

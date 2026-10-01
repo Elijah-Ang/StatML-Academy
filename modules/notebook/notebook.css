@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Kalam:wght@400;700&family=Patrick+Hand&display=swap");
+@import url("fonts.css");
 :root {
   color-scheme: light;
   --paper: #faf7ef;
@@ -42,6 +42,20 @@ select {
 button,
 select {
   min-height: 44px;
+}
+input[type="range"] {
+  min-height: 44px;
+}
+/* Written lessons remain usable when the interactive runtime is unavailable. */
+body:not(.is-interactive) .mobile-lab-bar,
+body:not(.is-interactive) .lesson-toolbar,
+body:not(.is-interactive) .lab-home,
+body:not(.is-interactive) [data-explore-stage] {
+  display: none;
+}
+body:not(.is-interactive) .notebook-layout {
+  display: block;
+  max-width: 760px;
 }
 button {
   cursor: pointer;

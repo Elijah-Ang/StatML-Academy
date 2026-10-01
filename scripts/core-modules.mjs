@@ -22,6 +22,7 @@ export const CORE_MODULES = [
   ["kmeans", "K-Means Clustering"],
   ["hierarchical-clustering", "Hierarchical Clustering"],
   ["pca", "Principal Component Analysis (PCA)"],
+  ["association-rules", "Association Rules"],
   ["bias-variance", "Bias-Variance Trade-Off & Resampling Methods"],
   ["model-selection", "Model Selection & Regularization"],
 ].map(([slug, title]) => ({ slug, title, path: `modules/${slug}.html` }));

@@ -1,0 +1,6726 @@
+{
+  "url": "http://127.0.0.1:8150/modules/association-rules.html",
+  "started": "2026-10-01T13:11:06.305Z",
+  "cases": [
+    {
+      "width": 1440,
+      "section": 1,
+      "labels": 19,
+      "collisions": [],
+      "clipped": [],
+      "overflow": false
+    },
+    {
+      "width": 1440,
+      "section": 2,
+      "labels": 22,
+      "collisions": [],
+      "clipped": [],
+      "overflow": false
+    },
+    {
+      "width": 1440,
+      "section": 3,
+      "labels": 9,
+      "collisions": [],
+      "clipped": [],
+      "overflow": false
+    },
+    {
+      "width": 1440,
+      "section": 4,
+      "labels": 11,
+      "collisions": [],
+      "clipped": [],
+      "overflow": false
+    },
+    {
+      "width": 1440,
+      "section": 5,
+      "labels": 10,
+      "collisions": [],
+      "clipped": [],
+      "overflow": false
+    },
+    {
+      "width": 1440,
+      "section": 6,
+      "labels": 11,
+      "collisions": [],
+      "clipped": [],
+      "overflow": false
+    },
+    {
+      "width": 1440,
+      "section": 7,
+      "labels": 16,
+      "collisions": [],
+      "clipped": [],
+      "overflow": false
+    },
+    {
+      "width": 1440,
+      "section": 8,
+      "labels": 21,
+      "collisions": [],
+      "clipped": [],
+      "overflow": false
+    },
+    {
+      "width": 1440,
+      "section": 9,
+      "labels": 23,
+      "collisions": [],
+      "clipped": [],
+      "overflow": false
+    },
+    {
+      "width": 1440,
+      "section": 10,
+      "labels": 15,
+      "collisions": [],
+      "clipped": [],
+      "overflow": false
+    },
+    {
+      "width": 1440,
+      "section": 11,
+      "labels": 30,
+      "collisions": [],
+      "clipped": [],
+      "overflow": false
+    },
+    {
+      "width": 1440,
+      "section": 12,
+      "labels": 29,
+      "collisions": [],
+      "clipped": [],
+      "overflow": false
+    },
+    {
+      "width": 1440,
+      "section": 13,
+      "labels": 16,
+      "collisions": [],
+      "clipped": [],
+      "overflow": false
+    },
+    {
+      "width": 1440,
+      "section": 14,
+      "labels": 18,
+      "collisions": [],
+      "clipped": [],
+      "overflow": false
+    },
+    {
+      "width": 1440,
+      "section": 15,
+      "labels": 16,
+      "collisions": [],
+      "clipped": [],
+      "overflow": false
+    },
+    {
+      "width": 1440,
+      "section": 16,
+      "labels": 19,
+      "collisions": [],
+      "clipped": [],
+      "overflow": false
+    },
+    {
+      "width": 1440,
+      "section": 17,
+      "labels": 9,
+      "collisions": [],
+      "clipped": [],
+      "overflow": false
+    },
+    {
+      "width": 1440,
+      "section": 18,
+      "labels": 12,
+      "collisions": [],
+      "clipped": [],
+      "overflow": false
+    },
+    {
+      "width": 1440,
+      "section": 19,
+      "labels": 22,
+      "collisions": [],
+      "clipped": [],
+      "overflow": false
+    },
+    {
+      "width": 1440,
+      "section": 20,
+      "labels": 45,
+      "collisions": [],
+      "clipped": [],
+      "overflow": false
+    },
+    {
+      "width": 1440,
+      "section": 21,
+      "labels": 8,
+      "collisions": [],
+      "clipped": [],
+      "overflow": false
+    },
+    {
+      "width": 1024,
+      "section": 1,
+      "labels": 19,
+      "collisions": [],
+      "clipped": [],
+      "overflow": false
+    },
+    {
+      "width": 1024,
+      "section": 2,
+      "labels": 22,
+      "collisions": [],
+      "clipped": [],
+      "overflow": false
+    },
+    {
+      "width": 1024,
+      "section": 3,
+      "labels": 9,
+      "collisions": [],
+      "clipped": [],
+      "overflow": false
+    },
+    {
+      "width": 1024,
+      "section": 4,
+      "labels": 11,
+      "collisions": [],
+      "clipped": [],
+      "overflow": false
+    },
+    {
+      "width": 1024,
+      "section": 5,
+      "labels": 10,
+      "collisions": [],
+      "clipped": [],
+      "overflow": false
+    },
+    {
+      "width": 1024,
+      "section": 6,
+      "labels": 11,
+      "collisions": [],
+      "clipped": [],
+      "overflow": false
+    },
+    {
+      "width": 1024,
+      "section": 7,
+      "labels": 18,
+      "collisions": [],
+      "clipped": [],
+      "overflow": false
+    },
+    {
+      "width": 1024,
+      "section": 8,
+      "labels": 21,
+      "collisions": [],
+      "clipped": [],
+      "overflow": false
+    },
+    {
+      "width": 1024,
+      "section": 9,
+      "labels": 23,
+      "collisions": [],
+      "clipped": [],
+      "overflow": false
+    },
+    {
+      "width": 1024,
+      "section": 10,
+      "labels": 15,
+      "collisions": [],
+      "clipped": [],
+      "overflow": false
+    },
+    {
+      "width": 1024,
+      "section": 11,
+      "labels": 31,
+      "collisions": [],
+      "clipped": [],
+      "overflow": false
+    },
+    {
+      "width": 1024,
+      "section": 12,
+      "labels": 31,
+      "collisions": [],
+      "clipped": [],
+      "overflow": false
+    },
+    {
+      "width": 1024,
+      "section": 13,
+      "labels": 16,
+      "collisions": [],
+      "clipped": [],
+      "overflow": false
+    },
+    {
+      "width": 1024,
+      "section": 14,
+      "labels": 19,
+      "collisions": [],
+      "clipped": [],
+      "overflow": false
+    },
+    {
+      "width": 1024,
+      "section": 15,
+      "labels": 18,
+      "collisions": [],
+      "clipped": [],
+      "overflow": false
+    },
+    {
+      "width": 1024,
+      "section": 16,
+      "labels": 19,
+      "collisions": [],
+      "clipped": [],
+      "overflow": false
+    },
+    {
+      "width": 1024,
+      "section": 17,
+      "labels": 10,
+      "collisions": [],
+      "clipped": [],
+      "overflow": false
+    },
+    {
+      "width": 1024,
+      "section": 18,
+      "labels": 12,
+      "collisions": [],
+      "clipped": [],
+      "overflow": false
+    },
+    {
+      "width": 1024,
+      "section": 19,
+      "labels": 23,
+      "collisions": [],
+      "clipped": [],
+      "overflow": false
+    },
+    {
+      "width": 1024,
+      "section": 20,
+      "labels": 47,
+      "collisions": [],
+      "clipped": [],
+      "overflow": false
+    },
+    {
+      "width": 1024,
+      "section": 21,
+      "labels": 8,
+      "collisions": [],
+      "clipped": [],
+      "overflow": false
+    },
+    {
+      "width": 768,
+      "section": 1,
+      "labels": 19,
+      "collisions": [],
+      "clipped": [],
+      "overflow": false
+    },
+    {
+      "width": 768,
+      "section": 2,
+      "labels": 22,
+      "collisions": [],
+      "clipped": [],
+      "overflow": false
+    },
+    {
+      "width": 768,
+      "section": 3,
+      "labels": 9,
+      "collisions": [],
+      "clipped": [],
+      "overflow": false
+    },
+    {
+      "width": 768,
+      "section": 4,
+      "labels": 11,
+      "collisions": [],
+      "clipped": [],
+      "overflow": false
+    },
+    {
+      "width": 768,
+      "section": 5,
+      "labels": 10,
+      "collisions": [],
+      "clipped": [],
+      "overflow": false
+    },
+    {
+      "width": 768,
+      "section": 6,
+      "labels": 11,
+      "collisions": [],
+      "clipped": [],
+      "overflow": false
+    },
+    {
+      "width": 768,
+      "section": 7,
+      "labels": 15,
+      "collisions": [],
+      "clipped": [],
+      "overflow": false
+    },
+    {
+      "width": 768,
+      "section": 8,
+      "labels": 21,
+      "collisions": [],
+      "clipped": [],
+      "overflow": false
+    },
+    {
+      "width": 768,
+      "section": 9,
+      "labels": 23,
+      "collisions": [],
+      "clipped": [],
+      "overflow": false
+    },
+    {
+      "width": 768,
+      "section": 10,
+      "labels": 15,
+      "collisions": [],
+      "clipped": [],
+      "overflow": false
+    },
+    {
+      "width": 768,
+      "section": 11,
+      "labels": 30,
+      "collisions": [],
+      "clipped": [],
+      "overflow": false
+    },
+    {
+      "width": 768,
+      "section": 12,
+      "labels": 29,
+      "collisions": [],
+      "clipped": [],
+      "overflow": false
+    },
+    {
+      "width": 768,
+      "section": 13,
+      "labels": 16,
+      "collisions": [],
+      "clipped": [],
+      "overflow": false
+    },
+    {
+      "width": 768,
+      "section": 14,
+      "labels": 17,
+      "collisions": [],
+      "clipped": [],
+      "overflow": false
+    },
+    {
+      "width": 768,
+      "section": 15,
+      "labels": 16,
+      "collisions": [],
+      "clipped": [],
+      "overflow": false
+    },
+    {
+      "width": 768,
+      "section": 16,
+      "labels": 19,
+      "collisions": [],
+      "clipped": [],
+      "overflow": false
+    },
+    {
+      "width": 768,
+      "section": 17,
+      "labels": 9,
+      "collisions": [],
+      "clipped": [],
+      "overflow": false
+    },
+    {
+      "width": 768,
+      "section": 18,
+      "labels": 11,
+      "collisions": [],
+      "clipped": [],
+      "overflow": false
+    },
+    {
+      "width": 768,
+      "section": 19,
+      "labels": 22,
+      "collisions": [],
+      "clipped": [],
+      "overflow": false
+    },
+    {
+      "width": 768,
+      "section": 20,
+      "labels": 45,
+      "collisions": [],
+      "clipped": [],
+      "overflow": false
+    },
+    {
+      "width": 768,
+      "section": 21,
+      "labels": 8,
+      "collisions": [],
+      "clipped": [],
+      "overflow": false
+    },
+    {
+      "width": 390,
+      "section": 1,
+      "labels": 22,
+      "collisions": [],
+      "clipped": [],
+      "overflow": false
+    },
+    {
+      "width": 390,
+      "section": 2,
+      "labels": 23,
+      "collisions": [],
+      "clipped": [],
+      "overflow": false
+    },
+    {
+      "width": 390,
+      "section": 3,
+      "labels": 10,
+      "collisions": [],
+      "clipped": [],
+      "overflow": false
+    },
+    {
+      "width": 390,
+      "section": 4,
+      "labels": 13,
+      "collisions": [],
+      "clipped": [],
+      "overflow": false
+    },
+    {
+      "width": 390,
+      "section": 5,
+      "labels": 13,
+      "collisions": [],
+      "clipped": [],
+      "overflow": false
+    },
+    {
+      "width": 390,
+      "section": 6,
+      "labels": 12,
+      "collisions": [],
+      "clipped": [],
+      "overflow": false
+    },
+    {
+      "width": 390,
+      "section": 7,
+      "labels": 21,
+      "collisions": [],
+      "clipped": [],
+      "overflow": false
+    },
+    {
+      "width": 390,
+      "section": 8,
+      "labels": 22,
+      "collisions": [],
+      "clipped": [],
+      "overflow": false
+    },
+    {
+      "width": 390,
+      "section": 9,
+      "labels": 27,
+      "collisions": [],
+      "clipped": [],
+      "overflow": false
+    },
+    {
+      "width": 390,
+      "section": 10,
+      "labels": 17,
+      "collisions": [],
+      "clipped": [],
+      "overflow": false
+    },
+    {
+      "width": 390,
+      "section": 11,
+      "labels": 36,
+      "collisions": [],
+      "clipped": [],
+      "overflow": false
+    },
+    {
+      "width": 390,
+      "section": 12,
+      "labels": 38,
+      "collisions": [],
+      "clipped": [],
+      "overflow": false
+    },
+    {
+      "width": 390,
+      "section": 13,
+      "labels": 16,
+      "collisions": [],
+      "clipped": [],
+      "overflow": false
+    },
+    {
+      "width": 390,
+      "section": 14,
+      "labels": 21,
+      "collisions": [],
+      "clipped": [],
+      "overflow": false
+    },
+    {
+      "width": 390,
+      "section": 15,
+      "labels": 19,
+      "collisions": [],
+      "clipped": [],
+      "overflow": false
+    },
+    {
+      "width": 390,
+      "section": 16,
+      "labels": 26,
+      "collisions": [],
+      "clipped": [],
+      "overflow": false
+    },
+    {
+      "width": 390,
+      "section": 17,
+      "labels": 18,
+      "collisions": [],
+      "clipped": [],
+      "overflow": false
+    },
+    {
+      "width": 390,
+      "section": 18,
+      "labels": 16,
+      "collisions": [],
+      "clipped": [],
+      "overflow": false
+    },
+    {
+      "width": 390,
+      "section": 19,
+      "labels": 28,
+      "collisions": [],
+      "clipped": [],
+      "overflow": false
+    },
+    {
+      "width": 390,
+      "section": 20,
+      "labels": 51,
+      "collisions": [],
+      "clipped": [],
+      "overflow": false
+    },
+    {
+      "width": 390,
+      "section": 21,
+      "labels": 11,
+      "collisions": [],
+      "clipped": [],
+      "overflow": false
+    },
+    {
+      "width": 320,
+      "section": 1,
+      "labels": 22,
+      "collisions": [],
+      "clipped": [],
+      "overflow": false
+    },
+    {
+      "width": 320,
+      "section": 2,
+      "labels": 23,
+      "collisions": [],
+      "clipped": [],
+      "overflow": false
+    },
+    {
+      "width": 320,
+      "section": 3,
+      "labels": 11,
+      "collisions": [],
+      "clipped": [],
+      "overflow": false
+    },
+    {
+      "width": 320,
+      "section": 4,
+      "labels": 14,
+      "collisions": [],
+      "clipped": [],
+      "overflow": false
+    },
+    {
+      "width": 320,
+      "section": 5,
+      "labels": 15,
+      "collisions": [],
+      "clipped": [],
+      "overflow": false
+    },
+    {
+      "width": 320,
+      "section": 6,
+      "labels": 12,
+      "collisions": [],
+      "clipped": [],
+      "overflow": false
+    },
+    {
+      "width": 320,
+      "section": 7,
+      "labels": 21,
+      "collisions": [],
+      "clipped": [],
+      "overflow": false
+    },
+    {
+      "width": 320,
+      "section": 8,
+      "labels": 22,
+      "collisions": [],
+      "clipped": [],
+      "overflow": false
+    },
+    {
+      "width": 320,
+      "section": 9,
+      "labels": 28,
+      "collisions": [],
+      "clipped": [],
+      "overflow": false
+    },
+    {
+      "width": 320,
+      "section": 10,
+      "labels": 19,
+      "collisions": [],
+      "clipped": [],
+      "overflow": false
+    },
+    {
+      "width": 320,
+      "section": 11,
+      "labels": 36,
+      "collisions": [],
+      "clipped": [],
+      "overflow": false
+    },
+    {
+      "width": 320,
+      "section": 12,
+      "labels": 40,
+      "collisions": [],
+      "clipped": [],
+      "overflow": false
+    },
+    {
+      "width": 320,
+      "section": 13,
+      "labels": 17,
+      "collisions": [],
+      "clipped": [],
+      "overflow": false
+    },
+    {
+      "width": 320,
+      "section": 14,
+      "labels": 23,
+      "collisions": [],
+      "clipped": [],
+      "overflow": false
+    },
+    {
+      "width": 320,
+      "section": 15,
+      "labels": 22,
+      "collisions": [],
+      "clipped": [],
+      "overflow": false
+    },
+    {
+      "width": 320,
+      "section": 16,
+      "labels": 27,
+      "collisions": [],
+      "clipped": [],
+      "overflow": false
+    },
+    {
+      "width": 320,
+      "section": 17,
+      "labels": 19,
+      "collisions": [],
+      "clipped": [],
+      "overflow": false
+    },
+    {
+      "width": 320,
+      "section": 18,
+      "labels": 18,
+      "collisions": [],
+      "clipped": [],
+      "overflow": false
+    },
+    {
+      "width": 320,
+      "section": 19,
+      "labels": 28,
+      "collisions": [],
+      "clipped": [],
+      "overflow": false
+    },
+    {
+      "width": 320,
+      "section": 20,
+      "labels": 53,
+      "collisions": [],
+      "clipped": [],
+      "overflow": false
+    },
+    {
+      "width": 320,
+      "section": 21,
+      "labels": 11,
+      "collisions": [],
+      "clipped": [],
+      "overflow": false
+    }
+  ],
+  "checks": [
+    {
+      "label": "Readable sections exist",
+      "ok": true,
+      "width": 1440
+    },
+    {
+      "label": "Scrolling selects the matching scene",
+      "ok": true,
+      "width": 1440,
+      "section": 1
+    },
+    {
+      "label": "Scene geometry",
+      "ok": true,
+      "width": 1440,
+      "section": 1,
+      "geometry": {
+        "labels": 19,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Slider preserves focus",
+      "ok": true,
+      "width": 1440,
+      "section": 1,
+      "value": "1"
+    },
+    {
+      "label": "Control extreme geometry",
+      "ok": true,
+      "width": 1440,
+      "section": 1,
+      "value": "1",
+      "geometry": {
+        "labels": 19,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Slider preserves focus",
+      "ok": true,
+      "width": 1440,
+      "section": 1,
+      "value": "4"
+    },
+    {
+      "label": "Control extreme geometry",
+      "ok": true,
+      "width": 1440,
+      "section": 1,
+      "value": "4",
+      "geometry": {
+        "labels": 19,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Scrolling selects the matching scene",
+      "ok": true,
+      "width": 1440,
+      "section": 2
+    },
+    {
+      "label": "Scene geometry",
+      "ok": true,
+      "width": 1440,
+      "section": 2,
+      "geometry": {
+        "labels": 22,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Scrolling selects the matching scene",
+      "ok": true,
+      "width": 1440,
+      "section": 3
+    },
+    {
+      "label": "Scene geometry",
+      "ok": true,
+      "width": 1440,
+      "section": 3,
+      "geometry": {
+        "labels": 9,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Scrolling selects the matching scene",
+      "ok": true,
+      "width": 1440,
+      "section": 4
+    },
+    {
+      "label": "Scene geometry",
+      "ok": true,
+      "width": 1440,
+      "section": 4,
+      "geometry": {
+        "labels": 11,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Scrolling selects the matching scene",
+      "ok": true,
+      "width": 1440,
+      "section": 5
+    },
+    {
+      "label": "Scene geometry",
+      "ok": true,
+      "width": 1440,
+      "section": 5,
+      "geometry": {
+        "labels": 10,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Scrolling selects the matching scene",
+      "ok": true,
+      "width": 1440,
+      "section": 6
+    },
+    {
+      "label": "Scene geometry",
+      "ok": true,
+      "width": 1440,
+      "section": 6,
+      "geometry": {
+        "labels": 11,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Slider preserves focus",
+      "ok": true,
+      "width": 1440,
+      "section": 6,
+      "value": "1750"
+    },
+    {
+      "label": "Control extreme geometry",
+      "ok": true,
+      "width": 1440,
+      "section": 6,
+      "value": "1750",
+      "geometry": {
+        "labels": 11,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Slider preserves focus",
+      "ok": true,
+      "width": 1440,
+      "section": 6,
+      "value": "3000"
+    },
+    {
+      "label": "Control extreme geometry",
+      "ok": true,
+      "width": 1440,
+      "section": 6,
+      "value": "3000",
+      "geometry": {
+        "labels": 11,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Scrolling selects the matching scene",
+      "ok": true,
+      "width": 1440,
+      "section": 7
+    },
+    {
+      "label": "Scene geometry",
+      "ok": true,
+      "width": 1440,
+      "section": 7,
+      "geometry": {
+        "labels": 16,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Slider preserves focus",
+      "ok": true,
+      "width": 1440,
+      "section": 7,
+      "value": "25"
+    },
+    {
+      "label": "Control extreme geometry",
+      "ok": true,
+      "width": 1440,
+      "section": 7,
+      "value": "25",
+      "geometry": {
+        "labels": 16,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Slider preserves focus",
+      "ok": true,
+      "width": 1440,
+      "section": 7,
+      "value": "100"
+    },
+    {
+      "label": "Control extreme geometry",
+      "ok": true,
+      "width": 1440,
+      "section": 7,
+      "value": "100",
+      "geometry": {
+        "labels": 16,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Scrolling selects the matching scene",
+      "ok": true,
+      "width": 1440,
+      "section": 8
+    },
+    {
+      "label": "Scene geometry",
+      "ok": true,
+      "width": 1440,
+      "section": 8,
+      "geometry": {
+        "labels": 21,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Slider preserves focus",
+      "ok": true,
+      "width": 1440,
+      "section": 8,
+      "value": "25"
+    },
+    {
+      "label": "Control extreme geometry",
+      "ok": true,
+      "width": 1440,
+      "section": 8,
+      "value": "25",
+      "geometry": {
+        "labels": 21,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Slider preserves focus",
+      "ok": true,
+      "width": 1440,
+      "section": 8,
+      "value": "100"
+    },
+    {
+      "label": "Control extreme geometry",
+      "ok": true,
+      "width": 1440,
+      "section": 8,
+      "value": "100",
+      "geometry": {
+        "labels": 21,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Scrolling selects the matching scene",
+      "ok": true,
+      "width": 1440,
+      "section": 9
+    },
+    {
+      "label": "Scene geometry",
+      "ok": true,
+      "width": 1440,
+      "section": 9,
+      "geometry": {
+        "labels": 23,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Slider preserves focus",
+      "ok": true,
+      "width": 1440,
+      "section": 9,
+      "value": "25"
+    },
+    {
+      "label": "Control extreme geometry",
+      "ok": true,
+      "width": 1440,
+      "section": 9,
+      "value": "25",
+      "geometry": {
+        "labels": 23,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Slider preserves focus",
+      "ok": true,
+      "width": 1440,
+      "section": 9,
+      "value": "100"
+    },
+    {
+      "label": "Control extreme geometry",
+      "ok": true,
+      "width": 1440,
+      "section": 9,
+      "value": "100",
+      "geometry": {
+        "labels": 3,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Scrolling selects the matching scene",
+      "ok": true,
+      "width": 1440,
+      "section": 10
+    },
+    {
+      "label": "Scene geometry",
+      "ok": true,
+      "width": 1440,
+      "section": 10,
+      "geometry": {
+        "labels": 15,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Slider preserves focus",
+      "ok": true,
+      "width": 1440,
+      "section": 10,
+      "value": "25"
+    },
+    {
+      "label": "Control extreme geometry",
+      "ok": true,
+      "width": 1440,
+      "section": 10,
+      "value": "25",
+      "geometry": {
+        "labels": 15,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Slider preserves focus",
+      "ok": true,
+      "width": 1440,
+      "section": 10,
+      "value": "100"
+    },
+    {
+      "label": "Control extreme geometry",
+      "ok": true,
+      "width": 1440,
+      "section": 10,
+      "value": "100",
+      "geometry": {
+        "labels": 15,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Scrolling selects the matching scene",
+      "ok": true,
+      "width": 1440,
+      "section": 11
+    },
+    {
+      "label": "Scene geometry",
+      "ok": true,
+      "width": 1440,
+      "section": 11,
+      "geometry": {
+        "labels": 30,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Slider preserves focus",
+      "ok": true,
+      "width": 1440,
+      "section": 11,
+      "value": "0"
+    },
+    {
+      "label": "Control extreme geometry",
+      "ok": true,
+      "width": 1440,
+      "section": 11,
+      "value": "0",
+      "geometry": {
+        "labels": 6,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Slider preserves focus",
+      "ok": true,
+      "width": 1440,
+      "section": 11,
+      "value": "5"
+    },
+    {
+      "label": "Control extreme geometry",
+      "ok": true,
+      "width": 1440,
+      "section": 11,
+      "value": "5",
+      "geometry": {
+        "labels": 30,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Scrolling selects the matching scene",
+      "ok": true,
+      "width": 1440,
+      "section": 12
+    },
+    {
+      "label": "Scene geometry",
+      "ok": true,
+      "width": 1440,
+      "section": 12,
+      "geometry": {
+        "labels": 29,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Scrolling selects the matching scene",
+      "ok": true,
+      "width": 1440,
+      "section": 13
+    },
+    {
+      "label": "Scene geometry",
+      "ok": true,
+      "width": 1440,
+      "section": 13,
+      "geometry": {
+        "labels": 16,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Scrolling selects the matching scene",
+      "ok": true,
+      "width": 1440,
+      "section": 14
+    },
+    {
+      "label": "Scene geometry",
+      "ok": true,
+      "width": 1440,
+      "section": 14,
+      "geometry": {
+        "labels": 18,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Slider preserves focus",
+      "ok": true,
+      "width": 1440,
+      "section": 14,
+      "value": "1"
+    },
+    {
+      "label": "Control extreme geometry",
+      "ok": true,
+      "width": 1440,
+      "section": 14,
+      "value": "1",
+      "geometry": {
+        "labels": 25,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Slider preserves focus",
+      "ok": true,
+      "width": 1440,
+      "section": 14,
+      "value": "3"
+    },
+    {
+      "label": "Control extreme geometry",
+      "ok": true,
+      "width": 1440,
+      "section": 14,
+      "value": "3",
+      "geometry": {
+        "labels": 10,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Scrolling selects the matching scene",
+      "ok": true,
+      "width": 1440,
+      "section": 15
+    },
+    {
+      "label": "Scene geometry",
+      "ok": true,
+      "width": 1440,
+      "section": 15,
+      "geometry": {
+        "labels": 16,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Slider preserves focus",
+      "ok": true,
+      "width": 1440,
+      "section": 15,
+      "value": "0"
+    },
+    {
+      "label": "Control extreme geometry",
+      "ok": true,
+      "width": 1440,
+      "section": 15,
+      "value": "0",
+      "geometry": {
+        "labels": 16,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Slider preserves focus",
+      "ok": true,
+      "width": 1440,
+      "section": 15,
+      "value": "200"
+    },
+    {
+      "label": "Control extreme geometry",
+      "ok": true,
+      "width": 1440,
+      "section": 15,
+      "value": "200",
+      "geometry": {
+        "labels": 16,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Scrolling selects the matching scene",
+      "ok": true,
+      "width": 1440,
+      "section": 16
+    },
+    {
+      "label": "Scene geometry",
+      "ok": true,
+      "width": 1440,
+      "section": 16,
+      "geometry": {
+        "labels": 19,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Slider preserves focus",
+      "ok": true,
+      "width": 1440,
+      "section": 16,
+      "value": "3500"
+    },
+    {
+      "label": "Control extreme geometry",
+      "ok": true,
+      "width": 1440,
+      "section": 16,
+      "value": "3500",
+      "geometry": {
+        "labels": 19,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Slider preserves focus",
+      "ok": true,
+      "width": 1440,
+      "section": 16,
+      "value": "6000"
+    },
+    {
+      "label": "Control extreme geometry",
+      "ok": true,
+      "width": 1440,
+      "section": 16,
+      "value": "6000",
+      "geometry": {
+        "labels": 19,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Scrolling selects the matching scene",
+      "ok": true,
+      "width": 1440,
+      "section": 17
+    },
+    {
+      "label": "Scene geometry",
+      "ok": true,
+      "width": 1440,
+      "section": 17,
+      "geometry": {
+        "labels": 9,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Slider preserves focus",
+      "ok": true,
+      "width": 1440,
+      "section": 17,
+      "value": "0"
+    },
+    {
+      "label": "Control extreme geometry",
+      "ok": true,
+      "width": 1440,
+      "section": 17,
+      "value": "0",
+      "geometry": {
+        "labels": 9,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Slider preserves focus",
+      "ok": true,
+      "width": 1440,
+      "section": 17,
+      "value": "100"
+    },
+    {
+      "label": "Control extreme geometry",
+      "ok": true,
+      "width": 1440,
+      "section": 17,
+      "value": "100",
+      "geometry": {
+        "labels": 9,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Scrolling selects the matching scene",
+      "ok": true,
+      "width": 1440,
+      "section": 18
+    },
+    {
+      "label": "Scene geometry",
+      "ok": true,
+      "width": 1440,
+      "section": 18,
+      "geometry": {
+        "labels": 12,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Slider preserves focus",
+      "ok": true,
+      "width": 1440,
+      "section": 18,
+      "value": "1"
+    },
+    {
+      "label": "Control extreme geometry",
+      "ok": true,
+      "width": 1440,
+      "section": 18,
+      "value": "1",
+      "geometry": {
+        "labels": 12,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Slider preserves focus",
+      "ok": true,
+      "width": 1440,
+      "section": 18,
+      "value": "8"
+    },
+    {
+      "label": "Control extreme geometry",
+      "ok": true,
+      "width": 1440,
+      "section": 18,
+      "value": "8",
+      "geometry": {
+        "labels": 12,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Scrolling selects the matching scene",
+      "ok": true,
+      "width": 1440,
+      "section": 19
+    },
+    {
+      "label": "Scene geometry",
+      "ok": true,
+      "width": 1440,
+      "section": 19,
+      "geometry": {
+        "labels": 22,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Slider preserves focus",
+      "ok": true,
+      "width": 1440,
+      "section": 19,
+      "value": "1"
+    },
+    {
+      "label": "Control extreme geometry",
+      "ok": true,
+      "width": 1440,
+      "section": 19,
+      "value": "1",
+      "geometry": {
+        "labels": 22,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Slider preserves focus",
+      "ok": true,
+      "width": 1440,
+      "section": 19,
+      "value": "9"
+    },
+    {
+      "label": "Control extreme geometry",
+      "ok": true,
+      "width": 1440,
+      "section": 19,
+      "value": "9",
+      "geometry": {
+        "labels": 22,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Scrolling selects the matching scene",
+      "ok": true,
+      "width": 1440,
+      "section": 20
+    },
+    {
+      "label": "Scene geometry",
+      "ok": true,
+      "width": 1440,
+      "section": 20,
+      "geometry": {
+        "labels": 45,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Slider preserves focus",
+      "ok": true,
+      "width": 1440,
+      "section": 20,
+      "value": "25"
+    },
+    {
+      "label": "Control extreme geometry",
+      "ok": true,
+      "width": 1440,
+      "section": 20,
+      "value": "25",
+      "geometry": {
+        "labels": 55,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Slider preserves focus",
+      "ok": true,
+      "width": 1440,
+      "section": 20,
+      "value": "100"
+    },
+    {
+      "label": "Control extreme geometry",
+      "ok": true,
+      "width": 1440,
+      "section": 20,
+      "value": "100",
+      "geometry": {
+        "labels": 37,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Scrolling selects the matching scene",
+      "ok": true,
+      "width": 1440,
+      "section": 21
+    },
+    {
+      "label": "Scene geometry",
+      "ok": true,
+      "width": 1440,
+      "section": 21,
+      "geometry": {
+        "labels": 8,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Readable sections exist",
+      "ok": true,
+      "width": 1024
+    },
+    {
+      "label": "Scrolling selects the matching scene",
+      "ok": true,
+      "width": 1024,
+      "section": 1
+    },
+    {
+      "label": "Scene geometry",
+      "ok": true,
+      "width": 1024,
+      "section": 1,
+      "geometry": {
+        "labels": 19,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Slider preserves focus",
+      "ok": true,
+      "width": 1024,
+      "section": 1,
+      "value": "1"
+    },
+    {
+      "label": "Control extreme geometry",
+      "ok": true,
+      "width": 1024,
+      "section": 1,
+      "value": "1",
+      "geometry": {
+        "labels": 19,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Slider preserves focus",
+      "ok": true,
+      "width": 1024,
+      "section": 1,
+      "value": "4"
+    },
+    {
+      "label": "Control extreme geometry",
+      "ok": true,
+      "width": 1024,
+      "section": 1,
+      "value": "4",
+      "geometry": {
+        "labels": 19,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Scrolling selects the matching scene",
+      "ok": true,
+      "width": 1024,
+      "section": 2
+    },
+    {
+      "label": "Scene geometry",
+      "ok": true,
+      "width": 1024,
+      "section": 2,
+      "geometry": {
+        "labels": 22,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Scrolling selects the matching scene",
+      "ok": true,
+      "width": 1024,
+      "section": 3
+    },
+    {
+      "label": "Scene geometry",
+      "ok": true,
+      "width": 1024,
+      "section": 3,
+      "geometry": {
+        "labels": 9,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Scrolling selects the matching scene",
+      "ok": true,
+      "width": 1024,
+      "section": 4
+    },
+    {
+      "label": "Scene geometry",
+      "ok": true,
+      "width": 1024,
+      "section": 4,
+      "geometry": {
+        "labels": 11,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Scrolling selects the matching scene",
+      "ok": true,
+      "width": 1024,
+      "section": 5
+    },
+    {
+      "label": "Scene geometry",
+      "ok": true,
+      "width": 1024,
+      "section": 5,
+      "geometry": {
+        "labels": 10,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Scrolling selects the matching scene",
+      "ok": true,
+      "width": 1024,
+      "section": 6
+    },
+    {
+      "label": "Scene geometry",
+      "ok": true,
+      "width": 1024,
+      "section": 6,
+      "geometry": {
+        "labels": 11,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Slider preserves focus",
+      "ok": true,
+      "width": 1024,
+      "section": 6,
+      "value": "1750"
+    },
+    {
+      "label": "Control extreme geometry",
+      "ok": true,
+      "width": 1024,
+      "section": 6,
+      "value": "1750",
+      "geometry": {
+        "labels": 11,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Slider preserves focus",
+      "ok": true,
+      "width": 1024,
+      "section": 6,
+      "value": "3000"
+    },
+    {
+      "label": "Control extreme geometry",
+      "ok": true,
+      "width": 1024,
+      "section": 6,
+      "value": "3000",
+      "geometry": {
+        "labels": 11,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Scrolling selects the matching scene",
+      "ok": true,
+      "width": 1024,
+      "section": 7
+    },
+    {
+      "label": "Scene geometry",
+      "ok": true,
+      "width": 1024,
+      "section": 7,
+      "geometry": {
+        "labels": 18,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Slider preserves focus",
+      "ok": true,
+      "width": 1024,
+      "section": 7,
+      "value": "25"
+    },
+    {
+      "label": "Control extreme geometry",
+      "ok": true,
+      "width": 1024,
+      "section": 7,
+      "value": "25",
+      "geometry": {
+        "labels": 18,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Slider preserves focus",
+      "ok": true,
+      "width": 1024,
+      "section": 7,
+      "value": "100"
+    },
+    {
+      "label": "Control extreme geometry",
+      "ok": true,
+      "width": 1024,
+      "section": 7,
+      "value": "100",
+      "geometry": {
+        "labels": 18,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Scrolling selects the matching scene",
+      "ok": true,
+      "width": 1024,
+      "section": 8
+    },
+    {
+      "label": "Scene geometry",
+      "ok": true,
+      "width": 1024,
+      "section": 8,
+      "geometry": {
+        "labels": 21,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Slider preserves focus",
+      "ok": true,
+      "width": 1024,
+      "section": 8,
+      "value": "25"
+    },
+    {
+      "label": "Control extreme geometry",
+      "ok": true,
+      "width": 1024,
+      "section": 8,
+      "value": "25",
+      "geometry": {
+        "labels": 21,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Slider preserves focus",
+      "ok": true,
+      "width": 1024,
+      "section": 8,
+      "value": "100"
+    },
+    {
+      "label": "Control extreme geometry",
+      "ok": true,
+      "width": 1024,
+      "section": 8,
+      "value": "100",
+      "geometry": {
+        "labels": 21,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Scrolling selects the matching scene",
+      "ok": true,
+      "width": 1024,
+      "section": 9
+    },
+    {
+      "label": "Scene geometry",
+      "ok": true,
+      "width": 1024,
+      "section": 9,
+      "geometry": {
+        "labels": 23,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Slider preserves focus",
+      "ok": true,
+      "width": 1024,
+      "section": 9,
+      "value": "25"
+    },
+    {
+      "label": "Control extreme geometry",
+      "ok": true,
+      "width": 1024,
+      "section": 9,
+      "value": "25",
+      "geometry": {
+        "labels": 23,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Slider preserves focus",
+      "ok": true,
+      "width": 1024,
+      "section": 9,
+      "value": "100"
+    },
+    {
+      "label": "Control extreme geometry",
+      "ok": true,
+      "width": 1024,
+      "section": 9,
+      "value": "100",
+      "geometry": {
+        "labels": 4,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Scrolling selects the matching scene",
+      "ok": true,
+      "width": 1024,
+      "section": 10
+    },
+    {
+      "label": "Scene geometry",
+      "ok": true,
+      "width": 1024,
+      "section": 10,
+      "geometry": {
+        "labels": 15,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Slider preserves focus",
+      "ok": true,
+      "width": 1024,
+      "section": 10,
+      "value": "25"
+    },
+    {
+      "label": "Control extreme geometry",
+      "ok": true,
+      "width": 1024,
+      "section": 10,
+      "value": "25",
+      "geometry": {
+        "labels": 15,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Slider preserves focus",
+      "ok": true,
+      "width": 1024,
+      "section": 10,
+      "value": "100"
+    },
+    {
+      "label": "Control extreme geometry",
+      "ok": true,
+      "width": 1024,
+      "section": 10,
+      "value": "100",
+      "geometry": {
+        "labels": 15,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Scrolling selects the matching scene",
+      "ok": true,
+      "width": 1024,
+      "section": 11
+    },
+    {
+      "label": "Scene geometry",
+      "ok": true,
+      "width": 1024,
+      "section": 11,
+      "geometry": {
+        "labels": 31,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Slider preserves focus",
+      "ok": true,
+      "width": 1024,
+      "section": 11,
+      "value": "0"
+    },
+    {
+      "label": "Control extreme geometry",
+      "ok": true,
+      "width": 1024,
+      "section": 11,
+      "value": "0",
+      "geometry": {
+        "labels": 7,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Slider preserves focus",
+      "ok": true,
+      "width": 1024,
+      "section": 11,
+      "value": "5"
+    },
+    {
+      "label": "Control extreme geometry",
+      "ok": true,
+      "width": 1024,
+      "section": 11,
+      "value": "5",
+      "geometry": {
+        "labels": 31,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Scrolling selects the matching scene",
+      "ok": true,
+      "width": 1024,
+      "section": 12
+    },
+    {
+      "label": "Scene geometry",
+      "ok": true,
+      "width": 1024,
+      "section": 12,
+      "geometry": {
+        "labels": 31,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Scrolling selects the matching scene",
+      "ok": true,
+      "width": 1024,
+      "section": 13
+    },
+    {
+      "label": "Scene geometry",
+      "ok": true,
+      "width": 1024,
+      "section": 13,
+      "geometry": {
+        "labels": 16,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Scrolling selects the matching scene",
+      "ok": true,
+      "width": 1024,
+      "section": 14
+    },
+    {
+      "label": "Scene geometry",
+      "ok": true,
+      "width": 1024,
+      "section": 14,
+      "geometry": {
+        "labels": 19,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Slider preserves focus",
+      "ok": true,
+      "width": 1024,
+      "section": 14,
+      "value": "1"
+    },
+    {
+      "label": "Control extreme geometry",
+      "ok": true,
+      "width": 1024,
+      "section": 14,
+      "value": "1",
+      "geometry": {
+        "labels": 25,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Slider preserves focus",
+      "ok": true,
+      "width": 1024,
+      "section": 14,
+      "value": "3"
+    },
+    {
+      "label": "Control extreme geometry",
+      "ok": true,
+      "width": 1024,
+      "section": 14,
+      "value": "3",
+      "geometry": {
+        "labels": 11,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Scrolling selects the matching scene",
+      "ok": true,
+      "width": 1024,
+      "section": 15
+    },
+    {
+      "label": "Scene geometry",
+      "ok": true,
+      "width": 1024,
+      "section": 15,
+      "geometry": {
+        "labels": 18,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Slider preserves focus",
+      "ok": true,
+      "width": 1024,
+      "section": 15,
+      "value": "0"
+    },
+    {
+      "label": "Control extreme geometry",
+      "ok": true,
+      "width": 1024,
+      "section": 15,
+      "value": "0",
+      "geometry": {
+        "labels": 18,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Slider preserves focus",
+      "ok": true,
+      "width": 1024,
+      "section": 15,
+      "value": "200"
+    },
+    {
+      "label": "Control extreme geometry",
+      "ok": true,
+      "width": 1024,
+      "section": 15,
+      "value": "200",
+      "geometry": {
+        "labels": 18,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Scrolling selects the matching scene",
+      "ok": true,
+      "width": 1024,
+      "section": 16
+    },
+    {
+      "label": "Scene geometry",
+      "ok": true,
+      "width": 1024,
+      "section": 16,
+      "geometry": {
+        "labels": 19,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Slider preserves focus",
+      "ok": true,
+      "width": 1024,
+      "section": 16,
+      "value": "3500"
+    },
+    {
+      "label": "Control extreme geometry",
+      "ok": true,
+      "width": 1024,
+      "section": 16,
+      "value": "3500",
+      "geometry": {
+        "labels": 19,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Slider preserves focus",
+      "ok": true,
+      "width": 1024,
+      "section": 16,
+      "value": "6000"
+    },
+    {
+      "label": "Control extreme geometry",
+      "ok": true,
+      "width": 1024,
+      "section": 16,
+      "value": "6000",
+      "geometry": {
+        "labels": 19,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Scrolling selects the matching scene",
+      "ok": true,
+      "width": 1024,
+      "section": 17
+    },
+    {
+      "label": "Scene geometry",
+      "ok": true,
+      "width": 1024,
+      "section": 17,
+      "geometry": {
+        "labels": 10,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Slider preserves focus",
+      "ok": true,
+      "width": 1024,
+      "section": 17,
+      "value": "0"
+    },
+    {
+      "label": "Control extreme geometry",
+      "ok": true,
+      "width": 1024,
+      "section": 17,
+      "value": "0",
+      "geometry": {
+        "labels": 10,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Slider preserves focus",
+      "ok": true,
+      "width": 1024,
+      "section": 17,
+      "value": "100"
+    },
+    {
+      "label": "Control extreme geometry",
+      "ok": true,
+      "width": 1024,
+      "section": 17,
+      "value": "100",
+      "geometry": {
+        "labels": 10,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Scrolling selects the matching scene",
+      "ok": true,
+      "width": 1024,
+      "section": 18
+    },
+    {
+      "label": "Scene geometry",
+      "ok": true,
+      "width": 1024,
+      "section": 18,
+      "geometry": {
+        "labels": 12,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Slider preserves focus",
+      "ok": true,
+      "width": 1024,
+      "section": 18,
+      "value": "1"
+    },
+    {
+      "label": "Control extreme geometry",
+      "ok": true,
+      "width": 1024,
+      "section": 18,
+      "value": "1",
+      "geometry": {
+        "labels": 12,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Slider preserves focus",
+      "ok": true,
+      "width": 1024,
+      "section": 18,
+      "value": "8"
+    },
+    {
+      "label": "Control extreme geometry",
+      "ok": true,
+      "width": 1024,
+      "section": 18,
+      "value": "8",
+      "geometry": {
+        "labels": 12,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Scrolling selects the matching scene",
+      "ok": true,
+      "width": 1024,
+      "section": 19
+    },
+    {
+      "label": "Scene geometry",
+      "ok": true,
+      "width": 1024,
+      "section": 19,
+      "geometry": {
+        "labels": 23,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Slider preserves focus",
+      "ok": true,
+      "width": 1024,
+      "section": 19,
+      "value": "1"
+    },
+    {
+      "label": "Control extreme geometry",
+      "ok": true,
+      "width": 1024,
+      "section": 19,
+      "value": "1",
+      "geometry": {
+        "labels": 23,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Slider preserves focus",
+      "ok": true,
+      "width": 1024,
+      "section": 19,
+      "value": "9"
+    },
+    {
+      "label": "Control extreme geometry",
+      "ok": true,
+      "width": 1024,
+      "section": 19,
+      "value": "9",
+      "geometry": {
+        "labels": 23,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Scrolling selects the matching scene",
+      "ok": true,
+      "width": 1024,
+      "section": 20
+    },
+    {
+      "label": "Scene geometry",
+      "ok": true,
+      "width": 1024,
+      "section": 20,
+      "geometry": {
+        "labels": 47,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Slider preserves focus",
+      "ok": true,
+      "width": 1024,
+      "section": 20,
+      "value": "25"
+    },
+    {
+      "label": "Control extreme geometry",
+      "ok": true,
+      "width": 1024,
+      "section": 20,
+      "value": "25",
+      "geometry": {
+        "labels": 57,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Slider preserves focus",
+      "ok": true,
+      "width": 1024,
+      "section": 20,
+      "value": "100"
+    },
+    {
+      "label": "Control extreme geometry",
+      "ok": true,
+      "width": 1024,
+      "section": 20,
+      "value": "100",
+      "geometry": {
+        "labels": 39,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Scrolling selects the matching scene",
+      "ok": true,
+      "width": 1024,
+      "section": 21
+    },
+    {
+      "label": "Scene geometry",
+      "ok": true,
+      "width": 1024,
+      "section": 21,
+      "geometry": {
+        "labels": 8,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Readable sections exist",
+      "ok": true,
+      "width": 768
+    },
+    {
+      "label": "Scrolling selects the matching scene",
+      "ok": true,
+      "width": 768,
+      "section": 1
+    },
+    {
+      "label": "Opening modal retains the matching reading scene",
+      "ok": true,
+      "width": 768,
+      "section": 1
+    },
+    {
+      "label": "Scene geometry",
+      "ok": true,
+      "width": 768,
+      "section": 1,
+      "geometry": {
+        "labels": 19,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Slider preserves focus",
+      "ok": true,
+      "width": 768,
+      "section": 1,
+      "value": "1"
+    },
+    {
+      "label": "Control extreme geometry",
+      "ok": true,
+      "width": 768,
+      "section": 1,
+      "value": "1",
+      "geometry": {
+        "labels": 19,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Slider preserves focus",
+      "ok": true,
+      "width": 768,
+      "section": 1,
+      "value": "4"
+    },
+    {
+      "label": "Control extreme geometry",
+      "ok": true,
+      "width": 768,
+      "section": 1,
+      "value": "4",
+      "geometry": {
+        "labels": 19,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Modal restores panel, reading position and focus",
+      "ok": true,
+      "width": 768,
+      "section": 1,
+      "restored": {
+        "same": true,
+        "home": true,
+        "scroll": true,
+        "focus": true
+      }
+    },
+    {
+      "label": "Scrolling selects the matching scene",
+      "ok": true,
+      "width": 768,
+      "section": 2
+    },
+    {
+      "label": "Opening modal retains the matching reading scene",
+      "ok": true,
+      "width": 768,
+      "section": 2
+    },
+    {
+      "label": "Scene geometry",
+      "ok": true,
+      "width": 768,
+      "section": 2,
+      "geometry": {
+        "labels": 22,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Modal restores panel, reading position and focus",
+      "ok": true,
+      "width": 768,
+      "section": 2,
+      "restored": {
+        "same": true,
+        "home": true,
+        "scroll": true,
+        "focus": true
+      }
+    },
+    {
+      "label": "Scrolling selects the matching scene",
+      "ok": true,
+      "width": 768,
+      "section": 3
+    },
+    {
+      "label": "Opening modal retains the matching reading scene",
+      "ok": true,
+      "width": 768,
+      "section": 3
+    },
+    {
+      "label": "Scene geometry",
+      "ok": true,
+      "width": 768,
+      "section": 3,
+      "geometry": {
+        "labels": 9,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Modal restores panel, reading position and focus",
+      "ok": true,
+      "width": 768,
+      "section": 3,
+      "restored": {
+        "same": true,
+        "home": true,
+        "scroll": true,
+        "focus": true
+      }
+    },
+    {
+      "label": "Scrolling selects the matching scene",
+      "ok": true,
+      "width": 768,
+      "section": 4
+    },
+    {
+      "label": "Opening modal retains the matching reading scene",
+      "ok": true,
+      "width": 768,
+      "section": 4
+    },
+    {
+      "label": "Scene geometry",
+      "ok": true,
+      "width": 768,
+      "section": 4,
+      "geometry": {
+        "labels": 11,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Modal restores panel, reading position and focus",
+      "ok": true,
+      "width": 768,
+      "section": 4,
+      "restored": {
+        "same": true,
+        "home": true,
+        "scroll": true,
+        "focus": true
+      }
+    },
+    {
+      "label": "Scrolling selects the matching scene",
+      "ok": true,
+      "width": 768,
+      "section": 5
+    },
+    {
+      "label": "Opening modal retains the matching reading scene",
+      "ok": true,
+      "width": 768,
+      "section": 5
+    },
+    {
+      "label": "Scene geometry",
+      "ok": true,
+      "width": 768,
+      "section": 5,
+      "geometry": {
+        "labels": 10,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Modal restores panel, reading position and focus",
+      "ok": true,
+      "width": 768,
+      "section": 5,
+      "restored": {
+        "same": true,
+        "home": true,
+        "scroll": true,
+        "focus": true
+      }
+    },
+    {
+      "label": "Scrolling selects the matching scene",
+      "ok": true,
+      "width": 768,
+      "section": 6
+    },
+    {
+      "label": "Opening modal retains the matching reading scene",
+      "ok": true,
+      "width": 768,
+      "section": 6
+    },
+    {
+      "label": "Scene geometry",
+      "ok": true,
+      "width": 768,
+      "section": 6,
+      "geometry": {
+        "labels": 11,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Slider preserves focus",
+      "ok": true,
+      "width": 768,
+      "section": 6,
+      "value": "1750"
+    },
+    {
+      "label": "Control extreme geometry",
+      "ok": true,
+      "width": 768,
+      "section": 6,
+      "value": "1750",
+      "geometry": {
+        "labels": 11,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Slider preserves focus",
+      "ok": true,
+      "width": 768,
+      "section": 6,
+      "value": "3000"
+    },
+    {
+      "label": "Control extreme geometry",
+      "ok": true,
+      "width": 768,
+      "section": 6,
+      "value": "3000",
+      "geometry": {
+        "labels": 11,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Modal restores panel, reading position and focus",
+      "ok": true,
+      "width": 768,
+      "section": 6,
+      "restored": {
+        "same": true,
+        "home": true,
+        "scroll": true,
+        "focus": true
+      }
+    },
+    {
+      "label": "Scrolling selects the matching scene",
+      "ok": true,
+      "width": 768,
+      "section": 7
+    },
+    {
+      "label": "Opening modal retains the matching reading scene",
+      "ok": true,
+      "width": 768,
+      "section": 7
+    },
+    {
+      "label": "Scene geometry",
+      "ok": true,
+      "width": 768,
+      "section": 7,
+      "geometry": {
+        "labels": 15,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Slider preserves focus",
+      "ok": true,
+      "width": 768,
+      "section": 7,
+      "value": "25"
+    },
+    {
+      "label": "Control extreme geometry",
+      "ok": true,
+      "width": 768,
+      "section": 7,
+      "value": "25",
+      "geometry": {
+        "labels": 15,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Slider preserves focus",
+      "ok": true,
+      "width": 768,
+      "section": 7,
+      "value": "100"
+    },
+    {
+      "label": "Control extreme geometry",
+      "ok": true,
+      "width": 768,
+      "section": 7,
+      "value": "100",
+      "geometry": {
+        "labels": 15,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Modal restores panel, reading position and focus",
+      "ok": true,
+      "width": 768,
+      "section": 7,
+      "restored": {
+        "same": true,
+        "home": true,
+        "scroll": true,
+        "focus": true
+      }
+    },
+    {
+      "label": "Scrolling selects the matching scene",
+      "ok": true,
+      "width": 768,
+      "section": 8
+    },
+    {
+      "label": "Opening modal retains the matching reading scene",
+      "ok": true,
+      "width": 768,
+      "section": 8
+    },
+    {
+      "label": "Scene geometry",
+      "ok": true,
+      "width": 768,
+      "section": 8,
+      "geometry": {
+        "labels": 21,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Slider preserves focus",
+      "ok": true,
+      "width": 768,
+      "section": 8,
+      "value": "25"
+    },
+    {
+      "label": "Control extreme geometry",
+      "ok": true,
+      "width": 768,
+      "section": 8,
+      "value": "25",
+      "geometry": {
+        "labels": 21,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Slider preserves focus",
+      "ok": true,
+      "width": 768,
+      "section": 8,
+      "value": "100"
+    },
+    {
+      "label": "Control extreme geometry",
+      "ok": true,
+      "width": 768,
+      "section": 8,
+      "value": "100",
+      "geometry": {
+        "labels": 21,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Modal restores panel, reading position and focus",
+      "ok": true,
+      "width": 768,
+      "section": 8,
+      "restored": {
+        "same": true,
+        "home": true,
+        "scroll": true,
+        "focus": true
+      }
+    },
+    {
+      "label": "Scrolling selects the matching scene",
+      "ok": true,
+      "width": 768,
+      "section": 9
+    },
+    {
+      "label": "Opening modal retains the matching reading scene",
+      "ok": true,
+      "width": 768,
+      "section": 9
+    },
+    {
+      "label": "Scene geometry",
+      "ok": true,
+      "width": 768,
+      "section": 9,
+      "geometry": {
+        "labels": 23,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Slider preserves focus",
+      "ok": true,
+      "width": 768,
+      "section": 9,
+      "value": "25"
+    },
+    {
+      "label": "Control extreme geometry",
+      "ok": true,
+      "width": 768,
+      "section": 9,
+      "value": "25",
+      "geometry": {
+        "labels": 23,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Slider preserves focus",
+      "ok": true,
+      "width": 768,
+      "section": 9,
+      "value": "100"
+    },
+    {
+      "label": "Control extreme geometry",
+      "ok": true,
+      "width": 768,
+      "section": 9,
+      "value": "100",
+      "geometry": {
+        "labels": 3,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Modal restores panel, reading position and focus",
+      "ok": true,
+      "width": 768,
+      "section": 9,
+      "restored": {
+        "same": true,
+        "home": true,
+        "scroll": true,
+        "focus": true
+      }
+    },
+    {
+      "label": "Scrolling selects the matching scene",
+      "ok": true,
+      "width": 768,
+      "section": 10
+    },
+    {
+      "label": "Opening modal retains the matching reading scene",
+      "ok": true,
+      "width": 768,
+      "section": 10
+    },
+    {
+      "label": "Scene geometry",
+      "ok": true,
+      "width": 768,
+      "section": 10,
+      "geometry": {
+        "labels": 15,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Slider preserves focus",
+      "ok": true,
+      "width": 768,
+      "section": 10,
+      "value": "25"
+    },
+    {
+      "label": "Control extreme geometry",
+      "ok": true,
+      "width": 768,
+      "section": 10,
+      "value": "25",
+      "geometry": {
+        "labels": 15,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Slider preserves focus",
+      "ok": true,
+      "width": 768,
+      "section": 10,
+      "value": "100"
+    },
+    {
+      "label": "Control extreme geometry",
+      "ok": true,
+      "width": 768,
+      "section": 10,
+      "value": "100",
+      "geometry": {
+        "labels": 15,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Modal restores panel, reading position and focus",
+      "ok": true,
+      "width": 768,
+      "section": 10,
+      "restored": {
+        "same": true,
+        "home": true,
+        "scroll": true,
+        "focus": true
+      }
+    },
+    {
+      "label": "Scrolling selects the matching scene",
+      "ok": true,
+      "width": 768,
+      "section": 11
+    },
+    {
+      "label": "Opening modal retains the matching reading scene",
+      "ok": true,
+      "width": 768,
+      "section": 11
+    },
+    {
+      "label": "Scene geometry",
+      "ok": true,
+      "width": 768,
+      "section": 11,
+      "geometry": {
+        "labels": 30,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Slider preserves focus",
+      "ok": true,
+      "width": 768,
+      "section": 11,
+      "value": "0"
+    },
+    {
+      "label": "Control extreme geometry",
+      "ok": true,
+      "width": 768,
+      "section": 11,
+      "value": "0",
+      "geometry": {
+        "labels": 6,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Slider preserves focus",
+      "ok": true,
+      "width": 768,
+      "section": 11,
+      "value": "5"
+    },
+    {
+      "label": "Control extreme geometry",
+      "ok": true,
+      "width": 768,
+      "section": 11,
+      "value": "5",
+      "geometry": {
+        "labels": 30,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Modal restores panel, reading position and focus",
+      "ok": true,
+      "width": 768,
+      "section": 11,
+      "restored": {
+        "same": true,
+        "home": true,
+        "scroll": true,
+        "focus": true
+      }
+    },
+    {
+      "label": "Scrolling selects the matching scene",
+      "ok": true,
+      "width": 768,
+      "section": 12
+    },
+    {
+      "label": "Opening modal retains the matching reading scene",
+      "ok": true,
+      "width": 768,
+      "section": 12
+    },
+    {
+      "label": "Scene geometry",
+      "ok": true,
+      "width": 768,
+      "section": 12,
+      "geometry": {
+        "labels": 29,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Modal restores panel, reading position and focus",
+      "ok": true,
+      "width": 768,
+      "section": 12,
+      "restored": {
+        "same": true,
+        "home": true,
+        "scroll": true,
+        "focus": true
+      }
+    },
+    {
+      "label": "Scrolling selects the matching scene",
+      "ok": true,
+      "width": 768,
+      "section": 13
+    },
+    {
+      "label": "Opening modal retains the matching reading scene",
+      "ok": true,
+      "width": 768,
+      "section": 13
+    },
+    {
+      "label": "Scene geometry",
+      "ok": true,
+      "width": 768,
+      "section": 13,
+      "geometry": {
+        "labels": 16,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Modal restores panel, reading position and focus",
+      "ok": true,
+      "width": 768,
+      "section": 13,
+      "restored": {
+        "same": true,
+        "home": true,
+        "scroll": true,
+        "focus": true
+      }
+    },
+    {
+      "label": "Scrolling selects the matching scene",
+      "ok": true,
+      "width": 768,
+      "section": 14
+    },
+    {
+      "label": "Opening modal retains the matching reading scene",
+      "ok": true,
+      "width": 768,
+      "section": 14
+    },
+    {
+      "label": "Scene geometry",
+      "ok": true,
+      "width": 768,
+      "section": 14,
+      "geometry": {
+        "labels": 17,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Slider preserves focus",
+      "ok": true,
+      "width": 768,
+      "section": 14,
+      "value": "1"
+    },
+    {
+      "label": "Control extreme geometry",
+      "ok": true,
+      "width": 768,
+      "section": 14,
+      "value": "1",
+      "geometry": {
+        "labels": 23,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Slider preserves focus",
+      "ok": true,
+      "width": 768,
+      "section": 14,
+      "value": "3"
+    },
+    {
+      "label": "Control extreme geometry",
+      "ok": true,
+      "width": 768,
+      "section": 14,
+      "value": "3",
+      "geometry": {
+        "labels": 9,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Modal restores panel, reading position and focus",
+      "ok": true,
+      "width": 768,
+      "section": 14,
+      "restored": {
+        "same": true,
+        "home": true,
+        "scroll": true,
+        "focus": true
+      }
+    },
+    {
+      "label": "Scrolling selects the matching scene",
+      "ok": true,
+      "width": 768,
+      "section": 15
+    },
+    {
+      "label": "Opening modal retains the matching reading scene",
+      "ok": true,
+      "width": 768,
+      "section": 15
+    },
+    {
+      "label": "Scene geometry",
+      "ok": true,
+      "width": 768,
+      "section": 15,
+      "geometry": {
+        "labels": 16,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Slider preserves focus",
+      "ok": true,
+      "width": 768,
+      "section": 15,
+      "value": "0"
+    },
+    {
+      "label": "Control extreme geometry",
+      "ok": true,
+      "width": 768,
+      "section": 15,
+      "value": "0",
+      "geometry": {
+        "labels": 16,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Slider preserves focus",
+      "ok": true,
+      "width": 768,
+      "section": 15,
+      "value": "200"
+    },
+    {
+      "label": "Control extreme geometry",
+      "ok": true,
+      "width": 768,
+      "section": 15,
+      "value": "200",
+      "geometry": {
+        "labels": 16,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Modal restores panel, reading position and focus",
+      "ok": true,
+      "width": 768,
+      "section": 15,
+      "restored": {
+        "same": true,
+        "home": true,
+        "scroll": true,
+        "focus": true
+      }
+    },
+    {
+      "label": "Scrolling selects the matching scene",
+      "ok": true,
+      "width": 768,
+      "section": 16
+    },
+    {
+      "label": "Opening modal retains the matching reading scene",
+      "ok": true,
+      "width": 768,
+      "section": 16
+    },
+    {
+      "label": "Scene geometry",
+      "ok": true,
+      "width": 768,
+      "section": 16,
+      "geometry": {
+        "labels": 19,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Slider preserves focus",
+      "ok": true,
+      "width": 768,
+      "section": 16,
+      "value": "3500"
+    },
+    {
+      "label": "Control extreme geometry",
+      "ok": true,
+      "width": 768,
+      "section": 16,
+      "value": "3500",
+      "geometry": {
+        "labels": 19,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Slider preserves focus",
+      "ok": true,
+      "width": 768,
+      "section": 16,
+      "value": "6000"
+    },
+    {
+      "label": "Control extreme geometry",
+      "ok": true,
+      "width": 768,
+      "section": 16,
+      "value": "6000",
+      "geometry": {
+        "labels": 19,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Modal restores panel, reading position and focus",
+      "ok": true,
+      "width": 768,
+      "section": 16,
+      "restored": {
+        "same": true,
+        "home": true,
+        "scroll": true,
+        "focus": true
+      }
+    },
+    {
+      "label": "Scrolling selects the matching scene",
+      "ok": true,
+      "width": 768,
+      "section": 17
+    },
+    {
+      "label": "Opening modal retains the matching reading scene",
+      "ok": true,
+      "width": 768,
+      "section": 17
+    },
+    {
+      "label": "Scene geometry",
+      "ok": true,
+      "width": 768,
+      "section": 17,
+      "geometry": {
+        "labels": 9,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Slider preserves focus",
+      "ok": true,
+      "width": 768,
+      "section": 17,
+      "value": "0"
+    },
+    {
+      "label": "Control extreme geometry",
+      "ok": true,
+      "width": 768,
+      "section": 17,
+      "value": "0",
+      "geometry": {
+        "labels": 9,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Slider preserves focus",
+      "ok": true,
+      "width": 768,
+      "section": 17,
+      "value": "100"
+    },
+    {
+      "label": "Control extreme geometry",
+      "ok": true,
+      "width": 768,
+      "section": 17,
+      "value": "100",
+      "geometry": {
+        "labels": 9,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Modal restores panel, reading position and focus",
+      "ok": true,
+      "width": 768,
+      "section": 17,
+      "restored": {
+        "same": true,
+        "home": true,
+        "scroll": true,
+        "focus": true
+      }
+    },
+    {
+      "label": "Scrolling selects the matching scene",
+      "ok": true,
+      "width": 768,
+      "section": 18
+    },
+    {
+      "label": "Opening modal retains the matching reading scene",
+      "ok": true,
+      "width": 768,
+      "section": 18
+    },
+    {
+      "label": "Scene geometry",
+      "ok": true,
+      "width": 768,
+      "section": 18,
+      "geometry": {
+        "labels": 11,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Slider preserves focus",
+      "ok": true,
+      "width": 768,
+      "section": 18,
+      "value": "1"
+    },
+    {
+      "label": "Control extreme geometry",
+      "ok": true,
+      "width": 768,
+      "section": 18,
+      "value": "1",
+      "geometry": {
+        "labels": 11,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Slider preserves focus",
+      "ok": true,
+      "width": 768,
+      "section": 18,
+      "value": "8"
+    },
+    {
+      "label": "Control extreme geometry",
+      "ok": true,
+      "width": 768,
+      "section": 18,
+      "value": "8",
+      "geometry": {
+        "labels": 11,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Modal restores panel, reading position and focus",
+      "ok": true,
+      "width": 768,
+      "section": 18,
+      "restored": {
+        "same": true,
+        "home": true,
+        "scroll": true,
+        "focus": true
+      }
+    },
+    {
+      "label": "Scrolling selects the matching scene",
+      "ok": true,
+      "width": 768,
+      "section": 19
+    },
+    {
+      "label": "Opening modal retains the matching reading scene",
+      "ok": true,
+      "width": 768,
+      "section": 19
+    },
+    {
+      "label": "Scene geometry",
+      "ok": true,
+      "width": 768,
+      "section": 19,
+      "geometry": {
+        "labels": 22,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Slider preserves focus",
+      "ok": true,
+      "width": 768,
+      "section": 19,
+      "value": "1"
+    },
+    {
+      "label": "Control extreme geometry",
+      "ok": true,
+      "width": 768,
+      "section": 19,
+      "value": "1",
+      "geometry": {
+        "labels": 22,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Slider preserves focus",
+      "ok": true,
+      "width": 768,
+      "section": 19,
+      "value": "9"
+    },
+    {
+      "label": "Control extreme geometry",
+      "ok": true,
+      "width": 768,
+      "section": 19,
+      "value": "9",
+      "geometry": {
+        "labels": 22,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Modal restores panel, reading position and focus",
+      "ok": true,
+      "width": 768,
+      "section": 19,
+      "restored": {
+        "same": true,
+        "home": true,
+        "scroll": true,
+        "focus": true
+      }
+    },
+    {
+      "label": "Scrolling selects the matching scene",
+      "ok": true,
+      "width": 768,
+      "section": 20
+    },
+    {
+      "label": "Opening modal retains the matching reading scene",
+      "ok": true,
+      "width": 768,
+      "section": 20
+    },
+    {
+      "label": "Scene geometry",
+      "ok": true,
+      "width": 768,
+      "section": 20,
+      "geometry": {
+        "labels": 45,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Slider preserves focus",
+      "ok": true,
+      "width": 768,
+      "section": 20,
+      "value": "25"
+    },
+    {
+      "label": "Control extreme geometry",
+      "ok": true,
+      "width": 768,
+      "section": 20,
+      "value": "25",
+      "geometry": {
+        "labels": 55,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Slider preserves focus",
+      "ok": true,
+      "width": 768,
+      "section": 20,
+      "value": "100"
+    },
+    {
+      "label": "Control extreme geometry",
+      "ok": true,
+      "width": 768,
+      "section": 20,
+      "value": "100",
+      "geometry": {
+        "labels": 37,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Modal restores panel, reading position and focus",
+      "ok": true,
+      "width": 768,
+      "section": 20,
+      "restored": {
+        "same": true,
+        "home": true,
+        "scroll": true,
+        "focus": true
+      }
+    },
+    {
+      "label": "Scrolling selects the matching scene",
+      "ok": true,
+      "width": 768,
+      "section": 21
+    },
+    {
+      "label": "Opening modal retains the matching reading scene",
+      "ok": true,
+      "width": 768,
+      "section": 21
+    },
+    {
+      "label": "Scene geometry",
+      "ok": true,
+      "width": 768,
+      "section": 21,
+      "geometry": {
+        "labels": 8,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Modal restores panel, reading position and focus",
+      "ok": true,
+      "width": 768,
+      "section": 21,
+      "restored": {
+        "same": true,
+        "home": true,
+        "scroll": true,
+        "focus": true
+      }
+    },
+    {
+      "label": "Readable sections exist",
+      "ok": true,
+      "width": 390
+    },
+    {
+      "label": "Scrolling selects the matching scene",
+      "ok": true,
+      "width": 390,
+      "section": 1
+    },
+    {
+      "label": "Opening modal retains the matching reading scene",
+      "ok": true,
+      "width": 390,
+      "section": 1
+    },
+    {
+      "label": "Scene geometry",
+      "ok": true,
+      "width": 390,
+      "section": 1,
+      "geometry": {
+        "labels": 22,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Slider preserves focus",
+      "ok": true,
+      "width": 390,
+      "section": 1,
+      "value": "1"
+    },
+    {
+      "label": "Control extreme geometry",
+      "ok": true,
+      "width": 390,
+      "section": 1,
+      "value": "1",
+      "geometry": {
+        "labels": 22,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Slider preserves focus",
+      "ok": true,
+      "width": 390,
+      "section": 1,
+      "value": "4"
+    },
+    {
+      "label": "Control extreme geometry",
+      "ok": true,
+      "width": 390,
+      "section": 1,
+      "value": "4",
+      "geometry": {
+        "labels": 21,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Modal restores panel, reading position and focus",
+      "ok": true,
+      "width": 390,
+      "section": 1,
+      "restored": {
+        "same": true,
+        "home": true,
+        "scroll": true,
+        "focus": true
+      }
+    },
+    {
+      "label": "Scrolling selects the matching scene",
+      "ok": true,
+      "width": 390,
+      "section": 2
+    },
+    {
+      "label": "Opening modal retains the matching reading scene",
+      "ok": true,
+      "width": 390,
+      "section": 2
+    },
+    {
+      "label": "Scene geometry",
+      "ok": true,
+      "width": 390,
+      "section": 2,
+      "geometry": {
+        "labels": 23,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Modal restores panel, reading position and focus",
+      "ok": true,
+      "width": 390,
+      "section": 2,
+      "restored": {
+        "same": true,
+        "home": true,
+        "scroll": true,
+        "focus": true
+      }
+    },
+    {
+      "label": "Scrolling selects the matching scene",
+      "ok": true,
+      "width": 390,
+      "section": 3
+    },
+    {
+      "label": "Opening modal retains the matching reading scene",
+      "ok": true,
+      "width": 390,
+      "section": 3
+    },
+    {
+      "label": "Scene geometry",
+      "ok": true,
+      "width": 390,
+      "section": 3,
+      "geometry": {
+        "labels": 10,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Modal restores panel, reading position and focus",
+      "ok": true,
+      "width": 390,
+      "section": 3,
+      "restored": {
+        "same": true,
+        "home": true,
+        "scroll": true,
+        "focus": true
+      }
+    },
+    {
+      "label": "Scrolling selects the matching scene",
+      "ok": true,
+      "width": 390,
+      "section": 4
+    },
+    {
+      "label": "Opening modal retains the matching reading scene",
+      "ok": true,
+      "width": 390,
+      "section": 4
+    },
+    {
+      "label": "Scene geometry",
+      "ok": true,
+      "width": 390,
+      "section": 4,
+      "geometry": {
+        "labels": 13,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Modal restores panel, reading position and focus",
+      "ok": true,
+      "width": 390,
+      "section": 4,
+      "restored": {
+        "same": true,
+        "home": true,
+        "scroll": true,
+        "focus": true
+      }
+    },
+    {
+      "label": "Scrolling selects the matching scene",
+      "ok": true,
+      "width": 390,
+      "section": 5
+    },
+    {
+      "label": "Opening modal retains the matching reading scene",
+      "ok": true,
+      "width": 390,
+      "section": 5
+    },
+    {
+      "label": "Scene geometry",
+      "ok": true,
+      "width": 390,
+      "section": 5,
+      "geometry": {
+        "labels": 13,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Modal restores panel, reading position and focus",
+      "ok": true,
+      "width": 390,
+      "section": 5,
+      "restored": {
+        "same": true,
+        "home": true,
+        "scroll": true,
+        "focus": true
+      }
+    },
+    {
+      "label": "Scrolling selects the matching scene",
+      "ok": true,
+      "width": 390,
+      "section": 6
+    },
+    {
+      "label": "Opening modal retains the matching reading scene",
+      "ok": true,
+      "width": 390,
+      "section": 6
+    },
+    {
+      "label": "Scene geometry",
+      "ok": true,
+      "width": 390,
+      "section": 6,
+      "geometry": {
+        "labels": 12,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Slider preserves focus",
+      "ok": true,
+      "width": 390,
+      "section": 6,
+      "value": "1750"
+    },
+    {
+      "label": "Control extreme geometry",
+      "ok": true,
+      "width": 390,
+      "section": 6,
+      "value": "1750",
+      "geometry": {
+        "labels": 12,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Slider preserves focus",
+      "ok": true,
+      "width": 390,
+      "section": 6,
+      "value": "3000"
+    },
+    {
+      "label": "Control extreme geometry",
+      "ok": true,
+      "width": 390,
+      "section": 6,
+      "value": "3000",
+      "geometry": {
+        "labels": 12,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Modal restores panel, reading position and focus",
+      "ok": true,
+      "width": 390,
+      "section": 6,
+      "restored": {
+        "same": true,
+        "home": true,
+        "scroll": true,
+        "focus": true
+      }
+    },
+    {
+      "label": "Scrolling selects the matching scene",
+      "ok": true,
+      "width": 390,
+      "section": 7
+    },
+    {
+      "label": "Opening modal retains the matching reading scene",
+      "ok": true,
+      "width": 390,
+      "section": 7
+    },
+    {
+      "label": "Scene geometry",
+      "ok": true,
+      "width": 390,
+      "section": 7,
+      "geometry": {
+        "labels": 21,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Slider preserves focus",
+      "ok": true,
+      "width": 390,
+      "section": 7,
+      "value": "25"
+    },
+    {
+      "label": "Control extreme geometry",
+      "ok": true,
+      "width": 390,
+      "section": 7,
+      "value": "25",
+      "geometry": {
+        "labels": 21,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Slider preserves focus",
+      "ok": true,
+      "width": 390,
+      "section": 7,
+      "value": "100"
+    },
+    {
+      "label": "Control extreme geometry",
+      "ok": true,
+      "width": 390,
+      "section": 7,
+      "value": "100",
+      "geometry": {
+        "labels": 21,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Modal restores panel, reading position and focus",
+      "ok": true,
+      "width": 390,
+      "section": 7,
+      "restored": {
+        "same": true,
+        "home": true,
+        "scroll": true,
+        "focus": true
+      }
+    },
+    {
+      "label": "Scrolling selects the matching scene",
+      "ok": true,
+      "width": 390,
+      "section": 8
+    },
+    {
+      "label": "Opening modal retains the matching reading scene",
+      "ok": true,
+      "width": 390,
+      "section": 8
+    },
+    {
+      "label": "Scene geometry",
+      "ok": true,
+      "width": 390,
+      "section": 8,
+      "geometry": {
+        "labels": 22,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Slider preserves focus",
+      "ok": true,
+      "width": 390,
+      "section": 8,
+      "value": "25"
+    },
+    {
+      "label": "Control extreme geometry",
+      "ok": true,
+      "width": 390,
+      "section": 8,
+      "value": "25",
+      "geometry": {
+        "labels": 22,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Slider preserves focus",
+      "ok": true,
+      "width": 390,
+      "section": 8,
+      "value": "100"
+    },
+    {
+      "label": "Control extreme geometry",
+      "ok": true,
+      "width": 390,
+      "section": 8,
+      "value": "100",
+      "geometry": {
+        "labels": 22,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Modal restores panel, reading position and focus",
+      "ok": true,
+      "width": 390,
+      "section": 8,
+      "restored": {
+        "same": true,
+        "home": true,
+        "scroll": true,
+        "focus": true
+      }
+    },
+    {
+      "label": "Scrolling selects the matching scene",
+      "ok": true,
+      "width": 390,
+      "section": 9
+    },
+    {
+      "label": "Opening modal retains the matching reading scene",
+      "ok": true,
+      "width": 390,
+      "section": 9
+    },
+    {
+      "label": "Scene geometry",
+      "ok": true,
+      "width": 390,
+      "section": 9,
+      "geometry": {
+        "labels": 27,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Slider preserves focus",
+      "ok": true,
+      "width": 390,
+      "section": 9,
+      "value": "25"
+    },
+    {
+      "label": "Control extreme geometry",
+      "ok": true,
+      "width": 390,
+      "section": 9,
+      "value": "25",
+      "geometry": {
+        "labels": 27,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Slider preserves focus",
+      "ok": true,
+      "width": 390,
+      "section": 9,
+      "value": "100"
+    },
+    {
+      "label": "Control extreme geometry",
+      "ok": true,
+      "width": 390,
+      "section": 9,
+      "value": "100",
+      "geometry": {
+        "labels": 5,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Modal restores panel, reading position and focus",
+      "ok": true,
+      "width": 390,
+      "section": 9,
+      "restored": {
+        "same": true,
+        "home": true,
+        "scroll": true,
+        "focus": true
+      }
+    },
+    {
+      "label": "Scrolling selects the matching scene",
+      "ok": true,
+      "width": 390,
+      "section": 10
+    },
+    {
+      "label": "Opening modal retains the matching reading scene",
+      "ok": true,
+      "width": 390,
+      "section": 10
+    },
+    {
+      "label": "Scene geometry",
+      "ok": true,
+      "width": 390,
+      "section": 10,
+      "geometry": {
+        "labels": 17,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Slider preserves focus",
+      "ok": true,
+      "width": 390,
+      "section": 10,
+      "value": "25"
+    },
+    {
+      "label": "Control extreme geometry",
+      "ok": true,
+      "width": 390,
+      "section": 10,
+      "value": "25",
+      "geometry": {
+        "labels": 17,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Slider preserves focus",
+      "ok": true,
+      "width": 390,
+      "section": 10,
+      "value": "100"
+    },
+    {
+      "label": "Control extreme geometry",
+      "ok": true,
+      "width": 390,
+      "section": 10,
+      "value": "100",
+      "geometry": {
+        "labels": 17,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Modal restores panel, reading position and focus",
+      "ok": true,
+      "width": 390,
+      "section": 10,
+      "restored": {
+        "same": true,
+        "home": true,
+        "scroll": true,
+        "focus": true
+      }
+    },
+    {
+      "label": "Scrolling selects the matching scene",
+      "ok": true,
+      "width": 390,
+      "section": 11
+    },
+    {
+      "label": "Opening modal retains the matching reading scene",
+      "ok": true,
+      "width": 390,
+      "section": 11
+    },
+    {
+      "label": "Scene geometry",
+      "ok": true,
+      "width": 390,
+      "section": 11,
+      "geometry": {
+        "labels": 36,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Slider preserves focus",
+      "ok": true,
+      "width": 390,
+      "section": 11,
+      "value": "0"
+    },
+    {
+      "label": "Control extreme geometry",
+      "ok": true,
+      "width": 390,
+      "section": 11,
+      "value": "0",
+      "geometry": {
+        "labels": 12,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Slider preserves focus",
+      "ok": true,
+      "width": 390,
+      "section": 11,
+      "value": "5"
+    },
+    {
+      "label": "Control extreme geometry",
+      "ok": true,
+      "width": 390,
+      "section": 11,
+      "value": "5",
+      "geometry": {
+        "labels": 36,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Modal restores panel, reading position and focus",
+      "ok": true,
+      "width": 390,
+      "section": 11,
+      "restored": {
+        "same": true,
+        "home": true,
+        "scroll": true,
+        "focus": true
+      }
+    },
+    {
+      "label": "Scrolling selects the matching scene",
+      "ok": true,
+      "width": 390,
+      "section": 12
+    },
+    {
+      "label": "Opening modal retains the matching reading scene",
+      "ok": true,
+      "width": 390,
+      "section": 12
+    },
+    {
+      "label": "Scene geometry",
+      "ok": true,
+      "width": 390,
+      "section": 12,
+      "geometry": {
+        "labels": 38,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Modal restores panel, reading position and focus",
+      "ok": true,
+      "width": 390,
+      "section": 12,
+      "restored": {
+        "same": true,
+        "home": true,
+        "scroll": true,
+        "focus": true
+      }
+    },
+    {
+      "label": "Scrolling selects the matching scene",
+      "ok": true,
+      "width": 390,
+      "section": 13
+    },
+    {
+      "label": "Opening modal retains the matching reading scene",
+      "ok": true,
+      "width": 390,
+      "section": 13
+    },
+    {
+      "label": "Scene geometry",
+      "ok": true,
+      "width": 390,
+      "section": 13,
+      "geometry": {
+        "labels": 16,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Modal restores panel, reading position and focus",
+      "ok": true,
+      "width": 390,
+      "section": 13,
+      "restored": {
+        "same": true,
+        "home": true,
+        "scroll": true,
+        "focus": true
+      }
+    },
+    {
+      "label": "Scrolling selects the matching scene",
+      "ok": true,
+      "width": 390,
+      "section": 14
+    },
+    {
+      "label": "Opening modal retains the matching reading scene",
+      "ok": true,
+      "width": 390,
+      "section": 14
+    },
+    {
+      "label": "Scene geometry",
+      "ok": true,
+      "width": 390,
+      "section": 14,
+      "geometry": {
+        "labels": 21,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Slider preserves focus",
+      "ok": true,
+      "width": 390,
+      "section": 14,
+      "value": "1"
+    },
+    {
+      "label": "Control extreme geometry",
+      "ok": true,
+      "width": 390,
+      "section": 14,
+      "value": "1",
+      "geometry": {
+        "labels": 27,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Slider preserves focus",
+      "ok": true,
+      "width": 390,
+      "section": 14,
+      "value": "3"
+    },
+    {
+      "label": "Control extreme geometry",
+      "ok": true,
+      "width": 390,
+      "section": 14,
+      "value": "3",
+      "geometry": {
+        "labels": 13,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Modal restores panel, reading position and focus",
+      "ok": true,
+      "width": 390,
+      "section": 14,
+      "restored": {
+        "same": true,
+        "home": true,
+        "scroll": true,
+        "focus": true
+      }
+    },
+    {
+      "label": "Scrolling selects the matching scene",
+      "ok": true,
+      "width": 390,
+      "section": 15
+    },
+    {
+      "label": "Opening modal retains the matching reading scene",
+      "ok": true,
+      "width": 390,
+      "section": 15
+    },
+    {
+      "label": "Scene geometry",
+      "ok": true,
+      "width": 390,
+      "section": 15,
+      "geometry": {
+        "labels": 19,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Slider preserves focus",
+      "ok": true,
+      "width": 390,
+      "section": 15,
+      "value": "0"
+    },
+    {
+      "label": "Control extreme geometry",
+      "ok": true,
+      "width": 390,
+      "section": 15,
+      "value": "0",
+      "geometry": {
+        "labels": 19,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Slider preserves focus",
+      "ok": true,
+      "width": 390,
+      "section": 15,
+      "value": "200"
+    },
+    {
+      "label": "Control extreme geometry",
+      "ok": true,
+      "width": 390,
+      "section": 15,
+      "value": "200",
+      "geometry": {
+        "labels": 19,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Modal restores panel, reading position and focus",
+      "ok": true,
+      "width": 390,
+      "section": 15,
+      "restored": {
+        "same": true,
+        "home": true,
+        "scroll": true,
+        "focus": true
+      }
+    },
+    {
+      "label": "Scrolling selects the matching scene",
+      "ok": true,
+      "width": 390,
+      "section": 16
+    },
+    {
+      "label": "Opening modal retains the matching reading scene",
+      "ok": true,
+      "width": 390,
+      "section": 16
+    },
+    {
+      "label": "Scene geometry",
+      "ok": true,
+      "width": 390,
+      "section": 16,
+      "geometry": {
+        "labels": 26,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Slider preserves focus",
+      "ok": true,
+      "width": 390,
+      "section": 16,
+      "value": "3500"
+    },
+    {
+      "label": "Control extreme geometry",
+      "ok": true,
+      "width": 390,
+      "section": 16,
+      "value": "3500",
+      "geometry": {
+        "labels": 26,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Slider preserves focus",
+      "ok": true,
+      "width": 390,
+      "section": 16,
+      "value": "6000"
+    },
+    {
+      "label": "Control extreme geometry",
+      "ok": true,
+      "width": 390,
+      "section": 16,
+      "value": "6000",
+      "geometry": {
+        "labels": 26,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Modal restores panel, reading position and focus",
+      "ok": true,
+      "width": 390,
+      "section": 16,
+      "restored": {
+        "same": true,
+        "home": true,
+        "scroll": true,
+        "focus": true
+      }
+    },
+    {
+      "label": "Scrolling selects the matching scene",
+      "ok": true,
+      "width": 390,
+      "section": 17
+    },
+    {
+      "label": "Opening modal retains the matching reading scene",
+      "ok": true,
+      "width": 390,
+      "section": 17
+    },
+    {
+      "label": "Scene geometry",
+      "ok": true,
+      "width": 390,
+      "section": 17,
+      "geometry": {
+        "labels": 18,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Slider preserves focus",
+      "ok": true,
+      "width": 390,
+      "section": 17,
+      "value": "0"
+    },
+    {
+      "label": "Control extreme geometry",
+      "ok": true,
+      "width": 390,
+      "section": 17,
+      "value": "0",
+      "geometry": {
+        "labels": 18,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Slider preserves focus",
+      "ok": true,
+      "width": 390,
+      "section": 17,
+      "value": "100"
+    },
+    {
+      "label": "Control extreme geometry",
+      "ok": true,
+      "width": 390,
+      "section": 17,
+      "value": "100",
+      "geometry": {
+        "labels": 18,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Modal restores panel, reading position and focus",
+      "ok": true,
+      "width": 390,
+      "section": 17,
+      "restored": {
+        "same": true,
+        "home": true,
+        "scroll": true,
+        "focus": true
+      }
+    },
+    {
+      "label": "Scrolling selects the matching scene",
+      "ok": true,
+      "width": 390,
+      "section": 18
+    },
+    {
+      "label": "Opening modal retains the matching reading scene",
+      "ok": true,
+      "width": 390,
+      "section": 18
+    },
+    {
+      "label": "Scene geometry",
+      "ok": true,
+      "width": 390,
+      "section": 18,
+      "geometry": {
+        "labels": 16,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Slider preserves focus",
+      "ok": true,
+      "width": 390,
+      "section": 18,
+      "value": "1"
+    },
+    {
+      "label": "Control extreme geometry",
+      "ok": true,
+      "width": 390,
+      "section": 18,
+      "value": "1",
+      "geometry": {
+        "labels": 16,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Slider preserves focus",
+      "ok": true,
+      "width": 390,
+      "section": 18,
+      "value": "8"
+    },
+    {
+      "label": "Control extreme geometry",
+      "ok": true,
+      "width": 390,
+      "section": 18,
+      "value": "8",
+      "geometry": {
+        "labels": 16,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Modal restores panel, reading position and focus",
+      "ok": true,
+      "width": 390,
+      "section": 18,
+      "restored": {
+        "same": true,
+        "home": true,
+        "scroll": true,
+        "focus": true
+      }
+    },
+    {
+      "label": "Scrolling selects the matching scene",
+      "ok": true,
+      "width": 390,
+      "section": 19
+    },
+    {
+      "label": "Opening modal retains the matching reading scene",
+      "ok": true,
+      "width": 390,
+      "section": 19
+    },
+    {
+      "label": "Scene geometry",
+      "ok": true,
+      "width": 390,
+      "section": 19,
+      "geometry": {
+        "labels": 28,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Slider preserves focus",
+      "ok": true,
+      "width": 390,
+      "section": 19,
+      "value": "1"
+    },
+    {
+      "label": "Control extreme geometry",
+      "ok": true,
+      "width": 390,
+      "section": 19,
+      "value": "1",
+      "geometry": {
+        "labels": 28,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Slider preserves focus",
+      "ok": true,
+      "width": 390,
+      "section": 19,
+      "value": "9"
+    },
+    {
+      "label": "Control extreme geometry",
+      "ok": true,
+      "width": 390,
+      "section": 19,
+      "value": "9",
+      "geometry": {
+        "labels": 28,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Modal restores panel, reading position and focus",
+      "ok": true,
+      "width": 390,
+      "section": 19,
+      "restored": {
+        "same": true,
+        "home": true,
+        "scroll": true,
+        "focus": true
+      }
+    },
+    {
+      "label": "Scrolling selects the matching scene",
+      "ok": true,
+      "width": 390,
+      "section": 20
+    },
+    {
+      "label": "Opening modal retains the matching reading scene",
+      "ok": true,
+      "width": 390,
+      "section": 20
+    },
+    {
+      "label": "Scene geometry",
+      "ok": true,
+      "width": 390,
+      "section": 20,
+      "geometry": {
+        "labels": 51,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Slider preserves focus",
+      "ok": true,
+      "width": 390,
+      "section": 20,
+      "value": "25"
+    },
+    {
+      "label": "Control extreme geometry",
+      "ok": true,
+      "width": 390,
+      "section": 20,
+      "value": "25",
+      "geometry": {
+        "labels": 61,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Slider preserves focus",
+      "ok": true,
+      "width": 390,
+      "section": 20,
+      "value": "100"
+    },
+    {
+      "label": "Control extreme geometry",
+      "ok": true,
+      "width": 390,
+      "section": 20,
+      "value": "100",
+      "geometry": {
+        "labels": 44,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Modal restores panel, reading position and focus",
+      "ok": true,
+      "width": 390,
+      "section": 20,
+      "restored": {
+        "same": true,
+        "home": true,
+        "scroll": true,
+        "focus": true
+      }
+    },
+    {
+      "label": "Scrolling selects the matching scene",
+      "ok": true,
+      "width": 390,
+      "section": 21
+    },
+    {
+      "label": "Opening modal retains the matching reading scene",
+      "ok": true,
+      "width": 390,
+      "section": 21
+    },
+    {
+      "label": "Scene geometry",
+      "ok": true,
+      "width": 390,
+      "section": 21,
+      "geometry": {
+        "labels": 11,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Modal restores panel, reading position and focus",
+      "ok": true,
+      "width": 390,
+      "section": 21,
+      "restored": {
+        "same": true,
+        "home": true,
+        "scroll": true,
+        "focus": true
+      }
+    },
+    {
+      "label": "Readable sections exist",
+      "ok": true,
+      "width": 320
+    },
+    {
+      "label": "Scrolling selects the matching scene",
+      "ok": true,
+      "width": 320,
+      "section": 1
+    },
+    {
+      "label": "Opening modal retains the matching reading scene",
+      "ok": true,
+      "width": 320,
+      "section": 1
+    },
+    {
+      "label": "Scene geometry",
+      "ok": true,
+      "width": 320,
+      "section": 1,
+      "geometry": {
+        "labels": 22,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Slider preserves focus",
+      "ok": true,
+      "width": 320,
+      "section": 1,
+      "value": "1"
+    },
+    {
+      "label": "Control extreme geometry",
+      "ok": true,
+      "width": 320,
+      "section": 1,
+      "value": "1",
+      "geometry": {
+        "labels": 22,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Slider preserves focus",
+      "ok": true,
+      "width": 320,
+      "section": 1,
+      "value": "4"
+    },
+    {
+      "label": "Control extreme geometry",
+      "ok": true,
+      "width": 320,
+      "section": 1,
+      "value": "4",
+      "geometry": {
+        "labels": 22,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Modal restores panel, reading position and focus",
+      "ok": true,
+      "width": 320,
+      "section": 1,
+      "restored": {
+        "same": true,
+        "home": true,
+        "scroll": true,
+        "focus": true
+      }
+    },
+    {
+      "label": "Scrolling selects the matching scene",
+      "ok": true,
+      "width": 320,
+      "section": 2
+    },
+    {
+      "label": "Opening modal retains the matching reading scene",
+      "ok": true,
+      "width": 320,
+      "section": 2
+    },
+    {
+      "label": "Scene geometry",
+      "ok": true,
+      "width": 320,
+      "section": 2,
+      "geometry": {
+        "labels": 23,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Modal restores panel, reading position and focus",
+      "ok": true,
+      "width": 320,
+      "section": 2,
+      "restored": {
+        "same": true,
+        "home": true,
+        "scroll": true,
+        "focus": true
+      }
+    },
+    {
+      "label": "Scrolling selects the matching scene",
+      "ok": true,
+      "width": 320,
+      "section": 3
+    },
+    {
+      "label": "Opening modal retains the matching reading scene",
+      "ok": true,
+      "width": 320,
+      "section": 3
+    },
+    {
+      "label": "Scene geometry",
+      "ok": true,
+      "width": 320,
+      "section": 3,
+      "geometry": {
+        "labels": 11,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Modal restores panel, reading position and focus",
+      "ok": true,
+      "width": 320,
+      "section": 3,
+      "restored": {
+        "same": true,
+        "home": true,
+        "scroll": true,
+        "focus": true
+      }
+    },
+    {
+      "label": "Scrolling selects the matching scene",
+      "ok": true,
+      "width": 320,
+      "section": 4
+    },
+    {
+      "label": "Opening modal retains the matching reading scene",
+      "ok": true,
+      "width": 320,
+      "section": 4
+    },
+    {
+      "label": "Scene geometry",
+      "ok": true,
+      "width": 320,
+      "section": 4,
+      "geometry": {
+        "labels": 14,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Modal restores panel, reading position and focus",
+      "ok": true,
+      "width": 320,
+      "section": 4,
+      "restored": {
+        "same": true,
+        "home": true,
+        "scroll": true,
+        "focus": true
+      }
+    },
+    {
+      "label": "Scrolling selects the matching scene",
+      "ok": true,
+      "width": 320,
+      "section": 5
+    },
+    {
+      "label": "Opening modal retains the matching reading scene",
+      "ok": true,
+      "width": 320,
+      "section": 5
+    },
+    {
+      "label": "Scene geometry",
+      "ok": true,
+      "width": 320,
+      "section": 5,
+      "geometry": {
+        "labels": 15,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Modal restores panel, reading position and focus",
+      "ok": true,
+      "width": 320,
+      "section": 5,
+      "restored": {
+        "same": true,
+        "home": true,
+        "scroll": true,
+        "focus": true
+      }
+    },
+    {
+      "label": "Scrolling selects the matching scene",
+      "ok": true,
+      "width": 320,
+      "section": 6
+    },
+    {
+      "label": "Opening modal retains the matching reading scene",
+      "ok": true,
+      "width": 320,
+      "section": 6
+    },
+    {
+      "label": "Scene geometry",
+      "ok": true,
+      "width": 320,
+      "section": 6,
+      "geometry": {
+        "labels": 12,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Slider preserves focus",
+      "ok": true,
+      "width": 320,
+      "section": 6,
+      "value": "1750"
+    },
+    {
+      "label": "Control extreme geometry",
+      "ok": true,
+      "width": 320,
+      "section": 6,
+      "value": "1750",
+      "geometry": {
+        "labels": 12,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Slider preserves focus",
+      "ok": true,
+      "width": 320,
+      "section": 6,
+      "value": "3000"
+    },
+    {
+      "label": "Control extreme geometry",
+      "ok": true,
+      "width": 320,
+      "section": 6,
+      "value": "3000",
+      "geometry": {
+        "labels": 12,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Modal restores panel, reading position and focus",
+      "ok": true,
+      "width": 320,
+      "section": 6,
+      "restored": {
+        "same": true,
+        "home": true,
+        "scroll": true,
+        "focus": true
+      }
+    },
+    {
+      "label": "Scrolling selects the matching scene",
+      "ok": true,
+      "width": 320,
+      "section": 7
+    },
+    {
+      "label": "Opening modal retains the matching reading scene",
+      "ok": true,
+      "width": 320,
+      "section": 7
+    },
+    {
+      "label": "Scene geometry",
+      "ok": true,
+      "width": 320,
+      "section": 7,
+      "geometry": {
+        "labels": 21,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Slider preserves focus",
+      "ok": true,
+      "width": 320,
+      "section": 7,
+      "value": "25"
+    },
+    {
+      "label": "Control extreme geometry",
+      "ok": true,
+      "width": 320,
+      "section": 7,
+      "value": "25",
+      "geometry": {
+        "labels": 21,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Slider preserves focus",
+      "ok": true,
+      "width": 320,
+      "section": 7,
+      "value": "100"
+    },
+    {
+      "label": "Control extreme geometry",
+      "ok": true,
+      "width": 320,
+      "section": 7,
+      "value": "100",
+      "geometry": {
+        "labels": 21,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Modal restores panel, reading position and focus",
+      "ok": true,
+      "width": 320,
+      "section": 7,
+      "restored": {
+        "same": true,
+        "home": true,
+        "scroll": true,
+        "focus": true
+      }
+    },
+    {
+      "label": "Scrolling selects the matching scene",
+      "ok": true,
+      "width": 320,
+      "section": 8
+    },
+    {
+      "label": "Opening modal retains the matching reading scene",
+      "ok": true,
+      "width": 320,
+      "section": 8
+    },
+    {
+      "label": "Scene geometry",
+      "ok": true,
+      "width": 320,
+      "section": 8,
+      "geometry": {
+        "labels": 22,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Slider preserves focus",
+      "ok": true,
+      "width": 320,
+      "section": 8,
+      "value": "25"
+    },
+    {
+      "label": "Control extreme geometry",
+      "ok": true,
+      "width": 320,
+      "section": 8,
+      "value": "25",
+      "geometry": {
+        "labels": 22,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Slider preserves focus",
+      "ok": true,
+      "width": 320,
+      "section": 8,
+      "value": "100"
+    },
+    {
+      "label": "Control extreme geometry",
+      "ok": true,
+      "width": 320,
+      "section": 8,
+      "value": "100",
+      "geometry": {
+        "labels": 23,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Modal restores panel, reading position and focus",
+      "ok": true,
+      "width": 320,
+      "section": 8,
+      "restored": {
+        "same": true,
+        "home": true,
+        "scroll": true,
+        "focus": true
+      }
+    },
+    {
+      "label": "Scrolling selects the matching scene",
+      "ok": true,
+      "width": 320,
+      "section": 9
+    },
+    {
+      "label": "Opening modal retains the matching reading scene",
+      "ok": true,
+      "width": 320,
+      "section": 9
+    },
+    {
+      "label": "Scene geometry",
+      "ok": true,
+      "width": 320,
+      "section": 9,
+      "geometry": {
+        "labels": 28,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Slider preserves focus",
+      "ok": true,
+      "width": 320,
+      "section": 9,
+      "value": "25"
+    },
+    {
+      "label": "Control extreme geometry",
+      "ok": true,
+      "width": 320,
+      "section": 9,
+      "value": "25",
+      "geometry": {
+        "labels": 28,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Slider preserves focus",
+      "ok": true,
+      "width": 320,
+      "section": 9,
+      "value": "100"
+    },
+    {
+      "label": "Control extreme geometry",
+      "ok": true,
+      "width": 320,
+      "section": 9,
+      "value": "100",
+      "geometry": {
+        "labels": 6,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Modal restores panel, reading position and focus",
+      "ok": true,
+      "width": 320,
+      "section": 9,
+      "restored": {
+        "same": true,
+        "home": true,
+        "scroll": true,
+        "focus": true
+      }
+    },
+    {
+      "label": "Scrolling selects the matching scene",
+      "ok": true,
+      "width": 320,
+      "section": 10
+    },
+    {
+      "label": "Opening modal retains the matching reading scene",
+      "ok": true,
+      "width": 320,
+      "section": 10
+    },
+    {
+      "label": "Scene geometry",
+      "ok": true,
+      "width": 320,
+      "section": 10,
+      "geometry": {
+        "labels": 19,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Slider preserves focus",
+      "ok": true,
+      "width": 320,
+      "section": 10,
+      "value": "25"
+    },
+    {
+      "label": "Control extreme geometry",
+      "ok": true,
+      "width": 320,
+      "section": 10,
+      "value": "25",
+      "geometry": {
+        "labels": 19,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Slider preserves focus",
+      "ok": true,
+      "width": 320,
+      "section": 10,
+      "value": "100"
+    },
+    {
+      "label": "Control extreme geometry",
+      "ok": true,
+      "width": 320,
+      "section": 10,
+      "value": "100",
+      "geometry": {
+        "labels": 19,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Modal restores panel, reading position and focus",
+      "ok": true,
+      "width": 320,
+      "section": 10,
+      "restored": {
+        "same": true,
+        "home": true,
+        "scroll": true,
+        "focus": true
+      }
+    },
+    {
+      "label": "Scrolling selects the matching scene",
+      "ok": true,
+      "width": 320,
+      "section": 11
+    },
+    {
+      "label": "Opening modal retains the matching reading scene",
+      "ok": true,
+      "width": 320,
+      "section": 11
+    },
+    {
+      "label": "Scene geometry",
+      "ok": true,
+      "width": 320,
+      "section": 11,
+      "geometry": {
+        "labels": 36,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Slider preserves focus",
+      "ok": true,
+      "width": 320,
+      "section": 11,
+      "value": "0"
+    },
+    {
+      "label": "Control extreme geometry",
+      "ok": true,
+      "width": 320,
+      "section": 11,
+      "value": "0",
+      "geometry": {
+        "labels": 12,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Slider preserves focus",
+      "ok": true,
+      "width": 320,
+      "section": 11,
+      "value": "5"
+    },
+    {
+      "label": "Control extreme geometry",
+      "ok": true,
+      "width": 320,
+      "section": 11,
+      "value": "5",
+      "geometry": {
+        "labels": 36,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Modal restores panel, reading position and focus",
+      "ok": true,
+      "width": 320,
+      "section": 11,
+      "restored": {
+        "same": true,
+        "home": true,
+        "scroll": true,
+        "focus": true
+      }
+    },
+    {
+      "label": "Scrolling selects the matching scene",
+      "ok": true,
+      "width": 320,
+      "section": 12
+    },
+    {
+      "label": "Opening modal retains the matching reading scene",
+      "ok": true,
+      "width": 320,
+      "section": 12
+    },
+    {
+      "label": "Scene geometry",
+      "ok": true,
+      "width": 320,
+      "section": 12,
+      "geometry": {
+        "labels": 40,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Modal restores panel, reading position and focus",
+      "ok": true,
+      "width": 320,
+      "section": 12,
+      "restored": {
+        "same": true,
+        "home": true,
+        "scroll": true,
+        "focus": true
+      }
+    },
+    {
+      "label": "Scrolling selects the matching scene",
+      "ok": true,
+      "width": 320,
+      "section": 13
+    },
+    {
+      "label": "Opening modal retains the matching reading scene",
+      "ok": true,
+      "width": 320,
+      "section": 13
+    },
+    {
+      "label": "Scene geometry",
+      "ok": true,
+      "width": 320,
+      "section": 13,
+      "geometry": {
+        "labels": 17,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Modal restores panel, reading position and focus",
+      "ok": true,
+      "width": 320,
+      "section": 13,
+      "restored": {
+        "same": true,
+        "home": true,
+        "scroll": true,
+        "focus": true
+      }
+    },
+    {
+      "label": "Scrolling selects the matching scene",
+      "ok": true,
+      "width": 320,
+      "section": 14
+    },
+    {
+      "label": "Opening modal retains the matching reading scene",
+      "ok": true,
+      "width": 320,
+      "section": 14
+    },
+    {
+      "label": "Scene geometry",
+      "ok": true,
+      "width": 320,
+      "section": 14,
+      "geometry": {
+        "labels": 23,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Slider preserves focus",
+      "ok": true,
+      "width": 320,
+      "section": 14,
+      "value": "1"
+    },
+    {
+      "label": "Control extreme geometry",
+      "ok": true,
+      "width": 320,
+      "section": 14,
+      "value": "1",
+      "geometry": {
+        "labels": 29,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Slider preserves focus",
+      "ok": true,
+      "width": 320,
+      "section": 14,
+      "value": "3"
+    },
+    {
+      "label": "Control extreme geometry",
+      "ok": true,
+      "width": 320,
+      "section": 14,
+      "value": "3",
+      "geometry": {
+        "labels": 14,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Modal restores panel, reading position and focus",
+      "ok": true,
+      "width": 320,
+      "section": 14,
+      "restored": {
+        "same": true,
+        "home": true,
+        "scroll": true,
+        "focus": true
+      }
+    },
+    {
+      "label": "Scrolling selects the matching scene",
+      "ok": true,
+      "width": 320,
+      "section": 15
+    },
+    {
+      "label": "Opening modal retains the matching reading scene",
+      "ok": true,
+      "width": 320,
+      "section": 15
+    },
+    {
+      "label": "Scene geometry",
+      "ok": true,
+      "width": 320,
+      "section": 15,
+      "geometry": {
+        "labels": 22,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Slider preserves focus",
+      "ok": true,
+      "width": 320,
+      "section": 15,
+      "value": "0"
+    },
+    {
+      "label": "Control extreme geometry",
+      "ok": true,
+      "width": 320,
+      "section": 15,
+      "value": "0",
+      "geometry": {
+        "labels": 22,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Slider preserves focus",
+      "ok": true,
+      "width": 320,
+      "section": 15,
+      "value": "200"
+    },
+    {
+      "label": "Control extreme geometry",
+      "ok": true,
+      "width": 320,
+      "section": 15,
+      "value": "200",
+      "geometry": {
+        "labels": 22,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Modal restores panel, reading position and focus",
+      "ok": true,
+      "width": 320,
+      "section": 15,
+      "restored": {
+        "same": true,
+        "home": true,
+        "scroll": true,
+        "focus": true
+      }
+    },
+    {
+      "label": "Scrolling selects the matching scene",
+      "ok": true,
+      "width": 320,
+      "section": 16
+    },
+    {
+      "label": "Opening modal retains the matching reading scene",
+      "ok": true,
+      "width": 320,
+      "section": 16
+    },
+    {
+      "label": "Scene geometry",
+      "ok": true,
+      "width": 320,
+      "section": 16,
+      "geometry": {
+        "labels": 27,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Slider preserves focus",
+      "ok": true,
+      "width": 320,
+      "section": 16,
+      "value": "3500"
+    },
+    {
+      "label": "Control extreme geometry",
+      "ok": true,
+      "width": 320,
+      "section": 16,
+      "value": "3500",
+      "geometry": {
+        "labels": 27,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Slider preserves focus",
+      "ok": true,
+      "width": 320,
+      "section": 16,
+      "value": "6000"
+    },
+    {
+      "label": "Control extreme geometry",
+      "ok": true,
+      "width": 320,
+      "section": 16,
+      "value": "6000",
+      "geometry": {
+        "labels": 27,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Modal restores panel, reading position and focus",
+      "ok": true,
+      "width": 320,
+      "section": 16,
+      "restored": {
+        "same": true,
+        "home": true,
+        "scroll": true,
+        "focus": true
+      }
+    },
+    {
+      "label": "Scrolling selects the matching scene",
+      "ok": true,
+      "width": 320,
+      "section": 17
+    },
+    {
+      "label": "Opening modal retains the matching reading scene",
+      "ok": true,
+      "width": 320,
+      "section": 17
+    },
+    {
+      "label": "Scene geometry",
+      "ok": true,
+      "width": 320,
+      "section": 17,
+      "geometry": {
+        "labels": 19,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Slider preserves focus",
+      "ok": true,
+      "width": 320,
+      "section": 17,
+      "value": "0"
+    },
+    {
+      "label": "Control extreme geometry",
+      "ok": true,
+      "width": 320,
+      "section": 17,
+      "value": "0",
+      "geometry": {
+        "labels": 19,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Slider preserves focus",
+      "ok": true,
+      "width": 320,
+      "section": 17,
+      "value": "100"
+    },
+    {
+      "label": "Control extreme geometry",
+      "ok": true,
+      "width": 320,
+      "section": 17,
+      "value": "100",
+      "geometry": {
+        "labels": 19,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Modal restores panel, reading position and focus",
+      "ok": true,
+      "width": 320,
+      "section": 17,
+      "restored": {
+        "same": true,
+        "home": true,
+        "scroll": true,
+        "focus": true
+      }
+    },
+    {
+      "label": "Scrolling selects the matching scene",
+      "ok": true,
+      "width": 320,
+      "section": 18
+    },
+    {
+      "label": "Opening modal retains the matching reading scene",
+      "ok": true,
+      "width": 320,
+      "section": 18
+    },
+    {
+      "label": "Scene geometry",
+      "ok": true,
+      "width": 320,
+      "section": 18,
+      "geometry": {
+        "labels": 18,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Slider preserves focus",
+      "ok": true,
+      "width": 320,
+      "section": 18,
+      "value": "1"
+    },
+    {
+      "label": "Control extreme geometry",
+      "ok": true,
+      "width": 320,
+      "section": 18,
+      "value": "1",
+      "geometry": {
+        "labels": 18,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Slider preserves focus",
+      "ok": true,
+      "width": 320,
+      "section": 18,
+      "value": "8"
+    },
+    {
+      "label": "Control extreme geometry",
+      "ok": true,
+      "width": 320,
+      "section": 18,
+      "value": "8",
+      "geometry": {
+        "labels": 18,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Modal restores panel, reading position and focus",
+      "ok": true,
+      "width": 320,
+      "section": 18,
+      "restored": {
+        "same": true,
+        "home": true,
+        "scroll": true,
+        "focus": true
+      }
+    },
+    {
+      "label": "Scrolling selects the matching scene",
+      "ok": true,
+      "width": 320,
+      "section": 19
+    },
+    {
+      "label": "Opening modal retains the matching reading scene",
+      "ok": true,
+      "width": 320,
+      "section": 19
+    },
+    {
+      "label": "Scene geometry",
+      "ok": true,
+      "width": 320,
+      "section": 19,
+      "geometry": {
+        "labels": 28,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Slider preserves focus",
+      "ok": true,
+      "width": 320,
+      "section": 19,
+      "value": "1"
+    },
+    {
+      "label": "Control extreme geometry",
+      "ok": true,
+      "width": 320,
+      "section": 19,
+      "value": "1",
+      "geometry": {
+        "labels": 28,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Slider preserves focus",
+      "ok": true,
+      "width": 320,
+      "section": 19,
+      "value": "9"
+    },
+    {
+      "label": "Control extreme geometry",
+      "ok": true,
+      "width": 320,
+      "section": 19,
+      "value": "9",
+      "geometry": {
+        "labels": 28,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Modal restores panel, reading position and focus",
+      "ok": true,
+      "width": 320,
+      "section": 19,
+      "restored": {
+        "same": true,
+        "home": true,
+        "scroll": true,
+        "focus": true
+      }
+    },
+    {
+      "label": "Scrolling selects the matching scene",
+      "ok": true,
+      "width": 320,
+      "section": 20
+    },
+    {
+      "label": "Opening modal retains the matching reading scene",
+      "ok": true,
+      "width": 320,
+      "section": 20
+    },
+    {
+      "label": "Scene geometry",
+      "ok": true,
+      "width": 320,
+      "section": 20,
+      "geometry": {
+        "labels": 53,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Slider preserves focus",
+      "ok": true,
+      "width": 320,
+      "section": 20,
+      "value": "25"
+    },
+    {
+      "label": "Control extreme geometry",
+      "ok": true,
+      "width": 320,
+      "section": 20,
+      "value": "25",
+      "geometry": {
+        "labels": 63,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Slider preserves focus",
+      "ok": true,
+      "width": 320,
+      "section": 20,
+      "value": "100"
+    },
+    {
+      "label": "Control extreme geometry",
+      "ok": true,
+      "width": 320,
+      "section": 20,
+      "value": "100",
+      "geometry": {
+        "labels": 46,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Modal restores panel, reading position and focus",
+      "ok": true,
+      "width": 320,
+      "section": 20,
+      "restored": {
+        "same": true,
+        "home": true,
+        "scroll": true,
+        "focus": true
+      }
+    },
+    {
+      "label": "Scrolling selects the matching scene",
+      "ok": true,
+      "width": 320,
+      "section": 21
+    },
+    {
+      "label": "Opening modal retains the matching reading scene",
+      "ok": true,
+      "width": 320,
+      "section": 21
+    },
+    {
+      "label": "Scene geometry",
+      "ok": true,
+      "width": 320,
+      "section": 21,
+      "geometry": {
+        "labels": 11,
+        "collisions": [],
+        "clipped": [],
+        "overflow": false
+      }
+    },
+    {
+      "label": "Modal restores panel, reading position and focus",
+      "ok": true,
+      "width": 320,
+      "section": 21,
+      "restored": {
+        "same": true,
+        "home": true,
+        "scroll": true,
+        "focus": true
+      }
+    },
+    {
+      "label": "Breakpoint preserves panel and model state",
+      "ok": true
+    },
+    {
+      "label": "Static lesson readable without JavaScript",
+      "ok": true
+    },
+    {
+      "label": "Native deeper explanation works without JavaScript",
+      "ok": true
+    },
+    {
+      "label": "Local action produces finite animation frames",
+      "ok": true
+    },
+    {
+      "label": "Finite motion leaves no idle frame loop",
+      "ok": true
+    },
+    {
+      "label": "Reduced motion finishes immediately",
+      "ok": true
+    }
+  ],
+  "findings": [],
+  "limitations": [
+    "Bounding-box findings require visual review. This audit does not validate subject claims or calculations."
+  ],
+  "finished": "2026-10-01T13:11:21.130Z"
+}

@@ -168,7 +168,7 @@ try {
     throw Error(failures.join("\n"));
   }
   console.log(
-    "Mobile constellation, all module links, menu navigation, and all 33 lesson rotations passed.",
+    "Mobile constellation, all module links, menu navigation, and all registered lesson rotations passed.",
   );
 } finally {
   server.closeAllConnections();

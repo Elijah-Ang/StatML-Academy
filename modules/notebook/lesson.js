@@ -11,6 +11,8 @@ const modules = {
 };
 const factory =
   modules[slug] ||
+  (slug === "association-rules" &&
+    (await import("./association-rules/topic.js")).create) ||
   (await import("./catalog.js").then(async ({ catalog }) => {
     const engine = catalog[slug]?.engine;
     if (!engine) throw new Error("Unknown notebook module: " + slug);
@@ -18,6 +20,7 @@ const factory =
     return (host) => module.create(host, slug);
   }));
 const controller = factory(document.getElementById("lab-content"));
+document.body.classList.add("is-interactive");
 const stages = [...document.querySelectorAll("article .stage")];
 const picker = document.getElementById("stage-select"),
   progress = document.querySelector(".stage-progress");
@@ -31,13 +34,13 @@ let active = -1,
   transition;
 const reduced = matchMedia("(prefers-reduced-motion:reduce)");
 function setStage(index) {
-  if (active === index) return;
+  if (!Number.isInteger(index) || index < 0 || index >= stages.length || active === index) return;
   const prior = active;
   active = index;
   picker.value = String(index);
   progress.textContent = `${index + 1} / ${stages.length}`;
   stages.forEach((el, i) => el.classList.toggle("is-active", i === index));
-  const title = stages[index]
+  const title = stages[index].dataset.title || stages[index]
     .querySelector(".stage-label")
     .textContent.slice(2)
     .trim();
@@ -55,7 +58,7 @@ function setStage(index) {
     prior >= 0 &&
     !reduced.matches &&
     !document.hidden &&
-    plot.getBoundingClientRect().width > 0
+    plot?.getBoundingClientRect().width > 0
   )
     transition = plot.animate([{ opacity: 0.55 }, { opacity: 1 }], {
       duration: 180,
@@ -83,6 +86,7 @@ function sync() {
   setStage(index);
 }
 function go(index) {
+  if (!Number.isInteger(index) || index < 0 || index >= stages.length) return;
   const hash = `#stage-${index + 1}`;
   if (location.hash !== hash) history.pushState(null, "", hash);
   stages[index].scrollIntoView({
@@ -96,13 +100,14 @@ function openLab(trigger) {
       block: "nearest",
       behavior: reduced.matches ? "instant" : "smooth",
     });
-    panel.querySelector("input,select,button")?.focus({ preventScroll: true });
+    panel.querySelector("#lab-content input, #lab-content select, #lab-content button")?.focus({ preventScroll: true });
     return;
   }
   returnFocus = trigger;
   readingY = scrollY;
   dialog.querySelector(".dialog-body").append(panel);
   dialog.showModal();
+  dialog.scrollTop = 0;
   document.body.style.overflow = "hidden";
   controller.resize();
 }
@@ -136,7 +141,7 @@ document.querySelectorAll("[data-explore-stage]").forEach(
     }),
 );
 document.querySelector("[data-reset]").onclick = () => controller.reset();
-document.querySelectorAll(".quiz-option").forEach(
+document.querySelectorAll("article .question .quiz-option").forEach(
   (b) =>
     (b.onclick = () => {
       const q = b.closest(".question");

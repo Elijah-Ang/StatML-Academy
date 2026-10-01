@@ -1,0 +1,47 @@
+{
+  "date": "2026-10-01",
+  "route": "modules/association-rules.html",
+  "topicCount": 34,
+  "coreModuleCount": 22,
+  "approvedSections": 21,
+  "sourcePreservation": {
+    "lesson.json": "byte-identical to approved notebook",
+    "storyboard.json": "byte-identical to approved notebook",
+    "model.js": "byte-identical to approved notebook",
+    "topic.js": "only shared UI/spatial import paths changed"
+  },
+  "checks": {
+    "npm test": "passed",
+    "npm run test:mobile": "passed: 136 module/width combinations, 1520 section visits and 34 rotations",
+    "npm run test:association-rules": "passed: domain tests, 244 independent mining cases, 105 section/width cases, 34 directories, both Universe maps and seven downloads",
+    "complete scene audit": "passed: 105 section/viewport cases, 627 checks, zero findings",
+    "final shared font verification": "visual teaching suite and mobile navigation suite passed after local font CSS was shared",
+    "npm run build": "passed: 35 pages",
+    "build downloads": "all seven are byte-identical to source assets"
+  },
+  "authorReviewLenses": {
+    "professor": "Kept the reviewed content and exact-count engine. Classified the lesson as unsupervised pattern mining. Source links resolve within the built site.",
+    "beginner": "Verified entry from both maps, shared directories, explicit prerequisites, section-to-scene matching, reset and phone return behavior, and readable explanations without JavaScript.",
+    "designer": "Inspected the actual desktop and mobile Universe, lesson header, and Apriori views. Reused shared paper, fonts, navigation, controls, dialog, footer and directory. Three distinct unsupervised groups remain clear."
+  },
+  "limitations": [
+    "Author review and automated browser checks; no separate human learner study."
+  ],
+  "screenshots": [
+    "universe-pattern-mining.png",
+    "notebook-desktop.png",
+    "apriori-desktop.png",
+    "universe-mobile.png",
+    "notebook-mobile.png",
+    "apriori-mobile.png"
+  ],
+  "assets": {
+    "assets/association-rules/association_rules_practical.py": "f586d18ccfe55515c1ee24519feca8234bcad61471a51a33f7ad6bc0a04b0570",
+    "assets/association-rules/lecture.pdf": "fac68fdce71810f120e4c2ec46ced96f716dff44ad028837db35a4a25c231526",
+    "assets/association-rules/practical.pdf": "c8a93358fb4bc5a28746a8921a13ade1a85bd2f51abedb7b8df89eba4e87879b",
+    "assets/association-rules/revision-sheet.png": "f762ea367d305f059742553e5bca16b5f39305dd87e7e55f1dde1007dc430f7f",
+    "assets/association-rules/seminar.pdf": "e02816b75c7cabeddfbca2ba5542550cfa91f287327f1b4a30ba5915ded7997e",
+    "assets/association-rules/seminar.pptx": "b096ade38c41a2c4be84c67f58e6dc87dfb1364a476b55c5cfae68f285862a7b",
+    "assets/association-rules/textbook-excerpt.pdf": "f19a5c37672493aca4b16b29dee2f085e072aba09bc0d14c347c123b1f84c4d1"
+  }
+}

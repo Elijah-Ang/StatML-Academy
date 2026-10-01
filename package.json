@@ -4,7 +4,7 @@
   "type": "module",
   "scripts": {
     "build": "node scripts/build.mjs",
-    "test": "node scripts/build.mjs --validate-only && node scripts/test-notebook-models.mjs && node scripts/test-science.mjs && node scripts/test-spatial-science.mjs && node scripts/test-notebook-browser.mjs && node scripts/test-expanded-browser.mjs && node scripts/test-logistic-browser.mjs && node scripts/test-notebook-interactions.mjs && node scripts/test-visual-teaching-browser.mjs && npm run test:stories",
+    "test": "node scripts/build.mjs --validate-only && node scripts/test-notebook-models.mjs && node scripts/test-science.mjs && node scripts/test-spatial-science.mjs && node scripts/test-notebook-browser.mjs && node scripts/test-expanded-browser.mjs && node scripts/test-logistic-browser.mjs && node scripts/test-notebook-interactions.mjs && node scripts/test-visual-teaching-browser.mjs && npm run test:association-rules && npm run test:stories",
     "test:browser": "node scripts/test-logistic-browser.mjs",
     "test:paper": "node scripts/test-paper-notes-browser.mjs",
     "test:sketch": "node scripts/test-study-sketch-browser.mjs",
@@ -12,10 +12,13 @@
     "generate:pilots": "node scripts/generate-pilots.mjs",
     "test:pilots": "node scripts/test-notebook-models.mjs && node scripts/test-notebook-browser.mjs",
     "generate:notebooks": "node scripts/generate-notebooks.mjs",
-    "generate:all": "node scripts/generate-pilots.mjs && node scripts/generate-notebooks.mjs",
+    "generate:all": "node scripts/generate-pilots.mjs && node scripts/generate-notebooks.mjs && node scripts/generate-association-rules.mjs && node scripts/generate-navigation.mjs",
     "test:rollout": "node scripts/test-science.mjs && node scripts/test-expanded-browser.mjs && node scripts/test-notebook-interactions.mjs",
     "test:visual": "node scripts/test-spatial-science.mjs && node scripts/test-visual-teaching-browser.mjs",
-    "test:stories": "node scripts/test-vote-criteria.mjs && node scripts/test-vote-criteria-browser.mjs && node scripts/test-covariance-scenes.mjs && node scripts/test-statistics-stories.mjs && node scripts/test-visual-collisions.mjs"
+    "test:stories": "node scripts/test-vote-criteria.mjs && node scripts/test-vote-criteria-browser.mjs && node scripts/test-covariance-scenes.mjs && node scripts/test-statistics-stories.mjs && node scripts/test-visual-collisions.mjs",
+    "generate:association-rules": "node scripts/generate-association-rules.mjs",
+    "generate:navigation": "node scripts/generate-navigation.mjs",
+    "test:association-rules": "node scripts/test-association-rules-models.mjs && node scripts/test-association-rules-browser.mjs"
   },
   "devDependencies": {
     "playwright": "^1.61.1"

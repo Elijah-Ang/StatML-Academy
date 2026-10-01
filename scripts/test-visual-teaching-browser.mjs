@@ -1,4 +1,6 @@
 import assert from "node:assert/strict";
+import { topics } from "../modules/notebook/topics.js";
+const topicCount = Object.keys(topics).length;
 import { chromium } from "playwright";
 import { createServer } from "node:http";
 import { readFile, writeFile, mkdir, readdir } from "node:fs/promises";
@@ -92,8 +94,8 @@ try {
     });
     report.push(result);
     if (
-      result.count !== 33 ||
-      result.unique !== 33 ||
+      result.count !== topicCount ||
+      result.unique !== topicCount ||
       result.clipped.length ||
       result.collisions.length ||
       result.overflow
@@ -220,7 +222,7 @@ try {
   );
   assert.deepEqual(errors, []);
   console.log(
-    "Visual teaching checks passed: all 33 lessons follow reading; all 33 universe entries at six widths; spatial screenshots, no word-box flows in priority scenes, restricted-gradient rewind, real pruning and least squares.",
+    "Visual teaching checks passed: all registered lessons follow reading; all registered universe entries at six widths; spatial screenshots, no word-box flows in priority scenes, restricted-gradient rewind, real pruning and least squares.",
   );
 } finally {
   await browser.close();

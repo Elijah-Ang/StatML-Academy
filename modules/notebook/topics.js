@@ -1,5 +1,6 @@
 export const topics = {
   anova: "Analysis of Variance (ANOVA)",
+  "association-rules": "Association Rules",
   "bias-variance": "Bias-Variance Trade-Off & Resampling",
   "chi-square": "Chi-Square Test of Independence",
   "classification-trees": "Classification Trees",
