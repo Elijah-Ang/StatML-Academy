@@ -1,6 +1,6 @@
 # Association Rules
 
-The 21-section lesson and scene plan were imported from the reviewed CP3403 Week 03 standalone notebook. `lesson.json` and `storyboard.json` preserve that authored source. The site adapter changes navigation and relative download links, and recommends Correlation as a further lesson.
+The 21-section lesson and scene plan were imported from the reviewed CP3403 Week 03 standalone notebook. `lesson.json` is the site lesson's authoring source; `storyboard.json` keeps its teaching and scene plan in sync. On 5 October 2026, the questions, explanations, activity instructions and answers were rewritten in plain language for complete beginners. The section order, scene plan, worked calculations, tables, runnable code and source links were retained. The site adapter changes navigation and relative download links, and recommends Correlation as a further lesson.
 
 The live engine is in `modules/notebook/association-rules/`. It uses the academy's shared UI, spatial drawing tools, notebook controller, fonts and stylesheet; `association-rules.css` supplies only the subject's extra controls and receipts.
 
