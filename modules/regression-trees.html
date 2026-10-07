@@ -11,322 +11,138 @@
 <div class="lesson-toolbar"><label for="stage-select">Lesson map</label><select id="stage-select"><option value="0">01 · The Raw Target</option><option value="1">02 · From Dataset to Model</option><option value="2">03 · The Clumsy Guess</option><option value="3">04 · The First Split</option><option value="4">05 · The Error Engine (RSS)</option><option value="5">06 · Real Trees Check Many Questions</option><option value="6">07 · Recursive Splitting</option><option value="7">08 · The Anatomy of a Tree</option><option value="8">09 · The Overfitting Trap</option><option value="9">10 · Stopping Rules</option><option value="10">11 · Pruning: Let It Grow, Then Cut It Back</option><option value="11">12 · Trees vs. Lines</option><option value="12">13 · Interactive Playground</option><option value="13">14 · Sample Output: Reading the Tree Result</option><option value="14">15 · Reality Check: Limitations</option><option value="15">16 · Synthesis</option></select><span class="stage-progress" aria-live="polite">1 / 16</span></div>
 <div class="mobile-lab-bar"><span><small>Live notebook</small><strong id="mobile-summary">What are we predicting?</strong></span><button class="primary" type="button" data-open-lab>Explore visual ↗</button></div>
 <main class="notebook-layout" id="lesson"><article class="reading">
-<header class="hero"><p class="eyebrow">Supervised learning · Trees and ensembles</p><h1>Regression Trees</h1><p class="intro">A regression tree predicts a numerical outcome using a sequence of questions about inputs. Each terminal leaf returns a number learned from its training rows.</p><div class="pathway"><div><small>Prerequisites</small>Means, plots, and the train–validation distinction</div><div><small>Recommended next</small><a href="random-forest.html">Random Forest</a></div></div><p class="reading-tip">Read a little. Try a little. Open the “why” when you are ready.</p></header>
+<header class="hero"><p class="eyebrow">Supervised learning · Trees and ensembles</p><h1>Regression Trees</h1><p class="intro">Predict a number by asking a sequence of yes/no questions. Follow the point through its region and tree path to one leaf average.</p><div class="pathway"><div><small>Prerequisites</small>Averages, prediction errors, and training/validation splits.</div><div><small>Recommended next</small><a href="random-forest.html">Random Forest</a></div></div><p class="reading-tip">Read a little. Try a little. Open the “why” when you are ready.</p></header>
 <noscript><p class="caution">The full lesson, worked examples and answers are readable here. Enable JavaScript for the interactive experiments and live calculations.</p></noscript>
-<section class="stage" id="stage-1" data-stage="1" aria-labelledby="heading-1">
+<section class="stage" id="stage-1" data-stage="1" data-visual-guide="Each dot is a training outcome. The plot shows input x₁ across and outcome up; later predictions can use both inputs." aria-labelledby="heading-1">
 <div class="stage-label"><span>01</span>The Raw Target</div><h2 id="heading-1">What are we predicting?</h2>
-<p class="answer">A regression tree predicts a numerical outcome using a sequence of questions about inputs. Each terminal leaf returns a number learned from its training rows.</p><div class="receipt"><div class="receipt-label">A small example · separate from the live dataset</div><div class="table-wrap"><table><thead><tr><th scope="col">Follow the idea</th><th scope="col">Read it in plain language</th></tr></thead><tbody><tr><th scope="row">Inputs</th><td>Available features</td></tr><tr><th scope="row">Target</th><td>A numerical outcome</td></tr><tr><th scope="row">Leaf output</th><td>Mean of its training outcomes</td></tr></tbody></table></div><p class="mini-note"><strong>Your notebook:</strong> <span data-bind="live-receipt">Open the visual to inspect the current calculation.</span></p></div>
+<p class="answer">A regression tree predicts a number. It asks questions about the inputs, such as whether a value is below a cutoff. The final group, called a leaf, returns an average learned from its training rows.</p><div class="receipt"><div class="receipt-label">A small example · separate from the live dataset</div><div class="table-wrap"><table><thead><tr><th scope="col">Follow the idea</th><th scope="col">Read it in plain language</th></tr></thead><tbody><tr><th scope="row">Inputs</th><td>Available features</td></tr><tr><th scope="row">Target</th><td>A numerical outcome</td></tr><tr><th scope="row">Leaf output</th><td>Mean of its training outcomes</td></tr></tbody></table></div><p class="mini-note"><strong>Your notebook:</strong> <span data-bind="live-receipt">Open the visual to inspect the current calculation.</span></p></div>
 <div class="experiment"><span class="pencil">↳</span><div><strong>Try it</strong><p>Select a dot. Read its numerical outcome, then keep that observation in mind as the following sections construct predictions.</p><button type="button" data-explore-stage="0">Explore this idea <span aria-hidden="true">↗</span></button></div></div>
-<details class="deeper"><summary>Why this works · a little deeper</summary><div><p>A regression tree predicts a numerical outcome using a sequence of questions about inputs. Each terminal leaf returns a number learned from its training rows.</p><p>No.</p><div class="reference-reading"><p class="reference-label">Additional reference · worked numbers below are separate examples from the live notebook.</p><p>A regression tree is a model that helps us predict a <strong>number</strong>. Not a category like "cat or dog", but a continuous value like an exam score, temperature, or a house price.</p>
-<p>Let's look at a small dataset of houses. We want to predict the Price (in thousands) based entirely on the Size of the house (in square meters).</p></div></div></details>
+<details class="deeper"><summary>Why this works · a little deeper</summary><div><p>A node is one group of training rows. An internal node asks a question; a leaf gives a number. The live model uses the inputs and outcome units on its axes. A house-price example is an analogy, not the live dataset. The plotted region and branching diagram describe the same fitted tree and selected point.</p></div></details>
 <details class="check"><summary>Quick check · Does a regression tree predict only categories?</summary><p>No.</p></details>
 <a class="next-idea" href="#stage-2">Next: From Dataset to Model ↓</a>
 </section>
-<section class="stage" id="stage-2" data-stage="2" aria-labelledby="heading-2">
+<section class="stage" id="stage-2" data-stage="2" data-visual-guide="Training learns the rule, validation compares choices, and final-test examples stay sealed while those choices change." aria-labelledby="heading-2">
 <div class="stage-label"><span>02</span>From Dataset to Model</div><h2 id="heading-2">Which rows can influence training?</h2>
-<p class="answer">Training rows choose splits and leaf values. Validation rows compare tree settings; final-test rows remain outside development decisions.</p><div class="receipt"><div class="receipt-label">A small example · separate from the live dataset</div><div class="table-wrap"><table><thead><tr><th scope="col">Follow the idea</th><th scope="col">Read it in plain language</th></tr></thead><tbody><tr><th scope="row">Train</th><td>Grow the tree</td></tr><tr><th scope="row">Validation</th><td>Choose complexity</td></tr><tr><th scope="row">Test</th><td>Evaluate the locked procedure</td></tr></tbody></table></div><p class="mini-note"><strong>Your notebook:</strong> <span data-bind="live-receipt">Open the visual to inspect the current calculation.</span></p></div>
+<p class="answer">Only training rows choose the cuts and leaf averages. Validation rows help choose depth and other settings. Keep the final test separate until those choices are finished.</p><div class="receipt"><div class="receipt-label">A small example · separate from the live dataset</div><div class="table-wrap"><table><thead><tr><th scope="col">Follow the idea</th><th scope="col">Read it in plain language</th></tr></thead><tbody><tr><th scope="row">Train</th><td>Grow the tree</td></tr><tr><th scope="row">Validation</th><td>Choose complexity</td></tr><tr><th scope="row">Test</th><td>Evaluate the locked procedure</td></tr></tbody></table></div><p class="mini-note"><strong>Your notebook:</strong> <span data-bind="live-receipt">Open the visual to inspect the current calculation.</span></p></div>
 <div class="experiment"><span class="pencil">↳</span><div><strong>Try it</strong><p>Count the training, validation and sealed test observations. Only the training outcomes may determine a split or a leaf mean.</p><button type="button" data-explore-stage="1">Explore this idea <span aria-hidden="true">↗</span></button></div></div>
-<details class="deeper"><summary>Why this works · a little deeper</summary><div><p>Training rows choose splits and leaf values. Validation rows compare tree settings; final-test rows remain outside development decisions.</p><p>No.</p><div class="reference-reading"><p class="reference-label">Additional reference · worked numbers below are separate examples from the live notebook.</p><p>Before teaching an algorithm, we need a disciplined plan. A standard Machine Learning workflow protects us from creating models that look perfect on paper but fail in the real world.</p>
-<p>The ML Pipeline: Target y The number we want to predict (e.g., Price). Features X The inputs we use (e.g., Size). Data Split Divide points into</p>
-<strong>Training</strong>
-<strong>Validation</strong>
-<p>sets. Tune &amp; Predict Limit tree growth to generalize and make unseen predictions.</p>
-<p>The data has been split. We use the 16</p>
-<strong>training houses</strong>
-<strong>validation houses</strong>
-<p>hidden to test general performance.</p></div></div></details>
+<details class="deeper"><summary>Why this works · a little deeper</summary><div><p>The target is the number to predict. Features are inputs known at prediction time. Training fits the tree. Validation evaluates development choices. A final test evaluates the locked procedure. Keep any learned preparation inside training, and split related people or time periods appropriately.</p></div></details>
 <details class="check"><summary>Quick check · May validation outcomes choose the next split?</summary><p>No.</p></details>
 <a class="next-idea" href="#stage-3">Next: The Clumsy Guess ↓</a>
 </section>
-<section class="stage" id="stage-3" data-stage="3" aria-labelledby="heading-3">
+<section class="stage" id="stage-3" data-stage="3" data-visual-guide="Red is your constant prediction; green is the training mean. Compare the vertical errors and their mean squared sizes." aria-labelledby="heading-3">
 <div class="stage-label"><span>03</span>The Clumsy Guess</div><h2 id="heading-3">Why start with the mean?</h2>
-<p class="answer">Before splitting, the whole training set is one leaf. Its mean minimizes the sum of squared errors for a constant prediction.</p><div class="receipt"><div class="receipt-label">A small example · separate from the live dataset</div><div class="table-wrap"><table><thead><tr><th scope="col">Follow the idea</th><th scope="col">Read it in plain language</th></tr></thead><tbody><tr><th scope="row">Outcomes</th><td>2, 4, 6</td></tr><tr><th scope="row">Mean prediction</th><td>4</td></tr><tr><th scope="row">SSE</th><td>4 + 0 + 4 = 8</td></tr></tbody></table></div><p class="mini-note"><strong>Your notebook:</strong> <span data-bind="live-receipt">Open the visual to inspect the current calculation.</span></p></div>
+<p class="answer">Before any split, all training rows are in one group, the root. If we predict the same number for everybody, the training average gives the smallest total squared error.</p><div class="receipt"><div class="receipt-label">A small example · separate from the live dataset</div><div class="table-wrap"><table><thead><tr><th scope="col">Follow the idea</th><th scope="col">Read it in plain language</th></tr></thead><tbody><tr><th scope="row">Outcomes</th><td>2, 4, 6</td></tr><tr><th scope="row">Mean prediction</th><td>4</td></tr><tr><th scope="row">SSE</th><td>4 + 0 + 4 = 8</td></tr></tbody></table></div><p class="mini-note"><strong>Your notebook:</strong> <span data-bind="live-receipt">Open the visual to inspect the current calculation.</span></p></div>
 <div class="experiment"><span class="pencil">↳</span><div><strong>Try it</strong><p>Move the constant prediction above and below the green mean. Follow the vertical gaps and compare your MSE with the best constant MSE.</p><button type="button" data-explore-stage="2">Explore this idea <span aria-hidden="true">↗</span></button></div></div>
-<details class="deeper"><summary>Why this works · a little deeper</summary><div><p>Before splitting, the whole training set is one leaf. Its mean minimizes the sum of squared errors for a constant prediction.</p><p>The mean, 4.</p><div class="reference-reading"><p class="reference-label">Additional reference · worked numbers below are separate examples from the live notebook.</p><p>At the very start, the tree puts all houses in one big group (the <strong>Root Node</strong>). Before asking any questions, it asks: <em>"If I had to guess one price for all houses, what should I use?"</em></p>
-<p>The standard answer is the <strong>average</strong>. If we take all 16 training house prices and average them, we get exactly $483.1k.</p>
-<p>Root Prediction = Average(y) = 483.1</p></div></div></details>
+<details class="deeper"><summary>Why this works · a little deeper</summary><div><p>For squared error, the best constant is the mean. Move a trial constant away from that mean and total squared gaps grow. The root average is a baseline, not a prediction that every outcome really equals that value. Calculate it from the current training rows. It changes when those rows change.</p></div></details>
 <details class="check"><summary>Quick check · Which constant minimizes squared error here?</summary><p>The mean, 4.</p></details>
 <a class="next-idea" href="#stage-4">Next: The First Split ↓</a>
 </section>
-<section class="stage" id="stage-4" data-stage="4" aria-labelledby="heading-4">
+<section class="stage" id="stage-4" data-stage="4" data-visual-guide="The same selected point appears in the map and branching path. Follow its input comparisons to one leaf." aria-labelledby="heading-4">
 <div class="stage-label"><span>04</span>The First Split</div><h2 id="heading-4">How can one question improve the prediction?</h2>
-<p class="answer">A split asks whether one feature is below a threshold. Each resulting group receives its own mean, potentially reducing squared error.</p><div class="receipt"><div class="receipt-label">A small example · separate from the live dataset</div><div class="table-wrap"><table><thead><tr><th scope="col">Follow the idea</th><th scope="col">Read it in plain language</th></tr></thead><tbody><tr><th scope="row">Question</th><td>Is x ≤ 0?</td></tr><tr><th scope="row">Left leaf</th><td>Mean of left training outcomes</td></tr><tr><th scope="row">Right leaf</th><td>Mean of right training outcomes</td></tr></tbody></table></div><p class="mini-note"><strong>Your notebook:</strong> <span data-bind="live-receipt">Open the visual to inspect the current calculation.</span></p></div>
+<p class="answer">A split divides one group into two. Each side gets its own training average. This can reduce squared errors by giving different predictions to groups with different outcomes.</p><div class="receipt"><div class="receipt-label">A small example · separate from the live dataset</div><div class="table-wrap"><table><thead><tr><th scope="col">Follow the idea</th><th scope="col">Read it in plain language</th></tr></thead><tbody><tr><th scope="row">Question</th><td>Is x ≤ 0?</td></tr><tr><th scope="row">Left leaf</th><td>Mean of left training outcomes</td></tr><tr><th scope="row">Right leaf</th><td>Mean of right training outcomes</td></tr></tbody></table></div><p class="mini-note"><strong>Your notebook:</strong> <span data-bind="live-receipt">Open the visual to inspect the current calculation.</span></p></div>
 <div class="experiment"><span class="pencil">↳</span><div><strong>Try it</strong><p>Slide the candidate midpoint. The two horizontal predictions are the means on either side; observations equal to a threshold go left.</p><button type="button" data-explore-stage="3">Explore this idea <span aria-hidden="true">↗</span></button></div></div>
-<details class="deeper"><summary>Why this works · a little deeper</summary><div><p>A split asks whether one feature is below a threshold. Each resulting group receives its own mean, potentially reducing squared error.</p><p>No.</p><div class="reference-reading"><p class="reference-label">Additional reference · worked numbers below are separate examples from the live notebook.</p><p>Now the tree asks a question to divide the data: <em>"Can I split the houses into 2 groups so the prices inside each group become more similar?"</em></p>
-<p>It checks a "cut point". Based on the math, the best first rule is: <strong>Is Size ≤ 100?</strong></p>
-<strong>Yes</strong>
-<strong>No</strong>
-<p>Now, instead of one average for everything, we have <strong>two averages</strong>. A lower average ($363.3k) for smaller houses, and a higher average ($637.1k) for bigger houses.</p></div></div></details>
+<details class="deeper"><summary>Why this works · a little deeper</summary><div><p>This notebook sends values equal to the cutoff to the left: x≤cutoff. The other side uses x&gt;cutoff. Each child mean uses only its own training rows. In two inputs, the cut spans the current parent&#x27;s region, not every unrelated branch&#x27;s region.</p></div></details>
 <details class="check"><summary>Quick check · Does a split use the unknown outcome of a new query?</summary><p>No.</p></details>
 <a class="next-idea" href="#stage-5">Next: The Error Engine (RSS) ↓</a>
 </section>
-<section class="stage" id="stage-5" data-stage="5" aria-labelledby="heading-5">
+<section class="stage" id="stage-5" data-stage="5" data-visual-guide="Compare the parent with both children. Child sizes weight their error or impurity before calculating the improvement." aria-labelledby="heading-5">
 <div class="stage-label"><span>05</span>The Error Engine (RSS)</div><h2 id="heading-5">How is a split scored?</h2>
-<p class="answer">Score a candidate by the sum of squared errors in its two children. Improvement is parent SSE minus child SSE; a larger reduction is preferred.</p><div class="receipt"><div class="receipt-label">A small example · separate from the live dataset</div><div class="table-wrap"><table><thead><tr><th scope="col">Follow the idea</th><th scope="col">Read it in plain language</th></tr></thead><tbody><tr><th scope="row">Parent SSE</th><td>100</td></tr><tr><th scope="row">Children SSE</th><td>30 + 20</td></tr><tr><th scope="row">Improvement</th><td>50</td></tr></tbody></table></div><p class="mini-note"><strong>Your notebook:</strong> <span data-bind="live-receipt">Open the visual to inspect the current calculation.</span></p></div>
+<p class="answer">Count the squared errors inside both child groups and add them. Compare that total with the original group's error. A larger reduction is a better split under this scoring rule.</p><div class="receipt"><div class="receipt-label">A small example · separate from the live dataset</div><div class="table-wrap"><table><thead><tr><th scope="col">Follow the idea</th><th scope="col">Read it in plain language</th></tr></thead><tbody><tr><th scope="row">Parent SSE</th><td>100</td></tr><tr><th scope="row">Children SSE</th><td>30 + 20</td></tr><tr><th scope="row">Improvement</th><td>50</td></tr></tbody></table></div><p class="mini-note"><strong>Your notebook:</strong> <span data-bind="live-receipt">Open the visual to inspect the current calculation.</span></p></div>
 <div class="experiment"><span class="pencil">↳</span><div><strong>Try it</strong><p>Keep a candidate cut fixed. Compare its child sample sizes, residual spreads and weighted impurity with the original parent.</p><button type="button" data-explore-stage="4">Explore this idea <span aria-hidden="true">↗</span></button></div></div>
-<details class="deeper"><summary>Why this works · a little deeper</summary><div><p>Score a candidate by the sum of squared errors in its two children. Improvement is parent SSE minus child SSE; a larger reduction is preferred.</p><p>Zero.</p><div class="reference-reading"><p class="reference-label">Additional reference · worked numbers below are separate examples from the live notebook.</p><p>How did it know to split exactly at 100? The algorithm is "Greedy". It tests candidate split points between sorted training values and chooses the one that leaves the least amount of mess.</p>
-<p>It measures "mess" using the <strong>Residual Sum of Squares (RSS)</strong>. It squares all the red error lines and adds them up. Lower training RSS means a closer training fit, not necessarily better prediction.</p>
-<p>Before vs After Split ... Root RSS ... Split RSS ... Reduction Best first split found. This threshold gives the lowest RSS among the tested candidate splits.</p></div></div></details>
+<details class="deeper"><summary>Why this works · a little deeper</summary><div><p>SSE, also called RSS here, is the sum of squared residuals. Split improvement = parent SSE − (left SSE + right SSE). A child-variance average must be weighted by child sizes to correspond to this total. A low training score is not yet evidence about new-data prediction.</p></div></details>
 <details class="check"><summary>Quick check · If children SSE equals parent SSE, what is the gain?</summary><p>Zero.</p></details>
 <a class="next-idea" href="#stage-6">Next: Real Trees Check Many Questions ↓</a>
 </section>
-<section class="stage" id="stage-6" data-stage="6" aria-labelledby="heading-6">
+<section class="stage" id="stage-6" data-stage="6" data-visual-guide="Compare the parent with both children. Child sizes weight their error or impurity before calculating the improvement." aria-labelledby="heading-6">
 <div class="stage-label"><span>06</span>Real Trees Check Many Questions</div><h2 id="heading-6">Why test many candidate questions?</h2>
-<p class="answer">Test thresholds between ordered distinct training values for each eligible feature. The chosen split is locally best under the loss and constraints, not globally optimal for every possible tree.</p><div class="receipt"><div class="receipt-label">A small example · separate from the live dataset</div><div class="table-wrap"><table><thead><tr><th scope="col">Follow the idea</th><th scope="col">Read it in plain language</th></tr></thead><tbody><tr><th scope="row">Candidates</th><td>Feature and threshold pairs</td></tr><tr><th scope="row">Constraint</th><td>Minimum leaf size</td></tr><tr><th scope="row">Selection</th><td>Largest allowed reduction</td></tr></tbody></table></div><p class="mini-note"><strong>Your notebook:</strong> <span data-bind="live-receipt">Open the visual to inspect the current calculation.</span></p></div>
+<p class="answer">Try candidate cutoffs between distinct training values. Repeat for each eligible input. Pick the best allowed improvement at this step. That does not guarantee the best possible whole tree.</p><div class="receipt"><div class="receipt-label">A small example · separate from the live dataset</div><div class="table-wrap"><table><thead><tr><th scope="col">Follow the idea</th><th scope="col">Read it in plain language</th></tr></thead><tbody><tr><th scope="row">Candidates</th><td>Feature and threshold pairs</td></tr><tr><th scope="row">Constraint</th><td>Minimum leaf size</td></tr><tr><th scope="row">Selection</th><td>Largest allowed reduction</td></tr></tbody></table></div><p class="mini-note"><strong>Your notebook:</strong> <span data-bind="live-receipt">Open the visual to inspect the current calculation.</span></p></div>
 <div class="experiment"><span class="pencil">↳</span><div><strong>Try it</strong><p>Move through candidate midpoints, then change the feature being tested. Compare the gold candidate with the green minimum of this feature’s cost curve.</p><button type="button" data-explore-stage="5">Explore this idea <span aria-hidden="true">↗</span></button></div></div>
-<details class="deeper"><summary>Why this works · a little deeper</summary><div><p>Test thresholds between ordered distinct training values for each eligible feature. The chosen split is locally best under the loss and constraints, not globally optimal for every possible tree.</p><p>No.</p><div class="reference-reading"><p class="reference-label">Additional reference · worked numbers below are separate examples from the live notebook.</p><p>In real machine learning, a regression tree is not limited to checking just one feature. It considers multiple input variables simultaneously, checking every possible partition point across size, age, rooms, and locations.</p>
-<p>The tree runs a <strong>"Greedy Search"</strong>: it picks the single feature and threshold that yields the largest drop in RSS.</p>
-<table>
-<thead>
-<tr>
-<th>Feature</th>
-<th>Candidate Rule</th>
-<th>Post RSS</th>
-<th>Reduction</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Size</td>
-<td>Size ≤ 100 m²</td>
-<td>61,743</td>
-<td>+295,201</td>
-</tr>
-<tr>
-<td>Rooms</td>
-<td>Rooms ≤ 3</td>
-<td>74,300</td>
-<td>+282,644</td>
-</tr>
-<tr>
-<td>MRT Dist</td>
-<td>Distance ≤ 2 km</td>
-<td>82,000</td>
-<td>+274,944</td>
-</tr>
-<tr>
-<td>Age</td>
-<td>Age ≤ 15 years</td>
-<td>90,500</td>
-<td>+266,444</td>
-</tr>
-</tbody>
-</table>
-<p>
-                        Note: For teaching clarity, the extra feature splits here are illustrative. In a real dataset, the tree would calculate these RSS values from actual feature columns.
-                    </p>
-<strong>Winning Split:</strong>
-<p>Size wins because partitioning by Size ≤ 100 m² leaves the least error (lowest post-split RSS) among all candidate features.</p></div></div></details>
+<details class="deeper"><summary>Why this works · a little deeper</summary><div><p>For each feature, sort the distinct values and examine midpoint cutoffs. Leaf-size and other rules can reject a candidate. Greedy means best at the current node, not best across every complete future tree. Compare the gold candidate with the measured minimum on the displayed feature&#x27;s cost curve.</p></div></details>
 <details class="check"><summary>Quick check · Does greedy splitting guarantee the globally best full tree?</summary><p>No.</p></details>
 <a class="next-idea" href="#stage-7">Next: Recursive Splitting ↓</a>
 </section>
-<section class="stage" id="stage-7" data-stage="7" aria-labelledby="heading-7">
+<section class="stage" id="stage-7" data-stage="7" data-visual-guide="The same selected point appears in the map and branching path. Follow its input comparisons to one leaf." aria-labelledby="heading-7">
 <div class="stage-label"><span>07</span>Recursive Splitting</div><h2 id="heading-7">What makes the process recursive?</h2>
-<p class="answer">Apply the same splitting procedure inside each child. Recursion stops at a limit or when no allowed split improves the objective.</p><div class="receipt"><div class="receipt-label">A small example · separate from the live dataset</div><div class="table-wrap"><table><thead><tr><th scope="col">Follow the idea</th><th scope="col">Read it in plain language</th></tr></thead><tbody><tr><th scope="row">Start</th><td>One node</td></tr><tr><th scope="row">Repeat</th><td>Split each eligible child</td></tr><tr><th scope="row">Stop</th><td>Depth, leaf size, or no useful split</td></tr></tbody></table></div><p class="mini-note"><strong>Your notebook:</strong> <span data-bind="live-receipt">Open the visual to inspect the current calculation.</span></p></div>
+<p class="answer">After splitting, ask the same kind of question inside each child. This repeated procedure is called recursion. Stop when a limit is reached or no allowed split improves the score.</p><div class="receipt"><div class="receipt-label">A small example · separate from the live dataset</div><div class="table-wrap"><table><thead><tr><th scope="col">Follow the idea</th><th scope="col">Read it in plain language</th></tr></thead><tbody><tr><th scope="row">Start</th><td>One node</td></tr><tr><th scope="row">Repeat</th><td>Split each eligible child</td></tr><tr><th scope="row">Stop</th><td>Depth, leaf size, or no useful split</td></tr></tbody></table></div><p class="mini-note"><strong>Your notebook:</strong> <span data-bind="live-receipt">Open the visual to inspect the current calculation.</span></p></div>
 <div class="experiment"><span class="pencil">↳</span><div><strong>Try it</strong><p>Reveal one more split level. Notice how a child’s cut stops at the edge of its own region.</p><button type="button" data-explore-stage="6">Explore this idea <span aria-hidden="true">↗</span></button></div></div>
-<details class="deeper"><summary>Why this works · a little deeper</summary><div><p>Apply the same splitting procedure inside each child. Recursion stops at a limit or when no allowed split improves the objective.</p><p>No.</p><div class="reference-reading"><p class="reference-label">Additional reference · worked numbers below are separate examples from the live notebook.</p><p>After finding the best first split, the tree does the exact same thing inside each new group. It splits, then splits inside the split. Like cutting a cake into pieces, then cutting those pieces again.</p>
-<p>This is called <strong>Recursive Binary Splitting</strong>. With every split, the prediction line stops looking flat and starts looking like a set of stairs.</p></div></div></details>
+<details class="deeper"><summary>Why this works · a little deeper</summary><div><p>Each child repeats the search using only the rows inside that child. The tree stops at its depth or sample limits, a constant outcome group, or no valid useful split. Different branches may stop at different levels. An added cut affects that local region and the corresponding branching path.</p></div></details>
 <details class="check"><summary>Quick check · Does every branch need the same number of splits?</summary><p>No.</p></details>
 <a class="next-idea" href="#stage-8">Next: The Anatomy of a Tree ↓</a>
 </section>
-<section class="stage" id="stage-8" data-stage="8" aria-labelledby="heading-8">
+<section class="stage" id="stage-8" data-stage="8" data-visual-guide="The same selected point appears in the map and branching path. Follow its input comparisons to one leaf." aria-labelledby="heading-8">
 <div class="stage-label"><span>08</span>The Anatomy of a Tree</div><h2 id="heading-8">How do I read a tree?</h2>
-<p class="answer">Read from the root to a leaf, following the input comparisons. The path explains which training partition supplied the prediction.</p><div class="receipt"><div class="receipt-label">A small example · separate from the live dataset</div><div class="table-wrap"><table><thead><tr><th scope="col">Follow the idea</th><th scope="col">Read it in plain language</th></tr></thead><tbody><tr><th scope="row">Root</th><td>First question</td></tr><tr><th scope="row">Internal node</th><td>Another question</td></tr><tr><th scope="row">Leaf</th><td>Final prediction</td></tr></tbody></table></div><p class="mini-note"><strong>Your notebook:</strong> <span data-bind="live-receipt">Open the visual to inspect the current calculation.</span></p></div>
-<div class="experiment"><span class="pencil">↳</span><div><strong>Try it</strong><p>Move the query in either input. Follow the gold region above and the same gold branching route below to its leaf prediction.</p><button type="button" data-explore-stage="7">Explore this idea <span aria-hidden="true">↗</span></button></div></div>
-<details class="deeper"><summary>Why this works · a little deeper</summary><div><p>Read from the root to a leaf, following the input comparisons. The path explains which training partition supplied the prediction.</p><p>No. A standard tree follows one path.</p><div class="reference-reading"><p class="reference-label">Additional reference · worked numbers below are separate examples from the live notebook.</p><p>Even though we call it a tree, data scientists draw them upside down.</p>
-<ul>
-<li><strong>Root Node:</strong> The top, where all data starts.</li>
-<li><strong>Internal Node:</strong> A fork in the road where a decision is checked (e.g., Size ≤ 100).</li>
-<li><strong>Terminal Node (Leaf):</strong> The final box that gives the prediction number.</li>
-</ul>
-<strong>Interactive:</strong></div></div></details>
+<p class="answer">Start at the top, called the root. Answer each input question and follow the matching branch. Stop at a leaf. Its training average supplies the prediction.</p><div class="receipt"><div class="receipt-label">A small example · separate from the live dataset</div><div class="table-wrap"><table><thead><tr><th scope="col">Follow the idea</th><th scope="col">Read it in plain language</th></tr></thead><tbody><tr><th scope="row">Root</th><td>First question</td></tr><tr><th scope="row">Internal node</th><td>Another question</td></tr><tr><th scope="row">Leaf</th><td>Final prediction</td></tr></tbody></table></div><p class="mini-note"><strong>Your notebook:</strong> <span data-bind="live-receipt">Open the visual to inspect the current calculation.</span></p></div>
+<div class="experiment"><span class="pencil">↳</span><div><strong>Try it</strong><p>Move the point to predict in either input. Follow the gold region above and the same gold branching route below to its leaf prediction.</p><button type="button" data-explore-stage="7">Explore this idea <span aria-hidden="true">↗</span></button></div></div>
+<details class="deeper"><summary>Why this works · a little deeper</summary><div><p>One query is the point we want to predict. Its input values choose a branch at every node. The highlighted region, path and leaf mean must agree. The leaf&#x27;s sample size matters: a prediction based on very few rows can be unstable.</p></div></details>
 <details class="check"><summary>Quick check · Are branches followed simultaneously for a single row?</summary><p>No. A standard tree follows one path.</p></details>
 <a class="next-idea" href="#stage-9">Next: The Overfitting Trap ↓</a>
 </section>
-<section class="stage" id="stage-9" data-stage="9" aria-labelledby="heading-9">
+<section class="stage" id="stage-9" data-stage="9" data-visual-guide="Training and validation scores describe different rows. More complexity can improve one while worsening the other." aria-labelledby="heading-9">
 <div class="stage-label"><span>09</span>The Overfitting Trap</div><h2 id="heading-9">Why can a deeper tree overfit?</h2>
-<p class="answer">Deeper trees can form small leaves that track training noise. Training fit improves while validation performance can deteriorate.</p><div class="receipt"><div class="receipt-label">A small example · separate from the live dataset</div><div class="table-wrap"><table><thead><tr><th scope="col">Follow the idea</th><th scope="col">Read it in plain language</th></tr></thead><tbody><tr><th scope="row">Shallow</th><td>Coarse partitions</td></tr><tr><th scope="row">Deep</th><td>Finer partitions</td></tr><tr><th scope="row">Risk</th><td>Unstable small-leaf averages</td></tr></tbody></table></div><p class="mini-note"><strong>Your notebook:</strong> <span data-bind="live-receipt">Open the visual to inspect the current calculation.</span></p></div>
+<p class="answer">A deeper tree can make tiny groups that follow training noise. Its training errors may shrink while errors on other rows get worse. Check validation instead of assuming more detail is better.</p><div class="receipt"><div class="receipt-label">A small example · separate from the live dataset</div><div class="table-wrap"><table><thead><tr><th scope="col">Follow the idea</th><th scope="col">Read it in plain language</th></tr></thead><tbody><tr><th scope="row">Shallow</th><td>Coarse partitions</td></tr><tr><th scope="row">Deep</th><td>Finer partitions</td></tr><tr><th scope="row">Risk</th><td>Unstable small-leaf averages</td></tr></tbody></table></div><p class="mini-note"><strong>Your notebook:</strong> <span data-bind="live-receipt">Open the visual to inspect the current calculation.</span></p></div>
 <div class="experiment"><span class="pencil">↳</span><div><strong>Try it</strong><p>Increase maximum depth. Compare the training and validation curves; a better training fit need not improve held-out error.</p><button type="button" data-explore-stage="8">Explore this idea <span aria-hidden="true">↗</span></button></div></div>
-<details class="deeper"><summary>Why this works · a little deeper</summary><div><p>Deeper trees can form small leaves that track training noise. Training fit improves while validation performance can deteriorate.</p><p>No, but validation error can rise.</p><div class="reference-reading"><p class="reference-label">Additional reference · worked numbers below are separate examples from the live notebook.</p><p>What happens if we never tell the tree to stop? It will keep splitting until every single data point is alone in its own leaf, creating a zero-error fit on training data.</p>
-<p>This creates a massive risk of <strong>Overfitting</strong>—the model memorizes the random noise in our training set and fails to generalize to unseen houses.</p>
-<table>
-<thead>
-<tr>
-<th>Tree Depth</th>
-<th>Bias</th>
-<th>Variance</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Too Shallow</td>
-<td>High</td>
-<td>Low</td>
-<td>Underfits (Misses pattern)</td>
-</tr>
-<tr>
-<td>Balanced</td>
-<td>Medium</td>
-<td>Medium</td>
-<td>Best fit (Generalizes)</td>
-</tr>
-<tr>
-<td>Too Deep</td>
-<td>Low</td>
-<td>High</td>
-<td>Overfits (Memorizes noise)</td>
-</tr>
-</tbody>
-</table></div></div></details>
+<details class="deeper"><summary>Why this works · a little deeper</summary><div><p>Growing very deep may isolate rows when suitable splits exist, but does not always achieve zero error when identical inputs have different outcomes or growth rules constrain it. More depth improves allowed training fit, not necessarily validation. Real validation curves need not have one clean turning point.</p></div></details>
 <details class="check"><summary>Quick check · Can training SSE rise when an unconstrained split improves the fit?</summary><p>No, but validation error can rise.</p></details>
 <a class="next-idea" href="#stage-10">Next: Stopping Rules ↓</a>
 </section>
-<section class="stage" id="stage-10" data-stage="10" aria-labelledby="heading-10">
+<section class="stage" id="stage-10" data-stage="10" data-visual-guide="The same selected point appears in the map and branching path. Follow its input comparisons to one leaf." aria-labelledby="heading-10">
 <div class="stage-label"><span>10</span>Stopping Rules</div><h2 id="heading-10">Which stopping rules constrain growth?</h2>
-<p class="answer">Pre-pruning stops growth using constraints such as maximum depth or minimum leaf size. The settings are choices to validate, not scientific constants.</p><div class="receipt"><div class="receipt-label">A small example · separate from the live dataset</div><div class="table-wrap"><table><thead><tr><th scope="col">Follow the idea</th><th scope="col">Read it in plain language</th></tr></thead><tbody><tr><th scope="row">Maximum depth</th><td>Limits path length</td></tr><tr><th scope="row">Minimum leaf size</th><td>Requires enough training rows</td></tr><tr><th scope="row">Minimum gain</th><td>Requires sufficient improvement</td></tr></tbody></table></div><p class="mini-note"><strong>Your notebook:</strong> <span data-bind="live-receipt">Open the visual to inspect the current calculation.</span></p></div>
+<p class="answer">Stopping rules prevent further growth. Maximum depth limits the number of questions on a path. Minimum leaf size prevents very small final groups. Choose these limits using development evidence.</p><div class="receipt"><div class="receipt-label">A small example · separate from the live dataset</div><div class="table-wrap"><table><thead><tr><th scope="col">Follow the idea</th><th scope="col">Read it in plain language</th></tr></thead><tbody><tr><th scope="row">Maximum depth</th><td>Limits path length</td></tr><tr><th scope="row">Minimum leaf size</th><td>Requires enough training rows</td></tr><tr><th scope="row">Minimum gain</th><td>Requires sufficient improvement</td></tr></tbody></table></div><p class="mini-note"><strong>Your notebook:</strong> <span data-bind="live-receipt">Open the visual to inspect the current calculation.</span></p></div>
 <div class="experiment"><span class="pencil">↳</span><div><strong>Try it</strong><p>Change the minimum leaf size on the same sample. Inspect which spatial cuts and branches are no longer allowed.</p><button type="button" data-explore-stage="9">Explore this idea <span aria-hidden="true">↗</span></button></div></div>
-<details class="deeper"><summary>Why this works · a little deeper</summary><div><p>Pre-pruning stops growth using constraints such as maximum depth or minimum leaf size. The settings are choices to validate, not scientific constants.</p><p>No. It changes the fitted model.</p><div class="reference-reading"><p class="reference-label">Additional reference · worked numbers below are separate examples from the live notebook.</p><p>To prevent overfitting, we enforce <strong>Stopping Rules</strong> (also known as pre-pruning). We restrict depth and control minimum partition requirements before splits can occur.</p>
-<ul>
-<li>
-<strong>Do not choose</strong> the model based solely on the lowest training error.
-</li>
-<li>
-<strong>Use validation error</strong> to estimate performance on unseen, real-world data.
-</li>
-<li>
-<strong>Prefer lower validation error.</strong> Minimize this value to find the sweet spot.
-</li>
-<li>
-<strong>If two settings perform similarly</strong>, always pick the simpler tree (Occam's razor).
-</li>
-<li>
-<strong>Use both rules together:</strong> <code>max_depth</code> limits levels, while <code>min_samples_leaf</code> prevents tiny leaves that isolate individual outliers.
-</li>
-</ul>
-<p>Notice that making the tree deeper eventually makes training error drop to 0, but the validation error starts increasing. That turning point is the sweet spot.</p></div></div></details>
+<details class="deeper"><summary>Why this works · a little deeper</summary><div><p>max_depth limits path length. min_samples_leaf requires enough rows in each child. These are settings, not scientific constants. Compare the same candidate fits under suitable validation. If useful performance is similar, a stated simpler-model preference can be reasonable; it is not a universal law.</p></div></details>
 <details class="check"><summary>Quick check · Does minimum leaf size control only display size?</summary><p>No. It changes the fitted model.</p></details>
 <a class="next-idea" href="#stage-11">Next: Pruning: Let It Grow, Then Cut It Back ↓</a>
 </section>
-<section class="stage" id="stage-11" data-stage="11" aria-labelledby="heading-11">
+<section class="stage" id="stage-11" data-stage="11" data-visual-guide="The penalty removes branches from one fixed grown tree. This differs from stopping new branches before they are grown." aria-labelledby="heading-11">
 <div class="stage-label"><span>11</span>Pruning: Let It Grow, Then Cut It Back</div><h2 id="heading-11">How does pruning differ from stopping early?</h2>
-<p class="answer">Post-pruning starts with a larger tree and removes branches according to a complexity tradeoff. It differs from refusing to grow a branch in the first place.</p><div class="receipt"><div class="receipt-label">A small example · separate from the live dataset</div><div class="table-wrap"><table><thead><tr><th scope="col">Follow the idea</th><th scope="col">Read it in plain language</th></tr></thead><tbody><tr><th scope="row">Grow</th><td>Larger candidate tree</td></tr><tr><th scope="row">Prune</th><td>Compare smaller subtrees</td></tr><tr><th scope="row">Select</th><td>Development evaluation</td></tr></tbody></table></div><p class="mini-note"><strong>Your notebook:</strong> <span data-bind="live-receipt">Open the visual to inspect the current calculation.</span></p></div>
+<p class="answer">Post-pruning starts with a larger tree, then removes branches. Early stopping prevents those branches being grown in the first place. Both control complexity, but they compare different possible trees.</p><div class="receipt"><div class="receipt-label">A small example · separate from the live dataset</div><div class="table-wrap"><table><thead><tr><th scope="col">Follow the idea</th><th scope="col">Read it in plain language</th></tr></thead><tbody><tr><th scope="row">Grow</th><td>Larger candidate tree</td></tr><tr><th scope="row">Prune</th><td>Compare smaller subtrees</td></tr><tr><th scope="row">Select</th><td>Development evaluation</td></tr></tbody></table></div><p class="mini-note"><strong>Your notebook:</strong> <span data-bind="live-receipt">Open the visual to inspect the current calculation.</span></p></div>
 <div class="experiment"><span class="pencil">↳</span><div><strong>Try it</strong><p>Raise α to remove branches from one fixed grown tree. Compare retained leaves, training risk and validation error. This is post-pruning.</p><button type="button" data-explore-stage="10">Explore this idea <span aria-hidden="true">↗</span></button></div></div>
-<details class="deeper"><summary>Why this works · a little deeper</summary><div><p>Post-pruning starts with a larger tree and removes branches according to a complexity tradeoff. It differs from refusing to grow a branch in the first place.</p><p>No. It demonstrates a growth constraint.</p><div class="reference-reading"><p class="reference-label">Additional reference · worked numbers below are separate examples from the live notebook.</p><p>Sometimes stopping early (pre-pruning) can be too short-sighted. It might stop before discovering splits that become useful in combination with other splits.</p>
-<p>The alternative is <strong>Post-Pruning</strong>: We allow the tree to grow deep first, and then collapse weak, low-utility sub-branches back into parent leaf nodes using a complexity penalty called <code>ccp_alpha</code>.</p></div></div></details>
+<details class="deeper"><summary>Why this works · a little deeper</summary><div><p>Cost-complexity pruning trades fitted training risk against the number of leaves. The α setting increases the cost of keeping branches. The live pruning comparison starts from one fixed grown tree, so it removes existing branches rather than secretly regrowing a different one. Choose α using development data.</p></div></details>
 <details class="check"><summary>Quick check · Is a depth slider a demonstration of cost-complexity pruning?</summary><p>No. It demonstrates a growth constraint.</p></details>
 <a class="next-idea" href="#stage-12">Next: Trees vs. Lines ↓</a>
 </section>
-<section class="stage" id="stage-12" data-stage="12" aria-labelledby="heading-12">
+<section class="stage" id="stage-12" data-stage="12" data-visual-guide="Compare a smooth model slice with tree steps at the same fixed x₂. The observations still retain their own x₂ values." aria-labelledby="heading-12">
 <div class="stage-label"><span>12</span>Trees vs. Lines</div><h2 id="heading-12">When does a tree differ from a line?</h2>
-<p class="answer">A line changes continuously with an input; a tree returns constant predictions within leaves and jumps at boundaries. Trees naturally represent interactions but extrapolate poorly.</p><div class="receipt"><div class="receipt-label">A small example · separate from the live dataset</div><div class="table-wrap"><table><thead><tr><th scope="col">Follow the idea</th><th scope="col">Read it in plain language</th></tr></thead><tbody><tr><th scope="row">Linear model</th><td>Continuous additive surface</td></tr><tr><th scope="row">Tree</th><td>Piecewise constant regions</td></tr><tr><th scope="row">Beyond training range</th><td>Often unchanged leaf prediction</td></tr></tbody></table></div><p class="mini-note"><strong>Your notebook:</strong> <span data-bind="live-receipt">Open the visual to inspect the current calculation.</span></p></div>
+<p class="answer">A line changes smoothly with an input. A tree gives one fixed number inside each leaf, then jumps at a boundary. A tree can represent combined input conditions, but does not extend a smooth trend beyond training data.</p><div class="receipt"><div class="receipt-label">A small example · separate from the live dataset</div><div class="table-wrap"><table><thead><tr><th scope="col">Follow the idea</th><th scope="col">Read it in plain language</th></tr></thead><tbody><tr><th scope="row">Linear model</th><td>Continuous additive surface</td></tr><tr><th scope="row">Tree</th><td>Piecewise constant regions</td></tr><tr><th scope="row">Beyond training range</th><td>Often unchanged leaf prediction</td></tr></tbody></table></div><p class="mini-note"><strong>Your notebook:</strong> <span data-bind="live-receipt">Open the visual to inspect the current calculation.</span></p></div>
 <div class="experiment"><span class="pencil">↳</span><div><strong>Try it</strong><p>Hold x₂ fixed and compare the line-model slice with the tree’s steps. The background observations retain their own x₂ values.</p><button type="button" data-explore-stage="11">Explore this idea <span aria-hidden="true">↗</span></button></div></div>
-<details class="deeper"><summary>Why this works · a little deeper</summary><div><p>A line changes continuously with an input; a tree returns constant predictions within leaves and jumps at boundaries. Trees naturally represent interactions but extrapolate poorly.</p><p>No.</p><div class="reference-reading"><p class="reference-label">Additional reference · worked numbers below are separate examples from the live notebook.</p><p>Linear regression fits a smooth, straight line. It assumes a constant rate of change. Regression trees carve the world into intervals and assign a flat average to each.</p>
-<p>If the data has sudden thresholds or "if/then" behaviors, trees capture it naturally. If it's a smooth trend, lines win.</p></div></div></details>
+<details class="deeper"><summary>Why this works · a little deeper</summary><div><p>Hold the other input fixed when comparing a line-model slice with tree steps. The original observations still have their own second-input values. A smooth truth does not guarantee the line wins; model form, data and evaluation matter. Leaf-mean regression trees predict within the training outcome range and do not extrapolate a new trend.</p></div></details>
 <details class="check"><summary>Quick check · Does a tree extend a learned linear trend indefinitely?</summary><p>No.</p></details>
 <a class="next-idea" href="#stage-13">Next: Interactive Playground ↓</a>
 </section>
-<section class="stage" id="stage-13" data-stage="13" aria-labelledby="heading-13">
+<section class="stage" id="stage-13" data-stage="13" data-visual-guide="The highlighted region and branching route describe the same point. Its leaf supplies one saved average outcome." aria-labelledby="heading-13">
 <div class="stage-label"><span>13</span>Interactive Playground</div><h2 id="heading-13">What changes when I alter the data?</h2>
-<p class="answer">Changing training observations can alter the chosen thresholds and the entire downstream tree. Use a controlled new sample to examine this instability.</p><div class="receipt"><div class="receipt-label">A small example · separate from the live dataset</div><div class="table-wrap"><table><thead><tr><th scope="col">Follow the idea</th><th scope="col">Read it in plain language</th></tr></thead><tbody><tr><th scope="row">Fixed settings</th><td>Same algorithm</td></tr><tr><th scope="row">New training sample</th><td>Different observed outcomes</td></tr><tr><th scope="row">Compare</th><td>Tree structure and predictions</td></tr></tbody></table></div><p class="mini-note"><strong>Your notebook:</strong> <span data-bind="live-receipt">Open the visual to inspect the current calculation.</span></p></div>
-<div class="experiment"><span class="pencil">↳</span><div><strong>Try it</strong><p>Change one growth setting at a time. Trace the same query before drawing a new dataset.</p><button type="button" data-explore-stage="12">Explore this idea <span aria-hidden="true">↗</span></button></div></div>
-<details class="deeper"><summary>Why this works · a little deeper</summary><div><p>Changing training observations can alter the chosen thresholds and the entire downstream tree. Use a controlled new sample to examine this instability.</p><p>No. It must preserve the fitted state.</p><div class="reference-reading"><p class="reference-label">Additional reference · worked numbers below are separate examples from the live notebook.</p><p>Let's put the model to work. The tree is currently trained at Depth 3.</p>
-<p>to place a new house. The tree will evaluate it and trace its path. New House Size-- m² Predicted Price--</p></div></div></details>
+<p class="answer">Changing one training row can change the chosen cutoff and later branches. Keep other settings fixed to see that effect. Drawing a new sample can reveal how stable or unstable the tree is.</p><div class="receipt"><div class="receipt-label">A small example · separate from the live dataset</div><div class="table-wrap"><table><thead><tr><th scope="col">Follow the idea</th><th scope="col">Read it in plain language</th></tr></thead><tbody><tr><th scope="row">Fixed settings</th><td>Same algorithm</td></tr><tr><th scope="row">New training sample</th><td>Different observed outcomes</td></tr><tr><th scope="row">Compare</th><td>Tree structure and predictions</td></tr></tbody></table></div><p class="mini-note"><strong>Your notebook:</strong> <span data-bind="live-receipt">Open the visual to inspect the current calculation.</span></p></div>
+<div class="experiment"><span class="pencil">↳</span><div><strong>Try it</strong><p>Change one growth setting at a time. Trace the same point to predict before drawing a new dataset.</p><button type="button" data-explore-stage="12">Explore this idea <span aria-hidden="true">↗</span></button></div></div>
+<details class="deeper"><summary>Why this works · a little deeper</summary><div><p>Compare the same query before and after a controlled change. A small outcome change can move a greedy root cut and alter later regions. Do not confuse that data sensitivity with changing the query itself. State which data or setting changed.</p></div></details>
 <details class="check"><summary>Quick check · Does resizing the browser count as a new dataset?</summary><p>No. It must preserve the fitted state.</p></details>
 <a class="next-idea" href="#stage-14">Next: Sample Output: Reading the Tree Result ↓</a>
 </section>
-<section class="stage" id="stage-14" data-stage="14" aria-labelledby="heading-14">
+<section class="stage" id="stage-14" data-stage="14" data-visual-guide="Training and validation scores describe different rows. More complexity can improve one while worsening the other." aria-labelledby="heading-14">
 <div class="stage-label"><span>14</span>Sample Output: Reading the Tree Result</div><h2 id="heading-14">What do the reported metrics mean?</h2>
-<p class="answer">MAE measures average absolute error in outcome units; MSE squares those units and emphasizes large misses. Report the evaluation split and a baseline with either metric.</p><div class="receipt"><div class="receipt-label">A small example · separate from the live dataset</div><div class="table-wrap"><table><thead><tr><th scope="col">Follow the idea</th><th scope="col">Read it in plain language</th></tr></thead><tbody><tr><th scope="row">Errors</th><td>−2 and +4</td></tr><tr><th scope="row">MAE</th><td>3</td></tr><tr><th scope="row">MSE</th><td>10</td></tr></tbody></table></div><p class="mini-note"><strong>Your notebook:</strong> <span data-bind="live-receipt">Open the visual to inspect the current calculation.</span></p></div>
+<p class="answer">MAE is the average size of the errors, ignoring their signs. MSE averages squared errors, giving large misses more weight. Report which rows supplied the score and compare it with a simple baseline.</p><div class="receipt"><div class="receipt-label">A small example · separate from the live dataset</div><div class="table-wrap"><table><thead><tr><th scope="col">Follow the idea</th><th scope="col">Read it in plain language</th></tr></thead><tbody><tr><th scope="row">Errors</th><td>−2 and +4</td></tr><tr><th scope="row">MAE</th><td>3</td></tr><tr><th scope="row">MSE</th><td>10</td></tr></tbody></table></div><p class="mini-note"><strong>Your notebook:</strong> <span data-bind="live-receipt">Open the visual to inspect the current calculation.</span></p></div>
 <div class="experiment"><span class="pencil">↳</span><div><strong>Try it</strong><p>Select a row and follow its vertical residual. Its prediction uses both inputs, even though this outcome plot shows x₁ on the horizontal axis.</p><button type="button" data-explore-stage="13">Explore this idea <span aria-hidden="true">↗</span></button></div></div>
-<details class="deeper"><summary>Why this works · a little deeper</summary><div><p>MAE measures average absolute error in outcome units; MSE squares those units and emphasizes large misses. Report the evaluation split and a baseline with either metric.</p><p>No. Its units are squared.</p><div class="reference-reading"><p class="reference-label">Additional reference · worked numbers below are separate examples from the live notebook.</p><p>After training the regression tree, we do not just look at the final prediction. We read the rules, follow the decision path, and check the validation metrics to see whether the model generalizes.</p>
-<ul>
-<li><strong>Model:</strong> Regression Tree</li>
-<li><strong>Target:</strong> Price ($k)</li>
-<li><strong>Feature used:</strong> Size (m²)</li>
-<li><strong>Max depth:</strong> 3</li>
-<li><strong>Min samples per leaf:</strong> 1</li>
-<li><strong>Leaf prediction rule:</strong> Average price of training houses inside that leaf</li>
-</ul>
-<p>Trained Regression Tree Output</p>
-<pre>
-1. If Size ≤ 100:
-      If Size ≤ 71.5:
-          If Size ≤ 52.5 → Predict $290.0k
-          Else → Predict $320.0k
-      Else:
-          If Size ≤ 84.0 → Predict $405.0k
-          Else → Predict $460.0k
-
-2. If Size &gt; 100:
-      If Size ≤ 124.0:
-          If Size ≤ 117.5 → Predict $565.0k
-          Else → Predict $620.0k
-      Else:
-          If Size ≤ 140.0 → Predict $645.0k
-          Else → Predict $710.0k</pre>
-<strong>Example house:</strong>
-<p>Size = 112 m² Step 1: Is Size ≤ 100? No → go right. Step 2: Is Size ≤ 124? Yes → go left. Step 3: Is Size ≤ 117.5? Yes → go left. Final leaf prediction: $565.0k</p>
-<p>
-<strong>Plain-English interpretation:</strong> The model predicts about $565,000 because the 112 m² house lands in a leaf containing similar-sized training houses. The prediction is the average price of that leaf, not a guaranteed exact price.
-                    </p>
-<p>Metric Interpretation Training Train RSS: 1,750 Train MAE: $9.4k Train RMSE: $10.5k Validation Val RSS: 6,550 Val MAE: $30.0k Val RMSE: $33.0k •</p>
-<strong>RSS:</strong>
-<p>total squared error. Lower is better. •</p>
-<strong>MAE:</strong>
-<strong>RMSE:</strong>
-<p>typical prediction mistake, with larger errors punished more heavily.</p>
-<strong>Interpretation:</strong>
-<p>Validation RMSE = $33.0k means that on unseen validation houses, the model is typically off by around $33,000. This is more realistic than the training error because the validation houses were not used to grow the tree. Common Mistake: “Do not say: The model is always correct.” Correct Interpretation: “Say: The model gives an estimate based on the average price of similar training houses in the same leaf.”</p></div></div></details>
+<details class="deeper"><summary>Why this works · a little deeper</summary><div><p>MAE uses outcome units. MSE uses squared outcome units. RMSE takes the square root of MSE to return to outcome units, while emphasizing large errors. Report the sample size, split and baseline with the score. A single RMSE is not a guaranteed bound on every future error.</p></div></details>
 <details class="check"><summary>Quick check · Is MSE expressed in the original outcome units?</summary><p>No. Its units are squared.</p></details>
 <a class="next-idea" href="#stage-15">Next: Reality Check: Limitations ↓</a>
 </section>
-<section class="stage" id="stage-15" data-stage="15" aria-labelledby="heading-15">
+<section class="stage" id="stage-15" data-stage="15" data-visual-guide="Both maps use the same query. Compare the original fit with the fit after one training outcome changes." aria-labelledby="heading-15">
 <div class="stage-label"><span>15</span>Reality Check: Limitations</div><h2 id="heading-15">What are the characteristic failure cases?</h2>
-<p class="answer">Trees can be unstable, overfit small leaves, and fail to extrapolate smooth trends. Their interpretability also declines as paths and interactions multiply.</p><div class="receipt"><div class="receipt-label">A small example · separate from the live dataset</div><div class="table-wrap"><table><thead><tr><th scope="col">Follow the idea</th><th scope="col">Read it in plain language</th></tr></thead><tbody><tr><th scope="row">Instability</th><td>Small data changes alter splits</td></tr><tr><th scope="row">Extrapolation</th><td>Leaf values remain bounded by fitted means</td></tr><tr><th scope="row">Complexity</th><td>Many paths become hard to explain</td></tr></tbody></table></div><p class="mini-note"><strong>Your notebook:</strong> <span data-bind="live-receipt">Open the visual to inspect the current calculation.</span></p></div>
-<div class="experiment"><span class="pencil">↳</span><div><strong>Try it</strong><p>Perturb one training outcome. Compare the before-and-after partitions and the prediction at the same query.</p><button type="button" data-explore-stage="14">Explore this idea <span aria-hidden="true">↗</span></button></div></div>
-<details class="deeper"><summary>Why this works · a little deeper</summary><div><p>Trees can be unstable, overfit small leaves, and fail to extrapolate smooth trends. Their interpretability also declines as paths and interactions multiply.</p><p>No.</p><div class="reference-reading"><p class="reference-label">Additional reference · worked numbers below are separate examples from the live notebook.</p><p>While extremely powerful and explainable, single regression trees have key engineering limitations that you must look out for in practice.</p>
-<p>
-                            Trees predict flat averages. If a house size is larger than any seen in training (e.g., 220 m²), the tree cannot continue a trend upward; it flatlines at the average of the largest leaf.
-                        </p>
-<p>Jagged Step Predictions Staircase</p>
-<p>
-                            Real-world factors often rise smoothly. Trees build staircases with sudden step jumps, struggling to cleanly represent smooth curves without huge depths.
-                        </p>
-<p>High Instability (Variance) High Variance</p>
-<p>
-                            A tiny shift in data (e.g., swapping one point's price) can completely re-arrange the root split boundary, producing a highly unstable prediction layout.
-                        </p>
-<p>Axis-Aligned Splits Orthogonal</p>
-<p>
-                            Basic trees split one feature at a time at right angles, making it difficult to capture diagonal correlations (like price dropping when size decreases and age increases simultaneously).
-                        </p>
-<p>Easy to Overfit High Complexity</p>
-<p>
-                            Without strict stopping rules or pruning, deep trees will easily grow until they isolate every single point, memorizing individual training points instead of discovering generalizable patterns.
-                        </p></div></div></details>
+<p class="answer">A single tree can change sharply with small data changes. Small leaves can overfit. Deep paths can also become hard to explain. Outside the measured range, leaf averages do not continue a rising or falling trend.</p><div class="receipt"><div class="receipt-label">A small example · separate from the live dataset</div><div class="table-wrap"><table><thead><tr><th scope="col">Follow the idea</th><th scope="col">Read it in plain language</th></tr></thead><tbody><tr><th scope="row">Instability</th><td>Small data changes alter splits</td></tr><tr><th scope="row">Extrapolation</th><td>Leaf values remain bounded by fitted means</td></tr><tr><th scope="row">Complexity</th><td>Many paths become hard to explain</td></tr></tbody></table></div><p class="mini-note"><strong>Your notebook:</strong> <span data-bind="live-receipt">Open the visual to inspect the current calculation.</span></p></div>
+<div class="experiment"><span class="pencil">↳</span><div><strong>Try it</strong><p>Perturb one training outcome. Compare the before-and-after partitions and the prediction at the same point to predict.</p><button type="button" data-explore-stage="14">Explore this idea <span aria-hidden="true">↗</span></button></div></div>
+<details class="deeper"><summary>Why this works · a little deeper</summary><div><p>Axis-aligned trees test one input at a time, so diagonal patterns may need many rectangular steps. Their instability can make one fitted explanation fragile. Ensembles may reduce some variability but can still overfit, leak data or fail after a population change. Use comparable validation before choosing an alternative.</p></div></details>
 <details class="check"><summary>Quick check · Does a tree's readable structure guarantee reliable predictions?</summary><p>No.</p></details>
 <a class="next-idea" href="#stage-16">Next: Synthesis ↓</a>
 </section>
-<section class="stage" id="stage-16" data-stage="16" aria-labelledby="heading-16">
+<section class="stage" id="stage-16" data-stage="16" data-visual-guide="The same selected point appears in the map and branching path. Follow its input comparisons to one leaf." aria-labelledby="heading-16">
 <div class="stage-label"><span>16</span>Synthesis</div><h2 id="heading-16">Can I reconstruct the algorithm?</h2>
-<p class="answer">Reconstruct the algorithm: start with a mean, search splits, choose a valid improvement, recurse, and select complexity on held-out development data.</p><div class="receipt"><div class="receipt-label">A small example · separate from the live dataset</div><div class="table-wrap"><table><thead><tr><th scope="col">Follow the idea</th><th scope="col">Read it in plain language</th></tr></thead><tbody><tr><th scope="row">Fit</th><td>Greedy loss reductions</td></tr><tr><th scope="row">Predict</th><td>Follow one path</td></tr><tr><th scope="row">Evaluate</th><td>Independent rows</td></tr></tbody></table></div><p class="mini-note"><strong>Your notebook:</strong> <span data-bind="live-receipt">Open the visual to inspect the current calculation.</span></p></div>
-<div class="experiment"><span class="pencil">↳</span><div><strong>Try it</strong><p>Trace a query from its location to a leaf. Explain the cut, the branch direction, the leaf sample size and its mean before checking the receipt.</p><button type="button" data-explore-stage="15">Explore this idea <span aria-hidden="true">↗</span></button></div></div>
-<details class="deeper"><summary>Why this works · a little deeper</summary><div><p>Reconstruct the algorithm: start with a mean, search splits, choose a valid improvement, recurse, and select complexity on held-out development data.</p><p>A numerical prediction, usually its training mean under squared loss.</p><div class="reference-reading"><p class="reference-label">Additional reference · worked numbers below are separate examples from the live notebook.</p><p>Let's review the final sequence to build and use a regression tree:</p>
-<p>. Put all training data in the</p>
-<strong>Root Node</strong>
-<p>. 2. Test possible splits (greedy thresholds) across all available features. 3. Pick the feature/split that results in the</p>
-<strong>lowest RSS</strong>
-<p>. 4. Repeat the process recursively inside each new branch. 5. Use validation error to choose stopping rules or pruning, instead of trusting training error alone. 6. Each final leaf predicts the</p>
-<strong>average target value</strong>
-<p>While a single regression tree can be unstable on its own, this recursive logic is the fundamental building block for advanced modern algorithms like <strong>Random Forests</strong> and <strong>Gradient Boosting</strong>.</p>
-<strong>Ensemble Learning:</strong>
-<p>Ensembles improve single trees by combining hundreds of them, smoothing out jagged steps and yielding highly stable predictions.</p></div></div></details>
+<p class="answer">Start with a mean. Test possible splits. Choose an allowed improvement. Repeat inside each child. Use validation to choose growth or pruning settings. A new point follows its path to a saved leaf average.</p><div class="receipt"><div class="receipt-label">A small example · separate from the live dataset</div><div class="table-wrap"><table><thead><tr><th scope="col">Follow the idea</th><th scope="col">Read it in plain language</th></tr></thead><tbody><tr><th scope="row">Fit</th><td>Greedy loss reductions</td></tr><tr><th scope="row">Predict</th><td>Follow one path</td></tr><tr><th scope="row">Evaluate</th><td>Independent rows</td></tr></tbody></table></div><p class="mini-note"><strong>Your notebook:</strong> <span data-bind="live-receipt">Open the visual to inspect the current calculation.</span></p></div>
+<div class="experiment"><span class="pencil">↳</span><div><strong>Try it</strong><p>Trace a point to predict from its location to a leaf. Explain the cut, the branch direction, the leaf sample size and its mean before checking the receipt.</p><button type="button" data-explore-stage="15">Explore this idea <span aria-hidden="true">↗</span></button></div></div>
+<details class="deeper"><summary>Why this works · a little deeper</summary><div><p>Reconstruct both training and prediction. Training searches and counts only training rows. Prediction follows the saved tests without knowing the new outcome. Report cuts, growth rules, pruning, leaf averages, sample split and validation error. The rules describe predictive groups, not proven causal effects.</p></div></details>
 <details class="check"><summary>Quick check · What is stored in a regression leaf?</summary><p>A numerical prediction, usually its training mean under squared loss.</p></details>
 <a class="next-idea" href="random-forest.html">Continue to Random Forest →</a>
 </section>
 </article><aside class="lab-home" aria-label="Interactive notebook"><section class="lab-panel" id="lab-panel"><header class="lab-header"><div><p class="eyebrow">THE LIVE NOTEBOOK <span id="lab-stage">01</span></p><h2 id="lab-title">The Raw Target</h2></div><button class="icon-button" type="button" data-reset aria-label="Reset notebook" title="Reset notebook to its starting values">↺</button></header>
-<div id="lab-content" data-interactive="tree-space"><p class="loading-note">Your interactive notebook is loading. The complete written lesson is on the left.</p></div>
+<p class="visual-reading-guide" id="visual-reading-guide" hidden></p><div id="lab-content" data-interactive="tree-space"><p class="loading-note">Your interactive notebook is loading. The complete written lesson is on the left.</p></div>
 <p id="motion-status" class="motion-status" aria-live="off"></p><p class="lab-caption" id="lab-caption">Read the idea, inspect a small example, then change one thing in the live notebook.</p><p class="live-announcement" role="status" aria-live="polite"></p></section></aside></main>
 <dialog class="lab-dialog" aria-labelledby="dialog-title"><header class="dialog-header"><strong id="dialog-title">Explore the notebook</strong><button type="button" data-close-lab>Back to reading ✕</button></header><div class="dialog-body"></div></dialog>
 <details class="topic-directory"><summary>Explore all 34 topics</summary><nav aria-label="All academy topics"><a href="anova.html">Analysis of Variance (ANOVA)</a><a href="association-rules.html">Association Rules</a><a href="bias-variance.html">Bias-Variance Trade-Off &amp; Resampling</a><a href="chi-square.html">Chi-Square Test of Independence</a><a href="classification-trees.html">Classification Trees</a><a href="confidence-hypothesis-testing.html">Confidence Intervals &amp; Hypothesis Testing</a><a href="correlation.html">Correlation</a><a href="data-leakage-pipelines.html">Data Leakage &amp; Pipelines</a><a href="deep-learning.html">Deep Learning</a><a href="evaluation-metrics.html">Evaluation Metrics</a><a href="experimental-design.html">Experimental Design &amp; Randomisation</a><a href="gradient-boosting.html">Gradient Boosting</a><a href="hierarchical-clustering.html">Hierarchical Clustering</a><a href="imbalanced-classification.html">Imbalanced Classification</a><a href="kmeans.html">K-Means Clustering</a><a href="knn.html">K-Nearest Neighbors (KNN)</a><a href="lda.html">Linear Discriminant Analysis (LDA)</a><a href="logistic-regression.html">Logistic Regression</a><a href="missing-data-encoding.html">Missing Data &amp; Encoding</a><a href="model-selection.html">Model Selection &amp; Regularization</a><a href="multiple-linear-regression.html">Multiple Linear Regression</a><a href="naive-bayes.html">Naive Bayes</a><a href="neural-networks.html">Neural Networks</a><a href="one-r.html">One-R</a><a href="polynomial-regression.html">Polynomial Regression</a><a href="pca.html">Principal Component Analysis (PCA)</a><a href="probability-sampling.html">Probability &amp; Sampling Distributions</a><a href="qda.html">Quadratic Discriminant Analysis (QDA)</a><a href="random-forest.html">Random Forest</a><a href="regression-diagnostics.html">Regression Diagnostics</a><a href="regression-trees.html" aria-current="page">Regression Trees</a><a href="simple-linear-regression.html">Simple Linear Regression</a><a href="support-vector-machine.html">Support Vector Machines — Separate classes with breathing room</a><a href="time-series-analysis.html">Time Series Analysis</a></nav></details>

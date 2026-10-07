@@ -60,6 +60,13 @@ export function fromCounts({n,a,b,both}) {
     kulc:confidence!==null&&reverse!==null?(confidence+reverse)/2:null,
     cosine:a&&b?both/Math.sqrt(a*b):null,ir:a+b-both?Math.abs(a-b)/(a+b-both):null};
 }
+// Compare unrounded rates. An absent antecedent never has defined confidence,
+// including at a zero cutoff. Control cutoffs are percentages; equality passes.
+export function ruleThresholds(rule,minSupport,minConfidence) {
+  const supportPass=Number.isFinite(rule.support)&&rule.support>=minSupport/100;
+  const confidencePass=Number.isFinite(rule.confidence)&&rule.confidence>=minConfidence/100;
+  return {supportPass,confidencePass,bothPass:supportPass&&confidencePass};
+}
 export function bruteFrequent(rows,minCount,items=[...new Set(rows.flatMap(r=>r.items))].sort()) {
   return allSets(items).map(items=>({items,count:count(rows,items)})).filter(p=>p.count>=minCount);
 }
@@ -165,7 +172,7 @@ export function constraint(items,type,cap) {
   return {total,span,pass:type==='upper'?total<=cap:type==='lower'?total>=cap:span<=cap,prices};
 }
 export function initialState() {
-  return {baskets:SOURCE_BASKETS.map(r=>({id:r.id,items:[...r.items]})),basket:0,rule:0,minSupport:50,minConfidence:90,set:['Bread','Coke','Egg'],level:3,candidate:'Bread|Coke|Egg',split:0,fpStep:5,suffix:'m',quizMin:2,quizFocus:'A',family:'all',cohort:'basketball',joint:2000,chiCohort:'games',chiJoint:4000,nulls:0,bOnly:10,constraintType:'upper',cap:35,constraintSet:'a|d',childMin:5,toyRow:0,absence:false,pythonAlgo:'apriori',reviewQuestion:2};
+  return {baskets:SOURCE_BASKETS.map(r=>({id:r.id,items:[...r.items]})),basket:0,rule:0,minSupport:50,minConfidence:90,set:['Bread','Coke','Egg'],level:3,candidate:'Bread|Coke|Egg',split:0,aprioriPhase:0,projectionPhase:0,workflowPhase:0,fpStep:5,suffix:'m',quizMin:2,quizFocus:'A',family:'all',cohort:'basketball',joint:2000,chiCohort:'games',chiJoint:4000,nulls:0,bOnly:10,constraintType:'upper',cap:35,constraintSet:'a|d',childMin:5,toyRow:0,absence:false,pythonAlgo:'apriori',reviewQuestion:2};
 }
 export function compute(state) {
   const rule=RULES[state.rule],main=measure(state.baskets,rule.x,rule.y),minCount=Math.ceil(state.baskets.length*state.minSupport/100-1e-12),minConf=state.minConfidence/100;

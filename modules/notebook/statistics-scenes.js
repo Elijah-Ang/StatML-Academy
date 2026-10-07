@@ -2,6 +2,23 @@ import { fmt, palette } from "./ui.js";
 import { frame, caption, arrow, line, paper, ink } from "./spatial.js";
 import { extent } from "./lab.js";
 
+export function sharedCauseStory(s){
+  s.begin(380);
+  let y=caption(s,'shared-cause-title','One possible shared cause can affect both outcomes.');
+  const center=s.w/2,top=y+17,childTop=top+120,childWidth=(s.w-43)/2;
+  s.rect('weather-node',center-75,top,150,47,palette[3]+'22',{stroke:palette[3]});
+  s.text('weather-name',center,top+29,'Hot weather',{'text-anchor':'middle','font-size':18});
+  for(const [i,words] of [['swimming',['More','swimming']],['sales',['More ice-cream','sales']]]){
+    const x=i==='swimming'?14:s.w-14-childWidth,cx=x+childWidth/2;
+    arrow(s,'weather-to-'+i,[center,top+47],[cx,childTop-5],palette[3]);
+    s.rect(i+'-node',x,childTop,childWidth,73,palette[0]+'16',{stroke:palette[0]});
+    words.forEach((word,j)=>s.text(i+'-name'+j,cx,childTop+29+j*23,word,{'text-anchor':'middle','font-size':15}));
+  }
+  y=caption(s,'shared-cause-scope','Arrows show a possible explanation, not measured effects.',childTop+111);
+  y=caption(s,'shared-cause-result','A correlation alone cannot tell us which causal explanation is right.',y+10);
+  s.fitHeight(y+20);
+}
+
 // Scenes use the same observations and calculations as the written receipt.
 // Returned caption positions reserve real space before the next visual band.
 export function samplingStory(s, P, d, st, scene) {
@@ -383,4 +400,40 @@ export function componentStory(s, P, d) {
     "These are known simulation components, not a decomposition estimated from real data.",
     y + 578,
   );
+}
+
+export function degreesStory(s, d) {
+  s.begin(430);
+  let y=caption(s,'df-title','Degrees of freedom: choices left after fitting averages.');
+  y=caption(s,'df-example','Separate example: three numbers with average 10 must add to 30.',y+10);
+  const values=[8,15,7], width=(s.w-48)/3;
+  values.forEach((v,i)=>{
+    const x=16+i*(width+8);
+    s.rect('df-value-box'+i,x,y+8,width,67,i<2 ? palette[0]+'18' : palette[2]+'18',{stroke:i<2?palette[0]:palette[2]});
+    s.text('df-value'+i,x+width/2,y+40,String(v),{'text-anchor':'middle','font-size':25});
+    s.text('df-role'+i,x+width/2,y+63,i<2?'Chosen':'Forced',{'text-anchor':'middle','font-size':14});
+  });
+  y=caption(s,'df-last','8 + 15 + ? = 30, so the last value must be 7.',y+105);
+  y=caption(s,'df-free','Two choices remain free; the fixed average determines the third.',y+8);
+  const n=d.rows.length,k=d.result.means.length;
+  y=caption(s,'df-live',`Live dataset: ${n} scores in ${k} groups.`,y+24);
+  y=caption(s,'df-between',`Between groups: ${k} − 1 = ${d.result.d1} degrees of freedom.`,y+8);
+  y=caption(s,'df-within',`Within groups: ${n} − ${k} = ${d.result.d2} degrees of freedom.`,y+8);
+  y=caption(s,'df-scaling','Dividing each squared total by its own df gives a mean square.',y+14);
+  s.fitHeight(y+20);
+}
+
+export function effectSizeStory(s, d) {
+  s.begin(350);
+  const r=d.result;
+  let y=caption(s,'eta-title','What share of total squared spread is between groups?');
+  y=caption(s,'eta-total',`Whole bar: total SS = ${fmt(r.total,2)}`,y+14);
+  const x=16,width=s.w-32,part=r.total>0 ? width*r.between/r.total : 0;
+  s.rect('eta-whole',x,y+8,width,45,palette[1]+'45');
+  s.rect('eta-between',x,y+8,part,45,palette[0]+'aa');
+  y=caption(s,'eta-between-value',`Blue: between SS = ${fmt(r.between,2)}`,y+82,palette[0]);
+  y=caption(s,'eta-within-value',`Red: within SS = ${fmt(r.within,2)}`,y+9,palette[1]);
+  y=caption(s,'eta-ratio',`η² = between ÷ total = ${fmt(r.eta,3)} (${fmt(r.eta*100,1)}%)`,y+18);
+  y=caption(s,'eta-scope','This describes group separation in these scores. It does not establish a cause.',y+14);
+  s.fitHeight(y+20);
 }

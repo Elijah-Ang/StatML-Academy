@@ -11,426 +11,90 @@
 <div class="lesson-toolbar"><label for="stage-select">Lesson map</label><select id="stage-select"><option value="0">01 · It Starts with Data</option><option value="1">02 · Why Lines Break</option><option value="2">03 · From a Raw Score to a Probability</option><option value="3">04 · Weighted Clues</option><option value="4">05 · Learning from Mistakes</option><option value="5">06 · Drawing the Line</option><option value="6">07 · Select the Decision Rule on Validation Data</option><option value="7">08 · The Validation ROC Curve</option><option value="8">09 · What the Numbers Mean</option><option value="9">10 · The Full Picture</option></select><span class="stage-progress" aria-live="polite">1 / 10</span></div>
 <div class="mobile-lab-bar"><span><small>Live notebook</small><strong id="mobile-summary">What is the binary outcome?</strong></span><button class="primary" type="button" data-open-lab>Explore visual ↗</button></div>
 <main class="notebook-layout" id="lesson"><article class="reading">
-<header class="hero"><p class="eyebrow">Supervised learning · Classification</p><h1>Logistic Regression</h1><p class="intro">A binary target has two defined outcomes. Logistic regression estimates the probability of the designated positive class using inputs available at prediction time.</p><div class="pathway"><div><small>Prerequisites</small>Means, plots, and the train–validation distinction</div><div><small>Recommended next</small><a href="evaluation-metrics.html">Evaluation Metrics</a></div></div><p class="reading-tip">Read a little. Try a little. Open the “why” when you are ready.</p></header>
+<header class="hero"><p class="eyebrow">Supervised learning · Classification</p><h1>Logistic Regression</h1><p class="intro">Turn clues into a probability, then turn that probability into a yes/no decision. Keep these two steps separate.</p><div class="pathway"><div><small>Prerequisites</small>Fractions, percentages, and multiplying then adding numbers.</div><div><small>Recommended next</small><a href="evaluation-metrics.html">Evaluation Metrics</a></div></div><p class="reading-tip">Read a little. Try a little. Open the “why” when you are ready.</p></header>
 <noscript><p class="caution">The full lesson, worked examples and answers are readable here. Enable JavaScript for the interactive experiments and live calculations.</p></noscript>
-<section class="stage" id="stage-1" data-stage="1" aria-labelledby="heading-1">
+<section class="stage" id="stage-1" data-stage="1" data-visual-guide="Dots show known classes. The blue/red background shows predicted classes at the chosen cutoff. Moving the cutoff changes decisions, not fitted probabilities." aria-labelledby="heading-1">
 <span class="legacy-anchor" id="sec-1" aria-hidden="true"></span><div class="stage-label"><span>01</span>It Starts with Data</div><h2 id="heading-1">What is the binary outcome?</h2>
-<p class="answer">A binary target has two defined outcomes. Logistic regression estimates the probability of the designated positive class using inputs available at prediction time.</p><div class="receipt"><div class="receipt-label">A small example · separate from the live dataset</div><div class="table-wrap"><table><thead><tr><th scope="col">Follow the idea</th><th scope="col">Read it in plain language</th></tr></thead><tbody><tr><th scope="row">Negative class</th><td>0</td></tr><tr><th scope="row">Positive class</th><td>1</td></tr><tr><th scope="row">Prediction</th><td>Estimated P(Y = 1 given inputs)</td></tr></tbody></table></div><p class="mini-note"><strong>Your notebook:</strong> <span data-bind="live-receipt">Open the visual to inspect the current calculation.</span></p></div>
-<div class="experiment"><span class="pencil">↳</span><div><strong>Try it</strong><p>Explore the decision surface. Use the labeled controls, predict what will change, then compare the calculation before and after.</p><button type="button" data-explore-stage="0">Explore this idea <span aria-hidden="true">↗</span></button></div></div>
-<details class="deeper"><summary>Why this works · a little deeper</summary><div><p>A binary target has two defined outcomes. Logistic regression estimates the probability of the designated positive class using inputs available at prediction time.</p><p>No. It expresses estimated risk, not certainty.</p><div class="reference-reading"><p class="reference-label">Additional reference · worked numbers below are separate examples from the live notebook.</p><p>Imagine you run an ice-cream shop. Every day you note the <strong>temperature</strong>, whether it was <strong>sunny</strong>, and whether someone <strong>bought ice cream</strong>.</p>
-<p>The plot shows each day as a dot: temperature on the x-axis, outcome (bought or didn't) on the y-axis.</p>
-<h3>Legend</h3>
-<p>● Bought (y = 1)   ● Didn't buy (y = 0)</p>
-<h3>What is probability? 🤔</h3>
-<p>
-<strong>Probability</strong> means "how likely something is to happen." It is always written as a number between 0 and 1:
-    </p>
-<ul>
-<li><strong>0</strong> means impossible (0% chance).</li>
-<li><strong>0.5</strong> means 50-50 (50% chance).</li>
-<li><strong>1</strong> means certain (100% chance).</li>
-</ul>
-<p>
-      In this guide, probability means: <em>"How likely is someone to buy ice cream?"</em>
-</p>
-<p>
-      Bought = 1 and Didn't buy = 0 are just category labels. They do not mean someone bought one ice cream or zero ice creams. They simply mark the two possible outcomes for the model.
-    </p>
-<p>Notice how higher temperatures tend to cluster near y = 1? That's the <strong>signal</strong> our model will learn to capture.</p>
-<p>📌 This is a small toy dataset with 20 rows designed for teaching. Real datasets have hundreds or thousands of rows.</p></div></div></details>
+<p class="answer">The target has two possible answers, called classes. We label them 0 and 1. Logistic regression uses the input clues to estimate the chance of class 1. Only use clues available when the prediction is made. A decision threshold is a cutoff: at or above it, predict 1; below it, predict 0.</p><div class="receipt"><div class="receipt-label">A small example · separate from the live dataset</div><div class="table-wrap"><table><thead><tr><th scope="col">Follow the idea</th><th scope="col">Read it in plain language</th></tr></thead><tbody><tr><th scope="row">Negative class</th><td>0</td></tr><tr><th scope="row">Positive class</th><td>1</td></tr><tr><th scope="row">Prediction</th><td>Estimated P(Y = 1 given inputs)</td></tr></tbody></table></div><p class="mini-note"><strong>Your notebook:</strong> <span data-bind="live-receipt">Open the visual to inspect the current calculation.</span></p></div>
+<div class="experiment"><span class="pencil">↳</span><div><strong>Try it</strong><p>Move the new point using Query x and Query z. Then move the decision threshold: blue predicts 0 and red predicts 1. The dots keep their known labels, and the fitted probabilities do not change.</p><button type="button" data-explore-stage="0">Explore this idea <span aria-hidden="true">↗</span></button></div></div>
+<details class="deeper"><summary>Why this works · a little deeper</summary><div><p>In a separate shop example, inputs include temperature and sunny weather; the label records whether someone bought ice cream. Here 1 means the designated positive class, not one unit purchased. Probability 0.5 means 50%; 0 means impossible and 1 certain within a probability model. The notebook uses small simulated examples, not a verified sales model.</p></div></details>
 <details class="check"><summary>Quick check · Does a probability of 0.8 guarantee a positive outcome?</summary><p>No. It expresses estimated risk, not certainty.</p></details>
 <a class="next-idea" href="#stage-2">Next: Why Lines Break ↓</a>
 </section>
-<section class="stage" id="stage-2" data-stage="2" aria-labelledby="heading-2">
+<section class="stage" id="stage-2" data-stage="2" data-visual-guide="The valid band is 0 to 1. The thin red line can leave it; green sigmoid stays inside. The moving blue/red field shows which class the cutoff predicts." aria-labelledby="heading-2">
 <span class="legacy-anchor" id="sec-2" aria-hidden="true"></span><div class="stage-label"><span>02</span>Why Lines Break</div><h2 id="heading-2">Why is an ordinary line awkward for probability?</h2>
-<p class="answer">An ordinary linear prediction can be below zero or above one. Logistic regression uses an unrestricted linear score, then transforms it into the probability range.</p><div class="receipt"><div class="receipt-label">A small example · separate from the live dataset</div><div class="table-wrap"><table><thead><tr><th scope="col">Follow the idea</th><th scope="col">Read it in plain language</th></tr></thead><tbody><tr><th scope="row">Linear score z</th><td>Any real number</td></tr><tr><th scope="row">Sigmoid output</th><td>Between 0 and 1</td></tr><tr><th scope="row">Decision</th><td>A later thresholding step</td></tr></tbody></table></div><p class="mini-note"><strong>Your notebook:</strong> <span data-bind="live-receipt">Open the visual to inspect the current calculation.</span></p></div>
-<div class="experiment"><span class="pencil">↳</span><div><strong>Try it</strong><p>Move the decision threshold. Watch the dashed horizontal line and the red/blue regions move together while the sigmoid curve stays fixed. Red predicts class 1 at or above the cutoff; blue predicts class 0 below it.</p><button type="button" data-explore-stage="1">Explore this idea <span aria-hidden="true">↗</span></button></div></div>
-<details class="deeper"><summary>Why this works · a little deeper</summary><div><p>An ordinary linear prediction can be below zero or above one. Logistic regression uses an unrestricted linear score, then transforms it into the probability range.</p><p>No.</p><div class="reference-reading"><p class="reference-label">Additional reference · worked numbers below are separate examples from the live notebook.</p><p>Your first instinct might be to draw a straight line through the data — that's <strong>linear regression</strong>.</p>
-<p>But watch what happens: the line predicts values <strong>above 1</strong> and <strong>below 0</strong>. Those aren't valid probabilities!</p>
-<p>ŷ = b₀ + b₁ · Temperature Can give 1.5 or −0.3 … not a probability!</p>
-<h3>Why Bounds Matter 🚧</h3>
-<p>
-      A probability cannot be below 0 or above 1:
-    </p>
-<ul>
-<li>Below 0 would mean “less than impossible.”</li>
-<li>Above 1 would mean “more than certain.”</li>
-</ul>
-<p>
-      So a prediction like <strong>1.5</strong> means 150%, which makes no real-world sense. We need a curve that stays strictly between 0 and 1.
-    </p>
-<p>We need a function that <em>squishes</em> any number into the 0–1 range. Enter the <strong>sigmoid</strong>.</p></div></div></details>
+<p class="answer">A straight-line formula can give numbers below 0 or above 1. Those cannot be probabilities. Logistic regression first makes a raw score, then changes it into a number between 0 and 1.</p><div class="receipt"><div class="receipt-label">A small example · separate from the live dataset</div><div class="table-wrap"><table><thead><tr><th scope="col">Follow the idea</th><th scope="col">Read it in plain language</th></tr></thead><tbody><tr><th scope="row">Linear score s</th><td>Any real number</td></tr><tr><th scope="row">Sigmoid output</th><td>Between 0 and 1</td></tr><tr><th scope="row">Decision</th><td>A later thresholding step</td></tr></tbody></table></div><p class="mini-note"><strong>Your notebook:</strong> <span data-bind="live-receipt">Open the visual to inspect the current calculation.</span></p></div>
+<div class="experiment"><span class="pencil">↳</span><div><strong>Try it</strong><p>Compare the thin red line with the green sigmoid. Move the decision threshold and watch the blue/red probability field slide. The cutoff changes labels; it does not move the curves.</p><button type="button" data-explore-stage="1">Explore this idea <span aria-hidden="true">↗</span></button></div></div>
+<details class="deeper"><summary>Why this works · a little deeper</summary><div><p>The raw score adds up weighted inputs and an intercept. The sigmoid turns that score into a valid probability. A finite score gives a value strictly between 0 and 1. That bound alone does not prove the estimated probability is accurate.</p></div></details>
 <details class="check"><summary>Quick check · Is the linear score already a probability?</summary><p>No.</p></details>
 <a class="next-idea" href="#stage-3">Next: From a Raw Score to a Probability ↓</a>
 </section>
-<section class="stage" id="stage-3" data-stage="3" aria-labelledby="heading-3">
+<section class="stage" id="stage-3" data-stage="3" data-visual-guide="The gold point links a raw score with its probability. Blue is below the cutoff; red is at or above it. Slide the cutoff and keep the S-curve fixed." aria-labelledby="heading-3">
 <span class="legacy-anchor" id="sec-3" aria-hidden="true"></span><div class="stage-label"><span>03</span>From a Raw Score to a Probability</div><h2 id="heading-3">What does the sigmoid do?</h2>
-<p class="answer">The sigmoid is a smooth S-shaped transformation. Zero maps to one-half; large positive scores approach one; large negative scores approach zero.</p><div class="receipt"><div class="receipt-label">A small example · separate from the live dataset</div><div class="table-wrap"><table><thead><tr><th scope="col">Follow the idea</th><th scope="col">Read it in plain language</th></tr></thead><tbody><tr><th scope="row">z = 0</th><td>p = 0.5</td></tr><tr><th scope="row">z ≈ 1.10</th><td>p ≈ 0.75</td></tr><tr><th scope="row">z ≈ −1.10</th><td>p ≈ 0.25</td></tr></tbody></table></div><p class="mini-note"><strong>Your notebook:</strong> <span data-bind="live-receipt">Open the visual to inspect the current calculation.</span></p></div>
-<div class="experiment"><span class="pencil">↳</span><div><strong>Try it</strong><p>Raise the decision threshold, then lower it. Compare the expanding blue region with the shrinking red region. The cutoff changes the decision rule, not the fitted probability.</p><button type="button" data-explore-stage="2">Explore this idea <span aria-hidden="true">↗</span></button></div></div>
-<details class="deeper"><summary>Why this works · a little deeper</summary><div><p>The sigmoid is a smooth S-shaped transformation. Zero maps to one-half; large positive scores approach one; large negative scores approach zero.</p><p>No. The mapping is nonlinear.</p><div class="reference-reading"><p class="reference-label">Additional reference · worked numbers below are separate examples from the live notebook.</p><p><strong>First, logistic regression starts the same way linear regression does.</strong> For each data point, one linear equation combines that point's features with the model's learned weights and produces one raw number, called <strong>z</strong>.</p>
-<p>z = b₀ + b₁x₁ + b₂x₂ + ··· one data point → one raw score z</p>
-<p><strong>z is not a z-score or a standard score.</strong> It is not learned separately for each point. It is simply the model's raw opinion before that opinion becomes a probability. z can be any number from negative infinity to positive infinity. If <strong>z = 0</strong>, the model is exactly at 50/50.</p>
-<p><strong>Only after that</strong> do we apply the <strong>sigmoid function</strong> to turn z into a probability between 0 and 1.</p>
-<p>p = 1 / (1 + e⁻ᶻ) Large positive z → probability near 1 Large negative z → probability near 0 z = 0 → probability exactly 0.5</p>
-<h3>See the Sigmoid Respond</h3>
-<p>Raw score z = 0.0 0.500Probability</p>
-<h3>Where Does z Come From? 🤔</h3>
-<p>In a real machine learning model: <strong>no</strong>, you do not choose z manually. The model runs its linear equation on each data point's features and learned weights.</p>
-<p>Features + Weights → raw score z</p>
-<p>raw score z → Sigmoid → Probability</p>
-<p><em>“The z slider is only a teaching demo. In real logistic regression, the model calculates a separate raw score z for each row, then the sigmoid turns it into a probability.”</em></p>
-<h3>🧠 Concept Check Quiz 1</h3>
-<p>In real logistic regression, where does the raw score z come from?</p></div></div></details>
-<details class="check"><summary>Quick check · Does doubling z double the probability?</summary><p>No. The mapping is nonlinear.</p></details>
+<p class="answer">The sigmoid is an S-shaped curve that converts the raw score into a probability. A score of zero becomes 0.5. Large positive scores approach 1; large negative scores approach 0.</p><div class="receipt"><div class="receipt-label">A small example · separate from the live dataset</div><div class="table-wrap"><table><thead><tr><th scope="col">Follow the idea</th><th scope="col">Read it in plain language</th></tr></thead><tbody><tr><th scope="row">s = 0</th><td>p = 0.5</td></tr><tr><th scope="row">s ≈ 1.10</th><td>p ≈ 0.75</td></tr><tr><th scope="row">s ≈ −1.10</th><td>p ≈ 0.25</td></tr></tbody></table></div><p class="mini-note"><strong>Your notebook:</strong> <span data-bind="live-receipt">Open the visual to inspect the current calculation.</span></p></div>
+<div class="experiment"><span class="pencil">↳</span><div><strong>Try it</strong><p>Move the input coordinates and follow the gold point along the S-curve. Then move the decision threshold. Watch the two-colour field change while the fitted curve and probability stay fixed.</p><button type="button" data-explore-stage="2">Explore this idea <span aria-hidden="true">↗</span></button></div></div>
+<details class="deeper"><summary>Why this works · a little deeper</summary><div><p>s = intercept + weight₁×input₁ + weight₂×input₂ + … . Then p = 1/(1+e^(−s)). e is a fixed mathematical number used by the exponential function. s is this model&#x27;s raw score, not a standardized z-score. The model calculates it separately for each row. A teaching slider may inspect that conversion, but training learns weights rather than one free score for every row.</p></div></details>
+<details class="check"><summary>Quick check · Does doubling s double the probability?</summary><p>No. The mapping is nonlinear.</p></details>
 <a class="next-idea" href="#stage-4">Next: Weighted Clues ↓</a>
 </section>
-<section class="stage" id="stage-4" data-stage="4" aria-labelledby="heading-4">
-<span class="legacy-anchor" id="sec-4" aria-hidden="true"></span><div class="stage-label"><span>04</span>Weighted Clues</div><h2 id="heading-4">How do weighted clues form z?</h2>
-<p class="answer">Multiply each input by its coefficient and add the intercept. This score is the model's log-odds; each contribution is additive on that scale.</p><div class="receipt"><div class="receipt-label">A small example · separate from the live dataset</div><div class="table-wrap"><table><thead><tr><th scope="col">Follow the idea</th><th scope="col">Read it in plain language</th></tr></thead><tbody><tr><th scope="row">Intercept</th><td>−1</td></tr><tr><th scope="row">2 × x, x = 1</th><td>+2</td></tr><tr><th scope="row">Score</th><td>1</td></tr><tr><th scope="row">Probability</th><td>About 0.731</td></tr></tbody></table></div><p class="mini-note"><strong>Your notebook:</strong> <span data-bind="live-receipt">Open the visual to inspect the current calculation.</span></p></div>
-<div class="experiment"><span class="pencil">↳</span><div><strong>Try it</strong><p>Follow each contribution. Use the labeled controls, predict what will change, then compare the calculation before and after.</p><button type="button" data-explore-stage="3">Explore this idea <span aria-hidden="true">↗</span></button></div></div>
-<details class="deeper"><summary>Why this works · a little deeper</summary><div><p>Multiply each input by its coefficient and add the intercept. This score is the model's log-odds; each contribution is additive on that scale.</p><p>They increase by 2, with other inputs fixed.</p><div class="reference-reading"><p class="reference-label">Additional reference · worked numbers below are separate examples from the live notebook.</p><p>How do we construct the score <strong>z</strong>? Think of our features (Temperature, Sunny, Weekend) as clues. Each <strong>weight</strong> describes the change in log-odds for a one-unit increase in that feature, holding the other modeled predictors fixed:</p>
-<p>• A <strong>positive weight</strong> pushes the score toward "Buy" (y = 1).<br/>
-  • A <strong>negative weight</strong> pushes the score toward "Don't Buy" (y = 0).<br/>
-  • The <strong>final raw score z</strong> is the total combined push from all clues. The Sigmoid then turns this raw score into a clean final probability.</p>
-<p><strong>These sliders are a sandbox.</strong> You are manually changing the weights only to see how the mathematical curve reacts. In real training, the model learns these weights automatically by reducing log loss.</p>
-<strong>Stage 04 (Sandbox):</strong>
-<p>You adjust weights manually to see the shapes of the decision curve.</p>
-<strong>Stage 05 (Machine Learning):</strong>
-<p>The model adjusts weights automatically using gradient descent.</p>
-<p>z = b₀ + b₁·standardized Temp + b₂·Sunny + b₃·Weekend</p>
-<p><strong>b₀</strong> = bias (baseline push) · <strong>b₁, b₂, b₃</strong> = individual clue pushes</p>
-<p><strong>Standardized temperature</strong> means we convert raw temperature values into a scaled version with a mean of 0 and standard deviation of 1. Scaling mainly helps optimisation run smoothly and makes regularisation penalties more comparable across features. Large raw values do not inherently overpower the final fitted model: coefficients account for feature units.</p>
-<h3>Live Score Builder 🛠️</h3>
-<p>
-      Let's test our current weights on an example day: a hot <strong>30°C</strong> day (Raw Temperature) that is <strong>sunny</strong> (1) and a <strong>weekend</strong> (1).
-    </p>
-<p>• Baseline Bias Push (b₀): -- • Temperature Push (b₁ × std temp --): -- • Sunny Push (b₂ × 1): -- • Weekend Push (b₃ × 1): -- Total Score (z) = -- Probability = Sigmoid(z) = --%</p>
-<h3>Who decides what? 📋</h3>
-<table>
-<thead>
-<tr>
-<th>Item</th>
-<th>Who determines it?</th>
-<th>Beginner meaning</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Features</td>
-<td>Data / user</td>
-<td>Inputs like temperature, sunny weather, weekend status</td>
-</tr>
-<tr>
-<td>Weights</td>
-<td>Model learns them</td>
-<td>How strongly each clue pushes the prediction</td>
-</tr>
-<tr>
-<td>Raw score z</td>
-<td>Model calculates it</td>
-<td>Total push from all weighted clues combined</td>
-</tr>
-<tr>
-<td>Probability</td>
-<td>Sigmoid calculates it</td>
-<td>Converts score z into a 0 to 1 probability (0% to 100%)</td>
-</tr>
-<tr>
-<td>Threshold</td>
-<td>Human chooses it</td>
-<td>Cutoff boundary for Yes/No decision (often 0.50)</td>
-</tr>
-<tr>
-<td>Final prediction</td>
-<td>Decision rule applies it</td>
-<td>Probability ≥ threshold means Yes (Predict Buy)</td>
-</tr>
-</tbody>
-</table>
-<p>
-<em>"You do not manually choose z during real prediction. You provide features, the model uses learned weights, and z is calculated automatically."</em>
-</p>
-<h3>Adjust Weights Manually</h3>
-<p>b₀ (bias)0.0 b₁ (temp)1.50 b₂ (sunny)0.8 b₃ (weekend)0.5 —Log-Loss</p></div></div></details>
-<details class="check"><summary>Quick check · What happens to log-odds when x increases by one with coefficient 2?</summary><p>They increase by 2, with other inputs fixed.</p></details>
+<section class="stage" id="stage-4" data-stage="4" data-visual-guide="The bars build the same raw score and probability used by the map below. Move the cutoff to change the two-colour field without changing those weighted contributions." aria-labelledby="heading-4">
+<span class="legacy-anchor" id="sec-4" aria-hidden="true"></span><div class="stage-label"><span>04</span>Weighted Clues</div><h2 id="heading-4">How do weighted clues form s?</h2>
+<p class="answer">Multiply each input by its weight, then add the starting value, called the intercept. The total is the raw score s. A positive contribution raises s; a negative one lowers it.</p><div class="receipt"><div class="receipt-label">A small example · separate from the live dataset</div><div class="table-wrap"><table><thead><tr><th scope="col">Follow the idea</th><th scope="col">Read it in plain language</th></tr></thead><tbody><tr><th scope="row">Intercept</th><td>−1</td></tr><tr><th scope="row">2 × x, x = 1</th><td>+2</td></tr><tr><th scope="row">Score</th><td>1</td></tr><tr><th scope="row">Probability</th><td>About 0.731</td></tr></tbody></table></div><p class="mini-note"><strong>Your notebook:</strong> <span data-bind="live-receipt">Open the visual to inspect the current calculation.</span></p></div>
+<div class="experiment"><span class="pencil">↳</span><div><strong>Try it</strong><p>Change x, then z, and follow their weighted contributions into the probability. In the map below, move the decision threshold: the blue/red regions move while the weights and probability stay fixed.</p><button type="button" data-explore-stage="3">Explore this idea <span aria-hidden="true">↗</span></button></div></div>
+<details class="deeper"><summary>Why this works · a little deeper</summary><div><p>A weight is also called a coefficient. Each input-times-weight product adds to the raw score. Learn any input scaling from training data. Scaling can help training and make weight penalties more comparable. Large input units do not automatically dominate a fitted linear model because its coefficients account for units. This lab learns weights from training rows; the input controls explore the saved prediction rule.</p></div></details>
+<details class="check"><summary>Quick check · If x rises by one and its weight is 2, how does the raw score change?</summary><p>It rises by 2, with the other input fixed.</p></details>
 <a class="next-idea" href="#stage-5">Next: Learning from Mistakes ↓</a>
 </section>
-<section class="stage" id="stage-5" data-stage="5" aria-labelledby="heading-5">
+<section class="stage" id="stage-5" data-stage="5" data-visual-guide="Move the probability assigned to the true class. The gold point shows the one-case log-loss penalty, rather than a validation error count." aria-labelledby="heading-5">
 <span class="legacy-anchor" id="sec-5" aria-hidden="true"></span><div class="stage-label"><span>05</span>Learning from Mistakes</div><h2 id="heading-5">What does learning minimize?</h2>
-<p class="answer">Learning minimizes binary log loss, often with a regularization penalty. Confident wrong predictions receive a large penalty, so good probability estimation matters beyond just correct labels.</p><div class="receipt"><div class="receipt-label">A small example · separate from the live dataset</div><div class="table-wrap"><table><thead><tr><th scope="col">Follow the idea</th><th scope="col">Read it in plain language</th></tr></thead><tbody><tr><th scope="row">True class 1, p = 0.9</th><td>Loss about 0.105</td></tr><tr><th scope="row">True class 1, p = 0.1</th><td>Loss about 2.303</td></tr><tr><th scope="row">Learning</th><td>Reduce average training loss</td></tr></tbody></table></div><p class="mini-note"><strong>Your notebook:</strong> <span data-bind="live-receipt">Open the visual to inspect the current calculation.</span></p></div>
-<div class="experiment"><span class="pencil">↳</span><div><strong>Try it</strong><p>Inspect the loss. Use the labeled controls, predict what will change, then compare the calculation before and after.</p><button type="button" data-explore-stage="4">Explore this idea <span aria-hidden="true">↗</span></button></div></div>
-<details class="deeper"><summary>Why this works · a little deeper</summary><div><p>Learning minimizes binary log loss, often with a regularization penalty. Confident wrong predictions receive a large penalty, so good probability estimation matters beyond just correct labels.</p><p>Yes. Their confidence can differ.</p><div class="reference-reading"><p class="reference-label">Additional reference · worked numbers below are separate examples from the live notebook.</p><p>The model starts with <strong>initial weights</strong>, makes predictions, measures how wrong it was using <strong>log loss</strong>, then nudges the weights to improve. This is <strong>gradient descent</strong>.</p>
-<p><strong>Training does not directly choose z.</strong> Training learns better weights. Once the weights improve, the model calculates better z values for each row of data automatically:</p>
-<p>Training updates weights → weights calculate z → sigmoid turns z into probability → threshold turns probability into Yes/No L = −[ y·log(p) + (1−y)·log(1−p) ] The model is punished more when it's very confident but very wrong.</p>
-<h3>How Log Loss Thinks 🧠</h3>
-<p>
-      Log loss measures the penalty of wrong answers. If the actual answer is 1 (Bought):
-    </p>
-<table>
-<thead>
-<tr>
-<th>Real Answer</th>
-<th>Predicted Prob</th>
-<th>Meaning</th>
-<th>Loss Penalty</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>1 (Bought)</td>
-<td>0.95</td>
-<td>Confident &amp; correct</td>
-<td>Small Loss (0.05)</td>
-</tr>
-<tr>
-<td>1 (Bought)</td>
-<td>0.55</td>
-<td>Unsure but leaning right</td>
-<td>Medium Loss (0.60)</td>
-</tr>
-<tr>
-<td>1 (Bought)</td>
-<td>0.05</td>
-<td>Confident &amp; wrong!</td>
-<td>Huge Loss (3.00)</td>
-</tr>
-</tbody>
-</table>
-<p>
-      * Note: These loss values are examples for one single prediction. The training loss shown below is the average loss across all training rows.
-    </p>
-<p>
-<strong>Gradient descent</strong> is like adjusting a recipe little by little. If the model is wrong, it changes the weights in the direction that reduces loss. The <strong>learning rate</strong> controls how big each adjustment step is.
-      Gradient descent is one teaching-friendly optimiser, not the definition of logistic regression: Newton, quasi-Newton, coordinate-descent and other solvers are also common. Feature scaling often improves numerical optimisation and is especially relevant with regularisation; fit scaling inside training folds.
-    </p>
-<p>
-        ⚠️ <strong>Warning on Learning Rate:</strong><br/>
-        • <strong>Too small:</strong> Learning is very slow, requiring thousands of steps.<br/>
-        • <strong>Too large:</strong> The model may jump right over the best values and fail to settle.
-      </p>
-<h3>🧠 Concept Check Quiz 2</h3>
-<p>What does model training mainly learn/adjust?</p>
-<h3>Train the Model</h3>
-<p>Learning rate0.010 0Epoch —Loss</p>
-<p>💡 Temperature is standardized behind the scenes (mean=0, std=1) so all features are on comparable scales. This makes gradient descent more stable.</p></div></div></details>
+<p class="answer">Training changes the weights to reduce log loss, a penalty for poor probability predictions. A very confident wrong answer gets a large penalty. Being right about the label is only part of the task.</p><div class="receipt"><div class="receipt-label">A small example · separate from the live dataset</div><div class="table-wrap"><table><thead><tr><th scope="col">Follow the idea</th><th scope="col">Read it in plain language</th></tr></thead><tbody><tr><th scope="row">True class 1, p = 0.9</th><td>Loss about 0.105</td></tr><tr><th scope="row">True class 1, p = 0.1</th><td>Loss about 2.303</td></tr><tr><th scope="row">Learning</th><td>Reduce average training loss</td></tr></tbody></table></div><p class="mini-note"><strong>Your notebook:</strong> <span data-bind="live-receipt">Open the visual to inspect the current calculation.</span></p></div>
+<div class="experiment"><span class="pencil">↳</span><div><strong>Try it</strong><p>Set the true-class probability to 0.9, then 0.1. Predict which penalty is larger. The point and receipt calculate this one-case loss; they do not retrain the classifier.</p><button type="button" data-explore-stage="4">Explore this idea <span aria-hidden="true">↗</span></button></div></div>
+<details class="deeper"><summary>Why this works · a little deeper</summary><div><p>Binary log loss is −[y log(p)+(1−y)log(1−p)]. If the true class is 1, probabilities .95, .55 and .05 give losses about .05, .60 and 3.00. These are one-row examples; training usually averages over rows. A regularization penalty can discourage large weights. Gradient descent takes small downhill steps; its learning rate is the step size. Other optimizers can fit logistic regression too. Excessively large steps may fail to settle.</p></div></details>
 <details class="check"><summary>Quick check · Can two classifiers have the same accuracy but different log loss?</summary><p>Yes. Their confidence can differ.</p></details>
 <a class="next-idea" href="#stage-6">Next: Drawing the Line ↓</a>
 </section>
-<section class="stage" id="stage-6" data-stage="6" aria-labelledby="heading-6">
+<section class="stage" id="stage-6" data-stage="6" data-visual-guide="The background shows the predicted decision or probability, as labelled. The dividing line is a fitted rule, not a physical boundary." aria-labelledby="heading-6">
 <span class="legacy-anchor" id="sec-6" aria-hidden="true"></span><div class="stage-label"><span>06</span>Drawing the Line</div><h2 id="heading-6">Why does a probability need a decision threshold?</h2>
-<p class="answer">A probability describes risk; a threshold turns it into an action. Choose the threshold from validation data and the consequences of missed cases and false alerts.</p><div class="receipt"><div class="receipt-label">A small example · separate from the live dataset</div><div class="table-wrap"><table><thead><tr><th scope="col">Follow the idea</th><th scope="col">Read it in plain language</th></tr></thead><tbody><tr><th scope="row">p ≥ threshold</th><td>Predict positive</td></tr><tr><th scope="row">Lower threshold</th><td>More positive decisions</td></tr><tr><th scope="row">Decision context</th><td>Costs and capacity</td></tr></tbody></table></div><p class="mini-note"><strong>Your notebook:</strong> <span data-bind="live-receipt">Open the visual to inspect the current calculation.</span></p></div>
+<p class="answer">A threshold is the cutoff for choosing a label. At or above it, predict class 1. Below it, predict class 0. Changing the cutoff changes decisions, not the probabilities already fitted by the model.</p><div class="receipt"><div class="receipt-label">A small example · separate from the live dataset</div><div class="table-wrap"><table><thead><tr><th scope="col">Follow the idea</th><th scope="col">Read it in plain language</th></tr></thead><tbody><tr><th scope="row">p ≥ threshold</th><td>Predict positive</td></tr><tr><th scope="row">Lower threshold</th><td>More positive decisions</td></tr><tr><th scope="row">Decision context</th><td>Costs and capacity</td></tr></tbody></table></div><p class="mini-note"><strong>Your notebook:</strong> <span data-bind="live-receipt">Open the visual to inspect the current calculation.</span></p></div>
 <div class="experiment"><span class="pencil">↳</span><div><strong>Try it</strong><p>Move the decision threshold and watch the dashed boundary slide through input space. The colored regions show the resulting decisions; the observations and fitted probabilities stay fixed.</p><button type="button" data-explore-stage="5">Explore this idea <span aria-hidden="true">↗</span></button></div></div>
-<details class="deeper"><summary>Why this works · a little deeper</summary><div><p>A probability describes risk; a threshold turns it into an action. Choose the threshold from validation data and the consequences of missed cases and false alerts.</p><p>No.</p><div class="reference-reading"><p class="reference-label">Additional reference · worked numbers below are separate examples from the live notebook.</p><p>The sigmoid gives a <strong>probability</strong>. But we need a <strong>decision</strong>: Yes or No. We pick a <strong>threshold</strong>.</p>
-<p>If p ≥ threshold → predict <strong>Yes (1)</strong><br/>If p &lt; threshold → predict <strong>No (0)</strong></p>
-<p><strong>The model only gives probabilities. The threshold is a decision rule chosen by humans.</strong> We choose it based on what kind of mistake is worse or more costly for our specific situation:</p>
-<h3>Threshold vs. Probability 🔍</h3>
-<p>
-      The threshold <strong>does not change the probability itself</strong>. It only changes how we convert that probability into a final Yes/No decision.
-    </p>
-<strong>Example:</strong>
-<p>If the model predicts a probability of</p>
-<strong>0.62</strong>
-<strong>0.50</strong>
-<strong>Yes</strong>
-<strong>0.70</strong>
-<strong>No</strong>
-<p>
-      The probability stayed exactly 0.62. Only the decision rule changed.
-    </p>
-<strong>Lowering the Threshold (e.g., 0.30):</strong>
-<p>Predicts "Yes" more easily. You catch more real buyers (high recall), but you also create more false alarms (false positives).</p>
-<strong>Raising the Threshold (e.g., 0.70):</strong>
-<p>Predicts "Yes" only when highly confident. You reduce false alarms (high precision), but you might miss many real buyers (false negatives).</p>
-<p><strong>Select this threshold on validation data, never the final test set.</strong> Use error costs, prevalence, capacity, and the real objective. Lock the threshold with all preprocessing and calibration choices, then report final test performance once. Probability calibration and classification accuracy answer different questions.</p>
-<h3>🧠 Concept Check Quiz 3</h3>
-<p>Who chooses the decision threshold?</p>
-<p>💡 A medical test might use <strong>0.3</strong> (catch more sick people), while a spam filter might use <strong>0.7</strong> (avoid false alarms).</p></div></div></details>
+<details class="deeper"><summary>Why this works · a little deeper</summary><div><p>For probability .62, a .50 threshold predicts 1 and a .70 threshold predicts 0. Lower thresholds catch at least as many positives and usually add false alarms on fixed data. Raising a threshold does not guarantee that precision rises at every step. Select it using validation data, error costs, class frequency and capacity. Keep the final test out of that choice.</p></div></details>
 <details class="check"><summary>Quick check · Must the threshold be 0.5?</summary><p>No.</p></details>
 <a class="next-idea" href="#stage-7">Next: Select the Decision Rule on Validation Data ↓</a>
 </section>
-<section class="stage" id="stage-7" data-stage="7" aria-labelledby="heading-7">
+<section class="stage" id="stage-7" data-stage="7" data-visual-guide="The four counts compare actual labels with predictions. TP and TN are correct; FP is a false alert and FN a missed positive." aria-labelledby="heading-7">
 <span class="legacy-anchor" id="sec-7" aria-hidden="true"></span><div class="stage-label"><span>07</span>Select the Decision Rule on Validation Data</div><h2 id="heading-7">Which mistakes does this threshold create?</h2>
-<p class="answer">The confusion matrix counts outcomes after thresholding. Changing the threshold changes these counts without changing the fitted probabilities.</p><div class="receipt"><div class="receipt-label">A small example · separate from the live dataset</div><div class="table-wrap"><table><thead><tr><th scope="col">Follow the idea</th><th scope="col">Read it in plain language</th></tr></thead><tbody><tr><th scope="row">TP</th><td>Positive and alerted</td></tr><tr><th scope="row">FP</th><td>Negative but alerted</td></tr><tr><th scope="row">FN</th><td>Positive but missed</td></tr><tr><th scope="row">TN</th><td>Negative and not alerted</td></tr></tbody></table></div><p class="mini-note"><strong>Your notebook:</strong> <span data-bind="live-receipt">Open the visual to inspect the current calculation.</span></p></div>
+<p class="answer">The confusion matrix sorts predictions into four groups: correct positives, correct negatives, false alarms and missed positives. Moving the threshold changes these counts. The fitted probabilities stay the same.</p><div class="receipt"><div class="receipt-label">A small example · separate from the live dataset</div><div class="table-wrap"><table><thead><tr><th scope="col">Follow the idea</th><th scope="col">Read it in plain language</th></tr></thead><tbody><tr><th scope="row">TP</th><td>Positive and alerted</td></tr><tr><th scope="row">FP</th><td>Negative but alerted</td></tr><tr><th scope="row">FN</th><td>Positive but missed</td></tr><tr><th scope="row">TN</th><td>Negative and not alerted</td></tr></tbody></table></div><p class="mini-note"><strong>Your notebook:</strong> <span data-bind="live-receipt">Open the visual to inspect the current calculation.</span></p></div>
 <div class="experiment"><span class="pencil">↳</span><div><strong>Try it</strong><p>Count held-out decisions. Use the labeled controls, predict what will change, then compare the calculation before and after.</p><button type="button" data-explore-stage="6">Explore this idea <span aria-hidden="true">↗</span></button></div></div>
-<details class="deeper"><summary>Why this works · a little deeper</summary><div><p>The confusion matrix counts outcomes after thresholding. Changing the threshold changes these counts without changing the fitted probabilities.</p><p>No.</p><div class="reference-reading"><p class="reference-label">Additional reference · worked numbers below are separate examples from the live notebook.</p><p>Use the <strong>validation set</strong> to explore threshold-dependent trade-offs. The final test set remains hidden while the threshold, metrics and model choices are still changing.</p>
-<p><strong>Every validation prediction falls into one of four boxes:</strong></p>
-<p>
-      • <strong>TP (True Positive):</strong> Predicted Bought, and they really bought. Correct prediction!<br/>
-      • <strong>TN (True Negative):</strong> Predicted Didn't buy, and they did not buy. Correct prediction!<br/>
-      • <strong>FP (False Positive):</strong> Predicted Bought, but they did not buy. (False alarm!).<br/>
-      • <strong>FN (False Negative):</strong> Predicted Didn't buy, but they actually bought. (Missed buyer!).
-    </p>
-<h3>Validation Confusion Matrix</h3>
-
-<p>● Dim dots = training set     <strong>● Vivid dots</strong> = validation set</p>
-<p>
-      ⚠️ <strong>Threshold Dependencies:</strong> Changing the decision threshold changes the validation TP, TN, FP, and FN counts. Use these development results to select and lock the rule; do not repeatedly inspect the test set.
-    </p>
-<h3>Validation Metrics</h3>
-<strong>Overall Accuracy</strong>
-<p>-- Formula: (TP + TN) / (TP + TN + FP + FN)</p>
-<p>
-<em>Meaning:</em> How often was the model correct overall? Best used when mistakes are equally costly.
-        </p>
-<strong>Precision (Reliability of Yes Predictions)</strong>
-<p>
-<em>Meaning:</em> When the model predicts Bought, how often is it right? Critical when <strong>false alarms (FP)</strong> are expensive.
-        </p>
-<strong>Recall (Sensitivity / Detection Rate)</strong>
-<p>
-<em>Meaning:</em> Out of all real positive buyers, how many did the model catch? Critical when <strong>missing a real positive (FN)</strong> is costly.
-        </p>
-<strong>F1-Score</strong>
-<p>-- Formula: 2 × (Precision × Recall) / (Precision + Recall)</p>
-<p>
-<em>Meaning:</em> F1 is a balance score between precision and recall. It is not a normal average; it gives a low score if either precision or recall is weak. Perfect when you want to look at general model balance.
-        </p>
-<h3>Final untouched test evaluation</h3>
-<p>Hidden until the model and validation-selected threshold are locked. Reveal this result once, after development is complete.</p>
-<p><strong>Locked threshold:</strong> —</p>
-<p><strong>Confusion matrix:</strong> TP — · TN — · FP — · FN —</p>
-<p><strong>Final test metrics:</strong> accuracy — · precision — · recall — · F1 —</p>
-<p>This snapshot does not change when validation controls move. Use Reset to begin a new demonstration.</p></div></div></details>
+<details class="deeper"><summary>Why this works · a little deeper</summary><div><p>TP means predicted 1 and actual 1. TN means predicted 0 and actual 0. FP is predicted 1 but actual 0. FN is predicted 0 but actual 1. Accuracy uses all rows; precision uses predicted positives; recall uses actual positives. F1 combines precision and recall and can be undefined under some zero-denominator conventions. The final-test snapshot remains separate from ongoing validation changes.</p></div></details>
 <details class="check"><summary>Quick check · Does moving the threshold retrain the coefficients?</summary><p>No.</p></details>
 <a class="next-idea" href="#stage-8">Next: The Validation ROC Curve ↓</a>
 </section>
-<section class="stage" id="stage-8" data-stage="8" aria-labelledby="heading-8">
+<section class="stage" id="stage-8" data-stage="8" data-visual-guide="Each point compares recall and false-alarm rate at one cutoff. The scores stay fixed while the decision threshold changes." aria-labelledby="heading-8">
 <span class="legacy-anchor" id="sec-8" aria-hidden="true"></span><div class="stage-label"><span>08</span>The Validation ROC Curve</div><h2 id="heading-8">What does the ROC curve summarize?</h2>
-<p class="answer">The ROC curve traces recall against false-positive rate across thresholds. It describes ranking tradeoffs; it does not measure calibration or select an operating point for you.</p><div class="receipt"><div class="receipt-label">A small example · separate from the live dataset</div><div class="table-wrap"><table><thead><tr><th scope="col">Follow the idea</th><th scope="col">Read it in plain language</th></tr></thead><tbody><tr><th scope="row">Vertical axis</th><td>TP / actual positives</td></tr><tr><th scope="row">Horizontal axis</th><td>FP / actual negatives</td></tr><tr><th scope="row">One point</th><td>One threshold</td></tr></tbody></table></div><p class="mini-note"><strong>Your notebook:</strong> <span data-bind="live-receipt">Open the visual to inspect the current calculation.</span></p></div>
+<p class="answer">The ROC curve compares how many positives we catch with how many negatives we falsely flag. It repeats that comparison across thresholds. It describes ranking tradeoffs, not whether the probabilities are well calibrated.</p><div class="receipt"><div class="receipt-label">A small example · separate from the live dataset</div><div class="table-wrap"><table><thead><tr><th scope="col">Follow the idea</th><th scope="col">Read it in plain language</th></tr></thead><tbody><tr><th scope="row">Vertical axis</th><td>TP / actual positives</td></tr><tr><th scope="row">Horizontal axis</th><td>FP / actual negatives</td></tr><tr><th scope="row">One point</th><td>One threshold</td></tr></tbody></table></div><p class="mini-note"><strong>Your notebook:</strong> <span data-bind="live-receipt">Open the visual to inspect the current calculation.</span></p></div>
 <div class="experiment"><span class="pencil">↳</span><div><strong>Try it</strong><p>Trace validation thresholds. Use the labeled controls, predict what will change, then compare the calculation before and after.</p><button type="button" data-explore-stage="7">Explore this idea <span aria-hidden="true">↗</span></button></div></div>
-<details class="deeper"><summary>Why this works · a little deeper</summary><div><p>The ROC curve traces recall against false-positive rate across thresholds. It describes ranking tradeoffs; it does not measure calibration or select an operating point for you.</p><p>Yes.</p><div class="reference-reading"><p class="reference-label">Additional reference · worked numbers below are separate examples from the live notebook.</p><p>The <strong>validation ROC curve</strong> shows: at every possible threshold, how does recall trade off against false-alarm rate? It is a development visual and never reads the final test set.</p>
-<p>Think of a smoke alarm: too sensitive and it goes off when you cook toast; too lenient and it misses an actual fire.</p>
-<p><strong>Accuracy vs. ROC / AUC:</strong></p>
-<p>
-      • <strong>Accuracy</strong> shows model performance at a single chosen threshold (like 0.50).
-    </p>
-<p>
-      • <strong>ROC</strong> shows performance trade-offs across <em>all</em> possible thresholds.
-    </p>
-<p>
-      • <strong>AUC (Area Under Curve)</strong> is not the same as accuracy. AUC summarizes how well the model separates/ranks positive cases from negative cases across all thresholds.
-    </p>
-<h3>Key ROC Metrics Explained</h3>
-<p>
-      An ROC curve plots two key metrics against each other at all possible thresholds from 0.0 to 1.0:
-    </p>
-<strong>True Positive Rate (TPR / Recall):</strong>
-<em>Meaning:</em>
-<p>Out of all real buyers, what percentage did we catch? (Higher is better!)</p>
-<strong>False Positive Rate (FPR / False Alarm Rate):</strong>
-<em>Meaning:</em>
-<p>Out of all non-buyers, what percentage did we wrongly predict as buyers? (Lower is better!)</p>
-<p>
-      The ROC curve checks many possible thresholds, not just 0.5. Each point on the curve comes from a specific threshold value. Moving the threshold changes TPR and FPR.
-    </p>
-<p>
-      • <strong>AUC = 1.0:</strong> Perfect separation on this dataset.<br/>
-      • <strong>AUC = 0.5:</strong> Random guessing. The model has no predictive strength.<br/>
-Note: AUC does not mean the model is perfect forever. It only summarizes separation performance on the data being evaluated.
-</p>
-<p>📌 <strong>Note:</strong> Because this teaching example has a very small validation set, the ROC curve looks coarse and jumpy. With a larger validation sample, the curve would usually be smoother.</p></div></div></details>
+<details class="deeper"><summary>Why this works · a little deeper</summary><div><p>ROC plots recall, TP/(TP+FN), against false-positive rate, FP/(FP+TN). AUC is the area under that curve. It summarizes positive-versus-negative ranking; ties count half. AUC .5 is the random-ranking benchmark, but some useful non-random rankings can also have AUC .5. AUC is not accuracy, calibration or a threshold recommendation. Small validation sets give coarse steps and uncertain estimates.</p></div></details>
 <details class="check"><summary>Quick check · Can a high ROC-AUC coexist with poor probability calibration?</summary><p>Yes.</p></details>
 <a class="next-idea" href="#stage-9">Next: What the Numbers Mean ↓</a>
 </section>
-<section class="stage" id="stage-9" data-stage="9" aria-labelledby="heading-9">
+<section class="stage" id="stage-9" data-stage="9" data-visual-guide="Each input coefficient becomes an odds multiplier through e^coefficient. Keep the other input fixed; this multiplier does not multiply probability." aria-labelledby="heading-9">
 <span class="legacy-anchor" id="sec-9" aria-hidden="true"></span><div class="stage-label"><span>09</span>What the Numbers Mean</div><h2 id="heading-9">What is an odds ratio?</h2>
-<p class="answer">Exponentiating a coefficient gives a multiplicative change in odds for a one-unit input increase, holding other inputs fixed. Odds are p/(1 − p), not probability.</p><div class="receipt"><div class="receipt-label">A small example · separate from the live dataset</div><div class="table-wrap"><table><thead><tr><th scope="col">Follow the idea</th><th scope="col">Read it in plain language</th></tr></thead><tbody><tr><th scope="row">p = 0.2</th><td>Odds = 0.25</td></tr><tr><th scope="row">Odds doubled</th><td>0.5</td></tr><tr><th scope="row">New probability</th><td>0.5 / 1.5 ≈ 0.333</td></tr></tbody></table></div><p class="mini-note"><strong>Your notebook:</strong> <span data-bind="live-receipt">Open the visual to inspect the current calculation.</span></p></div>
-<div class="experiment"><span class="pencil">↳</span><div><strong>Try it</strong><p>Read the fitted weights. Use the labeled controls, predict what will change, then compare the calculation before and after.</p><button type="button" data-explore-stage="8">Explore this idea <span aria-hidden="true">↗</span></button></div></div>
-<details class="deeper"><summary>Why this works · a little deeper</summary><div><p>Exponentiating a coefficient gives a multiplicative change in odds for a one-unit input increase, holding other inputs fixed. Odds are p/(1 − p), not probability.</p><p>No.</p><div class="reference-reading"><p class="reference-label">Additional reference · worked numbers below are separate examples from the live notebook.</p><p>We often want to know how the model estimates each feature (temperature, sunny day, weekend status) is associated with higher or lower predicted odds, while holding other features constant. Logistic regression gives us weights that can be converted into <strong>Odds Ratios</strong>.</p>
-<h3>Probability vs. Odds 🎲</h3>
-<p>
-      Probability and Odds are related but express likelihood differently:
-    </p>
-<p>
-      • <strong>Probability (p)</strong> asks: "Out of all outcomes, how likely is Yes?" (Varies between 0 and 1).<br/>
-      • <strong>Odds</strong> asks: "How much does the chance of Yes beat No?" (Varies from 0 to infinity). Formula: Odds = p / (1 - p)
-</p>
-<table>
-<thead>
-<tr>
-<th>Probability (p)</th>
-<th>Odds Formula</th>
-<th>Odds Value</th>
-<th>Meaning</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>0.50 (50%)</td>
-<td>0.50 / 0.50</td>
-<td>1 to 1 (1.0)</td>
-<td>Yes and No are equally likely</td>
-</tr>
-<tr>
-<td>0.75 (75%)</td>
-<td>0.75 / 0.25</td>
-<td>3 to 1 (3.0)</td>
-<td>Yes is three times as likely as No</td>
-</tr>
-<tr>
-<td>0.80 (80%)</td>
-<td>0.80 / 0.20</td>
-<td>4 to 1 (4.0)</td>
-<td>Yes is four times as likely as No</td>
-</tr>
-</tbody>
-</table>
-<p>
-      Taking the exponent of a weight (e<sup>weight</sup>) gives us the <strong>Odds Ratio (OR)</strong>. This ratio tells us how the odds of buying are multiplied for each unit increase in that feature.
-    </p>
-<p>
-        ⚠️ <strong>Beginner Warning:</strong><br/>
-        Odds are <strong>not</strong> the same as probability. An odds ratio of 2 does <strong>not</strong> mean the probability doubles! It means the odds ratio doubles (e.g. from 1:1 odds to 2:1 odds).
-      </p>
-<p>
-        ⚠️ <strong>Coefficient ≠ proof of cause:</strong><br/>
-A positive coefficient means the feature is associated with higher predicted probability in this model. It does not prove that modifying the feature directly causes buying behavior.
-</p>
-<h3>Our Weights &amp; Odds Ratios</h3>
-<p>
-<strong>Positive Weight (OR &gt; 1):</strong> Feature is associated with pushing probability and odds <em>up</em>.<br/>
-<strong>Negative Weight (OR &lt; 1):</strong> Feature is associated with pushing probability and odds <em>down</em>.<br/>
-<strong>Near Zero Weight (OR ≈ 1):</strong> Feature has little to no association with predicted odds.
-    </p></div></div></details>
+<p class="answer">Odds compare the chance of yes with the chance of no: p/(1−p). An odds ratio says how those odds multiply when an input rises by one unit, keeping the other inputs fixed. Odds are not probability.</p><div class="receipt"><div class="receipt-label">A small example · separate from the live dataset</div><div class="table-wrap"><table><thead><tr><th scope="col">Follow the idea</th><th scope="col">Read it in plain language</th></tr></thead><tbody><tr><th scope="row">p = 0.2</th><td>Odds = 0.25</td></tr><tr><th scope="row">Odds doubled</th><td>0.5</td></tr><tr><th scope="row">New probability</th><td>0.5 / 1.5 ≈ 0.333</td></tr></tbody></table></div><p class="mini-note"><strong>Your notebook:</strong> <span data-bind="live-receipt">Open the visual to inspect the current calculation.</span></p></div>
+<div class="experiment"><span class="pencil">↳</span><div><strong>Try it</strong><p>Read each input weight and its e^weight odds multiplier. Change the data pattern or weight penalty and compare the saved multipliers. A one-unit input change holds the other input fixed.</p><button type="button" data-explore-stage="8">Explore this idea <span aria-hidden="true">↗</span></button></div></div>
+<details class="deeper"><summary>Why this works · a little deeper</summary><div><p>At p=.75, odds are .75/.25=3, or 3 to 1. The raw score s is the natural logarithm of the odds. Adding a weight to that score multiplies the odds by e^weight. This gives the odds ratio: OR=e^weight. OR=2 doubles the odds, not the probability and not the odds ratio itself. Interpretation holds other modeled inputs fixed. For standardized inputs, one unit means one unit on that transformed scale. These associations do not prove that changing an input causes the outcome.</p></div></details>
 <details class="check"><summary>Quick check · Does doubling odds from p = 0.2 produce p = 0.4?</summary><p>No.</p></details>
 <a class="next-idea" href="#stage-10">Next: The Full Picture ↓</a>
 </section>
-<section class="stage" id="stage-10" data-stage="10" aria-labelledby="heading-10">
+<section class="stage" id="stage-10" data-stage="10" data-visual-guide="Development choices are separate from a locked final evaluation. A changing validation display is not a fresh final test." aria-labelledby="heading-10">
 <span class="legacy-anchor" id="sec-10" aria-hidden="true"></span><div class="stage-label"><span>10</span>The Full Picture</div><h2 id="heading-10">What is locked before the final test?</h2>
-<p class="answer">Lock the fitted model and decision threshold before revealing final-test performance. If that result changes your choices, later evaluation needs fresh independent evidence.</p><div class="receipt"><div class="receipt-label">A small example · separate from the live dataset</div><div class="table-wrap"><table><thead><tr><th scope="col">Follow the idea</th><th scope="col">Read it in plain language</th></tr></thead><tbody><tr><th scope="row">Training</th><td>Learn coefficients</td></tr><tr><th scope="row">Validation</th><td>Choose settings and threshold</td></tr><tr><th scope="row">Test</th><td>One evaluation of the frozen choices</td></tr></tbody></table></div><p class="mini-note"><strong>Your notebook:</strong> <span data-bind="live-receipt">Open the visual to inspect the current calculation.</span></p></div>
+<p class="answer">Finish choosing the model, input preparation and decision cutoff before opening the final test results. Use that test once to evaluate the finished procedure. If it changes your choices, you need fresh evaluation evidence.</p><div class="receipt"><div class="receipt-label">A small example · separate from the live dataset</div><div class="table-wrap"><table><thead><tr><th scope="col">Follow the idea</th><th scope="col">Read it in plain language</th></tr></thead><tbody><tr><th scope="row">Training</th><td>Learn coefficients</td></tr><tr><th scope="row">Validation</th><td>Choose settings and threshold</td></tr><tr><th scope="row">Test</th><td>One evaluation of the frozen choices</td></tr></tbody></table></div><p class="mini-note"><strong>Your notebook:</strong> <span data-bind="live-receipt">Open the visual to inspect the current calculation.</span></p></div>
 <div class="experiment"><span class="pencil">↳</span><div><strong>Try it</strong><p>Lock and evaluate once. Use the labeled controls, predict what will change, then compare the calculation before and after.</p><button type="button" data-explore-stage="9">Explore this idea <span aria-hidden="true">↗</span></button></div></div>
-<details class="deeper"><summary>Why this works · a little deeper</summary><div><p>Lock the fitted model and decision threshold before revealing final-test performance. If that result changes your choices, later evaluation needs fresh independent evidence.</p><p>No. This experiment locks it; resetting is a new development exercise.</p><div class="reference-reading"><p class="reference-label">Additional reference · worked numbers below are separate examples from the live notebook.</p><p>You've walked through the entire logistic regression pipeline! Let's review the whole story in plain English:</p>
-<h3>The Story of Logistic Regression 📖</h3>
-<ol>
-<li>We collect historical <strong>raw data</strong>: temperature, sunny weather, weekends, and whether someone bought ice cream.</li>
-<li>A straight <strong>linear regression</strong> line is not suitable because it predicts impossible values (below 0 and above 1) for probabilities.</li>
-<li>Instead, logistic regression builds an intermediate score called <strong>z</strong> by adding up weighted features (clues).</li>
-<li>The mathematical <strong>sigmoid function</strong> gracefully "squishes" this score z into a valid probability between 0% and 100%.</li>
-<li>A decision <strong>threshold</strong> translates probabilities into labels. Select it on validation data from error costs, prevalence and objectives; 0.50 is only a convention.</li>
-<li>During <strong>training</strong>, the model starts with baseline weights and iteratively adjusts them using <strong>gradient descent</strong> to minimize average <strong>log loss</strong>.</li>
-<li>A <strong>validation confusion matrix</strong> is used to compare threshold choices without touching the final test set.</li>
-<li>Performance is summarized using descriptive metrics: <strong>Accuracy</strong> (overall correctness), <strong>Precision</strong> (purity of Yes calls), <strong>Recall</strong> (capture rate of actual positives), and <strong>F1-score</strong> (their balanced harmony).</li>
-<li>The <strong>validation ROC curve and AUC</strong> summarize ranking trade-offs across thresholds during development.</li>
-<li>After the model and threshold are locked, the <strong>test set</strong> is revealed once for the final performance estimate.</li>
-<li>By analyzing <strong>coefficients and odds ratios</strong>, we can interpret how the model estimates each feature is associated with higher or lower odds of a purchase.</li>
-</ol>
-<h3>Concept Checklist</h3>
-<p>
-✓ Collected and plotted <strong>raw data</strong><br/>
-✓ Saw why linear regression <strong>can't</strong> predict probabilities<br/>
-✓ Met the <strong>sigmoid</strong> that squishes scores into 0–1<br/>
-✓ Built the <strong>score z</strong> from weighted features<br/>
-✓ Trained with <strong>gradient descent</strong> to minimize log loss<br/>
-✓ Chose a <strong>threshold</strong> to turn probabilities into decisions<br/>
-✓ Evaluated with <strong>confusion matrix</strong> and metrics<br/>
-✓ Explored the <strong>ROC curve</strong> for threshold trade-offs<br/>
-✓ Interpreted <strong>coefficients</strong> and <strong>odds ratios</strong>
-</p></div></div></details>
+<details class="deeper"><summary>Why this works · a little deeper</summary><div><p>Fit input preparation and weights on training data. Compare settings and cutoffs on validation data. Lock the whole procedure, then report the final-test results with sample sizes, error costs, suitable metrics and uncertainty. Repeatedly optimizing against the test makes it part of development. A fresh independent test is then needed for a new final claim.</p></div></details>
 <details class="check"><summary>Quick check · May the threshold change after the final reveal here?</summary><p>No. This experiment locks it; resetting is a new development exercise.</p></details>
 <a class="next-idea" href="evaluation-metrics.html">Continue to Evaluation Metrics →</a>
 </section>
 </article><aside class="lab-home" aria-label="Interactive notebook"><section class="lab-panel" id="lab-panel"><header class="lab-header"><div><p class="eyebrow">THE LIVE NOTEBOOK <span id="lab-stage">01</span></p><h2 id="lab-title">It Starts with Data</h2></div><button class="icon-button" type="button" data-reset aria-label="Reset notebook" title="Reset notebook to its starting values">↺</button></header>
-<div id="lab-content" data-interactive="classification"><p class="loading-note">Your interactive notebook is loading. The complete written lesson is on the left.</p></div>
+<p class="visual-reading-guide" id="visual-reading-guide" hidden></p><div id="lab-content" data-interactive="classification"><p class="loading-note">Your interactive notebook is loading. The complete written lesson is on the left.</p></div>
 <p id="motion-status" class="motion-status" aria-live="off"></p><p class="lab-caption" id="lab-caption">Read the idea, inspect a small example, then change one thing in the live notebook.</p><p class="live-announcement" role="status" aria-live="polite"></p></section></aside></main>
 <dialog class="lab-dialog" aria-labelledby="dialog-title"><header class="dialog-header"><strong id="dialog-title">Explore the notebook</strong><button type="button" data-close-lab>Back to reading ✕</button></header><div class="dialog-body"></div></dialog>
 <details class="topic-directory"><summary>Explore all 34 topics</summary><nav aria-label="All academy topics"><a href="anova.html">Analysis of Variance (ANOVA)</a><a href="association-rules.html">Association Rules</a><a href="bias-variance.html">Bias-Variance Trade-Off &amp; Resampling</a><a href="chi-square.html">Chi-Square Test of Independence</a><a href="classification-trees.html">Classification Trees</a><a href="confidence-hypothesis-testing.html">Confidence Intervals &amp; Hypothesis Testing</a><a href="correlation.html">Correlation</a><a href="data-leakage-pipelines.html">Data Leakage &amp; Pipelines</a><a href="deep-learning.html">Deep Learning</a><a href="evaluation-metrics.html">Evaluation Metrics</a><a href="experimental-design.html">Experimental Design &amp; Randomisation</a><a href="gradient-boosting.html">Gradient Boosting</a><a href="hierarchical-clustering.html">Hierarchical Clustering</a><a href="imbalanced-classification.html">Imbalanced Classification</a><a href="kmeans.html">K-Means Clustering</a><a href="knn.html">K-Nearest Neighbors (KNN)</a><a href="lda.html">Linear Discriminant Analysis (LDA)</a><a href="logistic-regression.html" aria-current="page">Logistic Regression</a><a href="missing-data-encoding.html">Missing Data &amp; Encoding</a><a href="model-selection.html">Model Selection &amp; Regularization</a><a href="multiple-linear-regression.html">Multiple Linear Regression</a><a href="naive-bayes.html">Naive Bayes</a><a href="neural-networks.html">Neural Networks</a><a href="one-r.html">One-R</a><a href="polynomial-regression.html">Polynomial Regression</a><a href="pca.html">Principal Component Analysis (PCA)</a><a href="probability-sampling.html">Probability &amp; Sampling Distributions</a><a href="qda.html">Quadratic Discriminant Analysis (QDA)</a><a href="random-forest.html">Random Forest</a><a href="regression-diagnostics.html">Regression Diagnostics</a><a href="regression-trees.html">Regression Trees</a><a href="simple-linear-regression.html">Simple Linear Regression</a><a href="support-vector-machine.html">Support Vector Machines — Separate classes with breathing room</a><a href="time-series-analysis.html">Time Series Analysis</a></nav></details>

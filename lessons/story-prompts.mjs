@@ -7,16 +7,16 @@ export const storyPrompts = {
     5: "Move the decision threshold and watch the dashed boundary slide through input space. The colored regions show the resulting decisions; the observations and fitted probabilities stay fixed.",
   },
   lda: {
-    5: "Change the contour radius. Follow the gold query from each hollow class center, then compare the shapes after both centers move to zero.",
+    5: "Change the contour radius. Follow the gold point to predict from each hollow class center, then compare the shapes after both centers move to zero.",
     6: "Choose Unequal covariance. Notice that LDA still fits one shared contour shape: the centered solid and dashed outlines coincide.",
   },
   qda: {
-    3: "Change the contour radius, then move the gold query. Compare the fitted centers, ellipse shapes, and shape-adjusted distances in the receipt.",
+    3: "Change the contour radius, then move the gold point to predict. Compare the fitted centers, ellipse shapes, and shape-adjusted distances in the receipt.",
     8: "Increase Shrink toward pooled covariance from 0 to 1. Watch the centered contours converge to the same shape.",
   },
   knn: {
     7: "Change K and vote weighting. Trace every neighbor’s distance and weight into the colored contribution strip; the class-1 total gives the vote share.",
-    13: "Move the query and compare uniform with inverse-distance voting. Explain which neighbors gained influence and whether the threshold decision changed.",
+    13: "Move the point to predict and compare uniform with inverse-distance voting. Explain which neighbors gained influence and whether the threshold decision changed.",
   },
   "model-selection": {
     3: "Change polynomial degree. Compare the unpenalized AIC/BIC and RSS; each added coefficient increases the complexity penalty. Penalty settings from other sections do not affect these OLS scorecards.",
@@ -33,7 +33,7 @@ export const storyPrompts = {
   },
   "confidence-hypothesis-testing": {
     1: "Count intervals crossing the fixed true effect 0. Draw a new batch: the count can change even though the confidence procedure stays at 95%.",
-    3: "Change the planned true effect, then sample size. Compare the alternative distribution with the fixed null rejection boundaries and read prospective power.",
+    3: "Change the planned true effect, then sample size. Compare the alternative distribution with the fixed null rejection boundaries and read the planned chance of detecting that effect.",
     5: "Compare the two specified sampling models. These curves assume independent normal observations and known population SD; they cannot diagnose a violated assumption.",
     8: "Draw several batches. Explain why an individual interval either covers the fixed truth or misses it, while 95% describes the repeated procedure.",
   },

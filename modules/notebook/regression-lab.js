@@ -1,3 +1,4 @@
+import { penaltyScene, influenceScene } from './metric-scenes.js';
 import {
   makeLab,
   fmt,
@@ -6,7 +7,6 @@ import {
   linspace,
   plotLine,
   bars,
-  flow,
 } from "./lab.js";
 import {
   regressionData,
@@ -20,6 +20,7 @@ import {
   sum,
   normalCDF,
 } from "./science.js";
+import { componentDirections,componentStory,subsetStory,decompositionStory } from './regression-stories.js';
 // Gaussian likelihood criteria require a maximum-likelihood candidate.
 // Keep this OLS comparison independent of a penalty used in other sections.
 export function gaussianOlsCriteria(rows, basis) {
@@ -48,7 +49,7 @@ export function create(host, slug) {
     penalty: "ridge",
     scenario: multiple ? "linear" : "curve",
     noise: 0.5,
-    query: 0,
+    query: slug === "polynomial-regression" ? 1.5 : 0,
     slice: 0,
     selected: "R1",
     omit: "no",
@@ -140,10 +141,11 @@ export function create(host, slug) {
     data;
   function compute() {
     const st = L.state,
+      penalty=selection&&L.index===5?'ridge':selection&&L.index===6?'lasso':st.penalty,
       key = JSON.stringify([
         st.degree,
         st.lambda,
-        st.penalty,
+        penalty,
         st.scenario,
         st.noise,
         st.seed,
@@ -159,14 +161,14 @@ export function create(host, slug) {
         (r) => st.omit !== "yes" || r.id !== st.selected,
       ),
       basis = (r) => (multiple ? [1, r.x, r.z] : polynomialBasis(r, st.degree)),
-      fit = linearFit(train, basis, st.lambda, st.penalty === "lasso"),
+      fit = linearFit(train, basis, st.lambda, penalty === "lasso"),
       baseline = mean(train.map((r) => r.y));
     const curve = Array.from({ length: 7 }, (_, i) => {
       const f = linearFit(
         train,
         (r) => (multiple ? [1, r.x, r.z] : polynomialBasis(r, i + 1)),
         st.lambda,
-        st.penalty === "lasso",
+        penalty === "lasso",
       );
       return {
         degree: i + 1,
@@ -180,7 +182,7 @@ export function create(host, slug) {
       folds = Array.from({ length: 5 }, (_, i) => {
         const training = dev.filter((_, j) => j % 5 !== i),
           validation = dev.filter((_, j) => j % 5 === i),
-          f = linearFit(training, basis, st.lambda, st.penalty === "lasso");
+          f = linearFit(training, basis, st.lambda, penalty === "lasso");
         return { train: training, validation, mse: mse(validation, f.predict) };
       });
     const rng = seeded(st.seed + 99),
@@ -193,7 +195,7 @@ export function create(host, slug) {
           splitRows(regressionData(200 + i, st.scenario, st.noise)).train,
           basis,
           st.lambda,
-          st.penalty === "lasso",
+          penalty === "lasso",
         ),
       );
     return (data = {
@@ -201,13 +203,17 @@ export function create(host, slug) {
       split,
       train,
       fit,
+      penalty,
       baseline,
       curve,
+      penaltyCurve: selection ? [...new Set([...Array.from({length:21},(_,i)=>i/10),st.lambda])].sort((a,b)=>a-b).map(lambda=>{const f=linearFit(train,basis,lambda,penalty==='lasso');return {lambda,train:mse(train,f.predict),validation:mse(split.validation,f.predict)};}) : null,
+      influence: diagnostic ? {all:linearFit(split.train,basis),without:linearFit(split.train.filter(r=>r.id!==st.selected),basis)} : null,
       folds,
       boot,
       replicas,
       basis,
       criteria: selection ? gaussianOlsCriteria(train, basis) : null,
+      components: selection ? componentDirections(train) : null,
       trainLoss: mse(train, fit.predict),
       valLoss: mse(split.validation, fit.predict),
     });
@@ -226,6 +232,11 @@ export function create(host, slug) {
       selectedPrediction = d.fit.predict(row),
       residual = row.y - selectedPrediction;
     L.data = d;
+    for(const control of controls){
+      const hidden=scene==='subsets'?control.key!=='degree':scene==='components'?['degree','query','slice','fold','lambda','penalty'].includes(control.key):scene==='criteria'?['query','slice','selected','fold','lambda','penalty'].includes(control.key):scene==='decomposition'?['selected','fold'].includes(control.key):control.key==='fold'&&scene!=='folds';
+      host.querySelector('#'+control.key).closest('label').hidden=hidden || (control.key==='slice'&&!multiple&&st.scenario!=='linear');
+    }
+    host.querySelector('#resample').hidden=scene==='subsets';
     L.metrics([
       ["Training MSE", fmt(d.trainLoss, 3)],
       ["Validation MSE", fmt(d.valLoss, 3)],
@@ -294,25 +305,34 @@ export function create(host, slug) {
     }
     if (selection)
       ["lambda", "penalty"].forEach((id) => {
-        host.querySelector("#" + id).closest("label").hidden = scene === "criteria";
+        host.querySelector("#" + id).closest("label").hidden = ['criteria','components','subsets'].includes(scene) || (id==='penalty'&&[5,6].includes(L.index));
       });
-    if (scene === "subsets")
+    if(selection&&[5,6].includes(L.index))notice=`This section fits ${d.penalty==='ridge'?'Ridge (squared weights)':'Lasso (absolute weights)'} at λ=${fmt(st.lambda,2)}. At zero there is no penalty; increase λ to see shrinkage. The underlying rows and saved general-purpose penalty choice stay the same.`;
+    if (scene === "subsets") {
+      L.legend([["Included input column",palette[0]]]);
+      L.metrics([['Optional input columns',st.degree],['Possible subsets',2**st.degree],['Scope','Combinations only']]);
+      notice='Each row of boxes shows one choice of input columns. This illustration counts possible subsets; it does not fit or rank all subset models.';
       receipt = [
-        ["7 optional predictors", "2⁷ = 128 subsets"],
+        ["Optional columns in this illustration",st.degree],
+        ["Possible subsets",`2^${st.degree} = ${2**st.degree}`],
         [
           "This experiment",
           "Polynomial degrees 1–7 are nested candidates, not exhaustive subset search.",
         ],
       ];
-    if (scene === "components")
+    }
+    if (scene === "components") {
+      L.legend([["PCA: uses X spread",palette[0]],["PLS first direction: uses X and y",palette[3]]]);
+      L.metrics([["Training rows",d.train.length],["PCA score variance",fmt(d.components.pcSummary.variance,3)],["PLS score–y covariance",d.components.plsSummary?fmt(d.components.plsSummary.covariance,3):"Undefined"]]);
       receipt = [
-        ["PCR", "Find X-variance directions, then regress y."],
-        ["PLS", "Use X–y association to form directions."],
-        [
-          "This experiment",
-          "The fitted curves here use raw polynomial columns, not a PCR or PLS fit.",
-        ],
+        ['Input columns','Centred raw x and x² from the training rows.'],
+        ['PCA direction',d.components.pc.map(v=>fmt(v,4)).join(', ')],
+        ['First PLS direction',d.components.pls?d.components.pls.map(v=>fmt(v,4)).join(', '):'Undefined: no input–output covariance'],
+        ['Scope','Two direction rules, rather than a complete PCR or PLS prediction fit.'],
       ];
+      notice='The blue direction keeps the most input spread. The gold direction maximizes score–output covariance for a unit-length direction. Both use the same centred training columns. This illustration does not compare final prediction performance.';
+    }
+    let breakdown=null;
     if (scene === "decomposition") {
       const preds = d.replicas.map((f) => f.predict(query)),
         truth =
@@ -321,6 +341,9 @@ export function create(host, slug) {
             : st.scenario === "funnel"
               ? 1 + 1.5 * st.query
               : 1 + 0.6 * st.query + 0.85 * st.query ** 2;
+      breakdown={x:st.query,predictions:preds,truth,average:mean(preds),bias2:(mean(preds)-truth)**2,variance:variance(preds,0),noise:st.noise**2*(st.scenario==="funnel"?(0.4+Math.abs(st.query))**2:1)};
+      L.metrics([["Squared estimated bias",fmt(breakdown.bias2,4)],["Prediction variance",fmt(breakdown.variance,4)],["Noise variance",fmt(breakdown.noise,4)]]);
+      L.legend([["Fitted prediction",palette[0]],["Average fitted prediction",palette[2]],["Known simulated mean",palette[3]]]);
       receipt = [
         [
           "Across 20 fixed synthetic training samples",
@@ -340,16 +363,36 @@ export function create(host, slug) {
       notice =
         "Monte Carlo illustration at a fixed x and z, using a known simulated mean. Twenty refits estimate bias and variance; no universal U-shape is imposed.";
     }
+    if(selection&&L.index===7) {
+      receipt=[['Fixed degree',st.degree],['Penalty',d.penalty],['Current λ',fmt(st.lambda,2)],['Training MSE',fmt(d.trainLoss,4)],['Validation MSE',fmt(d.valLoss,4)],['Comparison','Same training/validation rows across λ; no final-test rows.']];
+      notice='This development holdout comparison varies penalty strength at a fixed degree. It is not a cross-validation selection or final evaluation.';
+    }
+    if(scene==='influence') {
+      const a=d.influence.all.predict(query),b=d.influence.without.predict(query);
+      receipt=[['Selected row',st.selected],['All-row query prediction',fmt(a,4)],['Without-row query prediction',fmt(b,4)],['Prediction change',fmt(b-a,4)],['Active fit',st.omit==='yes'?'Without selected row':'Every training row']];
+      L.metrics([['All-row prediction',fmt(a,3)],['Without-row prediction',fmt(b,3)],['Change',fmt(b-a,3)]]);
+      L.legend([['Every training row',palette[0]],['Without selected row: dashed',palette[1]],['Selected row / query',palette[3]]]);
+      notice='Both fits use the same training source and degree. Temporarily omitting a row changes a fit; it does not delete the original observation.';
+    }
     L.receipt(L.table(["Inspect", "Value"], receipt));
     L.note(notice);
     L.draw((s, P) => {
       const { w } = s.begin(310);
-      if (["coefficients", "contributions", "basis"].includes(scene)) {
+      if(selection&&L.index===7)penaltyScene(s,P,d,st);
+      else if(scene==='influence')influenceScene(s,P,d,st);
+      else if(scene==='decomposition')decompositionStory(s,breakdown);
+      else if(scene==='subsets')subsetStory(s,st.degree);
+      else if(scene==='components')componentStory(s,d.components,st.selected);
+      else if(scene==='criteria') {
+        const c=d.criteria,fitPart=c.aic-2*c.parameters;
+        bars(s,P,[{label:'Fit term',value:fitPart},{label:'AIC penalty',value:2*c.parameters},{label:'AIC total',value:c.aic},{label:'BIC penalty',value:c.parameters*Math.log(c.n)},{label:'BIC total',value:c.bic}]);
+      }
+      else if (["coefficients", "contributions", "basis"].includes(scene)) {
         bars(
           s,
           P,
           d.fit.coefficients.map((v, i) => ({
-            label: "β" + i,
+            label: scene==='basis' ? (i===0 ? 'Constant 1' : `x^${i}`) : "β" + i,
             value:
               scene === "contributions"
                 ? v * d.basis(query)[i]
@@ -358,36 +401,6 @@ export function create(host, slug) {
                   : v,
             color: palette[i % 6],
           })),
-        );
-      } else if (
-        scene === "components" ||
-        scene === "subsets" ||
-        scene === "criteria"
-      ) {
-        flow(
-          s,
-          P,
-          scene === "components"
-            ? [
-                "Center / scale training inputs",
-                "PCR: directions from X",
-                "PLS: directions using X and y",
-                "Choose components inside validation",
-              ]
-            : scene === "subsets"
-              ? [
-                  "p optional predictors",
-                  "Include or exclude each one",
-                  "2 to the power p candidate subsets",
-                  "Select with independent evaluation",
-                ]
-              : [
-                  "Fit the candidate on training rows",
-                  "Measure likelihood or held-out loss",
-                  "Account for model complexity",
-                  "State the score’s assumptions",
-                ],
-          L.index % 4,
         );
       } else if (scene === "folds" || scene === "bootstrap") {
         const rows =

@@ -1,3 +1,4 @@
+import { auditOutput } from "./audit-output.mjs";
 import assert from "node:assert/strict";
 import { chromium } from "playwright";
 import { createServer } from "node:http";
@@ -5,7 +6,7 @@ import { readFile, writeFile, mkdir } from "node:fs/promises";
 import { resolve, extname, join } from "node:path";
 import { catalog } from "../modules/notebook/catalog.js";
 const root = resolve(import.meta.dirname, ".."),
-  out = resolve(root, "audit-evidence/rollout-2026-09-28");
+  out = auditOutput(root, "audit-evidence/rollout-2026-09-28");
 await mkdir(out, { recursive: true });
 const server = createServer(async (req, res) => {
   try {

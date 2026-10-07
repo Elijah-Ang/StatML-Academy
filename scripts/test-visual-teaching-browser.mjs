@@ -1,3 +1,4 @@
+import { auditOutput } from "./audit-output.mjs";
 import assert from "node:assert/strict";
 import { topics } from "../modules/notebook/topics.js";
 const topicCount = Object.keys(topics).length;
@@ -6,7 +7,7 @@ import { createServer } from "node:http";
 import { readFile, writeFile, mkdir, readdir } from "node:fs/promises";
 import { resolve, extname, join } from "node:path";
 const root = resolve(import.meta.dirname, ".."),
-  out = join(root, "audit-evidence/visual-teaching-2026-09-28");
+  out = auditOutput(root, "audit-evidence/visual-teaching-2026-09-28");
 await mkdir(out, { recursive: true });
 const server = createServer(async (req, res) => {
   try {

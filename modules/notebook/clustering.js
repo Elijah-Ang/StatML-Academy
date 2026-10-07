@@ -44,7 +44,7 @@ export function clustering(host) {
       ["outlier", "Add one outlier"],
       ["moons", "Curved moons"],
     ],
-  )}<div class="control"><span>Initialization seed <output id="cluster-seed">11</output></span><button type="button" id="cluster-reseed">Try another start</button></div></div></details><div class="inspection" id="cluster-inspect"></div>`;
+  )}<div class="control"><span>Initialization seed <output id="cluster-seed">11</output></span><button type="button" id="cluster-reseed">Try another start</button></div></div></details><p class="inspection" id="cluster-mean-guide" hidden></p><div class="inspection" id="cluster-inspect"></div>`;
   const surface = new Surface(
     document.getElementById("cluster-plot"),
     "K-means scatterplot in original age and spending units, with selectable customers and numbered centers.",
@@ -54,7 +54,8 @@ export function clustering(host) {
     timer = 0,
     history = [],
     position = 0,
-    curve;
+    curve,
+    meanExample = null;
   let state = {
       k: 3,
       seed: 11,
@@ -124,6 +125,16 @@ export function clustering(host) {
       const rawCentroids = snapshot.centroids.map((c, j) =>
         space.raw({ x: v[`x${j}`] ?? c.x, y: v[`y${j}`] ?? c.y }),
       );
+      if (meanExample) {
+        const {members, target, group} = meanExample;
+        for (const p of members) {
+          surface.line(`mean-thread-${p.id}`, a.x(p.x), a.y(p.y), a.x(target.x), a.y(target.y), `${palette[group]}55`, 1, "3 4");
+          surface.circle(`mean-member-${p.id}`, a.x(p.x), a.y(p.y), 6, "none", {stroke:palette[group],"stroke-width":1.5});
+        }
+        surface.circle("group-mean-target", a.x(target.x), a.y(target.y), 12, "#fffef9", {stroke:palette[group],"stroke-width":2.5});
+        surface.line("group-mean-h", a.x(target.x)-7, a.y(target.y), a.x(target.x)+7, a.y(target.y), palette[group], 2);
+        surface.line("group-mean-v", a.x(target.x), a.y(target.y)-7, a.x(target.x), a.y(target.y)+7, palette[group], 2);
+      }
       const selectedIndex = points.findIndex((p) => p.id === state.selected),
         selected = points[selectedIndex];
       if (stage > 0) {
@@ -226,6 +237,9 @@ export function clustering(host) {
     document.getElementById("cluster-run").disabled = snapshot.converged;
     setText("cluster-run", timer ? "Pause" : "Run");
     const raw = points[pIndex];
+    document.getElementById("cluster-mean-guide").hidden = !meanExample;
+    if (meanExample) setText("cluster-mean-guide",
+      `${meanExample.preview ? "Next-step example: " : "Group calculation: "}${meanExample.members.length} outlined customers belong to group ${meanExample.group+1}. The hollow cross marks their mean: age ${fmt(meanExample.target.x)}, spending $${fmt(meanExample.target.y,0)}. ${meanExample.preview ? "Click Assign points to save the shown grouping, then Move centers. Your saved step has not advanced." : "At Move centers, this group’s star moves to that mean."}`);
     setText(
       "cluster-inspect",
       `${raw.id}: age ${fmt(raw.x)}, spend $${fmt(raw.y, 0)}. ${group < 0 ? "Not assigned yet." : `Group ${group + 1}; contribution ${fmt(distances[group], 2)}.`}${snapshot.empty ? ` ${snapshot.empty} empty center(s) retained.` : ""}`,
@@ -260,13 +274,29 @@ export function clustering(host) {
       setText("cluster-iteration", 5);
       setText(
         "cluster-inspect",
-        `K=${state.k}: lowest WCSS found across five starts. Switch to Customer groups to run an inspectable fit.`,
+        `K=${state.k}: lowest WCSS found across five starts. Use the Lesson map to return to a grouping section and run its steps.`,
       );
     }
     motionStatus(moving);
   }
   const tween = new Tween(draw);
   const update = (animate = false) => {
+    meanExample = null;
+    if (stage === 3) {
+      // Compute the worked preview once per action, never inside animation
+      // frames. Scrolling reveals it without changing the saved algorithm.
+      const snapshot = current();
+      const assigned = snapshot.phase === "initialized"
+        ? stepKmeans(space.points, snapshot) : snapshot;
+      const pIndex = points.findIndex(p => p.id === state.selected);
+      const group = assigned.assignments[pIndex];
+      const members = points.filter((p, i) => assigned.assignments[i] === group);
+      const moved = assigned.phase === "assigned" ? stepKmeans(space.points, assigned) : assigned;
+      if (group >= 0 && members.length) meanExample = {
+        group, members, target: space.raw(moved.centroids[group]),
+        preview: snapshot.phase === "initialized",
+      };
+    }
     const target = {};
     current().centroids.forEach((c, j) => {
       target[`x${j}`] = c.x;
@@ -365,7 +395,7 @@ export function clustering(host) {
       s.value = value;
       rebuild();
       announce(
-        `Selected K ${value}. Switch to customer groups to inspect the fit.`,
+        `Selected K ${value}. Return to a grouping section using the Lesson map to inspect the fit.`,
       );
     }
   };

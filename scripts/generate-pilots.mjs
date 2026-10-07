@@ -4,6 +4,7 @@ import { pathToFileURL } from "node:url";
 import { pilots } from "../lessons/pilots.mjs";
 import { CORE_MODULES, coreNavLabel } from "./core-modules.mjs";
 import { topicDirectory } from "./topic-directory.mjs";
+import { visualGuide } from "../lessons/visual-guides.mjs";
 const root = resolve(import.meta.dirname, "..");
 const esc = (s) =>
   String(s)
@@ -42,7 +43,7 @@ ${d.stages
     (
       s,
       i,
-    ) => `<section class="stage" id="stage-${i + 1}" data-stage="${i + 1}" aria-labelledby="heading-${i + 1}">
+    ) => `<section class="stage" id="stage-${i + 1}" data-stage="${i + 1}" data-visual-guide="${esc(visualGuide(slug,i,s.scene))}" aria-labelledby="heading-${i + 1}">
 ${s.legacyId && s.legacyId !== `stage-${i + 1}` ? `<span class="legacy-anchor" id="${esc(s.legacyId)}" aria-hidden="true"></span>` : ""}<div class="stage-label"><span>${String(i + 1).padStart(2, "0")}</span>${esc(s.title)}</div><h2 id="heading-${i + 1}">${(slug === "evaluation-metrics" && i === 2) || s.worked ? "Worked example" : esc(s.question)}</h2>${(slug === "evaluation-metrics" && i === 2) || s.worked ? `<p class="sub-question">${esc(s.question)}</p>` : ""}
 <p class="answer">${s.answer}</p><div class="receipt">${s.receipt.replace("{{QUIZ}}", quiz(d.questions))}</div>
 <div class="experiment"><span class="pencil">↳</span><div><strong>Try it</strong><p>${esc(s.experiment)}</p><button type="button" data-explore-stage="${i}">Explore this idea <span aria-hidden="true">↗</span></button></div></div>
@@ -58,7 +59,7 @@ ${s.nextReason ? `<p class="lesson-bridge">${esc(s.nextReason)}</p>\n` : ""}${i 
   )
   .join("\n")}
 </article><aside class="lab-home" aria-label="Interactive notebook"><section class="lab-panel" id="lab-panel"><header class="lab-header"><div><p class="eyebrow">THE LIVE NOTEBOOK <span id="lab-stage">01</span></p><h2 id="lab-title">${esc(d.stages[0].title)}</h2></div><button class="icon-button" type="button" data-reset aria-label="Reset notebook" title="Reset notebook to its starting values">↺</button></header>
-<div id="lab-content" data-interactive="${d.engine || slug}"><p class="loading-note">Your interactive notebook is loading. The complete written lesson is on the left.</p></div>
+<p class="visual-reading-guide" id="visual-reading-guide" hidden></p><div id="lab-content" data-interactive="${d.engine || slug}"><p class="loading-note">Your interactive notebook is loading. The complete written lesson is on the left.</p></div>
 <p id="motion-status" class="motion-status" aria-live="off"></p><p class="lab-caption" id="lab-caption">${esc(d.summary)}</p><p class="live-announcement" role="status" aria-live="polite"></p></section></aside></main>
 <dialog class="lab-dialog" aria-labelledby="dialog-title"><header class="dialog-header"><strong id="dialog-title">Explore the notebook</strong><button type="button" data-close-lab>Back to reading ✕</button></header><div class="dialog-body"></div></dialog>
 ${topicDirectory({ slug })}

@@ -78,7 +78,18 @@ export function bayes(host) {
       w = surface.begin(300).w,
       p = v.p ?? r.p ?? 0,
       plant = gaussianPosterior(state.height);
-    if (stage === 2) {
+    const probabilityValid = r.p != null;
+    if (stage === 1) {
+      surface.text("input-title", 16, 28, w<350 ? "One email → word states" : "One email becomes measured word clues.");
+      const labels = {present: "Present · 1", absent: "Absent · 0", ignore: "Ignored · ?"};
+      ["free", "winner", "meeting"].forEach((word, i) => {
+        const y = 74 + i * 65;
+        surface.rect(`input-row-${i}`, 16, y-23, w-32, 50, `${palette[i]}12`, {stroke: `${palette[i]}55`});
+        surface.text(`input-word-${i}`, 30, y+8, word, {fill:palette[i]});
+        surface.text(`input-state-${i}`, w-28, y+8, labels[state.evidence[word]], {"text-anchor":"end", "font-size":w<350 ? 14 : 17});
+      });
+      surface.text("input-answer", 16, 289, "Spam label is the answer, not an input.", {"font-size":w<350 ? 14 : 16});
+    } else if (stage === 2) {
       const width = w - 36;
       const rows = [
         [
@@ -334,7 +345,7 @@ export function bayes(host) {
           `log-bar-${j}`,
           16,
           y + 12,
-          (w - 32) * (j ? 1 - p : p),
+          (w - 32) * (probabilityValid ? (j ? 1 - p : p) : 0),
           20,
           palette[j],
         );
@@ -365,7 +376,7 @@ export function bayes(host) {
       values.forEach((c, j) => {
         const y = 27 + j * 113;
         surface.text(`chain-label-${j}`, 16, y, c.name, { fill: c.color });
-        surface.text(`chain-score-${j}`, w - 16, y, fmt(c.score, 5), {
+        surface.text(`chain-score-${j}`, w - 16, y, stage === 5 ? fmt(c.score, 5) : pct(probabilityValid ? (j ? 1-p : p) : null), {
           "text-anchor": "end",
           class: "data-label",
         });
@@ -387,7 +398,7 @@ export function bayes(host) {
           `chain-bar-${j}`,
           16,
           y + 51,
-          (w - 32) * (j ? 1 - p : p),
+          (w - 32) * (stage === 5 ? c.score : probabilityValid ? (j ? 1 - p : p) : 0),
           19,
           c.color,
         );
@@ -396,9 +407,13 @@ export function bayes(host) {
         "chain-normalize",
         16,
         279,
-        state.duplicate && state.evidence.free !== "ignore"
-          ? "A copied clue is counted twice."
-          : "Posterior = score ÷ sum of both scores.",
+        !probabilityValid
+          ? "Both scores are zero: probability is undefined."
+          : stage === 5
+            ? state.duplicate && state.evidence.free !== "ignore"
+              ? "A copied clue multiplies its factor twice."
+              : "Class scores before dividing by their total."
+            : `Probability = score ÷ total ${fmt(r.scores[0]+r.scores[1], 5)}.`,
         { "font-size": w < 350 ? 15 : 17 },
       );
     } else {
@@ -406,14 +421,14 @@ export function bayes(host) {
       bar(
         "spam",
         47,
-        prior ? 0.4 : p,
+        prior ? 0.4 : probabilityValid ? p : null,
         prior ? "Spam · 40 training emails" : "Spam · posterior",
         palette[0],
       );
       bar(
         "ham",
         156,
-        prior ? 0.6 : 1 - p,
+        prior ? 0.6 : probabilityValid ? 1 - p : null,
         prior ? "Not spam · 60 emails" : "Not spam · posterior",
         palette[1],
       );
@@ -437,7 +452,9 @@ export function bayes(host) {
         );
     }
     surface.end(
-      stage === 7
+      stage === 1
+        ? "One email's measured word states. Present is 1, absent is 0, and ignored evidence does not enter the calculation. The spam target is not an input."
+        : stage === 7
         ? `Illustrative plant groups. At ${state.height} cm, density A ${fmt(plant.a, 4)}, density B ${fmt(plant.b, 4)}, posterior A ${pct(plant.p)}.`
         : `Bernoulli email model. Spam score ${fmt(r.scores[0], 6)}, not-spam score ${fmt(r.scores[1], 6)}, posterior spam ${pct(r.p)}.`,
     );
@@ -468,10 +485,16 @@ export function bayes(host) {
       "#bayes-posterior",
     ).previousElementSibling.textContent =
       stage === 7 ? "Posterior · plant A" : "Posterior · spam";
+    const showsPosterior = ![0, 1, 2, 3, 4, 5, 9].includes(stage);
+    document.getElementById("bayes-posterior").parentElement.hidden = !showsPosterior;
+    document.getElementById("bayes-decision").parentElement.hidden = !showsPosterior;
+    host.querySelector(".lab-stats").hidden = [1, 2, 3, 9].includes(stage);
     setText("alpha-value", state.alpha);
     setText("plant-height-value", `${state.height} cm`);
     setText("bayes-threshold-value", fmt(state.threshold, 2));
     const notes = {
+      0: "40 of 100 training emails are spam. This starting probability is called the prior.",
+      1: "Present and absent are measured states. Ignored means this clue does not enter the calculation.",
       2: "The split is a workflow diagram, not a performance estimate.",
       3: "This selector compares feature representations. It does not change the Bernoulli email model.",
       4: "Raw counts: free 30/40 vs 6/60; winner 24/40 vs 3/60; meeting 2/40 vs 30/60.",
@@ -569,14 +592,18 @@ export function bayes(host) {
   return {
     stage(i) {
       stage = i;
-      document.getElementById("email-controls").hidden = [2, 3, 7, 9].includes(
+      document.getElementById("email-controls").hidden = [0, 2, 3, 7, 9].includes(
         i,
       );
       document.getElementById("variant-controls").hidden = i !== 3;
       document.getElementById("gaussian-controls").hidden = i !== 7;
       document.getElementById("fold-controls").hidden = i !== 9;
       document.getElementById("threshold-control").hidden = i !== 10;
-      if (i === 5 || i === 8)
+      host.querySelector(".evidence-controls").hidden = i === 4;
+      document.getElementById("bayes-options").hidden = i < 4;
+      document.getElementById("clue-unicorn").closest("label").hidden = i === 4;
+      document.getElementById("duplicate-free").closest("label").hidden = i === 4;
+      if (i === 4 || i === 5 || i === 8)
         document.getElementById("bayes-options").open = true;
       update(false);
     },

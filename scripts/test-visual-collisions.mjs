@@ -1,3 +1,4 @@
+import { auditOutput } from "./audit-output.mjs";
 import { chromium } from "playwright";
 import { mkdir, writeFile, readFile } from "node:fs/promises";
 import { createServer } from "node:http";
@@ -5,7 +6,7 @@ import assert from "node:assert/strict";
 import { resolve, extname } from "node:path";
 import { catalog } from "../modules/notebook/catalog.js";
 const root = resolve(import.meta.dirname, ".."),
-  out = resolve(root, "audit-evidence/visual-storytelling-2026-09-28");
+  out = auditOutput(root, "audit-evidence/visual-storytelling-2026-09-28");
 const modules = {
   "simple-linear-regression": 8,
   kmeans: 9,

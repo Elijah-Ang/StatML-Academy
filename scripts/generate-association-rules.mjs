@@ -1,3 +1,4 @@
+import { visualRevision } from '../modules/notebook/visual-revisions.js';
 import { readFile, writeFile } from "node:fs/promises";
 import { resolve, join } from "node:path";
 import { pathToFileURL } from "node:url";
@@ -25,8 +26,10 @@ export const associationRulesLesson = {
   styles: ["notebook/association-rules.css"],
   nextSlug: "correlation",
   next: "Correlation",
-  stages: source.stages.map(stage => ({
+  stages: source.stages.map((stage,index) => ({
     ...stage,
+    question: visualRevision('association-rules',index)?.question || stage.question,
+    experiment: visualRevision('association-rules',index)?.action || stage.experiment,
     answer: stage.answerHtml,
     receipt: siteLinks(stage.receiptHtml),
     why: siteLinks(stage.whyHtml),

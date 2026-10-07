@@ -8,371 +8,125 @@
 <body class="paper-notes notebook" data-module="knn" data-accent="red" data-engine="classification">
 <a href="#lesson" class="skip-link">Skip to lesson</a>
 <nav class="statml-site-nav" aria-label="Academy"><a class="brand" href="../index.html">← Data Science Universe</a><span class="nav-title">K-Nearest Neighbors (KNN)</span><span class="statml-nav-meta">module 10/22</span></nav>
-<div class="lesson-toolbar"><label for="stage-select">Lesson map</label><select id="stage-select"><option value="0">01 · The Raw Data</option><option value="1">02 · Choosing Good Features</option><option value="2">03 · Train / Test Split</option><option value="3">04 · Feature Scaling</option><option value="4">05 · Measuring Distance</option><option value="5">06 · Choosing K</option><option value="6">07 · Finding Neighbors</option><option value="7">08 · The Majority Vote</option><option value="8">09 · Decision Boundary</option><option value="9">10 · Classifying Test Points</option><option value="10">11 · Evaluating the Model</option><option value="11">12 · The Effect of K</option><option value="12">13 · Strengths and Weaknesses</option><option value="13">14 · Interactive Playground</option></select><span class="stage-progress" aria-live="polite">1 / 14</span></div>
+<div class="lesson-toolbar"><label for="stage-select">Lesson map</label><select id="stage-select"><option value="0">01 · The Raw Data</option><option value="1">02 · Choosing Good Features</option><option value="2">03 · Keep training, validation and test separate</option><option value="3">04 · Feature Scaling</option><option value="4">05 · Measuring Distance</option><option value="5">06 · Choosing K</option><option value="6">07 · Finding Neighbors</option><option value="7">08 · The Majority Vote</option><option value="8">09 · Decision Boundary</option><option value="9">10 · Classify new validation points</option><option value="10">11 · Evaluating the Model</option><option value="11">12 · The Effect of K</option><option value="12">13 · Strengths and Weaknesses</option><option value="13">14 · Interactive Playground</option></select><span class="stage-progress" aria-live="polite">1 / 14</span></div>
 <div class="mobile-lab-bar"><span><small>Live notebook</small><strong id="mobile-summary">What is stored by KNN?</strong></span><button class="primary" type="button" data-open-lab>Explore visual ↗</button></div>
 <main class="notebook-layout" id="lesson"><article class="reading">
-<header class="hero"><p class="eyebrow">Supervised learning · Classification</p><h1>K-Nearest Neighbors (KNN)</h1><p class="intro">KNN stores labeled training examples and uses nearby examples to answer a query. Most work happens during prediction rather than through a fitted coefficient equation.</p><div class="pathway"><div><small>Prerequisites</small>Means, plots, and the train–validation distinction</div><div><small>Recommended next</small><a href="support-vector-machine.html">Support Vector Machines — Separate classes with breathing room</a></div></div><p class="reading-tip">Read a little. Try a little. Open the “why” when you are ready.</p></header>
+<header class="hero"><p class="eyebrow">Supervised learning · Classification</p><h1>K-Nearest Neighbors (KNN)</h1><p class="intro">To label a new point, find nearby examples with known labels and let them vote. See why the definition of nearby matters.</p><div class="pathway"><div><small>Prerequisites</small>Reading a two-axis plot, fractions, and simple distances.</div><div><small>Recommended next</small><a href="support-vector-machine.html">Support Vector Machines — Separate classes with breathing room</a></div></div><p class="reading-tip">Read a little. Try a little. Open the “why” when you are ready.</p></header>
 <noscript><p class="caution">The full lesson, worked examples and answers are readable here. Enable JavaScript for the interactive experiments and live calculations.</p></noscript>
-<section class="stage" id="stage-1" data-stage="1" aria-labelledby="heading-1">
+<section class="stage" id="stage-1" data-stage="1" data-visual-guide="The query is the point to predict. Its highlighted neighbours are training examples selected by the displayed distance rule." aria-labelledby="heading-1">
 <span class="legacy-anchor" id="sec-1" aria-hidden="true"></span><div class="stage-label"><span>01</span>The Raw Data</div><h2 id="heading-1">What is stored by KNN?</h2>
-<p class="answer">KNN stores labeled training examples and uses nearby examples to answer a query. Most work happens during prediction rather than through a fitted coefficient equation.</p><div class="receipt"><div class="receipt-label">A small example · separate from the live dataset</div><div class="table-wrap"><table><thead><tr><th scope="col">Follow the idea</th><th scope="col">Read it in plain language</th></tr></thead><tbody><tr><th scope="row">Stored</th><td>Training inputs and labels</td></tr><tr><th scope="row">Query</th><td>New input values</td></tr><tr><th scope="row">Answer</th><td>Neighbor-based vote or average</td></tr></tbody></table></div><p class="mini-note"><strong>Your notebook:</strong> <span data-bind="live-receipt">Open the visual to inspect the current calculation.</span></p></div>
+<p class="answer">KNN keeps examples with known labels. For a new point, it finds the K nearest training examples and uses their labels to predict. K is the number of neighbours allowed to vote.</p><div class="receipt"><div class="receipt-label">A small example · separate from the live dataset</div><div class="table-wrap"><table><thead><tr><th scope="col">Follow the idea</th><th scope="col">Read it in plain language</th></tr></thead><tbody><tr><th scope="row">Stored</th><td>Training inputs and labels</td></tr><tr><th scope="row">Query</th><td>New input values</td></tr><tr><th scope="row">Answer</th><td>Neighbor-based vote or average</td></tr></tbody></table></div><p class="mini-note"><strong>Your notebook:</strong> <span data-bind="live-receipt">Open the visual to inspect the current calculation.</span></p></div>
 <div class="experiment"><span class="pencil">↳</span><div><strong>Try it</strong><p>Move a query among training rows. Use the labeled controls, predict what will change, then compare the calculation before and after.</p><button type="button" data-explore-stage="0">Explore this idea <span aria-hidden="true">↗</span></button></div></div>
-<details class="deeper"><summary>Why this works · a little deeper</summary><div><p>KNN stores labeled training examples and uses nearby examples to answer a query. Most work happens during prediction rather than through a fitted coefficient equation.</p><p>No.</p><div class="reference-reading"><p class="reference-label">Additional reference · worked numbers below are separate examples from the live notebook.</p><p>Every machine learning model starts with data. Here we have measurements of fruits — each one scored on <strong>Sweetness</strong> and <strong>Color Intensity</strong>.</p>
-<p>Each fruit is already labeled: it's either an Apple or an Orange. Because we have labels, this is <em>supervised learning</em>.</p>
-<p>💡 <strong>Supervised learning</strong> means the model learns from examples where the answer is already known. Here, each fruit already has a known label: Apple or Orange. Later, KNN uses these known examples as its "memory" to classify any new, unknown fruit.</p>
-<h3>The Whole Idea of KNN</h3>
-<p><strong>KNN</strong> stands for <strong>K-Nearest Neighbors</strong>. The concept is incredibly straightforward:</p>
-<p>
-      To classify a new unknown item, look at the <strong>K</strong> closest known examples (neighbors) in your dataset. Then, simply copy the label that appears most often among those neighbors!
-    </p>
-<p><strong>Example:</strong> If we want to identify a mystery fruit, and its 3 closest neighbors are 🍎, 🍎, and 🍊, then Apple gets 2 votes and Orange gets 1 vote. KNN predicts <strong>Apple</strong>.</p>
-<p>New unknown fruit → Find closest old fruits → Count their labels → Predict majority label</p>
-<h3>Tiny ML Dictionary</h3>
-<p>Before moving forward, let's establish a few basic terms:</p>
-<strong>• Feature:</strong>
-<p>A measurement used to make a prediction (e.g.,</p>
-<em>Sweetness</em>
-<em>Color Intensity</em>
-<strong>• Label:</strong>
-<p>The correct answer already known for our examples (e.g.,</p>
-<em>Apple</em>
-<em>Orange</em>
-<strong>• Class:</strong>
-<p>The category we are trying to predict (e.g.,</p>
-<em>Apple class</em>
-<em>Orange class</em>
-<strong>• Query Point:</strong>
-<p>The new, unknown item we want to classify. In our visual plots, the query point is represented by a star</p>
-<strong>★</strong>
-<p>
-      "We know the query point's features, but we do not know its label yet. KNN tries to guess the label based on its neighbors."
-    </p>
-<h3>Training Dataset</h3>
-<p>💡 KNN needs labeled examples to learn from. It doesn't build a formula — it simply remembers all the data and compares new points to what it already knows.</p></div></div></details>
+<details class="deeper"><summary>Why this works · a little deeper</summary><div><p>A label is the known answer for a training row. A query is the new point we want to label. In a simple fruit example, three neighbours labelled Apple, Apple and Orange give two Apple votes and one Orange vote. KNN predicts Apple. It stores examples rather than fitting a coefficient equation. It still relies on useful measurements, distance and representative training coverage.</p></div></details>
 <details class="check"><summary>Quick check · Does KNN learn a single global slope?</summary><p>No.</p></details>
 <a class="next-idea" href="#stage-2">Next: Choosing Good Features ↓</a>
 </section>
-<section class="stage" id="stage-2" data-stage="2" aria-labelledby="heading-2">
+<section class="stage" id="stage-2" data-stage="2" data-visual-guide="The query is the point to predict. Its highlighted neighbours are training examples selected by the displayed distance rule." aria-labelledby="heading-2">
 <span class="legacy-anchor" id="sec-2" aria-hidden="true"></span><div class="stage-label"><span>02</span>Choosing Good Features</div><h2 id="heading-2">What makes a feature useful for distance?</h2>
-<p class="answer">A useful distance feature should distinguish relevant cases and be available at prediction time. Irrelevant or redundant dimensions can make closeness misleading.</p><div class="receipt"><div class="receipt-label">A small example · separate from the live dataset</div><div class="table-wrap"><table><thead><tr><th scope="col">Follow the idea</th><th scope="col">Read it in plain language</th></tr></thead><tbody><tr><th scope="row">Relevant clue</th><td>Related to the task</td></tr><tr><th scope="row">Irrelevant clue</th><td>Adds distance without useful signal</td></tr><tr><th scope="row">Unavailable clue</th><td>Creates leakage</td></tr></tbody></table></div><p class="mini-note"><strong>Your notebook:</strong> <span data-bind="live-receipt">Open the visual to inspect the current calculation.</span></p></div>
+<p class="answer">A feature is an input measurement. Choose features that make closeness useful for this task. Irrelevant measurements and repeated versions of the same clue can distort distance. The input must also be available at prediction time.</p><div class="receipt"><div class="receipt-label">A small example · separate from the live dataset</div><div class="table-wrap"><table><thead><tr><th scope="col">Follow the idea</th><th scope="col">Read it in plain language</th></tr></thead><tbody><tr><th scope="row">Relevant clue</th><td>Related to the task</td></tr><tr><th scope="row">Irrelevant clue</th><td>Adds distance without useful signal</td></tr><tr><th scope="row">Unavailable clue</th><td>Creates leakage</td></tr></tbody></table></div><p class="mini-note"><strong>Your notebook:</strong> <span data-bind="live-receipt">Open the visual to inspect the current calculation.</span></p></div>
 <div class="experiment"><span class="pencil">↳</span><div><strong>Try it</strong><p>Move a query among training rows. Use the labeled controls, predict what will change, then compare the calculation before and after.</p><button type="button" data-explore-stage="1">Explore this idea <span aria-hidden="true">↗</span></button></div></div>
-<details class="deeper"><summary>Why this works · a little deeper</summary><div><p>A useful distance feature should distinguish relevant cases and be available at prediction time. Irrelevant or redundant dimensions can make closeness misleading.</p><p>No.</p><div class="reference-reading"><p class="reference-label">Additional reference · worked numbers below are separate examples from the live notebook.</p><p>Not every measurement helps separate classes. We pick features where the groups actually differ — like Sweetness and Color Intensity.</p>
-<p>Bad features (random IDs, row numbers) add noise without signal. KNN is especially sensitive to irrelevant features because they pollute the distance calculation.</p>
-<h3>Why Feature Selection Matters</h3>
-<p>A <strong>good feature</strong> helps separate the classes clearly. A <strong>bad feature</strong> adds confusion and distorts the distance between points.</p>
-<p><strong>Useful Examples:</strong></p>
-<ul>
-<li><strong>Sweetness</strong> helps because apples and oranges have different natural sweetness profiles.</li>
-<li><strong>Color Intensity</strong> helps separate reddish apples from yellowish-orange citrus fruits.</li>
-</ul>
-<p><strong>Not Useful Examples:</strong></p>
-<ul>
-<li><strong>Row number</strong> is just the order in the table; it contains zero predictive power.</li>
-<li><strong>Day picked</strong> is unrelated to fruit sweetness or species and would only add noise.</li>
-</ul>
-<h3>Feature Quality</h3>
-<p>✅ <strong>Sweetness</strong> — The two fruit groups show different sweetness patterns<br/>
-    ✅ <strong>Color Intensity</strong> — Apples score higher on red<br/>
-    ❌ Row number — meaningless for prediction<br/>
-    ❌ Day picked — no predictive power</p>
-<p>💡 Notice how the two classes form somewhat distinct clusters on the plot — a good sign. KNN relies entirely on spatial proximity.</p></div></div></details>
+<details class="deeper"><summary>Why this works · a little deeper</summary><div><p>A row ID may be just an identifier rather than a useful measurement. But do not declare a field useless from its name alone: dates or collection conditions can matter in some tasks. Choose inputs using the task and validation evidence, not the final test. Extra dimensions can make all distances less informative even after scaling.</p></div></details>
 <details class="check"><summary>Quick check · Is every numerical column automatically suitable for distance?</summary><p>No.</p></details>
-<a class="next-idea" href="#stage-3">Next: Train / Test Split ↓</a>
+<a class="next-idea" href="#stage-3">Next: Keep training, validation and test separate ↓</a>
 </section>
-<section class="stage" id="stage-3" data-stage="3" aria-labelledby="heading-3">
-<span class="legacy-anchor" id="sec-3" aria-hidden="true"></span><div class="stage-label"><span>03</span>Train / Test Split</div><h2 id="heading-3">Why separate development and final evaluation?</h2>
-<p class="answer">Keep training neighbors separate from validation queries and final evaluation. K and distance choices are selected on development data, never by repeatedly consulting the final test.</p><div class="receipt"><div class="receipt-label">A small example · separate from the live dataset</div><div class="table-wrap"><table><thead><tr><th scope="col">Follow the idea</th><th scope="col">Read it in plain language</th></tr></thead><tbody><tr><th scope="row">Train</th><td>Available neighbors</td></tr><tr><th scope="row">Validation</th><td>Choose K and representation</td></tr><tr><th scope="row">Test</th><td>Evaluate the locked procedure</td></tr></tbody></table></div><p class="mini-note"><strong>Your notebook:</strong> <span data-bind="live-receipt">Open the visual to inspect the current calculation.</span></p></div>
+<section class="stage" id="stage-3" data-stage="3" data-visual-guide="Training learns the rule, validation compares choices, and final-test examples stay sealed while those choices change." aria-labelledby="heading-3">
+<span class="legacy-anchor" id="sec-3" aria-hidden="true"></span><div class="stage-label"><span>03</span>Keep training, validation and test separate</div><h2 id="heading-3">Why separate development and final evaluation?</h2>
+<p class="answer">Training examples are the neighbours we search. Validation examples help choose K and the distance rule. Final-test examples check the finished choices. Keep those roles separate.</p><div class="receipt"><div class="receipt-label">A small example · separate from the live dataset</div><div class="table-wrap"><table><thead><tr><th scope="col">Follow the idea</th><th scope="col">Read it in plain language</th></tr></thead><tbody><tr><th scope="row">Train</th><td>Available neighbors</td></tr><tr><th scope="row">Validation</th><td>Choose K and representation</td></tr><tr><th scope="row">Test</th><td>Evaluate the locked procedure</td></tr></tbody></table></div><p class="mini-note"><strong>Your notebook:</strong> <span data-bind="live-receipt">Open the visual to inspect the current calculation.</span></p></div>
 <div class="experiment"><span class="pencil">↳</span><div><strong>Try it</strong><p>Keep the partitions separate. Use the labeled controls, predict what will change, then compare the calculation before and after.</p><button type="button" data-explore-stage="2">Explore this idea <span aria-hidden="true">↗</span></button></div></div>
-<details class="deeper"><summary>Why this works · a little deeper</summary><div><p>Keep training neighbors separate from validation queries and final evaluation. K and distance choices are selected on development data, never by repeatedly consulting the final test.</p><p>No.</p><div class="reference-reading"><p class="reference-label">Additional reference · worked numbers below are separate examples from the live notebook.</p><p>We hold out a small <strong>test set</strong> (2 apples + 2 oranges) that the model will not see during training. The remaining points are used as the "memory" KNN will search through.</p>
-<p>Testing on training data is one of the most common mistakes — it gives inflated confidence. A model that memorizes isn't smart; it's just a parrot.</p>
-<h3>Training vs. Testing Sets</h3>
-<strong>• Training Set:</strong>
-<p>The collection of examples KNN is allowed to remember and search through. This is the model's "memory".</p>
-<strong>• Test Set:</strong>
-<p>Hidden examples set aside from the beginning, used ONLY at the very end to check if the model can accurately classify new, unseen data.</p>
-<p>⚠️ <strong>Critical Warning (Data Leakage):</strong> Do not use the test set to choose K or tune features. If the model is exposed to the test set during its construction, your evaluation results are no longer honest. This is called <em>data leakage</em>!</p></div></div></details>
+<details class="deeper"><summary>Why this works · a little deeper</summary><div><p>Never let a validation point vote as its own training neighbour. Select features, scaling, K and weights using development data. A final test must stay out of those choices. If observations are related, split whole related groups appropriately. Very small held-out examples illustrate the calculation but do not give stable performance estimates.</p></div></details>
 <details class="check"><summary>Quick check · May a validation row vote for itself?</summary><p>No.</p></details>
 <a class="next-idea" href="#stage-4">Next: Feature Scaling ↓</a>
 </section>
-<section class="stage" id="stage-4" data-stage="4" aria-labelledby="heading-4">
+<section class="stage" id="stage-4" data-stage="4" data-visual-guide="The query is the point to predict. Its highlighted neighbours are training examples selected by the displayed distance rule." aria-labelledby="heading-4">
 <span class="legacy-anchor" id="sec-4" aria-hidden="true"></span><div class="stage-label"><span>04</span>Feature Scaling</div><h2 id="heading-4">Why do units affect neighbors?</h2>
-<p class="answer">Distance uses numerical units. A feature measured in thousands can overwhelm one measured in single digits; scaling must be fitted on training data and applied unchanged to new rows.</p><div class="receipt"><div class="receipt-label">A small example · separate from the live dataset</div><div class="table-wrap"><table><thead><tr><th scope="col">Follow the idea</th><th scope="col">Read it in plain language</th></tr></thead><tbody><tr><th scope="row">Difference in age</th><td>10 years</td></tr><tr><th scope="row">Difference in income</th><td>10,000 currency units</td></tr><tr><th scope="row">Train scaling</th><td>Express differences relative to training spread</td></tr></tbody></table></div><p class="mini-note"><strong>Your notebook:</strong> <span data-bind="live-receipt">Open the visual to inspect the current calculation.</span></p></div>
+<p class="answer">Distance uses the numbers as given. A range of thousands can dominate a range of single digits. Scaling can put features on comparable ranges. Learn that scaling from training data, then reuse it unchanged.</p><div class="receipt"><div class="receipt-label">A small example · separate from the live dataset</div><div class="table-wrap"><table><thead><tr><th scope="col">Follow the idea</th><th scope="col">Read it in plain language</th></tr></thead><tbody><tr><th scope="row">Difference in age</th><td>10 years</td></tr><tr><th scope="row">Difference in income</th><td>10,000 currency units</td></tr><tr><th scope="row">Train scaling</th><td>Express differences relative to training spread</td></tr></tbody></table></div><p class="mini-note"><strong>Your notebook:</strong> <span data-bind="live-receipt">Open the visual to inspect the current calculation.</span></p></div>
 <div class="experiment"><span class="pencil">↳</span><div><strong>Try it</strong><p>Move a query among training rows. Use the labeled controls, predict what will change, then compare the calculation before and after.</p><button type="button" data-explore-stage="3">Explore this idea <span aria-hidden="true">↗</span></button></div></div>
-<details class="deeper"><summary>Why this works · a little deeper</summary><div><p>Distance uses numerical units. A feature measured in thousands can overwhelm one measured in single digits; scaling must be fitted on training data and applied unchanged to new rows.</p><p>No.</p><div class="reference-reading"><p class="reference-label">Additional reference · worked numbers below are separate examples from the live notebook.</p><p>This is the <strong>most common mistake</strong> with KNN. If Sweetness ranges 0–10 but Color ranges 0–100, the Color feature would completely dominate distance calculations.</p>
-<p>We use <em>Min-Max Scaling</em> to squish every feature into the 0–1 range, giving each feature equal voice.</p>
-<p><strong>Scaling is usually necessary when features use different units or magnitudes.</strong> If features already share meaningful units and scale, automatic rescaling may not be desirable. The distance metric and scaling choice together define what “near” means.</p>
-<p>Scaled Value = (Value − Min) ÷ (Max − Min) Example: Sweetness = 7, Min = 2, Max = 9 Scaled Value = (7 − 2) ÷ (9 − 2) = 5 ÷ 7 ≈ 0.71</p>
-<h3>Important: Scale Using Training Data Only</h3>
-<p>To prevent data leakage, we calculate the Minimum and Maximum values using <strong>only</strong> the training set. We then use this exact same scale factor for training, test, and any future query points.</p>
-<p>Training Data finds Min/Max ➔ same Min/Max scales training, test, and new query points</p>
-<p>If we used the test set to calculate the scale range, information from the test set would leak into the training process, leading to over-optimistic performance estimates.</p>
-<h4>🧠 Concept Check</h4>
-<p><strong>Why do we scale features before using KNN?</strong></p>
-<p>💡 Watch the points shift on the plot — they're being rescaled to [0, 1] on each axis. The order of points along each axis stays the same, but the scale changes. This makes distance fairer because Sweetness and Color now use comparable ranges.</p></div></div></details>
+<details class="deeper"><summary>Why this works · a little deeper</summary><div><p>Min-max scaling is (value−training minimum)/(training maximum−training minimum). With value 7, minimum 2 and maximum 9, that is 5/7≈.71. New values may fall outside 0–1; do not secretly refit the scale on them. Scaling is a choice about what near means, not a guarantee of equal feature importance. If units already have a useful shared meaning, automatic rescaling may be unwanted.</p></div></details>
 <details class="check"><summary>Quick check · May validation rows help estimate the scaler?</summary><p>No.</p></details>
 <a class="next-idea" href="#stage-5">Next: Measuring Distance ↓</a>
 </section>
-<section class="stage" id="stage-5" data-stage="5" aria-labelledby="heading-5">
-<span class="legacy-anchor" id="sec-5" aria-hidden="true"></span><div class="stage-label"><span>05</span>Measuring Distance</div><h2 id="heading-5">How is distance calculated?</h2>
-<p class="answer">Euclidean distance squares each coordinate difference, sums them, and takes a square root. With scaling, divide each difference by its training scale first.</p><div class="receipt"><div class="receipt-label">A small example · separate from the live dataset</div><div class="table-wrap"><table><thead><tr><th scope="col">Follow the idea</th><th scope="col">Read it in plain language</th></tr></thead><tbody><tr><th scope="row">Coordinate differences</th><td>3 and 4</td></tr><tr><th scope="row">Squared sum</th><td>9 + 16 = 25</td></tr><tr><th scope="row">Distance</th><td>5</td></tr></tbody></table></div><p class="mini-note"><strong>Your notebook:</strong> <span data-bind="live-receipt">Open the visual to inspect the current calculation.</span></p></div>
-<div class="experiment"><span class="pencil">↳</span><div><strong>Try it</strong><p>Inspect a distance receipt. Use the labeled controls, predict what will change, then compare the calculation before and after.</p><button type="button" data-explore-stage="4">Explore this idea <span aria-hidden="true">↗</span></button></div></div>
-<details class="deeper"><summary>Why this works · a little deeper</summary><div><p>Euclidean distance squares each coordinate difference, sums them, and takes a square root. With scaling, divide each difference by its training scale first.</p><p>No.</p><div class="reference-reading"><p class="reference-label">Additional reference · worked numbers below are separate examples from the live notebook.</p><p>KNN's entire logic boils down to one question: <em>"Who lives closest to me?"</em> To answer that, we need a way to measure distance between points.</p>
-<p>The most common choice is <strong>Euclidean distance</strong> — the straight-line distance between two points.</p>
-<p>Euclidean distance assumes each scaled direction should contribute through straight-line geometry. Manhattan, mixed-data, or domain-specific distances may be more appropriate. Scaling cannot rescue irrelevant features or the curse of dimensionality.</p>
-<p>d(a, b) = √[(x₂ − x₁)² + (y₂ − y₁)²] This is just the Pythagorean theorem — the same formula you learned in geometry class.</p>
-<h3>What Does Distance Mean Here?</h3>
-<p>In machine learning, <strong>distance</strong> represents <strong>dissimilarity</strong> between items:</p>
-<ul>
-<li><strong>Short distance</strong> means high similarity. The items have very similar features.</li>
-<li><strong>Long distance</strong> means high difference. The items are very dissimilar.</li>
-</ul>
-<h4>Step-by-Step Distance Calculation:</h4>
-<p>Let's calculate the distance between our mystery fruit and a training fruit manually:</p>
-<strong>Query point (Mystery Fruit ★):</strong>
-<p>Sweetness = 0.45, Color = 0.55</p>
-<strong>Training point (Known Fruit):</strong>
-<p>Sweetness = 0.50, Color = 0.65</p>
-<strong>Euclidean Distance Formula:</strong>
-<p>d = √[(0.50 − 0.45)² + (0.65 − 0.55)²]</p>
-<strong>d ≈ 0.1118</strong>
-<p>Note: While <strong>Euclidean distance</strong> is the straight-line default, other metrics exist (e.g., <strong>Manhattan distance</strong>, which calculates distance along grid paths like city streets). This page uses Euclidean distance.</p>
-<h3>Live Distance Calculation</h3>
-<p>Lines on the plot show the distance from a query point (★) to every training point. The darker lines emphasize the current teaching K nearest neighbors.</p></div></div></details>
+<section class="stage" id="stage-5" data-stage="5" data-visual-guide="The gold query and closest training row form a right triangle in the active distance coordinates. Square each input gap, add, then take the square root." aria-labelledby="heading-5">
+<span class="legacy-anchor" id="sec-5" aria-hidden="true"></span><div class="stage-label"><span>05</span>Measuring Distance</div><h2 id="heading-5">How do input gaps determine the nearest neighbors?</h2>
+<p class="answer">For straight-line distance, find the gap on each axis, square each gap, add them, then take the square root. This is Euclidean distance. With scaled inputs, use the scaled gaps.</p><div class="receipt"><div class="receipt-label">A small example · separate from the live dataset</div><div class="table-wrap"><table><thead><tr><th scope="col">Follow the idea</th><th scope="col">Read it in plain language</th></tr></thead><tbody><tr><th scope="row">Coordinate differences</th><td>3 and 4</td></tr><tr><th scope="row">Squared sum</th><td>9 + 16 = 25</td></tr><tr><th scope="row">Distance</th><td>5</td></tr></tbody></table></div><p class="mini-note"><strong>Your notebook:</strong> <span data-bind="live-receipt">Open the visual to inspect the current calculation.</span></p></div>
+<div class="experiment"><span class="pencil">↳</span><div><strong>Try it</strong><p>Move the query and switch feature scaling. Compare the displayed gaps, distance, and ranked neighbors. Scaled distances use training-only standard deviations.</p><button type="button" data-explore-stage="4">Explore this idea <span aria-hidden="true">↗</span></button></div></div>
+<details class="deeper"><summary>Why this works · a little deeper</summary><div><p>For query (.45,.55) and point (.50,.65), the gaps are .05 and .10. Distance = √(.05²+.10²)≈.1118. Squaring means multiply by itself; a square root reverses that operation for a nonnegative value. Manhattan distance adds absolute axis gaps instead. Match the distance to the measurement types and application; scaling cannot rescue irrelevant inputs.</p></div></details>
 <details class="check"><summary>Quick check · Can Euclidean distance be negative?</summary><p>No.</p></details>
 <a class="next-idea" href="#stage-6">Next: Choosing K ↓</a>
 </section>
-<section class="stage" id="stage-6" data-stage="6" aria-labelledby="heading-6">
+<section class="stage" id="stage-6" data-stage="6" data-visual-guide="The query is the point to predict. Its highlighted neighbours are training examples selected by the displayed distance rule." aria-labelledby="heading-6">
 <span class="legacy-anchor" id="sec-6" aria-hidden="true"></span><div class="stage-label"><span>06</span>Choosing K</div><h2 id="heading-6">Why does K change the behavior?</h2>
-<p class="answer">Small K gives local, potentially noisy decisions. Large K smooths the vote but can erase local structure and favor the majority class.</p><div class="receipt"><div class="receipt-label">A small example · separate from the live dataset</div><div class="table-wrap"><table><thead><tr><th scope="col">Follow the idea</th><th scope="col">Read it in plain language</th></tr></thead><tbody><tr><th scope="row">K = 1</th><td>Nearest example decides</td></tr><tr><th scope="row">Larger K</th><td>More averaged evidence</td></tr><tr><th scope="row">Selection</th><td>Validation performance</td></tr></tbody></table></div><p class="mini-note"><strong>Your notebook:</strong> <span data-bind="live-receipt">Open the visual to inspect the current calculation.</span></p></div>
+<p class="answer">Small K pays attention to a very local area, but one unusual neighbour can change the answer. Large K gives a broader vote, but may wash out smaller patterns or favour the common class.</p><div class="receipt"><div class="receipt-label">A small example · separate from the live dataset</div><div class="table-wrap"><table><thead><tr><th scope="col">Follow the idea</th><th scope="col">Read it in plain language</th></tr></thead><tbody><tr><th scope="row">K = 1</th><td>Nearest example decides</td></tr><tr><th scope="row">Larger K</th><td>More averaged evidence</td></tr><tr><th scope="row">Selection</th><td>Validation performance</td></tr></tbody></table></div><p class="mini-note"><strong>Your notebook:</strong> <span data-bind="live-receipt">Open the visual to inspect the current calculation.</span></p></div>
 <div class="experiment"><span class="pencil">↳</span><div><strong>Try it</strong><p>Move a query among training rows. Use the labeled controls, predict what will change, then compare the calculation before and after.</p><button type="button" data-explore-stage="5">Explore this idea <span aria-hidden="true">↗</span></button></div></div>
-<details class="deeper"><summary>Why this works · a little deeper</summary><div><p>Small K gives local, potentially noisy decisions. Large K smooths the vote but can erase local structure and favor the majority class.</p><p>No.</p><div class="reference-reading"><p class="reference-label">Additional reference · worked numbers below are separate examples from the live notebook.</p><p>K is <strong>one of the most important hyperparameters</strong> in KNN — the number of neighbors to consult before making a prediction.</p>
-<p><strong>Small K</strong> (e.g. K=1): Very sensitive to noise. One outlier can flip the prediction.<br/>
-<strong>Large K</strong> (e.g. K=15): Too smooth. Local patterns get drowned out by distant voters.</p>
-<p>We do not just guess K blindly. Later, in Stage 12, we compare several K values using cross-validation and look for a sensible choice.</p>
-<h3>Who Chooses K?</h3>
-<p><strong>K</strong> is a <strong>hyperparameter</strong>. In machine learning, a hyperparameter is a setting <em>selected</em> using validation data or cross-validation, rather than a coefficient fitted directly during training.</p>
-<p><strong>The Trade-Off:</strong></p>
-<ul>
-<li><strong>Too Small K (e.g., K=1):</strong> Extremely sensitive to outliers and noise. The model may <strong>overfit</strong> (memorize noise as pattern).</li>
-<li><strong>Too Large K (e.g., K=15):</strong> Overly smooth and generic. Local patterns are drowned out by far-away votes. The model may <strong>underfit</strong> (miss the actual pattern).</li>
-</ul>
-<h4>How a Machine Learning Task is Configured:</h4>
-<table>
-<thead>
-<tr>
-<th>Component</th>
-<th>Who Decides?</th>
-<th>Meaning</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><strong>Features</strong></td>
-<td>Human / Designer</td>
-<td>Measurements selected to describe items (e.g., Sweetness)</td>
-</tr>
-<tr>
-<td><strong>Scaling Method</strong></td>
-<td>Human choice</td>
-<td>How feature ranges are made comparable (e.g., Min-Max)</td>
-</tr>
-<tr>
-<td><strong>Distance Metric</strong></td>
-<td>Human choice</td>
-<td>Mathematical formula to measure closeness (e.g., Euclidean)</td>
-</tr>
-<tr>
-<td><strong>K value</strong></td>
-<td>Human choice</td>
-<td>Number of neighboring votes allowed to participate</td>
-</tr>
-<tr>
-<td><strong>Training labels</strong></td>
-<td>Existing Data</td>
-<td>The ground-truth answers for old examples</td>
-</tr>
-<tr>
-<td><strong>Prediction</strong></td>
-<td>KNN vote rule</td>
-<td>Majority vote among the K closest neighbors</td>
-</tr>
-</tbody>
-</table>
-<h4>🧠 Concept Check</h4>
-<p><strong>Who decides the value of K in K-Nearest Neighbors?</strong></p>
-<h3>Adjust K</h3>
-<p>K=3 is a balanced starting point. Try different values!</p>
-<p>💡 Best practice: use an <strong>odd</strong> number for K to avoid ties. Use cross-validation to find the optimal K for your specific dataset.</p></div></div></details>
+<details class="deeper"><summary>Why this works · a little deeper</summary><div><p>K is a hyperparameter: a setting chosen by validation rather than a fitted weight. Small K can follow noise; large K can miss local structure. Odd K avoids equal counts for uniform voting between two classes, but does not prevent every type of tie. There is no universally best K for every dataset.</p></div></details>
 <details class="check"><summary>Quick check · Does increasing K always improve prediction?</summary><p>No.</p></details>
 <a class="next-idea" href="#stage-7">Next: Finding Neighbors ↓</a>
 </section>
-<section class="stage" id="stage-7" data-stage="7" aria-labelledby="heading-7">
-<span class="legacy-anchor" id="sec-7" aria-hidden="true"></span><div class="stage-label"><span>07</span>Finding Neighbors</div><h2 id="heading-7">Which observations are the nearest?</h2>
-<p class="answer">Sort training observations by distance from the query, then take the first K. A neighbor receipt makes the selected IDs, distances, and labels inspectable.</p><div class="receipt"><div class="receipt-label">A small example · separate from the live dataset</div><div class="table-wrap"><table><thead><tr><th scope="col">Follow the idea</th><th scope="col">Read it in plain language</th></tr></thead><tbody><tr><th scope="row">First</th><td>Compute distances</td></tr><tr><th scope="row">Next</th><td>Sort with a stable tie rule</td></tr><tr><th scope="row">Then</th><td>Select K training rows</td></tr></tbody></table></div><p class="mini-note"><strong>Your notebook:</strong> <span data-bind="live-receipt">Open the visual to inspect the current calculation.</span></p></div>
-<div class="experiment"><span class="pencil">↳</span><div><strong>Try it</strong><p>Inspect a distance receipt. Use the labeled controls, predict what will change, then compare the calculation before and after.</p><button type="button" data-explore-stage="6">Explore this idea <span aria-hidden="true">↗</span></button></div></div>
-<details class="deeper"><summary>Why this works · a little deeper</summary><div><p>Sort training observations by distance from the query, then take the first K. A neighbor receipt makes the selected IDs, distances, and labels inspectable.</p><p>No. Use the stated metric and scale.</p><div class="reference-reading"><p class="reference-label">Additional reference · worked numbers below are separate examples from the live notebook.</p><p>For our query point (★), we calculate the distance to <em>every single training point</em>, then sort from closest to farthest.</p>
-<p>The top <strong>K</strong> points become the "neighborhood council" that will decide the prediction. Watch the circles expand outward from the query to find them.</p>
-<h3>Nearest Neighbors</h3></div></div></details>
+<section class="stage" id="stage-7" data-stage="7" data-visual-guide="The gold query and closest training row form a right triangle in the active distance coordinates. Square each input gap, add, then take the square root." aria-labelledby="heading-7">
+<span class="legacy-anchor" id="sec-7" aria-hidden="true"></span><div class="stage-label"><span>07</span>Finding Neighbors</div><h2 id="heading-7">How do input gaps determine the nearest neighbors?</h2>
+<p class="answer">Calculate the new point's distance to each training point. Sort the distances from smallest to largest. Keep the first K. The table shows which examples became neighbours and why.</p><div class="receipt"><div class="receipt-label">A small example · separate from the live dataset</div><div class="table-wrap"><table><thead><tr><th scope="col">Follow the idea</th><th scope="col">Read it in plain language</th></tr></thead><tbody><tr><th scope="row">First</th><td>Compute distances</td></tr><tr><th scope="row">Next</th><td>Sort with a stable tie rule</td></tr><tr><th scope="row">Then</th><td>Select K training rows</td></tr></tbody></table></div><p class="mini-note"><strong>Your notebook:</strong> <span data-bind="live-receipt">Open the visual to inspect the current calculation.</span></p></div>
+<div class="experiment"><span class="pencil">↳</span><div><strong>Try it</strong><p>Move the query and switch feature scaling. Compare the displayed gaps, distance, and ranked neighbors. Scaled distances use training-only standard deviations.</p><button type="button" data-explore-stage="6">Explore this idea <span aria-hidden="true">↗</span></button></div></div>
+<details class="deeper"><summary>Why this works · a little deeper</summary><div><p>The distance ranking chooses the neighbours; their labels then supply the vote. If distances tie at the K boundary, use a fixed tie rule so rerunning does not silently select different points. Inspect IDs, distances and labels in the receipt rather than inferring the selection only from colours.</p></div></details>
 <details class="check"><summary>Quick check · Does the closest-looking point on a distorted plot always have the smallest model distance?</summary><p>No. Use the stated metric and scale.</p></details>
 <a class="next-idea" href="#stage-8">Next: The Majority Vote ↓</a>
 </section>
-<section class="stage" id="stage-8" data-stage="8" aria-labelledby="heading-8">
+<section class="stage" id="stage-8" data-stage="8" data-visual-guide="Follow each selected prediction or neighbour weight into the combined answer. Name the averaging or voting rule." aria-labelledby="heading-8">
 <span class="legacy-anchor" id="sec-8" aria-hidden="true"></span><div class="stage-label"><span>08</span>The Majority Vote</div><h2 id="heading-8">How do neighbors vote?</h2>
-<p class="answer">A uniform vote gives every selected neighbor equal weight. Distance weighting gives nearer neighbors more influence; exact matches need an explicit rule to avoid division by zero.</p><div class="receipt"><div class="receipt-label">A small example · separate from the live dataset</div><div class="table-wrap"><table><thead><tr><th scope="col">Follow the idea</th><th scope="col">Read it in plain language</th></tr></thead><tbody><tr><th scope="row">Uniform vote</th><td>Positive neighbors / K</td></tr><tr><th scope="row">Distance vote</th><td>Weighted positive fraction</td></tr><tr><th scope="row">Exact match</th><td>Use matching observations directly</td></tr></tbody></table></div><p class="mini-note"><strong>Your notebook:</strong> <span data-bind="live-receipt">Open the visual to inspect the current calculation.</span></p></div>
+<p class="answer">With uniform voting, each neighbour gets one equal vote. With distance weighting, closer neighbours count more. Exact matches and tied votes need a clear rule.</p><div class="receipt"><div class="receipt-label">A small example · separate from the live dataset</div><div class="table-wrap"><table><thead><tr><th scope="col">Follow the idea</th><th scope="col">Read it in plain language</th></tr></thead><tbody><tr><th scope="row">Uniform vote</th><td>Positive neighbors / K</td></tr><tr><th scope="row">Distance vote</th><td>Weighted positive fraction</td></tr><tr><th scope="row">Exact match</th><td>Use matching observations directly</td></tr></tbody></table></div><p class="mini-note"><strong>Your notebook:</strong> <span data-bind="live-receipt">Open the visual to inspect the current calculation.</span></p></div>
 <div class="experiment"><span class="pencil">↳</span><div><strong>Try it</strong><p>Change K and vote weighting. Trace every neighbor’s distance and weight into the colored contribution strip; the class-1 total gives the vote share.</p><button type="button" data-explore-stage="7">Explore this idea <span aria-hidden="true">↗</span></button></div></div>
-<details class="deeper"><summary>Why this works · a little deeper</summary><div><p>A uniform vote gives every selected neighbor equal weight. Distance weighting gives nearer neighbors more influence; exact matches need an explicit rule to avoid division by zero.</p><p>3 / 5 = 0.6.</p><div class="reference-reading"><p class="reference-label">Additional reference · worked numbers below are separate examples from the live notebook.</p><p>For uniform binary voting with an odd K, equal class counts cannot occur. Distance-weighted votes can still tie, even with an odd K; multiclass voting can also tie. Define a reproducible rule for both tied neighbor distances and tied class votes. A class fraction among selected neighbors is a local empirical estimate, not a guaranteed calibrated probability. Inverse-distance weighting must handle zero distance explicitly; this notebook uses the labels of exact matches directly.</p></div></div></details>
+<details class="deeper"><summary>Why this works · a little deeper</summary><div><p>A weighted vote can tie even with odd K. Multiclass voting can also tie. Inverse-distance weights cannot divide by zero. This notebook handles exact matches using the labels of those exact matches. A neighbour class fraction is a local estimate; it is not automatically a well-calibrated probability for future cases.</p></div></details>
 <details class="check"><summary>Quick check · With three positive and two negative uniform neighbors, what is the fraction?</summary><p>3 / 5 = 0.6.</p></details>
 <a class="next-idea" href="#stage-9">Next: Decision Boundary ↓</a>
 </section>
-<section class="stage" id="stage-9" data-stage="9" aria-labelledby="heading-9">
+<section class="stage" id="stage-9" data-stage="9" data-visual-guide="The background shows the predicted decision or probability, as labelled. The dividing line is a fitted rule, not a physical boundary." aria-labelledby="heading-9">
 <span class="legacy-anchor" id="sec-9" aria-hidden="true"></span><div class="stage-label"><span>09</span>Decision Boundary</div><h2 id="heading-9">Where do predictions change?</h2>
-<p class="answer">A boundary is where the winning class changes as the query moves. KNN regions can be irregular because the local neighbor set changes across the space.</p><div class="receipt"><div class="receipt-label">A small example · separate from the live dataset</div><div class="table-wrap"><table><thead><tr><th scope="col">Follow the idea</th><th scope="col">Read it in plain language</th></tr></thead><tbody><tr><th scope="row">Query movement</th><td>Changes neighbor distances</td></tr><tr><th scope="row">Neighbor-set change</th><td>Can change the vote</td></tr><tr><th scope="row">Boundary</th><td>Separates decisions</td></tr></tbody></table></div><p class="mini-note"><strong>Your notebook:</strong> <span data-bind="live-receipt">Open the visual to inspect the current calculation.</span></p></div>
+<p class="answer">Move the new point around the plot. Its predicted class changes when a different label wins the local vote. The map's boundary marks those changes. It can have an irregular shape.</p><div class="receipt"><div class="receipt-label">A small example · separate from the live dataset</div><div class="table-wrap"><table><thead><tr><th scope="col">Follow the idea</th><th scope="col">Read it in plain language</th></tr></thead><tbody><tr><th scope="row">Query movement</th><td>Changes neighbor distances</td></tr><tr><th scope="row">Neighbor-set change</th><td>Can change the vote</td></tr><tr><th scope="row">Boundary</th><td>Separates decisions</td></tr></tbody></table></div><p class="mini-note"><strong>Your notebook:</strong> <span data-bind="live-receipt">Open the visual to inspect the current calculation.</span></p></div>
 <div class="experiment"><span class="pencil">↳</span><div><strong>Try it</strong><p>Explore the decision surface. Use the labeled controls, predict what will change, then compare the calculation before and after.</p><button type="button" data-explore-stage="8">Explore this idea <span aria-hidden="true">↗</span></button></div></div>
-<details class="deeper"><summary>Why this works · a little deeper</summary><div><p>A boundary is where the winning class changes as the query moves. KNN regions can be irregular because the local neighbor set changes across the space.</p><p>No.</p><div class="reference-reading"><p class="reference-label">Additional reference · worked numbers below are separate examples from the live notebook.</p><p>What if we classified <em>every possible point</em> on the plot? The result is a colorful map showing which regions belong to which class.</p>
-<p>Unlike linear models, KNN boundaries are <strong>non-linear</strong> — they bend and curve around the data naturally. The boundary is just wherever the majority vote flips from one class to the other.</p>
-<h3>What is a Decision Boundary?</h3>
-<p>A <strong>Decision Boundary</strong> is the invisible dividing line or contour across the feature space where the model switches from predicting one class to another. Any point that falls on one side is predicted as Apple; any point on the other is Orange.</p>
-<strong>• Non-parametric:</strong>
-<p>KNN has no underlying assumptions or mathematical weights to fit (unlike linear equations). The boundary adapts organically to the data density.</p>
-<strong>• Bias-Variance Tradeoff:</strong>
-<p>Adjusting K alters this boundary:</p>
-<strong>K = 1 (High Variance / Low Bias):</strong>
-<p>Extremely flexible, wiggly, and complex boundary. It fits every outlier precisely, memorizing noise and likely overfitting.</p>
-<strong>Medium K (Balanced Tradeoff):</strong>
-<p>Smooth, reasonable boundary shapes that filter out minor noise while preserving genuine group clusters.</p>
-<strong>Large K (Low Variance / High Bias):</strong>
-<p>Highly smooth, almost straight boundaries. It ignores localized trends completely, risking underfitting.</p>
-<h3>Boundary Properties</h3>
-<p>The decision boundary emerges organically from the data — no formula is fitted. This is what makes KNN a <em>non-parametric</em> model.</p>
-<p>💡 Small K = wiggly, complex boundaries. Large K = smoother boundaries. This is the classic <strong>bias-variance tradeoff</strong>.</p></div></div></details>
+<details class="deeper"><summary>Why this works · a little deeper</summary><div><p>KNN does not fit one fixed coefficient formula, so it is called nonparametric. That does not mean it has no assumptions. Its boundary comes from the distances and votes. Larger K often smooths local changes, but does not guarantee a straight boundary. Inspect the actual regions and validation errors instead of assuming one shape from K alone.</p></div></details>
 <details class="check"><summary>Quick check · Is a KNN boundary constrained to a straight line?</summary><p>No.</p></details>
-<a class="next-idea" href="#stage-10">Next: Classifying Test Points ↓</a>
+<a class="next-idea" href="#stage-10">Next: Classify new validation points ↓</a>
 </section>
-<section class="stage" id="stage-10" data-stage="10" aria-labelledby="heading-10">
-<span class="legacy-anchor" id="sec-10" aria-hidden="true"></span><div class="stage-label"><span>10</span>Classifying Test Points</div><h2 id="heading-10">How do unseen points get a label?</h2>
-<p class="answer">Apply the saved feature preparation, compute distances to training examples, select neighbors, and apply the voting rule. Do not add the unknown true label to the calculation.</p><div class="receipt"><div class="receipt-label">A small example · separate from the live dataset</div><div class="table-wrap"><table><thead><tr><th scope="col">Follow the idea</th><th scope="col">Read it in plain language</th></tr></thead><tbody><tr><th scope="row">Input</th><td>Only available features</td></tr><tr><th scope="row">Transform</th><td>Frozen training scales</td></tr><tr><th scope="row">Predict</th><td>K-neighbor vote</td></tr></tbody></table></div><p class="mini-note"><strong>Your notebook:</strong> <span data-bind="live-receipt">Open the visual to inspect the current calculation.</span></p></div>
+<section class="stage" id="stage-10" data-stage="10" data-visual-guide="The query is the point to predict. Its highlighted neighbours are training examples selected by the displayed distance rule." aria-labelledby="heading-10">
+<span class="legacy-anchor" id="sec-10" aria-hidden="true"></span><div class="stage-label"><span>10</span>Classify new validation points</div><h2 id="heading-10">How do unseen points get a label?</h2>
+<p class="answer">Prepare a new row using the saved input rules. Measure its distances to training points, select its neighbours, then apply the saved voting rule. The unknown true label must not help make the prediction.</p><div class="receipt"><div class="receipt-label">A small example · separate from the live dataset</div><div class="table-wrap"><table><thead><tr><th scope="col">Follow the idea</th><th scope="col">Read it in plain language</th></tr></thead><tbody><tr><th scope="row">Input</th><td>Only available features</td></tr><tr><th scope="row">Transform</th><td>Frozen training scales</td></tr><tr><th scope="row">Predict</th><td>K-neighbor vote</td></tr></tbody></table></div><p class="mini-note"><strong>Your notebook:</strong> <span data-bind="live-receipt">Open the visual to inspect the current calculation.</span></p></div>
 <div class="experiment"><span class="pencil">↳</span><div><strong>Try it</strong><p>Move a query among training rows. Use the labeled controls, predict what will change, then compare the calculation before and after.</p><button type="button" data-explore-stage="9">Explore this idea <span aria-hidden="true">↗</span></button></div></div>
-<details class="deeper"><summary>Why this works · a little deeper</summary><div><p>Apply the saved feature preparation, compute distances to training examples, select neighbors, and apply the voting rule. Do not add the unknown true label to the calculation.</p><p>No.</p><div class="reference-reading"><p class="reference-label">Additional reference · worked numbers below are separate examples from the live notebook.</p><p>Now the moment of truth. We take the validation points the model has never seen and classify each one using the same KNN procedure.</p>
-<p>Watch each validation point light up with its prediction. Green rings = correct. Red rings = wrong.</p>
-<h3>validation Predictions</h3></div></div></details>
+<details class="deeper"><summary>Why this works · a little deeper</summary><div><p>Use the same feature order, units and fitted scaling for new rows. Search training examples only. Compare the resulting prediction with a known validation label afterward, rather than letting that label enter the vote. Later evaluation data must reflect the kinds of rows the deployed system will receive.</p></div></details>
 <details class="check"><summary>Quick check · Must a new example's correct label be known to predict it?</summary><p>No.</p></details>
 <a class="next-idea" href="#stage-11">Next: Evaluating the Model ↓</a>
 </section>
-<section class="stage" id="stage-11" data-stage="11" aria-labelledby="heading-11">
+<section class="stage" id="stage-11" data-stage="11" data-visual-guide="The four counts compare actual labels with predictions. TP and TN are correct; FP is a false alert and FN a missed positive." aria-labelledby="heading-11">
 <span class="legacy-anchor" id="sec-11" aria-hidden="true"></span><div class="stage-label"><span>11</span>Evaluating the Model</div><h2 id="heading-11">What does the confusion matrix count?</h2>
-<p class="answer">Each validation row contributes to one confusion-matrix cell. Counts support rates with different denominators, so inspect which errors matter to the task.</p><div class="receipt"><div class="receipt-label">A small example · separate from the live dataset</div><div class="table-wrap"><table><thead><tr><th scope="col">Follow the idea</th><th scope="col">Read it in plain language</th></tr></thead><tbody><tr><th scope="row">Recall</th><td>TP / (TP + FN)</td></tr><tr><th scope="row">Precision</th><td>TP / (TP + FP)</td></tr><tr><th scope="row">Accuracy</th><td>Correct / all</td></tr></tbody></table></div><p class="mini-note"><strong>Your notebook:</strong> <span data-bind="live-receipt">Open the visual to inspect the current calculation.</span></p></div>
+<p class="answer">Each validation point goes into one confusion-matrix cell. A false positive is a false alarm for the positive class. A false negative is a missed positive. Different scores count different groups on the bottom of their fractions.</p><div class="receipt"><div class="receipt-label">A small example · separate from the live dataset</div><div class="table-wrap"><table><thead><tr><th scope="col">Follow the idea</th><th scope="col">Read it in plain language</th></tr></thead><tbody><tr><th scope="row">Recall</th><td>TP / (TP + FN)</td></tr><tr><th scope="row">Precision</th><td>TP / (TP + FP)</td></tr><tr><th scope="row">Accuracy</th><td>Correct / all</td></tr></tbody></table></div><p class="mini-note"><strong>Your notebook:</strong> <span data-bind="live-receipt">Open the visual to inspect the current calculation.</span></p></div>
 <div class="experiment"><span class="pencil">↳</span><div><strong>Try it</strong><p>Count held-out decisions. Use the labeled controls, predict what will change, then compare the calculation before and after.</p><button type="button" data-explore-stage="10">Explore this idea <span aria-hidden="true">↗</span></button></div></div>
-<details class="deeper"><summary>Why this works · a little deeper</summary><div><p>Each validation row contributes to one confusion-matrix cell. Counts support rates with different denominators, so inspect which errors matter to the task.</p><p>No.</p><div class="reference-reading"><p class="reference-label">Additional reference · worked numbers below are separate examples from the live notebook.</p><p>We don't just say "it works." We inspect <em>how</em> it works and where it fails using a <strong>confusion matrix</strong> and derived metrics.</p>
-<h3>Confusion Matrix</h3>
-<h4>🧠 Concept Check</h4>
-<p><strong>If Apple is the Positive Class, what does a False Positive mean in our fruit classification task?</strong></p>
-<h3>Performance Metrics (Apple = positive class)</h3>
-<p>These results come from a tiny 4-point held-out test set, so treat them as illustrative rather than stable performance estimates.</p>
-<p>💡 With imbalanced data, accuracy alone can be misleading. Precision tells you "of all predicted apples, how many were actually apples?" Recall tells you "of all actual apples, how many did the model find?"</p></div></div></details>
+<details class="deeper"><summary>Why this works · a little deeper</summary><div><p>Precision asks how often a predicted positive is correct. Recall asks how many actual positives were found. Accuracy can hide a rare class being missed. The notebook&#x27;s small validation counts are teaching examples. Do not rename them final-test results while choices are still changing.</p></div></details>
 <details class="check"><summary>Quick check · Are precision and recall equal by definition?</summary><p>No.</p></details>
 <a class="next-idea" href="#stage-12">Next: The Effect of K ↓</a>
 </section>
-<section class="stage" id="stage-12" data-stage="12" aria-labelledby="heading-12">
+<section class="stage" id="stage-12" data-stage="12" data-visual-guide="Each point is computed leave-one-out accuracy for one K. Every scored training row was kept out of its own scales and neighbour search." aria-labelledby="heading-12">
 <span class="legacy-anchor" id="sec-12" aria-hidden="true"></span><div class="stage-label"><span>12</span>The Effect of K</div><h2 id="heading-12">How do we choose K?</h2>
-<p class="answer">Compare candidate K values under the same development protocol, refitting preprocessing inside folds. Favor a choice that is useful and stable rather than chasing a tiny noisy advantage.</p><div class="receipt"><div class="receipt-label">A small example · separate from the live dataset</div><div class="table-wrap"><table><thead><tr><th scope="col">Follow the idea</th><th scope="col">Read it in plain language</th></tr></thead><tbody><tr><th scope="row">Candidate</th><td>K and distance rule</td></tr><tr><th scope="row">Score</th><td>Held-out loss</td></tr><tr><th scope="row">Final step</th><td>Lock before final evaluation</td></tr></tbody></table></div><p class="mini-note"><strong>Your notebook:</strong> <span data-bind="live-receipt">Open the visual to inspect the current calculation.</span></p></div>
-<div class="experiment"><span class="pencil">↳</span><div><strong>Try it</strong><p>Compare development settings. Use the labeled controls, predict what will change, then compare the calculation before and after.</p><button type="button" data-explore-stage="11">Explore this idea <span aria-hidden="true">↗</span></button></div></div>
-<details class="deeper"><summary>Why this works · a little deeper</summary><div><p>Compare candidate K values under the same development protocol, refitting preprocessing inside folds. Favor a choice that is useful and stable rather than chasing a tiny noisy advantage.</p><p>No.</p><div class="reference-reading"><p class="reference-label">Additional reference · worked numbers below are separate examples from the live notebook.</p><p>K is one of the most important tuning knobs. Watch how the decision boundary changes as K increases.</p>
-<h3>Start with Five-Fold Cross-Validation</h3>
-<p><strong>Five-fold cross-validation is the usual practical starting point.</strong> Ten-fold cross-validation is also common. In either case, the training data is divided into folds, and each candidate K is scored several times using different train/validation folds.</p>
-<p>⚠️ <strong>This toy dataset is very small, so this lesson demonstrates leave-one-out cross-validation (LOOCV) instead.</strong> That is a small-data teaching choice, not the usual default. With a larger dataset, five-fold or ten-fold CV would typically be more practical.</p>
-<h3>Cross-Validation Compares K; It Does Not Choose K for You</h3>
-<p>Cross-validation is a loop: try several candidate values of K, calculate an average validation score for each one, then choose the K with the strongest average score. The procedure produces the comparison; the modelling workflow makes the selection.</p>
-<p><strong>Illustrative five-fold example:</strong></p>
-<table>
-<thead>
-<tr><th>Candidate K</th><th>Average CV accuracy</th><th>What we do</th></tr>
-</thead>
-<tbody>
-<tr><td>K = 1</td><td>75%</td><td>Compare</td></tr>
-<tr><td>K = 3</td><td>88%</td><td>Compare</td></tr>
-<tr><td><strong>K = 5</strong></td><td><strong>92%</strong></td><td><strong>Best average score</strong></td></tr>
-<tr><td>K = 7</td><td>90%</td><td>Compare</td></tr>
-</tbody>
-</table>
-<p>In this example, we carry K = 5 forward because it has the highest average CV score. The live chart below uses LOOCV because this toy training set is tiny.</p>
-<h3>Recommended Workflow Order</h3>
-<ol>
-<li><strong>Split once:</strong> Separate the full dataset into training and test sets. Keep the test set hidden.</li>
-<li><strong>Cross-validate on training only:</strong> Run five-fold CV for several candidate Ks. In this demonstration, use LOOCV because the training set is very small.</li>
-<li><strong>Choose K:</strong> Compare the average CV scores and select the best-performing candidate.</li>
-<li><strong>Retrain:</strong> Fit KNN on all of the training data using the selected K.</li>
-<li><strong>Test once:</strong> Evaluate that locked model once on the untouched test set.</li>
-</ol>
-<h3>Elbow / Knee: A Secondary Heuristic</h3>
-<p>An elbow or knee is where the CV curve begins to flatten as K increases. It can help you read the curve, but it is a <strong>heuristic, not a rule</strong>. In most cases, start with the K that has the best average cross-validation score. Use the elbow only as a secondary aid when nearby K values perform similarly, then document the tie-breaker you used.</p>
-<p><strong>Example:</strong> If K = 5 has the highest average CV score and the curve also starts flattening after K = 5, the knee supports the choice. It does not replace the score comparison or select K automatically.</p>
-<p>⚠️ Do not choose K from a single split, from the curve's shape alone, or by repeatedly checking the final test set.</p>
-<h3>Compare K Values</h3>
-<h3>K vs Cross-Validation Accuracy</h3>
-<p>
-      Each point shows the average cross-validation accuracy for one candidate K. Use the highest average score as the primary selection signal; the knee marker is only a secondary visual aid.
-    </p>
-<p><strong>Demo note:</strong> This chart uses leave-one-out cross-validation on the training set only because the toy training set is very small. In practice, start with five-fold or ten-fold CV.</p>
-<p>
-      💡 <strong>Try several Ks → compare average CV scores → pick the best.</strong> The elbow/knee can support the decision, but it is not an automatic rule.
-    </p>
-<h3>Big Picture</h3>
-<p><strong>Try several Ks → cross-validation on train only → pick the best average score → retrain on all train → test once.</strong></p></div></div></details>
+<p class="answer">Try several K values using the same validation method. In cross-validation, each group takes a turn being held out. Fit input preparation inside each training turn. Prefer a useful, stable choice over a tiny uncertain lead.</p><div class="receipt"><div class="receipt-label">A small example · separate from the live dataset</div><div class="table-wrap"><table><thead><tr><th scope="col">Follow the idea</th><th scope="col">Read it in plain language</th></tr></thead><tbody><tr><th scope="row">Candidate</th><td>K and distance rule</td></tr><tr><th scope="row">Score</th><td>Held-out loss</td></tr><tr><th scope="row">Final step</th><td>Lock before final evaluation</td></tr></tbody></table></div><p class="mini-note"><strong>Your notebook:</strong> <span data-bind="live-receipt">Open the visual to inspect the current calculation.</span></p></div>
+<div class="experiment"><span class="pencil">↳</span><div><strong>Try it</strong><p>Compare the training-only leave-one-out scores across K. Move K to a different point and compare its CV score with the separate validation score. Neither uses final-test labels.</p><button type="button" data-explore-stage="11">Explore this idea <span aria-hidden="true">↗</span></button></div></div>
+<details class="deeper"><summary>Why this works · a little deeper</summary><div><p>This lab computes leave-one-out cross-validation on its 48 training rows: hold out one training row, predict from the others, and repeat. Its scaling must also be fitted without the held-out row. In larger tasks, several-fold evaluation may be more practical; choose a split suited to time or related groups. A separate five-fold illustration has scores 75%,88%,92%,90% for K=1,3,5,7. An elbow is only a visual aid, not a replacement for scores and uncertainty. Refit the chosen procedure on all development training data before an untouched final evaluation.</p></div></details>
 <details class="check"><summary>Quick check · Should training accuracy alone select K = 1?</summary><p>No.</p></details>
 <a class="next-idea" href="#stage-13">Next: Strengths and Weaknesses ↓</a>
 </section>
-<section class="stage" id="stage-13" data-stage="13" aria-labelledby="heading-13">
+<section class="stage" id="stage-13" data-stage="13" data-visual-guide="The query is the point to predict. Its highlighted neighbours are training examples selected by the displayed distance rule." aria-labelledby="heading-13">
 <span class="legacy-anchor" id="sec-13" aria-hidden="true"></span><div class="stage-label"><span>13</span>Strengths and Weaknesses</div><h2 id="heading-13">When does KNN become unreliable or expensive?</h2>
-<p class="answer">KNN can struggle in high dimensions, with irrelevant features, sparse coverage, or expensive searches. Nearby examples must remain meaningful for the deployment population.</p><div class="receipt"><div class="receipt-label">A small example · separate from the live dataset</div><div class="table-wrap"><table><thead><tr><th scope="col">Follow the idea</th><th scope="col">Read it in plain language</th></tr></thead><tbody><tr><th scope="row">High dimensions</th><td>Distances can become less discriminating</td></tr><tr><th scope="row">Large training set</th><td>Costly exact search</td></tr><tr><th scope="row">Shift</th><td>Old neighbors may no longer apply</td></tr></tbody></table></div><p class="mini-note"><strong>Your notebook:</strong> <span data-bind="live-receipt">Open the visual to inspect the current calculation.</span></p></div>
+<p class="answer">KNN struggles when distance stops being meaningful. Too many inputs, irrelevant clues, few nearby examples and very uneven class sizes can cause problems. Searching many stored points can also cost time and memory.</p><div class="receipt"><div class="receipt-label">A small example · separate from the live dataset</div><div class="table-wrap"><table><thead><tr><th scope="col">Follow the idea</th><th scope="col">Read it in plain language</th></tr></thead><tbody><tr><th scope="row">High dimensions</th><td>Distances can become less discriminating</td></tr><tr><th scope="row">Large training set</th><td>Costly exact search</td></tr><tr><th scope="row">Shift</th><td>Old neighbors may no longer apply</td></tr></tbody></table></div><p class="mini-note"><strong>Your notebook:</strong> <span data-bind="live-receipt">Open the visual to inspect the current calculation.</span></p></div>
 <div class="experiment"><span class="pencil">↳</span><div><strong>Try it</strong><p>Move a query among training rows. Use the labeled controls, predict what will change, then compare the calculation before and after.</p><button type="button" data-explore-stage="12">Explore this idea <span aria-hidden="true">↗</span></button></div></div>
-<details class="deeper"><summary>Why this works · a little deeper</summary><div><p>KNN can struggle in high dimensions, with irrelevant features, sparse coverage, or expensive searches. Nearby examples must remain meaningful for the deployment population.</p><p>No.</p><div class="reference-reading"><p class="reference-label">Additional reference · worked numbers below are separate examples from the live notebook.</p><p>Before using K-Nearest Neighbors in practice, it is vital to know when it shines and where it struggles.</p>
-<h3>💪 Strengths</h3>
-<ul>
-<li><strong>Simple to understand:</strong> Intuitive to explain to stakeholders.</li>
-<li><strong>No Parameter-Learning Phase:</strong> KNN does not fit weights or coefficients. It stores the training examples and uses them during prediction.</li>
-<li><strong>Highly Flexible:</strong> Can easily construct complex, non-linear decision boundaries.</li>
-<li><strong>Naturally Multi-class:</strong> Works seamlessly for predicting 3 or more classes.</li>
-</ul>
-<h3>⚠️ Weaknesses &amp; Limitations</h3>
-<ul>
-<li><strong>Sensitive to Scale:</strong> Scaling is usually necessary when features use different units or magnitudes; otherwise larger-scale features dominate distance.</li>
-<li><strong>The Curse of Dimensionality:</strong> When there are too many features, distance often becomes less useful because many points start to seem similarly far apart. This makes it harder for KNN to find truly meaningful neighbors.</li>
-<li><strong>Slow at Scale:</strong> Must calculate distance to every single stored point for every new query. High memory and computing costs.</li>
-<li><strong>Class Imbalance:</strong> If you have 95% Apples and 5% Oranges, votes will naturally skew heavily to Apple.</li>
-</ul>
-<h3>The Whole Story in Plain English</h3>
-<p>
-      Here is the complete machine learning workflow we walked through today:
-    </p>
-<ol>
-<li><strong>Labeled Examples:</strong> Start with known data (fruits with known categories).</li>
-<li><strong>Feature Selection:</strong> Select high-quality, relevant properties (sweetness, color).</li>
-<li><strong>Train/Test Split:</strong> Set aside a final held-out test set to keep final evaluation fair.</li>
-<li><strong>Feature Scaling:</strong> Fit an appropriate scaling transformation using the training data when feature units or magnitudes would otherwise dominate the distance calculation. Standardisation, min-max scaling, robust scaling and domain-specific transformations are all possible choices; apply the fitted transformation unchanged to validation and test data.</li>
-<li><strong>Mystery Input:</strong> Introduce an unknown query point (★) on the plot.</li>
-<li><strong>Distance Measuring:</strong> Run Euclidean distance against all stored training examples.</li>
-<li><strong>Hyperparameter K:</strong> Choose K (the count of voting neighbors) using validation or cross-validation.</li>
-<li><strong>Locate Neighbors:</strong> Gather the K nearest samples.</li>
-<li><strong>Tally Votes:</strong> Perform a democratic, equal-weight majority vote.</li>
-<li><strong>Predict:</strong> Assign the winning class to the unknown query point.</li>
-<li><strong>Independent Testing:</strong> Run the held-out test points to check the model's accuracy.</li>
-<li><strong>Evaluate Quality:</strong> Read the confusion matrix, recall, precision, and F1 metrics.</li>
-<li><strong>Tune K:</strong> Use cross-validation inside the training memory to find the best K.</li>
-<li><strong>Analyze Trade-offs:</strong> Know KNN's limits, such as scale sensitivity and the curse of dimensionality.</li>
-</ol></div></div></details>
+<details class="deeper"><summary>Why this works · a little deeper</summary><div><p>Many inputs can make distances increasingly alike, called the curse of dimensionality. Common classes can dominate local votes. Brute-force prediction checks every stored point; search structures or approximations can reduce that cost but have their own limits. Validate meaningful coverage, rare-class errors, distance choices and resource use on the intended deployment population.</p></div></details>
 <details class="check"><summary>Quick check · Does a nearby training case guarantee a reliable prediction?</summary><p>No.</p></details>
 <a class="next-idea" href="#stage-14">Next: Interactive Playground ↓</a>
 </section>
-<section class="stage" id="stage-14" data-stage="14" aria-labelledby="heading-14">
+<section class="stage" id="stage-14" data-stage="14" data-visual-guide="Follow each selected prediction or neighbour weight into the combined answer. Name the averaging or voting rule." aria-labelledby="heading-14">
 <span class="legacy-anchor" id="sec-14" aria-hidden="true"></span><div class="stage-label"><span>14</span>Interactive Playground</div><h2 id="heading-14">Can I explain a new prediction?</h2>
-<p class="answer">Explain one prediction by listing the transformed inputs, chosen neighbors, distances, and vote. Treat the explanation as a description of the model, not a causal story.</p><div class="receipt"><div class="receipt-label">A small example · separate from the live dataset</div><div class="table-wrap"><table><thead><tr><th scope="col">Follow the idea</th><th scope="col">Read it in plain language</th></tr></thead><tbody><tr><th scope="row">Three neighbors</th><td>Labels 1, 0, 1</td></tr><tr><th scope="row">Uniform fraction</th><td>2 / 3</td></tr><tr><th scope="row">At threshold 0.5</th><td>Predict class 1</td></tr></tbody></table></div><p class="mini-note"><strong>Your notebook:</strong> <span data-bind="live-receipt">Open the visual to inspect the current calculation.</span></p></div>
-<div class="experiment"><span class="pencil">↳</span><div><strong>Try it</strong><p>Move the query and compare uniform with inverse-distance voting. Explain which neighbors gained influence and whether the threshold decision changed.</p><button type="button" data-explore-stage="13">Explore this idea <span aria-hidden="true">↗</span></button></div></div>
-<details class="deeper"><summary>Why this works · a little deeper</summary><div><p>Explain one prediction by listing the transformed inputs, chosen neighbors, distances, and vote. Treat the explanation as a description of the model, not a causal story.</p><p>No. It changes which labels are consulted.</p><div class="reference-reading"><p class="reference-label">Additional reference · worked numbers below are separate examples from the live notebook.</p><p>Each new point's K nearest neighbors will be found and the majority vote decides its class.</p></div></div></details>
+<p class="answer">Change one setting at a time. Predict which neighbours and votes will change, then check. Keep the same new point so the before-and-after comparison answers one clear question.</p><div class="receipt"><div class="receipt-label">A small example · separate from the live dataset</div><div class="table-wrap"><table><thead><tr><th scope="col">Follow the idea</th><th scope="col">Read it in plain language</th></tr></thead><tbody><tr><th scope="row">Three neighbors</th><td>Labels 1, 0, 1</td></tr><tr><th scope="row">Uniform fraction</th><td>2 / 3</td></tr><tr><th scope="row">At threshold 0.5</th><td>Predict class 1</td></tr></tbody></table></div><p class="mini-note"><strong>Your notebook:</strong> <span data-bind="live-receipt">Open the visual to inspect the current calculation.</span></p></div>
+<div class="experiment"><span class="pencil">↳</span><div><strong>Try it</strong><p>Move the point to predict and compare uniform with inverse-distance voting. Explain which neighbors gained influence and whether the threshold decision changed.</p><button type="button" data-explore-stage="13">Explore this idea <span aria-hidden="true">↗</span></button></div></div>
+<details class="deeper"><summary>Why this works · a little deeper</summary><div><p>Hold the sample fixed while comparing settings. If you also draw a new dataset, several causes of change are mixed together. Explain the new point&#x27;s location, scaling, selected neighbours, labels, vote and final prediction. That trace is more informative than saying the colour changed.</p></div></details>
 <details class="check"><summary>Quick check · Would moving the query change the training labels?</summary><p>No. It changes which labels are consulted.</p></details>
 <a class="next-idea" href="support-vector-machine.html">Continue to Support Vector Machines — Separate classes with breathing room →</a>
 </section>
 </article><aside class="lab-home" aria-label="Interactive notebook"><section class="lab-panel" id="lab-panel"><header class="lab-header"><div><p class="eyebrow">THE LIVE NOTEBOOK <span id="lab-stage">01</span></p><h2 id="lab-title">The Raw Data</h2></div><button class="icon-button" type="button" data-reset aria-label="Reset notebook" title="Reset notebook to its starting values">↺</button></header>
-<div id="lab-content" data-interactive="classification"><p class="loading-note">Your interactive notebook is loading. The complete written lesson is on the left.</p></div>
+<p class="visual-reading-guide" id="visual-reading-guide" hidden></p><div id="lab-content" data-interactive="classification"><p class="loading-note">Your interactive notebook is loading. The complete written lesson is on the left.</p></div>
 <p id="motion-status" class="motion-status" aria-live="off"></p><p class="lab-caption" id="lab-caption">Read the idea, inspect a small example, then change one thing in the live notebook.</p><p class="live-announcement" role="status" aria-live="polite"></p></section></aside></main>
 <dialog class="lab-dialog" aria-labelledby="dialog-title"><header class="dialog-header"><strong id="dialog-title">Explore the notebook</strong><button type="button" data-close-lab>Back to reading ✕</button></header><div class="dialog-body"></div></dialog>
 <details class="topic-directory"><summary>Explore all 34 topics</summary><nav aria-label="All academy topics"><a href="anova.html">Analysis of Variance (ANOVA)</a><a href="association-rules.html">Association Rules</a><a href="bias-variance.html">Bias-Variance Trade-Off &amp; Resampling</a><a href="chi-square.html">Chi-Square Test of Independence</a><a href="classification-trees.html">Classification Trees</a><a href="confidence-hypothesis-testing.html">Confidence Intervals &amp; Hypothesis Testing</a><a href="correlation.html">Correlation</a><a href="data-leakage-pipelines.html">Data Leakage &amp; Pipelines</a><a href="deep-learning.html">Deep Learning</a><a href="evaluation-metrics.html">Evaluation Metrics</a><a href="experimental-design.html">Experimental Design &amp; Randomisation</a><a href="gradient-boosting.html">Gradient Boosting</a><a href="hierarchical-clustering.html">Hierarchical Clustering</a><a href="imbalanced-classification.html">Imbalanced Classification</a><a href="kmeans.html">K-Means Clustering</a><a href="knn.html" aria-current="page">K-Nearest Neighbors (KNN)</a><a href="lda.html">Linear Discriminant Analysis (LDA)</a><a href="logistic-regression.html">Logistic Regression</a><a href="missing-data-encoding.html">Missing Data &amp; Encoding</a><a href="model-selection.html">Model Selection &amp; Regularization</a><a href="multiple-linear-regression.html">Multiple Linear Regression</a><a href="naive-bayes.html">Naive Bayes</a><a href="neural-networks.html">Neural Networks</a><a href="one-r.html">One-R</a><a href="polynomial-regression.html">Polynomial Regression</a><a href="pca.html">Principal Component Analysis (PCA)</a><a href="probability-sampling.html">Probability &amp; Sampling Distributions</a><a href="qda.html">Quadratic Discriminant Analysis (QDA)</a><a href="random-forest.html">Random Forest</a><a href="regression-diagnostics.html">Regression Diagnostics</a><a href="regression-trees.html">Regression Trees</a><a href="simple-linear-regression.html">Simple Linear Regression</a><a href="support-vector-machine.html">Support Vector Machines — Separate classes with breathing room</a><a href="time-series-analysis.html">Time Series Analysis</a></nav></details>

@@ -11,233 +11,82 @@
 <div class="lesson-toolbar"><label for="stage-select">Lesson map</label><select id="stage-select"><option value="0">01 · The Multi-Variable World</option><option value="1">02 · The Secret Recipe</option><option value="2">03 · Finding the Fit</option><option value="3">04 · The Least Squares Method</option><option value="4">05 · The Superpower: Holding Constant</option><option value="5">06 · Building the Prediction</option><option value="6">07 · The Spurious Trap</option><option value="7">08 · The Adjusted R² Penalty</option><option value="8">09 · Reading the Model Output</option></select><span class="stage-progress" aria-live="polite">1 / 9</span></div>
 <div class="mobile-lab-bar"><span><small>Live notebook</small><strong id="mobile-summary">Why use more than one predictor?</strong></span><button class="primary" type="button" data-open-lab>Explore visual ↗</button></div>
 <main class="notebook-layout" id="lesson"><article class="reading">
-<header class="hero"><p class="eyebrow">Supervised learning · Multiple regression</p><h1>Multiple Linear Regression</h1><p class="intro">Several available clues can improve a prediction or help describe an adjusted association. Each row still has one outcome; the model now combines several predictors.</p><div class="pathway"><div><small>Prerequisites</small>Means, plots, and the train–validation distinction</div><div><small>Recommended next</small><a href="regression-diagnostics.html">Regression Diagnostics</a></div></div><p class="reading-tip">Read a little. Try a little. Open the “why” when you are ready.</p></header>
+<header class="hero"><p class="eyebrow">Supervised learning · Multiple regression</p><h1>Multiple Linear Regression</h1><p class="intro">Combine several input clues to predict one number. Follow each contribution and see what holding the other inputs fixed means.</p><div class="pathway"><div><small>Prerequisites</small>Simple Linear Regression, averages, and multiplying then adding numbers.</div><div><small>Recommended next</small><a href="regression-diagnostics.html">Regression Diagnostics</a></div></div><p class="reading-tip">Read a little. Try a little. Open the “why” when you are ready.</p></header>
 <noscript><p class="caution">The full lesson, worked examples and answers are readable here. Enable JavaScript for the interactive experiments and live calculations.</p></noscript>
-<section class="stage" id="stage-1" data-stage="1" aria-labelledby="heading-1">
+<section class="stage" id="stage-1" data-stage="1" data-visual-guide="Dots are observed outcomes. The fitted line or surface gives predictions; vertical gaps are actual minus predicted." aria-labelledby="heading-1">
 <div class="stage-label"><span>01</span>The Multi-Variable World</div><h2 id="heading-1">Why use more than one predictor?</h2>
-<p class="answer">Several available clues can improve a prediction or help describe an adjusted association. Each row still has one outcome; the model now combines several predictors.</p><div class="receipt"><div class="receipt-label">A small example · separate from the live dataset</div><div class="table-wrap"><table><thead><tr><th scope="col">Follow the idea</th><th scope="col">Read it in plain language</th></tr></thead><tbody><tr><th scope="row">Inputs</th><td>Study hours and prior score</td></tr><tr><th scope="row">Target</th><td>Exam score</td></tr><tr><th scope="row">Model</th><td>One weighted sum</td></tr></tbody></table></div><p class="mini-note"><strong>Your notebook:</strong> <span data-bind="live-receipt">Open the visual to inspect the current calculation.</span></p></div>
+<p class="answer">One clue may not be enough to predict an outcome. Multiple regression combines several inputs, called predictors. Each row still has one outcome. The model adds up the contributions from all its predictors.</p><div class="receipt"><div class="receipt-label">A small example · separate from the live dataset</div><div class="table-wrap"><table><thead><tr><th scope="col">Follow the idea</th><th scope="col">Read it in plain language</th></tr></thead><tbody><tr><th scope="row">Inputs</th><td>Study hours and prior score</td></tr><tr><th scope="row">Target</th><td>Exam score</td></tr><tr><th scope="row">Model</th><td>One weighted sum</td></tr></tbody></table></div><p class="mini-note"><strong>Your notebook:</strong> <span data-bind="live-receipt">Open the visual to inspect the current calculation.</span></p></div>
 <div class="experiment"><span class="pencil">↳</span><div><strong>Try it</strong><p>Rotate the data space. Select a blue observation and follow its vertical residual down to the green prediction plane.</p><button type="button" data-explore-stage="0">Explore this idea <span aria-hidden="true">↗</span></button></div></div>
-<details class="deeper"><summary>Why this works · a little deeper</summary><div><p>Several available clues can improve a prediction or help describe an adjusted association. Each row still has one outcome; the model now combines several predictors.</p><p>No. It can add noise or overfitting.</p><div class="reference-reading"><p class="reference-label">Additional reference · worked numbers below are separate examples from the live notebook.</p><p>
-                    Life is messy. If we want to predict a student's <strong>Test Score</strong>, knowing how many hours they studied is helpful, but it's rarely the full story.
-                </p>
-<p>
-                    What about how much sleep they got? What about the number of practice papers they completed? Multiple Linear Regression allows us to use <em>several clues together</em> to predict one number.
-                </p>
-<h3>Our Data Universe</h3>
-<p>To the right, we plot a dataset of students in 3D space:</p>
-<ul>
-<li>X-Axis: Hours Studied</li>
-<li>Z-Axis: Hours Slept</li>
-<li>Y-Axis (Height): Test Score</li>
-</ul></div></div></details>
+<details class="deeper"><summary>Why this works · a little deeper</summary><div><p>With two inputs and one outcome, the prediction can be drawn as a plane in three dimensions. One dot is one observed row; its height is the outcome. The vertical gap to the plane is actual minus predicted. More inputs require more dimensions, so a drawing must clearly state which ones are held fixed. The live lab uses two inputs, with the same rows shown across its views.</p></div></details>
 <details class="check"><summary>Quick check · Does adding a predictor guarantee better new-data predictions?</summary><p>No. It can add noise or overfitting.</p></details>
 <a class="next-idea" href="#stage-2">Next: The Secret Recipe ↓</a>
 </section>
-<section class="stage" id="stage-2" data-stage="2" aria-labelledby="heading-2">
+<section class="stage" id="stage-2" data-stage="2" data-visual-guide="Follow the separate products or scaled gaps into the total. A negative contribution lowers the sum." aria-labelledby="heading-2">
 <div class="stage-label"><span>02</span>The Secret Recipe</div><h2 id="heading-2">How does the equation combine clues?</h2>
-<p class="answer">The intercept supplies a starting value, and each predictor contributes its value times a coefficient. Add all contributions to obtain the predicted mean.</p><div class="receipt"><div class="receipt-label">A small example · separate from the live dataset</div><div class="table-wrap"><table><thead><tr><th scope="col">Follow the idea</th><th scope="col">Read it in plain language</th></tr></thead><tbody><tr><th scope="row">Intercept</th><td>20</td></tr><tr><th scope="row">2 × hours, hours = 4</th><td>8</td></tr><tr><th scope="row">0.5 × prior score, prior = 60</th><td>30</td></tr><tr><th scope="row">Prediction</th><td>58</td></tr></tbody></table></div><p class="mini-note"><strong>Your notebook:</strong> <span data-bind="live-receipt">Open the visual to inspect the current calculation.</span></p></div>
+<p class="answer">Start with the intercept, the prediction when all inputs are zero. Multiply each input by its coefficient, then add the products. The result is the model's predicted average outcome for those inputs.</p><div class="receipt"><div class="receipt-label">A small example · separate from the live dataset</div><div class="table-wrap"><table><thead><tr><th scope="col">Follow the idea</th><th scope="col">Read it in plain language</th></tr></thead><tbody><tr><th scope="row">Intercept</th><td>20</td></tr><tr><th scope="row">2 × hours, hours = 4</th><td>8</td></tr><tr><th scope="row">0.5 × prior score, prior = 60</th><td>30</td></tr><tr><th scope="row">Prediction</th><td>58</td></tr></tbody></table></div><p class="mini-note"><strong>Your notebook:</strong> <span data-bind="live-receipt">Open the visual to inspect the current calculation.</span></p></div>
 <div class="experiment"><span class="pencil">↳</span><div><strong>Try it</strong><p>Change x₁, then x₂. Follow each signed contribution into the total; a negative contribution lowers the prediction.</p><button type="button" data-explore-stage="1">Explore this idea <span aria-hidden="true">↗</span></button></div></div>
-<details class="deeper"><summary>Why this works · a little deeper</summary><div><p>The intercept supplies a starting value, and each predictor contributes its value times a coefficient. Add all contributions to obtain the predicted mean.</p><p>The prediction rises by 2, holding the other input fixed.</p><div class="reference-reading"><p class="reference-label">Additional reference · worked numbers below are separate examples from the live notebook.</p><p>
-                    In simple regression, we draw a line. But with three predictors—Study, Sleep, and Practice—we technically need a 4D space! Since we can't see 4D, we'll draw a <strong>3D plane</strong> as a visual stepping stone. 
-                </p>
-<p>
-                    We'll plot Study and Sleep on the axes, and hold Practice temporarily constant at its average to visualize one slice of the full model. Think of the full equation like a cake recipe with multiple ingredients:
-                </p>
-<sub>0</sub>
-<sub>1</sub>
-<sub>1</sub>
-<sub>2</sub>
-<sub>2</sub>
-<sub>3</sub>
-<sub>3</sub>
-<p>+ ε The Target (y) Test Score The Predictors (x) Study, Sleep, Practice The Boosters (β) Coefficients The Messiness (ε) Unexplained Error</p></div></div></details>
+<details class="deeper"><summary>Why this works · a little deeper</summary><div><p>ŷ = b₀+b₁x₁+b₂x₂. ŷ means prediction, b₀ is the intercept, and b₁,b₂ are coefficients. Each coefficient has outcome units per input unit. The fitted plane describes the predicted mean; individual outcomes can differ. An intercept at impossible or unobserved zero inputs may have little practical meaning.</p></div></details>
 <details class="check"><summary>Quick check · What happens if only hours increase by one?</summary><p>The prediction rises by 2, holding the other input fixed.</p></details>
 <a class="next-idea" href="#stage-3">Next: Finding the Fit ↓</a>
 </section>
-<section class="stage" id="stage-3" data-stage="3" aria-labelledby="heading-3">
+<section class="stage" id="stage-3" data-stage="3" data-visual-guide="Dots are observed outcomes. The fitted line or surface gives predictions; vertical gaps are actual minus predicted." aria-labelledby="heading-3">
 <div class="stage-label"><span>03</span>Finding the Fit</div><h2 id="heading-3">What changes when I adjust one coefficient?</h2>
-<p class="answer">Changing one coefficient changes the model's sensitivity to that predictor. A two-dimensional slice holds the other predictor fixed; it does not display the whole fitted surface.</p><div class="receipt"><div class="receipt-label">A small example · separate from the live dataset</div><div class="table-wrap"><table><thead><tr><th scope="col">Follow the idea</th><th scope="col">Read it in plain language</th></tr></thead><tbody><tr><th scope="row">Coefficient β₁</th><td>Change per unit of x₁</td></tr><tr><th scope="row">Coefficient β₂</th><td>Change per unit of x₂</td></tr><tr><th scope="row">Slice</th><td>Fix x₂ and vary x₁</td></tr></tbody></table></div><p class="mini-note"><strong>Your notebook:</strong> <span data-bind="live-receipt">Open the visual to inspect the current calculation.</span></p></div>
+<p class="answer">A coefficient controls how much its input changes the prediction. Changing it tilts the fitted surface. A slice shows one comparison while keeping another input fixed; it is not the entire model.</p><div class="receipt"><div class="receipt-label">A small example · separate from the live dataset</div><div class="table-wrap"><table><thead><tr><th scope="col">Follow the idea</th><th scope="col">Read it in plain language</th></tr></thead><tbody><tr><th scope="row">Coefficient β₁</th><td>Change per unit of x₁</td></tr><tr><th scope="row">Coefficient β₂</th><td>Change per unit of x₂</td></tr><tr><th scope="row">Slice</th><td>Fix x₂ and vary x₁</td></tr></tbody></table></div><p class="mini-note"><strong>Your notebook:</strong> <span data-bind="live-receipt">Open the visual to inspect the current calculation.</span></p></div>
 <div class="experiment"><span class="pencil">↳</span><div><strong>Try it</strong><p>Tilt β₁ while leaving β₂ alone. Compare the plane, the residual threads, and training MSE on the same data.</p><button type="button" data-explore-stage="2">Explore this idea <span aria-hidden="true">↗</span></button></div></div>
-<details class="deeper"><summary>Why this works · a little deeper</summary><div><p>Changing one coefficient changes the model's sensitivity to that predictor. A two-dimensional slice holds the other predictor fixed; it does not display the whole fitted surface.</p><p>No. Observations can sit away from a fixed-input slice.</p><div class="reference-reading"><p class="reference-label">Additional reference · worked numbers below are separate examples from the live notebook.</p><p>
-                    We want our model to pass as closely to the actual student scores as possible. The distance between our prediction and the actual score is called a <strong>Residual</strong> (the red dashed lines).
-                </p>
-<p>
-                    Try adjusting the full set of coefficients manually. The indigo surface is the average-practice slice, while the hollow red markers show the <em>full</em> three-variable prediction used for the residuals and SSE.
-                </p>
-<sub>0</sub>
-<sub>1</sub>
-<sub>2</sub>
-<sub>3</sub>
-<p>) 1.0 Sum of Squared Errors (SSE) ---</p></div></div></details>
+<details class="deeper"><summary>Why this works · a little deeper</summary><div><p>Use the same observed rows while comparing trial coefficients. The residuals are vertical outcome gaps at each row&#x27;s own input values. A fixed-input slice can help explain one slope, but it must not silently replace the full prediction used in a residual calculation. The numerical receipt and visual use the same fitted inputs.</p></div></details>
 <details class="check"><summary>Quick check · Does a slice show every observation at its own second input?</summary><p>No. Observations can sit away from a fixed-input slice.</p></details>
 <a class="next-idea" href="#stage-4">Next: The Least Squares Method ↓</a>
 </section>
-<section class="stage" id="stage-4" data-stage="4" aria-labelledby="heading-4">
+<section class="stage" id="stage-4" data-stage="4" data-visual-guide="Dots are observed outcomes. The fitted line or surface gives predictions; vertical gaps are actual minus predicted." aria-labelledby="heading-4">
 <div class="stage-label"><span>04</span>The Least Squares Method</div><h2 id="heading-4">How does least squares select the weights?</h2>
-<p class="answer">Least squares chooses coefficients together to minimize the sum of squared vertical residuals. A unique unregularized solution requires independent columns in the design matrix.</p><div class="receipt"><div class="receipt-label">A small example · separate from the live dataset</div><div class="table-wrap"><table><thead><tr><th scope="col">Follow the idea</th><th scope="col">Read it in plain language</th></tr></thead><tbody><tr><th scope="row">Residual</th><td>Observed − predicted</td></tr><tr><th scope="row">Objective</th><td>Sum of squared residuals</td></tr><tr><th scope="row">Identifiability</th><td>No exact redundant predictor column</td></tr></tbody></table></div><p class="mini-note"><strong>Your notebook:</strong> <span data-bind="live-receipt">Open the visual to inspect the current calculation.</span></p></div>
+<p class="answer">Least squares chooses all coefficients together to make squared prediction gaps as small as possible. To get one unique unpenalized coefficient answer, the input columns must not exactly repeat combinations of one another.</p><div class="receipt"><div class="receipt-label">A small example · separate from the live dataset</div><div class="table-wrap"><table><thead><tr><th scope="col">Follow the idea</th><th scope="col">Read it in plain language</th></tr></thead><tbody><tr><th scope="row">Residual</th><td>Observed − predicted</td></tr><tr><th scope="row">Objective</th><td>Sum of squared residuals</td></tr><tr><th scope="row">Identifiability</th><td>No exact redundant predictor column</td></tr></tbody></table></div><p class="mini-note"><strong>Your notebook:</strong> <span data-bind="live-receipt">Open the visual to inspect the current calculation.</span></p></div>
 <div class="experiment"><span class="pencil">↳</span><div><strong>Try it</strong><p>Try a poor slope, then choose “Find the least-squares plane”. Check that the training error falls while the observations stay fixed.</p><button type="button" data-explore-stage="3">Explore this idea <span aria-hidden="true">↗</span></button></div></div>
-<details class="deeper"><summary>Why this works · a little deeper</summary><div><p>Least squares chooses coefficients together to minimize the sum of squared vertical residuals. A unique unregularized solution requires independent columns in the design matrix.</p><p>No. Their combined effect can be identified, but their separate weights cannot.</p><div class="reference-reading"><p class="reference-label">Additional reference · worked numbers below are separate examples from the live notebook.</p><p>
-                    Instead of guessing, the computer uses matrix algebra to instantly derive the absolute lowest possible Sum of Squared Errors directly from the dataset.
-                </p>
-<p>
-                    By minimizing the squared outcome residuals at the observed input combinations, it finds the least-squares fit under the model.
-                </p>
-<strong>Why Square the Errors?</strong>
-<p>. It stops positive (+4) and negative (-4) misses from canceling out to zero.</p>
-<p>. It heavily punishes huge misses (a miss of 10 costs 100 points), forcing the model to compromise evenly across all variables.</p></div></div></details>
+<details class="deeper"><summary>Why this works · a little deeper</summary><div><p>Squaring stops +4 and −4 cancelling: both contribute 16. Least squares minimizes their total across training rows. A design matrix is the table of model input columns, including the intercept. Exact column redundancy gives non-unique ordinary coefficients. A penalty can stabilize a fit, but changes the fitting rule and does not prove causal effects.</p></div></details>
 <details class="check"><summary>Quick check · Can two identical columns have uniquely determined separate coefficients?</summary><p>No. Their combined effect can be identified, but their separate weights cannot.</p></details>
 <a class="next-idea" href="#stage-5">Next: The Superpower: Holding Constant ↓</a>
 </section>
-<section class="stage" id="stage-5" data-stage="5" aria-labelledby="heading-5">
+<section class="stage" id="stage-5" data-stage="5" data-visual-guide="Follow the separate products or scaled gaps into the total. A negative contribution lowers the sum." aria-labelledby="heading-5">
 <div class="stage-label"><span>05</span>The Superpower: Holding Constant</div><h2 id="heading-5">What does holding constant mean?</h2>
-<p class="answer">Holding constant is a comparison inside the model: change one predictor while fixing the others. It is not automatically a feasible intervention or a causal effect.</p><div class="receipt"><div class="receipt-label">A small example · separate from the live dataset</div><div class="table-wrap"><table><thead><tr><th scope="col">Follow the idea</th><th scope="col">Read it in plain language</th></tr></thead><tbody><tr><th scope="row">Compare</th><td>x₁ = 3 versus x₁ = 4</td></tr><tr><th scope="row">Keep fixed</th><td>Same x₂ value</td></tr><tr><th scope="row">Interpretation</th><td>Adjusted model association</td></tr></tbody></table></div><p class="mini-note"><strong>Your notebook:</strong> <span data-bind="live-receipt">Open the visual to inspect the current calculation.</span></p></div>
+<p class="answer">Holding constant means keeping the other input numbers fixed inside the model. Change one input and see how the prediction changes. It does not literally freeze the world or prove a cause-and-effect relationship.</p><div class="receipt"><div class="receipt-label">A small example · separate from the live dataset</div><div class="table-wrap"><table><thead><tr><th scope="col">Follow the idea</th><th scope="col">Read it in plain language</th></tr></thead><tbody><tr><th scope="row">Compare</th><td>x₁ = 3 versus x₁ = 4</td></tr><tr><th scope="row">Keep fixed</th><td>Same x₂ value</td></tr><tr><th scope="row">Interpretation</th><td>Adjusted model association</td></tr></tbody></table></div><p class="mini-note"><strong>Your notebook:</strong> <span data-bind="live-receipt">Open the visual to inspect the current calculation.</span></p></div>
 <div class="experiment"><span class="pencil">↳</span><div><strong>Try it</strong><p>Move x₁ along the green line while keeping x₂ fixed. The rise for a one-unit move is β₁. Then change the held value of x₂.</p><button type="button" data-explore-stage="4">Explore this idea <span aria-hidden="true">↗</span></button></div></div>
-<details class="deeper"><summary>Why this works · a little deeper</summary><div><p>Holding constant is a comparison inside the model: change one predictor while fixing the others. It is not automatically a feasible intervention or a causal effect.</p><p>It may rely on sparse or nonexistent combinations.</p><div class="reference-reading"><p class="reference-label">Additional reference · worked numbers below are separate examples from the live notebook.</p><p>
-                    This is the most critical concept in multiple regression. What does a Study Boost (β<sub>1</sub>) actually mean when we have an optimal fit?
-                </p>
-<p>
-                    It means: If a student studies one extra hour, their score increases by exactly that boost amount—<em>assuming their sleep and practice papers stay exactly the same.</em>
-</p>
-<p>
-                    This logic applies to <em>each</em> predictor's coefficient: <strong>β<sub>1</sub></strong> is the estimated association with Study while Sleep and Practice are held fixed, <strong>β<sub>2</sub></strong> is the estimated association with Sleep while Study and Practice are held fixed, and <strong>β<sub>3</sub></strong> is the estimated association with Practice while Study and Sleep are held fixed. These are not automatically causal effects.
-                </p>
-<p>
-                    The model does not literally freeze variables in real life—rather, it does this <em>mathematically</em> to estimate each variable's <strong>conditional association holding other modeled predictors fixed</strong>.
-                </p>
-<p>
-                        Notice the highlighted slice on the plane. We've locked "Sleep" at 6 hours (and Practice at its average). As we move purely along the Study axis, the score rises in a perfect straight line determined solely by β<sub>1</sub>.
-                    </p>
-<sub>0</sub>
-<strong>β<sub>1</sub>(Study)</strong></div></div></details>
+<details class="deeper"><summary>Why this works · a little deeper</summary><div><p>If b₁=3, increasing x₁ by one raises the predicted mean by 3 outcome units while x₂ stays fixed. That is an adjusted model association, not a guaranteed gain for one person. Holding a variable fixed may be impossible as a real intervention. Causal interpretation needs a suitable design and assumptions beyond the regression equation.</p></div></details>
 <details class="check"><summary>Quick check · If two predictors nearly always move together, is this comparison well supported?</summary><p>It may rely on sparse or nonexistent combinations.</p></details>
 <a class="next-idea" href="#stage-6">Next: Building the Prediction ↓</a>
 </section>
-<section class="stage" id="stage-6" data-stage="6" aria-labelledby="heading-6">
+<section class="stage" id="stage-6" data-stage="6" data-visual-guide="Follow the separate products or scaled gaps into the total. A negative contribution lowers the sum." aria-labelledby="heading-6">
 <div class="stage-label"><span>06</span>Building the Prediction</div><h2 id="heading-6">How is a prediction assembled?</h2>
-<p class="answer">A prediction is a receipt of contributions. Keeping the units visible makes both the calculation and the meaning easier to check.</p><div class="receipt"><div class="receipt-label">A small example · separate from the live dataset</div><div class="table-wrap"><table><thead><tr><th scope="col">Follow the idea</th><th scope="col">Read it in plain language</th></tr></thead><tbody><tr><th scope="row">Starting value</th><td>10</td></tr><tr><th scope="row">Hours contribution</th><td>3 × 4 = 12</td></tr><tr><th scope="row">Experience contribution</th><td>2 × 5 = 10</td></tr><tr><th scope="row">Total</th><td>32</td></tr></tbody></table></div><p class="mini-note"><strong>Your notebook:</strong> <span data-bind="live-receipt">Open the visual to inspect the current calculation.</span></p></div>
+<p class="answer">Read a prediction as a running total. Add the intercept, then each input-times-coefficient contribution. A negative contribution lowers the total. Keep the input and outcome units clear.</p><div class="receipt"><div class="receipt-label">A small example · separate from the live dataset</div><div class="table-wrap"><table><thead><tr><th scope="col">Follow the idea</th><th scope="col">Read it in plain language</th></tr></thead><tbody><tr><th scope="row">Starting value</th><td>10</td></tr><tr><th scope="row">Hours contribution</th><td>3 × 4 = 12</td></tr><tr><th scope="row">Experience contribution</th><td>2 × 5 = 10</td></tr><tr><th scope="row">Total</th><td>32</td></tr></tbody></table></div><p class="mini-note"><strong>Your notebook:</strong> <span data-bind="live-receipt">Open the visual to inspect the current calculation.</span></p></div>
 <div class="experiment"><span class="pencil">↳</span><div><strong>Try it</strong><p>Choose a negative input and follow the running total. Add the intercept and both products by hand before checking the last column.</p><button type="button" data-explore-stage="5">Explore this idea <span aria-hidden="true">↗</span></button></div></div>
-<details class="deeper"><summary>Why this works · a little deeper</summary><div><p>A prediction is a receipt of contributions. Keeping the units visible makes both the calculation and the meaning easier to check.</p><p>34, with the other input fixed.</p><div class="reference-reading"><p class="reference-label">Additional reference · worked numbers below are separate examples from the live notebook.</p><p>
-                    Now we transition away from the 3D plane. In multiple regression, the prediction is built from a <strong>base intercept</strong> plus separate <strong>contributions</strong> from each predictor.
-                </p>
-<p>
-                    Each predictor adds or subtracts its own specific amount. The final score is simply the sum of all these individual parts. Because of how the model fits the data, each of these contributions is added while the other predictors are treated as fixed.
-                </p>
-<h3>Predicting a specific student</h3>
-<ul>
-<li>
-
-Study
-4.0 hrs
-
-
-</li>
-<li>
-
-Sleep
-7.5 hrs
-
-
-</li>
-<li>
-
-Practice
-2 pps
-
-
-</li>
-</ul>
-<ul>
-<li>• Base Score = Starting point</li>
-<li>• Study Boost = β<sub>1</sub> × Study hours</li>
-<li>• Sleep Boost = β<sub>2</sub> × Sleep hours</li>
-<li>• Practice Boost = β<sub>3</sub> × Practice papers</li>
-</ul>
-<p>Final Score = Sum of all parts</p></div></div></details>
+<details class="deeper"><summary>Why this works · a little deeper</summary><div><p>For example, intercept 10 plus contributions 6 and −2 gives prediction 14. The sign belongs to the product, so a negative input and negative coefficient make a positive contribution. Check the actual values shown rather than assuming every coefficient is a positive boost.</p></div></details>
 <details class="check"><summary>Quick check · If experience becomes 6, what is the new prediction?</summary><p>34, with the other input fixed.</p></details>
 <a class="next-idea" href="#stage-7">Next: The Spurious Trap ↓</a>
 </section>
-<section class="stage" id="stage-7" data-stage="7" aria-labelledby="heading-7">
+<section class="stage" id="stage-7" data-stage="7" data-visual-guide="Compare the raw relationship with the adjusted one. The same observations remain after removing another input’s fitted contribution." aria-labelledby="heading-7">
 <div class="stage-label"><span>07</span>The Spurious Trap</div><h2 id="heading-7">Why can an apparent relationship disappear?</h2>
-<p class="answer">An unadjusted association can change after another variable is included. That variable may explain a shared pattern, but interpretation depends on the causal structure and measurement quality.</p><div class="receipt"><div class="receipt-label">A small example · separate from the live dataset</div><div class="table-wrap"><table><thead><tr><th scope="col">Follow the idea</th><th scope="col">Read it in plain language</th></tr></thead><tbody><tr><th scope="row">Unadjusted</th><td>Outcome related to x₁</td></tr><tr><th scope="row">Adjusted</th><td>Compare x₁ at a fixed x₂</td></tr><tr><th scope="row">Caution</th><td>Adjustment can also introduce bias</td></tr></tbody></table></div><p class="mini-note"><strong>Your notebook:</strong> <span data-bind="live-receipt">Open the visual to inspect the current calculation.</span></p></div>
+<p class="answer">A relationship seen with one input alone can change when another input is included. The two inputs may share information. This adjusted relationship belongs to the fitted model; it does not automatically settle what causes what.</p><div class="receipt"><div class="receipt-label">A small example · separate from the live dataset</div><div class="table-wrap"><table><thead><tr><th scope="col">Follow the idea</th><th scope="col">Read it in plain language</th></tr></thead><tbody><tr><th scope="row">Unadjusted</th><td>Outcome related to x₁</td></tr><tr><th scope="row">Adjusted</th><td>Compare x₁ at a fixed x₂</td></tr><tr><th scope="row">Caution</th><td>Adjustment can also introduce bias</td></tr></tbody></table></div><p class="mini-note"><strong>Your notebook:</strong> <span data-bind="live-receipt">Open the visual to inspect the current calculation.</span></p></div>
 <div class="experiment"><span class="pencil">↳</span><div><strong>Try it</strong><p>Compare the raw cloud with the residual cloud after removing x₂. These are the same observations; the adjusted slope can be very different.</p><button type="button" data-explore-stage="6">Explore this idea <span aria-hidden="true">↗</span></button></div></div>
-<details class="deeper"><summary>Why this works · a little deeper</summary><div><p>An unadjusted association can change after another variable is included. That variable may explain a shared pattern, but interpretation depends on the causal structure and measurement quality.</p><p>No. Mediators, colliders, and post-outcome variables need careful treatment.</p><div class="reference-reading"><p class="reference-label">Additional reference · worked numbers below are separate examples from the live notebook.</p><p>
-                    If multiple variables just stack, why not run a simple regression for each variable separately? Because of <strong>Spurious Correlations</strong>.
-                </p>
-<p>
-                    Imagine we want to predict <strong>Shark Attacks</strong>. If we run a simple model using <strong>Ice Cream Sales</strong>, the correlation is huge! It looks like ice cream causes shark attacks.
-                </p>
-<p>
-                    But the true driver is a lurking variable: <strong>High Temperature</strong>. Hot days cause both ice cream sales <em>and</em> beach visits (which lead to shark attacks).
-                </p>
-<strong>The Power of "Holding Constant"</strong>
-<p>Multiple regression estimates a variable's</p>
-<em>conditional association holding other modeled predictors fixed</em>
-<p>, which can reveal when a variable only looked important because it moved together with another predictor. If we put both Ice Cream and Temperature into the model, the model essentially compares days with the</p>
-<em>same temperature</em>
-<p>. Holding temperature constant, ice cream sales have almost zero conditional association with shark attacks in this example.</p>
-<p>If a coefficient shrinks close to zero after the other predictors are included, that suggests it has little</p>
-<em>conditional</em>
-<p>association with the predicted outcome (y) after accounting for the others. This does</p>
-<em>not</em>
-<p>prove the variable has no real-world effect at all, only that its estimated conditional association is small within this specific model.</p>
-<p>
-<em>Note: A larger coefficient doesn't always mean a "more important" predictor, as they depend on the unit of measurement.</em>
-</p></div></div></details>
+<details class="deeper"><summary>Why this works · a little deeper</summary><div><p>A shared cause can create an unadjusted link. Hot weather, for example, may influence both ice-cream sales and beach activity. Adding a relevant predictor can change another coefficient, but does not guarantee all confounding has been removed. A coefficient near zero means little adjusted linear association in this particular fit; it does not prove no real-world effect. Coefficient sizes also depend on units.</p></div></details>
 <details class="check"><summary>Quick check · Should every available variable be adjusted for in causal work?</summary><p>No. Mediators, colliders, and post-outcome variables need careful treatment.</p></details>
 <a class="next-idea" href="#stage-8">Next: The Adjusted R² Penalty ↓</a>
 </section>
-<section class="stage" id="stage-8" data-stage="8" aria-labelledby="heading-8">
+<section class="stage" id="stage-8" data-stage="8" data-visual-guide="Compare training R² with its adjusted version on the same sample. An extra noise input can improve training fit without helping new predictions." aria-labelledby="heading-8">
 <div class="stage-label"><span>08</span>The Adjusted R² Penalty</div><h2 id="heading-8">Why can training R-squared reward useless variables?</h2>
-<p class="answer">Training R² cannot fall when an unpenalized least-squares model adds predictors. Adjusted R² adds a complexity penalty, while held-out error asks about new-data prediction directly.</p><div class="receipt"><div class="receipt-label">A small example · separate from the live dataset</div><div class="table-wrap"><table><thead><tr><th scope="col">Follow the idea</th><th scope="col">Read it in plain language</th></tr></thead><tbody><tr><th scope="row">Training R²</th><td>In-sample fit</td></tr><tr><th scope="row">Adjusted R²</th><td>Fit with a parameter penalty</td></tr><tr><th scope="row">Validation error</th><td>Prediction on unused development rows</td></tr></tbody></table></div><p class="mini-note"><strong>Your notebook:</strong> <span data-bind="live-receipt">Open the visual to inspect the current calculation.</span></p></div>
+<p class="answer">Adding inputs to an ordinary least-squares fit cannot lower training R² on the same rows. Even a useless input can get credit for chance patterns. Adjusted R² adds a penalty. Validation asks whether predictions improve on other rows.</p><div class="receipt"><div class="receipt-label">A small example · separate from the live dataset</div><div class="table-wrap"><table><thead><tr><th scope="col">Follow the idea</th><th scope="col">Read it in plain language</th></tr></thead><tbody><tr><th scope="row">Training R²</th><td>In-sample fit</td></tr><tr><th scope="row">Adjusted R²</th><td>Fit with a parameter penalty</td></tr><tr><th scope="row">Validation error</th><td>Prediction on unused development rows</td></tr></tbody></table></div><p class="mini-note"><strong>Your notebook:</strong> <span data-bind="live-receipt">Open the visual to inspect the current calculation.</span></p></div>
 <div class="experiment"><span class="pencil">↳</span><div><strong>Try it</strong><p>Include and remove the seeded noise predictor. Compare training R² with adjusted R², then draw another sample to see a chance result change.</p><button type="button" data-explore-stage="7">Explore this idea <span aria-hidden="true">↗</span></button></div></div>
-<details class="deeper"><summary>Why this works · a little deeper</summary><div><p>Training R² cannot fall when an unpenalized least-squares model adds predictors. Adjusted R² adds a complexity penalty, while held-out error asks about new-data prediction directly.</p><p>No. It rewards unnecessary flexibility.</p><div class="reference-reading"><p class="reference-label">Additional reference · worked numbers below are separate examples from the live notebook.</p><p>
-                    How do we know if our team of variables is actually good? <strong>R²</strong> tells us what percentage of the variance we explained.
-                </p>
-<p>
-                    For least-squares models with an intercept fitted to the same training observations, adding predictors makes training R² <em>stay the same or increase</em>. Even "Student's Shoe Size" may increase it, without improving predictions on new data.
-                </p>
-<p>Adj R² = 1 - [ (1 - R²)(n - 1) / (n - p - 1) ]</p>
-<p>
-<strong>Adjusted R²</strong> corrects for this by penalizing model complexity.
-                    In the formula, <code>n</code> is the number of observations and <code>p</code> is the number of predictors.
-                </p>
-<p>
-                    Every new predictor (<code>p</code>) uses up flexibility and increases the penalty. Adjusted R² can rise or fall, even for an irrelevant variable in a particular sample. It is a descriptive aid, not an automatic feature-retention rule: consider validation performance, the modeling goal, and subject knowledge.
-                </p></div></div></details>
+<details class="deeper"><summary>Why this works · a little deeper</summary><div><p>For an ordinary least-squares model with an intercept, training R²=1−SSE/TSS. Adjusted R²=1−[(1−R²)(n−1)/(n−p−1)], with p predictors and a positive residual degrees-of-freedom denominator. Adjusted R² can rise or fall after adding a predictor. Neither score is an automatic feature-retention rule. Compare held-out prediction error and the purpose of the model too.</p></div></details>
 <details class="check"><summary>Quick check · Is the largest training R² a sufficient selection rule?</summary><p>No. It rewards unnecessary flexibility.</p></details>
 <a class="next-idea" href="#stage-9">Next: Reading the Model Output ↓</a>
 </section>
-<section class="stage" id="stage-9" data-stage="9" aria-labelledby="heading-9">
+<section class="stage" id="stage-9" data-stage="9" data-visual-guide="Each dot is a fitted coefficient estimate. Its horizontal interval describes model-based uncertainty, rather than individual outcome spread." aria-labelledby="heading-9">
 <div class="stage-label"><span>09</span>Reading the Model Output</div><h2 id="heading-9">How do I read a regression summary?</h2>
-<p class="answer">Read coefficients with units and uncertainty, then assess assumptions, overall fit, and validation. Large coefficient uncertainty can reflect collinearity even when predictions remain useful.</p><div class="receipt"><div class="receipt-label">A small example · separate from the live dataset</div><div class="table-wrap"><table><thead><tr><th scope="col">Follow the idea</th><th scope="col">Read it in plain language</th></tr></thead><tbody><tr><th scope="row">Coefficients</th><td>Adjusted associations</td></tr><tr><th scope="row">Intervals</th><td>Uncertainty under the model</td></tr><tr><th scope="row">Validation</th><td>Prediction beyond training rows</td></tr></tbody></table></div><p class="mini-note"><strong>Your notebook:</strong> <span data-bind="live-receipt">Open the visual to inspect the current calculation.</span></p></div>
+<p class="answer">Read each coefficient with its units and uncertainty. Then check assumptions, prediction errors and validation results. Closely overlapping inputs can make individual coefficients uncertain even when combined predictions remain useful.</p><div class="receipt"><div class="receipt-label">A small example · separate from the live dataset</div><div class="table-wrap"><table><thead><tr><th scope="col">Follow the idea</th><th scope="col">Read it in plain language</th></tr></thead><tbody><tr><th scope="row">Coefficients</th><td>Adjusted associations</td></tr><tr><th scope="row">Intervals</th><td>Uncertainty under the model</td></tr><tr><th scope="row">Validation</th><td>Prediction beyond training rows</td></tr></tbody></table></div><p class="mini-note"><strong>Your notebook:</strong> <span data-bind="live-receipt">Open the visual to inspect the current calculation.</span></p></div>
 <div class="experiment"><span class="pencil">↳</span><div><strong>Try it</strong><p>Increase outcome noise and watch the coefficient intervals widen. Read the dot as the estimate and the line as its model-based uncertainty.</p><button type="button" data-explore-stage="8">Explore this idea <span aria-hidden="true">↗</span></button></div></div>
-<details class="deeper"><summary>Why this works · a little deeper</summary><div><p>Read coefficients with units and uncertainty, then assess assumptions, overall fit, and validation. Large coefficient uncertainty can reflect collinearity even when predictions remain useful.</p><p>No. The study design and causal assumptions remain necessary.</p><div class="reference-reading"><p class="reference-label">Additional reference · worked numbers below are separate examples from the live notebook.</p><p>
-                    When a data analyst fits a multiple linear regression, they don't look at a 3D plot—they look at a summary table to evaluate the results.
-                </p>
-<ul>
-<li>
-Estimate:
-The coefficient (β). How much the prediction changes for a one-unit increase in this predictor, <em>holding all other predictors constant</em>.
-</li>
-<li>
-Std. Error:
-The uncertainty around the estimate. A smaller standard error means we are more confident in the coefficient.
-</li>
-<li>
-t value:
-The estimate divided by its standard error. A larger absolute value (typically &gt; 2) indicates strong statistical evidence that the true effect is not zero.
-</li>
-</ul>
-<p>
-                    Note: Each coefficient should be read as "the change in predicted y for a one-unit increase in this predictor, holding the others constant." Because predictors can be measured in entirely different units, coefficients cannot be compared as pure "importance scores" unless the predictors are on comparable scales.
-                </p>
-<strong>Diagnostics belong with the output.</strong>
-<p>Inspect residual-versus-fitted, Q–Q, scale-location, leverage and influence plots. Use VIFs and coefficient intervals to diagnose multicollinearity; document categorical reference levels and interactions. Report confidence intervals for mean responses and wider prediction intervals for new observations. These coefficients are adjusted associations, not causal effects without a causal design. Multiple linear regression is a powerful detective. It models additive effects, isolates individual drivers, and finds the mathematically optimal fit by minimizing squared errors.</p></div></div></details>
+<details class="deeper"><summary>Why this works · a little deeper</summary><div><p>A coefficient&#x27;s SE estimates its uncertainty under the model and design assumptions. t is estimate/SE for a zero-coefficient test; a universal cutoff of 2 is not always appropriate. Check residual shape, changing spread, dependence and influence. VIF measures overlap with other predictors. Distinguish an interval for a mean response from a wider interval for a new observation. State categorical reference levels, interactions, evaluation design and limits.</p></div></details>
 <details class="check"><summary>Quick check · Does a small coefficient p-value establish causation?</summary><p>No. The study design and causal assumptions remain necessary.</p></details>
 <a class="next-idea" href="regression-diagnostics.html">Continue to Regression Diagnostics →</a>
 </section>
 </article><aside class="lab-home" aria-label="Interactive notebook"><section class="lab-panel" id="lab-panel"><header class="lab-header"><div><p class="eyebrow">THE LIVE NOTEBOOK <span id="lab-stage">01</span></p><h2 id="lab-title">The Multi-Variable World</h2></div><button class="icon-button" type="button" data-reset aria-label="Reset notebook" title="Reset notebook to its starting values">↺</button></header>
-<div id="lab-content" data-interactive="multiple"><p class="loading-note">Your interactive notebook is loading. The complete written lesson is on the left.</p></div>
+<p class="visual-reading-guide" id="visual-reading-guide" hidden></p><div id="lab-content" data-interactive="multiple"><p class="loading-note">Your interactive notebook is loading. The complete written lesson is on the left.</p></div>
 <p id="motion-status" class="motion-status" aria-live="off"></p><p class="lab-caption" id="lab-caption">Read the idea, inspect a small example, then change one thing in the live notebook.</p><p class="live-announcement" role="status" aria-live="polite"></p></section></aside></main>
 <dialog class="lab-dialog" aria-labelledby="dialog-title"><header class="dialog-header"><strong id="dialog-title">Explore the notebook</strong><button type="button" data-close-lab>Back to reading ✕</button></header><div class="dialog-body"></div></dialog>
 <details class="topic-directory"><summary>Explore all 34 topics</summary><nav aria-label="All academy topics"><a href="anova.html">Analysis of Variance (ANOVA)</a><a href="association-rules.html">Association Rules</a><a href="bias-variance.html">Bias-Variance Trade-Off &amp; Resampling</a><a href="chi-square.html">Chi-Square Test of Independence</a><a href="classification-trees.html">Classification Trees</a><a href="confidence-hypothesis-testing.html">Confidence Intervals &amp; Hypothesis Testing</a><a href="correlation.html">Correlation</a><a href="data-leakage-pipelines.html">Data Leakage &amp; Pipelines</a><a href="deep-learning.html">Deep Learning</a><a href="evaluation-metrics.html">Evaluation Metrics</a><a href="experimental-design.html">Experimental Design &amp; Randomisation</a><a href="gradient-boosting.html">Gradient Boosting</a><a href="hierarchical-clustering.html">Hierarchical Clustering</a><a href="imbalanced-classification.html">Imbalanced Classification</a><a href="kmeans.html">K-Means Clustering</a><a href="knn.html">K-Nearest Neighbors (KNN)</a><a href="lda.html">Linear Discriminant Analysis (LDA)</a><a href="logistic-regression.html">Logistic Regression</a><a href="missing-data-encoding.html">Missing Data &amp; Encoding</a><a href="model-selection.html">Model Selection &amp; Regularization</a><a href="multiple-linear-regression.html" aria-current="page">Multiple Linear Regression</a><a href="naive-bayes.html">Naive Bayes</a><a href="neural-networks.html">Neural Networks</a><a href="one-r.html">One-R</a><a href="polynomial-regression.html">Polynomial Regression</a><a href="pca.html">Principal Component Analysis (PCA)</a><a href="probability-sampling.html">Probability &amp; Sampling Distributions</a><a href="qda.html">Quadratic Discriminant Analysis (QDA)</a><a href="random-forest.html">Random Forest</a><a href="regression-diagnostics.html">Regression Diagnostics</a><a href="regression-trees.html">Regression Trees</a><a href="simple-linear-regression.html">Simple Linear Regression</a><a href="support-vector-machine.html">Support Vector Machines — Separate classes with breathing room</a><a href="time-series-analysis.html">Time Series Analysis</a></nav></details>

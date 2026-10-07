@@ -486,7 +486,7 @@ export function create(host, slug) {
         ["New task head", "Trainable"],
         [
           "Scope",
-          "Architecture schematic; no pretrained model or transfer accuracy is fabricated.",
+          "Architecture illustration: the marked blocks can learn new weights. This diagram does not measure transfer accuracy.",
         ],
       ];
     if (scene === "tensor")

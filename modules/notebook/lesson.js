@@ -51,6 +51,13 @@ function setStage(index) {
   );
   document.getElementById("mobile-summary").textContent =
     stages[index].querySelector("h2").textContent;
+  const guide = document.getElementById("visual-reading-guide");
+  const guideText = stages[index].dataset.visualGuide || "";
+  if (guide) {
+    guide.textContent = guideText;
+    guide.hidden = !guideText;
+  }
+  panel.classList.toggle("has-reading-guide", !!guideText);
   controller.stage(index);
   transition?.cancel();
   const plot = panel.querySelector(".plot");

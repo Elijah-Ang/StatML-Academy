@@ -498,6 +498,7 @@ details p {
   display: block;
   font: 19px/1.8 var(--hand);
   font-variant-numeric: tabular-nums;
+  overflow-wrap: anywhere;
 }
 .lab-controls {
   display: grid;
@@ -947,6 +948,17 @@ legend {
 }
 
 /* Extended lessons use the same paper, type, surfaces and motion as the pilots. */
+.visual-reading-guide {
+  margin: 3px 0 18px;
+  padding: 0 0 0 12px;
+  border-left: 2px solid #c4b78d;
+  color: #56635c;
+  font-size: 17px;
+  line-height: 1.45;
+}
+.has-reading-guide .scene-kicker {
+  display: none;
+}
 .scene-kicker {
   color: var(--muted);
   font-size: 17px;
@@ -1028,6 +1040,9 @@ legend {
   overflow-wrap: anywhere;
 }
 @media (max-width: 600px) {
+  [data-engine] .lab-stats strong {
+    font-size: 18px;
+  }
   .reference-reading table {
     font-size: 15px;
   }

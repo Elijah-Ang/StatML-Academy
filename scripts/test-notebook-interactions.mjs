@@ -1,3 +1,4 @@
+import { auditOutput } from "./audit-output.mjs";
 import assert from "node:assert/strict";
 import { chromium } from "playwright";
 import { createServer } from "node:http";
@@ -159,7 +160,7 @@ try {
   }
   assert.deepEqual(errors, []);
   await writeFile(
-    resolve(root, "audit-evidence/rollout-2026-09-28/interaction-report.json"),
+    resolve(auditOutput(root, "audit-evidence/rollout-2026-09-28"), "interaction-report.json"),
     JSON.stringify(results, null, 2),
   );
   console.log(

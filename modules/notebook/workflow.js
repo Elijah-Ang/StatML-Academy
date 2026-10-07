@@ -1,3 +1,4 @@
+import { encodingScene } from './metric-scenes.js';
 import { makeLab, fmt, palette, bars } from "./lab.js";
 import { workflowScene } from "./workflow-scenes.js";
 import { mean, seeded } from "./science.js";
@@ -254,7 +255,7 @@ export function create(host, slug) {
             [
               "Encoding",
               st.encoding === "onehot"
-                ? "red → [1,0,0], blue → [0,1,0], unknown purple → [0,0,0] with explicit unknown flag"
+                ? "Columns Red, Blue, Green, New?: red → [1,0,0,0], blue → [0,1,0,0], green → [0,0,1,0], unknown purple → [0,0,0,1]"
                 : "red → 0, blue → 1, green → 2; this asserts ordered distances",
             ],
             [
@@ -278,7 +279,7 @@ export function create(host, slug) {
           ];
       notice = missing
         ? "A small synthetic dataset has known hidden values so reconstruction error can be computed. That oracle is unavailable in real missing data. No universal imputer ranking is implied. Unknown categories use an explicit saved policy."
-        : "Computed centering example. No fabricated accuracy gain is attributed to leakage. Training-only fitting is necessary; group, time, and feature availability must also be valid.";
+        : "This example calculates input centering, rather than prediction accuracy. Only training rows should teach the saved mean. Also check related groups, time order and whether each input is known when predicting.";
       L.legend([
         ["Training", palette[0]],
         ["Held-out", palette[1]],
@@ -371,38 +372,7 @@ export function create(host, slug) {
           );
         });
       } else if (!design && scene === "encoding") {
-        const rows =
-          st.encoding === "onehot"
-            ? [
-                ["Red", 1, 0, 0],
-                ["Blue", 0, 1, 0],
-                ["Green", 0, 0, 1],
-                ["Purple", 0, 0, 0],
-              ]
-            : [
-                ["Red", 0],
-                ["Blue", 1],
-                ["Green", 2],
-                ["Purple", "?"],
-              ];
-        rows.forEach((r, i) => {
-          s.text("row" + i, 15, 60 + i * 58, r[0], { "font-size": 17 });
-          r.slice(1).forEach((v, j) => {
-            const x = 100 + (j * (w - 115)) / 3,
-              p = P("encode" + i + j, x, 38 + i * 58);
-            s.rect(
-              "encode" + i + j,
-              p[0],
-              p[1],
-              Math.min(55, (w - 125) / 3),
-              37,
-              v === 1 ? palette[2] + "45" : "#ecece0",
-            );
-            s.text("val" + i + j, p[0] + 16, p[1] + 25, String(v), {
-              "font-size": 19,
-            });
-          });
-        });
+        encodingScene(s,P,st.encoding);
       } else workflowScene(s, P, { scene, st, d, design, missing });
       s.end(receipt.map((r) => r.join(": ")).join(". "));
     }, animate);

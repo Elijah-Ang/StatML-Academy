@@ -8,339 +8,133 @@
 <body class="paper-notes notebook" data-module="classification-trees" data-accent="red" data-engine="tree-space">
 <a href="#lesson" class="skip-link">Skip to lesson</a>
 <nav class="statml-site-nav" aria-label="Academy"><a class="brand" href="../index.html">← Data Science Universe</a><span class="nav-title">Classification Trees</span><span class="statml-nav-meta">module 13/22</span></nav>
-<div class="lesson-toolbar"><label for="stage-select">Lesson map</label><select id="stage-select"><option value="0">01 · The Raw Data</option><option value="1">02 · The Train / Test Split</option><option value="2">03 · The Root Node</option><option value="3">04 · Measuring Messiness</option><option value="4">05 · Testing Every Question</option><option value="5">06 · How the Tree Scores One Split</option><option value="6">07 · Recursive Splitting</option><option value="7">08 · The Decision Boundary</option><option value="8">09 · Depth Limiting vs. Post-Pruning</option><option value="9">10 · Choosing Tree Depth</option><option value="10">11 · Classifying Test Points</option><option value="11">12 · Performance Metrics</option><option value="12">13 · Reading Tree Output</option><option value="13">14 · Interactive Playground</option><option value="14">15 · Limitations &amp; Model Choice</option></select><span class="stage-progress" aria-live="polite">1 / 15</span></div>
+<div class="lesson-toolbar"><label for="stage-select">Lesson map</label><select id="stage-select"><option value="0">01 · The Raw Data</option><option value="1">02 · Split rows into training, validation and final test</option><option value="2">03 · The Root Node</option><option value="3">04 · Measuring Messiness</option><option value="4">05 · Testing Every Question</option><option value="5">06 · How the Tree Scores One Split</option><option value="6">07 · Recursive Splitting</option><option value="7">08 · The Decision Boundary</option><option value="8">09 · Depth Limiting vs. Post-Pruning</option><option value="9">10 · Choosing Tree Depth</option><option value="10">11 · Classify new validation points</option><option value="11">12 · Performance Metrics</option><option value="12">13 · Reading Tree Output</option><option value="13">14 · Interactive Playground</option><option value="14">15 · Limitations &amp; Model Choice</option></select><span class="stage-progress" aria-live="polite">1 / 15</span></div>
 <div class="mobile-lab-bar"><span><small>Live notebook</small><strong id="mobile-summary">What is the target category?</strong></span><button class="primary" type="button" data-open-lab>Explore visual ↗</button></div>
 <main class="notebook-layout" id="lesson"><article class="reading">
-<header class="hero"><p class="eyebrow">Supervised learning · Trees and ensembles</p><h1>Classification Trees</h1><p class="intro">A classification tree predicts a category from a sequence of input questions. Its leaves store class counts and usually a class fraction as well as a chosen label.</p><div class="pathway"><div><small>Prerequisites</small>Means, plots, and the train–validation distinction</div><div><small>Recommended next</small><a href="random-forest.html">Random Forest</a></div></div><p class="reading-tip">Read a little. Try a little. Open the “why” when you are ready.</p></header>
+<header class="hero"><p class="eyebrow">Supervised learning · Trees and ensembles</p><h1>Classification Trees</h1><p class="intro">Use input questions to divide labelled examples into groups. Follow a new point to the leaf that gives its class prediction.</p><div class="pathway"><div><small>Prerequisites</small>Fractions, two-axis plots, and training/validation splits.</div><div><small>Recommended next</small><a href="random-forest.html">Random Forest</a></div></div><p class="reading-tip">Read a little. Try a little. Open the “why” when you are ready.</p></header>
 <noscript><p class="caution">The full lesson, worked examples and answers are readable here. Enable JavaScript for the interactive experiments and live calculations.</p></noscript>
-<section class="stage" id="stage-1" data-stage="1" aria-labelledby="heading-1">
+<section class="stage" id="stage-1" data-stage="1" data-visual-guide="The background shows the predicted decision or probability, as labelled. The dividing line is a fitted rule, not a physical boundary." aria-labelledby="heading-1">
 <div class="stage-label"><span>01</span>The Raw Data</div><h2 id="heading-1">What is the target category?</h2>
-<p class="answer">A classification tree predicts a category from a sequence of input questions. Its leaves store class counts and usually a class fraction as well as a chosen label.</p><div class="receipt"><div class="receipt-label">A small example · separate from the live dataset</div><div class="table-wrap"><table><thead><tr><th scope="col">Follow the idea</th><th scope="col">Read it in plain language</th></tr></thead><tbody><tr><th scope="row">Target</th><td>Class 0 or 1</td></tr><tr><th scope="row">Leaf counts</th><td>Training labels reaching the leaf</td></tr><tr><th scope="row">Decision</th><td>Apply a rule to the class fraction</td></tr></tbody></table></div><p class="mini-note"><strong>Your notebook:</strong> <span data-bind="live-receipt">Open the visual to inspect the current calculation.</span></p></div>
+<p class="answer">A classification tree predicts a category. It asks input questions one after another. Each final group, called a leaf, stores the training class counts. Those counts provide a label and a class fraction.</p><div class="receipt"><div class="receipt-label">A small example · separate from the live dataset</div><div class="table-wrap"><table><thead><tr><th scope="col">Follow the idea</th><th scope="col">Read it in plain language</th></tr></thead><tbody><tr><th scope="row">Target</th><td>Class 0 or 1</td></tr><tr><th scope="row">Leaf counts</th><td>Training labels reaching the leaf</td></tr><tr><th scope="row">Decision</th><td>Apply a rule to the class fraction</td></tr></tbody></table></div><p class="mini-note"><strong>Your notebook:</strong> <span data-bind="live-receipt">Open the visual to inspect the current calculation.</span></p></div>
 <div class="experiment"><span class="pencil">↳</span><div><strong>Try it</strong><p>Inspect a point in the two-input space. Blue dots and red crossed dots distinguish the two target classes.</p><button type="button" data-explore-stage="0">Explore this idea <span aria-hidden="true">↗</span></button></div></div>
-<details class="deeper"><summary>Why this works · a little deeper</summary><div><p>A classification tree predicts a category from a sequence of input questions. Its leaves store class counts and usually a class fraction as well as a chosen label.</p><p>No.</p><div class="reference-reading"><p class="reference-label">Additional reference · worked numbers below are separate examples from the live notebook.</p><p>Every problem starts with data. We have measurements for fruit — <strong>Weight</strong> (x-axis) and <strong>Color Intensity</strong> (y-axis).</p>
-<p>Each fruit is already labeled: an Apple or an Orange. The goal of our tree is to learn rules to sort them into cleaner groups.</p>
-<h3> The Whole Idea of Classification Trees</h3>
-<p>
-      A <strong>Classification Tree</strong> is a supervised machine-learning model that learns a sequence of simple yes/no flowchart-like questions to sort data into categories.
-    </p>
-<p>Raw Labeled Data → Root Node → Scan Best Question → Split Data → Repeat Recursively → Leaf Prediction → Evaluation</p>
-<h3> Tiny Tree Dictionary</h3>
-<strong>• Feature:</strong>
-<p>A measurable property or input variable used to make predictions (e.g., Weight, Color Intensity).</p>
-<strong>• Label:</strong>
-<p>The target outcome or true answer we want the model to predict (e.g., Apple, Orange).</p>
-<strong>• Class:</strong>
-<p>One of the specific categorical outcomes (e.g., Apples vs. Oranges).</p>
-<strong>• Root Node:</strong>
-<p>The very first top-level block containing 100% of the training data.</p>
-<strong>• Split:</strong>
-<p>A division of a parent node into two child nodes based on a feature question.</p>
-<strong>• Child Node:</strong>
-<p>The subgroups created after splitting a parent node.</p>
-<strong>• Leaf Node:</strong>
-<p>A final terminal node that does not split further. It makes the final prediction.</p>
-<strong>• Impurity:</strong>
-<p>A measure of how mixed or diverse the class labels are within a particular node.</p>
-<strong>• Gini Impurity:</strong>
-<p>A mathematical metric used to calculate impurity (0.0 means perfectly pure; 0.5 is the maximum for a balanced binary node).</p>
-<strong>• Weighted Impurity:</strong>
-<p>The combined impurity of child nodes, weighted by the proportion of samples that went into each child.</p>
-<strong>• Impurity Decrease:</strong>
-<p>The difference between parent Gini and weighted child Gini. The tree maximizes this "gain".</p>
-<strong>• Decision Boundary:</strong>
-<p>The geometric line(s) dividing different class zones on the coordinate map.</p>
-<strong>• Tree Depth:</strong>
-<p>The length of the longest path from the root node down to any leaf node.</p>
-<strong>• Pruning:</strong>
-<p>Cutting back branches to simplify the model and improve generalizability on unseen data.</p>
-<strong>• Overfitting:</strong>
-<p>Memorizing noise in the training set, causing failure on unseen test data.</p>
-<strong>• Underfitting:</strong>
-<p>Creating a model that is too simple (e.g. too shallow) to learn the real underlying patterns.</p>
-<h3>Training Data Preview</h3>
-<p> This is a classification task because we want to predict a specific category or discrete group, rather than a continuous number.</p></div></div></details>
+<details class="deeper"><summary>Why this works · a little deeper</summary><div><p>The labels are known answers for training rows. Inputs are the measurements used to predict them. The root holds all training rows; a split creates two children; a leaf is a group that stops splitting. The live dot plot and tree diagram show the same selected point and fitted rules.</p></div></details>
 <details class="check"><summary>Quick check · Is a leaf fraction automatically well calibrated?</summary><p>No.</p></details>
-<a class="next-idea" href="#stage-2">Next: The Train / Test Split ↓</a>
+<a class="next-idea" href="#stage-2">Next: Split rows into training, validation and final test ↓</a>
 </section>
-<section class="stage" id="stage-2" data-stage="2" aria-labelledby="heading-2">
-<div class="stage-label"><span>02</span>The Train / Test Split</div><h2 id="heading-2">Which rows may choose a split?</h2>
-<p class="answer">Only training rows choose split thresholds and leaf counts. Validation compares settings after fitting; the final test evaluates a locked choice.</p><div class="receipt"><div class="receipt-label">A small example · separate from the live dataset</div><div class="table-wrap"><table><thead><tr><th scope="col">Follow the idea</th><th scope="col">Read it in plain language</th></tr></thead><tbody><tr><th scope="row">Split search</th><td>Training labels</td></tr><tr><th scope="row">Depth selection</th><td>Validation loss</td></tr><tr><th scope="row">Final evaluation</th><td>Independent test</td></tr></tbody></table></div><p class="mini-note"><strong>Your notebook:</strong> <span data-bind="live-receipt">Open the visual to inspect the current calculation.</span></p></div>
+<section class="stage" id="stage-2" data-stage="2" data-visual-guide="Training learns the rule, validation compares choices, and final-test examples stay sealed while those choices change." aria-labelledby="heading-2">
+<div class="stage-label"><span>02</span>Split rows into training, validation and final test</div><h2 id="heading-2">Which rows may choose a split?</h2>
+<p class="answer">Training rows choose the questions, cutoffs and leaf counts. Validation rows help choose the settings after fitting. The final test checks the locked model. Keep these roles separate.</p><div class="receipt"><div class="receipt-label">A small example · separate from the live dataset</div><div class="table-wrap"><table><thead><tr><th scope="col">Follow the idea</th><th scope="col">Read it in plain language</th></tr></thead><tbody><tr><th scope="row">Split search</th><td>Training labels</td></tr><tr><th scope="row">Depth selection</th><td>Validation loss</td></tr><tr><th scope="row">Final evaluation</th><td>Independent test</td></tr></tbody></table></div><p class="mini-note"><strong>Your notebook:</strong> <span data-bind="live-receipt">Open the visual to inspect the current calculation.</span></p></div>
 <div class="experiment"><span class="pencil">↳</span><div><strong>Try it</strong><p>Inspect the three sample groups. Test outcomes remain sealed while thresholds and leaf values are learned from training data.</p><button type="button" data-explore-stage="1">Explore this idea <span aria-hidden="true">↗</span></button></div></div>
-<details class="deeper"><summary>Why this works · a little deeper</summary><div><p>Only training rows choose split thresholds and leaf counts. Validation compares settings after fitting; the final test evaluates a locked choice.</p><p>No.</p><div class="reference-reading"><p class="reference-label">Additional reference · worked numbers below are separate examples from the live notebook.</p><p>To build a robust model, we never evaluate our tree on the exact same data it used for learning. Instead, we divide our original dataset into two parts:</p>
-<h3> Data Partitioning</h3>
-<h4> Training Set</h4>
-<p>
-          Used to scan thresholds, calculate Gini, and build rules.<br/>
-<strong>Count: 28 fruits</strong>
-</p>
-<h4> Test Set (Held out)</h4>
-<p>
-          Kept completely hidden from the tree during training.<br/>
-<strong>Count: 6 fruits</strong>
-</p>
-<p> <strong>Data Leakage Warning:</strong> Using test data to choose splits, tune tree depth, or pick stopping criteria is a cardinal sin of machine learning. The test set must ONLY be used for final generalizability assessment.</p>
-<p>Why is a Train/Test split essential for decision trees?</p></div></div></details>
-<details class="check"><summary>Quick check · May a held-out label enter split impurity calculations?</summary><p>No.</p></details>
+<details class="deeper"><summary>Why this works · a little deeper</summary><div><p>Test data must not choose cutoffs, depth, leaf size, pruning or input preparation. The live display uses validation while controls change. Separate final-test rows remain sealed. The small printed example and live dataset are separate. Read each sample size when you check a calculation.</p></div></details>
+<details class="check"><summary>Quick check · May a kept-out label enter split impurity calculations?</summary><p>No.</p></details>
 <a class="next-idea" href="#stage-3">Next: The Root Node ↓</a>
 </section>
-<section class="stage" id="stage-3" data-stage="3" aria-labelledby="heading-3">
+<section class="stage" id="stage-3" data-stage="3" data-visual-guide="The root contains all training labels. Before any split, its class fraction is the same starting estimate for every query." aria-labelledby="heading-3">
 <div class="stage-label"><span>03</span>The Root Node</div><h2 id="heading-3">What does the root predict before splitting?</h2>
-<p class="answer">With no splits, the root contains the whole training set. Its majority class is the baseline label and its class fraction is the baseline probability estimate.</p><div class="receipt"><div class="receipt-label">A small example · separate from the live dataset</div><div class="table-wrap"><table><thead><tr><th scope="col">Follow the idea</th><th scope="col">Read it in plain language</th></tr></thead><tbody><tr><th scope="row">Positive rows</th><td>12 of 30</td></tr><tr><th scope="row">Fraction</th><td>0.4</td></tr><tr><th scope="row">At threshold 0.5</th><td>Class 0</td></tr></tbody></table></div><p class="mini-note"><strong>Your notebook:</strong> <span data-bind="live-receipt">Open the visual to inspect the current calculation.</span></p></div>
-<div class="experiment"><span class="pencil">↳</span><div><strong>Try it</strong><p>Count the two classes in the root. Before any split, every query would receive this same class-1 fraction.</p><button type="button" data-explore-stage="2">Explore this idea <span aria-hidden="true">↗</span></button></div></div>
-<details class="deeper"><summary>Why this works · a little deeper</summary><div><p>With no splits, the root contains the whole training set. Its majority class is the baseline label and its class fraction is the baseline probability estimate.</p><p>The root is pure and predicts class 1.</p><div class="reference-reading"><p class="reference-label">Additional reference · worked numbers below are separate examples from the live notebook.</p><p>At the very beginning, a Classification Tree puts <em>all</em> the training data into one big group on the fruit map. We call this the <strong>Root Node</strong>.</p>
-<p>This starting box is very "messy" because it contains a mix of both apples and oranges. The tree's job is to split this box into smaller, cleaner sub-groups.</p>
-<h3>Root Node Content</h3></div></div></details>
+<p class="answer">Before splitting, all training rows form the root. Its most common class is a simple baseline prediction. Its class-1 fraction gives the same starting estimate to every query.</p><div class="receipt"><div class="receipt-label">A small example · separate from the live dataset</div><div class="table-wrap"><table><thead><tr><th scope="col">Follow the idea</th><th scope="col">Read it in plain language</th></tr></thead><tbody><tr><th scope="row">Positive rows</th><td>12 of 30</td></tr><tr><th scope="row">Fraction</th><td>0.4</td></tr><tr><th scope="row">At threshold 0.5</th><td>Class 0</td></tr></tbody></table></div><p class="mini-note"><strong>Your notebook:</strong> <span data-bind="live-receipt">Open the visual to inspect the current calculation.</span></p></div>
+<div class="experiment"><span class="pencil">↳</span><div><strong>Try it</strong><p>Count the two classes in the root. Before any split, every point to predict would receive this same class-1 fraction.</p><button type="button" data-explore-stage="2">Explore this idea <span aria-hidden="true">↗</span></button></div></div>
+<details class="deeper"><summary>Why this works · a little deeper</summary><div><p>If the root has 6 class-1 rows and 4 class-0 rows, its class-1 fraction is 6/10=.6. The usual .5 decision cutoff chooses class 1. That fraction describes training membership. It is not a guarantee that the next point belongs to class 1.</p></div></details>
 <details class="check"><summary>Quick check · What happens if every training label is 1?</summary><p>The root is pure and predicts class 1.</p></details>
 <a class="next-idea" href="#stage-4">Next: Measuring Messiness ↓</a>
 </section>
-<section class="stage" id="stage-4" data-stage="4" aria-labelledby="heading-4">
+<section class="stage" id="stage-4" data-stage="4" data-visual-guide="The top marks show a toy label mixture. The lower Gini curve shows how impurity changes from a pure group to an even mix." aria-labelledby="heading-4">
 <div class="stage-label"><span>04</span>Measuring Messiness</div><h2 id="heading-4">What is impurity?</h2>
-<p class="answer">Impurity measures how mixed a node's labels are. Binary Gini is 2p(1 − p), reaching zero for a pure node and one-half for an even mix.</p><div class="receipt"><div class="receipt-label">A small example · separate from the live dataset</div><div class="table-wrap"><table><thead><tr><th scope="col">Follow the idea</th><th scope="col">Read it in plain language</th></tr></thead><tbody><tr><th scope="row">p = 0</th><td>Gini 0</td></tr><tr><th scope="row">p = 0.5</th><td>Gini 0.5</td></tr><tr><th scope="row">p = 1</th><td>Gini 0</td></tr></tbody></table></div><p class="mini-note"><strong>Your notebook:</strong> <span data-bind="live-receipt">Open the visual to inspect the current calculation.</span></p></div>
+<p class="answer">Impurity measures how mixed the labels are in a group. For two classes, Gini is 2p(1−p), where p is the class-1 fraction. It is zero for one-class groups and 0.5 for a half-and-half mix.</p><div class="receipt"><div class="receipt-label">A small example · separate from the live dataset</div><div class="table-wrap"><table><thead><tr><th scope="col">Follow the idea</th><th scope="col">Read it in plain language</th></tr></thead><tbody><tr><th scope="row">p = 0</th><td>Gini 0</td></tr><tr><th scope="row">p = 0.5</th><td>Gini 0.5</td></tr><tr><th scope="row">p = 1</th><td>Gini 0</td></tr></tbody></table></div><p class="mini-note"><strong>Your notebook:</strong> <span data-bind="live-receipt">Open the visual to inspect the current calculation.</span></p></div>
 <div class="experiment"><span class="pencil">↳</span><div><strong>Try it</strong><p>Move the toy class proportion from 0 to 1. Compare a pure node with a half-and-half node on the Gini curve.</p><button type="button" data-explore-stage="3">Explore this idea <span aria-hidden="true">↗</span></button></div></div>
-<details class="deeper"><summary>Why this works · a little deeper</summary><div><p>Impurity measures how mixed a node's labels are. Binary Gini is 2p(1 − p), reaching zero for a pure node and one-half for an even mix.</p><p>Usually not for classification fit.</p><div class="reference-reading"><p class="reference-label">Additional reference · worked numbers below are separate examples from the live notebook.</p><p>To split effectively, the tree needs a way to measure how mixed a box is. We use a math rule called <strong>Gini Impurity</strong>.</p>
-<p>A Gini score of <code>0.0</code> means the box is <em>perfectly pure</em>. For this binary example, <code>0.5</code> is the maximum at a 50/50 mix; multiclass maxima differ.</p>
-<h3> Gini Impurity Formula</h3>
-<p>Gini = 1 - Σ pᵢ² For two classes (Apple &amp; Orange): Gini = 1 - [ P(Apple)² + P(Orange)² ]</p>
-<h3> Live Root Node Calculation</h3>
-<h3> Gini Impurity vs. Entropy</h3>
-<p>
-      While Gini is highly popular in CART (Classification and Regression Trees), another metric called <strong>Entropy</strong> is also widely used:
-    </p>
-<p>
-      Both metrics measure the same core property: disorder. A node with equal proportions of classes has a Gini score of 0.50 and an Entropy score of 1.0. Both reach 0.0 when a node is perfectly pure. In practice, Gini and entropy often choose very similar splits, but not always. This guide uses Gini because it is simple, common, and easy to compute.
-    </p>
-<p>What does a Gini Impurity of 0.0 indicate about a subset of fruit?</p></div></div></details>
+<details class="deeper"><summary>Why this works · a little deeper</summary><div><p>For several classes, Gini = 1−Σp_i²; Σ means add across classes. Binary .5 is the maximum only for two equally likely classes. Entropy is another criterion; binary entropy with base-2 logs reaches 1 for an even mix. Both measure mixture, but may choose different cuts. Low impurity is not itself evidence that the features cause the labels.</p></div></details>
 <details class="check"><summary>Quick check · Is high impurity a desirable leaf property?</summary><p>Usually not for classification fit.</p></details>
 <a class="next-idea" href="#stage-5">Next: Testing Every Question ↓</a>
 </section>
-<section class="stage" id="stage-5" data-stage="5" aria-labelledby="heading-5">
+<section class="stage" id="stage-5" data-stage="5" data-visual-guide="Compare the parent with both children. Child sizes weight their error or impurity before calculating the improvement." aria-labelledby="heading-5">
 <div class="stage-label"><span>05</span>Testing Every Question</div><h2 id="heading-5">Why inspect several candidate questions?</h2>
-<p class="answer">Candidate questions divide training inputs at possible thresholds. Compare the weighted child impurity, subject to leaf-size constraints.</p><div class="receipt"><div class="receipt-label">A small example · separate from the live dataset</div><div class="table-wrap"><table><thead><tr><th scope="col">Follow the idea</th><th scope="col">Read it in plain language</th></tr></thead><tbody><tr><th scope="row">Candidate</th><td>x ≤ threshold</td></tr><tr><th scope="row">Children</th><td>Rows satisfying or failing it</td></tr><tr><th scope="row">Score</th><td>Size-weighted impurity</td></tr></tbody></table></div><p class="mini-note"><strong>Your notebook:</strong> <span data-bind="live-receipt">Open the visual to inspect the current calculation.</span></p></div>
+<p class="answer">Try possible input questions and divide the training rows into two groups. Compare how mixed the two groups are, weighting by their sizes. Reject cuts that break the leaf-size rules.</p><div class="receipt"><div class="receipt-label">A small example · separate from the live dataset</div><div class="table-wrap"><table><thead><tr><th scope="col">Follow the idea</th><th scope="col">Read it in plain language</th></tr></thead><tbody><tr><th scope="row">Candidate</th><td>x ≤ threshold</td></tr><tr><th scope="row">Children</th><td>Rows satisfying or failing it</td></tr><tr><th scope="row">Score</th><td>Size-weighted impurity</td></tr></tbody></table></div><p class="mini-note"><strong>Your notebook:</strong> <span data-bind="live-receipt">Open the visual to inspect the current calculation.</span></p></div>
 <div class="experiment"><span class="pencil">↳</span><div><strong>Try it</strong><p>Scrub legal midpoint thresholds and switch the candidate feature. Compare the spatial cut with the minimum of the impurity curve.</p><button type="button" data-explore-stage="4">Explore this idea <span aria-hidden="true">↗</span></button></div></div>
-<details class="deeper"><summary>Why this works · a little deeper</summary><div><p>Candidate questions divide training inputs at possible thresholds. Compare the weighted child impurity, subject to leaf-size constraints.</p><p>No. Both children's sizes and impurities count.</p><div class="reference-reading"><p class="reference-label">Additional reference · worked numbers below are separate examples from the live notebook.</p><p>How does the tree find the best split? It tries testing candidate split points between observed values across the map.</p>
-<h3> The Candidate Search Strategy</h3>
-<p>
-      How does a decision tree find the best threshold? It doesn't guess random decimals. Instead, it uses a deterministic mathematical process:
-    </p>
-<ol>
-<li><strong>Sort values:</strong> For a given feature (like Weight), it sorts all observed training values in ascending order.</li>
-<li><strong>Compute Midpoints:</strong> It calculates the halfway points (midpoints) between every adjacent pair of unique values.</li>
-<li><strong>Evaluate Splits:</strong> It treats each midpoint as a candidate threshold (e.g., <code>Weight &lt; 5.40</code>), splits the data, and evaluates the resulting weighted Gini impurity.</li>
-</ol>
-<h3>Live Search (Scanning...)</h3>
-<p>Testing Split: Weight &lt; 5.0...</p>
-<p>Average Gini: ~0.45</p></div></div></details>
+<details class="deeper"><summary>Why this works · a little deeper</summary><div><p>For a numeric input, this lab sorts distinct training values and tests their midpoints. It evaluates valid questions using weighted child impurity. Different software can use other implementations, but the candidate question must separate training rows according to its stated comparison rule.</p></div></details>
 <details class="check"><summary>Quick check · Should a tiny pure child alone determine the split score?</summary><p>No. Both children's sizes and impurities count.</p></details>
 <a class="next-idea" href="#stage-6">Next: How the Tree Scores One Split ↓</a>
 </section>
-<section class="stage" id="stage-6" data-stage="6" aria-labelledby="heading-6">
+<section class="stage" id="stage-6" data-stage="6" data-visual-guide="Compare the parent with both children. Child sizes weight their error or impurity before calculating the improvement." aria-labelledby="heading-6">
 <div class="stage-label"><span>06</span>How the Tree Scores One Split</div><h2 id="heading-6">How is split improvement calculated?</h2>
-<p class="answer">Gain is parent impurity minus weighted child impurity. The weighting keeps a tiny child from counting as much as a large one.</p><div class="receipt"><div class="receipt-label">A small example · separate from the live dataset</div><div class="table-wrap"><table><thead><tr><th scope="col">Follow the idea</th><th scope="col">Read it in plain language</th></tr></thead><tbody><tr><th scope="row">Parent Gini</th><td>0.5</td></tr><tr><th scope="row">Children weighted Gini</th><td>0.2</td></tr><tr><th scope="row">Gain</th><td>0.3</td></tr></tbody></table></div><p class="mini-note"><strong>Your notebook:</strong> <span data-bind="live-receipt">Open the visual to inspect the current calculation.</span></p></div>
+<p class="answer">Gain is the parent's impurity minus the children's weighted impurity. Larger child groups count more than tiny groups. A greater gain means a larger improvement under that criterion.</p><div class="receipt"><div class="receipt-label">A small example · separate from the live dataset</div><div class="table-wrap"><table><thead><tr><th scope="col">Follow the idea</th><th scope="col">Read it in plain language</th></tr></thead><tbody><tr><th scope="row">Parent Gini</th><td>0.5</td></tr><tr><th scope="row">Children weighted Gini</th><td>0.2</td></tr><tr><th scope="row">Gain</th><td>0.3</td></tr></tbody></table></div><p class="mini-note"><strong>Your notebook:</strong> <span data-bind="live-receipt">Open the visual to inspect the current calculation.</span></p></div>
 <div class="experiment"><span class="pencil">↳</span><div><strong>Try it</strong><p>Compare the class mixtures in the two children. Weight their impurities by their sample sizes before subtracting from the parent.</p><button type="button" data-explore-stage="5">Explore this idea <span aria-hidden="true">↗</span></button></div></div>
-<details class="deeper"><summary>Why this works · a little deeper</summary><div><p>Gain is parent impurity minus weighted child impurity. The weighting keeps a tiny child from counting as much as a large one.</p><p>No.</p><div class="reference-reading"><p class="reference-label">Additional reference · worked numbers below are separate examples from the live notebook.</p><p>The tree found the single best question! By splitting the data at this specific threshold, it gets the lowest possible combined Gini impurity.</p>
-<p>This first split is often very influential because it shapes the rest of the tree. It divides the fruit map cleanly into two distinct regions.</p>
-<h3>The Golden Question</h3>
-<h3> How the Tree Scores This Split</h3>
-<p>What property makes a candidate split the absolute "winner" in a decision tree?</p></div></div></details>
+<details class="deeper"><summary>Why this works · a little deeper</summary><div><p>For child sizes n_L and n_R, weighted impurity = (n_L/n)Gini_L+(n_R/n)Gini_R. Gain subtracts this from parent impurity. Weighting avoids counting a one-row child as much as a large child. The chosen cut is locally best among allowed candidates, not an absolute best tree across all future choices.</p></div></details>
 <details class="check"><summary>Quick check · Can a valid improving split have negative gain?</summary><p>No.</p></details>
 <a class="next-idea" href="#stage-7">Next: Recursive Splitting ↓</a>
 </section>
-<section class="stage" id="stage-7" data-stage="7" aria-labelledby="heading-7">
+<section class="stage" id="stage-7" data-stage="7" data-visual-guide="The same selected point appears in the map and branching path. Follow its input comparisons to one leaf." aria-labelledby="heading-7">
 <div class="stage-label"><span>07</span>Recursive Splitting</div><h2 id="heading-7">How is the procedure reused in a child?</h2>
-<p class="answer">After splitting the root, reuse the search independently within each eligible child. Different branches can depend on different features and stop at different depths.</p><div class="receipt"><div class="receipt-label">A small example · separate from the live dataset</div><div class="table-wrap"><table><thead><tr><th scope="col">Follow the idea</th><th scope="col">Read it in plain language</th></tr></thead><tbody><tr><th scope="row">Local rows</th><td>Only those reaching the child</td></tr><tr><th scope="row">Local objective</th><td>Reduce their impurity</td></tr><tr><th scope="row">Repeat</th><td>Until a stopping rule applies</td></tr></tbody></table></div><p class="mini-note"><strong>Your notebook:</strong> <span data-bind="live-receipt">Open the visual to inspect the current calculation.</span></p></div>
+<p class="answer">After the root splits, repeat the search within each child. A branch can use a different input from another branch. Each stops when its own limits are reached.</p><div class="receipt"><div class="receipt-label">A small example · separate from the live dataset</div><div class="table-wrap"><table><thead><tr><th scope="col">Follow the idea</th><th scope="col">Read it in plain language</th></tr></thead><tbody><tr><th scope="row">Local rows</th><td>Only those reaching the child</td></tr><tr><th scope="row">Local objective</th><td>Reduce their impurity</td></tr><tr><th scope="row">Repeat</th><td>Until a stopping rule applies</td></tr></tbody></table></div><p class="mini-note"><strong>Your notebook:</strong> <span data-bind="live-receipt">Open the visual to inspect the current calculation.</span></p></div>
 <div class="experiment"><span class="pencil">↳</span><div><strong>Try it</strong><p>Reveal another split level. The new question applies only inside the parent’s rectangle.</p><button type="button" data-explore-stage="6">Explore this idea <span aria-hidden="true">↗</span></button></div></div>
-<details class="deeper"><summary>Why this works · a little deeper</summary><div><p>After splitting the root, reuse the search independently within each eligible child. Different branches can depend on different features and stop at different depths.</p><p>No.</p><div class="reference-reading"><p class="reference-label">Additional reference · worked numbers below are separate examples from the live notebook.</p><p>The tree isn't done. It now treats each of the two new boxes as a separate problem, and asks again: <em>"Can I perform another split to make these even cleaner?"</em></p>
-<p>It repeats this process recursively, carving the map into smaller and smaller axis-aligned rectangles until a box becomes pure, gets too small, or reaches the depth limit.</p>
-<h3> Tree Stopping Rules</h3>
-<p>
-      To prevent the tree from growing infinitely, we define stopping constraints (hyperparameters in ML frameworks):
-    </p>
-<ul>
-<li><strong>Node Purity:</strong> Stop if all items in a node belong to a single class (Gini = 0).</li>
-<li><strong>Max Depth (`max_depth`):</strong> Stop if the path length from the root matches our limit.</li>
-<li><strong>Min Samples Split (`min_samples_split`):</strong> Stop if a node contains too few samples to allow another split.</li>
-<li><strong>Min Samples Leaf (`min_samples_leaf`):</strong> Prevent splits that leave a child with too few samples.</li>
-<li><strong>Min Impurity Decrease (`min_impurity_decrease`):</strong> Stop if Gini gain is below a small threshold.</li>
-</ul>
-<p>What is the main danger of growing a classification tree completely unchecked without any stopping rules?</p></div></div></details>
+<details class="deeper"><summary>Why this works · a little deeper</summary><div><p>Reuse the same search inside a child rather than applying a child&#x27;s cut to unrelated regions. Stop for purity, maximum depth, insufficient rows, leaf-size requirements or inadequate gain. These conditions are configurable limits. Pure training leaves do not prove future predictions are perfect.</p></div></details>
 <details class="check"><summary>Quick check · Does a child split reconsider rows sent to its sibling?</summary><p>No.</p></details>
 <a class="next-idea" href="#stage-8">Next: The Decision Boundary ↓</a>
 </section>
-<section class="stage" id="stage-8" data-stage="8" aria-labelledby="heading-8">
+<section class="stage" id="stage-8" data-stage="8" data-visual-guide="The background shows the predicted decision or probability, as labelled. The dividing line is a fitted rule, not a physical boundary." aria-labelledby="heading-8">
 <div class="stage-label"><span>08</span>The Decision Boundary</div><h2 id="heading-8">Why do tree boundaries look rectangular?</h2>
-<p class="answer">An axis-aligned question cuts one feature at a time. Combining such cuts creates rectangles in a two-feature view, even when the true class pattern is curved.</p><div class="receipt"><div class="receipt-label">A small example · separate from the live dataset</div><div class="table-wrap"><table><thead><tr><th scope="col">Follow the idea</th><th scope="col">Read it in plain language</th></tr></thead><tbody><tr><th scope="row">x threshold</th><td>Vertical cut</td></tr><tr><th scope="row">z threshold</th><td>Horizontal cut</td></tr><tr><th scope="row">Leaf</th><td>Intersection of path conditions</td></tr></tbody></table></div><p class="mini-note"><strong>Your notebook:</strong> <span data-bind="live-receipt">Open the visual to inspect the current calculation.</span></p></div>
-<div class="experiment"><span class="pencil">↳</span><div><strong>Try it</strong><p>Move a query across a cut. Follow the gold rectangle to its leaf and notice why axis-aligned splits make rectangular regions.</p><button type="button" data-explore-stage="7">Explore this idea <span aria-hidden="true">↗</span></button></div></div>
-<details class="deeper"><summary>Why this works · a little deeper</summary><div><p>An axis-aligned question cuts one feature at a time. Combining such cuts creates rectangles in a two-feature view, even when the true class pattern is curved.</p><p>No.</p><div class="reference-reading"><p class="reference-label">Additional reference · worked numbers below are separate examples from the live notebook.</p><p>Once the tree stops growing, we fill in the colors. Each rectangular box becomes a "Leaf Node". The model assigns a prediction to the entire box based on the fruit type that appears most often in that box.</p>
-<h3> Leaf Nodes: How Predictions Are Made</h3>
-<p>
-      Every final sub-box is a terminal <strong>Leaf Node</strong>. It predicts the majority class contained within its boundary.
-    </p>
-<p>
-      We can also calculate a <strong>Class Probability Estimate</strong> simply as the proportion of that class in the leaf box:
-    </p>
-<p>P(Apple) = Leaf_Apples / Total_Leaf_Samples</p>
-<p>
-<strong>Warning:</strong> These leaf-proportion probabilities can be overconfident, especially in deep trees with small sample sizes in leaf boxes (e.g. predicting 100% confidence because a leaf contains exactly 1 Apple).
-    </p>
-<h3>Live Tree Snapshot</h3>
-<ul>
-<li><strong>Criterion:</strong> Gini Impurity</li>
-<li><strong>Classes:</strong> Apple, Orange</li>
-<li><strong>Max Depth:</strong> --</li>
-<li><strong>Leaf Nodes:</strong> --</li>
-</ul></div></div></details>
+<p class="answer">A question about one input makes a horizontal or vertical cut. Several cuts make rectangular leaf regions in a two-input plot. Every point in a leaf receives that leaf's saved prediction.</p><div class="receipt"><div class="receipt-label">A small example · separate from the live dataset</div><div class="table-wrap"><table><thead><tr><th scope="col">Follow the idea</th><th scope="col">Read it in plain language</th></tr></thead><tbody><tr><th scope="row">x threshold</th><td>Vertical cut</td></tr><tr><th scope="row">z threshold</th><td>Horizontal cut</td></tr><tr><th scope="row">Leaf</th><td>Intersection of path conditions</td></tr></tbody></table></div><p class="mini-note"><strong>Your notebook:</strong> <span data-bind="live-receipt">Open the visual to inspect the current calculation.</span></p></div>
+<div class="experiment"><span class="pencil">↳</span><div><strong>Try it</strong><p>Move a point to predict across a cut. Follow the gold rectangle to its leaf and notice why axis-aligned splits make rectangular regions.</p><button type="button" data-explore-stage="7">Explore this idea <span aria-hidden="true">↗</span></button></div></div>
+<details class="deeper"><summary>Why this works · a little deeper</summary><div><p>A leaf&#x27;s class fraction is class count/leaf count. A leaf containing one positive row gives 100% locally, but that is very little evidence about future rows. Probability calibration and minimum leaf size matter. Axis-aligned cuts can represent curves through many steps, not through a guaranteed smooth boundary.</p></div></details>
 <details class="check"><summary>Quick check · Must every tree boundary be a smooth curve?</summary><p>No.</p></details>
 <a class="next-idea" href="#stage-9">Next: Depth Limiting vs. Post-Pruning ↓</a>
 </section>
-<section class="stage" id="stage-9" data-stage="9" aria-labelledby="heading-9">
+<section class="stage" id="stage-9" data-stage="9" data-visual-guide="The penalty removes branches from one fixed grown tree. This differs from stopping new branches before they are grown." aria-labelledby="heading-9">
 <div class="stage-label"><span>09</span>Depth Limiting vs. Post-Pruning</div><h2 id="heading-9">How do depth limits and pruning differ?</h2>
-<p class="answer">Depth limits prevent additional growth; pruning removes branches from an already grown tree. Both control complexity but explore different candidate structures.</p><div class="receipt"><div class="receipt-label">A small example · separate from the live dataset</div><div class="table-wrap"><table><thead><tr><th scope="col">Follow the idea</th><th scope="col">Read it in plain language</th></tr></thead><tbody><tr><th scope="row">Pre-pruning</th><td>Stop early</td></tr><tr><th scope="row">Post-pruning</th><td>Remove branches later</td></tr><tr><th scope="row">Selection</th><td>Use development evidence</td></tr></tbody></table></div><p class="mini-note"><strong>Your notebook:</strong> <span data-bind="live-receipt">Open the visual to inspect the current calculation.</span></p></div>
+<p class="answer">A depth limit stops new branches being grown. Post-pruning removes branches from a tree that was already grown. Both simplify a tree, but their search paths differ.</p><div class="receipt"><div class="receipt-label">A small example · separate from the live dataset</div><div class="table-wrap"><table><thead><tr><th scope="col">Follow the idea</th><th scope="col">Read it in plain language</th></tr></thead><tbody><tr><th scope="row">Pre-pruning</th><td>Stop early</td></tr><tr><th scope="row">Post-pruning</th><td>Remove branches later</td></tr><tr><th scope="row">Selection</th><td>Use development evidence</td></tr></tbody></table></div><p class="mini-note"><strong>Your notebook:</strong> <span data-bind="live-receipt">Open the visual to inspect the current calculation.</span></p></div>
 <div class="experiment"><span class="pencil">↳</span><div><strong>Try it</strong><p>Raise the post-pruning penalty. The experiment starts from a fixed depth-5 tree, so it removes existing branches rather than stopping early.</p><button type="button" data-explore-stage="8">Explore this idea <span aria-hidden="true">↗</span></button></div></div>
-<details class="deeper"><summary>Why this works · a little deeper</summary><div><p>Depth limits prevent additional growth; pruning removes branches from an already grown tree. Both control complexity but explore different candidate structures.</p><p>No.</p><div class="reference-reading"><p class="reference-label">Additional reference · worked numbers below are separate examples from the live notebook.</p><p>Look closely at the tiny boxes the tree made just to capture one outlier fruit. The tree has started memorizing noise in the training dataset. This is called <strong>Overfitting</strong>.</p>
-<p>If we give the tree new fruit, these hyper-specific rules will likely fail. We fix this by limiting the maximum depth of the tree (Pre-Pruning), so it learns general rules instead of tracking every detail.</p>
-<h3>Pre-Pruning vs. Post-Pruning</h3>
-<table>
-<thead>
-<tr>
-<th>Method</th>
-<th>How it works</th>
-<th>Pros / Cons</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><strong>Pre-Pruning</strong></td>
-<td>Stop tree growth early using rules like <code>max_depth</code> or <code>min_samples_split</code>.</td>
-<td>Very fast to compute, but might stop too early before discovering complex interactions.</td>
-</tr>
-<tr>
-<td><strong>Post-Pruning</strong></td>
-<td>Grow the full complex tree first, then cut back nodes that do not add predictive value (e.g. cost-complexity pruning).</td>
-<td>Often more systematic, but computationally heavier because you build the full tree first.</td>
-</tr>
-</tbody>
-</table>
-<h3>Toggle Max Depth Model</h3>
-<p>Which of the following is a classic consequence of underfitting?</p></div></div></details>
+<details class="deeper"><summary>Why this works · a little deeper</summary><div><p>The pruning lab starts with a fixed depth-5 tree and removes branches as the penalty rises. This is different from reducing maximum depth and fitting a fresh early-stopped tree. Compare retained leaves, training risk and validation performance to see the actual tradeoff.</p></div></details>
 <details class="check"><summary>Quick check · Is setting maximum depth the same algorithm as post-pruning?</summary><p>No.</p></details>
 <a class="next-idea" href="#stage-10">Next: Choosing Tree Depth ↓</a>
 </section>
-<section class="stage" id="stage-10" data-stage="10" aria-labelledby="heading-10">
+<section class="stage" id="stage-10" data-stage="10" data-visual-guide="Training and validation scores describe different rows. More complexity can improve one while worsening the other." aria-labelledby="heading-10">
 <div class="stage-label"><span>10</span>Choosing Tree Depth</div><h2 id="heading-10">How should we select tree depth?</h2>
-<p class="answer">Fit each candidate depth on training data and score it on the same validation protocol. A shallower tree may generalize better despite making more training errors.</p><div class="receipt"><div class="receipt-label">A small example · separate from the live dataset</div><div class="table-wrap"><table><thead><tr><th scope="col">Follow the idea</th><th scope="col">Read it in plain language</th></tr></thead><tbody><tr><th scope="row">Train loss</th><td>Fit quality</td></tr><tr><th scope="row">Validation loss</th><td>Generalization estimate</td></tr><tr><th scope="row">Decision</th><td>Balance evidence and complexity</td></tr></tbody></table></div><p class="mini-note"><strong>Your notebook:</strong> <span data-bind="live-receipt">Open the visual to inspect the current calculation.</span></p></div>
+<p class="answer">Fit each candidate depth on training data. Compare the same validation rows or folds. A shallower tree may predict better on other data even though it makes more training errors.</p><div class="receipt"><div class="receipt-label">A small example · separate from the live dataset</div><div class="table-wrap"><table><thead><tr><th scope="col">Follow the idea</th><th scope="col">Read it in plain language</th></tr></thead><tbody><tr><th scope="row">Train loss</th><td>Fit quality</td></tr><tr><th scope="row">Validation loss</th><td>Generalization estimate</td></tr><tr><th scope="row">Decision</th><td>Balance evidence and complexity</td></tr></tbody></table></div><p class="mini-note"><strong>Your notebook:</strong> <span data-bind="live-receipt">Open the visual to inspect the current calculation.</span></p></div>
 <div class="experiment"><span class="pencil">↳</span><div><strong>Try it</strong><p>Compare training and validation error across maximum depths. Use held-out development evidence to choose complexity.</p><button type="button" data-explore-stage="9">Explore this idea <span aria-hidden="true">↗</span></button></div></div>
-<details class="deeper"><summary>Why this works · a little deeper</summary><div><p>Fit each candidate depth on training data and score it on the same validation protocol. A shallower tree may generalize better despite making more training errors.</p><p>No.</p><div class="reference-reading"><p class="reference-label">Additional reference · worked numbers below are separate examples from the live notebook.</p><p>How do we select the perfect <code>max_depth</code> parameter? We plot a <strong>Validation Curve</strong>.</p>
-<p>Below, we train 10 different trees with maximum depths ranging from 1 to 10. We compare <strong>Training Accuracy</strong> with <strong>Validation Accuracy</strong> to choose depth.</p>
-<h3> Tree Depth Validation Curve</h3>
-<p>Training Accuracy Validation Accuracy</p>
-<p>
-<strong>Validation-selected Depth:</strong> Depth 3
-</p>
-<p> <strong>Key Takeaway:</strong> Training accuracy keeps rising while validation accuracy peaks and then degrades. Choose depth from validation evidence, lock the tree, and evaluate final test accuracy once.</p>
-<p>
-<strong>Teaching note:</strong> This curve uses a validation set. Do not tune <code>max_depth</code> on the final test set; reserve it for one final evaluation after pruning is locked.
-    </p></div></div></details>
+<details class="deeper"><summary>Why this works · a little deeper</summary><div><p>Training accuracy and validation accuracy answer different questions. A measured validation curve may be noisy or flat; do not assume the best depth is always 3. Select a useful, stable setting using development data, then freeze it before final evaluation.</p></div></details>
 <details class="check"><summary>Quick check · Should maximum training accuracy select depth?</summary><p>No.</p></details>
-<a class="next-idea" href="#stage-11">Next: Classifying Test Points ↓</a>
+<a class="next-idea" href="#stage-11">Next: Classify new validation points ↓</a>
 </section>
-<section class="stage" id="stage-11" data-stage="11" aria-labelledby="heading-11">
-<div class="stage-label"><span>11</span>Classifying Test Points</div><h2 id="heading-11">How does one new row travel through the tree?</h2>
-<p class="answer">A query follows one branch at each question until it reaches a leaf. That leaf's saved counts determine its fraction and label.</p><div class="receipt"><div class="receipt-label">A small example · separate from the live dataset</div><div class="table-wrap"><table><thead><tr><th scope="col">Follow the idea</th><th scope="col">Read it in plain language</th></tr></thead><tbody><tr><th scope="row">Query x</th><td>Compare with root threshold</td></tr><tr><th scope="row">Next input</th><td>Compare at child</td></tr><tr><th scope="row">Leaf</th><td>Read saved fraction</td></tr></tbody></table></div><p class="mini-note"><strong>Your notebook:</strong> <span data-bind="live-receipt">Open the visual to inspect the current calculation.</span></p></div>
-<div class="experiment"><span class="pencil">↳</span><div><strong>Try it</strong><p>Move the query across a threshold. Follow the yes/left or no/right route and verify the resulting leaf fraction.</p><button type="button" data-explore-stage="10">Explore this idea <span aria-hidden="true">↗</span></button></div></div>
-<details class="deeper"><summary>Why this works · a little deeper</summary><div><p>A query follows one branch at each question until it reaches a leaf. That leaf's saved counts determine its fraction and label.</p><p>No.</p><div class="reference-reading"><p class="reference-label">Additional reference · worked numbers below are separate examples from the live notebook.</p><p>Now we bring in our small test dataset the model has not seen during training. We drop each test fruit (plotted as diamonds) onto the map. (Green border = correct prediction, red border = incorrect prediction).</p>
-<h3>Prediction Results Trace</h3></div></div></details>
+<section class="stage" id="stage-11" data-stage="11" data-visual-guide="The same selected point appears in the map and branching path. Follow its input comparisons to one leaf." aria-labelledby="heading-11">
+<div class="stage-label"><span>11</span>Classify new validation points</div><h2 id="heading-11">How does one new row travel through the tree?</h2>
+<p class="answer">A new point answers one question at a time. Follow its left or right branch until a leaf is reached. The leaf's saved class counts give the prediction and class fraction.</p><div class="receipt"><div class="receipt-label">A small example · separate from the live dataset</div><div class="table-wrap"><table><thead><tr><th scope="col">Follow the idea</th><th scope="col">Read it in plain language</th></tr></thead><tbody><tr><th scope="row">Query x</th><td>Compare with root threshold</td></tr><tr><th scope="row">Next input</th><td>Compare at child</td></tr><tr><th scope="row">Leaf</th><td>Read saved fraction</td></tr></tbody></table></div><p class="mini-note"><strong>Your notebook:</strong> <span data-bind="live-receipt">Open the visual to inspect the current calculation.</span></p></div>
+<div class="experiment"><span class="pencil">↳</span><div><strong>Try it</strong><p>Move the point to predict across a threshold. Follow the yes/left or no/right route and verify the resulting leaf fraction.</p><button type="button" data-explore-stage="10">Explore this idea <span aria-hidden="true">↗</span></button></div></div>
+<details class="deeper"><summary>Why this works · a little deeper</summary><div><p>This lab sends equality to the left branch. Follow the query&#x27;s actual x₁ or x₂ value at each question. The highlighted map region and tree route must reach the same leaf. Saved training counts give the class fraction; the query&#x27;s unknown label does not enter that calculation.</p></div></details>
 <details class="check"><summary>Quick check · Does a new row alter the leaf counts during prediction?</summary><p>No.</p></details>
 <a class="next-idea" href="#stage-12">Next: Performance Metrics ↓</a>
 </section>
-<section class="stage" id="stage-12" data-stage="12" aria-labelledby="heading-12">
+<section class="stage" id="stage-12" data-stage="12" data-visual-guide="The four counts compare actual labels with predictions. TP and TN are correct; FP is a false alert and FN a missed positive." aria-labelledby="heading-12">
 <div class="stage-label"><span>12</span>Performance Metrics</div><h2 id="heading-12">Which errors does the tree make?</h2>
-<p class="answer">Inspect validation confusion counts to see which errors occur. A tree can have high accuracy and still miss a rare but important class.</p><div class="receipt"><div class="receipt-label">A small example · separate from the live dataset</div><div class="table-wrap"><table><thead><tr><th scope="col">Follow the idea</th><th scope="col">Read it in plain language</th></tr></thead><tbody><tr><th scope="row">Missed positive</th><td>False negative</td></tr><tr><th scope="row">False alert</th><td>False positive</td></tr><tr><th scope="row">Useful comparison</th><td>Baseline and task costs</td></tr></tbody></table></div><p class="mini-note"><strong>Your notebook:</strong> <span data-bind="live-receipt">Open the visual to inspect the current calculation.</span></p></div>
+<p class="answer">Read the validation confusion matrix to see the errors. A tree can have high overall accuracy while missing a rare class. Check false alarms and misses for the task.</p><div class="receipt"><div class="receipt-label">A small example · separate from the live dataset</div><div class="table-wrap"><table><thead><tr><th scope="col">Follow the idea</th><th scope="col">Read it in plain language</th></tr></thead><tbody><tr><th scope="row">Missed positive</th><td>False negative</td></tr><tr><th scope="row">False alert</th><td>False positive</td></tr><tr><th scope="row">Useful comparison</th><td>Baseline and task costs</td></tr></tbody></table></div><p class="mini-note"><strong>Your notebook:</strong> <span data-bind="live-receipt">Open the visual to inspect the current calculation.</span></p></div>
 <div class="experiment"><span class="pencil">↳</span><div><strong>Try it</strong><p>Read the validation points inside each confusion-matrix cell. Identify false positives and false negatives before comparing the counts.</p><button type="button" data-explore-stage="11">Explore this idea <span aria-hidden="true">↗</span></button></div></div>
-<details class="deeper"><summary>Why this works · a little deeper</summary><div><p>Inspect validation confusion counts to see which errors occur. A tree can have high accuracy and still miss a rare but important class.</p><p>No.</p><div class="reference-reading"><p class="reference-label">Additional reference · worked numbers below are separate examples from the live notebook.</p><p>To evaluate how well our pruned tree performs on completely unseen data, we check the results of classifying our hidden Test set.</p>
-<h3> Detailed Performance Metrics</h3>
-<p>If Apples are the positive class, what does a False Positive mean in this context?</p></div></div></details>
+<details class="deeper"><summary>Why this works · a little deeper</summary><div><p>Define the positive class. FP predicts positive for an actual negative; FN predicts negative for an actual positive. Precision divides by predicted positives; recall divides by actual positives. Report counts and sample sizes, especially for rare classes. Changing the model during this display is development, not repeated final testing.</p></div></details>
 <details class="check"><summary>Quick check · Does a pure training leaf guarantee a correct new prediction?</summary><p>No.</p></details>
 <a class="next-idea" href="#stage-13">Next: Reading Tree Output ↓</a>
 </section>
-<section class="stage" id="stage-13" data-stage="13" aria-labelledby="heading-13">
+<section class="stage" id="stage-13" data-stage="13" data-visual-guide="The same selected point appears in the map and branching path. Follow its input comparisons to one leaf." aria-labelledby="heading-13">
 <div class="stage-label"><span>13</span>Reading Tree Output</div><h2 id="heading-13">What belongs in tree output?</h2>
-<p class="answer">Report the split protocol, tree constraints, leaf sizes, class metrics, and uncertainty. Explain rules as predictive partitions, without claiming they establish causal effects.</p><div class="receipt"><div class="receipt-label">A small example · separate from the live dataset</div><div class="table-wrap"><table><thead><tr><th scope="col">Follow the idea</th><th scope="col">Read it in plain language</th></tr></thead><tbody><tr><th scope="row">Structure</th><td>Depth and leaf count</td></tr><tr><th scope="row">Performance</th><td>Validation or final-test protocol</td></tr><tr><th scope="row">Limit</th><td>Stability and calibration</td></tr></tbody></table></div><p class="mini-note"><strong>Your notebook:</strong> <span data-bind="live-receipt">Open the visual to inspect the current calculation.</span></p></div>
-<div class="experiment"><span class="pencil">↳</span><div><strong>Try it</strong><p>Trace a query and reconcile its path, leaf sample size and predicted class fraction. A leaf fraction is not a guarantee of correctness.</p><button type="button" data-explore-stage="12">Explore this idea <span aria-hidden="true">↗</span></button></div></div>
-<details class="deeper"><summary>Why this works · a little deeper</summary><div><p>Report the split protocol, tree constraints, leaf sizes, class metrics, and uncertainty. Explain rules as predictive partitions, without claiming they establish causal effects.</p><p>No.</p><div class="reference-reading"><p class="reference-label">Additional reference · worked numbers below are separate examples from the live notebook.</p><p>When software packages train a decision tree, they output a comprehensive model summary. Let's learn to interpret these metrics directly.</p></div></div></details>
+<p class="answer">Report how the data was split, the growth and pruning limits, leaf sizes, and class scores. Explain the path to a prediction. These rules do not establish causes.</p><div class="receipt"><div class="receipt-label">A small example · separate from the live dataset</div><div class="table-wrap"><table><thead><tr><th scope="col">Follow the idea</th><th scope="col">Read it in plain language</th></tr></thead><tbody><tr><th scope="row">Structure</th><td>Depth and leaf count</td></tr><tr><th scope="row">Performance</th><td>Validation or final-test protocol</td></tr><tr><th scope="row">Limit</th><td>Stability and calibration</td></tr></tbody></table></div><p class="mini-note"><strong>Your notebook:</strong> <span data-bind="live-receipt">Open the visual to inspect the current calculation.</span></p></div>
+<div class="experiment"><span class="pencil">↳</span><div><strong>Try it</strong><p>Trace a point to predict and check its path, leaf sample size and predicted class fraction. A leaf fraction is not a guarantee of correctness.</p><button type="button" data-explore-stage="12">Explore this idea <span aria-hidden="true">↗</span></button></div></div>
+<details class="deeper"><summary>Why this works · a little deeper</summary><div><p>State the target labels, inputs, split structure, criterion, maximum depth, minimum leaf size, pruning and threshold. Include validation or final-test roles accurately, error measures, uncertainty and limits. A path explains how the fitted prediction was produced, not how changing an input would cause a real-world outcome.</p></div></details>
 <details class="check"><summary>Quick check · Is a feature's early split proof of causal importance?</summary><p>No.</p></details>
 <a class="next-idea" href="#stage-14">Next: Interactive Playground ↓</a>
 </section>
-<section class="stage" id="stage-14" data-stage="14" aria-labelledby="heading-14">
+<section class="stage" id="stage-14" data-stage="14" data-visual-guide="The background shows the predicted decision or probability, as labelled. The dividing line is a fitted rule, not a physical boundary." aria-labelledby="heading-14">
 <div class="stage-label"><span>14</span>Interactive Playground</div><h2 id="heading-14">What changes when I modify complexity?</h2>
-<p class="answer">Changing depth or leaf constraints refits the training tree. Keep the dataset fixed to isolate the effect, then inspect both the path and validation errors.</p><div class="receipt"><div class="receipt-label">A small example · separate from the live dataset</div><div class="table-wrap"><table><thead><tr><th scope="col">Follow the idea</th><th scope="col">Read it in plain language</th></tr></thead><tbody><tr><th scope="row">Fixed</th><td>Training and validation IDs</td></tr><tr><th scope="row">Changed</th><td>Complexity setting</td></tr><tr><th scope="row">Compare</th><td>Structure and loss</td></tr></tbody></table></div><p class="mini-note"><strong>Your notebook:</strong> <span data-bind="live-receipt">Open the visual to inspect the current calculation.</span></p></div>
+<p class="answer">Changing depth or minimum leaf size refits the training tree. Keep the data fixed so the change has one clear source. Check both the regions and the validation errors.</p><div class="receipt"><div class="receipt-label">A small example · separate from the live dataset</div><div class="table-wrap"><table><thead><tr><th scope="col">Follow the idea</th><th scope="col">Read it in plain language</th></tr></thead><tbody><tr><th scope="row">Fixed</th><td>Training and validation IDs</td></tr><tr><th scope="row">Changed</th><td>Complexity setting</td></tr><tr><th scope="row">Compare</th><td>Structure and loss</td></tr></tbody></table></div><p class="mini-note"><strong>Your notebook:</strong> <span data-bind="live-receipt">Open the visual to inspect the current calculation.</span></p></div>
 <div class="experiment"><span class="pencil">↳</span><div><strong>Try it</strong><p>Change depth or minimum leaf size while keeping the sample fixed. Inspect how the decision regions change.</p><button type="button" data-explore-stage="13">Explore this idea <span aria-hidden="true">↗</span></button></div></div>
-<details class="deeper"><summary>Why this works · a little deeper</summary><div><p>Changing depth or leaf constraints refits the training tree. Keep the dataset fixed to isolate the effect, then inspect both the path and validation errors.</p><p>No.</p><div class="reference-reading"><p class="reference-label">Additional reference · worked numbers below are separate examples from the live notebook.</p><p> <strong>Note:</strong> Small depth = simpler rules. Large depth = more detailed map but higher overfitting risk.</p>
-<h3>Last Drop Prediction Route:</h3></div></div></details>
+<details class="deeper"><summary>Why this works · a little deeper</summary><div><p>Keep the sample fixed while changing one constraint. That isolates the setting&#x27;s effect on cuts and leaves. Drawing a new dataset changes a second cause. Inspect whether better training fit also improves useful errors outside training.</p></div></details>
 <details class="check"><summary>Quick check · Should a control silently generate fresh data too?</summary><p>No.</p></details>
 <a class="next-idea" href="#stage-15">Next: Limitations &amp; Model Choice ↓</a>
 </section>
-<section class="stage" id="stage-15" data-stage="15" aria-labelledby="heading-15">
+<section class="stage" id="stage-15" data-stage="15" data-visual-guide="Compare the original partition with the partition after one training input changes. Both maps use the same query." aria-labelledby="heading-15">
 <div class="stage-label"><span>15</span>Limitations &amp; Model Choice</div><h2 id="heading-15">When should I prefer another model?</h2>
-<p class="answer">Prefer alternatives when smoothness, stability, high-dimensional structure, or calibrated probabilities matter more than a small set of rules. Compare under the same evaluation protocol.</p><div class="receipt"><div class="receipt-label">A small example · separate from the live dataset</div><div class="table-wrap"><table><thead><tr><th scope="col">Follow the idea</th><th scope="col">Read it in plain language</th></tr></thead><tbody><tr><th scope="row">Single tree</th><td>Readable but potentially unstable</td></tr><tr><th scope="row">Forest</th><td>Averages many trees</td></tr><tr><th scope="row">Other models</th><td>Different structure assumptions</td></tr></tbody></table></div><p class="mini-note"><strong>Your notebook:</strong> <span data-bind="live-receipt">Open the visual to inspect the current calculation.</span></p></div>
+<p class="answer">A short tree can be easy to read. A deep one can be unstable or overconfident. If another model better meets the need for stability, smoothness or probability quality, compare it under the same evaluation plan.</p><div class="receipt"><div class="receipt-label">A small example · separate from the live dataset</div><div class="table-wrap"><table><thead><tr><th scope="col">Follow the idea</th><th scope="col">Read it in plain language</th></tr></thead><tbody><tr><th scope="row">Single tree</th><td>Readable but potentially unstable</td></tr><tr><th scope="row">Forest</th><td>Averages many trees</td></tr><tr><th scope="row">Other models</th><td>Different structure assumptions</td></tr></tbody></table></div><p class="mini-note"><strong>Your notebook:</strong> <span data-bind="live-receipt">Open the visual to inspect the current calculation.</span></p></div>
 <div class="experiment"><span class="pencil">↳</span><div><strong>Try it</strong><p>Move one training input and compare the resulting partitions. A small data change can alter a greedy tree.</p><button type="button" data-explore-stage="14">Explore this idea <span aria-hidden="true">↗</span></button></div></div>
-<details class="deeper"><summary>Why this works · a little deeper</summary><div><p>Prefer alternatives when smoothness, stability, high-dimensional structure, or calibrated probabilities matter more than a small set of rules. Compare under the same evaluation protocol.</p><p>No.</p><div class="reference-reading"><p class="reference-label">Additional reference · worked numbers below are separate examples from the live notebook.</p><p>Classification Trees are incredibly intuitive, but they are not always the best tool for every job. Understanding their trade-offs is crucial for a data scientist.</p>
-<h3> Strengths vs.  Weaknesses</h3>
-<h4>When they shine:</h4>
-<ul>
-<li><strong>Explainability:</strong> Outputs simple rules that any non-expert can read and audit.</li>
-<li><strong>No Scaling Required:</strong> Features are evaluated independently, so feature magnitude does not matter.</li>
-<li><strong>Handles Mixed Types Conceptually:</strong> Trees can split numerical and categorical predictors, but raw categorical support depends on the software. Some libraries require encoded categories; others implement native categorical splits.</li>
-</ul>
-<h4>When they struggle:</h4>
-<ul>
-<li><strong>High Variance:</strong> Extremely sensitive to tiny training set alterations, which can yield completely different splits.</li>
-<li><strong>Axis-Aligned Boundaries:</strong> Since splits are purely horizontal or vertical, diagonal patterns require jagged, inefficient steps.</li>
-<li><strong>Overfitting:</strong> Easily memorize noise if depth is unchecked.</li>
-<li><strong>Class Imbalance:</strong> If one class is much more common, the tree may favor that class unless class weights, resampling, or better evaluation metrics are used.</li>
-</ul>
-<h3> Model Comparison Roadmap</h3>
-<table>
-<thead>
-<tr>
-<th>Model</th>
-<th>Boundary Type</th>
-<th>Interpretability</th>
-<th>Best Used For...</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><strong>Decision Tree</strong></td>
-<td>Axis-Aligned Boxes</td>
-<td>High (Flowchart)</td>
-<td>Rules-based audits, mixed categorical/numerical data.</td>
-</tr>
-<tr>
-<td><strong>Logistic Regression</strong></td>
-<td>Smooth Linear</td>
-<td>Medium (Weights)</td>
-<td>Linear associations with log-odds; estimated probabilities may need calibration.</td>
-</tr>
-<tr>
-<td><strong>K-Nearest Neighbors (KNN)</strong></td>
-<td>Irregular / Local</td>
-<td>Low (Instance-based)</td>
-<td>Complex local shapes, feature manifolds.</td>
-</tr>
-<tr>
-<td><strong>Random Forest</strong></td>
-<td>Complex / Smooth</td>
-<td>Low (Ensemble)</td>
-<td>High-accuracy, non-linear tasks (reduces variance).</td>
-</tr>
-</tbody>
-</table>
-<p> <strong>The Upgrade Path:</strong> To overcome the instability and high variance of a single Classification Tree, we combine hundreds of trees into an ensemble. Models like <strong>Random Forests</strong> (voting trees) and <strong>Gradient Boosted Trees</strong> (sequential error correction) represent the state-of-the-art for tabular data!</p></div></div></details>
+<details class="deeper"><summary>Why this works · a little deeper</summary><div><p>Numeric threshold trees usually do not need rescaling merely because input units differ; they compare values within one feature at a time. Native categorical support depends on software, so some inputs need encoding. Trees can be sensitive to data changes, rare classes and many small leaves. A forest still has piecewise tree-based predictions; averaging does not guarantee a smooth function or calibrated probabilities. Compare alternatives for the actual goal.</p></div></details>
 <details class="check"><summary>Quick check · Is a tree always the most interpretable model once it grows very large?</summary><p>No.</p></details>
 <a class="next-idea" href="random-forest.html">Continue to Random Forest →</a>
 </section>
 </article><aside class="lab-home" aria-label="Interactive notebook"><section class="lab-panel" id="lab-panel"><header class="lab-header"><div><p class="eyebrow">THE LIVE NOTEBOOK <span id="lab-stage">01</span></p><h2 id="lab-title">The Raw Data</h2></div><button class="icon-button" type="button" data-reset aria-label="Reset notebook" title="Reset notebook to its starting values">↺</button></header>
-<div id="lab-content" data-interactive="tree-space"><p class="loading-note">Your interactive notebook is loading. The complete written lesson is on the left.</p></div>
+<p class="visual-reading-guide" id="visual-reading-guide" hidden></p><div id="lab-content" data-interactive="tree-space"><p class="loading-note">Your interactive notebook is loading. The complete written lesson is on the left.</p></div>
 <p id="motion-status" class="motion-status" aria-live="off"></p><p class="lab-caption" id="lab-caption">Read the idea, inspect a small example, then change one thing in the live notebook.</p><p class="live-announcement" role="status" aria-live="polite"></p></section></aside></main>
 <dialog class="lab-dialog" aria-labelledby="dialog-title"><header class="dialog-header"><strong id="dialog-title">Explore the notebook</strong><button type="button" data-close-lab>Back to reading ✕</button></header><div class="dialog-body"></div></dialog>
 <details class="topic-directory"><summary>Explore all 34 topics</summary><nav aria-label="All academy topics"><a href="anova.html">Analysis of Variance (ANOVA)</a><a href="association-rules.html">Association Rules</a><a href="bias-variance.html">Bias-Variance Trade-Off &amp; Resampling</a><a href="chi-square.html">Chi-Square Test of Independence</a><a href="classification-trees.html" aria-current="page">Classification Trees</a><a href="confidence-hypothesis-testing.html">Confidence Intervals &amp; Hypothesis Testing</a><a href="correlation.html">Correlation</a><a href="data-leakage-pipelines.html">Data Leakage &amp; Pipelines</a><a href="deep-learning.html">Deep Learning</a><a href="evaluation-metrics.html">Evaluation Metrics</a><a href="experimental-design.html">Experimental Design &amp; Randomisation</a><a href="gradient-boosting.html">Gradient Boosting</a><a href="hierarchical-clustering.html">Hierarchical Clustering</a><a href="imbalanced-classification.html">Imbalanced Classification</a><a href="kmeans.html">K-Means Clustering</a><a href="knn.html">K-Nearest Neighbors (KNN)</a><a href="lda.html">Linear Discriminant Analysis (LDA)</a><a href="logistic-regression.html">Logistic Regression</a><a href="missing-data-encoding.html">Missing Data &amp; Encoding</a><a href="model-selection.html">Model Selection &amp; Regularization</a><a href="multiple-linear-regression.html">Multiple Linear Regression</a><a href="naive-bayes.html">Naive Bayes</a><a href="neural-networks.html">Neural Networks</a><a href="one-r.html">One-R</a><a href="polynomial-regression.html">Polynomial Regression</a><a href="pca.html">Principal Component Analysis (PCA)</a><a href="probability-sampling.html">Probability &amp; Sampling Distributions</a><a href="qda.html">Quadratic Discriminant Analysis (QDA)</a><a href="random-forest.html">Random Forest</a><a href="regression-diagnostics.html">Regression Diagnostics</a><a href="regression-trees.html">Regression Trees</a><a href="simple-linear-regression.html">Simple Linear Regression</a><a href="support-vector-machine.html">Support Vector Machines — Separate classes with breathing room</a><a href="time-series-analysis.html">Time Series Analysis</a></nav></details>

@@ -1,6 +1,7 @@
+import { visualRevision } from '../visual-revisions.js';
 import { Surface, Tween, range, select, stats, palette, setText, announce, motionStatus, fmt, pct } from '../ui.js';
 import { caption, frame } from '../spatial.js';
-import { ITEMS, CODES, RULES, SOURCE_BASKETS, FP_BASKETS, QUIZ_BASKETS, COHORTS, TOY_PRODUCTS, initialState, compute, allSets, combinations, count, subset, union, key } from './model.js';
+import { ITEMS, CODES, RULES, SOURCE_BASKETS, FP_BASKETS, QUIZ_BASKETS, COHORTS, TOY_PRODUCTS, initialState, compute, allSets, combinations, count, subset, union, key, ruleThresholds } from './model.js';
 const [blue,red,green,gold,purple]=palette;
 const neutral='#dce1d5',ink='#303b38';
 const code=xs=>xs.map(x=>CODES[x]||x).sort().join('');
@@ -38,6 +39,7 @@ const REVIEW=[
 ];
 export function create(host) {
   const group=(id,stages,html)=>`<div class="control-group" id="${id}" data-for="${stages.join(',')}">${html}</div>`;
+  const walk=(id,label,steps)=>select(id,label,[...steps.map((t,i)=>[i,t]),[3,id==='workflow-step'?'Whole workflow':'Whole walkthrough']])+`<div class="button-row"><button type="button" data-walk="${id}" data-delta="-1">Previous step</button><button type="button" data-walk="${id}" data-delta="1">Next step</button><button type="button" data-walk="${id}" data-delta="0">Replay steps</button></div>`;
   const setOptions=allSets(ITEMS).filter(xs=>xs.length>=2).map(xs=>[key(xs),names(xs)]);
   host.innerHTML=`<p class="scene-kicker" id="scene-kicker"></p><div class="plot"></div><div class="legend" id="scene-legend"></div>
     ${stats([['metric-one',''],['metric-two',''],['metric-three','']])}
@@ -48,9 +50,12 @@ export function create(host) {
     ${group('confidence-controls',[6,9,19],range('minimum-confidence','Minimum confidence',0,100,5,90))}
     ${group('itemset-controls',[7,9],select('itemset-choice','Inspect itemset',setOptions))}
     ${group('level-controls',[8],range('candidate-level','Candidate length k',1,5,1,3)+select('candidate-choice','Trace a candidate',[]))}
+    ${group('apriori-walk-controls',[8],walk('apriori-step','Apriori step',['1. Join frequent parents','2. Check every immediate subset','3. Count matching baskets']))}
     ${group('split-controls',[9],range('rule-split','Inspect a split',1,6,1,1))}
-    ${group('fp-step-controls',[10],range('fp-step','Inserted baskets',0,5,1,5))}
+    ${group('fp-step-controls',[10],range('fp-step','Inserted baskets',0,5,1,5)+`<div class="button-row"><button id="fp-back" type="button">Previous basket</button><button id="fp-next" type="button">Next basket</button><button id="fp-replay" type="button">Replay insertion</button></div>`)}
     ${group('suffix-controls',[11],select('suffix-choice','Suffix item', ['m','p','b','a','c','f'].map(x=>[x,x])))}
+    ${group('projection-controls',[11],walk('projection-step','Projection step',['1. Trace suffix','2. Copy weighted prefixes','3. Filter conditional tree']))}
+    ${group('workflow-walk-controls',[19],walk('workflow-step','Workflow step',['1. Boolean input','2. Frequent itemsets','3. Passing rules']))}
     ${group('cohort-controls',[5],select('cohort-choice','Source example',Object.entries(COHORTS).map(([k,v])=>[k,v.name]))+range('joint-count','Joint count',1750,3000,1,2000))}
     ${group('chi-controls',[15],select('chi-cohort-choice','Source example',Object.entries(COHORTS).map(([k,v])=>[k,v.name]))+range('chi-joint-count','Joint count',3500,6000,1,4000))}
     ${group('closed-controls',[13],range('quiz-minimum','Minimum count',1,3,1,2)+select('pattern-family','Emphasise patterns',[['all','All frequent'],['closed','Closed frequent'],['maximal','Maximal frequent']])+select('pattern-focus','Inspect pattern',[]))}
@@ -69,23 +74,37 @@ export function create(host) {
   const T=(k,x,y,t,attrs={})=>s.text(k,x,y,t,{'font-size':16,...attrs});
   const cap=(k,t,y=24,color=ink)=>caption(s,k,t,y,color);
   function end(y,description) {s.h=y+16;s.svg.setAttribute('viewBox',`0 0 ${s.w} ${s.h}`);s.end(description||notes[index]);}
-  function slots(k,title,y,rows,match,color=green) {
+  function slots(k,title,y,rows,match,color=green,contents=true) {
     y=cap(k+'-title',title,y);
     if(!rows.length)return cap(k+'-empty','No qualifying baskets: this denominator is zero.',y+17,red)+12;
-    const gap=8,cw=(s.w-28-gap*(rows.length-1))/rows.length;
-    rows.forEach((row,i)=>{const x=14+i*(cw+gap),yes=match(row);s.rect(k+'-slot-'+row.id,x,y+8,cw,38,yes?color:'#f0f0e6',{opacity:yes?.7:1,stroke:yes?color:'#cbd0c1'});T(k+'-id-'+row.id,x+cw/2,y+33,String(row.id),{'text-anchor':'middle',fill:yes?'#fffef9':ink,'font-size':15});});
-    return y+65;
+    const shopping=rows===state.baskets||rows.every(row=>row.items.every(item=>ITEMS.includes(item)));
+    if(!shopping||!contents) {
+      const gap=8,cw=(s.w-28-gap*(rows.length-1))/rows.length;
+      rows.forEach((row,i)=>{const x=14+i*(cw+gap),yes=match(row);s.rect(k+'-slot-'+row.id,x,y+8,cw,38,yes?color:'#f0f0e6',{opacity:yes?.7:1,stroke:yes?color:'#cbd0c1'});T(k+'-id-'+row.id,x+cw/2,y+33,String(row.id),{'text-anchor':'middle',fill:yes?'#fffef9':ink,'font-size':15});});
+      return y+65;
+    }
+    const cols=s.w>460?2:1,gap=10,cw=(s.w-28-gap*(cols-1))/cols;
+    const height=60+Math.max(1,...rows.map(row=>row.items.length))*21;
+    rows.forEach((row,i)=>{
+      const x=14+(i%cols)*(cw+gap),yy=y+8+Math.floor(i/cols)*(height+gap),yes=match(row);
+      s.rect(k+'-slot-'+row.id,x,yy,cw,height,yes?color+'18':'#f0f0e6',{stroke:yes?color:'#cbd0c1',rx:9});
+      T(k+'-id-'+row.id,x+12,yy+24,`Basket ${row.id}: ${yes?'Match':'No match'}`,{'font-size':15,fill:yes?color:ink});
+      (row.items.length?row.items:['Empty basket']).forEach((item,j)=>T(k+'-product-'+row.id+'-'+j,x+17,yy+49+j*21,item,{'font-size':16}));
+    });
+    return y+8+Math.ceil(rows.length/cols)*(height+gap)+10;
   }
   function chips(k,title,items,y,color=blue,removed=[]) {
     y=cap(k+'-title',title,y);
-    const cols=Math.max(1,Math.floor((s.w-28)/46)),start=y+7;
+    let x=14,yy=y+7;
     items.forEach((item,i)=>{
-      const x=14+(i%cols)*46,yy=start+Math.floor(i/cols)*43,off=removed.includes(item);
-      s.rect(k+'-chip-'+i,x,yy,35,31,off?'#eeeee6':color,{opacity:off?1:.16,stroke:off?'#b8bdaf':color});
-      T(k+'-letter-'+i,x+17.5,yy+22,CODES[item]||item,{'text-anchor':'middle',fill:off?'#838c7d':color,'font-size':18});
-      if(off)s.line(k+'-strike-'+i,x+5,yy+25,x+30,yy+6,'#838c7d',1.3);
+      const label=ITEMS.includes(item)?item:item,width=Math.max(35,label.length*8+18),off=removed.includes(item);
+      if(x+width>s.w-14){x=14;yy+=43;}
+      s.rect(k+'-chip-'+i,x,yy,width,31,off?'#eeeee6':color,{opacity:off?1:.16,stroke:off?'#b8bdaf':color});
+      T(k+'-letter-'+i,x+width/2,yy+22,label,{'text-anchor':'middle',fill:off?'#838c7d':color,'font-size':16});
+      if(off)s.line(k+'-strike-'+i,x+5,yy+25,x+width-5,yy+6,'#838c7d',1.3);
+      x+=width+10;
     });
-    return start+Math.ceil(items.length/cols)*43+8;
+    return yy+43;
   }
   function valueBar(k,label,value,max,y,color=blue,displayValue=value) {
     y=cap(k+'-caption',label,y);
@@ -117,24 +136,25 @@ export function create(host) {
   function paint(v) {
     s.begin(360);let y=24;
     if(index===0) {
-      y=cap('basket-caption','A–E are products. One outlined basket is one transaction.',y);
-      y=cap('basket-dictionary','A = Apple; B = Bread; C = Coke; D = DVD; E = Egg.',y+7,blue);
-      const cw=(s.w-42)/2,base=y+14;
+      y=cap('basket-caption','One outlined basket is one transaction. Read its product names.',y);
+      const cw=(s.w-42)/2,base=y+14,height=180;
       state.baskets.forEach((row,i)=>{
-        const x=14+(i%2)*(cw+14),by=base+Math.floor(i/2)*146,selected=i===state.basket;
+        const x=14+(i%2)*(cw+14),by=base+Math.floor(i/2)*height,selected=i===state.basket;
         T('basket-label-'+i,x+cw/2,by+4,`Basket ${row.id}`,{'text-anchor':'middle',fill:selected?gold:ink});
         s.path('basket-handle-'+i,`M${x+cw*.25},${by+25} Q${x+cw*.5},${by+3} ${x+cw*.75},${by+25}`,selected?gold:'#92a493',1.5);
-        s.path('basket-body-'+i,`M${x+4},${by+29} L${x+cw-4},${by+29} L${x+cw-14},${by+107} L${x+14},${by+107} Z`,selected?gold:'#92a493',selected?2.3:1.3,'#f2f3e9',{opacity:selected?(.6+.4*v.reveal):1});
-        row.items.forEach((item,j)=>{const bx=x+cw/2-25+(j%3)*25,cy=by+50+Math.floor(j/3)*29;s.circle('basket-product-'+i+'-'+item,bx,cy,11,blue,{opacity:.16});T('basket-item-'+i+'-'+item,bx,cy+5,CODES[item],{'text-anchor':'middle',fill:blue});});
-        if(!row.items.length)T('basket-empty-'+i,x+cw/2,by+73,'Empty',{'text-anchor':'middle',fill:red});
+        s.path('basket-body-'+i,`M${x+4},${by+29} L${x+cw-4},${by+29} L${x+cw-14},${by+150} L${x+14},${by+150} Z`,selected?gold:'#92a493',selected?2.3:1.3,'#f2f3e9',{opacity:selected?(.6+.4*v.reveal):1});
+        (row.items.length?row.items:['Empty basket']).forEach((item,j)=>T('basket-item-'+i+'-'+j,x+cw/2,by+53+j*21,item,{'text-anchor':'middle',fill:row.items.length?blue:red,'font-size':16}));
       });
-      y=base+2*146; y=cap('selected-basket',`Selected basket ${state.baskets[state.basket].id}: ${state.baskets[state.basket].items.join(', ')||'no items'}.`,y,gold);
+      y=base+2*height; y=cap('selected-basket',`Selected basket ${state.baskets[state.basket].id}: ${state.baskets[state.basket].items.join(', ')||'no items'}.`,y,gold);
+      y=cap('empty-count','An empty basket still counts as one transaction. The ID is not a product.',y+8);
     } else if(index===1) {
-      y=cap('rule-words',`${names(r.rule.x)} → ${names(r.rule.y)}`,y,blue);
-      const cols=[14,s.w*.32,s.w*.59,s.w-25];
-      ['TID',`X:${code(r.rule.x)}`,`Y:${code(r.rule.y)}`,'Both'].forEach((t,i)=>T('rule-col-'+i,cols[i],y+10,t,{'text-anchor':i?'middle':'start','font-size':15}));
-      y+=40;
-      state.baskets.forEach((row,i)=>{const yy=y+i*49,yesX=subset(r.rule.x,row.items),yesY=subset(r.rule.y,row.items);T('rule-row-'+i,14,yy+5,row.id);[yesX,yesY,yesX&&yesY].forEach((yes,j)=>{s.circle('rule-circle-'+i+'-'+j,cols[j+1],yy,14,yes?(j===2?green:blue):'#eceee5',{opacity:yes?.8:1});T('rule-bit-'+i+'-'+j,cols[j+1],yy+5,yes?'1':'0',{'text-anchor':'middle',fill:yes?'#fffef9':ink});});});
+      y=cap('rule-left',`X (left): ${names(r.rule.x)}`,y,blue);
+      y=cap('rule-right',`Y (right): ${names(r.rule.y)}`,y+5,green);
+      y=cap('rule-words','A plus sign means all listed items. The arrow does not establish sequence or cause.',y+7);
+      const cols=[14,s.w*.36,s.w*.63,s.w-30];
+      ['ID','X?','Y?','Both?'].forEach((t,i)=>T('rule-col-'+i,cols[i],y+14,t,{'text-anchor':i?'middle':'start','font-size':15}));
+      y+=50;
+      state.baskets.forEach((row,i)=>{const yy=y+i*49,yesX=subset(r.rule.x,row.items),yesY=subset(r.rule.y,row.items);T('rule-row-'+i,14,yy+5,row.id);[yesX,yesY,yesX&&yesY].forEach((yes,j)=>{s.rect('rule-circle-'+i+'-'+j,cols[j+1]-20,yy-18,40,32,yes?(j===2?green:blue)+'25':'#eceee5');T('rule-bit-'+i+'-'+j,cols[j+1],yy+5,yes?'Yes':'No',{'text-anchor':'middle',fill:yes?(j===2?green:blue):ink,'font-size':15});});});
       y+=state.baskets.length*49;y=cap('rule-outcome',`${r.main.a} baskets qualify for X; ${r.main.both} also contain all of Y.`,y+8);
     } else if(index===2) {
       y=slots('support-slots',`${names(union(r.rule.x,r.rule.y))}: count joint matches`,y,state.baskets,row=>subset(union(r.rule.x,r.rule.y),row.items));
@@ -173,48 +193,62 @@ export function create(host) {
       const xs=state.set,subs=xs.map((_,i)=>xs.filter((_,j)=>i!==j));
       for(const [i,items] of [...subs,xs].entries()) {
         const c=count(state.baskets,items),whole=i===subs.length,color=whole?gold:c>=r.minCount?blue:red;
-        y=slots('property-'+i,`${whole?'Complete set':'Subset'} ${code(items)}: count ${c}${c<r.minCount?' < cutoff '+r.minCount:''}`,y,state.baskets,row=>subset(items,row.items),color);y+=8;
+        y=slots('property-'+i,`${whole?'Complete set':'Subset'} ${names(items)}: count ${c}${c<r.minCount?' < cutoff '+r.minCount:''}`,y,state.baskets,row=>subset(items,row.items),color,false);y+=8;
       }
+      y=cap('property-objects','Basket contents: '+state.baskets.map(row=>`${row.id}: ${row.items.join(', ')||'empty'}`).join('; '),y+8);
       y=cap('property-message',`Complete count ${count(state.baskets,xs)} cannot exceed any subset count.`,y+5);
     } else if(index===8) {
-      const level=r.mined.levels.find(l=>l.k===state.level);
-      y=cap('apriori-stage',`C${state.level}: joined candidates at length ${state.level}. Cutoff = ${r.minCount} of ${state.baskets.length}.`,y,blue);
+      const level=r.mined.levels.find(l=>l.k===state.level),phase=state.aprioriPhase;
+      y=cap('apriori-stage',`C${state.level}: candidates of length ${state.level}. Cutoff = ${r.minCount} of ${state.baskets.length}.`,y,blue);
+      y=cap('apriori-dictionary','C means candidates; L means the candidates kept as frequent.',y+7);
       if(!level||!level.candidates.length)y=cap('apriori-empty','No candidate is generated. The search has stopped at an empty level.',y+28,red);
       else {
         const p=level.candidates.find(p=>key(p.items)===state.candidate)||level.candidates[0];
-        if(state.level>1){
-          y=cap('join-heading','1. Join two frequent parent sets.',y+12,blue);
-          for(const [i,parent] of p.parents.entries())y=chips('join-parent-'+i,`Parent from L${state.level-1}: ${code(parent)}`,parent,y+5,blue);
-          y=chips('join-result',`Union: ${code(p.items)}. Shared items are included once.`,p.items,y+7,gold);
-          y=cap('subset-heading',`2. Check every ${state.level-1}-item subset against L${state.level-1}.`,y+7,blue);
+        y=cap('candidate-name',`Candidate: ${names(p.items)}`,y+10,gold);
+        if(phase===0||phase===3) {
+          y=cap('join-heading','1. Join frequent parents',y+16,blue);
+          if(state.level>1)for(const [i,parent] of p.parents.entries())y=chips('join-parent-'+i,`Parent from L${state.level-1}: ${names(parent)}`,parent,y+5,blue);
+          else y=cap('join-singletons','At length 1, each observed item is a starting candidate.',y+7);
+          y=chips('join-result','Union: shared items are included once.',p.items,y+7,gold);
+        }
+        if(phase===1||phase===3) {
+          y=cap('subset-heading','2. Check every immediate subset',y+16,blue);
           const prior=r.mined.levels.find(l=>l.k===state.level-1)?.frequent||[];
-          for(const [i,xs] of combinations(p.items,state.level-1).entries()){
-            const known=prior.find(q=>key(q.items)===key(xs));
-            y=cap('subset-check-'+i,known?`✓ ${code(xs)} is frequent: count ${known.count}.`:`× ${code(xs)} is missing: prune this candidate.`,y+5,known?green:red);
+          if(state.level===1)y=cap('subset-singleton','A singleton has no nonempty immediate subset to check.',y+10);
+          for(const [i,items] of combinations(p.items,state.level-1).entries()) {
+            if(!items.length)continue;
+            const pass=prior.some(q=>key(q.items)===key(items));
+            y=cap('subset-check-'+i,`${pass?'Pass':'Missing'}: ${names(items)}; count ${count(state.baskets,items)}. ${pass?'Frequent parent.':'Not frequent: prune this candidate.'}`,y+10,pass?green:red);
           }
-        } else y=chips('singleton-candidate','Start with one candidate per item.',p.items,y+12,gold);
-        if(p.pruned)y=cap('candidate-pruned',`Blocked before scanning: ${code(p.items)} cannot be frequent because ${p.missing.map(code).join(', ')} failed.`,y+18,red);
-        else {
-          y=slots('candidate-scan',`${state.level>1?'3. ':''}Count baskets containing the complete candidate.`,y+17,state.baskets,row=>subset(p.items,row.items),p.count>=r.minCount?green:red);
-          y=cap('candidate-decision',`${code(p.items)}: count ${p.count} ${p.count>=r.minCount?'≥':'<'} ${r.minCount}. ${p.count>=r.minCount?'Keep in':'Exclude from'} L${state.level}.`,y+11,p.count>=r.minCount?green:red);
+        }
+        if(phase===2||phase===3) {
+          y=cap('candidate-count-heading','3. Count matching baskets',y+16,blue);
+          if(p.pruned)y=cap('candidate-pruned',`Pruned before scanning: ${p.missing.map(names).join('; ')} is not frequent. Counting is skipped.`,y+10,red);
+          else {
+            y=slots('candidate-baskets','Baskets containing every candidate item',y+10,state.baskets,row=>subset(p.items,row.items),green);
+            y=cap('candidate-decision',`${names(p.items)}: count ${p.count} ${p.count>=r.minCount?'≥':'<'} ${r.minCount}. ${p.count>=r.minCount?'Keep in':'Reject from'} L${state.level}.`,y+11,p.count>=r.minCount?green:red);
+          }
+          y=cap('apriori-keep',`L${state.level}: ${level.frequent.map(p=>names(p.items)).join('; ')||'empty'}.`,y+12,green);
         }
       }
-      y=cap('apriori-keep',`L${state.level}: ${level?.frequent.map(p=>code(p.items)).join(', ')||'empty'}.`,y+10,green);
     } else if(index===9) {
       const selected=r.splits[Math.min(state.split,r.splits.length-1)];
-      y=cap('split-set',`Combined itemset ${code(state.set)} has count ${count(state.baskets,state.set)}.`,y,blue);
+      y=cap('split-set',`Combined itemset ${names(state.set)} has count ${count(state.baskets,state.set)}.`,y,blue);
       if(!selected)y=cap('split-empty','No nonempty disjoint split exists.',y+25,red);
       else {
         y=chips('split-left','Antecedent X: '+names(selected.x),selected.x,y+15,blue);
         y=chips('split-right','Consequent Y: '+names(selected.y),selected.y,y+5,green);
-        y=cap('split-rule',`${code(selected.x)} → ${code(selected.y)}. Every combined item appears on exactly one side.`,y+8,gold);
+        y=cap('split-rule',`${names(selected.x)} → ${names(selected.y)}. Every combined item appears on exactly one side.`,y+8,gold);
         y=slots('split-denominator','Baskets in the antecedent denominator',y+18,state.baskets.filter(row=>subset(selected.x,row.items)),row=>subset(selected.y,row.items),green);
         y=proportion('split-confidence',`${selected.both} / ${selected.a} = confidence`,selected.confidence,y+15,green);
-        const passes=selected.support>=state.minSupport/100&&selected.confidence!==null&&selected.confidence>=r.minConf;
-        y=cap('split-verdict',selected.confidence===null?'Confidence is undefined: no basket contains the antecedent.':`${passes?'Passes':'Fails'} the current support and confidence cutoffs.`,y,passes?green:red);
+        const checks=ruleThresholds(selected,state.minSupport,state.minConfidence);
+        y=cap('split-support-check',`Support: ${selected.both}/${selected.n} = ${pct(selected.support)}; cutoff ${pct(state.minSupport/100)}; ${checks.supportPass?'passes':'does not pass'}.`,y,checks.supportPass?green:red);
+        y=cap('split-confidence-check',`Confidence: ${selected.both}/${selected.a} = ${pct(selected.confidence)}${selected.confidence===null?' (no baskets contain X)':''}; cutoff ${pct(state.minConfidence/100)}; ${checks.confidencePass?'passes':'does not pass'}.`,y+12,checks.confidencePass?green:red);
+        y=cap('split-verdict',checks.bothPass?'Passes both cutoffs.':'Does not pass both cutoffs.',y+12,checks.bothPass?green:red);
       }
     } else if(index===10) {
       const path=r.fp.full.paths[state.fpStep-1]?.items||[];
+      y=cap('fp-insertion-step',`Inserted baskets: ${state.fpStep} / 5`,y,gold);
       y=cap('fp-order',`Global order: ${r.fp.full.order.join(', ')}. Minimum count = 3.`,y,blue);
       if(state.fpStep){
         const raw=FP_BASKETS[state.fpStep-1],removed=raw.filter(item=>!r.fp.full.order.includes(item));
@@ -222,30 +256,45 @@ export function create(host) {
         y=chips('fp-ordered','Filtered path, in the one global order:',path,y+3,gold);
       } else y=cap('fp-empty','No basket inserted yet. Global counts came from the initial scan of all five baskets. The empty root is not an item.',y+8,gold);
       y=tree('fp-build',r.fp.partial.root,y+37,path);
-      y=cap('fp-node-caption',`${state.fpStep} inserted transactions; ${r.fp.partial.nodes.length} stored item nodes. Node counts refer to prefixes.`,y+12);
+      y=cap('fp-node-caption',`${state.fpStep} inserted transactions; ${r.fp.partial.nodes.length} stored item nodes. A node count counts baskets reaching that prefix.`,y+12);
+      y=cap('fp-shared-prefix','Shared prefix: reuse the node and add one. Letters belong to this separate lecture example.',y+8);
       const cNodes=r.fp.partial.nodes.filter(n=>n.item==='c');
       y=cap('fp-header-link',`Inserted c nodes: ${cNodes.map(n=>n.count).join(' + ')||'0'} = ${cNodes.reduce((sum,n)=>sum+n.count,0)}. Full-data header c = 4.`,y+8,blue);
     } else if(index===11) {
-      y=cap('conditional-title',`Suffix ${state.suffix}: complete five-transaction source tree.`,y,blue);
-      y=cap('conditional-trace','1. Trace gold paths to the chosen suffix nodes. Use the count at the final node.',y+9,gold);
-      y=tree('fp-source-projection',r.fp.full.root,y+33,[],state.suffix);
-      y=cap('conditional-base-title','2. Remove the suffix; copy its count to each prefix.',y+18,blue);
-      for(const [i,p] of r.fp.base.entries()) y=cap('conditional-prefix-'+i,`${p.items.join(' → ')||'Empty prefix'} : suffix count ${p.weight} → weight ${p.weight}`,y+13,gold);
-      y=cap('conditional-filter','3. Add prefix weights per item; keep totals ≥ 3.',y+23,blue);
-      for(const [item,n] of r.fp.conditional.totals){
-        const weights=r.fp.base.filter(p=>p.items.includes(item)).map(p=>p.weight);
-        y=cap('conditional-total-'+item,`${item}: ${weights.join(' + ')} = ${n}. ${n>=3?'Keep.':'Remove below support.'}`,y+5,n>=3?green:red);
+      const phase=state.projectionPhase;
+      y=cap('conditional-title',`Suffix ${state.suffix}: separate five-transaction lecture example; minimum count 3.`,y,blue);
+      if(phase===0||phase===3) {
+        y=cap('conditional-trace','1. Trace suffix. Follow gold paths and read each suffix-node count.',y+12,gold);
+        y=tree('fp-source-projection',r.fp.full.root,y+33,[],state.suffix);
       }
-      y=tree('fp-conditional',r.fp.conditional.root,y+30);
-      y=cap('conditional-patterns',`${r.fp.patterns.length} patterns generated at ordered suffix ${state.suffix}: ${r.fp.patterns.map(p=>p.items.join('')).join(', ')}.`,y+10,green);
-      y=cap('conditional-scope','This projection adds only earlier items. Patterns with later items are generated at their later suffix.',y+9);
+      if(phase===1||phase===3) {
+        y=cap('conditional-base-title','2. Copy weighted prefixes. Remove the suffix; copy its node count as the weight.',y+18,blue);
+        if(!r.fp.base.length)y=cap('conditional-base-empty','No suffix node has a prefix.',y+12,red);
+        for(const [i,p] of r.fp.base.entries())y=chips('conditional-prefix-'+i,`Prefix ${p.items.join(' → ')||'empty'}: suffix count ${p.weight} → weight ${p.weight}`,p.items,y+12,gold);
+      }
+      if(phase===2||phase===3) {
+        y=cap('conditional-filter','3. Filter conditional tree. Add prefix weights; keep totals ≥ 3.',y+18,blue);
+        if(!r.fp.conditional.totals.size)y=cap('conditional-no-prefix','No nonempty prefix remains.',y+14,red);
+        for(const [item,n] of r.fp.conditional.totals){
+          const weights=r.fp.base.filter(p=>p.items.includes(item)).map(p=>p.weight);
+          y=cap('conditional-total-'+item,`${item}: ${weights.join(' + ')} = ${n}. ${n>=3?'Keep total ≥ 3.':'Remove below support.'}`,y+10,n>=3?green:red);
+        }
+        y=tree('fp-conditional',r.fp.conditional.root,y+35);
+        y=cap('conditional-patterns',`${r.fp.patterns.length} patterns generated at suffix ${state.suffix}: ${r.fp.patterns.map(p=>p.items.join('')).join(', ')}.`,y+14,green);
+      }
+      y=cap('conditional-scope','This projection adds only earlier items. Patterns with later items are generated at their later suffix.',y+12);
     } else if(index===12) {
       const idsX=state.baskets.filter(row=>subset(r.rule.x,row.items)).map(row=>row.id),idsY=state.baskets.filter(row=>subset(r.rule.y,row.items)).map(row=>row.id),shared=idsX.filter(id=>idsY.includes(id));
+      y=cap('tid-column-guide','Each column is the same basket ID. Only an ID in both sides survives.',y);
+      const rowCenters=[];
       for(const [i,title,ids] of [[0,`X: ${names(r.rule.x)}`,idsX],[1,`Y: ${names(r.rule.y)}`,idsY],[2,'Intersection: X and Y',shared]]) {
         y=cap('tid-title-'+i,title,y,i===2?green:blue);
         const width=(s.w-28)/4;
+        rowCenters.push(y+21);
         state.baskets.forEach((row,j)=>{const x=14+width*(j+.5),contains=ids.includes(row.id),common=shared.includes(row.id);s.circle('tid-mark-'+i+'-'+row.id,x,y+21,12,contains?(common?green:blue):'#edeee6',{opacity:.8});T('tid-id-'+i+'-'+row.id,x,y+52,row.id,{'text-anchor':'middle','font-size':15});});y+=90;
       }
+      shared.forEach(id=>{const j=state.baskets.findIndex(row=>row.id===id),x=14+(s.w-28)/4*(j+.5);for(let i=0;i<2;i++)s.line('tid-connector-'+id+'-'+i,x+15,rowCenters[i]+10,x+15,rowCenters[i+1]-10,green,1.3,'3 4');});
+      y=cap('tid-set',`Intersection: {${shared.join(', ')||'Empty'}}`,y,green);
       y=cap('tid-result',`Intersection count ${shared.length}; support ${shared.length}/${state.baskets.length}.`,y,green);
     } else if(index===13) {
       const patterns=r.classified,maxLevel=Math.max(1,...patterns.map(p=>p.items.length));
@@ -347,20 +396,36 @@ export function create(host) {
       r.toy.labels.forEach((label,i)=>{const xx=14+(i%cols)*cellW,yy=start+Math.floor(i/cols)*46;s.rect('encoding-bit-'+label,xx,yy,30,30,r.toy.bits[i]?blue:'#eef0e7',{opacity:r.toy.bits[i]?.7:1});T('encoding-value-'+label,xx+15,yy+21,r.toy.bits[i]?'1':'0',{'text-anchor':'middle',fill:r.toy.bits[i]?'#fffef9':ink});T('encoding-label-'+label,xx+40,yy+21,label,{'font-size':15});});
       y=start+Math.ceil(r.toy.labels.length/cols)*46;y=cap('encoding-result','1 = True, token present. 0 = False, token absent.',y+10,blue);
     } else if(index===19) {
-      const patterns=r.pythonPatterns;
+      const patterns=r.pythonPatterns,phase=state.workflowPhase;
       y=cap('python-scope',`${state.pythonAlgo==='apriori'?'Apriori':'FP-growth'}: current four-basket experiment, cutoff count ${r.minCount}.`,y,blue);
-      y=cap('python-input-title','1. Boolean input: A Apple, B Bread, C Coke, D DVD, E Egg.',y+8,blue);
-      const cellW=(s.w-82)/5,top=y+17;
-      T('python-tid-header',14,top,'TID',{'font-size':15});ITEMS.forEach((item,j)=>T('python-item-header-'+j,74+cellW*(j+.5),top,CODES[item],{'text-anchor':'middle','font-size':15}));
-      state.baskets.forEach((row,i)=>{const yy=top+14+i*35;T('python-input-id-'+i,14,yy+20,row.id,{'font-size':15});ITEMS.forEach((item,j)=>{const on=row.items.includes(item),xx=74+cellW*j;s.rect('python-input-cell-'+i+'-'+j,xx,yy,cellW-3,28,on?'#dce8db':'#eff0e8');T('python-input-bit-'+i+'-'+j,xx+(cellW-3)/2,yy+20,on?'1':'0',{'text-anchor':'middle','font-size':15});});});
-      y=top+4*35+30;y=cap('python-input-caption','TID identifies rows and is removed from the mining input. 1 = True; 0 = False.',y);
-      y=cap('python-mining-title','2. Mine the itemsets. Each bar counts matching baskets out of four.',y+12,blue);
-      for(const [i,p] of [...patterns].sort((a,b)=>a.items.length-b.items.length||key(a.items).localeCompare(key(b.items))).entries()) {
-        y=cap('python-pattern-'+i,`${code(p.items)}: ${p.count}/4 = ${pct(p.count/4)}`,y+5);
-        s.rect('python-track-'+i,14,y,s.w-28,20,'#ecede3');s.rect('python-bar-'+i,14,y,(s.w-28)*p.count/4,20,blue,{opacity:.65});y+=36;
+      if(phase===0||phase===3) {
+        y=cap('python-input-title','1. Boolean input. Full product names identify the columns.',y+12,blue);
+        if(s.w>460) {
+          const cellW=(s.w-82)/5,top=y+17;
+          T('python-tid-header',14,top,'ID',{'font-size':15});ITEMS.forEach((item,j)=>T('python-item-header-'+j,74+cellW*(j+.5),top,item,{'text-anchor':'middle','font-size':15}));
+          state.baskets.forEach((row,i)=>{const yy=top+14+i*35;T('python-input-id-'+i,14,yy+20,row.id,{'font-size':15});ITEMS.forEach((item,j)=>{const on=row.items.includes(item),xx=74+cellW*j;s.rect('python-input-cell-'+i+'-'+j,xx,yy,cellW-3,28,on?'#dce8db':'#eff0e8');T('python-input-bit-'+i+'-'+j,xx+(cellW-3)/2,yy+20,on?'1':'0',{'text-anchor':'middle','font-size':15});});});
+          y=top+4*35+30;
+        } else {
+          for(const [i,row] of state.baskets.entries()) {
+            y=cap('python-phone-id-'+i,`Basket ${row.id}`,y+12,gold);
+            for(const [j,item] of ITEMS.entries())y=cap('python-phone-bit-'+i+'-'+j,`${item}: ${row.items.includes(item)?1:0}`,y+2,row.items.includes(item)?green:ink);
+          }
+        }
+        y=cap('python-input-caption','Basket ID is an identifier, not a mining feature. 1 = present; 0 = absent.',y+10);
       }
-      if(!patterns.length)y=cap('python-empty','No frequent itemset passes this cutoff.',y+20,red);
-      y=cap('python-result',`3. Generate rules: ${patterns.length} frequent itemsets; ${r.pythonRules.length} rules pass confidence ${state.minConfidence}%. Read them in the table below.`,y+12,green);
+      if(phase===1||phase===3) {
+        y=cap('python-mining-title','2. Frequent itemsets. Each bar counts matching baskets out of four.',y+18,blue);
+        for(const [i,p] of [...patterns].sort((a,b)=>a.items.length-b.items.length||key(a.items).localeCompare(key(b.items))).entries()) {
+          y=cap('python-pattern-'+i,`${names(p.items)}: ${p.count}/4 = ${pct(p.count/4)}`,y+8);
+          s.rect('python-track-'+i,14,y,s.w-28,20,'#ecede3');s.rect('python-bar-'+i,14,y,(s.w-28)*p.count/4,20,blue,{opacity:.65});y+=37;
+        }
+        if(!patterns.length)y=cap('python-empty','No frequent itemset passes this cutoff.',y+20,red);
+      }
+      if(phase===2||phase===3) {
+        y=cap('python-result',`3. Passing rules: ${patterns.length} frequent itemsets; ${r.pythonRules.length} rules pass confidence ${state.minConfidence}%.`,y+18,green);
+        for(const [i,rule] of r.pythonRules.entries())y=cap('python-rule-'+i,`${names(rule.x)} → ${names(rule.y)}: confidence ${pct(rule.confidence)}`,y+10,green);
+        if(!r.pythonRules.length)y=cap('python-rules-empty','No rule passes both cutoffs. Inspect the itemsets or lower a cutoff.',y+12,red);
+      }
     } else {
       const q=state.reviewQuestion;
       if(q===0) {
@@ -400,8 +465,14 @@ export function create(host) {
     if(index===5)return table(['Source quantity','Count'],[['All transactions N',r.cohort.n],['X: '+r.cohort.x,r.cohort.a],['Y: '+r.cohort.y,r.cohort.b],['Current joint count',state.joint],['Source joint count',r.cohort.both],['Expected if independent',fmt(r.comparison.expected,2)]]);
     if([6,19].includes(index)){const rules=index===19?r.pythonRules:r.rules;return rules.length?table(['Rules passing both thresholds','Confidence / lift'],rules.map(rule=>[`${names(rule.x)} → ${names(rule.y)}`,`${pct(rule.confidence)} / ${fmt(rule.lift,2)}`])):'<p>No rule passes both current thresholds. Try a lower cutoff or inspect the basket data.</p>';}
     if(index===7)return table(['Set / immediate subset','Count / cutoff'],[state.set,...state.set.map((_,i)=>state.set.filter((_,j)=>i!==j))].map(xs=>[names(xs),`${count(state.baskets,xs)} / ${r.minCount}`]));
-    if(index===8){const level=r.mined.levels.find(l=>l.k===state.level);return table(['Candidate','Count','Decision'],(level?.candidates||[]).map(p=>[code(p.items),p.count===null?'Not counted':p.count,p.pruned?'Pruned':p.count>=r.minCount?'Frequent':'Below support']));}
-    if(index===9)return table(['Candidate split','Confidence','Passes both?'],r.splits.map(rule=>[`${names(rule.x)} → ${names(rule.y)}`,`${rule.both}/${rule.a} = ${pct(rule.confidence)}`,rule.support>=state.minSupport/100&&rule.confidence>=r.minConf?'Yes':'No']));
+    if(index===8){const level=r.mined.levels.find(l=>l.k===state.level);return table(['Candidate','Count','Decision'],(level?.candidates||[]).map(p=>[names(p.items),p.count===null?'Not counted':p.count,p.pruned?'Pruned':p.count>=r.minCount?'Frequent':'Below support']));}
+    if(index===9)return table(['Candidate split','Support check','Confidence check','Passes both?'],r.splits.map(rule=>{
+      const checks=ruleThresholds(rule,state.minSupport,state.minConfidence);
+      return [`${names(rule.x)} → ${names(rule.y)}`,
+        `${rule.both}/${rule.n} = ${pct(rule.support)}; cutoff ${pct(state.minSupport/100)}; ${checks.supportPass?'passes':'does not pass'}`,
+        `${rule.both}/${rule.a} = ${pct(rule.confidence)}${rule.confidence===null?' (no baskets contain X)':''}; cutoff ${pct(state.minConfidence/100)}; ${checks.confidencePass?'passes':'does not pass'}`,
+        checks.bothPass?'Yes':'No'];
+    }));
     if(index===10)return table(['Source header item','Global count'],r.fp.full.order.map(x=>[x,r.fp.full.totals.get(x)]));
     if(index===11)return table(['Conditional item','Weighted count','Keep ≥ 3?'],[...r.fp.conditional.totals].map(([item,n])=>[item,n,n>=3?'Yes':'No']))+table(['Pattern from this projection','Support count'],r.fp.patterns.map(p=>[p.items.join(''),p.count]));
     if(index===13)return table(['Frequent set','Count','Closed / maximal'],r.classified.map(p=>[p.items.join(''),p.count,`${p.closed?'Yes':'No'} / ${p.maximal?'Yes':'No'}`]));
@@ -417,10 +488,10 @@ export function create(host) {
     r=compute(state);
     for(const group of host.querySelectorAll('[data-for]'))group.hidden=!group.dataset.for.split(',').map(Number).includes(index);
     const candidate=host.querySelector('#candidate-choice'),level=r.mined.levels.find(l=>l.k===state.level),candidates=level?.candidates||[],candidateKeys=candidates.map(p=>key(p.items)).join(',');
-    if(candidate.dataset.keys!==candidateKeys){candidate.innerHTML=candidates.length?candidates.map(p=>`<option value="${key(p.items)}">${code(p.items)}${p.pruned?' — pruned':''}</option>`).join(''):'<option value="">No joined candidate</option>';candidate.dataset.keys=candidateKeys;}
+    if(candidate.dataset.keys!==candidateKeys){candidate.innerHTML=candidates.length?candidates.map(p=>`<option value="${key(p.items)}">${names(p.items)}${p.pruned?' — pruned':''}</option>`).join(''):'<option value="">No joined candidate</option>';candidate.dataset.keys=candidateKeys;}
     if(!candidates.some(p=>key(p.items)===state.candidate))state.candidate=key(candidates[0]?.items||[]);candidate.disabled=!candidates.length;
     const fieldValues={
-      'basket-index':state.basket+1,'rule-choice':state.rule,'minimum-support':state.minSupport,'minimum-confidence':state.minConfidence,'itemset-choice':key(state.set),'candidate-level':state.level,'candidate-choice':state.candidate,'rule-split':state.split+1,'fp-step':state.fpStep,'suffix-choice':state.suffix,'cohort-choice':state.cohort,'joint-count':state.joint,'chi-cohort-choice':state.chiCohort,'chi-joint-count':state.chiJoint,'quiz-minimum':state.quizMin,'pattern-family':state.family,'null-rows':state.nulls,'y-only':state.bOnly,'constraint-type':state.constraintType,'constraint-bound':state.cap,'constraint-parent':state.constraintSet,'child-support':state.childMin,'product-row':state.toyRow+1,'python-algorithm':state.pythonAlgo,'revision-question':state.reviewQuestion,
+      'basket-index':state.basket+1,'rule-choice':state.rule,'minimum-support':state.minSupport,'minimum-confidence':state.minConfidence,'itemset-choice':key(state.set),'candidate-level':state.level,'candidate-choice':state.candidate,'rule-split':state.split+1,'fp-step':state.fpStep,'apriori-step':state.aprioriPhase,'projection-step':state.projectionPhase,'workflow-step':state.workflowPhase,'suffix-choice':state.suffix,'cohort-choice':state.cohort,'joint-count':state.joint,'chi-cohort-choice':state.chiCohort,'chi-joint-count':state.chiJoint,'quiz-minimum':state.quizMin,'pattern-family':state.family,'null-rows':state.nulls,'y-only':state.bOnly,'constraint-type':state.constraintType,'constraint-bound':state.cap,'constraint-parent':state.constraintSet,'child-support':state.childMin,'product-row':state.toyRow+1,'python-algorithm':state.pythonAlgo,'revision-question':state.reviewQuestion,
     };
     const joint=host.querySelector('#joint-count');joint.min=Math.max(0,r.cohort.a+r.cohort.b-r.cohort.n);joint.max=Math.min(r.cohort.a,r.cohort.b);
     const chiJoint=host.querySelector('#chi-joint-count');chiJoint.min=Math.max(0,r.chiCohort.a+r.chiCohort.b-r.chiCohort.n);chiJoint.max=Math.min(r.chiCohort.a,r.chiCohort.b);
@@ -432,9 +503,11 @@ export function create(host) {
     const pattern=host.querySelector('#pattern-focus'),options=r.classified.filter(p=>state.family==='all'||p[state.family]);
     if(options.map(p=>key(p.items)).join(',')!==pattern.dataset.keys){pattern.innerHTML=options.map(p=>`<option value="${key(p.items)}">${p.items.join('')}: count ${p.count}</option>`).join('');pattern.dataset.keys=options.map(p=>key(p.items)).join(',');}
     if(!options.some(p=>key(p.items)===state.quizFocus))state.quizFocus=key(options[0]?.items||[]);pattern.value=state.quizFocus;
-    setText('scene-kicker',notes[index]);
+    setText('scene-kicker',visualRevision('association-rules',index)?.guide||notes[index]);
+    for(const b of host.querySelectorAll('[data-walk]')){const phase=fieldValues[b.dataset.walk],delta=+b.dataset.delta;b.disabled=delta===-1&&phase===0||delta===1&&phase===2;}
+    host.querySelector('#fp-back').disabled=state.fpStep===0;host.querySelector('#fp-next').disabled=state.fpStep===5;
     const legends=[
-      [[blue,'Letters = products'],[gold,'Selected basket']],[[blue,'1 = contains this side'],[green,'Both sides present']],[[green,'Contains all required items'],[neutral,'Does not match']],[[blue,'Contains X'],[green,'Contains X and Y']],[[green,'Contains both sides'],[neutral,'Qualifies, but other side absent']],[[blue,'Overall baseline / expected'],[green,'Conditional / observed']],[[green,'Passes both'],[red,'Fails confidence'],['#909c89','Fails support'],[gold,'Thresholds']],[[blue,'Subset passes support'],[red,'Subset fails'],[gold,'Complete set']],[[blue,'Frequent parents'],[gold,'Joined candidate'],[green,'Pass / matching basket'],[red,'Reject or prune']],[[blue,'Antecedent item chips'],[green,'Consequent items / successful baskets'],[neutral,'Antecedent without consequent']],[[blue,'Kept raw items / stored prefixes'],['#838c7d','Crossed = removed'],[gold,'Latest ordered path']],[[gold,'Traced suffix path / prefix weight'],[blue,'Conditional tree'],[red,'Removed by conditional support']],[[blue,'ID in one side only'],[green,'ID in both sides'],[neutral,'Absent ID']],[[blue,'Blue outline = closed'],[green,'Green fill = maximal'],[gold,'Inspected pattern']],[[green,'Both sides'],[blue,'X only / X conditioning'],[purple,'Y only / Y conditioning'],[gold,'Blank circle = neither']],[[blue,'Observed count'],['#909f8e','Expected count'],[gold,'Squared contribution']],[[blue,'Parent item values'],[gold,'Added item / dashed bound'],[green,'Pass'],[red,'Fail']],[[blue,'2% milk'],[purple,'Skim milk'],[gold,'Support cutoff']],[[blue,'Low / present token'],[green,'Medium'],[purple,'High'],[gold,'Selected row']],[[blue,'Input items / exact support count'],[green,'True cell / passing rule']],[[green,'Joint or resulting amount'],[blue,'Antecedent'],[purple,'Consequent']],
+      [[blue,'Named products'],[gold,'Selected basket']],[[blue,'Yes = contains this side'],[green,'Both sides present']],[[green,'Contains all required items'],[neutral,'Does not match']],[[blue,'Contains X'],[green,'Contains X and Y']],[[green,'Contains both sides'],[neutral,'Qualifies, but other side absent']],[[blue,'Overall baseline / expected'],[green,'Conditional / observed']],[[green,'Passes both'],[red,'Fails confidence'],['#909c89','Fails support'],[gold,'Thresholds']],[[blue,'Subset passes support'],[red,'Subset fails'],[gold,'Complete set']],[[blue,'Frequent parents'],[gold,'Joined candidate'],[green,'Pass / matching basket'],[red,'Reject or prune']],[[blue,'Antecedent item chips'],[green,'Consequent items / successful baskets'],[neutral,'Antecedent without consequent']],[[blue,'Kept raw items / stored prefixes'],['#838c7d','Crossed = removed'],[gold,'Latest ordered path']],[[gold,'Traced suffix path / prefix weight'],[blue,'Conditional tree'],[red,'Removed by conditional support']],[[blue,'ID in one side only'],[green,'ID in both sides'],[neutral,'Absent ID']],[[blue,'Blue outline = closed'],[green,'Green fill = maximal'],[gold,'Inspected pattern']],[[green,'Both sides'],[blue,'X only / X conditioning'],[purple,'Y only / Y conditioning'],[gold,'Blank circle = neither']],[[blue,'Observed count'],['#909f8e','Expected count'],[gold,'Squared contribution']],[[blue,'Parent item values'],[gold,'Added item / dashed bound'],[green,'Pass'],[red,'Fail']],[[blue,'2% milk'],[purple,'Skim milk'],[gold,'Support cutoff']],[[blue,'Low / present token'],[green,'Medium'],[purple,'High'],[gold,'Selected row']],[[blue,'Input items / exact support count'],[green,'True cell / passing rule']],[[green,'Joint or resulting amount'],[blue,'Antecedent'],[purple,'Consequent']],
     ];
     const revisionLegends=[
       [[green,'Joint transactions'],[blue,'CPU transactions'],[purple,'GPU transactions']],
@@ -473,9 +546,12 @@ export function create(host) {
     tween.to({support:r.main.support,confidence:r.main.confidence??0,minSupport:state.minSupport/100,minConfidence:state.minConfidence/100,baseline:r.comparison.baseline,cohortConfidence:r.comparison.confidence??0,joint:state.joint,chiJoint:state.chiJoint,nullSupport:r.nullMetrics.support,nullForward:r.nullMetrics.confidence??0,nullReverse:r.nullMetrics.reverse??0,reveal:1},animate,280);
   }
   const fields={
-    'basket-index':v=>state.basket=+v-1,'rule-choice':v=>state.rule=+v,'minimum-support':v=>state.minSupport=+v,'minimum-confidence':v=>state.minConfidence=+v,'itemset-choice':v=>{state.set=v.split('|');state.split=0;},'candidate-level':v=>state.level=+v,'candidate-choice':v=>state.candidate=v,'rule-split':v=>state.split=+v-1,'fp-step':v=>state.fpStep=+v,'suffix-choice':v=>state.suffix=v,'cohort-choice':v=>{state.cohort=v;state.joint=COHORTS[v].both;},'joint-count':v=>state.joint=+v,'chi-cohort-choice':v=>{state.chiCohort=v;state.chiJoint=COHORTS[v].both;},'chi-joint-count':v=>state.chiJoint=+v,'quiz-minimum':v=>state.quizMin=+v,'pattern-family':v=>state.family=v,'pattern-focus':v=>state.quizFocus=v,'null-rows':v=>state.nulls=+v,'y-only':v=>state.bOnly=+v,'constraint-type':v=>state.constraintType=v,'constraint-bound':v=>state.cap=+v,'constraint-parent':v=>state.constraintSet=v,'child-support':v=>state.childMin=+v,'product-row':v=>state.toyRow=+v-1,'python-algorithm':v=>state.pythonAlgo=v,'revision-question':v=>state.reviewQuestion=+v,
+    'basket-index':v=>state.basket=+v-1,'rule-choice':v=>state.rule=+v,'minimum-support':v=>state.minSupport=+v,'minimum-confidence':v=>state.minConfidence=+v,'itemset-choice':v=>{state.set=v.split('|');state.split=0;},'candidate-level':v=>state.level=+v,'candidate-choice':v=>state.candidate=v,'rule-split':v=>state.split=+v-1,'fp-step':v=>state.fpStep=+v,'apriori-step':v=>state.aprioriPhase=+v,'projection-step':v=>state.projectionPhase=+v,'workflow-step':v=>state.workflowPhase=+v,'suffix-choice':v=>state.suffix=v,'cohort-choice':v=>{state.cohort=v;state.joint=COHORTS[v].both;},'joint-count':v=>state.joint=+v,'chi-cohort-choice':v=>{state.chiCohort=v;state.chiJoint=COHORTS[v].both;},'chi-joint-count':v=>state.chiJoint=+v,'quiz-minimum':v=>state.quizMin=+v,'pattern-family':v=>state.family=v,'pattern-focus':v=>state.quizFocus=v,'null-rows':v=>state.nulls=+v,'y-only':v=>state.bOnly=+v,'constraint-type':v=>state.constraintType=v,'constraint-bound':v=>state.cap=+v,'constraint-parent':v=>state.constraintSet=v,'child-support':v=>state.childMin=+v,'product-row':v=>state.toyRow=+v-1,'python-algorithm':v=>state.pythonAlgo=v,'revision-question':v=>state.reviewQuestion=+v,
   };
   for(const [id,fn] of Object.entries(fields)) {const input=host.querySelector('#'+id);input.addEventListener('input',()=>{fn(input.value);update(!['cohort-choice','chi-cohort-choice'].includes(id));});input.addEventListener('change',()=>announce(host.querySelector('#live-receipt').textContent.trim().slice(0,250)));}
+  const phaseKeys={'apriori-step':'aprioriPhase','projection-step':'projectionPhase','workflow-step':'workflowPhase'};
+  for(const b of host.querySelectorAll('[data-walk]'))b.addEventListener('click',()=>{const key=phaseKeys[b.dataset.walk],delta=+b.dataset.delta;state[key]=delta===0?0:Math.max(0,Math.min(2,(state[key]===3?delta===1?-1:3:state[key])+delta));update();});
+  for(const [id,delta] of [['fp-back',-1],['fp-next',1],['fp-replay',0]])host.querySelector('#'+id).addEventListener('click',()=>{state.fpStep=delta===0?0:Math.max(0,Math.min(5,state.fpStep+delta));update();});
   host.querySelector('#encode-absence').addEventListener('change',e=>{state.absence=e.target.checked;update();});
   for(const c of host.querySelectorAll('[data-item]'))c.addEventListener('change',()=>{const row=state.baskets[state.basket];row.items=c.checked?union(row.items,[c.dataset.item]):row.items.filter(x=>x!==c.dataset.item);update();announce(`Basket ${row.id} now contains ${row.items.join(', ')||'no products'}.`);});
   for(const b of host.querySelectorAll('[data-review-answer]'))b.addEventListener('click',()=>{const [q,a]=b.dataset.reviewAnswer.split(':').map(Number);reviewAnswers[q]=a;update();});
