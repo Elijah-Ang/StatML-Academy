@@ -149,6 +149,10 @@ export class Surface {
     this.seen = new Set();
     return { w: this.w, h: this.h };
   }
+  fitHeight(height) {
+    this.h = Math.max(180, Math.ceil(height));
+    this.svg.setAttribute("viewBox", `0 0 ${this.w} ${this.h}`);
+  }
   node(key, type, attrs = {}, text, parent = this.svg) {
     let el = this.nodes.get(key);
     if (!el) {

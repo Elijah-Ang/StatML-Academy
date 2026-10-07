@@ -478,26 +478,28 @@ export function boostFit(rows, validation, rounds = 20, rate = 0.2, depth = 1) {
   return { initial, trees, trace, predict: predictAt };
 }
 export function oneRuleFit(rows, feature = "auto") {
+  const fallback=mean(rows.map(r=>r.y))>=.5?1:0;
   const rules = ["x", "z"].map((key) => {
-    const sorted = rows.map((r) => r[key]).sort((a, b) => a - b),
+    const sorted = rows.map((r) => r[key]).filter(Number.isFinite).sort((a, b) => a - b),
       cuts = [
-        sorted[Math.floor(rows.length / 3)],
-        sorted[Math.floor((rows.length * 2) / 3)],
+        sorted[Math.floor(sorted.length / 3)],
+        sorted[Math.floor((sorted.length * 2) / 3)],
       ],
-      bucket = (r) => (r[key] <= cuts[0] ? 0 : r[key] <= cuts[1] ? 1 : 2);
+      bucket = (r) => !sorted.length || !Number.isFinite(r[key]) ? null : (r[key] <= cuts[0] ? 0 : r[key] <= cuts[1] ? 1 : 2);
     const values = [0, 1, 2].map((k) => {
       const rs = rows.filter((r) => bucket(r) === k);
       return {
         n: rs.length,
         positive: sum(rs.map((r) => r.y)),
-        prediction: mean(rs.map((r) => r.y)) >= 0.5 ? 1 : 0,
+        prediction: rs.length ? (mean(rs.map((r) => r.y)) >= 0.5 ? 1 : 0) : fallback,
       };
     });
-    const predict = (r) => values[bucket(r)].prediction;
+    const predict = (r) => bucket(r)==null ? fallback : values[bucket(r)].prediction;
     return {
       key,
       cuts,
       values,
+      fallback,
       bucket,
       predict,
       errors: sum(rows.map((r) => +(predict(r) !== r.y))),

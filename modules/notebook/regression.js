@@ -19,7 +19,7 @@ import {
   announce,
 } from "./ui.js";
 export function regression(host) {
-  host.innerHTML = `<div class="plot" id="regression-plot"></div><div class="legend"><span class="dot">Observed student</span><span id="trial-legend" style="--legend:${palette[1]}">Your line</span><span id="fit-legend">Least-squares fit</span></div>${stats(
+  host.innerHTML = `<div class="plot" id="regression-plot"></div><div class="legend"><span class="dot">Observed student</span><span id="trial-legend" style="--legend:${palette[1]}">Your line</span><span id="fit-legend">Least-squares fit</span><span id="mean-legend" style="--legend:#9a8747" hidden>Mean-only baseline</span></div>${stats(
     [
       ["trial-sse", "Your line · SSE"],
       ["fit-sse", "Best fit · SSE"],
@@ -39,13 +39,18 @@ export function regression(host) {
       points: initialRegression(),
       m: 7,
       b: 40,
-      selected: "C",
+      selected: "D",
       query: 3.5,
       squares: false,
     },
     stage = 0;
-  const getFit = () => leastSquares(state.points);
-  document.getElementById("student").value = "C";
+  let fitted, fittedKey;
+  const getFit = () => {
+    const key=JSON.stringify(state.points);
+    if(key!==fittedKey){fitted=leastSquares(state.points);fittedKey=key;}
+    return fitted;
+  };
+  document.getElementById("student").value = "D";
   function draw(view, moving = false) {
     if (!("m" in view)) return;
     const { m, b } = view,
@@ -53,12 +58,11 @@ export function regression(host) {
       current = lineSummary(state.points, m, b),
       row = current.rows.find((p) => p.id === state.selected);
     surface.begin(310);
-    const ymin = Math.min(35, ...state.points.map((p) => p.y - 10)),
-      ymax = Math.max(85, ...state.points.map((p) => p.y + 10));
-    const xmax =
-      stage === 7
-        ? Math.max(6, state.query + 1)
-        : Math.max(6, ...state.points.map((p) => p.x + 1));
+    const shownPredictions=stage>=1?current.rows.map(r=>r.predicted):[];
+    if(stage===7)shownPredictions.push(m*state.query+b);
+    const ymin = Math.min(35, ...state.points.map((p) => p.y - 10),...shownPredictions.map(y=>y-10)),
+      ymax = Math.max(85, ...state.points.map((p) => p.y + 10),...shownPredictions.map(y=>y+10));
+    const xmax=Math.max(6,...state.points.map(p=>p.x+1),...(stage===7?[state.query+1]:[]));
     const a = surface.axes(
       [0, xmax],
       [ymin, ymax],
@@ -116,21 +120,6 @@ export function regression(host) {
         py = a.y(p.y),
         pred = clamp(a.y(p.predicted), a.t, a.b);
       if (showResidual) {
-        if (state.squares || stage === 3) {
-          const rawPrediction = a.y(p.predicted);
-          const side = Math.abs(py - rawPrediction);
-          const top = Math.max(a.t, Math.min(py, rawPrediction));
-          const bottom = Math.min(a.b, Math.max(py, rawPrediction));
-          surface.rect(
-            `square-${p.id}`,
-            px,
-            top,
-            Math.min(side, a.r - px),
-            bottom - top,
-            `${palette[1]}15`,
-            { stroke: `${palette[1]}55` },
-          );
-        }
         surface.line(
           `residual-${p.id}`,
           px,
@@ -161,6 +150,21 @@ export function regression(host) {
         yp = clamp(a.y(m * state.query + b), a.t, a.b);
       surface.line("query-guide", xp, a.b, xp, a.t, "#a09b71", 1.5, "3 5");
       surface.circle("query-dot", xp, yp, 6, palette[1]);
+    }
+    if(showResidual&&(state.squares||stage===3)){
+      const columns=Math.min(5,Math.max(2,Math.floor((surface.w-28)/120))),cell=(surface.w-28)/columns,maximum=Math.max(...current.rows.map(r=>Math.abs(r.residual))),scale=maximum?Math.min(65,cell-24)/maximum:0,top=400;
+      surface.text('square-title',14,350,'Square each error, then add the values.',{'font-size':surface.w<350?13:17});
+      current.rows.forEach((r,i)=>{
+        const x=14+(i%columns)*cell,y=top+Math.floor(i/columns)*132,side=Math.abs(r.residual)*scale;
+        surface.text('square-student'+r.id,x+cell/2,y,r.id,{'text-anchor':'middle','font-size':15});
+        surface.rect('square-'+r.id,x+(cell-side)/2,y+15,side,side,palette[1]+'25',{stroke:palette[1],'stroke-width':1.3,rx:0});
+        surface.text('square-value'+r.id,x+cell/2,y+104,`(${fmt(r.residual,1)})² ≈ ${fmt(r.residual*r.residual,1)}`,{'text-anchor':'middle','font-size':12});
+      });
+      const y=top+Math.ceil(current.rows.length/columns)*132+6;
+      surface.text('square-scale',14,y,'Tiles share one scale within this view.',{'font-size':surface.w<350?13:15});
+      surface.text('square-rounding',14,y+27,'≈ means about. Printed numbers are rounded.',{'font-size':surface.w<350?12:15});
+      surface.text('square-sum',14,y+55,`Sum before rounding: SSE = ${fmt(current.sse,2)}.`,{'font-size':surface.w<350?12:15});
+      surface.fitHeight(y+79);
     }
     surface.end(
       `Five students. Your equation has slope ${fmt(m)} and intercept ${fmt(b)}. SSE ${fmt(current.sse)}. Selected ${row.id}, actual ${row.y}, predicted ${fmt(row.predicted)}, residual ${fmt(row.residual)}.`,
@@ -197,9 +201,18 @@ export function regression(host) {
       max = Math.max(...state.points.map((p) => p.x));
     values.extrapolation = `${fmt(state.query)} hours is ${state.query < min || state.query > max ? "outside" : "inside"} the observed range ${fmt(min)}–${fmt(max)} hours.${state.query < min || state.query > max ? " This is extrapolation." : ""}`;
     Object.entries(values).forEach(([k, v]) => bind(k, v));
-    setText("trial-sse", fmt(current.sse));
-    setText("fit-sse", fmt(fit.sse));
-    setText("reg-residual", fmt(row.residual));
+    const scorecard = stage === 6;
+    const metrics = scorecard
+      ? [["trial-sse", "Fitted R²", fit.r2 == null ? "Undefined" : fmt(fit.r2, 3)],
+         ["fit-sse", "Fitted error spread · RSE", fmt(fit.rse, 3)],
+         ["reg-residual", "Mean-only squared error", fmt(fit.sst)]]
+      : [["trial-sse", "Your line · SSE", fmt(current.sse)],
+         ["fit-sse", "Best fit · SSE", fmt(fit.sse)],
+         ["reg-residual", "Selected residual", fmt(row.residual)]];
+    for (const [id, label, value] of metrics) {
+      document.getElementById(id).previousElementSibling.textContent = label;
+      setText(id, value);
+    }
     setText("slope-value", fmt(state.m));
     setText("intercept-value", fmt(state.b));
     setText("query-value", fmt(state.query));
@@ -208,14 +221,14 @@ export function regression(host) {
       : stage === 7
         ? values.extrapolation
         : stage === 6
-          ? "The dashed mean line is the SST baseline. R² here describes training fit."
+          ? "Gold dashed line: predict the same average for everyone. R² compares the blue fitted line with that baseline; RSE is its error spread in score points."
           : `Student ${row.id}: ${fmt(row.y)} − ${fmt(row.predicted)} = ${fmt(row.residual)}.`;
     setText("reg-notice", notice);
     document.getElementById("fit-line").disabled = !fit.valid;
     setText(
       "lab-caption",
       stage === 3
-        ? "Error-tile area represents squared residual size; tiles are clipped at the plot edge. Select a student to inspect the exact value."
+        ? "Every tile is complete and shares the same scale for this view. Labels are rounded for reading; SSE uses the original squared errors. Select a student to inspect its calculation."
         : stage === 0
           ? "Edit the table or select a dot. These are the same five observations throughout the lesson."
           : "The dots, equation and calculation receipts use the same live data. Select a dot with a click, Enter, or the student selector.",
@@ -300,13 +313,13 @@ export function regression(host) {
       points: initialRegression(),
       m: 7,
       b: 40,
-      selected: "C",
+      selected: "D",
       query: 3.5,
       squares: false,
     };
     syncControls();
     document.getElementById("query").value = 3.5;
-    document.getElementById("student").value = "C";
+    document.getElementById("student").value = "D";
     document.getElementById("squares").checked = false;
     document.querySelectorAll("[data-point]").forEach((n) => {
       n.value = state.points.find((p) => p.id === n.dataset.point)[
@@ -325,10 +338,11 @@ export function regression(host) {
       document.getElementById("slope").closest("label").hidden = i === 0;
       document.getElementById("intercept").closest("label").hidden = i === 0;
       document.getElementById("query").closest("label").hidden = i !== 7;
-      document.getElementById("squares").closest("label").hidden = i < 3;
+      document.getElementById("squares").closest("label").hidden = i <= 3;
       document.getElementById("fit-line").hidden = i === 0;
       document.getElementById("trial-legend").hidden = i === 0;
       document.getElementById("fit-legend").hidden = i < 4;
+      document.getElementById("mean-legend").hidden = i !== 6;
       host.querySelector(".lab-stats").hidden = i === 0;
       update();
     },

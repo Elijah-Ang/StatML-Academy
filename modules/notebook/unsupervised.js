@@ -8,6 +8,8 @@ import {
   bars,
 } from "./lab.js";
 import { pca, hierarchical, mean, sum } from "./science.js";
+import { frame } from './spatial.js';
+import { pcaProjectionStory,pairDistanceStory,linkageCalculation,linkageStory } from './unsupervised-stories.js';
 const points = [
   [-1.9, -1.2],
   [-1.5, -0.7],
@@ -18,6 +20,8 @@ const points = [
   [1.2, 0.9],
   [1.8, 1.7],
 ].map(([x, z], i) => ({ id: String.fromCharCode(65 + i), x, z }));
+const groupColors=[...palette,'#bf7b44','#ba6e9c'];
+const groupColor=group=>groupColors[Math.min(...group.members)];
 export function create(host, slug) {
   const principal = slug === "pca",
     initial = {
@@ -139,7 +143,20 @@ export function create(host, slug) {
       groups = d.hierarchy.snapshots[st.merge],
       last = d.hierarchy.merges[st.merge - 1],
       next = d.hierarchy.merges[st.merge];
-    L.data = { ...d, projectedVariance, error, groups };
+    const fitted=pc.scores.map(r=>({...r,reconstructedX:st.components===2?r.x:r.pc1*Math.cos(pc.angle),reconstructedZ:st.components===2?r.z:r.pc1*Math.sin(pc.angle)}));
+    const reconstructionError=sum(fitted.map(r=>(r.x-r.reconstructedX)**2+(r.z-r.reconstructedZ)**2));
+    const selectedPoint=d.rows.find(r=>r.id===st.selected);
+    const nearest=d.rows.filter(r=>r.id!==st.selected).sort((a,b)=>Math.hypot(a.x-selectedPoint.x,a.z-selectedPoint.z)-Math.hypot(b.x-selectedPoint.x,b.z-selectedPoint.z))[0];
+    const pairGroups=next?[groups.find(g=>g.id===next.left),groups.find(g=>g.id===next.right)]:null;
+    const linkage=scene==='linkage'&&pairGroups?linkageCalculation(d.rows,pairGroups[0].members,pairGroups[1].members):null;
+    L.data = { ...d, projectedVariance, error, groups,reconstructionError,fitted,linkage,next };
+    if(principal){
+      host.querySelector('.lab-stats').hidden=L.index<2;
+      host.querySelector('#angle').closest('label').hidden=['loadings','scores','scree','reconstruction'].includes(scene)||L.index===5;
+      host.querySelector('#components').closest('label').hidden=!['scree','reconstruction'].includes(scene);
+      host.querySelector('#selected').closest('label').hidden=['loadings','scree'].includes(scene);
+      host.querySelector('#best-axis').hidden=['loadings','scores','scree','reconstruction'].includes(scene)||L.index===5;
+    }
     let receipt;
     if (principal) {
       L.metrics([
@@ -164,6 +181,25 @@ export function create(host, slug) {
         ],
         ["Fitted PC1 angle", fmt((pc.angle * 180) / Math.PI, 2) + "°"],
       ];
+      if(L.index<2)receipt=[['Observed rows',points.length],['Input columns','Two numeric measurements'],['Gold trial line','One possible direction for the new single coordinate.'],['Green marks','The same rows projected onto that direction.']];
+      if(scene==='loadings'){
+        L.metrics([['Fitted PC1 x weight',fmt(Math.cos(pc.angle),3)],['Fitted PC1 z weight',fmt(Math.sin(pc.angle),3)],['PC1 variance',fmt(pc.eigenvalues[0],3)]]);
+        receipt=[['Fitted PC1 loadings',`${fmt(Math.cos(pc.angle),4)}, ${fmt(Math.sin(pc.angle),4)}`],['Meaning','Weights from the fitted covariance direction, not the trial-angle control.'],['Unit length','The two squared weights add to 1.']];
+      }
+      if(scene==='scores'){
+        const r=pc.scores.find(r=>r.id===st.selected);
+        L.metrics([['Selected observation',r.id],['Fitted PC1 score',fmt(r.pc1,3)],['Fitted PC2 score',fmt(r.pc2,3)]]);
+        receipt=[['Selected observation',r.id],['Prepared inputs',`${fmt(r.x,4)}, ${fmt(r.z,4)}`],['Fitted PC1 score',fmt(r.pc1,4)],['Fitted PC2 score',fmt(r.pc2,4)],['Meaning','Coordinates on the fitted axes, rather than the trial-angle line.']];
+      }
+      if(L.index===5){
+        L.metrics([['PC1 variance',fmt(pc.eigenvalues[0],3)],['PC2 variance',fmt(pc.eigenvalues[1],3)],['Fitted directions','At right angles']]);
+        receipt=[['Fitted PC1 angle',fmt(pc.angle*180/Math.PI,2)+'°'],['Fitted PC2 angle',fmt(pc.angle*180/Math.PI+90,2)+'°'],['Meaning','Both fitted directions; retaining components is a separate reconstruction choice.']];
+      }
+      if(scene==='reconstruction'){
+        L.metrics([['Kept components',st.components],['Retained variance',fmt((st.components===2?1:pc.pve)*100,1)+'%'],['Total squared gaps',fmt(reconstructionError,4)]]);
+        const r=fitted.find(r=>r.id===st.selected);
+        receipt=[['Selected observation',r.id],[st.scale==='yes'?'Centred, standardized input':'Centred input',`${fmt(r.x,4)}, ${fmt(r.z,4)}`],['Fitted reconstruction',`${fmt(r.reconstructedX,4)}, ${fmt(r.reconstructedZ,4)}`],['Total squared gaps',fmt(reconstructionError,5)]];
+      }
       if (scene === "scree")
         receipt = [
           ["PC1 eigenvalue", fmt(pc.eigenvalues[0], 4)],
@@ -189,6 +225,10 @@ export function create(host, slug) {
               ["Projection", palette[2]],
             ],
       );
+      if(scene==='projection'||scene==='reconstruction')L.legend(L.index===5||scene==='reconstruction'?[["Observed rows",'#596860'],['Fitted PC1 axis',palette[0]],['Fitted PC2 / reconstruction',palette[2]]]:[['Observed rows','#596860'],['Trial axis',palette[3]],['Projection',palette[2]]]);
+      if(scene==='loadings')L.legend([['Fitted PC1 x weight',palette[0]],['Fitted PC1 z weight',palette[1]]]);
+      if(scene==='scree')L.legend([['PC1 variance',palette[0]],['PC2 variance',palette[1]]]);
+      if(scene==='scores')L.legend([['Observed row in fitted coordinates',palette[0]],['Selected row: gold ring',palette[3]]]);
     } else {
       L.metrics([
         ["Groups remaining", groups.length],
@@ -199,6 +239,8 @@ export function create(host, slug) {
         "Group " + (i + 1),
         g.members.map((j) => points[j].id).join(", "),
       ]);
+      if(scene==='distances')receipt=[['Selected pair',`${selectedPoint.id} and nearest ${nearest.id}`],['x gap',fmt(nearest.x-selectedPoint.x,4)],['z gap',fmt(nearest.z-selectedPoint.z,4)],['Euclidean point distance',fmt(Math.hypot(nearest.x-selectedPoint.x,nearest.z-selectedPoint.z),5)],['Scope','Point distance, distinct from the whole-group linkage rule.']];
+      if(scene==='linkage')receipt=linkage?[['Next group 1',pairGroups[0].members.map(i=>points[i].id).join(', ')],['Next group 2',pairGroups[1].members.map(i=>points[i].id).join(', ')],['Cross-group point pairs',linkage.pairs.length],['Rule',st.linkage],['Next merge value',fmt(linkage[st.linkage],5)]]:[['Next merge','Complete: only one group remains.']];
       receipt.push(
         [
           "Height units",
@@ -211,19 +253,19 @@ export function create(host, slug) {
       L.note(
         "Exact agglomeration on the eight displayed observations. The slider selects a snapshot of the same hierarchy. A new linkage or unit scale recomputes the hierarchy.",
       );
-      L.legend(
-        groups
-          .slice(0, 6)
-          .map((g, i) => [
-            g.members.map((j) => points[j].id).join(""),
-            palette[i % 6],
-          ]),
-      );
+      L.legend(scene==='dendrogram'?[['Completed merges',palette[2]],['Later merges','#a7aea1'],['Current cut height',palette[1]]]:groups.map(g=>[g.members.map(j=>points[j].id).join(''),groupColor(g)]));
+      for(const id of ['linkage','merge'])host.querySelector('#'+id).closest('label').hidden=scene==='distances';
+      host.querySelector('#selected').closest('label').hidden=scene==='linkage';
+      if(scene==='linkage')L.legend(linkage?[[pairGroups[0].members.map(i=>points[i].id).join(''),groupColor(pairGroups[0])],[pairGroups[1].members.map(i=>points[i].id).join(''),groupColor(pairGroups[1])],['Pairs / mean gap used by the rule',palette[1]]]:[]);
     }
     L.receipt(L.table(["Calculation", "Value"], receipt));
     L.draw((s, P) => {
       const { w } = s.begin(310);
-      if (principal && scene === "scree") {
+      if(principal&&scene==='projection')pcaProjectionStory(s,P,pc,st,L.index===5?'pc2':'trial',projections);
+      else if(principal&&scene==='reconstruction')pcaProjectionStory(s,P,pc,st,'reconstruction',fitted);
+      else if(!principal&&scene==='distances')pairDistanceStory(s,P,d.rows,selectedPoint,nearest);
+      else if(!principal&&scene==='linkage')linkageStory(s,d.rows,linkage,st.linkage,pairGroups?.map(groupColor));
+      else if (principal && scene === "scree") {
         bars(
           s,
           P,
@@ -238,14 +280,15 @@ export function create(host, slug) {
           s,
           P,
           [
-            { label: "x loading", value: c },
-            { label: "z loading", value: sn },
+            { label: "PC1 x weight", value: Math.cos(pc.angle) },
+            { label: "PC1 z weight", value: Math.sin(pc.angle) },
           ],
           { domain: 1 },
         );
       } else if (principal && scene === "scores") {
-        const domain = extent(pc.scores.flatMap((r) => [r.pc1, r.pc2])),
-          axis = s.axes(domain, domain, "PC1 score", "PC2 score");
+        const limit=Math.max(.1,...pc.scores.flatMap(r=>[Math.abs(r.pc1),Math.abs(r.pc2)]))*1.22,side=s.w-77;
+        s.begin(side+103);
+        const axis=frame(s,'pca-score-space',{x:48,y:28,w:side,h:side},[-limit,limit],[-limit,limit],['PC1 score','PC2 score']);
         pc.scores.forEach((r) => {
           const p = P(r.id, axis.x(r.pc1), axis.y(r.pc2));
           s.mark(
@@ -253,6 +296,8 @@ export function create(host, slug) {
             ...p,
             palette[0],
             r.id + " PC1 " + fmt(r.pc1, 3) + " PC2 " + fmt(r.pc2, 3),
+            r.id===st.selected,
+            r.id,
             r.id === st.selected,
             r.id,
           );
@@ -379,7 +424,7 @@ export function create(host, slug) {
                 axis.y(center.z),
                 axis.x(d.rows[j].x),
                 axis.y(d.rows[j].z),
-                palette[i % 6] + "75",
+                groupColor(g) + "75",
                 1.6,
               ),
             );
@@ -393,7 +438,7 @@ export function create(host, slug) {
           s.mark(
             r.id,
             ...p,
-            palette[i % 6],
+            principal?palette[0]:groupColor(groups[i]),
             r.id + " x " + fmt(r.x, 3) + " z " + fmt(r.z, 3),
             r.id === st.selected,
             r.id,

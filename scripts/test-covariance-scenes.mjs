@@ -1,3 +1,4 @@
+import { auditOutput } from "./audit-output.mjs";
 import assert from "node:assert/strict";
 import { covarianceContour, squaredMahalanobis } from "../modules/notebook/classification.js";
 import { classificationData, splitRows, discriminantFit } from "../modules/notebook/science.js";
@@ -25,7 +26,7 @@ for (const scenario of ["clouds", "unequal", "rings"])
         centered[0].forEach((p, i) => p.forEach((v, j) => assert.ok(Math.abs(v - centered[1][i][j]) < 1e-10)));
     }
 
-const root = resolve(import.meta.dirname, ".."), out = join(root, "audit-evidence/visual-storytelling-2026-09-28");
+const root = resolve(import.meta.dirname, ".."), out = auditOutput(root, "audit-evidence/visual-storytelling-2026-09-28");
 await mkdir(out, { recursive: true });
 const server = createServer(async (req, res) => {
   try {

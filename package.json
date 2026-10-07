@@ -15,10 +15,11 @@
     "generate:all": "node scripts/generate-pilots.mjs && node scripts/generate-notebooks.mjs && node scripts/generate-association-rules.mjs && node scripts/generate-navigation.mjs",
     "test:rollout": "node scripts/test-science.mjs && node scripts/test-expanded-browser.mjs && node scripts/test-notebook-interactions.mjs",
     "test:visual": "node scripts/test-spatial-science.mjs && node scripts/test-visual-teaching-browser.mjs",
-    "test:stories": "node scripts/test-vote-criteria.mjs && node scripts/test-vote-criteria-browser.mjs && node scripts/test-covariance-scenes.mjs && node scripts/test-statistics-stories.mjs && node scripts/test-visual-collisions.mjs",
+    "test:stories": "node scripts/test-vote-criteria.mjs && node scripts/test-vote-criteria-browser.mjs && node scripts/test-covariance-scenes.mjs && node scripts/test-statistics-stories.mjs && node scripts/test-visual-collisions.mjs && node scripts/test-learning-stories.mjs && node scripts/test-beginner-visuals.mjs && node scripts/test-visual-revisions.mjs",
     "generate:association-rules": "node scripts/generate-association-rules.mjs",
     "generate:navigation": "node scripts/generate-navigation.mjs",
-    "test:association-rules": "node scripts/test-association-rules-models.mjs && node scripts/test-association-rules-browser.mjs"
+    "test:association-rules": "node scripts/test-association-rules-models.mjs && node scripts/test-association-rules-browser.mjs",
+    "test:visual-revisions": "node scripts/test-visual-revisions.mjs"
   },
   "devDependencies": {
     "playwright": "^1.61.1"

@@ -1,4 +1,9 @@
+import { illustrativeCounts } from './decision-counts.js';
+import { visualRevision } from './visual-revisions.js';
+import { oneRStudy, oneRDetails, oneRScene } from './one-r-scenes.js';
+import { imbalanceScene, knnDistanceScene } from './metric-scenes.js';
 import { logisticRegions } from "./logistic-geometry.js";
+import { knnCrossValidation,linearScoreContours,gridScoreContours,oddsStory,oneRuleStory,scalingStory,contributionsStory,probabilityShapesStory,appendLogisticDecisionField } from './classification-stories.js';
 import {
   makeLab,
   fmt,
@@ -184,8 +189,11 @@ export function create(host, slug) {
     C: 1,
     kernel: "linear",
     gamma: 0.8,
-    query: 0,
-    second: 0,
+    query: slug === 'logistic-regression' ? .8 : 0,
+    second: slug === 'logistic-regression' ? .4 : 0,
+    inputState: 'measured',
+    oneFold: 1,
+    lossInput: svm ? .4 : .5,
     selected: "C1",
     feature: "auto",
     prevalence: 1,
@@ -297,11 +305,15 @@ export function create(host, slug) {
     ...(!svm && !knn && !qda && !lda && !one && !imb
       ? [{ key: "lambda", label: "L2 penalty", min: 0, max: 1, step: 0.02 }]
       : []),
+    ...(one?[{key:'oneFold',label:'Held-out fold',options:[[1,'Fold 1'],[2,'Fold 2'],[3,'Fold 3']]},{key:'inputState',label:'Selected rule input',options:[['measured','Measured value'],['missing','Missing value: use saved fallback']]}]:[]),
+    ...(svm||slug==='logistic-regression'?[{key:'lossInput',label:svm?'Inspect signed margin y × score':'Inspect probability assigned to true class',min:svm?-2:.01,max:svm?2:.99,step:.01}]:[]),
   ];
   const L = makeLab(host, slug, initial, controls);
   let data,
     key = "",
-    sealed = null;
+    sealed = null,
+    cvKey = '',
+    cvScores = [];
   function compute() {
     const st = L.state,
       k = JSON.stringify([
@@ -340,9 +352,10 @@ export function create(host, slug) {
       fit.transform = transform;
     } else fit = logisticFit(train, 350, 0.2, st.lambda);
     score = svm ? fit.score : fit.predict;
+    const limit=Math.max(3,...train.flatMap(r=>[Math.abs(r.x)+.25,Math.abs(r.z)+.25]));
     const grid = Array.from({ length: 24 * 20 }, (_, i) => {
-      const x = -3 + (6 * (i % 24)) / 23,
-        z = -3 + (6 * Math.floor(i / 24)) / 19;
+      const x = -limit + (2*limit * (i % 24)) / 23,
+        z = -limit + (2*limit * Math.floor(i / 24)) / 19;
       return { x, z, score: score({ x, z }) };
     });
     const predictions = split.validation.map((r) => ({
@@ -358,7 +371,7 @@ export function create(host, slug) {
         const c = matrix(split.validation, score, t);
         return { x: c.fp / (c.fp + c.tn), y: c.tp / (c.tp + c.fn) };
       });
-    return (data = { split, fit, score, grid, predictions, roc });
+    return (data = { split, fit, score, grid, predictions, roc,limit });
   }
   function unlock() {
     sealed = null;
@@ -402,24 +415,51 @@ export function create(host, slug) {
     const st = L.state,
       d = compute(),
       scene = L.scene,
-      q = { x: st.query, z: st.second },
+      q = { x: one&&[5,11].includes(L.index)&&st.inputState==='missing'&&d.fit.key==='x'?NaN:st.query,
+            z: one&&[5,11].includes(L.index)&&st.inputState==='missing'&&d.fit.key==='z'?NaN:st.second },
       score = d.score(q),
       c = imb
-        ? (() => {
-            const n = 10000,
-              pos = Math.round((n * st.prevalence) / 100),
-              sens = (1 - st.threshold) ** (Math.log(0.9) / Math.log(0.5)),
-              fpr = (1 - st.threshold) ** (Math.log(0.05) / Math.log(0.5)),
-              tp = Math.round(pos * sens),
-              fp = Math.round((n - pos) * fpr);
-            return { tp, fn: pos - tp, fp, tn: n - pos - fp };
-          })()
-        : matrix(d.split.validation, d.score, st.threshold);
+        ? illustrativeCounts(st.prevalence,st.threshold)
+        : matrix(d.split.validation, d.score, one ? .5 : st.threshold);
     const precision = c.tp + c.fp ? c.tp / (c.tp + c.fp) : null,
       recall = c.tp / (c.tp + c.fn);
     finalButton.hidden = slug !== "logistic-regression" || scene !== "final";
     const votes = knn ? knnVoteReceipt(d.fit, q, st.weighted === "yes") : null;
-    L.data = { ...d, counts: c, sealed, votes };
+    const logistic=slug==='logistic-regression';
+    host.querySelector('.lab-stats').hidden=logistic&&L.index===0;
+    const parts=logistic?[d.fit.weights[0],d.fit.weights[1]*q.x,d.fit.weights[2]*q.z]:null;
+    const rawScore=parts?parts.reduce((a,b)=>a+b,0):null;
+    const lossDemo=scene==='loss'?{input:st.lossInput,value:svm?Math.max(0,1-st.lossInput):-Math.log(st.lossInput)}:null;
+    const newExample=host.querySelector('#new-data');
+    if(newExample)newExample.hidden=scene==='loss';
+    if(logistic||svm) {
+      for(const control of controls){
+        const hide=scene==='loss'?control.key!=='lossInput':control.key==='lossInput'||(svm&&scene==='split'&&['C','kernel','gamma','threshold'].includes(control.key))||(svm&&control.key==='gamma'&&st.kernel!=='rbf'&&scene!=='kernel')||(logistic&&scene==='coefficients'&&['query','second','threshold'].includes(control.key));
+        host.querySelector('#'+control.key).closest('label').hidden=hide;
+      }
+    }
+    if(one){
+      host.querySelector('#threshold').closest('label').hidden=true;
+      host.querySelector('#oneFold').closest('label').hidden=L.index!==8;
+      host.querySelector('#inputState').closest('label').hidden=![5,11].includes(L.index);
+      for(const id of ['query','second','feature'])host.querySelector('#'+id).closest('label').hidden=scene==='votes'||(id!=='feature'&&[3,8,9].includes(L.index));
+      if([5,11].includes(L.index)&&st.inputState==='missing')host.querySelector(d.fit.key==='x'?'#query':'#second').closest('label').hidden=true;
+    }
+    if(knn && scene==='tuning'){
+      const nextKey=JSON.stringify([st.scenario,st.seed,st.scaling,st.weighted,st.threshold]);
+      if(cvKey!==nextKey){
+        cvKey=nextKey;
+        cvScores=knnCrossValidation(d.split.train,st.scaling==='yes',st.weighted==='yes',st.threshold);
+      }
+    }
+    if(knn)for(const id of ['query','second'])host.querySelector('#'+id).closest('label').hidden=scene==='tuning';
+    const svmContours=svm && scene==='margin'
+      ? st.kernel==='linear'
+        ? linearScoreContours(d.score,d.limit).map(c=>({level:c.level,segments:c.points.length?[c.points]:[]}))
+        : [-1,0,1].map(level=>({level,segments:gridScoreContours(d.grid,24,level)}))
+      : [];
+    const oneStudy=one?oneRStudy(d,st):null;
+    L.data = { ...d, oneStudy, counts: c, sealed, votes, lossDemo, rawScore, parts, svmContours, cvScores:knn&&scene==='tuning'?cvScores:undefined };
     L.metrics([
       [
         "Validation / scenario accuracy",
@@ -443,6 +483,14 @@ export function create(host, slug) {
         ["Dashed cutoff · " + fmt(st.threshold, 2), "#344a48"],
         ...(scene === "boundary" ? [["Query", palette[3]]] : []),
       ]);
+    if(svm && scene==='margin')L.legend([['Known class 0',palette[0]],['Known class 1',palette[1]],["Model separator: score 0",palette[2]],["Margin contours: scores ±1",'#817562'],["Support points: gold rings",palette[3]],['Query: solid gold',palette[3]]]);
+    if(knn&&scene==='votes')L.legend([['Class 0 votes',palette[0]],['Class 1 votes',palette[1]]]);
+    if(scene==='split'&&!svm)L.legend([]);
+    if(knn && scene==='tuning'){
+      const selected=cvScores.find(row=>row.k===st.k);
+      L.metrics([["Current K · LOO accuracy",selected?fmt(selected.accuracy*100,1)+'%':'Not compared'],["Separate validation accuracy",fmt((c.tp+c.tn)/(c.tp+c.tn+c.fp+c.fn)*100,1)+'%'],["Training-only LOO folds",d.split.train.length]]);
+      L.legend([["Training-only LOO accuracy",palette[0]],["Current K",palette[3]]]);
+    }
     if ((lda || qda) && scene === "covariance")
       L.legend([["Class 0 · solid contour", palette[0]], ["Class 1 · dashed contour", palette[1]], ["Inspected query", palette[3]]]);
     if (lda || qda) {
@@ -454,6 +502,27 @@ export function create(host, slug) {
           ["Query distance · class 1", fmt(Math.sqrt(squaredMahalanobis(d.fit.estimates[1], q)), 3)],
           ["Covariance model", qda ? fmt(st.shrink * 100, 0) + "% pooled" : "Shared shape"],
         ]);
+    }
+    if(lossDemo){
+      L.metrics([[svm?'Signed margin':'True-class probability',fmt(lossDemo.input,3)],[svm?'Hinge loss':'One-case log loss',fmt(lossDemo.value,3)],['Scope','Loss illustration']]);
+      L.legend([["Loss function",palette[2]],["Inspected value",palette[3]]]);
+    }
+    if(logistic&&scene==='sigmoid'&&L.index<5){
+      L.legend([['Blue background: predict 0',palette[0]],['Red background: predict 1',palette[1]],['Dashed decision cutoff','#344a48'],['Sigmoid',palette[2]],...(L.index===1?[['Thin red: illustrative line',palette[1]]]:[]),['Current point',palette[3]]]);
+      L.metrics([['Current raw score s',fmt(rawScore,3)],['Model probability',fmt(score,4)],['Valid probability range','0 to 1']]);
+    }
+    if(logistic&&scene==='contributions'){
+      L.metrics([['Raw score s',fmt(rawScore,3)],['Sigmoid probability',fmt(score,4)],['Input clues',2]]);
+      L.legend([['Intercept',palette[0]],['x contribution',palette[1]],['z contribution',palette[2]],['Raw score total',palette[3]],['Map blue: predict 0',palette[0]],['Map red: predict 1',palette[1]],['Map gold: query',palette[3]]]);
+    }
+    if(one&&scene==='votes'){
+      const positive=d.split.train.filter(r=>r.y===1).length,baseline=d.fit.fallback;
+      L.metrics([['Training class 0',d.split.train.length-positive],['Training class 1',positive],['Majority baseline',`Class ${baseline}`]]);
+      L.legend([['Class 0',palette[0]],['Class 1',palette[1]]]);
+    }
+    if(one&&scene==='rules'){
+      L.metrics([['Training mistakes',d.fit.errors],['Returned class',score],['Saved input',d.fit.key]]);
+      L.legend([5,11].includes(L.index)&&st.inputState==='missing'?[['Saved fallback class '+d.fit.fallback,palette[d.fit.fallback]]]:[['Training class 0',palette[0]],['Training class 1',palette[1]],['Current input interval',palette[3]]]);
     }
     let receipt = [
       ["Query inputs", "x " + fmt(q.x, 2) + ", z " + fmt(q.z, 2)],
@@ -527,6 +596,8 @@ export function create(host, slug) {
     if (one)
       receipt = [
         ["Selected input", d.fit.key],
+        ['New input value',Number.isFinite(q[d.fit.key])?fmt(q[d.fit.key],4):'Missing'],
+        ['Returned saved class',score],
         ["Training cut points", d.fit.cuts.map((x) => fmt(x, 3)).join(", ")],
         ...d.fit.values.map((v, i) => [
           "Bin " + (i + 1),
@@ -567,12 +638,20 @@ export function create(host, slug) {
         "β" + i,
         fmt(v, 4) + (i ? " · odds multiplier " + fmt(Math.exp(v), 3) : ""),
       ]);
+    if(logistic&&scene==='contributions')receipt=[['Intercept',fmt(parts[0],4)],['x × coefficient',`${fmt(q.x,3)} × ${fmt(d.fit.weights[1],3)} = ${fmt(parts[1],4)}`],['z × coefficient',`${fmt(q.z,3)} × ${fmt(d.fit.weights[2],3)} = ${fmt(parts[2],4)}`],['Raw score s',fmt(rawScore,4)],['Sigmoid probability',fmt(score,4)]];
     if (scene === "split")
       receipt = [
         ["Train IDs", d.split.train.map((r) => r.id).join(", ")],
         ["Validation IDs", d.split.validation.map((r) => r.id).join(", ")],
         ["Final test", "16 rows sealed; never used in this view."],
       ];
+    if(svm&&scene==='split'){
+      const scaled=d.fit.transform(q);
+      receipt=[['Raw query',`x=${fmt(q.x,4)}, z=${fmt(q.z,4)}`],['Training means',`x=${fmt(d.fit.scaler.mx,4)}, z=${fmt(d.fit.scaler.mz,4)}`],['Training SDs',`x=${fmt(d.fit.scaler.sx,4)}, z=${fmt(d.fit.scaler.sz,4)}`],['Scaled query',`x=${fmt(scaled.x,4)}, z=${fmt(scaled.z,4)}`],['Saved rule','Subtract the training mean, then divide by the training SD. Reuse these same values for later rows.']];
+      L.metrics([['Scaled query x',fmt(scaled.x,3)],['Scaled query z',fmt(scaled.z,3)],['Training rows for scales',d.split.train.length]]);
+      L.legend([['Scaled input calculation',palette[0]]]);
+      notice='This panel follows input preparation. Its means and SDs come from the training rows only; validation and final-test rows cannot set them.';
+    }
     if (imb)
       receipt = [
         ["Actual positives / negatives", c.tp + c.fn + " / " + (c.fp + c.tn)],
@@ -615,11 +694,75 @@ export function create(host, slug) {
             ["Action", "Lock choices & reveal final test."],
             ["Current test status", "Sealed."],
           ];
+    if(knn && scene==='tuning'){
+      receipt=cvScores.map(row=>[`K=${row.k}`,`${row.correct}/${row.total} held-out predictions correct (${fmt(row.accuracy*100,1)}%)`]);
+      notice='Computed leave-one-out comparison on the 48 training rows only. Every held-out row is excluded from its fitted scales and neighbours. Validation and sealed final-test rows do not enter these CV scores. No best K is selected automatically.';
+    }
+    if(lossDemo){
+      receipt=[['Input to the loss rule',fmt(lossDemo.input,4)],['Loss',fmt(lossDemo.value,4)],['Scope',svm?'Hinge loss at a chosen signed margin.':'Log loss for probability assigned to the known true class.']];
+      notice='This is a one-case loss-function experiment. The input control inspects the rule; it does not refit a classifier or report validation performance.';
+    }
+    if(logistic&&L.index<5&&scene!=='loss'){
+      if(scene!=='contributions')receipt=[['Inputs',`x=${fmt(q.x,3)}, z=${fmt(q.z,3)}`],['Raw score s',fmt(rawScore,4)],['Model class-1 probability',fmt(score,4)]];
+      if(L.index===0){
+        receipt=[['New input coordinates',`x=${fmt(q.x,3)}, z=${fmt(q.z,3)}`],['Training examples',d.split.train.length],['Known answers','Classes 0 and 1']];
+        notice='Dots are labelled training examples. The gold point is a new input to predict. The background turns fitted probabilities into decisions: blue below the cutoff, red at or above it. Moving the cutoff leaves the fitted probabilities unchanged.';
+      }
+      if(L.index===1)notice='The thin red line is y=.5+.25s as a shape illustration, not a fitted prediction. The gold dot uses this classifier’s raw score and sigmoid probability. The two-colour probability field follows the decision threshold; moving it does not change either curve.';
+      if(['sigmoid','contributions'].includes(scene))receipt.push(['Decision cutoff',fmt(st.threshold,2)],['Class at this cutoff',+(score>=st.threshold)]);
+    }
+    if(one&&scene==='votes'){
+      const positive=d.split.train.filter(r=>r.y===1).length;
+      receipt=[['Training class counts',`${d.split.train.length-positive} class 0; ${positive} class 1`],['Saved majority label',d.fit.fallback],['Tie rule','An equal count chooses class 1 in this teaching model.']];
+      notice='This baseline ignores every input. The counts come from the current training rows, rather than the separate printed weather example.';
+    }
+    if(one&&[5,11].includes(L.index)&&st.inputState==='missing'){
+      receipt=[['Selected input',d.fit.key],['Input status','Missing, rather than zero'],['Saved fallback label',d.fit.fallback],['Returned prediction',score]];
+      notice='The selected input is unknown. The model applies its saved training-majority fallback; it does not treat the value as the largest interval.';
+    }
+    if(one) {
+      const detail=oneRDetails(oneStudy,st,q,L.index);
+      L.metrics(detail.metrics);receipt=detail.receipt;
+      notice=visualRevision(slug,L.index).guide;
+    }
+    if(imb) {
+      L.legend([['Found positives (TP)',palette[2]],['Misses (FN)',palette[3]],['False alerts (FP)',palette[1]],['Correct negatives (TN)',palette[0]]]);
+      receipt=[['Actual positives',`${c.tp} found + ${c.fn} missed = ${c.tp+c.fn}`],['Actual negatives',`${c.fp} false alerts + ${c.tn} correct negatives = ${c.fp+c.tn}`],['Alert pool',`${c.tp} + ${c.fp} = ${c.tp+c.fp}`],['Recall',`${c.tp}/${c.tp+c.fn}`],['Precision',c.tp+c.fp?`${c.tp}/${c.tp+c.fp}`:'Undefined: no alerts'],['Accuracy',`(${c.tp}+${c.tn})/10000`]];
+      notice=visualRevision(slug,L.index).guide;
+    }
+    if(knn&&scene==='distances') {
+      receipt=[['Distance coordinates',st.scaling==='yes'?'Training SD-scaled':'Raw'],['Training x SD',fmt(d.fit.sx,4)],['Training z SD',fmt(d.fit.sz,4)],...votes.rows.map((r,i)=>[`Rank ${i+1}: ${r.id}`,`class ${r.y}; distance ${fmt(r.distance,4)}; Δx ${fmt((r.x-q.x)/d.fit.sx,4)}; Δz ${fmt((r.z-q.z)/d.fit.sz,4)}`])];
+      notice=visualRevision(slug,L.index).guide;
+    }
     L.receipt(L.table(["Inspect", "Value"], receipt));
     L.note(notice);
     L.draw((s, P) => {
       s.begin(310);
-      if ((lda || qda) && scene === "covariance") {
+      if(one && L.index!==7){
+        oneRScene(s,P,oneStudy,q,st,L.index,c,d);
+      } else if(imb){
+        imbalanceScene(s,P,c,L.index,st.prevalence,st.threshold);
+      } else if(knn&&scene==='distances'){
+        knnDistanceScene(s,P,d,q,st.k,st.scaling==='yes');
+      } else if(logistic&&L.index===1){
+        probabilityShapesStory(s,rawScore,score,st.threshold,P);
+      } else if(logistic&&scene==='contributions'){
+        contributionsStory(s,parts,score);
+        appendLogisticDecisionField(s,P,d,q,st.threshold);
+      } else if(one&&scene==='rules'){
+        oneRuleStory(s,d.fit,d.split.train,q,[5,11].includes(L.index)&&st.inputState==='missing');
+      } else if(one&&scene==='votes'){
+        const positive=d.split.train.filter(r=>r.y===1).length;
+        bars(s,P,[{label:'Class 0',value:d.split.train.length-positive,color:palette[0]},{label:'Class 1',value:positive,color:palette[1]}]);
+      } else if(svm&&scene==='split'){
+        scalingStory(s,q,d.fit.scaler,d.split.train.length);
+      } else if(knn && scene==='tuning'){
+        const a=s.axes([1,21],[0,100],'Neighbours K','Leave-one-out accuracy %',[1,5,9,13,17,21]);
+        plotLine(s,P,'knn-cv',cvScores.map(row=>[a.x(row.k),a.y(row.accuracy*100)]),palette[0],2.5);
+        cvScores.forEach(row=>s.circle('knn-cv-point'+row.k,a.x(row.k),a.y(row.accuracy*100),row.k===st.k?6:3.5,row.k===st.k?palette[3]:palette[0]));
+      } else if(slug==='logistic-regression' && scene==='coefficients'){
+        oddsStory(s,d.fit.weights);
+      } else if ((lda || qda) && scene === "covariance") {
         drawCovariance(s, P, d, q, qda, st.radius);
       } else if (scene === "confusion" || scene === "final" || imb) {
         const cc = sealed && scene === "final" ? sealed.counts : c,
@@ -678,12 +821,13 @@ export function create(host, slug) {
       ) {
         const kernel = scene === "kernel",
           loss = scene === "loss",
+          scoreLimit=logistic&&scene==='sigmoid'?Math.max(6,Math.abs(rawScore)+1):6,
           a = s.axes(
             kernel
               ? [0, 4]
               : loss
                 ? [svm ? -2 : 0.01, svm ? 2 : 0.99]
-                : [-6, 6],
+                : [-scoreLimit, scoreLimit],
             kernel ? [0, 1] : loss ? [0, 5] : [0, 1],
             kernel
               ? "Scaled distance"
@@ -691,12 +835,12 @@ export function create(host, slug) {
                 ? svm
                   ? "Signed margin"
                   : "Probability of true class"
-                : "Linear score z",
+                : "Linear score s",
             kernel ? "RBF similarity" : loss ? "Loss" : "Probability",
           );
         const xs = linspace(
-          kernel ? 0 : loss ? (svm ? -2 : 0.01) : -6,
-          kernel ? 4 : loss ? (svm ? 2 : 0.99) : 6,
+          kernel ? 0 : loss ? (svm ? -2 : 0.01) : -scoreLimit,
+          kernel ? 4 : loss ? (svm ? 2 : 0.99) : scoreLimit,
         );
         let thresholdY;
         if (scene === "sigmoid" && slug === "logistic-regression") {
@@ -724,6 +868,11 @@ export function create(host, slug) {
           palette[2],
           2.8,
         );
+        if(lossDemo){
+          s.circle('loss-inspection',a.x(lossDemo.input),a.y(lossDemo.value),6,palette[3]);
+          s.line('loss-input-guide',a.x(lossDemo.input),a.b,a.x(lossDemo.input),a.y(lossDemo.value),palette[3],1.3,'3 4');
+        }
+        if(logistic&&scene==='sigmoid')s.circle('sigmoid-current',a.x(rawScore),a.y(score),6,palette[3]);
         if (thresholdY !== undefined)
           s.line("probability-threshold", a.l, thresholdY, a.r, thresholdY, "#344a48", 2, "6 4");
       } else if (scene === "rules") {
@@ -754,7 +903,7 @@ export function create(host, slug) {
           })),
         );
       } else {
-        const a = s.axes([-3, 3], [-3, 3], "Input x", "Input z");
+        const a = s.axes([-d.limit, d.limit], [-d.limit, d.limit], "Input x", "Input z");
         if (lda && scene === "projection") {
           const c = d.fit.estimates[0],
             e = d.fit.estimates[1],
@@ -798,7 +947,7 @@ export function create(host, slug) {
         if (showSurface && slug === "logistic-regression") {
           const threshold = P("decision-threshold", 0, st.threshold)[1],
             weights = d.fit.weights.map((value, i) => P("decision-weight" + i, value, 0)[0]),
-            regions = logisticRegions(weights, threshold);
+            regions = logisticRegions(weights, threshold,[-d.limit,d.limit]);
           for (const [key, points, color] of [
             ["decision-class-1", regions.positive, palette[1]],
             ["decision-class-0", regions.negative, palette[0]],
@@ -810,17 +959,11 @@ export function create(host, slug) {
             const [from, to] = regions.boundary;
             s.line("decision-threshold-line", a.x(from[0]), a.y(from[1]), a.x(to[0]), a.y(to[1]), "#344a48", 2, "6 4");
           }
-        } else if (showSurface)
-          d.grid.forEach((r, i) =>
-            s.rect(
-              "cell" + i,
-              a.x(r.x) - 1,
-              a.y(r.z) - (a.b - a.t) / 19,
-              (a.r - a.l) / 23 + 1,
-              (a.b - a.t) / 19 + 1,
-              r.score >= st.threshold ? palette[1] + "16" : palette[0] + "16",
-            ),
-          );
+        } else if (showSurface && slug!=='logistic-regression')
+          d.grid.forEach((r, i) => {
+            const dx=(a.r-a.l)/23,dy=(a.b-a.t)/19,left=Math.max(a.l,a.x(r.x)-dx/2),right=Math.min(a.r,a.x(r.x)+dx/2),top=Math.max(a.t,a.y(r.z)-dy/2),bottom=Math.min(a.b,a.y(r.z)+dy/2);
+            s.rect('cell'+i,left,top,right-left,bottom-top,r.score>=st.threshold?palette[1]+'16':palette[0]+'16',{rx:0});
+          });
         const neighbors = knn
             ? new Set(d.fit.neighbors(q).map((r) => r.id))
             : new Set(),
@@ -840,19 +983,7 @@ export function create(host, slug) {
               ),
             );
         if (svm && scene === "margin") {
-          const levels = [-1, 0, 1];
-          levels.forEach((level, j) => {
-            d.grid.forEach((r, i) => {
-              if (Math.abs(r.score - level) < 0.15)
-                s.circle(
-                  "contour" + j + "-" + i,
-                  a.x(r.x),
-                  a.y(r.z),
-                  j === 1 ? 2 : 1.5,
-                  j === 1 ? palette[2] : "#817562",
-                );
-            });
-          });
+          svmContours.forEach(({level,segments},j)=>segments.forEach((segment,i)=>s.line(`svm-contour-${j}-${i}`,a.x(segment[0][0]),a.y(segment[0][1]),a.x(segment[1][0]),a.y(segment[1][1]),level===0?palette[2]:'#817562',level===0?2.4:1.5,level===0?null:'4 4')));
         }
         d.split.train.forEach((r) => {
           const p = P(r.id, a.x(r.x), a.y(r.z));
@@ -897,6 +1028,7 @@ export function create(host, slug) {
           "stroke-width": 2,
         });
       }
+      if(one&&L.index===7)caption(s,'one-map-guide',`Map: predicted class from input ${d.fit.key}. Changing ${d.fit.key==='x'?'z':'x'} alone cannot change this rule’s answer. Known labels and predicted strips describe different things.`,s.h+24);
       s.end(receipt.map((r) => r.join(": ")).join(". "));
     }, animate);
   });

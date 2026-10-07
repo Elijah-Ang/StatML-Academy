@@ -1,3 +1,4 @@
+import { visualRevision } from '../modules/notebook/visual-revisions.js';
 import {workflowPrompts} from "./workflow-prompts.mjs";
 import { spatialPrompts } from "./spatial-prompts.mjs";
 import { storyPrompts } from "./story-prompts.mjs";
@@ -123,9 +124,9 @@ export const expanded = Object.fromEntries(
               : config.engine === "statistics"
                 ? "blue"
                 : "red",
-        intro: authored[slug][0][0],
+        intro: d.intro || authored[slug][0][0],
         prerequisite:
-          f?.prerequisite ||
+          d.prerequisite || f?.prerequisite ||
           (config.engine === "neural"
             ? "Weighted sums, functions, and train–validation–test splits"
             : "Means, plots, and the train–validation distinction"),
@@ -144,9 +145,10 @@ export const expanded = Object.fromEntries(
               "the visual panel",
               "the corresponding conceptual example",
             );
-          // Knowledge checks are authored below; old button labels do not belong in the reference.
-          if (f && i === 8) deep = "";
-          if (f && i === 3)
+          // Revised explanations own the optional depth. Legacy button text is
+          // removed only for source sections that have not yet been rewritten.
+          if (f && i === 8 && !stage.languageReviewed) deep = "";
+          if (f && i === 3 && !stage.languageReviewed)
             deep = deep.replace(
               /<p>A defensible analysis connects[\s\S]*?<\/p>/,
               "",
@@ -156,7 +158,7 @@ export const expanded = Object.fromEntries(
               slug === "neural-networks" && i === 2
                 ? "Split, then learn preprocessing"
                 : stage.title.replace(/^\d+[.\s]+/, ""),
-            question: stage.question,
+            question: visualRevision(slug,i)?.question || stage.question,
             answer: esc(answer),
             receipt:
               '<div class="receipt-label">A small example · separate from the live dataset</div>' +
@@ -164,12 +166,13 @@ export const expanded = Object.fromEntries(
               (f && i === 8 ? "{{QUIZ}}" : "") +
               '<p class="mini-note"><strong>Your notebook:</strong> <span data-bind="live-receipt">Open the visual to inspect the current calculation.</span></p>',
             experiment:
-              storyPrompts[slug]?.[i] || workflowPrompts[slug]?.[i] ||
+              visualRevision(slug,i)?.action || stage.experiment || storyPrompts[slug]?.[i] || workflowPrompts[slug]?.[i] ||
               spatialPrompts[slug]?.[i] ||
               sceneLabels[scene] +
                 ". Use the labeled controls, predict what will change, then compare the calculation before and after.",
-            why: answer + "\n" + solution,
-            reference: deep,
+            why: stage.languageReviewed ? "" : answer + "\n" + solution,
+            whyHtml: stage.languageReviewed ? deep : undefined,
+            reference: stage.languageReviewed ? "" : deep,
             check,
             solution,
             legacyId: stage.legacyId,

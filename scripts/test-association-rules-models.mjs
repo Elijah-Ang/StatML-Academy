@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { ITEMS, SOURCE_BASKETS, RULES, FP_BASKETS, QUIZ_BASKETS, COHORTS, initialState, compute, apriori, bruteFrequent, mineFP, key, subset, measure, fromCounts, generateRules, classify, fpExample, encodeToy, constraint, splitRules } from '../modules/notebook/association-rules/model.js';
+import { ITEMS, SOURCE_BASKETS, RULES, FP_BASKETS, QUIZ_BASKETS, COHORTS, initialState, compute, apriori, bruteFrequent, mineFP, key, subset, measure, fromCounts, generateRules, classify, fpExample, encodeToy, constraint, splitRules, ruleThresholds } from '../modules/notebook/association-rules/model.js';
 let checks=0; const test=(name,fn)=>{fn();checks++;};
 const map=patterns=>Object.fromEntries(patterns.map(p=>[key(p.items),p.count]).sort(([a],[b])=>a.localeCompare(b)));
 const near=(a,b)=>assert.ok(Math.abs(a-b)<1e-10,`${a} != ${b}`);
@@ -71,5 +71,28 @@ test('Threshold map preserves rejected observations and each algorithm supplies 
 test('Chi-square and lift examples have independent state and align with the printed first cases',()=>{
  const state=initialState();state.cohort='cpu';state.joint=900;const a=compute(state);near(a.comparison.lift,1);near(a.chi.chi2,5000/9);assert.equal(a.chi.both,4000);
  state.chiJoint=4500;const b=compute(state);near(b.chi.chi2,0);assert.deepEqual(b.chi.observed,b.chi.expectations);assert.equal(b.comparison.both,900);
+});
+test('Rule cutoff checks distinguish all four outcomes and include equality',()=>{
+ const rule=splitRules(SOURCE_BASKETS,['Bread','Coke','Egg'])[0];
+ assert.equal(rule.both,2);assert.equal(rule.n,4);assert.equal(rule.a,3);
+ for(const [support,confidence,supportPass,confidencePass] of [[50,60,true,true],[50,90,true,false],[75,60,false,true],[75,90,false,false]])
+  assert.deepEqual(ruleThresholds(rule,support,confidence),{supportPass,confidencePass,bothPass:supportPass&&confidencePass});
+ assert.deepEqual(ruleThresholds(fromCounts({n:4,a:2,b:2,both:1}),25,50),{supportPass:true,confidencePass:true,bothPass:true});
+ assert.equal(ruleThresholds(rule,50,66.7).confidencePass,false,'Rounded 66.7% must not pass a 66.7% cutoff when the exact fraction is 2/3');
+});
+test('Undefined confidence never passes a cutoff, including zero',()=>{
+ const absent=measure([{items:['Coke']},{items:[]}],['Bread'],['Egg']);
+ for(const cutoff of [0,5,90,100])assert.deepEqual(ruleThresholds(absent,0,cutoff),{supportPass:true,confidencePass:false,bothPass:false});
+ assert.deepEqual(ruleThresholds(measure([{items:['Bread']}],['Bread'],['Egg']),0,0),{supportPass:true,confidencePass:true,bothPass:true});
+});
+test('Every split check follows altered baskets and each control cutoff',()=>{
+ for(const rows of [SOURCE_BASKETS,SOURCE_BASKETS.map(r=>({...r,items:r.items.filter(i=>i!=='Bread')})),SOURCE_BASKETS.map(r=>({...r,items:[]}))])
+ for(const items of [['Bread','Coke','Egg'],['Apple','DVD']])for(const rule of splitRules(rows,items))
+ for(const support of [25,50,75,100])for(let confidence=0;confidence<=100;confidence+=5){
+  const joint=rows.filter(r=>[...rule.x,...rule.y].every(i=>r.items.includes(i))).length;
+  const left=rows.filter(r=>rule.x.every(i=>r.items.includes(i))).length;
+  const supportPass=joint/rows.length>=support/100,confidencePass=left>0&&joint/left>=confidence/100;
+  assert.deepEqual(ruleThresholds(rule,support,confidence),{supportPass,confidencePass,bothPass:supportPass&&confidencePass});
+ }
 });
 console.log(`${checks} domain tests passed: independent miners, 244 data/threshold cases, source answers, projections, candidate joins, retained rule observations, state separation and edge cases.`);

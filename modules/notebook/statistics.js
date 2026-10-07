@@ -1,8 +1,12 @@
+import { correlationAreaScene, powerScene } from './metric-scenes.js';
 import {
   samplingStory,
   coverageStory,
   anovaStory,
   componentStory,
+  degreesStory,
+  effectSizeStory,
+  sharedCauseStory,
 } from "./statistics-scenes.js";
 import {
   makeLab,
@@ -38,6 +42,8 @@ export function create(host, slug) {
     corr = slug === "correlation",
     time = slug === "time-series-analysis",
     sampling = slug === "probability-sampling";
+  const pLabel = value => value == null || !Number.isFinite(value)
+    ? "Undefined" : value < .00001 ? "<0.00001" : fmt(value,5);
   const initial = {
     gap: 8,
     noise: 5,
@@ -403,11 +409,15 @@ export function create(host, slug) {
               ["Interaction SS", fmt(d.ssAB, 2)],
               ["Error SS", fmt(d.ssE, 2)],
             ]
-          : [
-              ["F (2, 21)", fmt(r.F, 3)],
-              ["Upper-tail p", fmt(r.p, 5)],
-              ["η²", fmt(r.eta, 3)],
-            ],
+          : L.index < 3
+            ? [["Groups",r.means.length],["Observed scores",d.rows.length],["Overall average",fmt(r.grand,2)]]
+            : L.index === 3
+              ? [["Between SS",fmt(r.between,2)],["Within SS",fmt(r.within,2)],["Total SS",fmt(r.total,2)]]
+              : L.index === 5
+                ? [["Between df",r.d1],["Within df",r.d2],["Total df",d.rows.length-1]]
+                : L.index < 8
+                  ? [["MS between",fmt(r.between/r.d1,2)],["MS within",fmt(r.within/r.d2,2)],["F ratio",fmt(r.F,3)]]
+                  : [["F (2, 21)",fmt(r.F,3)],["Upper-tail p",pLabel(r.p)],["η²",fmt(r.eta,3)]],
       );
       receipt = two
         ? [
@@ -438,7 +448,7 @@ export function create(host, slug) {
     } else if (chi) {
       L.metrics([
         ["χ² · df 1", fmt(d.stat, 3)],
-        ["Upper-tail p", fmt(d.p, 5)],
+        ["Upper-tail p", pLabel(d.p)],
         ["Cramér’s V", fmt(d.v, 3)],
       ]);
       receipt = d.expected.map((e, i) => [
@@ -460,7 +470,7 @@ export function create(host, slug) {
       L.metrics([
         ["Pearson r", fmt(d.r, 3)],
         ["t · df 28", fmt(d.t, 3)],
-        ["Two-sided p", fmt(d.p, 5)],
+        ["Two-sided p", pLabel(d.p)],
       ]);
       receipt = [
         ["Selected pair", row.id],
@@ -494,7 +504,7 @@ export function create(host, slug) {
         ["Residual", fmt(d.residuals[0], 3)],
       ];
       notice =
-        "Synthetic monthly series. Components are known simulation values, not an estimated decomposition. Fixed-origin forecasts use only the previous observed season; future actuals are used solely to score them. No fabricated forecast interval is shown.";
+        "Synthetic monthly series. We know its separate parts because we simulated them. Each forecast repeats the previous observed season. Later actual values are used only to check the forecast’s error.";
     } else if (sampling) {
       L.metrics([
         ["Current sample mean", fmt(d.means[st.sampleIndex - 1], 3)],
@@ -589,6 +599,16 @@ export function create(host, slug) {
           "95% under the stated normal, independent, known-σ model",
         ],
       ];
+    if(corr){
+      for(const control of controls)host.querySelector('#'+control.key).closest('label').hidden=scene==='causal';
+      const action=host.querySelector('#resample');
+      if(action)action.hidden=scene==='causal';
+      host.querySelector('.lab-stats').hidden=scene==='causal';
+      if(scene==='causal'){
+        receipt=[['Possible shared cause','Hot weather'],['Possible effects','More swimming and more ice-cream sales'],['What r establishes','An association, rather than the direction of a cause.']];
+        notice='This is a separate explanation diagram. Its arrows are hypotheses, not estimates made from the synthetic scatterplot.';
+      }
+    }
     L.receipt(L.table(["Inspect", "Calculation"], receipt));
     L.note(notice);
     L.data = d;
@@ -609,11 +629,16 @@ export function create(host, slug) {
               ["Reference / comparison", palette[1]],
             ],
     );
+    if(corr&&scene==='causal')L.legend([['Possible shared cause',palette[3]],['Two possible outcomes',palette[0]]]);
     if (aov && (L.index >= 10 || scene === "interaction"))
       L.legend([
         ["Setting 0", palette[0]],
         ["Setting 1", palette[1]],
       ]);
+    if (aov && L.index === 5)
+      L.legend([["Two freely chosen example values",palette[0]],["Third value forced by the mean",palette[2]]]);
+    if (aov && L.index === 8)
+      L.legend([["Between-group squared spread",palette[0]],["Within-group squared spread",palette[1]]]);
     if (time && scene === "components")
       L.legend([
         ["Observed", palette[0]],
@@ -657,6 +682,8 @@ export function create(host, slug) {
       if (aov) {
         const two = L.index >= 10 || scene === "interaction";
         if (L.index === 3) anovaStory(s, P, d, st.selected);
+        else if (L.index === 5) degreesStory(s,d);
+        else if (L.index === 8) effectSizeStory(s,d);
         else if (
           scene === "partition" ||
           scene === "table" ||
@@ -800,27 +827,20 @@ export function create(host, slug) {
           });
         }
       } else if (corr) {
-        if (scene === "causal") {
-          flow(
-            s,
-            P,
-            [
-              "Hot weather",
-              "More swimming and more ice-cream sales",
-              "Observed association between outcomes",
-              "Causal direction is not identified by r",
-            ],
-            1,
-          );
+        if(scene==='deviations'){
+          correlationAreaScene(s,P,d,st.selected);
+        } else if (scene === "causal") {
+          sharedCauseStory(s);
         } else if (scene === "distribution") {
-          const limit = Math.max(4, Math.min(12, Math.abs(d.t) + 1)),
+          const finite = Number.isFinite(d.t);
+          const limit = finite ? Math.min(60, Math.max(4, Math.abs(d.t)*1.15+1)) : 30,
             a = s.axes(
               [-limit, limit],
               [0, 0.42],
               "t statistic · df 28",
               "Density",
             ),
-            xs = linspace(-limit, limit, 120),
+            xs = [...new Set([...linspace(-limit, limit, 241),...linspace(-Math.min(5,limit),Math.min(5,limit),121)])].sort((a,b)=>a-b),
             pdf = (x) =>
               (Math.exp(logGamma(14.5) - logGamma(14)) /
                 Math.sqrt(28 * Math.PI)) *
@@ -832,15 +852,15 @@ export function create(host, slug) {
             xs.map((x) => [a.x(x), a.y(pdf(x))]),
             palette[0],
           );
-          s.line(
-            "observed",
-            a.x(Math.max(-limit, Math.min(limit, d.t))),
-            a.t,
-            a.x(Math.max(-limit, Math.min(limit, d.t))),
-            a.b,
-            palette[1],
-            2,
-          );
+          if(finite && Math.abs(d.t)<=limit) {
+            s.line('observed',a.x(d.t),a.t,a.x(d.t),a.b,palette[1],2);
+            for(const side of [-1,1]) {
+              s.line('other-tail-boundary'+side,a.x(side*Math.abs(d.t)),a.t,a.x(side*Math.abs(d.t)),a.b,palette[1],1.4,'4 4');
+              xs.filter(x=>side*x>=Math.abs(d.t)).forEach((x,i)=>s.line('two-sided-tail'+side+'-'+i,a.x(x),a.b,a.x(x),a.y(pdf(x)),palette[1]+'55',2));
+            }
+          } else {
+            s.text('unbounded-t',a.l+8,a.t+21,`|t| > ${limit} (outside view)`,{'font-size':14,fill:palette[1]});
+          }
         } else {
           const a = s.axes(
             extent(d.rows.map((r) => r.x)),
@@ -984,44 +1004,7 @@ export function create(host, slug) {
       } else {
         if ([1, 8].includes(L.index)) coverageStory(s, P, d);
         else if (scene === "power") {
-          const domain = extent(
-              [
-                -4 * d.se,
-                4 * d.se,
-                st.alternative - 4 * d.se,
-                st.alternative + 4 * d.se,
-              ],
-              0.01,
-            ),
-            a = s.axes(
-              domain,
-              [0, normalPDF(0, 0, d.se) * 1.15],
-              "Estimated effect",
-              "Sampling density",
-            ),
-            xs = linspace(...domain, 100);
-          [0, st.alternative].forEach((mu, i) =>
-            plotLine(
-              s,
-              P,
-              "density" + i,
-              xs.map((x) => [a.x(x), a.y(normalPDF(x, mu, d.se))]),
-              palette[i],
-              2.2,
-            ),
-          );
-          [-1, 1].forEach((sign) =>
-            s.line(
-              "critical" + sign,
-              a.x(sign * 1.96 * d.se),
-              a.t,
-              a.x(sign * 1.96 * d.se),
-              a.b,
-              palette[2],
-              1.4,
-              "4 4",
-            ),
-          );
+          powerScene(s,P,d,st);
         } else {
           const a = s.axes(
               extent([0, d.lo, d.hi]),
